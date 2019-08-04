@@ -1,0 +1,172 @@
+<div class="row">
+  <div class="col-sm-6 col-lg-6">
+    <h3>
+      Users
+    </h3>
+  </div>
+  <div class="col-sm-6 col-lg-6">
+    <div class="pull-right hidden-xs">
+      <ol class="breadcrumb" id="dynamicbreadcrumb">
+        <li>
+          <i class="fa fa-wrench"></i> <span> Utilities</span>
+        </li>
+        <li>
+          <i class="fa fa-users"></i> <span> Users</span>
+        </li>
+        <li class="active">
+          <i class="fa fa-th-list"></i>
+          List
+        </li>
+      </ol>
+    </div>
+  </div>
+</div>
+<div class="panel panel-default">
+  <div class="panel-heading">
+
+    <div class="row">
+      <div class="col-xs-12 col-sm-10 col-md-10 col-lg-10">
+        <div class="input-group col-sm-12" role="group" aria-label="Basic example">
+          <div class="col-md-3 nopading_loct">
+            <select [(ngModel)]="SearchBy" type="select" class="serchcurv form-control btn-group">
+              <option value="" selected="select">Search By</option>
+              <option value="ByName">Name</option>
+              <option value="ByEmail">Email</option>
+              <option value="ByStatus">Status</option>
+            </select>
+          </div>
+          <div class="col-md-4 nopading_loct" *ngIf="(SearchBy!= 'ByStatus') ">
+            <input [(ngModel)]="SearchKeyword" placeholder="Enter {{SearchBy}}" type="text"
+              class="serchcurv  form-control btn-group">
+          </div>
+          <div class="col-md-3 nopading_loct" *ngIf="(SearchBy=='ByStatus')"> 
+            <select [(ngModel)]="Searchaction" type="select" class="serchcurv form-control btn-group"> 
+              <option value="true">Active</option>
+              <option value="false">InActive</option>
+            </select>
+
+          </div>
+          <div class="col-md-2 nopading_loct">
+            <button class="btn btn-default serchcurv  btn-group" (click)="Search()" title="Search">
+              <i class="fa fa-search " aria-hidden="true"></i>
+            </button>
+            <button class="btn btn-default serchcurv  btn-group" (click)="Refresh()" title="Reset">
+              <i class="fa fa-refresh" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 text-right">
+        <button class="btn btn-primary" routerLink="/User/Create" title="Add New">
+
+          Add New
+        </button>
+      </div>
+    </div>
+
+  </div>
+  <!-- <div class="row">
+        <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+          <span class="spanheader">
+            Users
+          </span>
+        </div>
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 ">
+          <div class="pull-right">
+            <button class="btn btn-primary" routerLink="/User/Create">Add New</button>
+          </div>
+        </div>
+      </div> -->
+
+  <div class="panel-body">
+
+    <div class="table-responsive">
+      <table datatable [dtOptions]="dtOptions" class="table table-bordered table-condensed "
+        *ngIf="users && users.length">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>User Type</th>
+            <th class="text-center">IsActive</th>
+            <th class="text-center">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of users">
+            <td>{{ user.FirstName +' '+ user.LastName }}</td>
+            <td>{{ user.Email}}</td>
+            <td>{{ user.UserType}}</td>
+            <td class="text-center btnflag" *ngIf="(user.IsActive)"><i class="fa fa-check"></i></td>
+            <td class="text-center btnflag" *ngIf="(!user.IsActive)"><i class="fa fa-times"></i></td>
+            <td class="text-center btnactions">
+              <i (click)="editButtonClick(user.UserId)" title="Edit" class="bgblue pointer fa fa-edit"></i>
+              &nbsp;
+
+              <i (click)="confirmDeleteid(user.UserId,user.Email)" type="button" class="bgred pointer fa fa-trash"
+                title="Delete"></i>
+
+              &nbsp;
+
+              <i class="fa fa-shield bgblue pointer" (click)="editPermissionClick(user.UserId)" title="Permission"></i>
+
+              &nbsp;
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table class="table table-bordered table-condensed" *ngIf="users==null">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>User Type</th>
+            <th class="text-center btnflag">IsActive</th>
+            <th class="text-center btnactions">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td colspan="5">
+              No Records Found.!
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>
+
+<div id="modaldeleteconfimation" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modaldeleteconfimation"
+  aria-hidden="true">
+  <div class="modal-dialog ">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="modaldeleteconfimation">Confirmation</h4>
+      </div>
+      <div class="modal-body alert-warning">
+        <div class="row">
+          <div class="col-xs-2">
+            <i class="fa fa-warning fa-3x "></i>
+          </div>
+          <div class="col-xs-10">
+            <div>
+              <h5>
+                Are you sure you want to delete this value <span> {{deleteColumn}}</span>?
+              </h5>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-danger btn-sm" (click)="delete()">Yes</button>
+        &nbsp;
+        <button class="btn btn-default btn-sm" data-dismiss="modal">No</button>
+      </div>
+    </div>
+  </div>
+</div>

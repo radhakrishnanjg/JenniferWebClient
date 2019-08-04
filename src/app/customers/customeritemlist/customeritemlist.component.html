@@ -1,0 +1,296 @@
+<div class="row">
+  <div class="col-sm-6 col-lg-6">
+    <h3>
+      Customer Items
+    </h3>
+  </div>
+  <div class="col-sm-6 col-lg-6">
+    <div class="pull-right hidden-xs">
+      <ol class="breadcrumb" id="dynamicbreadcrumb">
+        <li>
+          <i class="fa fa-user-plus"></i> <span> Debtors</span>
+        </li>
+        <li>
+          <i class="fa fa fa-product-hunt"></i> <span> Customer Items</span>
+        </li>
+        <li class="active">
+          <i class="fa fa-th-list"></i>
+          List
+        </li>
+      </ol>
+    </div>
+  </div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+
+    <div class="row">
+      <div class="col-xs-12 col-sm-10 col-md-10 col-lg-10">
+        <div class="input-group col-sm-12" role="group" aria-label="Basic example">
+          <div class="col-md-3 nopading_loct">
+            <select [(ngModel)]="SearchBy" class="serchcurv form-control btn-group">
+              <option value="" selected="select">Search By</option>
+              <option value="ByItemcode">ItemCode</option>
+              <option value="ByCustomerItemCode">Customer ItemCode</option>
+              <option value="ByCustomerName">Customer Name</option>
+              <option value="ByStatus">Status</option>
+            </select>
+          </div>
+          <div class="col-md-4 nopading_loct" *ngIf="(SearchBy!='ByStatus')">
+            <input [(ngModel)]="SearchKeyword" type="text" class="serchcurv form-control btn-group">
+          </div>
+          <div class="col-md-3 nopading_loct" *ngIf="(SearchBy=='ByStatus')">
+            
+            <select [(ngModel)]="Searchaction" type="select" class="serchcurv form-control btn-group">
+              
+              <option value="true">Active</option>
+              <option value="false">InActive</option>
+            </select>
+
+          </div>
+          <div class="col-md-2 nopading_loct">
+            <button class="serchcurv btn btn-default btn-group" (click)="Search()" title="Search">
+              <i class="fa fa-search " aria-hidden="true"></i>
+            </button>
+            <button class="serchcurv btn btn-default btn-group" (click)="Refresh()" title="Reset">
+              <i class="fa fa-refresh" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 text-right">
+        <button class="btn btn-primary" (click)="newButtonClick()" title="Add New">
+          
+          Add New
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="panel-body">
+
+
+    <div class="table-responsive">
+      <table datatable [dtOptions]="dtOptions" class="table table-bordered table-condensed "
+        *ngIf="lstCustomeritem && lstCustomeritem.length">
+        <thead>
+          <tr>
+            <th>Customer</th>
+            <th>ItemCode</th>
+            <th>Customer ItemCode</th>
+            <th class="text-center btnflag">IsActive</th>
+            <th class="text-center btnactions">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of lstCustomeritem">
+            <td>{{ user.CustomerName  }}</td>
+            <td>{{ user.ItemCode}}</td>
+            <td>{{ user.CustomerItemCode}}</td>
+            <td class="text-center" *ngIf="(user.IsActive)"><i class="fa fa-check"></i></td>
+            <td class="text-center" *ngIf="(!user.IsActive)"><i class="fa fa-times"></i></td>
+            <td class="text-center">
+              <i (click)="editButtonClick(user.CustomerItemID)" title="Edit" class="fa fa-edit bgblue pointer"></i>
+              &nbsp;
+              <i class="fa fa-trash bgred pointer" (click)="confirmDeleteid(user.CustomerItemID,user.CustomerItemCode)"
+                title="Delete"></i>
+
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table class="table table-bordered table-condensed" *ngIf="lstCustomeritem==null">
+        <thead>
+          <tr>
+            <th>Customer</th>
+            <th>Itemcode</th>
+            <th>Customer ItemCode</th>
+            <th class="text-center btnflag">IsActive</th>
+            <th class="text-center btnactions">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td colspan="5">
+              No Records Found.!
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+
+  <div id="modaldeleteconfimation" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="modaldeleteconfimation" aria-hidden="true">
+    <div class="modal-dialog ">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+              aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="modaldeleteconfimation">Confirmation</h4>
+        </div>
+        <div class="modal-body alert-warning">
+          <div class="row">
+            <div class="col-xs-2">
+              <i class="fa fa-warning fa-3x "></i>
+            </div>
+            <div class="col-xs-10">
+              <div>
+                <h5>
+                  Are you sure you want to delete this value <span> {{deleteColumn}}</span>?
+                </h5>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-danger btn-sm" (click)="delete()">Yes</button>
+          &nbsp;
+          <button class="btn btn-default btn-sm"  data-dismiss="modal">No</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="modalpopupcustomeritemupsert" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="modalpopupcustomeritemupsert" aria-hidden="true">
+
+    <form autocomplete="off" [formGroup]="CustomerItemForm" (ngSubmit)="SaveData()" class="form-horizontal">
+      <div class="modal-dialog ">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="modalpopupcustomeritemupsert"> {{panelTitle}}</h4>
+          </div>
+          <div class="modal-body">
+
+
+            <div class="form-group" [ngClass]="{'has-error': formErrors.CustomerID}">
+              <label class="col-sm-4 control-label" for="CustomerID">Customer<span class="mandantory">*</span></label>
+              <div class="col-sm-8">
+                <select id="CustomerID" class="form-control" formControlName="CustomerID"
+                  (blur)="logValidationErrors()">
+                  <option value="0" selected="selected">Select</option>
+                  <option *ngFor="let dis of lstCustomer" value={{dis.CustomerID}}>
+                    {{dis.CustomerName}}
+                  </option>
+                </select>
+                <div class="help-block-rk">
+                  <span class="help-block" *ngIf="formErrors.CustomerID">
+                    {{formErrors.CustomerID}}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group" [ngClass]="{'has-error': formErrors.ProductGroupID}" *ngIf="action">
+                <label class="col-sm-4  control-label" for="ProductGroupID">Product Group
+                </label>
+                <div class="col-sm-8">
+                  <select id="ProductGroupID" class="form-control" formControlName="ProductGroupID"
+                    (blur)="logValidationErrors()" (change)="onchangeProductGroupID($event.target.value)">
+                    <option value="0" selected="selected">Select</option>
+                    <option *ngFor="let c1 of lstProductGroup" value={{c1.ProductGroupID}}>
+                      {{c1.ProductGroupName}}
+                    </option>
+                  </select>
+                  <div class="help-block-rk">
+                    <span class="help-block" *ngIf="formErrors.ProductGroupID">
+                      {{formErrors.ProductGroupID}}
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group" [ngClass]="{'has-error': formErrors.CategoryID}" *ngIf="action">
+                <label class="col-sm-4 control-label" for="CategoryID">Category </label>
+                <div class="col-sm-8">
+                  <select formControlName="CategoryID" id='CategoryID' type="select" class="form-control"
+                    (blur)="logValidationErrors()" (change)="onchangeCategoryID($event.target.value)">
+  
+                    <option value="0" selected="selected">Select</option>
+                    <option *ngFor="let c1 of lstCategory" value={{c1.CategoryID}}>
+                      {{c1.CategoryName}}
+                    </option>
+                  </select>
+                  <div class="help-block-rk">
+                    <span class="help-block" *ngIf="formErrors.CategoryID">
+                      {{formErrors.CategoryID}}
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group" [ngClass]="{'has-error': formErrors.SubCategoryID}" *ngIf="action">
+                <label class="col-sm-4 control-label " for="SubCategoryID">Sub Category </label>
+                <div class="col-sm-8">
+                  <select formControlName="SubCategoryID" id='SubCategoryID' type="select" class="form-control"
+                    (blur)="logValidationErrors()" (change)="onchangeSubCategoryID($event.target.value)">
+                    <option value="0" selected="selected">Select</option>
+                    <option *ngFor="let c1 of lstSubCategory" value={{c1.SubCategoryID}}>
+                      {{c1.SubCategoryName}}
+                    </option>
+                  </select>
+                  <div class="help-block-rk">
+                    <span class="help-block" *ngIf="formErrors.SubCategoryID">
+                      {{formErrors.SubCategoryID}}
+                    </span>
+                  </div>
+                </div>
+              </div>
+  
+              <div class="form-group" [ngClass]="{'has-error': formErrors.ItemID}" *ngIf="action">
+                <label class="col-sm-4 control-label" for="ItemID">Item Code <span class="mandantory">*</span></label>
+                <div class="col-sm-8">
+                  <select id="ItemID" class="form-control" formControlName="ItemID" (blur)="logValidationErrors()">
+                    <option value="0" selected="selected">Select</option>
+                    <option *ngFor="let dis of lstItem" value={{dis.ItemID}}>
+                      {{dis.ItemCode}}
+                    </option>
+                  </select>
+                  <div class="help-block-rk">
+                    <span class="help-block" *ngIf="formErrors.ItemID">
+                      {{formErrors.ItemID}}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+            <div class="form-group" [ngClass]="{'has-error': formErrors.CustomerItemCode}">
+              <label class="col-sm-4 control-label" for="CustomerItemCode">Customer ItemCode
+                <span class="mandantory">*</span></label>
+              <div class="col-sm-8">
+                <input id="CustomerItemCode" type="text" class="form-control" formControlName="CustomerItemCode"
+                  (blur)="logValidationErrors()" maxlength="30">
+                <div class="help-block-rk">
+                  <span class="help-block" *ngIf="formErrors.CustomerItemCode">
+                    {{formErrors.CustomerItemCode}}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+
+            <div class="form-group" *ngIf="!action">
+              <label class="col-sm-4 control-label custom-control-label " for="customSwitches">IsActive </label>
+              <div class="col-sm-8 nopading_loct">
+                <label class="switch">
+                  <input type="checkbox" checked formControlName="IsActive" id="IsActive">
+                  <span class="slider round"></span>
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-primary" data-dismiss="modal">Cancel</button>
+            &nbsp;
+            <button class="btn btn-success" type="submit" prevent-double-submit [disabled]="CustomerItemForm.invalid">
+              <!-- <i class="fa fa-save"></i> -->
+              Save
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>

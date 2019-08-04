@@ -1,0 +1,277 @@
+<div class="row">
+  <div class="col-sm-6 col-lg-6">
+    <h3>
+      Purchase Invoices
+    </h3>
+  </div>
+  <div class="col-sm-6 col-lg-6">
+    <div class="pull-right hidden-xs">
+      <ol class="breadcrumb" id="dynamicbreadcrumb">
+        <li>
+          <i class="fa fa-shopping-cart"></i> <span> Procurements</span>
+        </li>
+        <li>
+          <i class="fa fa-newspaper-o"></i> <span> Purchase Invoices </span>
+        </li>
+        <li class="active">
+          <i class="fa fa-save"></i>
+          Save
+        </li>
+      </ol>
+    </div>
+  </div>
+</div>
+<form autocomplete="off" [formGroup]="invoiceform" (ngSubmit)="SaveData()" class="form-group">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <div class="row">
+        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+          <span class="spanheader">
+            {{panelTitle}}
+          </span>
+        </div>
+        <div class="col-sm-6">
+          <!-- <div class="pull-left">
+                <div class="form-group" *ngIf="!action">
+                  <div class="col-sm-12 inputlevelswtch">
+                    <label class="col-sm-6" for=" IsActive">IsActive </label>
+                    <div class=" col-sm-6">
+                      <label class="switch">
+                        <input type="checkbox" formControlName="IsActive" checked>
+                        <span class="slider round"></span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div> -->
+        </div>
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 ">
+          <div class="pull-right">
+            <button class="btn btn-primary" routerLink="/Purchaselist" title="Back">
+              Back
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="panel-body">
+      <div class="groupspanheader"> Invoice Information </div>
+      <div class="row">
+        <div class="col-md-6"></div>
+
+        <div class="col-md-6"></div>
+        <div class="col-md-3 col-xs-12">
+          <div class="form-group" [ngClass]="{'has-error': formErrors.InvoiceNumber}">
+            <label class="control-label" for="InvoiceNumber">Invoice Number <span class="mandantory">*</span></label>
+            <div class="">
+              <input id="InvoiceNumber" type="text" class="form-control" formControlName="InvoiceNumber"
+                (blur)="logValidationErrors()" maxlength="30">
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrors.InvoiceNumber">
+                  {{formErrors.InvoiceNumber}}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="col-md-3 col-xs-12">
+          <div class="form-group" [ngClass]="{'has-error': formErrors.InvoiceDate}">
+            <label class="control-label" for="InvoiceDate">Invoice Date<span class="mandantory">*</span></label>
+            <div class="">
+              <div class='input-group date'>
+                <input id="InvoiceDate" type="text" ngxDaterangepickerMd [timePicker]="true"
+                  (datesUpdated)="InvoiceDateUpdated($event)" [singleDatePicker]="true"
+                  [locale]="{format: 'MM-DD-YYYY HH:mm'}" [autoApply]="true" class="form-control"
+                  formControlName="InvoiceDate" (blur)="logValidationErrors()" maxlength="16" [(ngModel)]="InvoiceDate">
+                <label class="fa fa-calendar"></label>
+              </div>
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrors.InvoiceDate">
+                  {{formErrors.InvoiceDate}}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-3 col-xs-12">
+          <div class="form-group" [ngClass]="{'has-error': formErrors.VendorWarehouseID}">
+            <label class="control-label" for="VendorWarehouseID"> Vendor Warehouse <span
+                class="mandantory">*</span></label>
+            <div class="">
+              <select id="VendorWarehouseID" class="form-control" formControlName="VendorWarehouseID"
+                (blur)="logValidationErrors()" (change)="onchangeVendorWarehouseID($event.target.value)">
+                <option value="0" selected="selected">Select</option>
+                <option *ngFor="let c1 of lstVendorwarehouse" value={{c1.VendorWarehouseID}}>
+                  {{c1.WarehouseName}}
+                </option>
+              </select>
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrors.VendorWarehouseID">
+                  {{formErrors.VendorWarehouseID}}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-12 col-xs-12">
+          <div class="form-group" [ngClass]="{'has-error': formErrors.Remarks}">
+            <label class="control-label" for="Remarks">Remarks <span class="mandantory">*</span></label>
+            <div class="">
+              <input id="Remarks" type="text" class="form-control" formControlName="Remarks"
+                (blur)="logValidationErrors()" maxlength="250">
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrors.Remarks">
+                  {{formErrors.Remarks}}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <!-- Editable table -->
+        <div class="col-md-12 col-xs-12">
+          <h3 class="">Order Items</h3>
+          <table class="table table-bordered table-condensed" *ngIf="lstItem && lstItem.length">
+            <thead>
+              <tr>
+                <th class="text-center">ItemCode</th>
+                <th class="text-center">Vendor ItemCode </th>
+                <th class="text-center">PO Available Qty</th>
+                <th class="text-center">Qty</th>
+                <th class="text-center">Rate</th>
+
+                <th class="text-center">MRP</th>
+                <th class="text-center">TaxRate</th>
+                <th class="text-center">TaxNature</th>
+                <th class="text-center">DirectCost</th>
+                <th class="text-center">TaxAmount</th>
+                <th class="text-center">TotalAmount</th>
+              </tr>
+            </thead>
+
+            <tr *ngFor="let person of lstItem; let id = index">
+              <td>
+                <span contenteditable="false">{{person.ItemCode}}</span>
+              </td>
+              <td>
+                <span contenteditable="false">{{person.VendorItemCode}}</span>
+              </td>
+              <td class="text-right">
+                <span contenteditable="false">{{person.AvailableQty}}</span>
+              </td>
+              <td class="text-right">
+
+                <input type="number" min="0" step="1" class="form-control" max="100000"
+                  (input)="updateList(id,'Qty',$event.target.value)" value="{{person.Qty}}">
+              </td>
+              <td>
+                <span contenteditable="false">{{person.Rate}}</span>
+              </td>
+
+              <td class="text-right">
+                <span contenteditable="false">{{person.MRP}}</span>
+              </td>
+              <td class="text-right">
+                <span contenteditable="false">{{person.TaxRate}}</span>
+              </td>
+              <td class="text-right">
+                <span contenteditable="false">{{person.TaxNature}}</span>
+              </td>
+              <td class="text-right">
+                <span contenteditable="false">{{person.DirectCost}}</span>
+              </td>
+              <td class="text-right">
+                <span contenteditable="false">{{person.TaxAmount}}</span>
+              </td>
+
+              <td class="text-right">
+                <span contenteditable="false">{{person.TotalAmount}}</span>
+              </td>
+            </tr>
+            <tr>
+              <th>Total</th>
+              <th> </th>
+              <th> </th>
+              <th  class="text-right"> {{ TotalQty}}</th>
+              <th  class="text-right"> {{ TotalRate}}</th>
+
+
+              <th  class="text-right">
+                {{ TotalMRP | currency: 'INR' }}
+              </th>
+              <th  class="text-right">
+                {{ TotalTaxRate | currency: 'INR'}}
+              </th>
+              <th> </th>
+
+              <th  class="text-right">
+                {{ TotalDirectCost | currency: 'INR'}}
+              </th>
+              <th  class="text-right">
+                {{ TotalTaxAmount | currency: 'INR'}}
+              </th>
+              <th  class="text-right">
+                {{ TotalTotalAmount | currency: 'INR'}}
+              </th>
+            </tr>
+          </table>
+        </div>
+
+
+      </div>
+
+    </div>
+  </div>
+
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <span class="groupspanheader"> PO Information </span>
+      <div class="row">
+        <div class="col-md-3 col-xs-12">
+          <div class="form-group">
+            <label class="control-label"> PO No. </label>
+            <div class="">
+              {{PONumber}}
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 col-xs-12">
+          <div class="form-group">
+            <label class="control-label"> Location </label>
+            <div class="">
+              {{LocationName}}
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-3 col-xs-12">
+          <div class="form-group">
+            <label class="control-label">Vendor <span class="mandantory">*</span></label>
+            <div class="">
+              {{VendorName}}
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="panel-footer" *ngIf="IsEditable">
+      <div class="pull-right btn-toolbar">
+        <button class="btn btn-primary" routerLink="/Purchaselist" title="Cancel">
+          <!-- <i class="fa fa-arrow-left" aria-hidden="true"></i> -->
+          Cancel
+        </button>
+        <button class="btn btn-success" type="submit" prevent-double-submit [disabled]="invoiceform.invalid">
+          <!-- <i class="fa fa-save"></i> -->
+          Save
+        </button>
+      </div>
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</form>

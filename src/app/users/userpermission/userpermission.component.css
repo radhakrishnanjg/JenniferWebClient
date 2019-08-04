@@ -1,0 +1,22 @@
+
+.parcol
+{
+  width: 25%;
+  float: left;
+  line-height: 30px;
+  padding: 4px 0 0 10px;
+}  
+.userpermheader {
+  background-color: #cccccc;
+  width: 100%;
+  height: 40px;  
+}
+.userpermodd { 
+    width: 100%;
+    height: 40px;
+    background-color: #fbfbfb;
+    border-bottom: 1px solid #eceaea;
+    border-left: 1px solid #eceaea;
+    border-right: 1px solid #eceaea;
+ 
+}

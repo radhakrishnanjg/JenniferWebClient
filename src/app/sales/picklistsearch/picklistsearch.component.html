@@ -1,0 +1,134 @@
+<div class="row">
+  <div class="col-sm-6 col-lg-6">
+    <h3>
+      Picklist
+    </h3>
+  </div>
+  <div class="col-sm-6 col-lg-6">
+    <div class="pull-right hidden-xs">
+      <ol class="breadcrumb" id="dynamicbreadcrumb">
+        <li>
+          <i class="fa fa-money"></i> <span> Revenue</span>
+        </li>
+        <li>
+          <i class="fa fa-truck"></i> <span> PickList</span>
+        </li>
+        <li class="active">
+          <i class="fa fa-list" aria-hidden="true"></i>
+          List
+        </li>
+      </ol>
+    </div>
+  </div>
+</div>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <div class="row">
+      <div class="col-xs-12 col-sm-7 col-md-7 col-lg-7">
+        <div class="input-group col-sm-12" role="group" aria-label="Basic example">
+          <div class="col-md-3 nopading_loct">
+            <select class="form-control serchcurv btn-group" [(ngModel)]="SearchBy">
+              <option value="" selected="select">SearchBy</option>
+              <option value="OrderNumber">Order Number</option>
+              <option value="InventoryType">Inventory Type</option>
+              <option value="PicklistStatus">Picklist Status</option>
+              <option value="RackNumber">Rack Number</option>
+              <option value="StorageNumber">Storage Number</option>
+            </select>
+          </div>
+          <div class="col-md-3 nopading_loct">
+            <input type="text" [(ngModel)]="SearchKeyword" class="serchcurv form-control btn-group">
+          </div>
+
+          <div class="col-md-3 nopading_loct">
+            <select class="form-control serchcurv btn-group" [(ngModel)]="LocationID">
+              <option value="0" selected="select">Location</option>
+              <option *ngFor="let c1 of locations" value={{c1.LocationID}}>
+                {{c1.LocationName}}
+              </option>
+            </select>
+          </div>
+
+          <div class="col-md-2 nopading_loct">
+            <button class="serchcurv btn btn-default btn-group" (click)="Search()" title="Search">
+              <i class="fa fa-search " aria-hidden="true"></i>
+            </button>
+            <button class="serchcurv btn btn-default btn-group" (click)="Refresh()" title="Reset">
+              <i class="fa fa-refresh" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5 text-right">
+        <!-- <button class="btn btn-primary" routerLink="/Picklist/Create" title="Add New">
+          Add New
+        </button> -->
+        <!-- pdf.component.html -->
+        <!-- <div [id]="'pdf'+i" *ngFor="let item of items; index as i">
+          <h1>{{ item.title }}</h1>
+        </div>
+
+        <button (click)="downloadPDF()">
+          generatePDF
+        </button> -->
+      </div>
+    </div>
+  </div>
+  <div class="panel-body" [id]="samplepdf">
+    <div class="table-responsive">
+      <table datatable [dtOptions]="dtOptions" class="table table-bordered table-condensed "
+        *ngIf="lstPicklist && lstPicklist.length">
+        <thead>
+          <tr>
+            <th>Sales Order Number</th>
+            <th>Inventory Type </th>
+            <th>Picklist Qty </th>
+            <th>Picked Qty </th>
+            <th>Transfer Qty</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let obj of lstPicklist">
+            <td>{{ obj.OrderID }}</td>
+            <td>{{ obj.InventoryType}}</td>
+            <td class="text-right">{{ obj.PicklistQty }}</td>
+            <td class="text-right">{{obj.PickedQty}}</td>
+            <td class="text-right">{{obj.TransferQty}}</td>
+            <td>{{ obj.Status }}</td>
+            <td>
+              <i class="fa fa-edit bgblue pointer" (click)="editButtonClick(obj.PickListNumber)" title="Edit"
+                *ngIf="!(obj.Status == 'Confirmed')"></i>
+              &nbsp;
+              <i class="fa fa-eye bgblue pointer" (click)="editInvoiceClick(obj.PickListNumber)" title="Edit"
+                *ngIf="(obj.Status == 'Confirmed')"></i>
+              &nbsp;
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table class="table table-bordered table-condensed" *ngIf="lstPicklist==null">
+        <thead>
+          <tr>
+            <th>Sales Order Number</th>
+            <th>Inventory Type </th>
+            <th>Picklist Qty </th>
+            <th>Picked Qty </th>
+            <th>Transfer Qty</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td colspan="7">
+              No Records Found.!
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,165 @@
+<div class="row">
+  <div class="col-sm-6 col-lg-6">
+    <h3>
+      Purchase Orders
+    </h3>
+  </div>
+  <div class="col-sm-6 col-lg-6">
+    <div class="pull-right hidden-xs">
+      <ol class="breadcrumb" id="dynamicbreadcrumb">
+        <li>
+          <i class="fa fa-shopping-cart"></i> <span> Procurements</span>
+        </li>
+        <li>
+          <i class="fa fa-list-ul"></i> <span> Purchase Order</span>
+        </li>
+        <li class="active">
+          <i class="fa fa-list" aria-hidden="true"></i>
+          List
+        </li>
+      </ol>
+    </div>
+  </div>
+</div>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <div class="row">
+      <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
+        <div class="input-group col-sm-12" role="group" aria-label="Basic example">
+          <div class="col-md-3 nopading_loct">
+            <select class="form-control serchcurv btn-group" [(ngModel)]="SearchBy">
+              <option value="" selected="select">Search By</option>
+              <option value="ByPONumber">PO Number</option>
+              <option value="ByVendor">Vendor</option>
+              <option value="ByLocation">Location</option>
+              <option value="ByItemCode">ItemCode</option>
+              <option value="ByOtherReferenceNo">Other Reference Number</option>
+              <option value="ByPODate">PO Date</option>
+            </select>
+          </div>
+          <div class="col-md-4 nopading_loct" *ngIf="( SearchBy=='ByPONumber'  || SearchBy=='ByVendor'  || SearchBy=='ByLocation' 
+          || SearchBy=='ByItemCode' || SearchBy=='ByOtherReferenceNo' )">
+            <input [(ngModel)]="SearchKeyword" type="text" class="serchcurv form-control btn-group">
+          </div>
+          <div class="col-md-4 nopading_loct" *ngIf="(SearchBy=='ByPODate')">
+            <input type="text" ngxDaterangepickerMd [(ngModel)]="selectedDateRange"
+              class="serchcurv form-control btn-group col-xs-12 pointer"
+              style="width:300px;border:1px soloid #ccc !important; padding :3px;left:0px" [showCustomRangeLabel]="true"
+              [ranges]="Searchranges" [showCancel]="true" placeholder="Select please..."
+              (ngModelChange)="onChange($event)" />
+          </div>
+          <div class="col-md-2 nopading_loct">
+            <button class="serchcurv btn btn-default btn-group" (click)="Search()" title="Search">
+              <i class="fa fa-search " aria-hidden="true"></i>
+            </button>
+            <button class="serchcurv btn btn-default btn-group" (click)="Refresh()" title="Reset">
+              <i class="fa fa-refresh" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 ">
+        <div class="pull-right">
+          <button class="btn btn-primary" routerLink="/PO/Create" title="Add New">
+            Add New
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="panel-body">
+    <div class="table-responsive">
+      <table datatable [dtOptions]="dtOptions" class="table table-bordered table-condensed " *ngIf="lst && lst.length">
+        <thead>
+          <tr>
+            <th>PO No.</th>
+            <th>PO Date </th>
+            <th>Vendor </th>
+            <th>Shipment ID </th>
+            <th>PO Status</th>
+
+            <th>Approval</th>
+            <th class="text-center btnactions">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let obj of lst">
+            <td>{{ obj.PONumber }}</td>
+            <td>{{ obj.PODate | date:'MM-dd-yyyy HH:mm' }}</td>
+            <td>{{ obj.VendorName }}</td>
+            <td>{{obj.ShipmentNumber}}</td>
+            <td>{{ obj.DeliveryStatus }}</td>
+            <td>{{ obj.ApprovalStatus }}</td>
+            <td class="text-center btnactions">
+              <i class="fa fa-edit bgblue pointer" (click)="editButtonClick(obj.POID)" title="Edit"
+                *ngIf="!(obj.ApprovalStatus == 'Approved')"></i>
+              &nbsp;
+              <i class="fa fa-eye bgblue pointer" (click)="viewButtonClick(obj.POID)" title="View"></i>
+
+
+              &nbsp;
+              <i class="fa fa-trash bgred pointer" *ngIf="!(obj.ApprovalStatus == 'Approved')" title="Delete"
+                (click)="confirmDeleteid(obj.POID,obj.LocationID,obj.PONumber)"></i>
+              &nbsp;
+              <i class="fa fa-plus bgblue pointer" *ngIf="(obj.ApprovalStatus == 'Approved')"
+                (click)="AddNewPurchaseButtonClick(obj.POID)" title="Add New Purchase"></i>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table class="table table-bordered table-condensed" *ngIf="lst==null">
+        <thead>
+          <tr>
+            <th>PONumber</th>
+            <th>PODate </th>
+            <th>Vendor </th>
+            <th>ShipmentID </th>
+            <th>POStatus</th>
+
+            <th>Approval</th>
+            <th class="text-center btnactions">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td colspan="7">
+              No Records Found.!
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+  <div id="modaldeleteconfimation" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="modaldeleteconfimation" aria-hidden="true">
+    <div class="modal-dialog ">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+              aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="modaldeleteconfimation">Confirmation</h4>
+        </div>
+        <div class="modal-body alert-warning">
+          <div class="row">
+            <div class="col-xs-2">
+              <i class="fa fa-warning fa-3x "></i>
+            </div>
+            <div class="col-xs-10">
+              <div>
+                <h5>
+                  Are you sure you want to delete this value <span> {{deleteColumn}}</span>?
+                </h5>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-danger btn-sm" (click)="delete()">Yes</button>
+          &nbsp;
+          <button class="btn btn-default btn-sm" data-dismiss="modal">No</button>
+        </div>
+      </div>
+    </div>
+  </div>

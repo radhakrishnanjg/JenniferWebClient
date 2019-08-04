@@ -1,0 +1,259 @@
+<div class="row">
+
+  <div class="col-xs-4">
+    <h3>
+      Summary Details
+    </h3>
+    <small> Values in Lakhs </small>
+  </div>
+  
+  <div class="col-xs-8">
+    <div class="pull-right">
+      <b>
+        Filter by (Disbursement Date)
+      </b><br />
+      <input type="text" ngxDaterangepickerMd [(ngModel)]="selectedDateRange" class="col-xs-12 pointer" 
+        style="width:500px;border:1px soloid #ccc !important; padding :3px;left:0px"
+        [showCustomRangeLabel]="true" [ranges]="ranges" [showCancel]="true" placeholder="Select please..."
+        (ngModelChange)="onChange($event)"  />
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-2">
+    <div class="panel panel-custom">
+      <div class="panel-heading bed-padding operpnlhead">
+        <div class="row">
+          <div class="col-xs-12 col-sm-2  col-md-2  col-lg-2">
+            <i class="fa fa-money fa-2x"></i>
+          </div>
+          <div class="col-xs-10 text-right">
+            <div>
+              No. of Loans :
+              <span id="h5totalapprovedpo">
+                {{DashboardBulletin?.TotalAppliedCount}}
+              </span>
+            </div>
+            <div>
+              Value :
+              <i class="fa fa-inr rupe-i"></i>
+              <span id="h5totalpendingpo">
+                {{DashboardBulletin?.TotalDisbursmentAmount}}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="panel-footer">
+        <span class="pull-left">Disbursed Amount</span>
+        <span class="pull-right">
+          <i class="fa fa-arrow-circle-right">
+          </i>
+        </span>
+        <div class="clearfix"></div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-2">
+    <div class="panel panel-custom">
+      <div class="panel-heading bed-padding operpnlhead">
+        <div class="row">
+          <div class="col-xs-12 col-sm-2  col-md-2  col-lg-2">
+            <i class="fa fa-money fa-2x"></i>
+          </div>
+          <div class="col-xs-10 text-right">
+            <div>
+              No. of Loans :
+              <span id="h5totalshipments">
+                {{DashboardBulletin?.NotDueAppliedCount}}
+              </span>
+            </div>
+            <div>
+              Value :
+              <i class="fa fa-inr rupe-i"></i>
+              <span id="h5pendingshipments">
+                {{DashboardBulletin?.NotDueDisbursmentAmount}}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="panel-footer">
+
+        <span class="pull-left">Not Due</span>
+        <span class="pull-right">
+          <i class="fa fa-arrow-circle-right">
+          </i>
+        </span>
+        <div class="clearfix"></div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-2">
+    <div class="panel panel-custom">
+      <div class="panel-heading bed-padding operpnlhead">
+        <div class="row">
+          <div class="col-xs-12 col-sm-2  col-md-2  col-lg-2">
+            <i class="fa fa-money fa-2x"></i>
+          </div>
+          <div class="col-xs-10 text-right">
+            <div>
+              No. of Loans :
+              <span id="h5mdtsales">
+                {{DashboardBulletin?.ReceivedonTimeAppliedCount}}
+              </span>
+            </div>
+            <div>
+              Value :
+              <i class="fa fa-inr rupe-i"></i>
+              <span id="h5yesterdaysales">
+                {{DashboardBulletin?.ReceivedonTimeDisbursmentAmount}}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="panel-footer">
+        <span class="pull-left">Received on Time</span>
+        <span class="pull-right">
+          <i class="fa fa-arrow-circle-right">
+          </i>
+        </span>
+        <div class="clearfix"></div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-2">
+    <div class="panel panel-custom">
+      <div class="panel-heading bed-padding operpnlhead">
+        <div class="row">
+          <div class="col-xs-12 col-sm-2  col-md-2  col-lg-2">
+            <i class="fa fa-money fa-2x"></i>
+          </div>
+          <div class="col-xs-10 text-right">
+            <div>
+              No. of Loans :
+              <span id="h5mdtpurchases">
+                {{DashboardBulletin?.ReceivedwithDelayAppliedCount}}
+              </span>
+            </div>
+            <div>
+              Value :
+              <i class="fa fa-inr rupe-i"></i>
+              <span id="h5yesterdaypurchases">
+                {{DashboardBulletin?.ReceivedwithDelayDisbursmentAmount}}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="panel-footer">
+
+        <span class="pull-left">Received With Delay</span>
+        <span class="pull-right">
+          <i class="fa fa-arrow-circle-right">
+          </i>
+        </span>
+        <div class="clearfix"></div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-2">
+    <div class="">
+      <div class="panel panel-custom">
+        <div class="panel-heading bed-padding operpnlhead">
+          <div class="row">
+            <div class="col-xs-12 col-sm-2  col-md-2  col-lg-2">
+              <i class="fa fa-money fa-2x"></i>
+            </div>
+            <div class="col-xs-10 text-right">
+              <div>
+                No. of Loans :
+                <span id="h5inboundvalue">
+                  {{DashboardBulletin?.OverDueAppliedCount}}
+                </span>
+              </div>
+              <div>
+                Value :
+                <i class="fa fa-inr rupe-i"></i>
+                <span id="h5stockvalue">
+                  {{DashboardBulletin?.OverDueDisbursmentAmount}}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="panel-footer">
+          <span class="pull-left">Over Due</span>
+          <span class="pull-right">
+            <i class="fa fa-arrow-circle-right">
+            </i>
+          </span>
+          <div class="clearfix"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <div class="col-md-2">
+    <div class="">
+      <div class="panel panel-custom">
+        <div class="panel-heading bed-padding operpnlhead">
+          <div class="row">
+            <div class="col-xs-12 col-sm-2  col-md-2  col-lg-2">
+              <i class="fa fa-money fa-2x"></i>
+            </div>
+            <div class="col-xs-10 text-right">
+              <div>
+                No. of Loans :
+                <span id="h5inboundvalue">
+                  {{DashboardBulletin?.ShortReceiptAppliedCount}}
+                </span>
+              </div>
+              <div>
+                Value :
+                <i class="fa fa-inr rupe-i"></i>
+                <span id="h5stockvalue">
+                  {{DashboardBulletin?.ShortReceiptDisbursmentAmount}}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="panel-footer">
+          <span class="pull-left">Short Receipt</span>
+          <span class="pull-right">
+            <i class="fa fa-arrow-circle-right">
+            </i>
+          </span>
+          <div class="clearfix"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="panel-heading">
+  &nbsp;
+</div>
+
+
+<div class="panel">
+  <div class="panel-body">
+    <div class="col-sm-6">
+      <div echarts [options]="chartOption1" class="demo-chart"></div>
+    </div>
+    <div class="col-sm-6">
+      <div echarts [options]="chartOption2" class="demo-chart"></div>
+    </div>
+    <div class="panel-heading">
+      &nbsp;
+    </div>
+    <div class="col-sm-12">
+      <div echarts [options]="chartOption3" class="demo-chart"></div>
+    </div>
+  </div>
+
+
+</div>

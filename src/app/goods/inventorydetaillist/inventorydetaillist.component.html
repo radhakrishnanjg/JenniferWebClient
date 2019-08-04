@@ -1,0 +1,234 @@
+<div class="row">
+  <div class="col-sm-6 col-lg-6">
+    <h3>
+      Inventory Detail
+    </h3>
+  </div>
+  <div class="col-sm-6 col-lg-6">
+    <div class="pull-right hidden-xs">
+      <ol class="breadcrumb" id="dynamicbreadcrumb">
+        <li>
+          <i class="fa fa-truck"></i> GRN
+        </li>
+        <li>
+          <i class="fa fa-truck"> </i> Inventory Detail
+        </li>
+        <li class="active">
+          <i class="fa fa-list" aria-hidden="true"></i>
+          List
+        </li>
+      </ol>
+    </div>
+  </div>
+</div>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <div class="row">
+      <div class="col-xs-12 col-sm-7 col-md-7 col-lg-7">
+        <div class="input-group col-sm-12" role="group" aria-label="Basic example">
+          <div class="col-md-3 nopading_loct">
+            <select [(ngModel)]="SearchInventoryType" class="form-control serchcurv btn-group"> 
+              <option value="" selected="select">Item Level</option>
+              <option value="LocationName" selected>Location</option>
+              <option value="BrandName">Brand</option> 
+            </select>
+          </div>
+          <div class="col-md-3 nopading_loct">
+            <select [(ngModel)]="SearchBy" class="form-control serchcurv btn-group">
+              <option value="" selected="select">Search By</option>
+              <option value="Location">Location</option>
+              <option value="Brand">Brand</option>
+              <option value="Product">Product</option>
+              <option value="Category">Category</option>
+              <option value="SubCategory">Sub Category</option>
+              <option value="ItemDescription">Item Name</option>
+            </select>
+          </div>
+          <div class="col-md-3 nopading_loct">
+            <input [(ngModel)]="SearchKeyword" type="text" class="form-control btn-group serchcurv">
+          </div>
+          <div class="col-md-3 nopading_loct">
+            <button class="btn btn-default btn-group serchcurv" (click)="Search()" title="Search">
+              <i class="fa fa-search " aria-hidden="true"></i>
+            </button>
+            <button class="btn btn-default btn-group serchcurv" (click)="Refresh()" title="Reset">
+              <i class="fa fa-refresh" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="panel-body" *ngIf="(SearchInventoryType == '')">
+    <div class="table-responsive">
+      <table datatable [dtOptions]="dtOptions" class="table table-bordered table-condensed " *ngIf="lst && lst.length">
+        <thead>
+          <tr> 
+            <th>Item Code</th>
+            <th>Item Name </th>
+            <th>Event Date </th>
+            <th>Sellable Current Stock</th>
+
+            <th>Unsellable Current Stock</th>
+            <th>Sellable Warehouse Qty</th>
+            <th>UnSellable Warehouse Qty</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let obj of lst"> 
+            <td>{{ obj.ItemCode }}</td>
+            <td>{{ obj.ItemName }}</td>
+            <td>{{ obj.EventDate | date:'MM-dd-yyyy' }}</td>
+            <td class="text-right">{{ obj.SellableCurrentStock }}</td>
+
+            <td class="text-right">{{ obj.UnsellableCurrentStock }}</td>
+            <td class="text-right">{{ obj.SellableWarehouseQty }}</td>
+            <td class="text-right">{{ obj.UnSellableWarehouseQty }}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table class="table table-bordered table-condensed" *ngIf="lst==null">
+        <thead>
+          <tr> 
+            <th>Item Code</th>
+            <th>Item Name </th>
+            <th>Event Date </th>
+            <th>Sellable Current Stock</th>
+
+            <th>Unsellable Current Stock</th>
+            <th>Sellable Warehouse Qty</th>
+            <th>UnSellable Warehouse Qty</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td colspan="7">
+              No Records Found.!
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+
+  <div class="panel-body" *ngIf="(SearchInventoryType == 'LocationName')">
+    <div class="table-responsive">
+      <table datatable [dtOptions]="dtOptions" class="table table-bordered table-condensed " *ngIf="lst && lst.length">
+        <thead>
+          <tr>
+            <th>Location Name</th>
+            <th>Item Code</th>
+            <th>Item Name </th>
+            <th>Event Date </th>
+            <th>Sellable Current Stock</th>
+  
+            <th>Unsellable Current Stock</th>
+            <th>Sellable Warehouse Qty</th>
+            <th>UnSellable Warehouse Qty</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let obj of lst">
+            <td>{{ obj.LocationName }}</td>
+            <td>{{ obj.ItemCode }}</td>
+            <td>{{ obj.ItemName }}</td>
+            <td>{{ obj.EventDate | date:'MM-dd-yyyy' }}</td>
+            <td class="text-right">{{ obj.SellableCurrentStock }}</td>
+  
+            <td class="text-right">{{ obj.UnsellableCurrentStock }}</td>
+            <td class="text-right">{{ obj.SellableWarehouseQty }}</td>
+            <td class="text-right">{{ obj.UnSellableWarehouseQty }}</td>
+          </tr>
+        </tbody>
+      </table>
+  
+      <table class="table table-bordered table-condensed" *ngIf="lst==null">
+        <thead>
+          <tr>
+            <th>Location Name</th>
+            <th>Item Code</th>
+            <th>Item Name </th>
+            <th>Event Date </th>
+            <th>Sellable Current Stock</th>
+  
+            <th>Unsellable Current Stock</th>
+            <th>Sellable Warehouse Qty</th>
+            <th>UnSellable Warehouse Qty</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td colspan="8">
+              No Records Found.!
+            </td>
+          </tr>
+        </tbody>
+      </table>
+  
+    </div>
+  </div>
+  
+  <div class="panel-body" *ngIf="(SearchInventoryType == 'BrandName')">
+    <div class="table-responsive">
+      <table datatable [dtOptions]="dtOptions" class="table table-bordered table-condensed " *ngIf="lst && lst.length">
+        <thead>
+          <tr>
+            <th>Brand </th>
+            <th>Item Code</th>
+            <th>Item Name </th>
+            <th>Event Date </th>
+            <th>Sellable Current Stock</th>
+
+            <th>Unsellable Current Stock</th>
+            <th>Sellable Warehouse Qty</th>
+            <th>UnSellable Warehouse Qty</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let obj of lst">
+            <td>{{ obj.BrandName }}</td>
+            <td>{{ obj.ItemCode }}</td>
+            <td>{{ obj.ItemName }}</td>
+            <td>{{ obj.EventDate | date:'MM-dd-yyyy' }}</td>
+            <td class="text-right">{{ obj.SellableCurrentStock }}</td>
+
+            <td class="text-right">{{ obj.UnsellableCurrentStock }}</td>
+            <td class="text-right">{{ obj.SellableWarehouseQty }}</td>
+            <td class="text-right">{{ obj.UnSellableWarehouseQty }}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table class="table table-bordered table-condensed" *ngIf="lst==null">
+        <thead>
+          <tr>
+            <th>Brand</th>
+            <th>Item Code</th>
+            <th>Item Name </th>
+            <th>Event Date </th>
+            <th>Sellable Current Stock</th>
+
+            <th>Unsellable Current Stock</th>
+            <th>Sellable Warehouse Qty</th>
+            <th>UnSellable Warehouse Qty</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td colspan="8">
+              No Records Found.!
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+  </div> 
+</div>
+
+
+
+

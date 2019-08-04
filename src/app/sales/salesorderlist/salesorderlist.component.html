@@ -1,0 +1,209 @@
+<div class="row">
+  <div class="col-sm-6 col-lg-6">
+    <h3>
+      Sales Order
+    </h3>
+  </div>
+  <div class="col-sm-6 col-lg-6">
+    <div class="pull-right hidden-xs">
+      <ol class="breadcrumb" id="dynamicbreadcrumb">
+        <li>
+          <i class="fa fa-money"></i> <span> Revenue</span>
+        </li>
+        <li>
+          <i class="fa fa-shopping-cart"></i> <span> Sales Orders </span>
+        </li>
+        <li class="active">
+          <i class="fa fa-list" aria-hidden="true"></i>
+          List
+        </li>
+      </ol>
+    </div>
+  </div>
+</div>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <div class="row">
+      <div class="col-xs-12 col-sm-10 col-md-10 col-lg-10">
+        <div class="input-group col-sm-12" role="group" aria-label="Basic example">
+          <div class="col-md-3 nopading_loct">
+            <select class="form-control serchcurv btn-group" [(ngModel)]="SearchBy">
+              <option value="" selected="select">Search By</option>
+              <option value="OrderID">OrderID</option>
+              <option value="OrderStatus">Order Status</option>
+              <option value="InventoryType">Inventory Type</option>
+              <option value="TransactionType">Transaction Type</option>
+              <option value="CustomerName">Customer Name</option>
+              <option value="ByStatus">Status</option>
+              <option value="OrderDate">Order Date</option>
+            </select>
+          </div>
+          <div class="col-md-4 nopading_loct" *ngIf="(SearchBy!='OrderDate')">
+            <input [(ngModel)]="SearchKeyword" type="text" class="serchcurv form-control btn-group">
+          </div>
+          <div class="col-md-4 nopading_loct" *ngIf="(SearchBy=='OrderDate')">
+            <input type="text" ngxDaterangepickerMd [(ngModel)]="selectedDateRange"
+              class="serchcurv form-control btn-group col-xs-12 pointer"
+              style="width:300px;border:1px soloid #ccc !important; padding :3px;left:0px" [showCustomRangeLabel]="true"
+              [ranges]="Searchranges" [showCancel]="true" placeholder="Select please..."
+              (ngModelChange)="onChange($event)" [autoApply]="true" />
+          </div>
+          <div class="col-md-2 nopading_loct">
+            <button class="serchcurv btn btn-default btn-group" (click)="Search()" title="Search">
+              <i class="fa fa-search " aria-hidden="true"></i>
+            </button>
+            <button class="serchcurv btn btn-default btn-group" (click)="Refresh()" title="Reset">
+              <i class="fa fa-refresh" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 text-right">
+        <button class="btn btn-primary" title="Add New" data-toggle="modal" data-target="#modalsaleorderconfimation">
+          Add New
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="panel-body">
+    <div class="table-responsive">
+      <table datatable [dtOptions]="dtOptions" class="table table-bordered table-condensed table-striped"
+        *ngIf="lst && lst.length">
+        <thead>
+          <tr>
+            <th>OrderID</th>
+            <th>Order Date</th>
+            <th>Customer Name</th>
+            <th>Payment Terms</th>
+            <th>Inventory Type</th>
+
+            <th>Transaction Type</th>
+            <th>Discount Amt</th>
+            <th>Total value</th>
+            <th>Order Status</th>
+            <th>Approval</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of lst">
+            <td>{{data.OrderID}}</td>
+            <td>{{data.OrderDate | date:'MM-dd-yyyy HH:mm'}}</td>
+            <td>{{data.CustomerName}}</td>
+            <td>{{data.DiscountAllowedinDays}}</td>
+            <td>{{data.InventoryType}}</td>
+
+            <td>{{data.TransactionType}}</td>
+            <td class="text-right">{{data.Discountamt | currency: 'INR'}}</td>
+            <td class="text-right">{{data.TotalValue | currency: 'INR'}}</td>
+            <td>{{data.OrderStatus}}</td>
+            <td>{{data.ApprovalStatus}}</td>
+            <td class="text-center">
+              <i class="fa fa-eye bgblue pointer" (click)="editButtonClick(data.SalesOrderID)" title="Edit"></i>
+              &nbsp;
+              <i class="fa fa-times bgred pointer"
+                *ngIf="( 
+                (data.InventoryType =='Sellable')  ||   (data.InventoryType =='Unsellable' && data.ApprovalStatus == 'Pending Approval'  ) )"
+                title="Cancel" (click)="confirmDeleteid(data.SalesOrderID,data.OrderID)"></i>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table class="table table-bordered table-condensed table-striped" *ngIf="lst == null">
+        <thead>
+          <tr>
+            <th>OrderID</th>
+            <th>Order Date</th>
+            <th>Customer Name</th>
+            <th>Payment Terms</th>
+            <th>Inventory Type</th>
+
+            <th>Transaction Type</th>
+            <th>Discount Amt</th>
+            <th>Total value</th>
+            <th>Order Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td colspan="9">
+              No Records Round.!
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+
+<div id="modaldeleteconfimation" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modaldeleteconfimation"
+  aria-hidden="true">
+  <div class="modal-dialog ">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="modaldeleteconfimation">Confirmation</h4>
+      </div>
+      <div class="modal-body alert-warning">
+        <div class="row">
+          <div class="col-xs-2">
+            <i class="fa fa-warning fa-3x "></i>
+          </div>
+          <div class="col-xs-10">
+            <div>
+              <h5>
+                Are you sure you want to cancel this order <span> {{deleteColumn}}</span>?
+              </h5>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-danger btn-sm" (click)="approval()">Yes</button>
+        &nbsp;
+        <button class="btn btn-default btn-sm" data-dismiss="modal">No</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="modalsaleorderconfimation" class="modal fade" tabindex="-1" role="dialog"
+  aria-labelledby="modalsaleorderconfimation" aria-hidden="true">
+  <div class="modal-dialog ">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="modalsaleorderconfimation">Confirmation</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-xs-10">
+            <div>
+              <h5>
+                Please Select Inventory Type to Create Sales Order
+              </h5>
+              <label class="control-label">
+                <input type="radio" [value]="true" name="InventoryType" [(ngModel)]="InventoryType">
+
+              </label> Sellable
+              &nbsp; &nbsp;
+              <label class="control-label">
+                <input type="radio" [value]="false" name="InventoryType" [(ngModel)]="InventoryType">
+
+              </label> Unsellable
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary btn-sm" data-dismiss="modal">Cancel</button>
+        &nbsp;
+        <button class="btn btn-success btn-sm" data-dismiss="modal" (click)="addButtonClick()">Okey</button>
+      </div>
+    </div>
+  </div>
+</div>

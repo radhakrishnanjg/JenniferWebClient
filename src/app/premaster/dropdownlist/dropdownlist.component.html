@@ -1,0 +1,254 @@
+<div class="row">
+  <div class="col-sm-6 col-lg-6">
+    <h3>
+      DropDowns
+    </h3>
+  </div>
+  <div class="col-sm-6 col-lg-6">
+    <div class="pull-right hidden-xs">
+      <ol class="breadcrumb" id="dynamicbreadcrumb">
+        <li>
+          <i class="fa fa-cog"></i> <span> Jennifer Admin</span>
+        </li>
+        <li>
+          <i class="fa fa-users"></i> <span> DropDowns</span>
+        </li>
+        <li class="active">
+          <i class="fa fa-th-list"></i>
+          List
+        </li>
+      </ol>
+    </div>
+  </div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+
+    <div class="row">
+      <div class="col-xs-12 col-sm-10 col-md-10 col-lg-10">
+        <div class="input-group col-sm-12" role="group" aria-label="Basic example">
+          <div class="col-md-3 nopading_loct">
+            <select [(ngModel)]="SearchBy" class="serchcurv form-control btn-group">
+              <option value="" selected="select">Search By</option>
+              <option value="ByDropdownType">DropdownType</option>
+              <option value="ByDropdownValue">DropdownValue</option>
+              <option value="ByDropDownDescription">DropDownDescription</option>
+              <option value="ByStatus">Status</option>
+            </select>
+          </div>
+          <div class="col-md-4 nopading_loct" *ngIf="(SearchBy!='ByStatus')">
+            <input [(ngModel)]="SearchKeyword" type="text" class="serchcurv form-control btn-group">
+          </div>
+          <div class="col-md-3 nopading_loct" *ngIf="(SearchBy=='ByStatus')">
+            
+            <select [(ngModel)]="Searchaction" type="select" class="serchcurv form-control btn-group">
+              
+              <option value="true">Active</option>
+              <option value="false">InActive</option>
+            </select>
+
+          </div>
+          <div class="col-md-2 nopading_loct">
+            <button class="serchcurv btn btn-default btn-group" (click)="Search()" title="Search">
+              <i class="fa fa-search " aria-hidden="true"></i>
+            </button>
+            <button class="serchcurv btn btn-default btn-group" (click)="Refresh()" title="Reset">
+              <i class="fa fa-refresh" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 text-right">
+        <button class="btn btn-primary" (click)="newButtonClick()" title="Add New">
+          
+          Add New
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="panel-body">
+
+
+    <div class="table-responsive">
+      <table datatable [dtOptions]="dtOptions" class="table table-bordered table-condensed "
+        *ngIf="lstDropdown && lstDropdown.length">
+        <thead>
+          <tr>
+            <th>Type</th>
+            <th>Value</th>
+            <th>Description</th>
+            <th>Display Order</th>
+            <th class="text-center btnflag">IsActive</th>
+            <th class="text-center btnactions">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of lstDropdown">
+            <td>{{ user.DropdownType  }}</td>
+            <td>{{ user.DropdownValue}}</td>
+            <td>{{ user.DropDownDescription}}</td>
+            <td>{{ user.DisplayOrder}}</td>
+            <td class="text-center" *ngIf="(user.IsActive)"><i class="fa fa-check"></i></td>
+            <td class="text-center" *ngIf="(!user.IsActive)"><i class="fa fa-times"></i></td>
+            <td class="text-center">
+              <i (click)="editButtonClick(user.DropdownID)" title="Edit" class="fa fa-edit bgblue pointer"></i>
+              &nbsp;
+              <i class="fa fa-trash bgred pointer" (click)="confirmDeleteid(user.DropdownID,user.DropdownValue)"
+                title="Delete"></i>
+
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table class="table table-bordered table-condensed" *ngIf="lstDropdown==null">
+        <thead>
+          <tr>
+            <th>Type</th>
+            <th>Value</th>
+            <th>Description</th>
+            <th>Display Order</th>
+            <th class="text-center btnflag">IsActive</th>
+            <th class="text-center btnactions">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td colspan="6">
+              No Records Found.!
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+
+  <div id="modaldeleteconfimation" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="modaldeleteconfimation" aria-hidden="true">
+    <div class="modal-dialog ">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+              aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="modaldeleteconfimation">Confirmation</h4>
+        </div>
+        <div class="modal-body alert-warning">
+          <div class="row">
+            <div class="col-xs-2">
+              <i class="fa fa-warning fa-3x "></i>
+            </div>
+            <div class="col-xs-10">
+              <div>
+                <h5>
+                  Are you sure you want to delete this value <span> {{deleteColumn}}</span>?
+                </h5>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-danger btn-sm" (click)="delete()">Yes</button>
+          &nbsp;
+          <button class="btn btn-default btn-sm"  data-dismiss="modal">No</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="modalpopupdropdownupsert" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="modalpopupdropdownupsert" aria-hidden="true">
+
+    <form autocomplete="off" [formGroup]="dropdownForm" (ngSubmit)="SaveData()" class="form-horizontal">
+      <div class="modal-dialog ">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="modalpopupdropdownupsert"> {{panelTitle}}</h4>
+          </div>
+          <div class="modal-body">
+
+            <div class="form-group" [ngClass]="{'has-error': formErrors.DropdownTypeName}">
+              <label class="col-sm-3 control-label" for="DropdownTypeName">Type <span
+                  class="mandantory">*</span></label>
+              <div class="col-sm-9">
+                <select id="DropdownTypeName" class="form-control" formControlName="DropdownTypeName"
+                  (blur)="logValidationErrors()" >
+                  <option value="" selected="selected">Select</option>
+                  <option *ngFor="let dis of lstDropdownMaster" value={{dis.DropdownType}}>
+                    {{dis.DropdownType}}
+                  </option>
+                </select>
+                <div class="help-block-rk">
+                  <span class="help-block" *ngIf="formErrors.DropdownTypeName">
+                    {{formErrors.DropdownTypeName}}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group" [ngClass]="{'has-error': formErrors.DropdownValue}">
+              <label class="col-sm-3 control-label" for="DropdownValue"> Value <span class="mandantory">*</span></label>
+              <div class="col-sm-9">
+                <input id="DropdownValue" [readonly]="!action" type="text" class="form-control"
+                  formControlName="DropdownValue" (blur)="logValidationErrors()" maxlength="100">
+                <div class="help-block-rk">
+                  <span class="help-block" *ngIf="formErrors.DropdownValue">
+                    {{formErrors.DropdownValue}}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group" [ngClass]="{'has-error': formErrors.DropDownDescription}">
+              <label class="col-sm-3 control-label" for="DropDownDescription"> Description <span
+                  class="mandantory">*</span></label>
+              <div class="col-sm-9">
+                <input id="DropDownDescription" type="text" class="form-control" formControlName="DropDownDescription"
+                  (blur)="logValidationErrors()" maxlength="250">
+                <div class="help-block-rk">
+                  <span class="help-block" *ngIf="formErrors.DropDownDescription">
+                    {{formErrors.DropDownDescription}}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+
+            <div class="form-group" [ngClass]="{'has-error': formErrors.DisplayOrder}">
+              <label class="col-sm-3 control-label" for="DisplayOrder">Display Order <span
+                  class="mandantory">*</span></label>
+              <div class="col-sm-9">
+                <input id="DisplayOrder" type="text" class="form-control" formControlName="DisplayOrder"
+                  (blur)="logValidationErrors()" maxlength="3">
+                <div class="help-block-rk">
+                  <span class="help-block" *ngIf="formErrors.DisplayOrder">
+                    {{formErrors.DisplayOrder}}
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="form-group" *ngIf="!action">
+              <label class="col-sm-3 control-label custom-control-label " for="customSwitches">IsActive </label>
+              <div class="col-sm-9 nopading_loct">
+                <label class="switch">
+                  <input type="checkbox" checked formControlName="IsActive" id="IsActive">
+                  <span class="slider round"></span>
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-primary" data-dismiss="modal">Cancel</button>
+            &nbsp;
+            <button class="btn btn-success" type="submit" prevent-double-submit [disabled]="dropdownForm.invalid">
+              <!-- <i class="fa fa-save"></i> -->
+              Save
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>

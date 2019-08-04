@@ -1,0 +1,195 @@
+<div class="row">
+  <div class="col-sm-6 col-lg-6">
+    <h3>
+      Goods Storage
+    </h3>
+  </div>
+  <div class="col-sm-6 col-lg-6">
+    <div class="pull-right hidden-xs">
+      <ol class="breadcrumb" id="dynamicbreadcrumb">
+        <li>
+          <i class="fa fa-truck"></i> <span> GRN</span>
+        </li>
+        <li>
+          <i class="fa fa-truck"></i> <span>Goods Storage</span>
+        </li>
+        <li class="active">
+          <i class="fa fa-list" aria-hidden="true"></i>
+          List
+        </li>
+      </ol>
+    </div>
+  </div>
+</div>
+<form autocomplete="off" [formGroup]="goodsstorageform" (ngSubmit)="SaveData()" class="form-group">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <div class="row">
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+          <span class="spanheader">
+            {{panelTitle}}
+          </span>
+        </div>
+        <div class="col-sm-4">
+          <div class="pull-left">
+
+          </div>
+        </div>
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 ">
+          <div class="pull-right">
+            <button class="btn btn-primary" routerLink="/Goodsstoragelist" title="Back">
+              Back
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="panel-body">
+      <!-- <span class="groupspanheader"> General Information </span> -->
+      <div class="row">
+        <div class="container container-table">
+          <div class="row vertical-center-row">
+            <div class="col-xs-12 col-md-6 col-md-offset-3">
+              <div class="col-xs-12">
+
+                <div class="form-group" [ngClass]="{'has-error':formErrors.WarehouseLocation}">
+                  <label class="control-label" for="WarehouseLocation">Storage Location
+                    <span class="mandantory">*</span>
+                  </label>
+                  <div class="">
+                    <div class="input-group">
+                      <input id="WarehouseLocation" type="text" class="form-control" formControlName="WarehouseLocation"
+                        (blur)="logValidationErrors();" maxlength="30" (change)="onChangeJenniferItemSerial()">
+
+                      <span class="input-group-btn">
+                        <button class="btn btn-clr-custm" type="button" title="Clear"
+                          (click)="clearValue('WarehouseLocation')">
+                          <i class="fa fa-refresh"></i>
+                        </button>
+                      </span>
+                    </div>
+                    <div class="help-block-rk">
+                      <span class="help-block" *ngIf="formErrors.WarehouseLocation">
+                        {{formErrors.WarehouseLocation}}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-xs-12">
+                <div class="form-group" [ngClass]="{'has-error':formErrors.WarehouseRack}">
+                  <label class="control-label" for="WarehouseRack">Rack Number
+                    <span class="mandantory">*</span>
+                  </label>
+                  <div class="">
+                    <div class="input-group">
+                      <input id="WarehouseRack" type="text" class="form-control" formControlName="WarehouseRack"
+                        (blur)="logValidationErrors(); " maxlength="20" (change)="onChangeJenniferItemSerial()">
+
+                      <span class="input-group-btn">
+                        <button class="btn btn-clr-custm" type="button" title="Clear"
+                          (click)="clearValue('WarehouseRack')">
+                          <i class="fa fa-refresh"></i>
+                        </button>
+                      </span>
+                    </div>
+                  </div>
+                  <div class="help-block-rk">
+                    <span class="help-block" *ngIf="formErrors.WarehouseRack">
+                      {{formErrors.WarehouseRack}}
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-xs-12">
+                <div class="form-group" [ngClass]="{'has-error':formErrors.WarehouseBin}">
+                  <label class="control-label" for="WarehouseBin">BIN Number
+                    <span class="mandantory">*</span>
+                  </label>
+                  <div class="">
+                    <div class="input-group">
+                      <input id="WarehouseBin" type="text" class="form-control" formControlName="WarehouseBin"
+                        (blur)="logValidationErrors(); " maxlength="20" (change)="onChangeJenniferItemSerial()">
+
+                      <span class="input-group-btn">
+                        <button class="btn btn-clr-custm" type="button" title="Clear"
+                          (click)="clearValue('WarehouseBin')">
+                          <i class="fa fa-refresh"></i>
+                        </button>
+                      </span>
+                    </div>
+                  </div>
+                  <div class="help-block-rk">
+                    <span class="help-block" *ngIf="formErrors.WarehouseBin">
+                      {{formErrors.WarehouseBin}}
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-xs-12">
+                <div class="form-group" [ngClass]="{'has-error':formErrors.JenniferItemSerial}">
+                  <label class="control-label" for="JenniferItemSerial">Jennifer Item Serial Number
+                    <span class="mandantory">*</span>
+                  </label>
+                  <div class="">
+                    <input id="JenniferItemSerial" type="text" class="form-control" formControlName="JenniferItemSerial"
+                      (blur)="logValidationErrors();" maxlength="30" (change)="onChangeJenniferItemSerial()">
+                    <div class="help-block-rk">
+                      <span class="help-block" *ngIf="formErrors.JenniferItemSerial">
+                        {{formErrors.JenniferItemSerial}}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12 col-xs-12">
+          <!---->
+          <div class="table-responsive">
+            <table class="table table-bordered table-condensed table-striped">
+              <thead>
+                <tr>
+                  <th>Jennifer Item Serial</th>
+                  <th>Storage Location</th>
+                  <th>Rack Number</th>
+                  <th>Bin Number</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of lstGoodsstorage; let i = index;">
+                  <td>{{item.JenniferItemSerial}}</td>
+                  <td>{{item.WarehouseLocation}}</td>
+                  <td>{{item.WarehouseRack}}</td>
+                  <td>{{item.WarehouseBin}}</td>
+                  <td class="text-center">
+                    <i class="fa fa-trash bgred pointer" title="Remove" (click)="removeRow(i)"></i>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <!---->
+        </div>
+      </div>
+    </div>
+
+    <div class="panel-footer">
+      <div class="pull-right btn-toolbar">
+        <button class="btn btn-primary" routerLink="Goodsstoragelist" title="Cancel">
+          <!-- <i class="fa fa-arrow-left" aria-hidden="true"></i> -->
+          Cancel
+        </button>
+        <button class="btn btn-success" type="submit" prevent-double-submit [disabled]="lstGoodsstorage.length == 0">
+          <!-- <i class="fa fa-save"></i> -->
+          Save
+        </button>
+      </div>
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</form>

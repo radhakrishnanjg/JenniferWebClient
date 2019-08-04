@@ -1,0 +1,289 @@
+<div class="row">
+  <div class="col-sm-6 col-lg-6">
+    <h3>
+      Sales Order Approval
+    </h3>
+  </div>
+  <div class="col-sm-6 col-lg-6">
+    <div class="pull-right hidden-xs">
+      <ol class="breadcrumb" id="dynamicbreadcrumb">
+        <li>
+          <i class="fa fa-money"></i> <span> Revenue</span>
+        </li>
+        <li>
+          <i class="fa fa-check"></i> <span> Sales Order Approval</span>
+        </li>
+        <li class="active">
+          <i class="fa fa-save"></i>
+          Save
+        </li>
+      </ol>
+    </div>
+  </div>
+</div>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <div class="row">
+      <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+        <span class="spanheader">
+          {{panelTitle}}
+        </span>
+      </div>
+      <div class="col-sm-6">
+        <div class="pull-left">
+
+        </div>
+      </div>
+      <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 ">
+        <div class="pull-right">
+          <button class="btn btn-primary" routerLink="/Salesorderapprovallist" title="Back">
+
+            Back
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel-body">
+    <!-- <span class="groupspanheader"> General Information </span> -->
+    <div class="row">
+
+      <div class="col-md-3 col-xs-12">
+        <div class="form-group">
+          <label class="control-label" for="CustomerID">Customer
+            <span class="mandantory">*</span></label>
+          <div>
+            {{objSalesOrder?.CustomerName}}
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 col-xs-12">
+        <div class="form-group">
+          <label class="control-label">Order ID </label>
+          <div>
+            {{objSalesOrder?.OrderID}}
+            <div class="help-block-rk">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 col-xs-12">
+        <div class="form-group">
+          <label class="control-label">Customer Warehouse <span class="mandantory">*</span></label>
+          <div>
+            {{objSalesOrder?.WarehouseName}}
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 col-xs-12">
+        <div class="  form-group">
+          <label class="control-label">Order Date <span class="mandantory">*</span>
+          </label>
+          <div>
+            {{objSalesOrder?.OrderDate | date:'MM-dd-yyyy HH:mm' }}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6 col-xs-12">
+        <div class="form-group">
+          <label class="control-label" for="ShipTo"> Ship To
+            <span class="mandantory"> *</span>
+          </label>
+          <div>
+            {{objSalesOrder?.ShipTo}}
+            <div class="help-block-rk">
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-xs-12">
+        <div class="form-group">
+          <label class="control-label" for="BilledTo"> Billed To
+            <span class="mandantory">*</span>
+          </label>
+          <div>
+            {{objSalesOrder?.BilledTo}}
+            <div class="help-block-rk">
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label class="control-label"> Bill To Is same as Ship To </label> <br />
+          <div>
+            <div *ngIf="(objSalesOrder?.IsBillTo_SameAs_ShipTo)"><i class="fa fa-check"></i></div>
+            <div *ngIf="(!objSalesOrder?.IsBillTo_SameAs_ShipTo)"><i class="fa fa-times"></i></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label class="control-label"> Is discount applicable </label> <br />
+          <div *ngIf="(objSalesOrder?.IsDiscountApplicable)"><i class="fa fa-check"></i></div>
+          <div *ngIf="(!objSalesOrder?.IsDiscountApplicable)"><i class="fa fa-times"></i></div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-3 col-xs-12">
+        <div class="form-group">
+          <label class="control-label" for="InventoryType">Inventory Type <span class="mandantory">*</span></label>
+
+          <div>
+            {{objSalesOrder?.InventoryType}}
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 col-xs-12">
+        <div class="form-group">
+          <label class="control-label" for="PaymentTermsID">Payment Terms <span class="mandantory">*</span></label>
+
+          <div>
+            {{objSalesOrder?.DiscountAllowedinDays}}
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 col-xs-12">
+        <div class="form-group">
+          <label class="control-label" for="DispatchThrough">Dispatch Through <span class="mandantory">*</span></label>
+          <div>
+            {{objSalesOrder?.CustomerName}}
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 col-xs-12">
+        <div class="form-group">
+          <label class="control-label" for="BuyerOrderNo"> Buyer Order No <span class="mandantory">*</span></label>
+
+          <div>
+            {{objSalesOrder?.BuyerOrderNo}}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-3 col-xs-12">
+        <div class="form-group">
+          <label class="control-label" for="DeliveryNote"> Delivery Note <span class="mandantory">*</span></label>
+
+          <div>
+            {{objSalesOrder?.DeliveryNote}}
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 col-xs-12">
+        <div class="form-group">
+          <label class="control-label" for="TermsOfDelivery"> Terms Of Delivery <span
+              class="mandantory">*</span></label>
+          <div>
+            {{objSalesOrder?.TermsOfDelivery}}
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-xs-12">
+        <div class="form-group">
+          <label class="control-label" for="Remarks"> Remarks
+            <span class="mandantory"> *</span>
+          </label>
+          <div>
+            {{objSalesOrder?.Remarks}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <span class="spanheader">Order Items</span>
+  </div>
+  <div>
+    <table class="table table-bordered table-condensed table-striped"
+      *ngIf="objSalesOrder.lstItem && objSalesOrder.lstItem.length">
+      <thead>
+        <tr>
+          <th>ItemCode</th>
+          <th>Item Name</th>
+          <th>CustomerItemCode</th>
+          <th>Units</th>
+          <th>UOM </th>
+          <th>Qty </th>
+
+
+          <th>SellingPrice</th>
+          <th>TaxRate</th>
+          <th>Tax Amt</th>
+          <th>Discount Amt</th>
+          <th>ShippingCharges</th>
+          <th>Total value</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of objSalesOrder.lstItem">
+          <td>{{data.ItemCode}}</td>
+          <td>{{data.ItemName  }}</td>
+          <td>{{data.CustomerItemCode}}</td>
+          <td class="text-right">{{data.Units}}</td>
+          <td class="text-right">{{data.MultiplierValue}}</td>
+          <td class="text-right">{{data.Qty}}</td>
+
+
+          <td class="text-right">{{data.SellingPrice | currency: 'INR'}}</td>
+          <td class="text-right">{{data.TaxRate  }}</td>
+          <td class="text-right">{{data.TaxAmount | currency: 'INR'}}</td>
+          <td class="text-right">{{data.Discountamt | currency: 'INR'}}</td>
+          <td class="text-right">{{data.ShippingCharges | currency: 'INR'}}</td>
+          <td class="text-right">{{data.TotalValue | currency: 'INR'}}</td>
+        </tr>
+
+        <tr>
+          <th>Total</th>
+          <th> </th>
+          <th> </th>
+          <th class="text-right"> {{ TotalCaseSize}}</th>
+          <th class="text-right"> {{ TotalMultiplierValue}}</th>
+          <th class="text-right"> {{ TotalQty}}</th>
+
+
+          <th class="text-right">
+            {{ TotalSellingPrice | currency: 'INR'}}
+          </th>
+          <th class="text-right">
+          </th>
+          <th class="text-right">
+            {{ TotalTaxAmount | currency: 'INR'}}
+          </th>
+          <th class="text-right">
+            {{ TotalDiscountamt | currency: 'INR'}}
+          </th>
+
+          <th class="text-right">
+            {{ TotalShippingCharges | currency: 'INR'}}
+          </th>
+          <th class="text-right">
+            {{ TotalTotalAmount | currency: 'INR'}}
+          </th>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <form autocomplete="off">
+    <div class="panel-footer" *ngIf="(objSalesOrder.ApprovalStatus == 'Pending Approval')">
+      <div class="btn-toolbar pull-right">
+        <button prevent-double-submit type="submit" class="btn btn-success" (click)="saveData('Approve')"> Approve
+        </button>
+        &nbsp;
+        <button prevent-double-submit type="submit" class="btn btn-danger" (click)="saveData('Reject')">Reject</button>
+      </div>
+      <div class="clearfix"></div>
+    </div>
+  </form>
+</div>

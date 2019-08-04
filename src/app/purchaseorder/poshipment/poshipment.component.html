@@ -1,0 +1,315 @@
+<div class="row">
+  <div class="col-sm-6 col-lg-6">
+    <h3>
+      Shipments
+    </h3>
+  </div>
+  <div class="col-sm-6 col-lg-6">
+    <div class="pull-right hidden-xs">
+      <ol class="breadcrumb" id="dynamicbreadcrumb">
+        <li>
+          <i class="fa fa-shopping-cart"></i> <span> Procurements</span>
+        </li>
+        <li>
+          <i class="fa fa fa-truck"></i> <span> Shipments</span>
+        </li>
+        <li class="active">
+          <i class="fa fa-save"></i>
+          Save
+        </li>
+      </ol>
+    </div>
+  </div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <div class="row">
+      <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+        <span class="spanheader">
+          Shipments
+        </span>
+      </div>
+      <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 ">
+        <div class="pull-right">
+          <button class="btn btn-primary" routerLinkActive="active" routerLink="/Poshipmentlist">Back</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <form autocomplete="off" [formGroup]="poshipmentForm" (ngSubmit)="uploadFiles()" class="form-horizontal">
+    <div class="panel-body">
+      <div class="row">
+
+        <div class="col-sm-4">
+          <div class="form-group  " [ngClass]="{'has-error': formErrors.POID}" *ngIf="action">
+            <div class="col-sm-12 inputlevel">
+              <label class="control-label" for="POID">PO Number <span class="mandantory">*</span></label>
+              <div>
+                <select id="POID" class="form-control" formControlName="POID" (blur)="logValidationErrors()"
+                  (change)="onchangePOID($event.target.value)">
+                  <option value="0" selected="selected">Select</option>
+                  <option *ngFor="let c1 of lstpendingshipments" value={{c1.POID}}>
+                    {{c1.OtherReference}}
+                  </option>
+                </select>
+                <div class="help-block-rk">
+                  <span class="help-block" *ngIf="formErrors.POID">
+                    {{formErrors.POID}}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 ">
+          <div class="form-group" *ngIf="!action">
+            <div class="col-sm-12 inputlevel">
+
+              <label class="control-label" for="POID">PO Number <span class="mandantory">*</span></label>
+              <div>
+                {{
+                  PONumber
+                 }}
+                <div class="help-block-rk">
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group" *ngIf="!action">
+            <div class="col-sm-12 inputlevel">
+              <label class="control-label" for="POID">Shipment Number <span class="mandantory">*</span></label>
+              <div>
+                {{
+                  ShipmentNumber
+                 }}
+                <div class="help-block-rk">
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4" *ngIf="action">
+          <div class="form-group  " [ngClass]="{'has-error': formErrors.ShipmentType}">
+            <div class="col-sm-12 inputlevel">
+              <label class="control-label" for="ShipmentType"> Type <span class="mandantory">*</span></label>
+              <div>
+                <select id="ShipmentType" class="form-control" formControlName="ShipmentType"
+                  (blur)="logValidationErrors()" [(ngModel)]="ShipmentType"
+                  (change)="onchangeShipmentType($event.target.value)">
+                  <option value="" selected="selected">Select</option>
+                  <option value="Auto">Auto</option>
+                  <option value="Manual">Manual</option>
+                </select>
+                <div class="help-block-rk">
+                  <span class="help-block" *ngIf="formErrors.ShipmentType">
+                    {{formErrors.ShipmentType}}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class=" col-md-4" *ngIf="(ShipmentType=='Manual') && action">
+          <div class="form-group" [ngClass]="{'has-error': formErrors.ShipmentNumber}">
+            <div class="col-sm-12  inputlevel">
+              <label class="control-label" for="ShipmentNumber">Shipment Number <span
+                  class="mandantory">*</span></label>
+              <input id="ShipmentNumber" type="text" class="form-control" formControlName="ShipmentNumber"
+                (blur)="logValidationErrors()" maxlength="50" />
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrors.ShipmentNumber">
+                  {{formErrors.ShipmentNumber}}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class=" col-md-4">
+          <div class="form-group" [ngClass]="{'has-error': formErrors.ShipmentName}">
+            <div class="col-sm-12 inputlevel">
+              <label class="control-label" for="ShipmentName">Shipment Name <span class="mandantory">*</span></label>
+
+              <input id="ShipmentName" type="text" class="form-control" formControlName="ShipmentName"
+                (blur)="logValidationErrors()" maxlength="100" />
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrors.ShipmentName">
+                  {{formErrors.ShipmentName}}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <div class=" col-md-4">
+          <div class="form-group" [ngClass]="{'has-error': formErrors.CarpID}">
+            <div class="col-sm-12 inputlevel">
+              <label class="control-label" for="CarpID">Carp ID <span class="mandantory">*</span></label>
+
+              <input id="CarpID" type="text" class="form-control" formControlName="CarpID"
+                (blur)="logValidationErrors()" maxlength="50">
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrors.CarpID">
+                  {{formErrors.CarpID}}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class=" col-md-4">
+          <div class="form-group" [ngClass]="{'has-error': formErrors.Appointment}">
+            <div class="col-sm-12 inputlevel">
+              <label class="control-label" for="Appointment"> Appointment <span class="mandantory">*</span></label>
+
+              <div class='input-group date'>
+                <input type="text" ngxDaterangepickerMd [minDate]="MinDate" [timePicker]="true"
+                  (datesUpdated)="AppointmentUpdated($event)" [singleDatePicker]="true" class="form-control"
+                  formControlName="Appointment" id="Appointment" (blur)="logValidationErrors()"
+                  [locale]="{format: 'MM-DD-YYYY HH:mm'}" maxlength="16" />
+                <label class="fa fa-calendar"></label>
+              </div>
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrors.Appointment">
+                  {{formErrors.Appointment}}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class=" col-md-4" *ngIf="action">
+          <div class="form-group inputlevel" [ngClass]="{'has-error': formErrors.FileData}">
+            <div class="col-sm-12 inputlevel">
+              <label class="control-label" for="SelectSelect">File <span class="mandantory">*</span> </label>
+
+              <input type="file" id="file" (change)="onFileChanged($event)" multiple="multiple"
+                formControlName="FileData" accept="application/pdf">
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrors.FileData">
+                  {{formErrors.FileData}}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class=" col-md-4">
+          <div class="form-group">
+            <div class="col-sm-12 inputlevel">
+              <label class="control-label">Is Mail Required
+              </label> <br />
+              <input type="checkbox" id="IsMailSent" formControlName="IsMailSent">
+              <div class="help-block-rk">
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class=" col-md-12">
+          <div class="form-group" [ngClass]="{'has-error': formErrors.Remarks}">
+            <div class="col-sm-12 inputlevel">
+              <label class=" control-label" for="Remarks">Remarks <span class="mandantory">*</span></label>
+
+              <textarea id="Remarks" type="text" row="5" maxlength="250" class="form-control" formControlName="Remarks"
+                (blur)="logValidationErrors()"> </textarea>
+              <span class="help-block" *ngIf="formErrors.Remarks">
+                {{formErrors.Remarks}}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-12">
+          <span class="spanheader"> Order Items</span>
+          <table class="table table-bordered table-condensed " *ngIf="lstpoorderitem && lstpoorderitem.length">
+            <thead>
+              <tr>
+                <th>ItemCode</th>
+                <th>POQty</th>
+                <th>AvailableQty</th>
+                <th>Qty</th>
+                <th>Location </th>
+                <th>PO Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let user of lstpoorderitem; let id = index">
+                <td>{{ user.ItemCode  }}</td>
+                <td class="text-right">{{ user.POQty  }}</td>
+                <td class="text-right">{{ user.AvailableQty  }}</td>
+                <td>
+                  <input type="number" min="0" step="1" class="form-control" max="100000"
+                    (input)="updateList(id,'ShipmentQty',$event.target.value)" value="{{user.ShipmentQty}}">
+                </td>
+
+                <td>{{ user.LocationName}}</td>
+                <td>{{ user.PODate | date :"MM-dd-yyyy HH:mm"   }}</td>
+              </tr>
+              <tr>
+                <th>Total</th>
+                <th class="text-right"> {{ TotalPOQty}} </th>
+                <th class="text-right"> {{TotalAvailableQty}} </th>
+                <th class="text-right"> {{ TotalShipmentQty}}</th>
+                <th>
+                </th>
+                <th>
+                </th>
+              </tr>
+            </tbody>
+          </table>
+
+          <table class="table table-bordered table-condensed " *ngIf="lstshipmentqty && lstshipmentqty.length">
+            <thead>
+              <tr>
+                <th>ItemCode</th>
+                <th>POQty</th>
+                <th>AvailableQty</th>
+                <th>Shipment Qty</th>
+                <th>Location </th>
+                <th>PO Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let user of lstshipmentqty ">
+                <td>{{ user.ItemCode  }}</td>
+                <td class="text-right">{{ user.POQty  }}</td>
+                <td class="text-right">{{ user.AvailableQty  }}</td>
+                <td class="text-right"> {{user.ShipmentQty}}
+                </td>
+                <td>{{ user.LocationName}}</td>
+                <td>{{ user.PODate | date :"MM-dd-yyyy HH:mm"   }}</td>
+              </tr>
+              <tr>
+                <th>Total</th>
+                <th class="text-right"> {{ TotalPOQty}} </th>
+                <th class="text-right"> {{TotalAvailableQty}} </th>
+                <th class="text-right"> {{ TotalShipmentQty}}</th>
+                <th>
+                </th>
+                <th>
+                </th>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="panel-footer">
+      <div class="pull-right btn-toolbar">
+        <button class="btn btn-primary" routerLinkActive="active" routerLink="/Poshipmentlist">Cancel</button>
+        <button type="submit" prevent-double-submit [disabled]="poshipmentForm.invalid"
+          class="btn btn-success">Upload</button>
+      </div>
+      <div class="clearfix"></div>
+    </div>
+  </form>
+</div>

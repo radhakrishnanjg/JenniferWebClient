@@ -1,0 +1,144 @@
+<div class="row">
+  <div class="col-sm-6 col-lg-6">
+    <h3>
+      Goods Receipts
+    </h3>
+  </div>
+  <div class="col-sm-6 col-lg-6">
+    <div class="pull-right hidden-xs">
+      <ol class="breadcrumb" id="dynamicbreadcrumb">
+        <li>
+          <i class="fa fa-truck"></i> <span> GRN</span>
+        </li>
+        <li>
+          <i class="fa fa-truck"></i> <span> Goods Receipts</span>
+        </li>
+        <li class="active">
+          <i class="fa fa-list" aria-hidden="true"></i>
+          List
+        </li>
+      </ol>
+    </div>
+  </div>
+</div>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <div class="row">
+      <div class="col-xs-12 col-sm-10 col-md-10 col-lg-10">
+        <div class="input-group col-sm-12" role="group" aria-label="Basic example">
+          <div class="col-md-3 nopading_loct">
+            <select [(ngModel)]="SearchBy" class="serchcurv form-control btn-group">
+              <option value="" selected="select">Search By</option>
+              <option value="GRNNumber">GRN Number</option>
+              <option value="GRNDate">GRN Date</option>
+              <option value="PONumber">PO Number</option>
+              <option value="PurchaseInvoiceNum">Purchase Invoice Num</option>
+              <option value="Location">Location</option>
+              <option value="Vendor">Vendor</option>
+              <option value="InventoryType">Inventory Type</option>
+            </select>
+          </div>
+          <div class="col-md-4 nopading_loct"
+            *ngIf="(SearchBy=='GRNNumber' || SearchBy=='PONumber' 
+          || SearchBy=='PurchaseInvoiceNum' || SearchBy=='Location' || SearchBy=='Vendor' || SearchBy=='InventoryNumber')">
+            <input [(ngModel)]="SearchKeyword" type="text" class="serchcurv form-control btn-group">
+          </div>
+          <div class="col-md-4 nopading_loct" *ngIf="(SearchBy=='GRNDate')">
+            <input type="text" ngxDaterangepickerMd [(ngModel)]="selectedDateRange"
+              class="serchcurv form-control col-xs-12 pointer"
+              style="width:300px;border:1px soloid #ccc !important; padding :3px;left:0px" [showCustomRangeLabel]="true"
+              [ranges]="Searchranges" [showCancel]="true" placeholder="Select please..."
+              (ngModelChange)="onChange($event)" />
+          </div>
+
+          <div class="col-md-2 nopading_loct">
+            <button class="serchcurv btn btn-default btn-group" (click)="Search()" title="Search">
+              <i class="fa fa-search " aria-hidden="true"></i>
+            </button>
+            <button class="serchcurv btn btn-default btn-group" (click)="Refresh()" title="Reset">
+              <i class="fa fa-refresh" aria-hidden="true"></i>
+            </button>
+          </div>
+
+
+        </div>
+      </div>
+      <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 text-right">
+        <button class="btn btn-primary" routerLink="/Goodsreceipt/Create" title="Add New">
+          Add New
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel-body">
+    <div class="table-responsive">
+      <table datatable [dtOptions]="dtOptions" class="table table-bordered table-condensed table-striped"
+        *ngIf="lstGoodsReceipt && lstGoodsReceipt.length">
+        <thead>
+          <tr>
+            <th>GRN Number</th>
+            <th>GRN Date</th>
+            <th>PO Number</th>
+            <th>Purchase Invoice Num</th>
+            <th>Other Reference</th>
+
+            <th>Location</th>
+            <th>Vendor</th>
+            <th> Inventory Type</th>
+            <th> Total Received Qty</th>
+            <th class="text-center btnactions"> Action </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of lstGoodsReceipt">
+            <td>{{ user.GRNNumber  }}</td>
+            <td>{{ user.GRNDate | date :"MM-dd-yyyy HH:mm" }}</td>
+            <td>{{ user.PONumber}}</td>
+            <td>{{ user.InvoiceNumber}}</td>
+            <td>{{ user.OtherReference}}</td>
+
+            <td>{{ user.LocationName}}</td>
+            <td>{{ user.VendorName}}</td>
+            <td>{{ user.InventoryType}}</td>
+            <td class="text-right">{{ user.TotalReceivedQty}}</td>
+            <td class="text-center">
+              <i class="fa fa-download bgblue pointer" (click)="DownloadButtonClick(user.GRNNumber)"
+                title="Download"></i>
+              &nbsp;
+              <!-- <i class="fa fa-trash bgred pointer" title="Delete"
+                (click)="confirmDeleteid(user.GRNID,user.GRNNumber)"></i> -->
+              <i class="fa fa-eye bgblue pointer" (click)="viewButtonClick(user.GRNID)" title="View"></i>
+            </td>
+          </tr>
+        </tbody>
+
+      </table>
+
+      <table class="table table-bordered table-condensed table-striped" *ngIf="lstGoodsReceipt==null">
+        <thead>
+          <tr>
+            <td>GRN Number</td>
+            <td>GRN Date</td>
+            <td>PO Number</td>
+            <td>Purchase Invoice Num</td>
+            <td>Other Reference</td>
+            <td>Location</td>
+            <td>Vendor</td>
+            <td> Inventory Type</td>
+            <td> Total Received Qty</td>
+            <td> Action </td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td colspan="10">
+              No Records Found.!
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+</div>

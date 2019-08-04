@@ -1,0 +1,33 @@
+  /*To show image caption on image hover*/
+  #dvimageHolder {
+    position: relative;
+    width: 100%;
+    min-height: 100px;
+    cursor: pointer;
+}
+
+#dvCompanyLogo {
+    position: relative;
+    min-height: 100px;
+    min-height: 100px;
+    cursor: pointer;
+}
+
+
+.caption {
+    opacity: 0;
+    position: absolute;
+    height: 50px;
+    width: 100%;
+    bottom: 0px;
+    left: 0px;
+    padding: 2px 0px;
+    color: white;
+    background: black;
+    text-align: center;
+    font-weight: bold;
+}
+
+    .caption:hover {
+        opacity: 0.7;
+    }

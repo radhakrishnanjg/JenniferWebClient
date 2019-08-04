@@ -1,0 +1,470 @@
+<div class="row">
+  <div class="col-sm-6 col-lg-6">
+    <h3>
+      Sales Order
+    </h3>
+  </div>
+  <div class="col-sm-6 col-lg-6">
+    <div class="pull-right hidden-xs">
+      <ol class="breadcrumb" id="dynamicbreadcrumb">
+        <li>
+          <i class="fa fa-money"></i> <span> Revenue</span>
+        </li>
+        <li>
+          <i class="fa fa-shopping-cart"></i> <span> Sales Order</span>
+        </li>
+        <li class="active">
+          <i class="fa fa-save"></i>
+          Save
+        </li>
+      </ol>
+    </div>
+  </div>
+</div>
+<form autocomplete="off" (ngSubmit)="saveData()" [formGroup]="salesForm">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <div class="row">
+        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+          <span class="spanheader">
+            {{panelTitle}}
+          </span>
+        </div>
+        <div class="col-sm-6">
+          <div class="pull-left">
+
+          </div>
+        </div>
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 ">
+          <div class="pull-right">
+            <button class="btn btn-primary" routerLink="/Salesorderlist" title="Back">
+
+              Back
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel-body">
+      <!-- <span class="groupspanheader"> General Information </span> -->
+      <div class="row">
+
+        <div class="col-md-3 col-xs-12">
+          <div class="form-group" [ngClass]="{'has-error': formErrors.CustomerID}">
+            <label class="control-label" for="CustomerID">Customer <span class="mandantory">*</span></label>
+            <div *ngIf="action">
+              <select id="CustomerID" class="form-control" formControlName="CustomerID" (blur)="logValidationErrors()"
+                (change)="onCustomerChange($event.target.value)" [disabled]="!IsDisableMasterControls">
+                <option value="0" selected="selected">Select</option>
+                <option *ngFor="let dis of customerList" value={{dis.CustomerID}}>
+                  {{dis.CustomerName}}
+                </option>
+              </select>
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrors.CustomerID">
+                  {{formErrors.CustomerID}}
+                </span>
+              </div>
+            </div>
+            <div *ngIf="!action">
+              {{objSalesOrder?.CustomerName}}
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 col-xs-12">
+          <div class="form-group">
+            <label class="control-label" for="OrderID">Order ID </label>
+            <div>
+              {{OrderID}}
+              <div class="help-block-rk">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-3 col-xs-12">
+          <div class="  form-group" [ngClass]="{'has-error': formErrors.OrderDate}">
+            <label class="control-label" for="OrderDate">Order Date <span class="mandantory">*</span>
+            </label>
+            <div *ngIf="action">
+              <div class='input-group date'>
+                <input type="text" ngxDaterangepickerMd [timePicker]="true" [singleDatePicker]="true"
+                  class="form-control" formControlName="OrderDate" id="OrderDate" (blur)="logValidationErrors()"
+                  [locale]="{format: 'MM-DD-YYYY HH:mm'}" [autoApply]="true" (datesUpdated)="OrderDateUpdated($event)"
+                  *ngIf="!hideOrderDate" />
+                <label class="fa fa-calendar" *ngIf="!hideOrderDate"></label>
+                <div *ngIf="hideOrderDate">
+                  {{
+                        OrderDate | date:'MM-dd-yyyy HH:mm'
+                      }}
+                </div>
+              </div>
+              <div class="help-block-rk">
+              </div><span class="help-block" *ngIf="formErrors.OrderDate">
+                {{formErrors.OrderDate}}
+              </span>
+            </div>
+
+            <div *ngIf="!action">
+              {{objSalesOrder?.OrderDate | date:'MM-dd-yyyy HH:mm' }}
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 col-xs-12">
+          <div class="form-group" [ngClass]="{'has-error': formErrors.CustomerWarehouseID}">
+            <label class="control-label" for="CustomerWarehouseID">Customer Warehouse <span
+                class="mandantory">*</span></label>
+            <div *ngIf="action">
+              <select id="CustomerWarehouseID" class="form-control" formControlName="CustomerWarehouseID"
+                (blur)="logValidationErrors()" (change)="onCustomerWarehouseIDChange($event.target.value)">
+                <option value="0" selected="selected">Select</option>
+                <option *ngFor="let dis of customerWarehouseList" value={{dis.CustomerWarehouseID}}>
+                  {{dis.WarehouseName}}
+                </option>
+              </select>
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrors.CustomerWarehouseID">
+                  {{formErrors.CustomerWarehouseID}}
+                </span>
+              </div>
+            </div>
+            <div *ngIf="!action">
+              {{objSalesOrder?.WarehouseName}}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-3 col-xs-12">
+          <div class="form-group">
+            <label class="control-label" for="ShipTo"> Ship To
+              <span class="mandantory"> *</span>
+            </label>
+            <div>
+              {{ShipTo}}
+              <div class="help-block-rk">
+
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 col-xs-12">
+          <div class="form-group">
+            <label class="control-label" for="BilledTo"> Billed To
+              <span class="mandantory">*</span>
+            </label>
+            <div>
+              {{BilledTo}}
+              <div class="help-block-rk">
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="form-group">
+            <label class="control-label"> Bill To Is same as Ship To </label> <br />
+            <input *ngIf="action" type="checkbox" checked="checked" [(ngModel)]="IsBillTo_SameAs_ShipTo"
+              formControlName="IsBillTo_SameAs_ShipTo" (change)="onchangeIsBillTo_SameAs_ShipTo($event)">
+            <div *ngIf="!action">
+              <div *ngIf="IsBillTo_SameAs_ShipTo">
+                Yes
+              </div>
+              <div *ngIf="!IsBillTo_SameAs_ShipTo">
+                No
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-3 col-xs-12">
+          <div class="form-group" [ngClass]="{'has-error': formErrors.InventoryType}">
+            <label class="control-label" for="InventoryType">Inventory Type <span class="mandantory">*</span></label>
+            <div *ngIf="action">
+              <input type="text" id="InventoryType" class="form-control" formControlName="InventoryType"
+                disabled="disabled">
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrors.InventoryType">
+                  {{formErrors.InventoryType}}
+                </span>
+              </div>
+            </div>
+            <div *ngIf="!action">
+              {{objSalesOrder?.InventoryType}}
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 col-xs-12">
+          <div class="form-group" [ngClass]="{'has-error': formErrors.PaymentTermsID}">
+            <label class="control-label" for="PaymentTermsID">Payment Terms <span class="mandantory">*</span></label>
+            <div *ngIf="action">
+              <select id="PaymentTermsID" class="form-control" formControlName="PaymentTermsID"
+                (blur)="logValidationErrors()">
+                <option value="0" selected="selected">Select</option>
+                <option *ngFor="let dis of lstPaymentTermsID" value={{dis.PaymentTermsID}}>
+                  {{dis.DiscountAllowedinDaysDesc}}
+                </option>
+              </select>
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrors.PaymentTermsID">
+                  {{formErrors.PaymentTermsID}}
+                </span>
+              </div>
+            </div>
+            <div *ngIf="!action">
+              {{objSalesOrder?.DiscountAllowedinDays}}
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 col-xs-12">
+          <div class="form-group" [ngClass]="{'has-error': formErrors.DispatchThrough}">
+            <label class="control-label" for="DispatchThrough">Dispatch Through <span
+                class="mandantory">*</span></label>
+            <div *ngIf="action">
+              <select id="DispatchThrough" class="form-control" formControlName="DispatchThrough" type="select"
+                (blur)="logValidationErrors()">
+                <option value="" selected="selected">Select</option>
+                <option *ngFor="let dis of lstDispatchThrough" value={{dis.DropdownValue}}>
+                  {{dis.DropdownValue}}
+                </option>
+              </select>
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrors.DispatchThrough">
+                  {{formErrors.DispatchThrough}}
+                </span>
+              </div>
+            </div>
+            <div *ngIf="!action">
+              {{objSalesOrder?.CustomerName}}
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-3 col-xs-12">
+          <div class="form-group" [ngClass]="{'has-error':formErrors.TermsOfDelivery}">
+            <label class="control-label" for="TermsOfDelivery"> Terms Of Delivery <span
+                class="mandantory">*</span></label>
+            <div *ngIf="action">
+              <input id="TermsOfDelivery" type="text" class="form-control" formControlName="TermsOfDelivery"
+                (blur)="logValidationErrors()" maxlength="50">
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrors.TermsOfDelivery">
+                  {{formErrors.TermsOfDelivery}}
+                </span>
+              </div>
+            </div>
+            <div *ngIf="!action">
+              {{objSalesOrder?.TermsOfDelivery}}
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="row">
+        <div class="col-md-12 col-xs-12">
+          <div class="form-group" [ngClass]="{'has-error':formErrors.Remarks}">
+            <label class="control-label" for="Remarks"> Remarks
+              <span class="mandantory"> *</span>
+            </label>
+            <div *ngIf="action">
+              <textarea rows="4" cols="50" id="Remarks" type="text" class="form-control" formControlName="Remarks"
+                (blur)="logValidationErrors()" maxlength="250">
+                    </textarea>
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrors.Remarks">
+                  {{formErrors.Remarks}}
+                </span>
+              </div>
+            </div>
+            <div *ngIf="!action">
+              {{objSalesOrder?.Remarks}}
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-12">
+          <div class="form-group pull-left">
+            <button type="button" class="btn btn-primary" [disabled]="!salesForm.valid" (click)="chooseitems()">Choose
+              Items</button>
+            <br />
+            <br />
+          </div>
+        </div>
+      </div>
+      <div class="panel-default panel" *ngIf="ispickitems">
+        <div class="panel-heading">
+          <div class="row">
+            <!-- [disabled]="!salesForm.valid"  -->
+            <div class="col-md-12">
+
+
+              <div class="form-group col-sm-3">
+                <select id="BrandID" class="form-control" name="Brand" (change)="onchangeBrand($event.target.value)">
+                  <option value="Brand" selected="selected">Brand</option>
+                  <option *ngFor="let c1 of objunsell?.lstBrand" value={{c1.BrandName}}>
+                    {{c1.BrandName}}
+                  </option>
+                </select>
+              </div>
+
+              <div class="form-group col-sm-3">
+                <select id="ProductGroupID" class="form-control" name="ProductGroup"
+                  (change)="onchangeProductGroupID($event.target.value)">
+                  <option value="ProductGroup" selected="selected">ProductGroup</option>
+                  <option *ngFor="let c1 of objunsell?.lstProductGroup" value={{c1.ProductGroupName}}>
+                    {{c1.ProductGroupName}}
+                  </option>
+                </select>
+              </div>
+
+              <div class="form-group col-sm-3">
+                <select id='CategoryID' type="select" class="form-control" name="Category"
+                  (change)="onchangeCategoryID($event.target.value)">
+                  <option value="Category" selected="selected">Category</option>
+                  <option *ngFor="let c1 of objunsell?.lstCategory" value={{c1.CategoryName}}>
+                    {{c1.CategoryName}}
+                  </option>
+                </select>
+              </div>
+
+              <div class="form-group col-sm-2">
+                <!-- [(ngModel)]="SubCategory" -->
+                <select id='SubCategoryID' type="select" class="form-control" name="SubCategory"
+                  (change)="onchangeSubCategoryID($event.target.value)">
+                  <option value="SubCategory" selected="selected">SubCategory</option>
+                  <option *ngFor="let c1 of objunsell?.lstSubCategory" value={{c1.SubCategoryName}}>
+                    {{c1.SubCategoryName}}
+                  </option>
+                </select>
+              </div>
+
+              <div class="form-group col-sm-1">
+                <button type="button" class="btn btn-primary" (click)="ClearAll()">Clear All</button>
+              </div>
+
+
+            </div>
+          </div>
+        </div>
+        <div class="panel-body">
+          <div class="form-group col-md-12">
+            <table class="table table-bordered table-condensed table-striped"
+              *ngIf="objunsell?.lstunsellqty && objunsell?.lstunsellqty.length">
+              <thead>
+                <tr>
+                  <th>ItemCode</th>
+                  <th>Item Name</th>
+                  <th>CustomerItemCode</th>
+                  <th>LocationName</th>
+                  <th>MarketPlace Sold Price</th>
+
+                  <th>Liq % </th>
+                  <th>Liq Rate </th>
+                  <th>Available Qty </th>
+                  <th>Liq Value </th>
+                  <th>Select Qty </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let data of objunsell?.lstunsellqty; let id = index">
+                  <td [ngClass]="(data.Qty>0)?'bggreen':''">{{data.ItemCode}}</td>
+                  <td [ngClass]="(data.Qty>0)?'bggreen':''">{{data.ItemName  }}</td>
+                  <td [ngClass]="(data.Qty>0)?'bggreen':''">{{data.CustomerItemCode}}</td>
+                  <td [ngClass]="(data.Qty>0)?'bggreen':''">{{data.LocationName}}</td>
+                  <td [ngClass]="(data.Qty>0)?'bggreen':''" class="text-right">{{data.SellingPrice | currency: 'INR'}}
+                  </td>
+
+                  <td [ngClass]="(data.Qty>0)?'bggreen':''" class="text-right">{{data.LiquidationPercent}}</td>
+                  <td [ngClass]="(data.Qty>0)?'bggreen':''" class="text-right">
+                    {{data.LiquidationRate | currency: 'INR'}}</td>
+                  <td [ngClass]="(data.Qty>0)?'bggreen':''" class="text-right">{{data.AvailableQty}}</td>
+                  <td [ngClass]="(data.Qty>0)?'bggreen':''" class="text-right">
+                    {{data.LiquidationValue | currency: 'INR'}}</td>
+                  <td class="text-right">
+                    <input type="number" min="0" step="1" class="form-control" max="100000"
+                      (input)="updateList(id,'Qty',$event.target.value)" value="{{data.Qty}}">
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="form-group col-md-12">
+            <div class="btn-toolbar pull-right">
+              <!-- <button (click)="addtolistCancel()" type="button" class="btn btn-primary">Cancel</button>   -->
+              <button (click)="addtolist()" type="button" class="btn btn-success">Add to List</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="panel-default panel" *ngIf="isadditems">
+        <div class="panel-heading">
+          <div class="spanheader">Order Items</div>
+        </div>
+        <div class="panel-body">
+          <table class="table table-bordered table-condensed table-striped"
+            *ngIf="objSalesOrder.lstItem && objSalesOrder.lstItem.length">
+            <thead>
+              <tr>
+                <th>ItemCode</th>
+                <th>Item Name</th>
+                <th>CustomerItemCode</th>
+                <th>Rate</th>
+                <th>Qty </th>
+                <th>Tax Rate</th>
+
+                <th>Tax Amt</th>
+                <th>Discount Amt</th>
+                <th>Total Value</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of objSalesOrder.lstItem">
+                <td>{{data.ItemCode}}</td>
+                <td>{{data.ItemName  }}</td>
+                <td>{{data.CustomerItemCode}}</td>
+                <td class="text-right">{{data.SellingPrice | currency: 'INR'}}</td>
+
+                <td class="text-right">{{data.Qty}}</td>
+                <td class="text-right">{{data.TaxRate  }}</td>
+                <td class="text-right">{{data.TaxAmount | currency: 'INR'}}</td>
+
+                <td class="text-right">{{data.Discountamt | currency: 'INR'}}</td>
+                <td class="text-right">{{data.TotalValue | currency: 'INR'}}</td>
+              </tr>
+
+              <tr>
+                <th>Total</th>
+                <th> </th>
+                <th> </th>
+                <th class="text-right">
+                  {{ TotalSellingPrice | currency: 'INR'}}
+                </th>
+                <th class="text-right"> {{ TotalQty}}</th>
+                <th> </th>
+                <th class="text-right">
+                  {{ TotalTaxAmount | currency: 'INR'}}
+                </th>
+                <th class="text-right">
+                  {{ TotalDiscountamt | currency: 'INR'}}
+                </th>
+                <th class="text-right">
+                  {{ TotalTotalAmount | currency: 'INR'}}
+                </th>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="panel-footer" *ngIf="isadditems">
+      <div class="btn-toolbar pull-right">
+        <button type="button" class="btn btn-primary" routerLink="/Salesorderlist">Cancel</button>
+        <button prevent-double-submit type="submit" id="save" class="btn btn-success"
+          [disabled]="!salesForm.valid">Save</button>
+      </div>
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</form>

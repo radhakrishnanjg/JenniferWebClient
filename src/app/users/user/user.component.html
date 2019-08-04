@@ -1,0 +1,191 @@
+<div class="row">
+  <div class="col-sm-6 col-lg-6">
+    <h3>
+      Users
+    </h3>
+  </div>
+  <div class="col-sm-6 col-lg-6">
+    <div class="pull-right hidden-xs">
+      <ol class="breadcrumb" id="dynamicbreadcrumb">
+        <li>
+          <i class="fa fa-wrench"></i> <span> Utilities</span>
+        </li>
+        <li>
+          <i class="fa fa-users"></i> <span> Users</span>
+        </li>
+        <li class="active">
+          <i class="fa fa-save"></i>
+          Save
+        </li>
+      </ol>
+    </div>
+  </div>
+</div>
+<form autocomplete="off" [formGroup]="userForm" (ngSubmit)="SaveData()" class="form-horizontal">
+  <div class="panel panel-default tabspanl">
+    <div class="panel-heading">
+      <div class="row">
+        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+          <span class="spanheader">
+            {{panelTitle}}
+          </span>
+        </div>
+        <div class="col-sm-6">
+          <div class="pull-left">
+            <div class="form-group" *ngIf="!action">
+              <div class="col-sm-12 inputlevelswtch">
+                <label class="col-sm-6" for=" IsActive">IsActive </label>
+                <div class=" col-sm-6">
+                  <label class="switch">
+                    <input type="checkbox" formControlName="IsActive" checked>
+                    <span class="slider round"></span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 ">
+          <div class="pull-right">
+            <button class="btn btn-primary" routerLink="/Userlist" title="Back">
+              <!-- <i class="fa fa-arrow-left" aria-hidden="true"></i> -->
+              Back
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12 col-sm-12">
+      <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item">
+          <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home"
+            aria-selected="true">Basic Details</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile"
+            aria-selected="false">Upload Option</a>
+        </li>
+      </ul>
+      <div class="tab-content" id="myTabContent">
+        <div class="tab-pane  active" id="home" role="tabpanel" aria-labelledby="home-tab">
+
+          <div class="col-lg-6">
+
+            <div class="form-group" [ngClass]="{'has-error': formErrors.Email}">
+              <label class=" control-label col-sm-4" for="Email">Email <span class="mandantory">*</span> </label>
+              <div class="col-sm-8">
+                <input id="Email" [readonly]="!action" type="email" class="form-control" formControlName="Email"
+                  (blur)="logValidationErrors();onchangeEmail();" maxlength="50">
+                <div class="help-block-rk">
+                  <span class="help-block" *ngIf="formErrors.Email">
+                    {{formErrors.Email}}
+                  </span> 
+                  <span class="help-block">
+                    {{ UserTypeErrorMessage}}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+
+            <div class="form-group" [ngClass]="{'has-error': formErrors.FirstName}">
+              <label class=" control-label col-sm-4" for="FirstName">First Name <span class="mandantory">*</span>
+              </label>
+              <div class="col-sm-8">
+                <input id="FirstName" type="text" class="form-control" formControlName="FirstName"
+                  (blur)="logValidationErrors()" maxlength="30">
+                <div class="help-block-rk">
+                  <span class="help-block" *ngIf="formErrors.FirstName">
+                    {{formErrors.FirstName}}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group" [ngClass]="{'has-error': formErrors.LastName}">
+              <label class="control-label col-sm-4" for="LastName">Last Name</label>
+              <div class="col-sm-8">
+                <input id="LastName" type="text" class="form-control" formControlName="LastName"
+                  (blur)="logValidationErrors()" maxlength="30">
+                <div class="help-block-rk">
+                  <span class="help-block" *ngIf="formErrors.LastName">
+                    {{formErrors.LastName}}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+
+
+          </div>
+          <div class="col-lg-6">
+            <div class="">
+              <span class="spanheader">
+                Map Stores Access to User
+              </span>
+              <div>
+                <div class="col-sm-6" *ngFor="let userStore of obj?.lstUserStores">
+                  <div *ngIf="(userStore.IsActive ==true)">
+                    <input type="checkbox" name="{{userStore.CompanyDetailID}}" id="{{userStore.CompanyDetailID  }}"
+                      checked="checked" (change)="storeFieldsChange($event)">
+                    <span class="stornme">{{userStore.StoreName }}</span>
+                  </div>
+                  <div *ngIf="(userStore.IsActive != true)">
+                    <input type="checkbox" name="{{userStore.CompanyDetailID}}" id="{{userStore.CompanyDetailID }}"
+                      (change)="storeFieldsChange($event)">
+                    <span class="stornme">{{userStore.StoreName }}</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+          <div class="col-lg-6 col-sm-12">
+            <div class="">
+              <span class="spanheader">
+                Map Bulk Upload Option to user
+              </span>
+              <div>
+                <div class="col-sm-4" *ngFor="let ms of obj?.lstmasterscreens">
+                  <div *ngIf="(ms.IsActive ==true )">
+                    <input type="checkbox" name="{{ms.DropdownValue}}" id="{{ms.DropdownValue  }}" checked="checked"
+                      (change)="masterscreenFieldsChange($event)">
+                    <span class="stornme">{{ms.DropDownDescription }}</span>
+                  </div>
+                  <div *ngIf="(ms.IsActive != true)">
+                    <input type="checkbox" name="{{ms.DropdownValue}}" id="{{ms.DropdownValue }}"
+                      (change)="masterscreenFieldsChange($event)">
+                    <span class="stornme">{{ms.DropDownDescription }}</span>
+                  </div>
+                </div>
+              </div>
+
+
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="panel-footer">
+    <div class="pull-right btn-toolbar">
+      <button class="btn btn-primary" routerLink="/Userlist" title="Back">
+        <!-- <i class="fa fa-arrow-left" aria-hidden="true"></i> -->
+        Cancel
+      </button>
+      <button class="btn btn-success" 
+      type="submit" prevent-double-submit [disabled]="userForm.invalid || UserType==1 || UserType==2 ">
+        <!-- <i class="fa fa-save"></i> -->
+        Save
+      </button>
+      <!-- [disabled]="userForm.invalid" -->
+    </div>
+    <div class="clearfix"></div>
+  </div>
+</form>

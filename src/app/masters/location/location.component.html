@@ -1,0 +1,361 @@
+<div class="row">
+  <div class="col-sm-6 col-lg-6">
+    <h3>
+      Locations
+    </h3>
+  </div>
+  <div class="col-sm-6 col-lg-6">
+    <div class="pull-right hidden-xs">
+      <ol class="breadcrumb" id="dynamicbreadcrumb">
+        <li>
+          <i class="fa fa-asterisk"></i> <span> Master</span>
+        </li>
+        <li>
+          <i class="fa fa-map-marker"></i> <span> Locations</span>
+        </li>
+        <li class="active">
+          <i class="fa fa-save"></i>
+          Save
+        </li>
+      </ol>
+    </div>
+  </div>
+</div>
+<form autocomplete="off" [formGroup]="locationform" (ngSubmit)="SaveData()" class="form-group">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <div class="row">
+        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+          <span class="spanheader">
+            {{panelTitle}}
+          </span>
+        </div>
+        <div class="col-sm-6">
+          <div class="pull-left">
+            <div class="form-group" *ngIf="!action">
+              <div class="col-sm-12 inputlevelswtch">
+                <label class="col-sm-6" for=" IsActive">IsActive </label>
+                <div class=" col-sm-6">
+                  <label class="switch">
+                    <input type="checkbox" formControlName="IsActive" checked>
+                    <span class="slider round"></span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 ">
+          <div class="pull-right">
+            <button class="btn btn-primary" routerLink="/Locationlist" title="Back">
+
+              Back
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+      <li class="nav-item">
+        <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home"
+          aria-selected="true">Basic Details</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile"
+          aria-selected="false">Secondary Contacts </a>
+      </li>
+    </ul>
+    <div class="tab-content" id="myTabContent">
+      <div class="tab-pane  active" id="home" role="tabpanel" aria-labelledby="home-tab">
+
+        <div class="panel-body">
+          <span class="groupspanheader"> General Information </span>
+          <div class="row">
+            <div class="col-md-6 col-xs-12">
+              <div class="form-group" [ngClass]="{'has-error': formErrors.LocationName}">
+                <label class="control-label" for="LocationName">Location <span class="mandantory">*</span></label>
+                <div class="">
+                  <input id="LocationName" type="text" class="form-control" formControlName="LocationName"
+                    (blur)="logValidationErrors()" maxlength="20">
+                  <div class="help-block-rk">
+                    <span class="help-block" *ngIf="formErrors.LocationName">
+                      {{formErrors.LocationName}}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 col-xs-12">
+              <div class="form-group" [ngClass]="{'has-error': formErrors.LocaitonAliasName}">
+                <label class="control-label" for="LocaitonAliasName">Location Alias Name<span
+                    class="mandantory">*</span></label>
+                <div class="">
+                  <input id="LocaitonAliasName" type="text" class="form-control" formControlName="LocaitonAliasName"
+                    (blur)="logValidationErrors()" maxlength="10">
+                  <div class="help-block-rk">
+                    <span class="help-block" *ngIf="formErrors.LocaitonAliasName">
+                      {{formErrors.LocaitonAliasName}}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-3 col-xs-12">
+              <div class="form-group" [ngClass]="{'has-error': formErrors.ContactPerson}">
+                <label class="control-label" for="ContactPerson">Contact Person <span
+                    class="mandantory">*</span></label>
+                <div class="">
+                  <input id="ContactPerson" type="text" class="form-control" formControlName="ContactPerson"
+                    (blur)="logValidationErrors()" maxlength="30">
+                  <div class="help-block-rk">
+                    <span class="help-block" *ngIf="formErrors.ContactPerson">
+                      {{formErrors.ContactPerson}}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-3 col-xs-12">
+              <div class="form-group" [ngClass]="{'has-error': formErrors.ContactNumber}">
+                <label class="control-label" for="ContactNumber">Contact Number <span
+                    class="mandantory">*</span></label>
+                <div class="">
+                  <input id="ContactNumber" type="text" class="form-control" formControlName="ContactNumber"
+                    (blur)="logValidationErrors()" maxlength="12" mask="000000000000">
+                  <div class="help-block-rk">
+                    <span class="help-block" *ngIf="formErrors.ContactNumber">
+                      {{formErrors.ContactNumber}}
+                    </span>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3 col-xs-12">
+              <div class="form-group" [ngClass]="{'has-error': formErrors.Email}">
+                <label class="control-label" for="Email">Email <span class="mandantory">*</span></label>
+                <div class="">
+                  <input id="Email" type="email" class="form-control" formControlName="Email"
+                    (blur)="logValidationErrors()" maxlength="50">
+                  <div class="help-block-rk">
+                    <span class="help-block" *ngIf="formErrors.Email">
+                      {{formErrors.Email}}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-3 col-xs-12">
+              <div class="form-group" [ngClass]="{'has-error': formErrors.GSTNumber}">
+                <label class="control-label" for="GSTNumber">GST Number <span class="mandantory">*</span></label>
+                <div class="">
+                  <input id="GSTNumber" [readonly]="!action" type="text" class="text-uppercase form-control"
+                    formControlName="GSTNumber" (blur)="logValidationErrors()" maxlength="30">
+                  <div class="help-block-rk">
+                    <span class="help-block" *ngIf="formErrors.GSTNumber">
+                      {{formErrors.GSTNumber}}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="panel-body">
+          <span class="groupspanheader"> Address </span>
+          <div class="row">
+            <div class="col-md-6 col-xs-12">
+              <div class="form-group" [ngClass]="{'has-error': formErrors.Address1}">
+                <label class="control-label" for="Address1">Address 1 <span class="mandantory">*</span></label>
+                <div class="">
+                  <textarea id="Address1" type="text" class="form-control" formControlName="Address1"
+                    (blur)="logValidationErrors()" rows="2" maxlength="150"></textarea>
+                  <div class="help-block-rk">
+                    <span class="help-block" *ngIf="formErrors.Address1">
+                      {{formErrors.Address1}}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 col-xs-12">
+              <div class="form-group" [ngClass]="{'has-error': formErrors.Address2}">
+                <label class="control-label" for="Address2">Address 2 </label>
+                <div class="">
+                  <textarea id="Address2" type="text" class="form-control" formControlName="Address2"
+                    (blur)="logValidationErrors()" rows="2" maxlength="100"></textarea>
+                  <div class="help-block-rk">
+                    <span class="help-block" *ngIf="formErrors.Address2">
+                      {{formErrors.Address2}}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-3 col-xs-12">
+              <div class="form-group" [ngClass]="{'has-error': formErrors.CountryID}">
+                <label class="control-label" for="CountryID">Country <span class="mandantory">*</span></label>
+                <div class="">
+                  <select id="CountryID" class="form-control" formControlName="CountryID" (blur)="logValidationErrors()"
+                    (change)="onchangeCountryID($event.target.value)">
+                    <option value="0" selected="selected">Select</option>
+                    <option *ngFor="let c1 of countries" value={{c1.CountryID}}>
+                      {{c1.CountryName}}
+                    </option>
+                  </select>
+                  <div class="help-block-rk">
+                    <span class="help-block" *ngIf="formErrors.CountryID">
+                      {{formErrors.CountryID}}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3 col-xs-12">
+              <div class="form-group" [ngClass]="{'has-error': formErrors.StateID}">
+                <label class="control-label" for="StateID">State <span class="mandantory">*</span></label>
+                <div class="">
+                  <select id="StateID" [readonly]="!action" class="form-control" formControlName="StateID"
+                    (blur)="logValidationErrors()">
+                    <option value="0" selected="selected">Select</option>
+                    <option *ngFor="let dis of states" value={{dis.StateID}}>
+                      {{dis.State}}
+                    </option>
+                  </select>
+                  <div class="help-block-rk">
+                    <span class="help-block" *ngIf="formErrors.StateID">
+                      {{formErrors.StateID}}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3 col-xs-12">
+              <div class="form-group" [ngClass]="{'has-error': formErrors.City}">
+                <label class="control-label" for="City">City <span class="mandantory">*</span></label>
+                <div class="">
+                  <input id="City" type="text" class="form-control" formControlName="City"
+                    (blur)="logValidationErrors()" maxlength="50">
+                  <div class="help-block-rk">
+                    <span class="help-block" *ngIf="formErrors.City">
+                      {{formErrors.City}}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3 col-xs-12">
+              <div class="form-group" [ngClass]="{'has-error': formErrors.PostalCode}">
+                <label class="control-label" for="PostalCode">Postal Code <span class="mandantory">*</span></label>
+                <div class="">
+                  <input id="PostalCode" type="text" class="form-control" 
+                  formControlName="PostalCode" maxlength="6" mask="000000"
+                    (blur)="logValidationErrors()" >
+                  <div class="help-block-rk">
+                    <span class="help-block" *ngIf="formErrors.PostalCode">
+                      {{formErrors.PostalCode}}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class=" col-md-3 col-xs-12">
+                <div class="form-group">
+                  <div class="col-sm-12 inputlevel">
+                    <label class="control-label">Is Invoicing
+                    </label> <br />
+                    <input type="checkbox" formControlName="IsInvoicing">
+                    <div class="help-block-rk">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+        <table class="table table-bordered table-condensed " *ngIf="obj?.lstContact && obj?.lstContact.length">
+          <thead>
+            <tr>
+              <th class="text-center ">Check</th>
+              <th class="text-center ">Contact Name</th>
+              <th class="text-center ">Mobile Number </th>
+              <th class="text-center ">LandPhone Number</th>
+              <th class="text-center ">Email </th>
+              <th class="text-center ">Designation </th>
+
+              <th class="text-center ">Department </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let ms of obj?.lstContact">
+              <td class="text-center ">
+                <div *ngIf="(ms.IsActive ==true)">
+                  <input type="checkbox" name="{{ms.ContactID}}" id="{{ms.ContactID }}" checked="checked"
+                    (change)="ContactIDFieldsChange($event)">
+                </div>
+                <div *ngIf="(ms.IsActive != true)">
+                  <input type="checkbox" name="{{ms.ContactID}}" id="{{ms.ContactID }}"
+                    (change)="ContactIDFieldsChange($event)">
+                </div>
+              </td>
+              <td>{{ ms.ContactName }}</td>
+              <td>{{ ms.MobileNumber }}</td>
+              <td>{{ ms.LandphoneNumber }}</td>
+              <td>{{ ms.Email }}</td>
+              <td>{{ ms.Designation }}</td>
+
+              <td>{{ ms.Department }}</td>
+
+            </tr>
+          </tbody>
+        </table>
+
+        <table class="table table-bordered table-condensed" *ngIf="obj?.lstContact==null">
+          <thead>
+            <tr>
+              <th class="text-center ">Check</th>
+              <th class="text-center ">Contact Name</th>
+              <th class="text-center ">Mobile Number </th>
+              <th class="text-center ">LandPhone Number</th>
+              <th class="text-center ">Email </th>
+
+              <th class="text-center ">Designation </th>
+              <th class="text-center ">Department </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td colspan="7">
+                No Records Found.!
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="panel-footer">
+      <div class="pull-right btn-toolbar">
+        <button class="btn btn-primary" routerLink="/Locationlist" title="Cancel">
+          <!-- <i class="fa fa-arrow-left" aria-hidden="true"></i> -->
+          Cancel
+        </button>
+        <button class="btn btn-success" type="submit" prevent-double-submit [disabled]="locationform.invalid">
+          <!-- <i class="fa fa-save"></i> -->
+          Save
+        </button>
+      </div>
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</form>

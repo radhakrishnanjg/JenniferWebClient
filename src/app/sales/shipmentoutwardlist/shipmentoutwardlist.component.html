@@ -1,0 +1,178 @@
+<div class="row">
+  <div class="col-sm-6 col-lg-6">
+    <h3>
+      Shipment Outward
+    </h3>
+  </div>
+  <div class="col-sm-6 col-lg-6">
+    <div class="pull-right hidden-xs">
+      <ol class="breadcrumb" id="dynamicbreadcrumb">
+        <li>
+          <i class="fa fa-money"></i> <span> Revenue</span>
+        </li>
+        <li>
+          <i class="fa fa-truck"></i> <span> Shipment Outward</span>
+        </li>
+        <li class="active">
+          <i class="fa fa-list" aria-hidden="true"></i>
+          List
+        </li>
+      </ol>
+    </div>
+  </div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+
+    <div class="row">
+      <div class="col-xs-12 col-sm-7 col-md-7 col-lg-7">
+        <div class="input-group col-sm-12" role="group" aria-label="Basic example">
+          <div class="col-md-3 nopading_loct">
+            <select [(ngModel)]="SearchBy" class="form-control serchcurv btn-group">
+              <option value="" selected="select">Search By</option>
+              <option value="OutwardID">Outward ID</option>
+              <option value="CourierTrackingID">Courier Tracking ID</option>
+              <option value="GSTEwayBillNumber">E-Way Bill Number</option>
+            </select>
+          </div>
+          <div class="col-md-5 nopading_loct">
+            <input [(ngModel)]="SearchKeyword" type="text" class="form-control btn-group serchcurv">
+          </div>
+          <div class="col-md-3 nopading_loct">
+            <button class="btn btn-default btn-group serchcurv" (click)="Search()" title="Search">
+              <i class="fa fa-search " aria-hidden="true"></i>
+            </button>
+            <button class="btn btn-default btn-group serchcurv" (click)="Refresh()" title="Reset">
+              <i class="fa fa-refresh" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5 text-right">
+        <button class="btn btn-primary" (click)="newButtonClick()" title="Update E-Way Bill Number">
+          Update E-Way Bill Number
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="panel-body">
+
+    <div class="table-responsive">
+      <table datatable [dtOptions]="dtOptions" class="table table-bordered table-condensed " *ngIf="lst && lst.length">
+        <thead>
+          <tr>
+            <th>OutwardID </th>
+            <th>Courier Tracking ID </th>
+            <th>GST E-Way Bill Number </th>
+            <!-- <th class="text-center btnactions">Action</th> -->
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let obj of lst">
+            <td><b>{{ obj.OutwardID }}</b></td>
+            <td>{{ obj.CourierTrackingID }}</td>
+            <td>{{ obj.GSTEwayBillNumber }}</td>
+            <!-- <td class="text-center btnactions">
+              <i (click)="editButtonClick(obj.CourierTrackingID)" title="Edit" class="fa fa-edit bgblue pointer"
+                *ngIf="obj.IsEditable==true"></i>
+              &nbsp;
+            </td> -->
+          </tr>
+        </tbody>
+      </table>
+
+      <table class="table table-bordered table-condensed" *ngIf="lst==null">
+        <thead>
+          <tr>
+            <th>Outward ID </th>
+            <th>Courier Tracking ID </th>
+            <th>GST E-Way Bill Number </th>
+            <!-- <th class="text-center btnactions">Action</th> -->
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td colspan="3">
+              No Records Found.!
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+
+
+  <div id="modalpopup_shipmentoutward" class="modal fade " tabindex="-1" role="dialog"
+    aria-labelledby="modalpopup_shipmentoutward" aria-hidden="true">
+
+    <form autocomplete="off" [formGroup]="shipmentoutwardform" (ngSubmit)="SaveData()">
+      <div class="modal-dialog ">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="modalpopup_shipmentoutward"> {{panelTitle}}</h4>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="form-group col-sm-6">
+                <label class="control-label" for="OutwardID">Outward ID</label>
+              </div>
+              <div class="col-sm-6">
+                {{
+                  OutwardID
+                }}
+                <div class="help-block-rk">
+
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="  form-group col-sm-6" [ngClass]="{'has-error': formErrors.CourierTrackingID}">
+                <label class=" control-label" for="CourierTrackingID">Courier Tracking ID
+                  <span class="mandantory">*</span>
+                </label>
+              </div>
+              <div class="col-sm-6">
+                <input id="CourierTrackingID" type="text" class="form-control" formControlName="CourierTrackingID"
+                  (blur)="logValidationErrors()" maxlength="30">
+                <div class="help-block-rk">
+                  <span class="help-block" *ngIf="formErrors.CourierTrackingID">
+                    {{formErrors.CourierTrackingID}}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="form-group col-sm-6" [ngClass]="{'has-error': formErrors.GSTEwayBillNumber}">
+                <label class="control-label" for="GSTEwayBillNumber">GST E-Way Bill Number
+                  <span class="mandantory">*</span> </label>
+              </div>
+              <div class="col-sm-6">
+                <input id="GSTEwayBillNumber" type="text" class="form-control" formControlName="GSTEwayBillNumber"
+                  (blur)="logValidationErrors()" maxlength="30">
+                <div class="help-block-rk">
+                  <span class="help-block" *ngIf="formErrors.GSTEwayBillNumber">
+                    {{formErrors.GSTEwayBillNumber}}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-primary" data-dismiss="modal">Cancel</button>
+            &nbsp;
+            <button class="btn btn-success" type="submit" prevent-double-submit
+              [disabled]="shipmentoutwardform.invalid">
+              Save
+            </button>
+          </div>
+          <div class="clearfix"> </div>
+        </div>
+      </div>
+    </form>
+  </div>

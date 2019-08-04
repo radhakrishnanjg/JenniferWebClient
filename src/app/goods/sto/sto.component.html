@@ -1,0 +1,303 @@
+<div class="row">
+  <div class="col-sm-6 col-lg-6">
+    <h3>
+      Stock Transfer
+    </h3>
+  </div>
+  <div class="col-sm-6 col-lg-6">
+    <div class="pull-right hidden-xs">
+      <ol class="breadcrumb" id="dynamicbreadcrumb">
+        <li>
+          <i class="fa fa-arrows-h"></i> <span> Journals</span>
+        </li>
+        <li>
+          <i class="fa fa-arrows-h"></i> <span>Stock Transfer</span>
+        </li>
+        <li class="active">
+          <i class="fa fa-save"></i>
+          Save
+        </li>
+      </ol>
+    </div>
+  </div>
+</div>
+<form autocomplete="off" [formGroup]="stoForm" (ngSubmit)="saveData()" class="form-group">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <div class="row">
+        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+          <span class="spanheader">
+            {{panelTitle}}
+          </span>
+        </div>
+        <div class="col-sm-6">
+          <div class="pull-left">
+
+          </div>
+        </div>
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 ">
+          <div class="pull-right">
+            <button class="btn btn-primary" routerLink="/StoList" title="Back">
+
+              Back
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-md-4 col-xs-12">
+          <div class="form-group">
+            <label class="control-label">STO Number <span class="mandantory">*</span>
+            </label>
+            <div class="">
+
+              {{STONumber}}
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 col-xs-12">
+          <div class="form-group" [ngClass]="{'has-error':formErrors.STODate}">
+            <label class="control-label" for="STODate"> STO Date <span class="mandantory">*</span>
+            </label>
+            <div class='input-group date'>
+              <input type="text" ngxDaterangepickerMd [autoApply]="true" [singleDatePicker]="true" class="form-control"
+                formControlName="STODate" (blur)="logValidationErrors()" [locale]="{format: 'MM-DD-YYYY HH:mm'}"
+                maxlength="16" id="STODate" (ngModelChange)="onSTODateChange($event)"
+                (datesUpdated)="STODateUpdated($event)" [timePicker]="true" *ngIf="!hideSTODate" />
+              <label *ngIf="!hideSTODate" class="fa fa-calendar"></label>
+              <div *ngIf="hideSTODate">
+                {{
+                  STODate | date:'MM-dd-yyyy HH:mm'
+                    }}
+              </div>
+            </div>
+            <div class="help-block-rk">
+              <span class="help-block" *ngIf="formErrors.STODate">
+                {{formErrors.STODate}}
+              </span>
+              <span class="help-block" *ngIf="objResult.Flag">
+                {{objResult.Msg}}
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 col-xs-12">
+          <div class="form-group" [ngClass]="{'has-error': formErrors.InventoryType}">
+            <label class="control-label" for="InventoryType">Inventory Type<span class="mandantory">*</span></label>
+            <div class="">
+              <select id="InventoryType" class="form-control" formControlName="InventoryType"
+                (blur)="logValidationErrors()" (change)="onInventoryTypeChange($event.target.value)">
+                <option value="" selected="selected">Select</option>
+                <option *ngFor="let type of lstInventoryType" value={{type.DropdownValue}}>
+                  {{type.DropdownValue}}
+                </option>
+              </select>
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrors.InventoryType">
+                  {{formErrors.InventoryType}}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4 col-xs-12">
+          <div class="form-group" [ngClass]="{'has-error': formErrors.FromLocationID}">
+            <label class="control-label" for="FromLocationID">From Location <span class="mandantory">*</span></label>
+            <div>
+              <select id="FromLocationID" class="form-control" formControlName="FromLocationID"
+                (blur)="logValidationErrors()" (change)="onFromLocationIDChange($event.target.value)">
+                <option value="0" selected="selected">Select</option>
+                <option *ngFor="let dis of fromlocationList" value={{dis.FromLocationID}}>
+                  {{dis.FromLocation}}
+                </option>
+              </select>
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrors.FromLocationID">
+                  {{formErrors.FromLocationID}}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 col-xs-12">
+          <div class="form-group" [ngClass]="{'has-error': formErrors.ToLocationID}">
+            <label class="control-label" for="ToLocationID">To Location <span class="mandantory">*</span></label>
+            <div>
+              <select id="ToLocationID" class="form-control" formControlName="ToLocationID"
+                (blur)="logValidationErrors()" (change)="onToLocationIDChange($event.target.value)">
+                <option value="0" selected="selected">Select</option>
+                <option *ngFor="let dis of tolocationList" value={{dis.ToLocationID}}>
+                  {{dis.ToLocation}}
+                </option>
+              </select>
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrors.ToLocationID">
+                  {{formErrors.ToLocationID}}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 col-xs-12">
+          <div class="form-group" [ngClass]="{'has-error': formErrors.OtherReference}">
+            <label class="control-label" for="OtherReference">Other Reference<span class="mandantory">*</span></label>
+            <div class="">
+              <input id="OtherReference" type="text" class="form-control" formControlName="OtherReference"
+                (blur)="logValidationErrors()" maxlength="30">
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrors.OtherReference">
+                  {{formErrors.OtherReference}}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-2 col-xs-12">
+          <label class="control-label" for="IsDiscountApplicable"> Discount Applicable </label> <br />
+          <input type="checkbox" id="IsDiscountApplicable" formControlName="IsDiscountApplicable"
+            [(ngModel)]="IsDiscountApplicable" (change)="onchangeIsDiscountApplicable($event)">
+        </div>
+        <div class="col-md-2 col-xs-12">
+          <label class="control-label" for="IsShipmentRequired"> Is Shipment Required </label>
+          <br />
+          <input type="checkbox" id="IsShipmentRequired" formControlName="IsShipmentRequired">
+        </div>
+        <div class="col-md-8 col-xs-12">
+          <div class="form-group" [ngClass]="{'has-error': formErrors.Remarks}">
+            <label class="control-label" for="Remarks">Remarks<span class="mandantory">*</span></label>
+            <div class="">
+              <textarea id="Remarks" type="text" class="form-control" formControlName="Remarks"
+                (blur)="logValidationErrors()" rows="2" maxlength="250"></textarea>
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrors.Remarks">
+                  {{formErrors.Remarks}}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <span class="spanheader">Order Items</span>
+      </div>
+      <kendo-grid [data]="gridData" (edit)="editHandler($event)" (cancel)="cancelHandler($event)"
+        (save)="saveHandler($event)" (remove)="removeHandler($event)" (add)="addHandler($event)" [height]="410">
+        <ng-template kendoGridToolbarTemplate>
+          <button kendoGridAddCommand>Add Item</button>
+        </ng-template>
+
+        <kendo-grid-column field="ItemCode" title="ItemCode" width="150">
+          <ng-template kendoGridCellTemplate let-dataItem>
+            {{item(dataItem.ItemID)?.ItemCode}}
+          </ng-template>
+          <ng-template kendoGridEditTemplate let-dataItem="dataItem" let-column="column" let-formGroup="itemFormGroup">
+            <kendo-dropdownlist #ddl="popupAnchor" popupAnchor [data]="itemList" textField="ItemCode"
+              valueField="ItemID" [valuePrimitive]="true" [formControl]="itemFormGroup.get(column.field)"
+              (valueChange)="onItemCodeChange($event)">
+            </kendo-dropdownlist>
+          </ng-template>
+        </kendo-grid-column>
+
+        <kendo-grid-column field="ItemName" title="ItemDescription" width="200">
+          <ng-template kendoGridEditTemplate let-column="column" let-formGroup="itemFormGroup" let-isNew="isNew">
+            <input #input [readonly]="true" class="k-textbox" [formControl]="itemFormGroup.get(column.field)">
+          </ng-template>
+        </kendo-grid-column>
+
+        <kendo-grid-column field="CustomerItemCode" title="CustomerItemCode" width="200">
+          <ng-template kendoGridEditTemplate let-column="column" let-formGroup="itemFormGroup" let-isNew="isNew">
+            <input #input [readonly]="true" class="k-textbox" [formControl]="itemFormGroup.get(column.field)">
+          </ng-template>
+        </kendo-grid-column>
+
+        <kendo-grid-column field="Units" title="Units" width="100">
+          <ng-template kendoGridEditTemplate let-column="column" let-formGroup="itemFormGroup" let-isNew="isNew">
+            <kendo-numerictextbox #ntb="popupAnchor" popupAnchor [formControl]="itemFormGroup.get(column.field)"
+              (valueChange)="onUnitsChanged($event)">
+            </kendo-numerictextbox>
+          </ng-template>
+        </kendo-grid-column>
+
+        <kendo-grid-column field="UOM" title="UOM" width="150">
+          <ng-template kendoGridCellTemplate let-dataItem>
+            {{uomDetail(dataItem.UOMID)?.UOM}}
+          </ng-template>
+          <ng-template kendoGridEditTemplate let-dataItem="dataItem" let-column="column" let-formGroup="itemFormGroup">
+            <kendo-dropdownlist #ddl="popupAnchor" popupAnchor [data]="uomList" textField="UOM" valueField="UOMID"
+              [valuePrimitive]="true" (valueChange)="onUOMChanged($event)" [formControl]="itemFormGroup.get('UOM')">
+            </kendo-dropdownlist>
+          </ng-template>
+        </kendo-grid-column>
+
+        <kendo-grid-column field="Rate" title="Rate" width="120">
+          <ng-template kendoGridEditTemplate let-column="column" let-formGroup="itemFormGroup" let-isNew="isNew">
+            <kendo-numerictextbox #ntb="popupAnchor" popupAnchor [readonly]="true"
+              [formControl]="itemFormGroup.get(column.field)"></kendo-numerictextbox>
+          </ng-template>
+        </kendo-grid-column>
+
+        <!-- <kendo-grid-column field="MRP" title="MRP" width="100">
+          <ng-template kendoGridEditTemplate let-column="column" let-formGroup="itemFormGroup" let-isNew="isNew">
+            <kendo-numerictextbox #ntb="popupAnchor" popupAnchor [readonly]="true"
+              [formControl]="itemFormGroup.get(column.field)">
+            </kendo-numerictextbox>
+          </ng-template>
+        </kendo-grid-column> -->
+
+        <!-- <kendo-grid-column field="ShippingCharges" title="ShippingCharges" width="150">
+              <ng-template kendoGridEditTemplate let-column="column" let-formGroup="itemFormGroup" let-isNew="isNew">
+                <kendo-numerictextbox #ntb="popupAnchor" popupAnchor [formControl]="itemFormGroup.get(column.field)"
+                  (valueChange)="onShippingChargesChanged($event)">
+                </kendo-numerictextbox>
+              </ng-template>
+            </kendo-grid-column> -->
+
+
+        <kendo-grid-column field="DiscountValue" title="DiscountValue" width="150">
+          <ng-template kendoGridEditTemplate let-column="column" let-formGroup="itemFormGroup" let-isNew="isNew">
+            <kendo-numerictextbox #ntb="popupAnchor" popupAnchor [formControl]="itemFormGroup.get(column.field)"
+              [formControl]="itemFormGroup.get(column.field)" [readonly]="true">
+            </kendo-numerictextbox>
+          </ng-template>
+        </kendo-grid-column>
+
+        <kendo-grid-column field="TotalAmount" title="TotalAmount" width="150">
+          <ng-template kendoGridEditTemplate let-column="column" let-formGroup="itemFormGroup" let-isNew="isNew">
+            <kendo-numerictextbox #ntb="popupAnchor" popupAnchor [readonly]="true"
+              [formControl]="itemFormGroup.get(column.field)"></kendo-numerictextbox>
+          </ng-template>
+        </kendo-grid-column>
+
+        <kendo-grid-command-column title="Action" width="220">
+          <ng-template kendoGridCellTemplate let-isNew="isNew">
+            <button kendoGridEditCommand [primary]="true">Edit</button>
+            <button kendoGridRemoveCommand>Remove</button>
+            <button kendoGridSaveCommand [disabled]="itemFormGroup?.invalid">{{ isNew ? 'Add' : 'Update' }}</button>
+            <button kendoGridCancelCommand>{{ isNew ? 'Discard changes' : 'Cancel' }}</button>
+          </ng-template>
+        </kendo-grid-command-column>
+      </kendo-grid>
+    </div>
+    <!---->
+    <div class="panel-footer">
+      <div class="pull-right btn-toolbar">
+        <button class="btn btn-primary" routerLink="/StoList" title="Cancel">
+          <!-- <i class="fa fa-arrow-left" aria-hidden="true"></i> -->
+          Cancel
+        </button>
+        <button class="btn btn-success" type="submit" prevent-double-submit [disabled]="stoForm.invalid">
+          <!-- <i class="fa fa-save"></i> -->
+          Save
+        </button>
+      </div>
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</form>

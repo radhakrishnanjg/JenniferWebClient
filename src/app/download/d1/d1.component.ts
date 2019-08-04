@@ -1,0 +1,206 @@
+import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormBuilder } from '@angular/forms';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { ToastrService } from 'ngx-toastr';
+import { DownloadMaster, DownloadDetail } from '../../_services/model';
+import { PrivateutilityService } from '../../_services/service/privateutility.service';
+import { DownloadService } from '../../_services/service/download.service';
+import { AuthorizationGuard } from '../../_guards/Authorizationguard'
+
+@Component({
+  selector: 'app-d1',
+  templateUrl: './d1.component.html',
+  styleUrls: ['./d1.component.css']
+})
+export class D1Component implements OnInit {
+  lstDownloadMaster: DownloadMaster[];
+  lstDownloadDetail: DownloadDetail[];
+  Download_Master_ID: number = 0;
+  Column1: string = '';
+  Column2: string = '';
+  Column3: string = '';
+  Column4: string = '';
+  Column5: string = '';
+  txtColumn1: string = '';
+  txtColumn2: string = '';
+  txtColumn3: string = '';
+  txtColumn4: string = '';
+  txtColumn5: string = '';
+
+  constructor(
+    private alertService: ToastrService,
+    private _spinner: NgxSpinnerService,
+    private _authorizationGuard: AuthorizationGuard,
+    private fb: FormBuilder,
+    private _PrivateutilityService: PrivateutilityService,
+    private _DownloadService: DownloadService,
+  ) { }
+
+  ngOnInit() {
+    this.Download_Master_ID = 0;
+    this._spinner.show();
+    this._DownloadService.getDownloadScreens('GENERAL')
+      .subscribe(
+        (data: DownloadMaster[]) => {
+          this.lstDownloadMaster = data;
+          this._spinner.hide();
+        },
+        (err: any) => {
+          console.log(err);
+          this._spinner.hide();
+        }
+      );
+  }
+
+  Downloadexcel(): void {
+    if (this.Download_Master_ID == 0) {
+      this.alertService.error('Please select screen name!');
+      return;
+    }
+    if (this.lstDownloadDetail.length > 0) {
+      $(".dvhide").hide();
+      $("#txtColumn1").val('');
+      $("#txtColumn2").val('');
+      $("#txtColumn3").val('');
+      $("#txtColumn4").val('');
+      $("#txtColumn5").val('');
+      let dyamicspstring = 'exec ';
+      var SP_Name = this.lstDownloadDetail[0].SP_Name;
+      var Screen_Name = this.lstDownloadDetail[0].Screen_Name;
+      dyamicspstring += SP_Name;
+      this.lstDownloadDetail.forEach((element) => {
+        var P_Name = element.P_Name;
+        var Column_Name = element.Column_Name;
+        if (Column_Name == "Column1") {
+          dyamicspstring += ' ' + P_Name + '="' + this.txtColumn1 + '",';
+        }
+        else if (Column_Name == "Column2") {
+          dyamicspstring += ' ' + P_Name + '="' + this.txtColumn2 + '",';
+        }
+        else if (Column_Name == "Column3") {
+          dyamicspstring += ' ' + P_Name + '="' + this.txtColumn3 + '",';
+        }
+        else if (Column_Name == "Column4") {
+          dyamicspstring += ' ' + P_Name + '="' + this.txtColumn4 + '",';
+        } else if (Column_Name == "Column5") {
+          dyamicspstring += ' ' + P_Name + '="' + this.txtColumn5 + '",';
+        }
+      });
+      //var newStr = dyamicspstring.substring(0, dyamicspstring.length - 1);
+      this._spinner.show(),
+        this._DownloadService.downloadExcel(Screen_Name, dyamicspstring)
+          .subscribe(data => {
+            if (data != null) {
+              this._spinner.show(),
+                this._DownloadService.Download(Screen_Name)
+                  .subscribe(data1 => {
+                    this._spinner.hide();
+                    saveAs(data1, Screen_Name + '.xls');
+                    this.alertService.success("File downloaded succesfully.!");
+                  },
+                    (err) => {
+                      this._spinner.hide();
+                      console.log(err);
+                    }
+                  );
+            } else {
+              this.alertService.error(data.Msg);
+            }
+            this._spinner.hide();
+          },
+            (err) => {
+              this._spinner.hide();
+              console.log(err);
+            }
+          );
+
+      //this.alertService.success('Your Dynamic Query:' + newStr);
+    }
+  }
+
+  Refresh(): void {
+    this.Download_Master_ID = 0;
+    $(".dvhide").hide();
+  }
+
+  onScreenNameChange(selectedValue: string) {
+    let id = parseInt(selectedValue);
+    if (id > 0) {
+      this._spinner.show();
+      this._DownloadService.getDownloadParameters(id)
+        .subscribe(
+          (data: DownloadDetail[]) => {
+            this.lstDownloadDetail = data;
+            if (data != null && this.lstDownloadDetail.length > 0) {
+              $(".dvhide").hide();
+              this.lstDownloadDetail.forEach((element) => {
+                var Text_Type = element.Text_Type;
+                var Download_Detail_ID = element.Download_Detail_ID;
+                if (Text_Type == "Text") {
+                  $("#txtColumn" + Download_Detail_ID).attr("type", "text");
+                }
+                else if (Text_Type == "Date") {
+                  $("#txtColumn" + Download_Detail_ID).attr("type", "date");
+                }
+                else if (Text_Type == "Number") {
+                  $("#txtColumn" + Download_Detail_ID).attr("type", "number");
+                  $("#txtColumn" + Download_Detail_ID).attr("min", "1");
+                  $("#txtColumn" + Download_Detail_ID).attr("max", "10000000");
+                }
+                else if (Text_Type == "Day") {
+                  $("#txtColumn" + Download_Detail_ID).attr("type", "number");
+                  $("#txtColumn" + Download_Detail_ID).attr("min", "1");
+                  $("#txtColumn" + Download_Detail_ID).attr("max", "31");
+                }
+                else if (Text_Type == "Month") {
+                  $("#txtColumn" + Download_Detail_ID).attr("type", "number");
+                  $("#txtColumn" + Download_Detail_ID).attr("min", "1");
+                  $("#txtColumn" + Download_Detail_ID).attr("max", "12");
+                }
+                else if (Text_Type == "Year") {
+                  $("#txtColumn" + Download_Detail_ID).attr("type", "number");
+                  $("#txtColumn" + Download_Detail_ID).attr("min", "2015");
+                  $("#txtColumn" + Download_Detail_ID).attr("max", "2025");
+                }
+                if (this.lstDownloadDetail.length == 1) {
+                  this.Column1 = this.lstDownloadDetail[0].Display_Name;
+                }
+                if (this.lstDownloadDetail.length == 2) {
+                  this.Column1 = this.lstDownloadDetail[0].Display_Name;
+                  this.Column2 = this.lstDownloadDetail[1].Display_Name;
+                }
+                if (this.lstDownloadDetail.length == 3) {
+                  this.Column1 = this.lstDownloadDetail[0].Display_Name;
+                  this.Column2 = this.lstDownloadDetail[1].Display_Name;
+                  this.Column3 = this.lstDownloadDetail[2].Display_Name;
+                }
+                if (this.lstDownloadDetail.length == 4) {
+                  this.Column1 = this.lstDownloadDetail[0].Display_Name;
+                  this.Column2 = this.lstDownloadDetail[1].Display_Name;
+                  this.Column3 = this.lstDownloadDetail[2].Display_Name;
+                  this.Column4 = this.lstDownloadDetail[3].Display_Name;
+                }
+                if (this.lstDownloadDetail.length == 5) {
+                  this.Column1 = this.lstDownloadDetail[0].Display_Name;
+                  this.Column2 = this.lstDownloadDetail[1].Display_Name;
+                  this.Column3 = this.lstDownloadDetail[2].Display_Name;
+                  this.Column4 = this.lstDownloadDetail[3].Display_Name;
+                  this.Column5 = this.lstDownloadDetail[4].Display_Name;
+                }
+                $("#dv" + Download_Detail_ID).show();
+              });
+            }
+            else {
+              $(".dvhide").hide();
+            }
+            this._spinner.hide();
+          },
+          (err: any) => {
+            console.log(err);
+            this._spinner.hide();
+          }
+        );
+    }
+  }
+
+}

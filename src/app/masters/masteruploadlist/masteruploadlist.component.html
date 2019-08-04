@@ -1,0 +1,116 @@
+<div class="row">
+  <div class="col-sm-6 col-lg-6">
+    <h3>
+      Masters Upload
+    </h3>
+  </div>
+  <div class="col-sm-6 col-lg-6">
+    <div class="pull-right hidden-xs">
+      <ol class="breadcrumb" id="dynamicbreadcrumb">
+        <li>
+          <i class="fa fa-file"></i> <span>Upload</span>
+        </li>
+        <li>
+          <i class="fa fa-file"></i> <span> Masters</span>
+        </li>
+        <li class="active">
+          <i class="fa fa-th-list"></i>
+          List
+        </li>
+      </ol>
+    </div>
+  </div>
+</div>
+
+
+<div class="panel panel-default">
+
+  <div class="panel-heading">
+    <div class="row">
+      <div class="col-xs-12 col-sm-10 col-md-10 col-lg-10">
+        <div class="input-group col-sm-12" role="group" aria-label="Basic example">
+          <div class="col-md-3 nopading_loct">
+            <select [(ngModel)]="SearchBy" class="serchcurv form-control btn-group">
+              <option value="" selected="select">Search By</option>
+              <option value="ByFileType">FileType</option>
+              <option value="ByFileName">FileName</option>
+            </select>
+          </div>
+          <div class="col-md-4 nopading_loct">
+            <input [(ngModel)]="SearchKeyword" type="text" class="serchcurv form-control btn-group">
+          </div>
+          <div class="col-md-2 nopading_loct">
+            <button class="serchcurv btn btn-default btn-group" (click)="Search()" title="Search">
+              <i class="fa fa-search " aria-hidden="true"></i>
+            </button>
+            <button class="serchcurv btn btn-default btn-group" (click)="Refresh()" title="Reset">
+              <i class="fa fa-refresh" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 text-right">
+        <button class="btn btn-primary" routerLink="/MasterUpload/Create" title="Upload New">
+          Upload New
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel-body">
+    <div class="table-responsive">
+      <table datatable [dtOptions]="dtOptions" class="table table-bordered table-condensed " *ngIf="lst && lst.length">
+        <thead>
+          <tr>
+            <th>File Type </th>
+            <th>File Name </th>
+            <th>Uploaded By</th>
+            <th>Uploaded Date</th>
+            <th>FileUpload Status</th>
+            <th>Remarks</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let obj of lst">
+            <td>{{obj.FileType}}</td>
+            <td>{{obj.FileName}} 
+            </td>
+            <td>{{obj.UploadedByName}}</td>
+            <td>{{obj.UploadedDate | date :"MM-dd-yyyy HH:mm"}}</td>
+            <td>{{obj.FileUploadStatus}}</td>
+            <td>{{obj.Remarks_UploadStatus}}</td>
+            <td>
+              <i class="fa fa-download bgblue" (click)="downloadFile(obj.FileId,obj.FileName)"></i>
+              &nbsp;
+              <i class="fa fa-download bgred" *ngIf="obj.FileUploadStatus =='REJECTED'"
+                (click)="downloadError(obj.FileId)"></i>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table class="table table-bordered table-condensed" *ngIf="lst==null">
+        <thead>
+          <tr>
+            <th>File Type </th>
+            <th>File Name </th>
+            <th>Uploaded By</th>
+            <th>Uploaded Date</th>
+            <th>FileUpload Status</th>
+
+            <th>Remarks</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td colspan="7">
+              No Records Found.!
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

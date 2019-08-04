@@ -1,0 +1,415 @@
+<div class="row">
+  <div class="col-sm-6 col-lg-6">
+    <h3>
+      Discounts
+    </h3>
+  </div>
+  <div class="col-sm-6 col-lg-6">
+    <div class="pull-right hidden-xs">
+      <ol class="breadcrumb" id="dynamicbreadcrumb">
+        <li>
+          <i class="fa fa-inr"></i> <span> Pricing</span>
+        </li>
+        <li>
+          <i class="fa fa-inr"></i> <span> Discounts</span>
+        </li>
+        <li class="active">
+          <i class="fa fa-th-list"></i>
+          List
+        </li>
+      </ol>
+    </div>
+  </div>
+</div>
+<div class="panel panel-default">
+  <div class="panel-heading">
+
+    <div class="row">
+      <div class="col-xs-12 col-sm-10 col-md-10 col-lg-10">
+        <div class="input-group col-sm-12" role="group" aria-label="Basic example">
+          <div class="col-md-3 nopading_loct">
+            <select [(ngModel)]="SearchBy" class="serchcurv form-control btn-group">
+              <option value="" selected="select">Search By</option>
+              <option value="ByCustomer">Customer</option>
+              <option value="ByTransactionType">Transaction Type</option>
+              <option value="ByInventoryType">Inventory Type</option>
+              <option value="ByItemcode">ItemCode</option>
+              <option value="ByDate">Effective Date</option>
+              <option value="ByStatus">Status</option>
+            </select>
+          </div>
+          <div class="col-md-4 nopading_loct"
+            *ngIf="(SearchBy=='ByItemcode' || SearchBy=='ByCustomer'  || SearchBy=='ByTransactionType' || SearchBy=='ByInventoryType' )">
+            <input [(ngModel)]="SearchKeyword" type="text" class="serchcurv form-control btn-group">
+          </div>
+          <div class="col-md-4 nopading_loct" *ngIf="(SearchBy=='ByDate')">
+            <input type="text" ngxDaterangepickerMd [(ngModel)]="selectedDateRange"
+              class="serchcurv form-control btn-group col-xs-12 pointer"
+              style="width:300px;border:1px soloid #ccc !important; padding :3px;left:0px" [showCustomRangeLabel]="true"
+              [ranges]="Searchranges" [showCancel]="true" placeholder="Select please..."
+              (ngModelChange)="onChange($event)" />
+          </div>
+
+          <div class="col-md-3 nopading_loct" *ngIf="(SearchBy=='ByStatus')">
+            <select [(ngModel)]="Searchaction" type="select" class="serchcurv form-control btn-group">
+              <option value="true">Active</option>
+              <option value="false">InActive</option>
+            </select>
+          </div>
+          <div class="col-md-2 nopading_loct">
+            <button class="serchcurv btn btn-default btn-group" (click)="Search()" title="Search">
+              <i class="fa fa-search " aria-hidden="true"></i>
+            </button>
+            <button class="serchcurv btn btn-default btn-group" (click)="Refresh()" title="Reset">
+              <i class="fa fa-refresh" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 text-right">
+        <button class="btn btn-primary" (click)="newButtonClick()" title="Add New">
+
+          Add New
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="panel-body">
+
+
+    <div class="table-responsive">
+      <table datatable [dtOptions]="dtOptions" class="table table-bordered table-condensed "
+        *ngIf="lstDiscount && lstDiscount.length">
+        <thead>
+          <tr>
+            <th>Customer</th>
+            <th>Transaction Type</th>
+            <th>Inventory Type</th>
+            <th>Item Code</th>
+
+            <th>MarketPlace Contribution</th>
+            <th>Store Contribution</th>
+            <th>Other Contribution</th>
+
+            <th>Effective From</th>
+            <th>Effective To</th>
+            <!-- <th class="text-center btnactions">Action</th> -->
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of lstDiscount">
+            <td>{{ user.CustomerName  }}</td>
+            <td>{{ user.TransactionType  }}</td>
+            <td>{{ user.InventoryType  }}</td>
+            <td>{{ user.ItemCode}}</td>
+
+            <td class="text-right">{{ user.MarketPlaceContribution}}</td>
+            <td class="text-right">{{ user.StoreContribution}}</td>
+            <td class="text-right">{{ user.OtherContribution}}</td>
+
+            <td class="text-right">{{ user.StartDate | date :"MM-dd-yyyy HH:mm" }}</td>
+            <td class="text-right">{{ user.EndDate | date :"MM-dd-yyyy HH:mm"}}</td>
+            <!-- <td class="text-center">
+              <i (click)="editButtonClick(user.DiscountID)" title="Edit" class="fa fa-edit bgblue pointer"></i>
+            </td> -->
+          </tr>
+        </tbody>
+      </table>
+
+      <table class="table table-bordered table-condensed" *ngIf="lstDiscount==null">
+        <thead>
+          <tr>
+            <th>Customer</th>
+            <th>Transaction Type</th>
+            <th>Inventory Type</th>
+            <th>Item Code</th>
+
+            <th>MarketPlace Contribution</th>
+            <th>Store Contribution</th>
+            <th>Other Contribution</th>
+
+            <th>Effective From</th>
+            <th>Effective To</th>
+            <!-- <th class="text-center btnactions">Action</th> -->
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td colspan="9">
+              No Records Found.!
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+
+
+
+  <div id="modalpopup_discount" class="modal fade " tabindex="-1" role="dialog" aria-labelledby="modalpopup_discount"
+    aria-hidden="true">
+
+    <form autocomplete="off" [formGroup]="discountForm" (ngSubmit)="SaveData()">
+      <div class="modal-dialog ">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="modalpopup_discount"> {{panelTitle}}</h4>
+          </div>
+          <div class="modal-body">
+
+            <div class="form-group col-sm-6" [ngClass]="{'has-error': formErrors.TransactionType}">
+              <label class="control-label" for="TransactionType">Transaction Type <span
+                  class="mandantory">*</span></label>
+              <div>
+                <select id="TransactionType" class="form-control" formControlName="TransactionType"
+                  (blur)="logValidationErrors()" (change)="onchangeTransactionType($event.target.value)">
+                  <option value="" selected="selected">Select</option>
+                  <option *ngFor="let dis of lstTransactionType" value={{dis.DropdownValue}}>
+                    {{dis.DropdownValue}}
+                  </option>
+                </select>
+                <div class="help-block-rk">
+                  <span class="help-block" *ngIf="formErrors.TransactionType">
+                    {{formErrors.TransactionType}}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group col-sm-6" [ngClass]="{'has-error': formErrors.CustomerID}">
+              <label for="CustomerID" class="control-label">Customer Name <span class="mandantory">*</span></label>
+              <div>
+                <select formControlName="CustomerID" id='CustomerID' type="select" class="form-control"
+                  (blur)="logValidationErrors()">
+                  <option value="0" selected="selected">Select</option>
+                  <option *ngFor="let c1 of lstCustomer" value={{c1.CustomerID}}>
+                    {{c1.CustomerName}}
+                  </option>
+                </select>
+                <div class="help-block-rk">
+                  <span class="help-block" *ngIf="formErrors.CustomerID">
+                    {{formErrors.CustomerID}}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+
+
+            <div class="form-group col-sm-6" [ngClass]="{'has-error': formErrors.InventoryType}">
+              <label class="control-label" for="InventoryType">Inventory Type <span class="mandantory">*</span></label>
+              <div>
+                <select id="InventoryType" class="form-control" formControlName="InventoryType"
+                  (blur)="logValidationErrors()">
+                  <option value="" selected="selected">Select</option>
+                  <option *ngFor="let dis of lstInventoryType" value={{dis.DropdownValue}}>
+                    {{dis.DropdownValue}}
+                  </option>
+                </select>
+                <div class="help-block-rk">
+                  <span class="help-block" *ngIf="formErrors.InventoryType">
+                    {{formErrors.InventoryType}}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+
+            <div class="form-group col-sm-6" [ngClass]="{'has-error': formErrors.ProductGroupID}" *ngIf="action">
+              <label class="control-label" for="ProductGroupID">Product Group
+              </label>
+              <div>
+                <select id="ProductGroupID" class="form-control" formControlName="ProductGroupID"
+                  (blur)="logValidationErrors()" (change)="onchangeProductGroupID($event.target.value)">
+                  <option value="0" selected="selected">Select</option>
+                  <option *ngFor="let c1 of lstProductGroup" value={{c1.ProductGroupID}}>
+                    {{c1.ProductGroupName}}
+                  </option>
+                </select>
+                <div class="help-block-rk">
+                  <span class="help-block" *ngIf="formErrors.ProductGroupID">
+                    {{formErrors.ProductGroupID}}
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+
+              <div class="col-sm-12">
+                <div class="form-group col-sm-6" [ngClass]="{'has-error': formErrors.CategoryID}" *ngIf="action">
+                  <label class="control-label" for="CategoryID">Category </label>
+                  <div>
+                    <select formControlName="CategoryID" id='CategoryID' type="select" class="form-control"
+                      (blur)="logValidationErrors()" (change)="onchangeCategoryID($event.target.value)">
+                      <option value="0" selected="selected">Select</option>
+                      <option *ngFor="let c1 of lstCategory" value={{c1.CategoryID}}>
+                        {{c1.CategoryName}}
+                      </option>
+                    </select>
+                    <div class="help-block-rk">
+                      <span class="help-block" *ngIf="formErrors.CategoryID">
+                        {{formErrors.CategoryID}}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group col-sm-6" [ngClass]="{'has-error': formErrors.SubCategoryID}" *ngIf="action">
+                  <label class="control-label " for="SubCategoryID">Sub Category </label>
+                  <div>
+                    <select formControlName="SubCategoryID" id='SubCategoryID' type="select" class="form-control"
+                      (blur)="logValidationErrors()" (change)="onchangeSubCategoryID($event.target.value)">
+                      <option value="0" selected="selected">Select</option>
+                      <option *ngFor="let c1 of lstSubCategory" value={{c1.SubCategoryID}}>
+                        {{c1.SubCategoryName}}
+                      </option>
+                    </select>
+                    <div class="help-block-rk">
+                      <span class="help-block" *ngIf="formErrors.SubCategoryID">
+                        {{formErrors.SubCategoryID}}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group col-sm-6" [ngClass]="{'has-error': formErrors.ItemID}" *ngIf="action">
+              <label class="control-label" for="ItemID">Item Code <span class="mandantory">*</span></label>
+              <div>
+                <ngx-select-dropdown formControlName="ItemID" [multiple]="true" [config]="config"
+                  (blur)="logValidationErrors()" [options]="lstItem">
+                </ngx-select-dropdown>
+                <div class="help-block-rk">
+                  <span class="help-block" *ngIf="formErrors.ItemID">
+                    {{formErrors.ItemID}}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group col-sm-6" [ngClass]="{'has-error': formErrors.ItemID}" *ngIf="!action">
+              <label class="control-label"> Item Code <span class="mandantory">*</span>
+              </label>
+              <div>
+                <div>
+                  <input [(ngModel)]="ItemCode" type="text" class="form-control" disabled="disabled">
+                </div>
+                <div class="help-block-rk">
+                  <span class="help-block" *ngIf="formErrors.ItemID">
+                    {{formErrors.ItemID}}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+
+              <div class="col-sm-12">
+                <div class="form-group col-sm-12"> Contribution Details</div>
+                <div class="form-group col-sm-3" [ngClass]="{'has-error': formErrors.MarketPlaceContribution}">
+                  <label class=" control-label" for="MarketPlaceContribution">MarketPlace <span
+                      class="mandantory">*</span></label>
+                  <div class=" ">
+                    <input (change)="onchangeContribution()" [(ngModel)]="MarketPlaceContribution"
+                      id="MarketPlaceContribution" type="text" class="form-control"
+                      formControlName="MarketPlaceContribution" (blur)="logValidationErrors()" maxlength="5">
+                    <div class="help-block-rk">
+                      <span class="help-block" *ngIf="formErrors.MarketPlaceContribution">
+                        {{formErrors.MarketPlaceContribution}}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group col-sm-3" [ngClass]="{'has-error': formErrors.StoreContribution}">
+                  <label class=" control-label" for="StoreContribution">Store <span class="mandantory">*</span></label>
+                  <div class=" ">
+                    <input (change)="onchangeContribution()" [(ngModel)]="StoreContribution" id="StoreContribution"
+                      type="text" class="form-control" formControlName="StoreContribution"
+                      (blur)="logValidationErrors()" maxlength="5">
+                    <div class="help-block-rk">
+                      <span class="help-block" *ngIf="formErrors.StoreContribution">
+                        {{formErrors.StoreContribution}}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group col-sm-3" [ngClass]="{'has-error': formErrors.OtherContribution}">
+                  <label class=" control-label" for="OtherContribution">Other <span class="mandantory">*</span></label>
+                  <div class=" ">
+                    <input (change)="onchangeContribution()" [(ngModel)]="OtherContribution" id="OtherContribution"
+                      type="text" class="form-control" formControlName="OtherContribution"
+                      (blur)="logValidationErrors()" maxlength="5">
+                    <div class="help-block-rk">
+                      <span class="help-block" *ngIf="formErrors.OtherContribution">
+                        {{formErrors.OtherContribution}}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group col-sm-3">
+                  <label class=" control-label" for="OtherContribution">Total <span class="mandantory">*</span></label>
+                  <div class=" ">
+                    {{
+                      TotalDiscountPer
+                      }}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+            <div class="form-group col-sm-6" [ngClass]="{'has-error': formErrors.StartDate}">
+              <label class="control-label" for="StartDate">Start Date <span class="mandantory">*</span>
+              </label>
+              <div class="">
+                <div class='input-group date'>
+                  <input type="text" ngxDaterangepickerMd [minDate]="MinDate" [timePicker]="true"
+                    (datesUpdated)="StartDateUpdated($event)" [singleDatePicker]="true" class="form-control"
+                    formControlName="StartDate" id="StartDate" (blur)="logValidationErrors()"
+                    [locale]="{format: 'MM-DD-YYYY HH:mm'}" maxlength="16" [autoApply]="true" />
+
+                  <label class="fa fa-calendar"></label>
+                </div>
+                <div class="help-block-rk">
+                </div><span class="help-block" *ngIf="formErrors.StartDate">
+                  {{formErrors.StartDate}}
+                </span>
+              </div>
+            </div>
+
+            <div class="form-group col-sm-6" [ngClass]="{'has-error': formErrors.EndDate}">
+              <label class="control-label" for="EndDate">End Date <span class="mandantory">*</span> </label>
+              <div class=" ">
+                <div class='input-group date'>
+                  <input type="text" ngxDaterangepickerMd [autoApply]="true" [singleDatePicker]="true"
+                    (datesUpdated)="EndDateUpdated($event)" [timePicker]="true" class="form-control"
+                    formControlName="EndDate" (blur)="logValidationErrors()" id="EndDate"
+                    [locale]="{format: 'MM-DD-YYYY HH:mm'}" maxlength="16" />
+                  <label class="fa fa-calendar"></label>
+                </div>
+                <div class="help-block-rk">
+                </div><span class="help-block" *ngIf="formErrors.EndDate">
+                  {{formErrors.EndDate}}
+                </span>
+              </div>
+            </div>
+
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-primary" data-dismiss="modal">Cancel</button>
+            &nbsp;
+            <button class="btn btn-success" type="submit" prevent-double-submit [disabled]="discountForm.invalid">
+              Save
+            </button>
+          </div>
+          <div class="clearfix"> </div>
+        </div>
+      </div>
+    </form>
+  </div>

@@ -1,0 +1,210 @@
+<div class="row">
+  <div class="col-sm-6 col-lg-6">
+    <h3>
+      Goods Storage
+    </h3>
+  </div>
+  <div class="col-sm-6 col-lg-6">
+    <div class="pull-right hidden-xs">
+      <ol class="breadcrumb" id="dynamicbreadcrumb">
+        <li>
+          <i class="fa fa-truck"></i> <span> GRN</span>
+        </li>
+        <li>
+          <i class="fa fa-truck"></i> <span>Goods Storage</span>
+        </li>
+        <li class="active">
+          <i class="fa fa-list" aria-hidden="true"></i>
+          List
+        </li>
+      </ol>
+    </div>
+  </div>
+</div>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <div class="row">
+      <div class="col-xs-12 col-sm-10 col-md-10 col-lg-10">
+        <div class="input-group col-sm-12" role="group" aria-label="Basic example">
+          <div class="col-md-3 nopading_loct">
+            <select [(ngModel)]="SearchBy" class="serchcurv form-control btn-group">
+              <option value="" selected="select">Search By</option>
+              <option value="JenniferItemSerial">Jennifer Item Serial</option>
+              <option value="WarehouseLocation">Storage Location</option>
+              <option value="WarehouseRack">Rack Number</option>
+              <option value="WarehouseBin">Bin Number</option>
+            </select>
+          </div>
+          <div class="col-md-3 nopading_loct">
+            <input type="text" class="serchcurv form-control btn-group" id="GRN" aria-describedby="GRN"
+              [(ngModel)]="SearchKeyword">
+          </div>
+          <div class="col-md-2 nopading_loct">
+            <button class="serchcurv btn btn-default btn-group" (click)="Search()" title="Search">
+              <i class="fa fa-search " aria-hidden="true"></i>
+            </button>
+            <button class="serchcurv btn btn-default btn-group" (click)="Refresh()" title="Reset">
+              <i class="fa fa-refresh" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 text-right">
+        <button class="btn btn-primary" routerLink="/Goodsstorage/Create" title="Add New">
+
+          Add New
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel-body">
+    <div class="table-responsive">
+      <table datatable [dtOptions]="dtOptions" class="table table-bordered table-condensed table-striped"
+        *ngIf="lst && lst.length">
+        <thead>
+          <tr>
+            <th>Item Code</th>
+            <th>Item Descripation</th>
+            <th>Vendor Item Code</th>
+            <th>Jennifer Item Serial Number</th>
+            <th>Storage Location</th>
+
+            <th>Rack Number</th>
+            <th>BIN Number</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of lst">
+            <td>{{ user.ItemCode}}</td>
+            <td>{{ user.ItemName}}</td>
+            <td>{{ user.VendorItemCode}}</td>
+            <td>{{ user.JenniferItemSerial  }}</td>
+            <td>{{ user.WarehouseLocation  }}</td>
+
+            <td>{{ user.WarehouseRack}}</td>
+            <td>{{ user.WarehouseBin  }}</td>
+            <td class="text-center btnactions">
+              <i class="fa fa-edit bgblue pointer" *ngIf="user.IsEditable"
+                (click)="editButtonClick(user.GoodsStorageID)" title="Edit">
+              </i>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table class="table table-bordered table-condensed table-striped" *ngIf="lst == null || lst.length == 0">
+        <thead>
+          <tr>
+            <th>Item Code</th>
+            <th>Item Descripation</th>
+            <th>Vendor Item Code</th>
+            <th>Item Serial Number</th>
+            <th>Storage Location</th>
+
+            <th>Rack Number</th>
+            <th>BIN Number</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td colspan="8">
+              No Records Found.!
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div id="modalpopup_goodsstorage" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="modalpopup_goodsstorage" aria-hidden="true">
+    <form autocomplete="off" [formGroup]="goodsstorageform" (ngSubmit)="SaveData()">
+      <div class="modal-dialog ">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="modalpopup_goodsstorage">Update Storage Location</h4>
+          </div>
+          <div class="modal-body">
+
+            <div class="row">
+              <div class="  form-group col-sm-6">
+                <label class=" control-label">Jennifer Item Serial
+                  <span class="mandantory">*</span>
+                </label>
+              </div>
+              <div class="col-sm-6">
+                {{JenniferItemSerial}}
+                <div class="help-block-rk">
+                  <span class="help-block">
+
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="form-group col-sm-6" [ngClass]="{'has-error': formErrors.WarehouseLocation}">
+                <label class="control-label" for="WarehouseLocation">Warehouse Location
+                  <span class="mandantory">*</span> </label>
+              </div>
+              <div class="col-sm-6">
+                <input id="WarehouseLocation" type="text" class="form-control" formControlName="WarehouseLocation"
+                  (blur)="logValidationErrors()" maxlength="30">
+                <div class="help-block-rk">
+                  <span class="help-block" *ngIf="formErrors.WarehouseLocation">
+                    {{formErrors.WarehouseLocation}}
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="  form-group col-sm-6" [ngClass]="{'has-error': formErrors.WarehouseRack}">
+                <label class=" control-label" for="WarehouseRack">Warehouse Rack
+                  <span class="mandantory">*</span>
+                </label>
+              </div>
+              <div class="col-sm-6">
+                <input id="WarehouseRack" type="text" class="form-control" formControlName="WarehouseRack"
+                  (blur)="logValidationErrors()" maxlength="30">
+                <div class="help-block-rk">
+                  <span class="help-block" *ngIf="formErrors.WarehouseRack">
+                    {{formErrors.WarehouseRack}}
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="form-group col-sm-6" [ngClass]="{'has-error': formErrors.WarehouseBin}">
+                <label class="control-label" for="WarehouseBin">Warehouse Bin
+                  <span class="mandantory">*</span> </label>
+              </div>
+              <div class="col-sm-6">
+                <input id="WarehouseBin" type="text" class="form-control" formControlName="WarehouseBin"
+                  (blur)="logValidationErrors()" maxlength="30">
+                <div class="help-block-rk">
+                  <span class="help-block" *ngIf="formErrors.WarehouseBin">
+                    {{formErrors.WarehouseBin}}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-primary" data-dismiss="modal">Cancel</button>
+            &nbsp;
+            <button class="btn btn-success" type="submit" 
+            prevent-double-submit [disabled]="goodsstorageform.invalid">
+              Save
+            </button>
+          </div>
+          <div class="clearfix"> </div>
+        </div>
+      </div>
+    </form>
+  </div>

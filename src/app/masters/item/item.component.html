@@ -1,0 +1,383 @@
+<div class="row">
+  <div class="col-sm-6 col-lg-6">
+    <h3>
+      Items
+    </h3>
+  </div>
+  <div class="col-sm-6 col-lg-6">
+    <div class="pull-right hidden-xs">
+      <ol class="breadcrumb" id="dynamicbreadcrumb">
+        <li>
+          <i class="fa fa-asterisk"></i> <span> Master</span>
+        </li>
+        <li>
+          <i class="fa fa-list-alt"></i> <span> Items </span>
+        </li>
+        <li class="active">
+          <i class="fa fa-save"></i>
+          Save
+        </li>
+      </ol>
+    </div>
+  </div>
+</div>
+<form autocomplete="off" [formGroup]="itemform" (ngSubmit)="SaveData()" class="form-group">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <div class="row">
+        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+          <span class="spanheader">
+            {{panelTitle}}
+          </span>
+        </div>
+        <div class="col-sm-6">
+          <div class="pull-left">
+            <div class="form-group" *ngIf="!action">
+              <div class="col-sm-12 inputlevelswtch">
+                <label class="col-sm-6" for=" IsActive">IsActive </label>
+                <div class=" col-sm-6">
+                  <label class="switch">
+                    <input type="checkbox" formControlName="IsActive" checked>
+                    <span class="slider round"></span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 ">
+          <div class="pull-right">
+            <button class="btn btn-primary" routerLink="/Itemlist" title="Back">
+
+              Back
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel-body">
+      <span class="groupspanheader">Item Information</span>
+      <div class="row">
+        <div class="col-md-6 col-xs-12">
+          <div class="form-group" [ngClass]="{'has-error': formErrors.ItemName}">
+            <label class="control-label" for="ItemName"> Name<span class="mandantory">*</span>
+            </label>
+            <div class="">
+              <input id="ItemName" type="text" class="form-control" formControlName="ItemName"
+                (blur)="logValidationErrors()" maxlength="250">
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrors.ItemName">
+                  {{formErrors.ItemName}}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 col-xs-12">
+          <div class="form-group" [ngClass]="{'has-error': formErrors.ItemCode}">
+            <label class="control-label" for="ItemCode"> Code <span class="mandantory">*</span></label>
+            <div class="">
+              <input id="ItemCode" type="text" class="form-control" formControlName="ItemCode"
+                (blur)="logValidationErrors()" maxlength="50">
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrors.ItemCode">
+                  {{formErrors.ItemCode}}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 col-xs-12">
+          <div class="form-group" [ngClass]="{'has-error': formErrors.BrandID}">
+            <label class="control-label" for="BrandID">Brand <span class="mandantory">*</span></label>
+            <div class="">
+              <select id="BrandID" class="form-control" formControlName="BrandID" (blur)="logValidationErrors()">
+                <option value="0" selected="selected">Select</option>
+                <option *ngFor="let c1 of lstBrand" value={{c1.BrandID}}>
+                  {{c1.BrandName}}
+                </option>
+              </select>
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrors.BrandID">
+                  {{formErrors.BrandID}}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-3 col-xs-12">
+          <div class="form-group" [ngClass]="{'has-error': formErrors.ProductGroupID}">
+            <label class="control-label" for="ProductGroupID">Product Group <span class="mandantory">*</span>
+            </label>
+            <div class="">
+              <select id="ProductGroupID" class="form-control" formControlName="ProductGroupID"
+                (blur)="logValidationErrors()" (change)="onchangeProductGroupID($event.target.value)">
+                <option value="0" selected="selected">Select</option>
+                <option *ngFor="let c1 of lstProductGroup" value={{c1.ProductGroupID}}>
+                  {{c1.ProductGroupName}}
+                </option>
+              </select>
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrors.ProductGroupID">
+                  {{formErrors.ProductGroupID}}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 col-xs-12">
+          <div class="form-group" [ngClass]="{'has-error': formErrors.CategoryID}">
+            <label class="control-label" for="CategoryID">Category <span class="mandantory">*</span></label>
+            <div class="">
+              <select formControlName="CategoryID" id='CategoryID' type="select" class="form-control"
+                (blur)="logValidationErrors()" (change)="onchangeCategoryID($event.target.value)">
+
+                <option value="0" selected="selected">Select</option>
+                <option *ngFor="let c1 of lstCategory" value={{c1.CategoryID}}>
+                  {{c1.CategoryName}}
+                </option>
+              </select>
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrors.CategoryID">
+                  {{formErrors.CategoryID}}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 col-xs-12">
+          <div class="form-group" [ngClass]="{'has-error': formErrors.SubCategoryID}">
+            <label class=" control-label " for="SubCategoryID">Sub Category <span class="mandantory">*</span></label>
+            <div class=" ">
+              <select formControlName="SubCategoryID" id='SubCategoryID' type="select" class="form-control"
+                (blur)="logValidationErrors()">
+                <option value="0" selected="selected">Select</option>
+                <option *ngFor="let c1 of lstSubCategory" value={{c1.SubCategoryID}}>
+                  {{c1.SubCategoryName}}
+                </option>
+              </select>
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrors.SubCategoryID">
+                  {{formErrors.SubCategoryID}}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 col-xs-12">
+          <div class="form-group" [ngClass]="{'has-error': formErrors.UOMID}">
+            <label class="control-label" for="UOMID">UOM <span class="mandantory">*</span></label>
+            <div class="">
+              <select id="UOMID" class="form-control" formControlName="UOMID" (blur)="logValidationErrors()"
+                (change)="onchangeUOMID($event.target.value)">
+                <option value="0" selected="selected">Select</option>
+                <option *ngFor="let c1 of lstUOM" value={{c1.UOMID}}>
+                  {{c1.UOM}}
+                </option>
+              </select>
+              <div class="small">
+                {{UOMDescription}}
+              </div>
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrors.UOMID">
+                  {{formErrors.UOMID}}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-3 col-xs-12">
+          <div class="form-group" [ngClass]="{'has-error': formErrors.ItemColor}">
+            <label class="control-label" for="ItemColor"> Color
+            </label>
+            <div class="">
+              <input id="ItemColor" type="text" class="form-control" formControlName="ItemColor"
+                (blur)="logValidationErrors()" maxlength="20">
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrors.ItemColor">
+                  {{formErrors.ItemColor}}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 col-xs-12">
+          <div class="form-group" [ngClass]="{'has-error': formErrors.ItemModel_Style}">
+            <label class="control-label" for="ItemModel_Style"> Model/Style
+            </label>
+            <div class="">
+              <input id="ItemModel_Style" type="text" class="form-control" formControlName="ItemModel_Style"
+                (blur)="logValidationErrors()" maxlength="20">
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrors.ItemModel_Style">
+                  {{formErrors.ItemModel_Style}}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 col-xs-12">
+          <div class="form-group" [ngClass]="{'has-error': formErrors.ItemSize_Storage}">
+            <label class=" control-label" for="ItemSize_Storage"> Item Size/Storage
+            </label>
+            <div class=" ">
+              <input id="ItemSize_Storage" type="text" class="form-control" formControlName="ItemSize_Storage"
+                (blur)="logValidationErrors()" maxlength="20">
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrors.ItemSize_Storage">
+                  {{formErrors.ItemSize_Storage}}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <span class="groupspanheader">General Information</span>
+      <div class="row">
+        <div class="col-md-2 col-xs-12">
+          <label class="control-label custom-control-label chkbx" for="IsTaxExempted"> Is Tax Exempted</label>
+          <div class="">
+            <input type="checkbox" formControlName="IsTaxExempted" value="" id="IsTaxExempted"
+              (change)="onchangeIsTaxExempted($event)">
+          </div>
+        </div>
+        <div class="col-md-2 col-xs-12">
+          <div class="form-group" [ngClass]="{'has-error': formErrors.TaxRate}">
+            <label class="control-label" for="TaxRate">Tax Rate <span class="mandantory">*</span></label>
+            <div class="">
+              <input id="TaxRate" type="text" class="form-control" formControlName="TaxRate"
+                (blur)="logValidationErrors()" maxlength="5">
+
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrors.TaxRate">
+                  {{formErrors.TaxRate}}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-2 col-xs-12">
+          <div class="form-group" [ngClass]="{'has-error': formErrors.Margin}">
+            <label class=" control-label" for="Margin">Margin </label>
+            <div class="">
+              <input id="Margin" type="text" class="form-control" formControlName="Margin"
+                (blur)="logValidationErrors()" maxlength="5"> 
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrors.Margin">
+                  {{formErrors.Margin}}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-2 col-xs-12">
+          <div class="form-group" [ngClass]="{'has-error': formErrors.MRP}">
+            <label class=" control-label" for="MRP">MRP <span class="mandantory">*</span></label>
+            <div class=" ">
+              <input id="MRP" type="text" class="form-control" formControlName="MRP" 
+              (blur)="logValidationErrors()" maxlength="15">
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrors.MRP">
+                  {{formErrors.MRP}}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-2 col-xs-12">
+          <div class="form-group" [ngClass]="{'has-error': formErrors.HSNCode}">
+            <label class="control-label" for="HSNCode">HSN Code
+              <span class="mandantory">*</span></label>
+            <div class="">
+              <input id="HSNCode" type="text" class="form-control" formControlName="HSNCode"  
+                (blur)="logValidationErrors()" mask="0000000000" maxlength="10">
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrors.HSNCode">
+                  {{formErrors.HSNCode}}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-2 col-xs-12">
+          <div class="form-group" [ngClass]="{'has-error': formErrors.EAN_UPCCode}">
+            <label class="control-label" for="EAN_UPCCode">EAN/UPC Code
+            </label>
+            <div class="">
+              <input id="EAN_UPCCode" type="text" class="form-control" formControlName="EAN_UPCCode"
+                (blur)="logValidationErrors()" maxlength="50">
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrors.EAN_UPCCode">
+                  {{formErrors.EAN_UPCCode}}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="panel-footer">
+      <div class="pull-right btn-toolbar">
+        <button class="btn btn-primary" routerLink="/Itemlist" title="Cancel">
+          <!-- <i class="fa fa-arrow-left" aria-hidden="true"></i> -->
+          Cancel
+        </button>
+        <button class="btn btn-success" type="submit" prevent-double-submit [disabled]="itemform.invalid">
+          <!-- <i class="fa fa-save"></i> -->
+          Save
+        </button>
+      </div>
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</form>
+
+<form autocomplete="off" [formGroup]="UploadForm" (ngSubmit)="uploadFiles()" class="form-horizontal" *ngIf="!action">
+  <div class="panel-body">
+    <div class="row">
+      <div class="col-sm-7">
+        <b>Image General Instructions :</b><br />
+        <ul class="list-group">
+          <li class="list-group-item">File must be extension with "jpeg", "png", "jpg".</li>
+          <li class="list-group-item">File size must be less than or equal to 1 MB.</li>
+        </ul>
+      </div>
+      <div class="col-sm-5">
+        <div class="form-group">
+          <label class="control-label custom-control-label chkbx" for="ImagePathChange"> Change Image </label>
+          <input type="checkbox" value="" id="ImagePathChange" (change)="onchangeImagePathChange($event)">
+        </div>
+        <div class="form-group" *ngIf="ImagePathChange==false">
+          <!-- *ngIf="ImagePathChange==null"  -->
+          <img [src]="ImagePath" width="200" height="200" title="SKU Image" />
+        </div>
+        <div class="form-group" *ngIf="ImagePathChange==true || ImagePath==null">
+          <label class="col-sm-3 control-label" for="SelectSelect"></label>
+          <input class="col-md-9" type="file" id="file" (change)="onFileChanged($event)" accept="image/*"
+            formControlName="FileData">
+          <span class="help-block" *ngIf="formErrors1.FileData">
+            {{formErrors1.FileData}}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="panel-footer">
+    <div class="pull-right btn-toolbar">
+      <button type="submit" prevent-double-submit [disabled]="UploadForm.invalid"
+        class="btn btn-success">Upload</button>
+    </div>
+    <div class="clearfix"></div>
+  </div>
+</form>

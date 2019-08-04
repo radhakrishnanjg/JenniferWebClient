@@ -1,0 +1,352 @@
+<div class="row">
+  <div class="col-sm-6 col-lg-6">
+    <h3>
+      PO Approval
+    </h3>
+  </div>
+  <div class="col-sm-6 col-lg-6">
+    <div class="pull-right hidden-xs">
+      <ol class="breadcrumb" id="dynamicbreadcrumb">
+        <li>
+          <i class="fa fa-shopping-cart"></i> <span> Procurements</span>
+        </li>
+        <li>
+          <i class="fa fa fa-truck"></i> <span> PO Approval</span>
+        </li>
+        <li class="active">
+          <i class="fa fa-save"></i>
+          Save
+        </li>
+      </ol>
+    </div>
+  </div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <div class="row">
+      <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+        <span class="spanheader">
+          {{panelTitle}} - <b> {{obj?.ApprovalStatus }}</b>
+        </span>
+      </div>
+      <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 ">
+        <div class="pull-right">
+          <button class="btn btn-primary" routerLinkActive="active" routerLink="/Poapprovallist">Back</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <form autocomplete="off" [formGroup]="poapprovalForm" (ngSubmit)="Update()" class="form-horizontal">
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="form-group  col-md-4">
+            <label class="control-label">PO Number <span class="mandantory">*</span></label>
+            <div>
+              {{obj?.PONumber}}
+            </div>
+          </div>
+
+          <div class="form-group col-md-4">
+            <label class="control-label"> Vendor<span class="mandantory">*</span></label>
+            <div>
+              {{obj?.VendorName}}
+            </div>
+          </div>
+
+          <div class="form-group col-md-4">
+            <label class="control-label">PO Date<span class="mandantory">*</span></label>
+            <div>
+              {{obj?.PODate | date :"MM-dd-yyyy"  }}
+            </div>
+          </div>
+
+          <div class="form-group col-md-4">
+            <label class="control-label">PO DeliveryDate <span class="mandantory">*</span></label>
+            <div>
+              {{obj?.PODeliveryDate | date :"MM-dd-yyyy"  }}
+            </div>
+          </div>
+
+
+          <div class="form-group col-md-4">
+            <label class="control-label">Event Purchase <span class="mandantory">*</span></label>
+            <div>
+              {{obj?.IsEventPurchase}}
+            </div>
+          </div>
+
+          <div class="form-group col-md-4">
+            <label class="control-label">Location<span class="mandantory">*</span></label>
+            <div *ngIf=" objResult?.Flag  ">
+              {{obj?.LocationName}}
+            </div>
+            <div *ngIf="!objResult?.Flag ">
+              ********
+            </div>
+          </div>
+
+          <div class="form-group col-md-4">
+            <label class="control-label">Payment Reference<span class="mandantory">*</span></label>
+            <div>
+              {{obj?.PaymentReference}}
+            </div>
+          </div>
+
+          <div class="form-group col-md-4">
+            <label class="control-label">Other Reference<span class="mandantory">*</span></label>
+            <div>
+              {{obj?.OtherReference}}
+            </div>
+          </div>
+
+          <div class="form-group col-md-4">
+            <label class="control-label"> Against Reference<span class="mandantory">*</span></label>
+            <div>
+              {{obj?.AgainstReference}}
+            </div>
+          </div>
+
+        </div>
+        <div class="col-sm-12">
+          <span class="spanheader"> Order Items</span>
+          <table class="table table-bordered table-condensed " *ngIf="obj?.lstItem && obj?.lstItem.length">
+            <thead>
+              <tr>
+                <th>ItemCode</th>
+                <th>Cases</th>
+                <th>Packs</th>
+                <th>Qty</th>
+                <th>Tax Rate</th>
+
+                <th>Tax Amount</th>
+                <th>Total Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let user of obj?.lstItem">
+                <td>{{ user.ItemCode  }}</td>
+                <td class="text-right">{{ user.CaseSize}}</td>
+                <td class="text-right">{{ user.MultiplierValue}}</td>
+                <td class="text-right">{{ user.Qty}}</td>
+                <td class="text-right">
+                  <span *ngIf="objResult?.Flag ">
+                    {{ user.TaxRate}}
+                  </span>
+                  <span *ngIf="!objResult?.Flag ">
+                    ********
+                  </span>
+                </td>
+
+                <td class="text-right">
+                  <span *ngIf="objResult?.Flag ">
+                    {{ user.TaxAmount | currency: 'INR' }}
+                  </span>
+                  <span *ngIf="!objResult?.Flag">
+                    ********
+                  </span>
+                </td>
+                <td class="text-right">
+                  <span *ngIf="objResult?.Flag ">
+                    {{ user.TotalAmount | currency: 'INR' }}
+                  </span>
+                  <span *ngIf="!objResult?.Flag ">
+                    ********
+                  </span>
+                </td>
+              </tr>
+              <tr>
+                <th>Total</th>
+                <th class="text-right"> {{ TotalCaseSize}}</th>
+                <th class="text-right"> {{ TotalMultiplierValue}}</th>
+                <th class="text-right"> {{ TotalQty}}</th>
+                <th class="text-right">
+                  <span *ngIf="objResult?.Flag ">
+                    {{ TotalTaxRate }}
+                  </span>
+                  <span *ngIf="!objResult?.Flag ">
+                    ********
+                  </span>
+                </th>
+
+                <th class="text-right">
+                  <span *ngIf="objResult?.Flag ">
+                    {{ TotalTaxAmount | currency: 'INR'}}
+                  </span>
+                  <span *ngIf="!objResult?.Flag ">
+                    ********
+                  </span>
+                </th>
+
+                <th class="text-right">
+                  <span *ngIf="objResult?.Flag ">
+                    {{ TotalTotalAmount | currency: 'INR'}}
+                  </span>
+                  <span *ngIf="!objResult?.Flag ">
+                    ********
+                  </span>
+
+                </th>
+              </tr>
+            </tbody>
+          </table>
+
+          <table class="table table-bordered table-condensed" *ngIf="obj?.lstItem==null">
+            <thead>
+              <tr>
+                <th>ItemCode</th>
+                <th>Cases</th>
+                <th>Packs</th>
+                <th>Qty</th>
+                <th>Tax Rate</th>
+
+                <th>Tax Amount</th>
+                <th>Total Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td colspan="7">
+                  No Records Found.!
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="col-sm-12">
+          <div class="col-md-4" *ngIf="(obj?.ApprovalStatus!='Approved')">
+            <div class="form-group  " [ngClass]="{'has-error': formErrors.ApprovalStatus}">
+              <label class="control-label" for="ApprovalStatus">Approval Status<span class="mandantory">*</span></label>
+              <div>
+                <select id="ApprovalStatus" [(ngModel)]="ApprovalStatus" class="form-control"
+                  formControlName="ApprovalStatus" (change)="onchangeApprovalStatus($event.target.value)"
+                  (blur)="logValidationErrors()">
+                  <option value="" selected="selected">Select</option>
+                  <option value="Approve">Approve</option>
+                  <!-- <option value="ApproveWithShipment">Approve With Shipment</option> -->
+                  <option value="Reject">Reject</option>
+                </select>
+                <div class="help-block-rk">
+                  <span class="help-block" *ngIf="formErrors.ApprovalStatus">
+                    {{formErrors.ApprovalStatus}}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class=" col-md-4" *ngIf="(ApprovalStatus=='Approve'  || ApprovalStatus=='ApproveWithShipment' 
+          || ApprovalStatus=='Reject'  ) ">
+            <div class="form-group" [ngClass]="{'has-error': formErrors.VerifyLocationId}">
+              <div class="col-sm-12  inputlevel">
+                <label class="control-label" for="VerifyLocationId"> Location<span class="mandantory">*</span></label>
+                <select id="VerifyLocationId" class="form-control" formControlName="VerifyLocationId"
+                  (change)="onchangeVerifyApproval($event.target.value)">
+                  <option value="0" selected="selected">Select</option>
+                  <option *ngFor="let c1 of lstlocation" value={{c1.LocationID}}>
+                    {{c1.LocationName}}
+                  </option>
+                </select>
+                <div class="help-block-rk">
+                  <span class="help-block" *ngIf="formErrors.VerifyLocationId">
+                    {{formErrors.VerifyLocationId}}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class=" col-md-4" *ngIf="(ApprovalStatus=='Approve'  || ApprovalStatus=='ApproveWithShipment'
+          || ApprovalStatus=='Reject' )">
+            <div class="form-group" [ngClass]="{'has-error': formErrors.VerifyTotalAmount}">
+              <div class="col-sm-12 inputlevel">
+                <label class="control-label" for="VerifyTotalAmount"> Total Amount<span
+                    class="mandantory">*</span></label>
+
+                <input id="VerifyTotalAmount" type="text" class="form-control" formControlName="VerifyTotalAmount"
+                  (blur)="logValidationErrors()" maxlength="15"
+                  (change)="onchangeVerifyApproval($event.target.value)" />
+                <div class="help-block-rk">
+                  <span class="help-block" *ngIf="formErrors.VerifyTotalAmount">
+                    {{formErrors.VerifyTotalAmount}}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <span class="help-block" *ngIf="!objResult?.Flag">
+            {{objResult?.Msg}}
+          </span>
+        </div>
+        <div class=" col-md-12" *ngIf="(obj?.ApprovalStatus!='Approved')">
+          <div class="form-group" [ngClass]="{'has-error': formErrors.Remarks}">
+            <div class="col-sm-12 inputlevel">
+              <label class=" control-label" for="Remarks">Remarks <span class="mandantory">*</span></label>
+
+              <textarea id="Remarks" type="text" row="5" maxlength="250" class="form-control" formControlName="Remarks"
+                (blur)="logValidationErrors()"> </textarea>
+              <span class="help-block" *ngIf="formErrors.Remarks">
+                {{formErrors.Remarks}}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-12">
+          <span class="spanheader"> Approval Details</span>
+          <table class="table table-bordered table-condensed " *ngIf="obj?.lstApproval && obj?.lstApproval.length">
+            <thead>
+              <tr>
+                <th>Status</th>
+                <th>Remarks</th>
+                <th>Action By</th>
+
+                <th>Action Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let user of obj?.lstApproval">
+                <td>{{ user.ApprovalStatus  }}</td>
+                <td>{{ user.Remarks  }}</td>
+                <td>{{ user.ActionBy}}</td>
+
+                <td>{{ user.CreatedDate | date :"MM-dd-yyyy HH:mm"   }}</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <table class="table table-bordered table-condensed" *ngIf="obj?.lstApproval==null">
+            <thead>
+              <tr>
+                <th>Status</th>
+                <th>Remarks</th>
+                <th>Action By</th>
+
+                <th>Action Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td colspan="4">
+                  No Records Found.!
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+    </div>
+    <div class="panel-footer" *ngIf="(obj?.ApprovalStatus!='Approved')">
+      <div class="pull-right btn-toolbar">
+        <button class="btn btn-primary" routerLinkActive="active" routerLink="/Poapprovallist">Cancel</button>
+        <button type="submit" prevent-double-submit [disabled]="poapprovalForm.invalid || !objResult.Flag"
+          class="btn btn-success">Submit</button>
+      </div>
+      <div class="clearfix"></div>
+    </div>
+  </form>
+</div>

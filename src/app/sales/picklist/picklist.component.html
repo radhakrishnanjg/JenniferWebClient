@@ -1,0 +1,239 @@
+<div class="row">
+  <div class="col-sm-6 col-lg-6">
+    <h3>
+      Picklist
+    </h3>
+  </div>
+  <div class="col-sm-6 col-lg-6">
+    <div class="pull-right hidden-xs">
+      <ol class="breadcrumb" id="dynamicbreadcrumb">
+        <li>
+          <i class="fa fa-money"></i> <span> Revenue</span>
+        </li>
+        <li>
+          <i class="fa fa-truck"></i> <span> PickList</span>
+        </li>
+        <li class="active">
+          <i class="fa fa-list" aria-hidden="true"></i>
+          List
+        </li>
+      </ol>
+    </div>
+  </div>
+</div>
+
+
+<!-- <form autocomplete="off" (ngSubmit)="saveData()" [formGroup]="picklistForm"> -->
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <div class="row">
+      <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+        <span class="spanheader">
+          {{panelTitle}}
+        </span>
+      </div>
+      <div class="col-sm-6">
+        <div class="pull-left">
+
+        </div>
+      </div>
+      <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 ">
+        <div class="pull-right">
+          <button class="btn btn-primary" routerLink="/Picklistsearch" title="Back">
+
+            Back
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel-body">
+    <div class="col-md-12">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="row">
+            <div class="table-responsive">
+              <table class="table table-bordered table-condensed "
+                *ngIf="lstPicklistsummary && lstPicklistsummary.length">
+                <thead>
+                  <tr>
+                    <th>Item Code </th>
+                    <th>Store Name </th>
+                    <th>Rack Number </th>
+                    <th>Bin Number </th>
+                    <th>Total Item Level Qty </th>
+
+                    <th>Qty </th>
+                    <th>Scanned Qty </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let obj of lstPicklistsummary">
+                    <td>{{ obj.ItemCode }}</td>
+                    <td>{{ obj.WarehouseLocation}}</td>
+                    <td>{{ obj.WarehouseRack }}</td>
+                    <td>{{obj.WarehouseBin}}</td>
+                    <td class="text-right">{{obj.PicklistQty}}</td>
+
+                    <td class="text-right">{{obj.AvailableQty}}</td>
+                    <td class="text-right">{{obj.ScanedQty}}</td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <table class="table table-bordered table-condensed" *ngIf="lstPicklistsummary==null">
+                <thead>
+                  <tr>
+                    <th>Item Code </th>
+                    <th>Store Name </th>
+                    <th>Rack Number </th>
+                    <th>Bin Number </th>
+                    <th >Total Item Level Qty </th>
+                    <th>Qty </th>
+                    <th>Scanned Qty </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td colspan="7">
+                      No Records Found.!
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="row">
+            <div class="col-md-12 col-xs-12">
+              <div class="form-group">
+                <label class="col-md-4 control-label" for="OrderID"> Sales Order ID </label>
+                <div class="col-md-8">
+                  {{OrderID}}
+                  <div class="help-block-rk">
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12 col-xs-12">
+              <div class="form-group">
+                <label class="col-md-4  control-label" for="Location"> Location </label>
+                <div class="col-md-8">
+                  {{LocationName}}
+                  <div class="help-block-rk">
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12 col-xs-12">
+              <div class="form-group">
+                <label class="col-md-4 control-label" for="InventoryType"> Inventory Type </label>
+                <div class="col-md-8">
+                  {{InventoryType}}
+                  <div class="help-block-rk">
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12 col-xs-12">
+              <div class="form-group">
+                <label class="col-md-4 control-label" for="JenniferItem erial"> Jennifer Item Serial</label>
+                <div class="col-md-4">
+                  <input id="JenniferItemSerial" type="text" class="form-control" maxlength="15"
+                    [(ngmodel)]="JenniferItemSerial" (change)="onJenniferItemSerialChange($event.target.value)">
+                  <div class="help-block-rk">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <div *ngIf="lstPicklistdetail && lstPicklistdetail.length">Scanned Items</div>
+              <table datatable [dtOptions]="dtOptions" class="table table-bordered table-condensed "
+                *ngIf="lstPicklistdetail && lstPicklistdetail.length">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Jennifer Item Serial No.</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let obj1 of lstPicklistdetail; let id = index">
+                    <td>{{ id +1 }}</td>
+                    <td>{{ obj1.JenniferItemSerial}}</td>
+                    <td>
+                      <!-- {{obj1.Flag }} -->
+                      <i class="fa fa-trash bgred pointer" title="Remove" (click)="removeRow(id)"
+                        *ngIf="obj1.Flag==false"></i>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <table class="table table-bordered table-condensed " *ngIf="lstPicklistdetail==null">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Jennifer Item Serial No.</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td colspan="3"> No Records Found</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="form-group col-sm-12">
+              <div class="pull-right">
+                <button type="button" *ngIf="lstPicklistdetail && lstPicklistdetail.length" class="btn btn-success"
+                  (click)="Process()" title="Process"> Process </button>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="row">
+            <div class="form-group col-sm-4">
+              <label class="control-label" for="Status">Status
+                <span class="mandantory">*</span> </label>
+            </div>
+            <div class="col-sm-8">
+              <select class="form-control serchcurv btn-group" id="Status" [(ngModel)]="Status" class="form-control">
+                <option value="" selected="select">Select</option>
+                <option value="Draft">Draft</option>
+                <option value="Save">Save</option>
+              </select>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="panel-footer">
+    <div class="btn-toolbar pull-right">
+      <button type="button" class="btn btn-primary" routerLink="/Picklistsearch" title="Cancel">Cancel</button>
+      <button type="submit" *ngIf="Btnenable" prevent-double-submit class="btn btn-success" (click)="SaveData()" title="Submit">Submit</button>
+    </div>
+    <div class="clearfix"></div>
+  </div>
+</div>
+<!-- </form> -->

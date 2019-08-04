@@ -1,0 +1,144 @@
+<div class="row">
+  <div class="col-sm-6 col-lg-6">
+    <h3>
+      Sales Shipment
+    </h3>
+  </div>
+  <div class="col-sm-6 col-lg-6">
+    <div class="pull-right hidden-xs">
+      <ol class="breadcrumb" id="dynamicbreadcrumb">
+        <li>
+          <i class="fa fa-money"></i> <span> Revenue</span>
+        </li>
+        <li>
+          <i class="fa fa-truck"></i> <span> Sales Shipment</span>
+        </li>
+        <li class="active">
+          <i class="fa fa-list" aria-hidden="true"></i>
+          List
+        </li>
+      </ol>
+    </div>
+  </div>
+</div>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <div class="row">
+      <div class="col-xs-12 col-sm-7 col-md-7 col-lg-7">
+        <div class="input-group col-sm-12" role="group" aria-label="Basic example">
+          <div class="col-md-3 nopading_loct">
+            <select class="form-control serchcurv btn-group" [(ngModel)]="SearchBy">
+              <option value="" selected="select">SearchBy</option>
+              <option value="SalesShipmentID" selected="select">Sales Shipment ID</option>
+              <option value="InvoiceNumber">Sales Invoice Number</option>
+              <option value="CourierName">Courier Name</option>
+              <option value="CourierTrackingID">Courier Tracking ID</option>
+              <option value="AirwayBillNumber">Ariway Bill Number</option>
+            </select>
+          </div>
+          <div class="col-md-4 nopading_loct" *ngIf="( SearchBy=='SalesShipmentID'  || SearchBy=='InvoiceNumber'  || SearchBy=='CourierName' 
+          || SearchBy=='CourierTrackingID' || SearchBy=='AirwayBillNumber' )">
+            <input [(ngModel)]="SearchKeyword" type="text" class="serchcurv form-control btn-group">
+          </div>
+          
+          <div class="col-md-2 nopading_loct">
+            <button class="serchcurv btn btn-default btn-group" (click)="Search()" title="Search">
+              <i class="fa fa-search " aria-hidden="true"></i>
+            </button>
+            <button class="serchcurv btn btn-default btn-group" (click)="Refresh()" title="Reset">
+              <i class="fa fa-refresh" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5 text-right">
+        <button class="btn btn-primary"  routerLink="/Salesshipment/Create" title="Add New">
+          
+          Add New
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="panel-body">
+    <div class="table-responsive">
+      <table class="table table-bordered table-condensed " *ngIf="shipmentList && shipmentList.length">
+        <thead>
+          <tr>
+            <th>Sales ShipmentID</th>
+            <th>Sales Invoice Number </th>
+            <th>Courier Name </th>
+            <th>Courier TrackingID </th>
+            <th>Airway Bill Number</th>
+            <!-- <th class="text-center btnactions">Action</th> -->
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let obj of shipmentList">
+            <td>{{ obj.SalesShipmentID }}</td>
+            <td>{{ obj.InvoiceNumber}}</td>
+            <td>{{ obj.CourierName }}</td>
+            <td>{{obj.CourierTrackingID}}</td>
+            <td>{{ obj.AirwayBillNumber }}</td>
+            <!-- <td class="text-center btnactions">
+              <i class="fa fa-edit bgblue pointer" (click)="editButtonClick(obj.ShipmentOutWardID)" title="Edit"></i>
+              &nbsp;
+              <i class="fa fa-trash bgred pointer"  title="Delete"
+                (click)="confirmDeleteid(obj.ShipmentOutWardID, obj.SalesShipmentID)"></i>
+            </td> -->
+          </tr>
+        </tbody>
+      </table>
+
+      <table class="table table-bordered table-condensed" *ngIf="shipmentList==null">
+        <thead>
+          <tr>
+            <th>Sales ShipmentID</th>
+            <th>Sales Invoice Number </th>
+            <th>Courier Name </th>
+            <th>Courier TrackingID </th>
+            <th>Airway Bill Number</th>
+            <!-- <th class="text-center btnactions">Action</th> -->
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td colspan="5">
+              No Records Found.!
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+  <div id="modaldeleteconfimation" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="modaldeleteconfimation" aria-hidden="true">
+    <div class="modal-dialog ">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+              aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="modaldeleteconfimation">Confirmation</h4>
+        </div>
+        <div class="modal-body alert-warning">
+          <div class="row">
+            <div class="col-xs-2">
+              <i class="fa fa-warning fa-3x "></i>
+            </div>
+            <div class="col-xs-10">
+              <div>
+                <h5>
+                  Are you sure you want to delete this value <span> {{deleteColumn}}</span>?
+                </h5>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <!-- <button class="btn btn-danger btn-sm" (click)="delete()">Yes</button> -->
+          &nbsp;
+          <button class="btn btn-default btn-sm" data-dismiss="modal">No</button>
+        </div>
+      </div>
+    </div>
+  </div>

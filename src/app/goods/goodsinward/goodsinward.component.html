@@ -1,0 +1,186 @@
+<div class="row">
+  <div class="col-sm-6 col-lg-6">
+    <h3>
+      Goods Inward
+    </h3>
+  </div>
+  <div class="col-sm-6 col-lg-6">
+    <div class="pull-right hidden-xs">
+      <ol class="breadcrumb" id="dynamicbreadcrumb">
+        <li>
+          <i class="fa fa-truck"></i> <span> GRN</span>
+        </li>
+        <li>
+          <i class="fa fa-truck"></i> <span> Goods Inward</span>
+        </li>
+        <li class="active">
+          <i class="fa fa-save"></i>
+          Save
+        </li>
+      </ol>
+    </div>
+  </div>
+</div>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <div class="row">
+      <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+        <span class="spanheader">
+          {{panelTitle}}
+        </span>
+      </div>
+      <div class="col-sm-4">
+        <div class="pull-left">
+
+        </div>
+      </div>
+      <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 ">
+        <div class="pull-right">
+          <button class="btn btn-primary" routerLink="/Goodsinwardlist" title="Back">
+            Back
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <form autocomplete="off" [formGroup]="goodsinwardform" (ngSubmit)="SaveData()" class="form-horizontal">
+
+    <div class="panel-body">
+      <span class="groupspanheader"> Goods Inward Information </span>
+      <div class="row">
+
+        <div class="col-md-6">
+          <div class="col-md-6 col-xs-12 form-group" [ngClass]="{'has-error': formErrors.JenniferItemSerial}">
+            <label class="control-label" for="JenniferItemSerial">Jennifer Item Serial <span
+                class="mandantory">*</span></label>
+          </div>
+          <div class="col-md-6 col-xs-12">
+            <input id="JenniferItemSerial" type="text" class="form-control" formControlName="JenniferItemSerial"
+              (blur)="logValidationErrors();getGoodsInwardDisplay();" (change)="JenniferItemSerialonChange()"
+              maxlength="20" >
+            <div class="help-block-rk">
+              <span class="help-block" *ngIf="formErrors.JenniferItemSerial">
+                {{formErrors.JenniferItemSerial}}
+              </span>
+            </div>
+          </div>
+          <div class="col-md-6 col-xs-12 form-group">
+            <label for="VendorItemSerialType" class="nopading_loct control-label">Vendor Item Serial Type
+              <span class="mandantory">*</span>
+            </label>
+          </div>
+          <div class="col-md-6 col-xs-12">
+            <select formControlName="VendorItemSerialType" id='VendorItemSerialType' type="select" class="form-control"
+              (blur)="logValidationErrors(); " (change)="VendorItemSerialTypeonChange()">
+              <option value="" selected="selected">Select</option>
+              <option *ngFor="let dis of lstVendorItemSerialType" value={{dis.DropdownValue}}>
+                {{dis.DropdownValue}}
+              </option>
+            </select>
+            <div class="help-block-rk">
+              <span class="help-block" *ngIf="formErrors.VendorItemSerialType">
+                {{formErrors.VendorItemSerialType}}
+              </span>
+            </div>
+          </div>
+          <div class="col-md-6 col-xs-12 form-group" [ngClass]="{'has-error': formErrors.VendorItemSerialNumber}">
+            <label class="control-label" for="VendorItemSerialNumber">Vendor Item Serial Number
+              <span class="mandantory">*</span>
+            </label>
+          </div>
+          <div class="col-md-6 col-xs-12">
+            <input id="VendorItemSerialNumber" type="text" class="form-control" formControlName="VendorItemSerialNumber"
+              (blur)="logValidationErrors(); " (change)="VendorItemSerialNumberonChange()"
+              maxlength="30" >
+            <div class="help-block-rk">
+              <span class="help-block" *ngIf="formErrors.VendorItemSerialNumber">
+                {{formErrors.VendorItemSerialNumber}}
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="row">
+
+            <div class="col-md-6 col-xs-12 form-group">
+              <label class="control-label" for="InventoryType">Inventory Type</label>
+            </div>
+            <div class="col-md-6 col-xs-12">
+              {{ InventoryType}}
+            </div>
+
+          </div>
+          <div class="row">
+            <div class="col-md-6 col-xs-12 form-group">
+              <label for="GRNNumber" class="nopading_loct control-label">GRN Number </label>
+            </div>
+            <div class="col-sm-6 col-xs-12">
+
+              {{ GRNNumber}}
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 col-xs-12 form-group">
+              <label class="control-label" for="ItemName">Item Code-Description</label>
+            </div>
+            <div class="col-md-6 col-xs-12">
+              {{ ItemName}}
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- <div class="row">
+        <div class="col-md-6">
+          <div class="pull-right btn-toolbar">
+            <button class="btn btn-primary" (click)="Clear()" title="Clear">
+              Clear
+            </button>
+            <button class="btn btn-success" type="submit" (click)="onTextChange()">
+              Add
+            </button>
+          </div>
+        </div>
+      </div> -->
+
+      <div class="table-responsive">
+        <table class="table table-bordered table-condensed table-striped">
+          <thead>
+            <tr>
+              <th>Item Name</th>
+              <th>Jennifer Item Serial</th>
+              <th>Vendor Item Serial Type</th>
+              <th>Vendor Item Serial Number</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of lstGoodsinward; let i = index;">
+              <td>{{item.ItemName}}</td>
+              <td>{{item.JenniferItemSerial}}</td>
+              <td>{{item.VendorItemSerialType}}</td>
+              <td>{{item.VendorItemSerialNumber}}</td>
+              <td class="text-center">
+                <i class="fa fa-trash bgred pointer" title="Remove" (click)="removeRow(i)"></i>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+    <div class="panel-footer">
+      <div class="pull-right btn-toolbar">
+        <button class="btn btn-primary" routerLink="/Goodsinwardlist" title="Cancel">
+          Cancel
+        </button>
+        <button class="btn btn-success" type="submit" prevent-double-submit [disabled]="lstGoodsinward.length == 0 ">
+          Save
+        </button>
+      </div>
+      <div class="clearfix"></div>
+    </div>
+
+  </form>
+</div>

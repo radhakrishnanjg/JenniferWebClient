@@ -1,0 +1,246 @@
+<div class="row">
+  <div class="col-sm-6 col-lg-6">
+    <h3>
+      Goods Receipts
+    </h3>
+  </div>
+  <div class="col-sm-6 col-lg-6">
+    <div class="pull-right hidden-xs">
+      <ol class="breadcrumb" id="dynamicbreadcrumb">
+        <li>
+          <i class="fa fa-truck"></i> <span> GRN</span>
+        </li>
+        <li>
+          <i class="fa fa-truck"></i> <span> Goods Receipts</span>
+        </li>
+        <li class="active">
+          <i class="fa fa-save"></i>
+          Save
+        </li>
+      </ol>
+    </div>
+  </div>
+</div>
+<form autocomplete="off">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <div class="row">
+        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+          <span class="spanheader">
+            Goods Receipt View
+          </span>
+        </div>
+        <div class="col-sm-6">
+          <div class="pull-left">
+
+          </div>
+        </div>
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 ">
+          <div class="pull-right">
+            <button class="btn btn-primary" routerLink="/Goodsreceiptlist" title="Back">
+
+              Back
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="panel-body">
+      <!-- <span class="groupspanheader"> General Information </span> -->
+      <div class="row">
+
+        <div class="col-md-3 col-xs-12">
+          <div>
+            <label>PO Number <span class="mandantory">*</span>
+
+            </label>
+
+            <div class="">
+              {{obj?.PONumber}}
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-3 col-xs-12">
+          <div>
+            <label>GRN Number <span class="mandantory">*</span>
+            </label>
+            <div class="">
+              {{ obj?.GRNNumber }}
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-3 col-xs-12">
+          <div class="form-group">
+            <label>Location <span class="mandantory">*</span>
+            </label>
+            <div class="">
+              {{obj?.LocationName }}
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 col-xs-12">
+          <div class="form-group">
+            <label for="VendorID">Vendor
+              <span class="mandantory">*</span>
+            </label>
+            <div class="">
+              {{ obj?.VendorName }}
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="row">
+        <div class="col-md-3 col-xs-12">
+          <div>
+            <label> GRN Date <span class="mandantory">*</span>
+            </label>
+            <div>
+              {{obj?.GRNDate | date :"MM-dd-yyyy HH:mm"}}
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 col-xs-12">
+          <div>
+            <label>Purchase Invoice Number<span class="mandantory">*</span></label>
+            <div class="">
+              {{obj?.InvoiceNumber}}
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 col-xs-12">
+          <div>
+            <label>Inventory Type<span class="mandantory">*</span></label>
+            <div class="">
+              {{obj?.InventoryType}}
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 col-xs-12">
+          <div>
+            <label>Other Reference Number </label>
+            <div class="">
+              {{obj?.OtherReference}}
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="row">
+        <div class="col-md-3 col-xs-12">
+          <div>
+            <label>Vehicle Number </label>
+            <div class="">
+              {{obj?.VehicleNumber}}
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 col-xs-12">
+          <div>
+            <label>Eway Bill Number </label>
+            <div class="">
+              {{obj?.EwayBillNumber}}
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-xs-12">
+          <div>
+            <label>Remarks </label>
+            <div class="">
+              {{obj?.Remarks}}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="spanheader"> Order Items</div>
+      <div class="table-responsive">
+        <table class="table table-bordered table-condensed table-striped">
+          <thead>
+            <tr>
+              <th>Vendor Item Code</th>
+              <th>Item Description</th>
+              <th>Item code</th>
+              <!-- <th>PO Qty</th>
+              <th>Available Qty</th> -->
+
+              <th>Inventory Sellable Qty</th>
+              <th>Inventory Shortage Qty</th>
+              <th>Inventory Damaged Qty</th>
+              <th>Inventory Others Qty </th>
+              <th>Total Received Qty <span class="mandantory">*</span> </th>
+
+              <th>Shortage Remarks </th>
+              <th>Damage Remarks</th>
+              <th>Others Remarks</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of obj?.ItemDetails; let i = index;">
+              <td>{{item.VendorItemCode}}</td>
+              <td>{{item.ItemDescription}}</td>
+              <td>{{item.ItemCode}}</td>
+              <!-- <td>{{item.POQTY}}</td>
+              <td>{{item.AvailableQty}}</td> -->
+
+              <td class="text-right">{{item.InventorySellableQty}}</td>
+              <td class="text-right">{{item.InventoryShortageQty}} </td>
+              <td class="text-right">{{item.InventoryDamageQty}} </td>
+              <td class="text-right">{{item.InventoryOthersQty}} </td>
+              <td class="text-right"> {{item.TotalReceivedQty}} </td>
+
+              <td>{{item.ShortageRemarks}} </td>
+              <td>{{item.DamageRemarks}} </td>
+              <td>{{item.OthersRemarks}} </td>
+              <td>
+                <button 
+                class="btn btn-info" (click)="filterGoodsInward(item.GRNDetailID)"
+                title="View Goods Inward">View</button>
+              </td>
+            </tr>
+            <tr>
+              <th> Total </th>
+              <td> </td>
+              <td> </td>
+              <!-- <td>{{item.POQTY}}</td>
+              <td>{{item.AvailableQty}}</td> -->
+
+              <th class="text-right">{{InventorySellable }}</th>
+              <th class="text-right">{{InventoryShortage }} </th>
+              <th class="text-right">{{InventoryDamage }} </th>
+              <th class="text-right">{{InventoryOthers }} </th>
+              <th class="text-right">{{TotalReceived }} </th>
+
+              <td> </td>
+              <td> </td>
+              <td> </td>
+              <td> </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="spanheader"> Goods Inwards</div>
+      <div class="table-responsive">
+        <table datatable [dtOptions]="dtOptions" class="table table-bordered table-condensed table-striped"
+          *ngIf="lstinward.length > 0">
+          <thead>
+            <tr>
+              <th>Jennifer Item Serial</th>
+              <th>Vendor Item Serial Type</th>
+              <th>Vendor Item Serial Number</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of lstinward; let i = index;">
+              <td>{{item.JenniferItemSerial}}</td>
+              <td>{{item.VendorItemSerialType}}</td>
+              <td>{{item.VendorItemSerialNumber}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</form>

@@ -3,7 +3,10 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  baseUrl: 'http://localhost:55555/api/',
+  basedomain: 'http://localhost:55555/',
+  defaultImageUrl: 'UploadFiles/Item/default.png'
 };
 
 /*

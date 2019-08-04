@@ -1,0 +1,259 @@
+<div class="row">
+  <div class="col-sm-6 col-lg-6">
+    <h3>
+      Report Master
+    </h3>
+  </div>
+  <div class="col-sm-6 col-lg-6">
+    <div class="pull-right hidden-xs">
+      <ol class="breadcrumb" id="dynamicbreadcrumb">
+        <li>
+          <i class="fa fa-shield"></i> <span> Jennifer Admin</span>
+        </li>
+        <li>
+          <i class="fa fa-newspaper-o"></i> <span> Report Master</span>
+        </li>
+        <li class="active">
+          <i class="fa fa-save"></i>
+          Save
+        </li>
+      </ol>
+    </div>
+  </div>
+</div>
+<form autocomplete="off" [formGroup]="reportmasterform" (ngSubmit)="SaveData()" class="form-horizontal">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <div class="row">
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+          <span class="spanheader">
+            {{panelTitle}}
+          </span>
+        </div>
+        <div class="col-sm-4">
+          <div class="pull-left">
+
+          </div>
+        </div>
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 ">
+          <div class="pull-right">
+            <button class="btn btn-primary" routerLink="/Reportmasterlist" title="Back">
+              Back
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="panel-body">
+      <span class="groupspanheader"> Report Details </span>
+      <div class="form-group" [ngClass]="{'has-error': formErrors.Report_Type}">
+        <label class="col-sm-5 control-label" for="Report_Type">Report Type <span class="mandantory">*</span></label>
+        <div class="col-sm-3" *ngIf="action">
+          <select formControlName="Report_Type" id='Report_Type' type="select" class="form-control"
+            (blur)="logValidationErrors()">
+            <option value="0" selected="selected">Select</option>
+            <option *ngFor="let dis of lstReport_Type" value={{dis.DropdownValue}}>
+              {{dis.DropdownValue}}
+            </option>
+          </select>
+          <div class="help-block-rk"> <span class="help-block" *ngIf="formErrors.Report_Type">
+              {{formErrors.Report_Type}}
+            </span>
+          </div>
+        </div>
+        <div class="col-sm-3" *ngIf="!action">
+          {{objDownloadMaster?.Report_Type}}
+          <div class="help-block-rk">
+          </div>
+        </div>
+      </div>
+      <div class="form-group" [ngClass]="{'has-error': formErrors.Screen_Name}">
+        <label class="col-sm-5 control-label" for="Screen_Name">Screen Name <span class="mandantory">*</span></label>
+        <div class="col-sm-3" *ngIf="action">
+          <input id="Screen_Name" type="text" class="form-control" formControlName="Screen_Name"
+            (blur)="logValidationErrors()" maxlength="50">
+          <div class="help-block-rk">
+            <span class="help-block" *ngIf="formErrors.Screen_Name">
+              {{formErrors.Screen_Name}}
+            </span>
+          </div>
+        </div>
+        <div class="col-sm-3" *ngIf="!action">
+          {{objDownloadMaster?.Screen_Name}}
+          <div class="help-block-rk">
+          </div>
+        </div>
+      </div>
+      <div class="form-group" [ngClass]="{'has-error': formErrors.SP_Name}">
+        <label class="col-sm-5 control-label" for="SP_Name">Stor Proc Name <span class="mandantory">*</span></label>
+        <div class="col-sm-3" *ngIf="action">
+          <input id="SP_Name" type="text" class="form-control" formControlName="SP_Name" (blur)="logValidationErrors()"
+            maxlength="500">
+          <div class="help-block-rk">
+            <span class="help-block" *ngIf="formErrors.SP_Name">
+              {{formErrors.SP_Name}}
+            </span>
+          </div>
+        </div>
+        <div class="col-sm-3" *ngIf="!action">
+          {{objDownloadMaster?.SP_Name}}
+          <div class="help-block-rk">
+          </div>
+        </div>
+      </div>
+      <div class="form-group" [ngClass]="{'has-error': formErrors.P_Count}">
+        <label class="col-sm-5 control-label" for="P_Count">Total Parameters <span class="mandantory">*</span></label>
+        <div class="col-sm-3" *ngIf="action">
+          <input id="P_Count" type="text" class="form-control" formControlName="P_Count" (blur)="logValidationErrors()"
+            maxlength="150" mask="0">
+          <div class="help-block-rk"> <span class="help-block" *ngIf="formErrors.P_Count">
+              {{formErrors.P_Count}}
+            </span>
+          </div>
+        </div>
+        <div class="col-sm-3" *ngIf="!action">
+          {{objDownloadMaster?.P_Count}}
+          <div class="help-block-rk">
+          </div>
+        </div>
+      </div>
+
+      <form autocomplete="off" [formGroup]="reportdetailform" class="form-horizontal">
+        <span class="groupspanheader"> Parameter Details </span>
+        <div class="row" *ngIf="action">
+          <div class="col-sm-1">
+          </div>
+          <div class="col-sm-2">
+            <div class="form-group" [ngClass]="{'has-error': formErrors1.Text_Type}">
+              <div class=" col-sm-12 " for="Text_Type">
+                <label for="Text_Type" class=" control-label">Input Type
+                  <span class="mandantory">*</span>
+                </label>
+                <select formControlName="Text_Type" id='Text_Type' type="select" class="form-control"
+                  (blur)="logValidationErrors1()">
+                  <option value="0" selected="selected">Select</option>
+                  <option *ngFor="let dis of lstText_Type" value={{dis.DropdownValue}}>
+                    {{dis.DropdownValue}}
+                  </option>
+                </select>
+                <div class="help-block-rk">
+                  <span class="help-block" *ngIf="formErrors1.Text_Type">
+                    {{formErrors1.Text_Type}}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-3">
+            <div class="form-group" [ngClass]="{'has-error': formErrors1.Display_Name}">
+              <div class="col-sm-12 ">
+                <label class=" control-label" for="Display_Name"> Display Name <span class="mandantory">*</span></label>
+                <input id="Display_Name" type="text" class="form-control" formControlName="Display_Name"
+                  (blur)="logValidationErrors1()" maxlength="50">
+                <div class="help-block-rk">
+                  <span class="help-block" *ngIf="formErrors1.Display_Name">
+                    {{formErrors1.Display_Name}}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-3">
+            <div class="form-group" [ngClass]="{'has-error': formErrors1.P_Name}">
+              <div class="col-xs-12 ">
+                <label class=" control-label" for="P_Name"> Parameter Name <span class="mandantory">*</span>
+                </label>
+                <input id="P_Name" type="text" class="form-control" formControlName="P_Name"
+                  (blur)="logValidationErrors1()" maxlength="50">
+                <div class="help-block-rk">
+                  <span class="help-block" *ngIf="formErrors1.P_Name">
+                    {{formErrors1.P_Name}}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-2">
+            <div class="btn-toolbar">
+              <br>
+              <button class="btn btn-primary" title="Add" (click)="onAddButtonClick()">
+                Add
+              </button>
+              <button class="btn btn-dark" title="Clear" (click)="clearValue()">
+                Clear
+              </button>
+            </div>
+            <div class="clearfix"></div>
+          </div>
+          <div class="col-sm-1">
+          </div>
+        </div>
+        <div class="row" *ngIf="action">
+          <div class="col-md-1 col-xs-1">
+          </div>
+          <div class="col-md-9 col-xs-9">
+            <div class="table-responsive">
+              <table class="table table-bordered table-condensed table-striped">
+                <thead>
+                  <tr>
+                    <th>Input Type</th>
+                    <th>Display Name</th>
+                    <th>Parameter Name</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of lstDownloadDetail; let i = index;">
+                    <td>{{item.Text_Type}}</td>
+                    <td>{{item.Display_Name}}</td>
+                    <td>{{item.P_Name}}</td>
+                    <td class="text-center">
+                      <i class="fa fa-trash bgred pointer" title="Remove" (click)="removeRow(i)"></i>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="row" *ngIf="!action">
+          <div class="col-md-1 col-xs-1">
+          </div>
+          <div class="col-md-9 col-xs-9">
+            <div class="table-responsive">
+              <table class="table table-bordered table-condensed table-striped">
+                <thead>
+                  <tr>
+                    <th>Input Type</th>
+                    <th>Display Name</th>
+                    <th>Parameter Name</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of objDownloadMaster?.lstDetail">
+                    <td>{{item?.Text_Type}}</td>
+                    <td>{{item?.Display_Name}}</td>
+                    <td>{{item?.P_Name}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+      </form>
+    </div>
+
+    <div class="panel-footer">
+      <div class="pull-right btn-toolbar">
+        <button class="btn btn-primary" routerLink="/Reportmasterlist" title="Cancel">
+          Cancel
+        </button>
+        <button prevent-double-submit type="submit" id="save" class="btn btn-success"
+          [disabled]="!reportmasterform.valid">Save
+        </button>
+      </div>
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</form>

@@ -1,0 +1,299 @@
+<div class="row">
+  <div class="col-sm-6 col-lg-6">
+    <h3>
+      Email Configuration
+    </h3>
+  </div>
+  <div class="col-sm-6 col-lg-6">
+    <div class="pull-right hidden-xs">
+      <ol class="breadcrumb" id="dynamicbreadcrumb">
+        <li>
+          <i class="fa fa-wrench"></i> <span> Utilities</span>
+        </li>
+        <li>
+          <i class="fa fa-envelope"></i> <span> Email</span>
+        </li>
+        <li class="active">
+          <i class="fa fa-list" aria-hidden="true"></i>
+          List
+        </li>
+      </ol>
+    </div>
+  </div>
+</div>
+
+<form autocomplete="off" [formGroup]="emailtemplateform" class="form-horizontal">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <div class="row">
+        <div class="col-xs-12 col-sm-7 col-md-7 col-lg-7">
+          <h3>
+            Email Configuration
+          </h3>
+        </div>
+      </div>
+    </div>
+    <div class="panel-body">
+
+      <div class="row">
+        <div class="col-md-6 col-xs-12">
+          <div class="form-group" [ngClass]="{'has-error': formErrors.EmailTemplateID}">
+            <div class=" col-sm-12 inputlevel" for="EmailTemplateID">
+              <div class="col-md-3">
+                <label for="EmailTemplateID" class="nopading_loct control-label">Email Template
+                  <span class="mandantory">*</span></label>
+              </div>
+              <div class="col-md-6">
+                <select formControlName="EmailTemplateID" id='EmailTemplateID' type="select" class="form-control"
+                  (blur)="logValidationErrors()" (change)="onchangeEmailTemplateID($event.target.value)">
+                  <option value="0" selected="selected">Select</option>
+                  <option *ngFor="let dis of lstemailtemplates" value={{dis.EmailTemplateID}}>
+                    {{dis.TemplateName}}
+                  </option>
+                </select>
+                <div class="help-block-rk">
+                  <span class="help-block" *ngIf="formErrors.EmailTemplateID">
+                    {{formErrors.EmailTemplateID}}
+                  </span>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="pull-right">
+                  <!-- <button class="btn btn-success" title="Preview">
+                    Preview
+                  </button> -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <span class="groupspanheader"> Internal </span>
+      <div class="table-responsive">
+        <table class="table table-bordered table-condensed "
+          *ngIf="lstContact && lstContact.length && Internalflag==true">
+          <thead>
+            <tr>
+              <th class="text-center ">Check</th>
+              <th class="text-center ">Contact Name</th>
+              <th class="text-center ">Mobile Number </th>
+              <th class="text-center ">LandPhone Number</th>
+              <th class="text-center ">Email </th>
+              <th class="text-center ">Designation </th>
+
+              <th class="text-center ">Department </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let ms of filterInternal('Internal')">
+
+              <td class="text-center ">
+                <div *ngIf="(ms.IsActive ==true)">
+                  <input type="checkbox" name="{{ms.ContactID}}" id="{{ms.ContactID }}" checked="checked"
+                    (change)="ContactIDFieldsChange($event)">
+                </div>
+                <div *ngIf="(ms.IsActive != true)">
+                  <input type="checkbox" name="{{ms.ContactID}}" id="{{ms.ContactID }}"
+                    (change)="ContactIDFieldsChange($event)">
+                </div>
+              </td>
+              <td>{{ ms.ContactName }}</td>
+              <td>{{ ms.MobileNumber }}</td>
+              <td>{{ ms.LandphoneNumber }}</td>
+              <td>{{ ms.Email }}</td>
+              <td>{{ ms.Designation }}</td>
+
+              <td>{{ ms.Department }}</td>
+
+            </tr>
+          </tbody>
+        </table>
+
+        <table class="table table-bordered table-condensed " *ngIf="Internalflag==false">
+          <thead>
+            <tr>
+              <th class=" text-center ">Check</th>
+              <th class=" text-center ">Contact Name</th>
+              <th class=" text-center ">Mobile Number </th>
+              <th class=" text-center ">LandPhone Number</th>
+              <th class=" text-center ">Email </th>
+              <th class=" text-center ">Designation </th>
+
+              <th class=" text-center ">Department </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td colspan="7">
+                No Records Found
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <span class="groupspanheader"> External </span>
+      <div class="table-responsive">
+        <table class="table table-bordered table-condensed "
+          *ngIf="lstContact && lstContact.length && Externalflag==true">
+          <thead>
+            <tr>
+              <th class=" text-center ">Check</th>
+              <th class=" text-center ">Contact Name</th>
+              <th class=" text-center ">Mobile Number </th>
+              <th class=" text-center ">LandPhone Number</th>
+              <th class=" text-center ">Email </th>
+              <th class=" text-center ">Designation </th>
+
+              <th class=" text-center ">Department </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor=" let ms of filterExternal('External')">
+              <td class="text-center ">
+                <div *ngIf="(ms.IsActive ==true)">
+                  <input type="checkbox" name="{{ms.ContactID}}" id="{{ms.ContactID }}" checked="checked"
+                    (change)="ContactIDFieldsChange($event)">
+                </div>
+                <div *ngIf="(ms.IsActive != true)">
+                  <input type="checkbox" name="{{ms.ContactID}}" id="{{ms.ContactID }}"
+                    (change)="ContactIDFieldsChange($event)">
+                </div>
+              </td>
+              <td>{{ ms.ContactName }}</td>
+              <td>{{ ms.MobileNumber }}</td>
+              <td>{{ ms.LandphoneNumber }}</td>
+              <td>{{ ms.Email }}</td>
+              <td>{{ ms.Designation }}</td>
+
+              <td>{{ ms.Department }}</td>
+
+            </tr>
+          </tbody>
+        </table>
+        <table class="table table-bordered table-condensed " *ngIf="Externalflag==false">
+          <thead>
+            <tr>
+              <th class=" text-center ">Check</th>
+              <th class=" text-center ">Contact Name</th>
+              <th class=" text-center ">Mobile Number </th>
+              <th class=" text-center ">LandPhone Number</th>
+              <th class=" text-center ">Email </th>
+              <th class=" text-center ">Designation </th>
+
+              <th class=" text-center ">Department </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td colspan="7">
+                No Records Found
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <span class="groupspanheader"> Market Place </span>
+      <div class="table-responsive">
+        <table class="table table-bordered table-condensed "
+          *ngIf="lstContact && lstContact.length && MarketPlaceflag==true">
+          <thead>
+            <tr>
+              <th class=" text-center ">Check</th>
+              <th class=" text-center ">Contact Name</th>
+              <th class=" text-center ">Mobile Number </th>
+              <th class=" text-center ">LandPhone Number</th>
+              <th class=" text-center ">Email </th>
+              <th class=" text-center ">Designation </th>
+
+              <th class=" text-center ">Department </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor=" let ms of filterMarketPlace('MarketPlace')">
+              <td class="text-center ">
+                <div *ngIf="(ms.IsActive ==true)">
+                  <input type="checkbox" name="{{ms.ContactID}}" id="{{ms.ContactID }}" checked="checked"
+                    (change)="ContactIDFieldsChange($event)">
+                </div>
+                <div *ngIf="(ms.IsActive != true)">
+                  <input type="checkbox" name="{{ms.ContactID}}" id="{{ms.ContactID }}"
+                    (change)="ContactIDFieldsChange($event)">
+                </div>
+              </td>
+              <td>{{ ms.ContactName }}</td>
+              <td>{{ ms.MobileNumber }}</td>
+              <td>{{ ms.LandphoneNumber }}</td>
+              <td>{{ ms.Email }}</td>
+              <td>{{ ms.Designation }}</td>
+
+              <td>{{ ms.Department }}</td>
+
+            </tr>
+          </tbody>
+        </table>
+
+        <table class="table table-bordered table-condensed " *ngIf="MarketPlaceflag==false">
+          <thead>
+            <tr>
+              <th class=" text-center ">Check</th>
+              <th class=" text-center ">Contact Name</th>
+              <th class=" text-center ">Mobile Number </th>
+              <th class=" text-center ">LandPhone Number</th>
+              <th class=" text-center ">Email </th>
+              <th class=" text-center ">Designation </th>
+
+              <th class=" text-center ">Department </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td colspan="7">
+                No Records Found
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+      </div>
+    </div>
+    <div class=" panel-footer">
+      <div class="pull-right btn-toolbar">
+        <button class="btn btn-warning" prevent-double-submit type="submit" title="Preview" data-toggle="modal"
+          data-target="#modalemailpreview" [disabled]="emailtemplateform.invalid"
+          (click)="Save('Preview')">Preview</button>
+        &nbsp;
+        <button class="btn btn-success" prevent-double-submit type="submit" title="Save" (click)="Save('Save')"
+          [disabled]="emailtemplateform.invalid">Save</button>
+      </div>
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</form>
+
+<div id="modalemailpreview" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modalemailpreview"
+  aria-hidden="true">
+  <div class="modal-dialog ">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="modalemailpreview">Preview</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-12">
+            <b>To : </b> {{MailTo}}
+          </div>
+          <div class="col-md-12">
+            <div>
+              <div [innerHTML]="HtmlContent| safeHtml"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary btn-sm" data-dismiss="modal">Okay</button>
+      </div>
+    </div>
+  </div>
+</div>

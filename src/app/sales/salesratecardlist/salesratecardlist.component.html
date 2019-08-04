@@ -1,0 +1,236 @@
+<div class="row">
+  <div class="col-sm-6 col-lg-6">
+    <h3>
+      Sales Rates
+    </h3>
+  </div>
+  <div class="col-sm-6 col-lg-6">
+    <div class="pull-right hidden-xs">
+      <ol class="breadcrumb" id="dynamicbreadcrumb">
+        <li>
+          <i class="fa fa-inr"></i> <span> Pricing</span>
+        </li>
+        <li>
+          <i class="fa fa-inr"></i> <span> Sales Rates</span>
+        </li>
+        <li class="active">
+          <i class="fa fa-th-list"></i>
+          List
+        </li>
+      </ol>
+    </div>
+  </div>
+</div>
+<div class="panel panel-default">
+  <div class="panel-heading">
+
+    <div class="row">
+      <div class="col-xs-12 col-sm-10 col-md-10 col-lg-10">
+        <div class="input-group col-sm-12" role="group" aria-label="Basic example">
+          <div class="col-md-3 nopading_loct">
+            <select [(ngModel)]="SearchBy" class="serchcurv form-control btn-group">
+              <option value="" selected="select">Search By</option>
+              <option value="ByItemCode">ItemCode</option>
+              <option value="ByDate">Effective Date</option> 
+            </select>
+          </div>
+          <div class="col-md-4 nopading_loct" *ngIf="(SearchBy=='ByItemCode' )">
+            <input [(ngModel)]="SearchKeyword" type="text" class="serchcurv form-control btn-group">
+          </div>
+          <div class="col-md-4 nopading_loct" *ngIf="(SearchBy=='ByDate')">
+            <input type="text" ngxDaterangepickerMd [(ngModel)]="selectedDateRange"
+              class="serchcurv form-control btn-group col-xs-12 pointer"
+              style="width:300px;border:1px soloid #ccc !important; padding :3px;left:0px" [showCustomRangeLabel]="true"
+              [ranges]="Searchranges" [showCancel]="true" placeholder="Select please..."
+              (ngModelChange)="onChange($event)" />
+          </div>
+          <div class="col-md-2 nopading_loct">
+            <button class="serchcurv btn btn-default btn-group" (click)="Search()" title="Search">
+              <i class="fa fa-search " aria-hidden="true"></i>
+            </button>
+            <button class="serchcurv btn btn-default btn-group" (click)="Refresh()" title="Reset">
+              <i class="fa fa-refresh" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 text-right">
+        <button class="btn btn-primary" (click)="newButtonClick()" title="Add New">
+
+          Add New
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="panel-body">
+
+
+    <div class="table-responsive">
+      <table datatable [dtOptions]="dtOptions" class="table table-bordered table-condensed "
+        *ngIf="lstSalesratecard && lstSalesratecard.length">
+        <thead>
+          <tr>
+            <th>ItemCode</th>
+            <th>Inventory Type</th>
+
+            <th>Selling Price</th>
+
+            <th>Effective From</th>
+            <th>Effective To</th>
+            <!-- <th class="text-center btnactions">Action</th> -->
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of lstSalesratecard">
+            <td>{{ user.ItemCode}}</td>
+            <td>{{ user.InventoryType  }}</td>
+            <td class="text-right">{{ user.SellingPrice | currency: 'INR'}}</td>
+            <td class="text-right">{{ user.StartDate | date :"MM-dd-yyyy HH:mm" }}</td>
+            <td class="text-right">{{ user.EndDate | date :"MM-dd-yyyy HH:mm"}}</td>
+            <!-- <td class="text-center">
+              <i (click)="editButtonClick(user.SalesRateCardID)" title="Edit" class="fa fa-edit bgblue pointer"></i>
+            </td> -->
+          </tr>
+        </tbody>
+      </table>
+
+      <table class="table table-bordered table-condensed" *ngIf="lstSalesratecard==null">
+        <thead>
+          <tr>
+            <th>ItemCode</th>
+            <th>Inventory Type</th>
+
+            <th>Selling Price</th>
+
+            <th>Effective From</th>
+            <th>Effective To</th>
+            <!-- <th class="text-center btnactions">Action</th> -->
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td colspan="5">
+              No Records Found.!
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+
+
+
+  <div id="modalpopup_salesratecard" class="modal fade " tabindex="-1" role="dialog"
+    aria-labelledby="modalpopup_salesratecard" aria-hidden="true">
+
+    <form autocomplete="off" [formGroup]="salesratecardForm" (ngSubmit)="SaveData()">
+      <div class="modal-dialog ">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="modalpopup_salesratecard"> {{panelTitle}}</h4>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="form-group col-sm-12" [ngClass]="{'has-error': formErrors.ItemID}" *ngIf="action">
+                <label class="control-label" for="ItemID">Item Code <span class="mandantory">*</span></label>
+                <div>
+                  <ngx-select-dropdown formControlName="ItemID" [multiple]="true" [config]="config"
+                    (blur)="logValidationErrors()" [options]="lstItem">
+                  </ngx-select-dropdown>
+                  <!-- </div> -->
+                  <!-- <div *ngIf="!action">
+                  {{ItemCode}}
+                </div> -->
+                  <div class="help-block-rk">
+                    <span class="help-block" *ngIf="formErrors.ItemID">
+                      {{formErrors.ItemID}}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="  form-group col-sm-6" [ngClass]="{'has-error': formErrors.InventoryType}">
+                <label class="control-label" for="InventoryType">Inventory Type <span
+                    class="mandantory">*</span></label>
+                <div>
+                  <select id="InventoryType" class="form-control" formControlName="InventoryType"
+                    (blur)="logValidationErrors()">
+                    <option value="" selected="selected">Select</option>
+                    <option *ngFor="let dis of lstInventoryType" value={{dis.DropdownValue}}>
+                      {{dis.DropdownValue}}
+                    </option>
+                  </select>
+                  <div class="help-block-rk">
+                    <span class="help-block" *ngIf="formErrors.InventoryType">
+                      {{formErrors.InventoryType}}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="  form-group col-sm-6" [ngClass]="{'has-error': formErrors.SellingPrice}">
+                <label class=" control-label" for="SellingPrice">Selling Price <span class="mandantory">*</span></label>
+                <div class=" ">
+                  <input id="SellingPrice" type="text" class="form-control" formControlName="SellingPrice"
+                    (blur)="logValidationErrors()" maxlength="15">
+                  <div class="help-block-rk">
+                    <span class="help-block" *ngIf="formErrors.SellingPrice">
+                      {{formErrors.SellingPrice}}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="  form-group col-sm-6" [ngClass]="{'has-error': formErrors.StartDate}">
+                <label class="control-label" for="StartDate">Start Date <span class="mandantory">*</span>
+                </label>
+                <div class="">
+                  <div class='input-group date'>
+                    <input type="text" ngxDaterangepickerMd [minDate]="MinDate" [timePicker]="true"
+                      (datesUpdated)="StartDateUpdated($event)" [singleDatePicker]="true" class="form-control"
+                      formControlName="StartDate" id="StartDate" (blur)="logValidationErrors()"
+                      [locale]="{format: 'MM-DD-YYYY HH:mm'}" maxlength="16" [autoApply]="true" />
+
+                    <label class="fa fa-calendar"></label>
+                  </div>
+                  <div class="help-block-rk">
+                  </div><span class="help-block" *ngIf="formErrors.StartDate">
+                    {{formErrors.StartDate}}
+                  </span>
+                </div>
+              </div>
+
+              <div class="  form-group col-sm-6" [ngClass]="{'has-error': formErrors.EndDate}">
+                <label class="control-label" for="EndDate">End Date <span class="mandantory">*</span> </label>
+                <div class=" ">
+                  <div class='input-group date'>
+                    <input type="text" ngxDaterangepickerMd [autoApply]="true" [singleDatePicker]="true"
+                      (datesUpdated)="EndDateUpdated($event)" [timePicker]="true" class="form-control"
+                      formControlName="EndDate" (blur)="logValidationErrors()" id="EndDate"
+                      [locale]="{format: 'MM-DD-YYYY HH:mm'}" maxlength="16" />
+                    <label class="fa fa-calendar"></label>
+                  </div>
+                  <div class="help-block-rk">
+                  </div><span class="help-block" *ngIf="formErrors.EndDate">
+                    {{formErrors.EndDate}}
+                  </span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-primary" data-dismiss="modal">Cancel</button>
+            &nbsp;
+            <button class="btn btn-success" type="submit" prevent-double-submit [disabled]="salesratecardForm.invalid">
+              Save
+            </button>
+          </div>
+          <div class="clearfix"> </div>
+        </div>
+      </div>
+    </form>
+  </div>

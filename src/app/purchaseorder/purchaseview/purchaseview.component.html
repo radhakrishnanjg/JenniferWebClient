@@ -1,0 +1,182 @@
+<div class="row">
+  <div class="col-sm-6 col-lg-6">
+    <h3>
+      Purchase Invoices
+    </h3>
+  </div>
+  <div class="col-sm-6 col-lg-6">
+    <div class="pull-right hidden-xs">
+      <ol class="breadcrumb" id="dynamicbreadcrumb">
+        <li>
+          <i class="fa fa-shopping-cart"></i> <span> Procurements</span>
+        </li>
+        <li>
+          <i class="fa fa-newspaper-o"></i> <span> Purchase Invoices </span>
+        </li>
+        <li class="active">
+          <i class="fa fa-save"></i>
+          Save
+        </li>
+      </ol>
+    </div>
+  </div>
+</div>
+<form autocomplete="off">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <div class="row">
+        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+          <span class="spanheader">
+            Purchase Invoice View
+          </span>
+        </div>
+        <div class="col-sm-6">
+
+        </div>
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 ">
+          <div class="pull-right">
+            <button class="btn btn-primary" routerLink="/Purchaselist" title="Back">
+              Back
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="panel-body"><span class="groupspanheader"> PO Information </span>
+      <div class="row">
+        <div class="col-md-3 col-xs-12">
+          <div class="form-group">
+            <label class="control-label"> PO No. </label>
+            <div class="">
+              {{obj?.PONumber}}
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 col-xs-12">
+          <div class="form-group">
+            <label class="control-label"> Location </label>
+            <div class="">
+              {{obj?.LocationName}}
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-3 col-xs-12">
+          <div class="form-group">
+            <label class="control-label">Vendor <span class="mandantory">*</span></label>
+            <div class="">
+              {{obj?.VendorName}}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="groupspanheader"> Invoice Information </div>
+      <div class="row">
+        <div class="col-md-6"></div>
+
+        <div class="col-md-6"></div>
+        <div class="col-md-3 col-xs-12">
+          <div>
+            <label>Invoice Number <span class="mandantory">*</span></label>
+            <div class="">
+              {{obj?.InvoiceNumber}}
+            </div>
+          </div>
+        </div>
+
+
+        <div class="col-md-3 col-xs-12">
+          <div>
+            <label>Invoice Date<span class="mandantory">*</span></label>
+            <div class="">
+              {{obj?.InvoiceDate | date :"MM-dd-yyyy HH:mm"}}
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-3 col-xs-12">
+          <div>
+            <label> Vendor Warehouse <span class="mandantory">*</span></label>
+            <div class="">
+              {{obj?.WarehouseName}}
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-12 col-xs-12">
+          <div>
+            <label>Remarks <span class="mandantory">*</span></label>
+            <div class="">
+              {{obj?.Remarks}}
+            </div>
+          </div>
+        </div>
+
+
+        <!-- Editable table -->
+        <div class="col-md-12 col-xs-12">
+          <h3 class="">Order Items</h3>
+          <table class="table table-bordered table-condensed">
+            <thead>
+              <tr>
+                <th class="text-center">ItemCode</th>
+                <th class="text-center">Vendor ItemCode </th>
+                <!-- <th class="text-center">PO Available Qty</th> -->
+                <th class="text-center">Qty</th>
+                <th class="text-center">Rate</th>
+
+                <th class="text-center">MRP</th>
+                <th class="text-center">TaxRate</th>
+                <th class="text-center">TaxNature</th>
+                <th class="text-center">DirectCost</th>
+                <th class="text-center">TaxAmount</th>
+
+                <th class="text-center">TotalAmount</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr *ngFor="let person of lstItem; let id = index">
+                <td > {{person.ItemCode}} </td>
+                <td > {{person.VendorItemCode}} </td>
+                <!-- <td> {{person.AvailableQty}}  </td> -->
+                <td class="text-right"> {{person.Qty}} </td>
+                <td class="text-right"> {{person.Rate}} </td>
+
+                <td class="text-right"> {{person.MRP | currency: 'INR' }} </td>
+                <td class="text-right"> {{person.TaxRate}} </td>
+                <td> {{person.TaxNature}} </td>
+                <td class="text-right"> {{person.DirectCost | currency: 'INR' }} </td>
+                <td class="text-right"> {{person.TaxAmount | currency: 'INR' }} </td>
+
+                <td class="text-right"> {{person.TotalAmount | currency: 'INR' }} </td>
+              </tr>
+
+              <tr>
+                <th>Total</th>
+                <th> </th>
+                <!-- <th> {{ TotalAvailableQty}} </th> -->
+                <th  class="text-right"> {{ TotalQty}}</th>
+                <th class="text-right"> {{ TotalRate}}</th>
+
+
+                <th  class="text-right"> {{ TotalMRP | currency: 'INR' }} </th>
+                <th  class="text-right"> {{ TotalTaxRate }} </th>
+                <th> </th>
+                <th  class="text-right"> {{ TotalDirectCost | currency: 'INR'}} </th>
+                <th  class="text-right"> {{ TotalTaxAmount | currency: 'INR'}} </th>
+
+                <th   class="text-right"> {{ TotalTotalAmount | currency: 'INR'}} </th>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+
+      </div>
+
+    </div>
+  </div>
+
+
+</form>

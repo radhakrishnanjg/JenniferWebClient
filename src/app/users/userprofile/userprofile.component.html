@@ -1,0 +1,130 @@
+<form autocomplete="off" [formGroup]="profileForm" class="form-horizontal" (ngSubmit)="ProfileUpdate()">
+
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <!-- <h3 class="panel-title">Profile Update</h3> -->
+
+      <div class="row">
+        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+          <span class="spanheader">
+            Profile Update
+          </span>
+        </div>
+        <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
+          <div class="pull-right">
+            <b>
+              Last Successful :
+              {{obj?.LastLogin | date: 'MM-dd-yyyy : HH:mm'}}
+            </b>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="panel-body">
+      <div class="form-group">
+        <label class="control-label col-sm-2">User Type</label>
+        <div class="col-sm-4">
+          {{obj?.UserType}}
+          <div class="help-block-rk">
+
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="control-label col-sm-2">Email</label>
+        <div class="col-sm-4">
+          {{obj?.Email}}
+          <div class="help-block-rk">
+
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group" [ngClass]="{'has-error': formErrors.FirstName}">
+        <label class=" control-label col-sm-2" for="FirstName">First Name <span class="mandantory">*</span>
+        </label>
+        <div class="col-sm-4">
+          <input id="FirstName" type="text" class="form-control" formControlName="FirstName"
+            (blur)="logValidationErrors()" maxlength="30">
+          <div class="help-block-rk">
+            <span class="help-block" *ngIf="formErrors.FirstName">
+              {{formErrors.FirstName}}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="control-label col-sm-2" for="LastName">Last Name</label>
+        <div class="col-sm-4">
+          <input id="LastName" type="text" class="form-control" formControlName="LastName"
+            (blur)="logValidationErrors()" maxlength="30">
+          <div class="help-block-rk">
+            <span class="help-block" *ngIf="formErrors.LastName">
+              {{formErrors.LastName}}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class=" control-label col-sm-2" for="IsMailRequired"> Is Mail Required </label>
+        <div class="col-sm-4">
+          <input type="checkbox" id="IsMailRequired" formControlName="IsMailRequired" />
+          <div class="help-block-rk">
+            <span class="help-block">
+            </span>
+          </div>
+        </div>
+      </div>
+
+
+
+      <div class="form-group">
+        <label class="control-label col-sm-2" for="ImagePathChange"> Change Image </label>
+        <div class="col-sm-4">
+          <input type="checkbox" id="ImagePathChange" (change)="onchangeImagePathChange($event)">
+          <div class="help-block-rk">
+
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class=" col-sm-2" for="ImagePathChange"> </div>
+        <div class="col-md-4" *ngIf="ImagePathChange==false">
+          <img [src]="ImagePath" width="200" height="200" title="Profile Picture" />
+        </div>
+      </div>
+      <div class="form-group">
+        <div class=" col-sm-2" for="ImagePathChange"> </div>
+        <div *ngIf="ImagePathChange==true || ImagePath==null">
+          <input class="col-md-4" type="file" id="file" (change)="onFileChanged($event)" accept="image/*"
+            formControlName="FileData">
+          <div class="help-block-rk">
+          </div>
+        </div>
+      </div>
+
+      <!-- <div class="form-group">
+        <label class="control-label col-sm-2" for="LastLogin">Last Successful Login Time</label>
+        <div class="col-sm-4">
+          {{obj?.LastLogin | date: 'MM-dd-yyyy : HH:mm'}}
+          <div class="help-block-rk">
+
+          </div>
+        </div>
+      </div> -->
+
+    </div>
+
+    <div class="panel-footer">
+      <div class="pull-right btn-toolbar">
+        <button class="btn btn-success" prevent-double-submit type="submit" [disabled]="profileForm.invalid"> Update
+        </button>
+      </div>
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</form>
