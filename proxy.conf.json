@@ -1,0 +1,11 @@
+{
+    "/proxy/*": {
+    "target": "http://localhost:1025/POCWebApi",
+    "secure": false,
+    "logLevel": "debug",
+    "changeOrigin": true,
+    "pathRewrite": {
+    "^/proxy": "/"
+    }
+   }
+  }
