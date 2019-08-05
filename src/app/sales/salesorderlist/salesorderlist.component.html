@@ -186,15 +186,15 @@
               <h5>
                 Please Select Inventory Type to Create Sales Order
               </h5>
-              <label class="control-label">
-                <input type="radio" [value]="true" name="InventoryType" [(ngModel)]="InventoryType">
 
-              </label> Sellable
+
+              <input id="Sellable" type="radio" [value]="true" name="InventoryType" [(ngModel)]="InventoryType">
+              <label for="Sellable" class="control-label">  Sellable
+              </label> 
               &nbsp; &nbsp;
-              <label class="control-label">
-                <input type="radio" [value]="false" name="InventoryType" [(ngModel)]="InventoryType">
-
-              </label> Unsellable
+              <input id="Unsellable" type="radio" [value]="false" name="InventoryType" [(ngModel)]="InventoryType">
+              <label for="Unsellable" class="control-label">  Unsellable
+              </label> 
             </div>
           </div>
         </div>

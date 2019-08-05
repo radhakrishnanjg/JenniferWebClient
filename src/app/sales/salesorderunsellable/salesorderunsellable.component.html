@@ -286,7 +286,8 @@
         </div>
         <div class="col-sm-12">
           <div class="form-group pull-left">
-            <button type="button" class="btn btn-primary" [disabled]="!salesForm.valid" (click)="chooseitems()">Choose
+            <!-- [disabled]="!salesForm.valid" -->
+            <button type="button" class="btn btn-primary" (click)="chooseitems()">Choose
               Items</button>
             <br />
             <br />
@@ -295,8 +296,7 @@
       </div>
       <div class="panel-default panel" *ngIf="ispickitems">
         <div class="panel-heading">
-          <div class="row">
-            <!-- [disabled]="!salesForm.valid"  -->
+          <div class="row"> 
             <div class="col-md-12">
 
 
@@ -350,7 +350,7 @@
         </div>
         <div class="panel-body">
           <div class="form-group col-md-12">
-            <table class="table table-bordered table-condensed table-striped"
+            <table datatable [dtOptions]="dtOptions" class="table table-bordered table-condensed table-striped"
               *ngIf="objunsell?.lstunsellqty && objunsell?.lstunsellqty.length">
               <thead>
                 <tr>

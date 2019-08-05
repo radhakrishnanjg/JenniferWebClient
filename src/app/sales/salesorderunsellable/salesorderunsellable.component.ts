@@ -353,14 +353,14 @@ export class SalesorderunsellableComponent implements OnInit {
 
 
   public chooseitems(): void {
-    // stop here if form is invalid
+    //stop here if form is invalid
     // if (this.salesForm.invalid) {
     //   return;
     // }
 
-    // if (this._authorizationGuard.CheckAcess("Salesorderlist", "ViewEdit")) {
-    //   return;
-    // }
+    if (this._authorizationGuard.CheckAcess("Salesorderlist", "ViewEdit")) {
+      return;
+    }
 
     if (localStorage.getItem("Unsellableqty") == null) {
       let OrderDate = this.salesForm.controls['OrderDate'].value.startDate._d.toLocaleString();
@@ -375,6 +375,11 @@ export class SalesorderunsellableComponent implements OnInit {
             this.ClearAll();
             this.ispickitems = true;
             this.isadditems = false;
+
+            this.dtOptions = { 
+              paging: false,
+              scrollY: '400px'
+            };
           }
           this._spinner.hide();
         }, (err) => {
