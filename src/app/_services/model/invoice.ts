@@ -19,8 +19,9 @@ export class Invoice {
     VendorID: number;
     VendorName: string;
     WarehouseName: string;
-    lstItem: Invoiceitem[]; 
+    lstItem: Invoiceitem[];
     IsEditable: boolean;
+    ISBOE:boolean;
 
     // who is doing this task
     LoginId: number;
@@ -31,7 +32,7 @@ export class Invoiceitem {
     PurchaseID: number;
     CompanyDetailID: number;
     ItemID: number;
-    Qty: number; 
+    Qty: number;
 
     TaxNature: string;
     Rate: number;
@@ -50,4 +51,50 @@ export class Invoiceitem {
     //reference for the calculation
     POQty: number;
     AvailableQty: number;
+}
+
+
+export class BOEHeader {
+
+    BOEID: number;
+    CompanyDetailId: number;
+    PurchaseID: number;
+    BOENumber: string;
+    BOEDate: Date;
+
+    PortCode: string;
+    ReferenceDetail: string;
+    LoginId: number; 
+    //addtion columns 
+    TotalAmount:number;
+    IsEditable:boolean;
+    
+    lstDetail: BOEDetail[];
+    //master table 
+    PONumber: string ;
+    InvoiceNumber: string ;
+    InvoiceDate: Date
+    LocationName:string ;
+    WarehouseName:string ;
+    PIValue:number;
+}
+
+export class BOEDetail {
+    BOEDetailsID: number;
+    BOEID: number;
+    ItemID: number;
+    HSNCode: string;
+    HSNCodeGST:string;
+
+    DutyType: string;
+    IsGSTApplicable: number;
+    DutyPercentage: number;
+    DutyAmount: number;
+    IGSTRate: boolean;
+
+    IGSTValue: number;
+    TotalValue: number;
+    SumTotalValue: number;
+
+    IsView:boolean=true;
 }

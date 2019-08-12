@@ -371,9 +371,9 @@ export class PoshipmentComponent implements OnInit {
     this.uploaddata.CarpID = this.poshipmentForm.controls['CarpID'].value;
     this.uploaddata.IsMailSent = this.poshipmentForm.controls['IsMailSent'].value;
     if (this.poshipmentForm.controls['Appointment'].value.startDate._d != undefined) {
-      this.uploaddata.Appointment = this.poshipmentForm.controls['Appointment'].value.startDate._d.toLocaleString();
+      this.uploaddata.AppointmentDate = this.poshipmentForm.controls['Appointment'].value.startDate._d.toLocaleString();
     } else {
-      this.uploaddata.Appointment = this.poshipmentForm.controls['Appointment'].value.startDate.toLocaleString();
+      this.uploaddata.AppointmentDate = this.poshipmentForm.controls['Appointment'].value.startDate.toLocaleString();
     }
     this.uploaddata.Remarks = this.poshipmentForm.controls['Remarks'].value;
     this.uploaddata.IsMailSent = this.poshipmentForm.controls['IsMailSent'].value;

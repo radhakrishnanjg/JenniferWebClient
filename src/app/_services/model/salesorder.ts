@@ -41,7 +41,11 @@ export class Salesorder {
     ShipTo: string;
     BilledTo: string;
     TotalAmount: number = 0.00;
-    ApprovalStatus:string;
+    ApprovalStatus: string;
+    ActionBy: string;
+    ActionDate: Date;
+    DiscountAllowedinDays: number;    
+    DiscountAllowedinDaysDesc: string;
 }
 
 export class PaymentTermType {
@@ -67,8 +71,8 @@ export class SalesorderItem {
 
     Discountamt: number = 0.00;
     TotalValue: number = 0.00;
-    TaxRate:number;
-    TaxAmount:number;
+    TaxRate: number;
+    TaxAmount: number;
 }
 
 export class SalesorderunsellableQty {
@@ -93,8 +97,8 @@ export class unsellqty {
     CategoryName: string;
     SubCategoryName: string;
     ItemCode: string;
-    TaxRate:number;
-    MRP:number;
+    TaxRate: number;
+    MRP: number;
     ItemName: string;
     CustomerItemCode: string;
 

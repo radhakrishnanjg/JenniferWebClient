@@ -33,8 +33,7 @@
               <option value="OrderStatus">Order Status</option>
               <option value="InventoryType">Inventory Type</option>
               <option value="TransactionType">Transaction Type</option>
-              <option value="CustomerName">Customer Name</option>
-              <option value="Status">Status</option>
+              <option value="CustomerName">Customer Name</option> 
               <option value="OrderDate">Order Date</option>
             </select>
           </div>
@@ -44,7 +43,7 @@
           <div class="col-md-4 nopading_loct" *ngIf="(SearchBy=='OrderDate')">
             <input type="text" ngxDaterangepickerMd [(ngModel)]="selectedDateRange"
               class="serchcurv form-control btn-group col-xs-12 pointer"
-              style="width:300px;border:1px soloid #ccc !important; padding :3px;left:0px" [showCustomRangeLabel]="true"
+              style="border:1px soloid #ccc !important; padding :3px;left:0px" [showCustomRangeLabel]="true"
               [ranges]="Searchranges" [showCancel]="true" placeholder="Select please..."
               (ngModelChange)="onChange($event)" [autoApply]="true" />
           </div>

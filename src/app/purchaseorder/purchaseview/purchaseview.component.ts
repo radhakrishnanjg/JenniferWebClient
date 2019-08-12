@@ -18,8 +18,7 @@ export class PurchaseviewComponent implements OnInit {
   lstItem: Invoiceitem[];
   TotalQty: number = 0;
   TotalRate: number = 0;
-  TotalMRP: number = 0;
-  TotalTaxRate: number = 0;
+  TotalMRP: number = 0; 
   TotalDirectCost: number = 0;
   TotalTaxAmount: number = 0;
   TotalTotalAmount: number = 0;
@@ -51,8 +50,7 @@ export class PurchaseviewComponent implements OnInit {
                     this.lstItem = data;
                     this.TotalQty = this.lstItem.reduce((acc, a) => acc + a.Qty, 0);
                     this.TotalRate = this.lstItem.reduce((acc, a) => acc + a.Rate, 0);
-                    this.TotalMRP = this.lstItem.reduce((acc, a) => acc + a.MRP, 0);
-                    this.TotalTaxRate = this.lstItem.reduce((acc, a) => acc + a.TaxRate, 0);
+                    this.TotalMRP = this.lstItem.reduce((acc, a) => acc + a.MRP, 0); 
                     this.TotalTaxAmount = this.lstItem.reduce((acc, a) => acc + a.TaxAmount, 0);
                     this.TotalDirectCost = this.lstItem.reduce((acc, a) => acc + a.DirectCost, 0);
                     this.TotalTotalAmount = this.lstItem.reduce((acc, a) => acc + a.TotalAmount, 0);

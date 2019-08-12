@@ -20,9 +20,10 @@ export class PoviewComponent implements OnInit {
   identity: number = 0;
   TotalUnits: number = 0;
   TotalRate: number = 0.00;
-  TotalTaxRate: number = 0.00;
+  TotalMultiplierValue: number = 0.00;
   TotalDirectCost: number = 0.00;
   TotalTaxAmount: number = 0.00;
+  TotalTotalAmount: number = 0.00;
 
   constructor(
     private _spinner: NgxSpinnerService,
@@ -48,9 +49,10 @@ export class PoviewComponent implements OnInit {
                 this.lstItem = data;
                 this.TotalUnits = this.lstItem.reduce((acc, a) => acc + a.CaseSize, 0);
                 this.TotalRate = this.lstItem.reduce((acc, a) => acc + a.Rate, 0);
-                this.TotalTaxRate = this.lstItem.reduce((acc, a) => acc + a.TaxRate, 0);
+                this.TotalMultiplierValue = this.lstItem.reduce((acc, a) => acc + a.MultiplierValue, 0);
                 this.TotalDirectCost = this.lstItem.reduce((acc, a) => acc + a.DirectCost, 0);
                 this.TotalTaxAmount = this.lstItem.reduce((acc, a) => acc + a.TaxAmount, 0);
+                this.TotalTotalAmount = this.lstItem.reduce((acc, a) => acc + a.TotalAmount, 0);
                 this._spinner.hide();
               },
               (err: any) => {
@@ -59,12 +61,12 @@ export class PoviewComponent implements OnInit {
               }
             );
           },
-          (err : any) => {
+          (err: any) => {
             this._spinner.hide();
             console.log(err);
           }
         );
       }
-    }); 
-  } 
+    });
+  }
 }

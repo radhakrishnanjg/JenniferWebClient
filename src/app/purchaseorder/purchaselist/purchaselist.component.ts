@@ -117,6 +117,13 @@ export class PurchaselistComponent implements OnInit {
     $('#modaldeleteconfimation').modal('show');
   }
 
+  NewBOW(id: number) {
+    if (this._authorizationGuard.CheckAcess("Purchaselist", "ViewEdit")) {
+      return;
+    }
+    this.router.navigate(['/BOE', 0, id]);
+  }
+
   delete() {
     this._spinner.show();
     this._invoiceService.delete(this.selectedDeleteId).subscribe(

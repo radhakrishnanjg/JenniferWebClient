@@ -26,18 +26,22 @@
     <div class="row">
       <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
         <span class="spanheader">
-          {{panelTitle}}
+          {{panelTitle}}- {{objSalesOrder?.ApprovalStatus}}
         </span>
       </div>
-      <div class="col-sm-6">
-        <div class="pull-left">
-
-        </div>
+      <div class="col-sm-4">
+        <span class=" spanheader">
+          Action By : {{objSalesOrder?.ActionBy}}
+        </span>
       </div>
-      <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 ">
+      <div class="col-sm-4">
+        <span class=" spanheader">
+          Action Date : {{objSalesOrder?.ActionDate | date:'MM-dd-yyyy HH:mm'}}
+        </span>
+      </div>
+      <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 ">
         <div class="pull-right">
           <button class="btn btn-primary" routerLink="/Salesorderapprovallist" title="Back">
-
             Back
           </button>
         </div>
@@ -124,13 +128,13 @@
           </div>
         </div>
       </div>
-      <div class="col-md-6">
+      <!-- <div class="col-md-6">
         <div class="form-group">
           <label class="control-label"> Is discount applicable </label> <br />
           <div *ngIf="(objSalesOrder?.IsDiscountApplicable)"><i class="fa fa-check"></i></div>
           <div *ngIf="(!objSalesOrder?.IsDiscountApplicable)"><i class="fa fa-times"></i></div>
         </div>
-      </div>
+      </div> -->
     </div>
     <div class="row">
       <div class="col-md-3 col-xs-12">
@@ -144,10 +148,10 @@
       </div>
       <div class="col-md-3 col-xs-12">
         <div class="form-group">
-          <label class="control-label" for="PaymentTermsID">Payment Terms <span class="mandantory">*</span></label>
-
+          <label class="control-label" for="DiscountAllowedinDays">
+            Payment Terms <span class="mandantory">*</span></label>
           <div>
-            {{objSalesOrder?.DiscountAllowedinDays}}
+            {{objSalesOrder?.DiscountAllowedinDaysDesc}}
           </div>
         </div>
       </div>
@@ -155,11 +159,11 @@
         <div class="form-group">
           <label class="control-label" for="DispatchThrough">Dispatch Through <span class="mandantory">*</span></label>
           <div>
-            {{objSalesOrder?.CustomerName}}
+            {{objSalesOrder?.DispatchThrough}}
           </div>
         </div>
       </div>
-      <div class="col-md-3 col-xs-12">
+      <div class="col-md-3 col-xs-12" *ngIf="(objSalesOrder?.InventoryType=='Sellable')">
         <div class="form-group">
           <label class="control-label" for="BuyerOrderNo"> Buyer Order No <span class="mandantory">*</span></label>
 
@@ -170,7 +174,7 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-md-3 col-xs-12">
+      <div class="col-md-3 col-xs-12" *ngIf="(objSalesOrder?.InventoryType=='Sellable')">
         <div class="form-group">
           <label class="control-label" for="DeliveryNote"> Delivery Note <span class="mandantory">*</span></label>
 
@@ -212,8 +216,8 @@
           <th>ItemCode</th>
           <th>Item Name</th>
           <th>CustomerItemCode</th>
-          <th>Units</th>
-          <th>UOM </th>
+          <th *ngIf="(objSalesOrder?.InventoryType=='Sellable')">Units</th>
+          <th *ngIf="(objSalesOrder?.InventoryType=='Sellable')">UOM </th>
           <th>Qty </th>
 
 
@@ -230,8 +234,8 @@
           <td>{{data.ItemCode}}</td>
           <td>{{data.ItemName  }}</td>
           <td>{{data.CustomerItemCode}}</td>
-          <td class="text-right">{{data.Units}}</td>
-          <td class="text-right">{{data.MultiplierValue}}</td>
+          <td *ngIf="(objSalesOrder?.InventoryType=='Sellable')" class="text-right">{{data.Units}}</td>
+          <td *ngIf="(objSalesOrder?.InventoryType=='Sellable')" class="text-right">{{data.MultiplierValue}}</td>
           <td class="text-right">{{data.Qty}}</td>
 
 
@@ -247,8 +251,8 @@
           <th>Total</th>
           <th> </th>
           <th> </th>
-          <th class="text-right"> {{ TotalCaseSize}}</th>
-          <th class="text-right"> {{ TotalMultiplierValue}}</th>
+          <th *ngIf="(objSalesOrder?.InventoryType=='Sellable')" class="text-right"> {{ TotalCaseSize}}</th>
+          <th *ngIf="(objSalesOrder?.InventoryType=='Sellable')" class="text-right"> {{ TotalMultiplierValue}}</th>
           <th class="text-right"> {{ TotalQty}}</th>
 
 

@@ -27,15 +27,22 @@
       <div class="row">
         <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
           <span class="spanheader">
-            {{panelTitle}}
+            {{panelTitle}}  <span *ngIf="!action">
+              -  {{objSalesOrder?.ApprovalStatus}}
+            </span>
           </span>
         </div>
-        <div class="col-sm-6">
-          <div class="pull-left">
-
-          </div>
+        <div class="col-sm-4">
+          <span class=" spanheader" *ngIf="!action">
+            Action By : {{objSalesOrder?.ActionBy}}
+          </span>
         </div>
-        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 ">
+        <div class="col-sm-4">
+          <span class=" spanheader" *ngIf="!action">
+            Action Date : {{objSalesOrder?.ActionDate | date:'MM-dd-yyyy HH:mm'}}
+          </span>
+        </div>
+        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 ">
           <div class="pull-right">
             <button class="btn btn-primary" routerLink="/Salesorderlist" title="Back">
 
@@ -84,6 +91,33 @@
           </div>
         </div>
         <div class="col-md-3 col-xs-12">
+          <div class="  form-group" [ngClass]="{'has-error': formErrors.OrderDate}">
+            <label class="control-label" for="OrderDate">Order Date <span class="mandantory">*</span>
+            </label>
+            <div *ngIf="action">
+              <div class='input-group date'>
+                <input type="text" ngxDaterangepickerMd [timePicker]="true" [singleDatePicker]="true"
+                  class="form-control" formControlName="OrderDate" id="OrderDate" (blur)="logValidationErrors()"
+                  [locale]="{format: 'MM-DD-YYYY HH:mm'}" [autoApply]="true" (datesUpdated)="OrderDateUpdated($event)"
+                  *ngIf="!hideOrderDate" [minDate]="orderMinDate" [maxDate]="OrderMaxDate" />
+                <label class="fa fa-calendar" *ngIf="!hideOrderDate"></label>
+                <div *ngIf="hideOrderDate">
+                  {{
+                      OrderDate | date:'MM-dd-yyyy HH:mm'
+                    }}
+                </div>
+              </div>
+              <div class="help-block-rk">
+              </div><span class="help-block" *ngIf="formErrors.OrderDate">
+                {{formErrors.OrderDate}}
+              </span>
+            </div> 
+            <div *ngIf="!action">
+              {{objSalesOrder?.OrderDate | date:'MM-dd-yyyy HH:mm' }}
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 col-xs-12">
           <div class="form-group" [ngClass]="{'has-error': formErrors.CustomerWarehouseID}">
             <label class="control-label" for="CustomerWarehouseID">Customer Warehouse <span
                 class="mandantory">*</span></label>
@@ -106,34 +140,7 @@
             </div>
           </div>
         </div>
-        <div class="col-md-3 col-xs-12">
-          <div class="  form-group" [ngClass]="{'has-error': formErrors.OrderDate}">
-            <label class="control-label" for="OrderDate">Order Date <span class="mandantory">*</span>
-            </label>
-            <div *ngIf="action">
-              <div class='input-group date'>
-                <input type="text" ngxDaterangepickerMd [timePicker]="true" [singleDatePicker]="true"
-                  class="form-control" formControlName="OrderDate" id="OrderDate" (blur)="logValidationErrors()"
-                  [locale]="{format: 'MM-DD-YYYY HH:mm'}" [autoApply]="true" (datesUpdated)="OrderDateUpdated($event)"
-                  *ngIf="!hideOrderDate" />
-                <label class="fa fa-calendar" *ngIf="!hideOrderDate"></label>
-                <div *ngIf="hideOrderDate">
-                  {{
-                      OrderDate | date:'MM-dd-yyyy HH:mm'
-                    }}
-                </div>
-              </div>
-              <div class="help-block-rk">
-              </div><span class="help-block" *ngIf="formErrors.OrderDate">
-                {{formErrors.OrderDate}}
-              </span>
-            </div>
 
-            <div *ngIf="!action">
-              {{objSalesOrder?.OrderDate | date:'MM-dd-yyyy HH:mm' }}
-            </div>
-          </div>
-        </div>
       </div>
       <div class="row">
         <div class="col-md-6 col-xs-12">
@@ -238,7 +245,7 @@
               </div>
             </div>
             <div *ngIf="!action">
-              {{objSalesOrder?.DiscountAllowedinDays}}
+              {{objSalesOrder?.DiscountAllowedinDaysDesc}}
             </div>
           </div>
         </div>
@@ -261,7 +268,7 @@
               </div>
             </div>
             <div *ngIf="!action">
-              {{objSalesOrder?.CustomerName}}
+              {{objSalesOrder?.DispatchThrough}}
             </div>
           </div>
         </div>
@@ -472,8 +479,8 @@
             <th>ItemCode</th>
             <th>Item Name</th>
             <th>CustomerItemCode</th>
-            <th>Units</th>
-            <th>UOM </th>
+            <th *ngIf="(objSalesOrder?.InventoryType=='Sellable')">Units</th>
+            <th *ngIf="(objSalesOrder?.InventoryType=='Sellable')">UOM </th>
             <th>Qty </th>
 
 
@@ -490,8 +497,8 @@
             <td>{{data.ItemCode}}</td>
             <td>{{data.ItemName  }}</td>
             <td>{{data.CustomerItemCode}}</td>
-            <td class="text-right">{{data.Units}}</td>
-            <td class="text-right">{{data.MultiplierValue}}</td>
+            <td *ngIf="(objSalesOrder?.InventoryType=='Sellable')" class="text-right">{{data.Units}}</td>
+            <td *ngIf="(objSalesOrder?.InventoryType=='Sellable')" class="text-right">{{data.MultiplierValue}}</td>
             <td class="text-right">{{data.Qty}}</td>
 
 
@@ -507,8 +514,8 @@
             <th>Total</th>
             <th> </th>
             <th> </th>
-            <th class="text-right"> {{ TotalCaseSize}}</th>
-            <th class="text-right"> {{ TotalMultiplierValue}}</th>
+            <th *ngIf="(objSalesOrder?.InventoryType=='Sellable')" class="text-right"> {{ TotalCaseSize}}</th>
+            <th *ngIf="(objSalesOrder?.InventoryType=='Sellable')" class="text-right"> {{ TotalMultiplierValue}}</th>
             <th class="text-right"> {{ TotalQty}}</th>
 
 
@@ -517,7 +524,7 @@
             </th>
             <th class="text-right">
             </th>
-            <th class="text-right"> 
+            <th class="text-right">
               {{ TotalTaxAmount | currency: 'INR'}}
             </th>
             <th class="text-right">

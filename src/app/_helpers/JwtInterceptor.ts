@@ -14,7 +14,7 @@ export class JwtInterceptor implements HttpInterceptor {
                 setHeaders: {
                     UserId: `${currentUser.UserId}`,
                     Token: `${currentUser.AuthToken}`,
-                   // 'Accept': 'application/json;charset=utf-8'
+                    'Accept': 'application/json;charset=utf-8'
                 }
             });
         }

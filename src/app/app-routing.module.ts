@@ -68,6 +68,9 @@ import { PurchaselistComponent } from './purchaseorder/purchaselist/purchaselist
 import { PurchaseComponent } from './purchaseorder/purchase/purchase.component';
 import { PurchaseviewComponent } from './purchaseorder/purchaseview/purchaseview.component';
 import { PoviewComponent } from './purchaseorder/poview/poview.component';
+import { BoeComponent } from './purchaseorder/boe/boe.component';
+import { BoelistComponent } from './purchaseorder/boelist/boelist.component';
+import { BoeviewComponent } from './purchaseorder/boeview/boeview.component';
 
 import { GoodsinwardComponent } from './goods/goodsinward/goodsinward.component';
 import { GoodsinwardlistComponent } from './goods/goodsinwardlist/goodsinwardlist.component';
@@ -96,8 +99,8 @@ import { SalesinvoiceComponent } from './sales/salesinvoice/salesinvoice.compone
 import { ReceiptslistComponent } from './sales/receiptslist/receiptslist.component';
 import { SalesorderunsellableComponent } from './sales/salesorderunsellable/salesorderunsellable.component';
 import { SalesorderapprovallistComponent } from './sales/salesorderapprovallist/salesorderapprovallist.component';
-	import { SalesorderapprovalComponent } from './sales/salesorderapproval/salesorderapproval.component';
-	
+import { SalesorderapprovalComponent } from './sales/salesorderapproval/salesorderapproval.component';
+
 
 
 import { ReportmasterlistComponent } from './download/reportmasterlist/reportmasterlist.component';
@@ -119,9 +122,9 @@ const appRoutes: Routes = [
       { path: 'Userlist', component: UserlistComponent, canActivate: [AuthGuard] },
       { path: 'User/:id', component: UserComponent, canActivate: [AuthGuard] },
       { path: 'Userpermission/:id', component: UserpermissionComponent, canActivate: [AuthGuard] },
-      { path: 'Changepassword', component: ChangepasswordComponent },
+      { path: 'ChangePassword', component: ChangepasswordComponent },
       { path: 'Companydetails/:id', component: CompanydetailsComponent, canActivate: [AuthGuard] },
-      { path: 'Companydetaillist', component: CompanydetaillistComponent, canActivate: [AuthGuard] }, 
+      { path: 'Companydetaillist', component: CompanydetaillistComponent, canActivate: [AuthGuard] },
       { path: 'Profile', component: UserprofileComponent },
       //masters module
       { path: 'Location/:id', component: LocationComponent, canActivate: [AuthGuard] },
@@ -168,6 +171,10 @@ const appRoutes: Routes = [
       { path: 'Purchase/:id/:PoId', component: PurchaseComponent, canActivate: [AuthGuard, StoreGuard] },
       { path: 'POview/:id', component: PoviewComponent, canActivate: [AuthGuard, StoreGuard] },
       { path: 'Purchaseview/:id/:PoId', component: PurchaseviewComponent, canActivate: [AuthGuard, StoreGuard] },
+      { path: 'BOElist', component: BoelistComponent, canActivate: [AuthGuard, StoreGuard] },
+      { path: 'BOE/:id/:PurchaseId', component: BoeComponent, canActivate: [AuthGuard, StoreGuard] },
+      { path: 'BOEview/:id/:PurchaseId', component: BoeviewComponent, canActivate: [AuthGuard, StoreGuard] },
+
 
       //Goods Receipt
       { path: 'Goodsreceipt/:id', component: GoodsReceiptComponent, canActivate: [AuthGuard, StoreGuard] },
@@ -187,8 +194,8 @@ const appRoutes: Routes = [
       // Sales module
       { path: 'Salesorder/:id', component: SalesorderComponent, canActivate: [AuthGuard, StoreGuard] },
       { path: 'Salesorderunsellable/:id', component: SalesorderunsellableComponent, canActivate: [AuthGuard, StoreGuard] },
-      { path: 'Salesorderlist', component: SalesorderlistComponent, canActivate: [AuthGuard, StoreGuard] },      
-      { path: 'Salesorderapproval/:id', component: SalesorderapprovalComponent, canActivate: [AuthGuard, StoreGuard]  },
+      { path: 'Salesorderlist', component: SalesorderlistComponent, canActivate: [AuthGuard, StoreGuard] },
+      { path: 'Salesorderapproval/:id', component: SalesorderapprovalComponent, canActivate: [AuthGuard, StoreGuard] },
       { path: 'Salesorderapprovallist', component: SalesorderapprovallistComponent, canActivate: [AuthGuard, StoreGuard] },
       { path: 'Salesshipment/:id', component: SalesShipmentComponent, canActivate: [AuthGuard, StoreGuard] },
       { path: 'Salesshipmentlist', component: SalesShipmentListComponent, canActivate: [AuthGuard, StoreGuard] },

@@ -278,8 +278,14 @@ export class SalesorderComponent implements OnInit {
       }
     });
 
+    this.orderMinDate = moment().add(0, 'days');
+    var end = moment().endOf('day');
+    var currentend = new Date();
+    var differ = end.diff(currentend, 'minutes');
+    this.OrderMaxDate = moment().add(differ, 'minutes');
+
     this.salesForm = this.fb.group({
-      OrderDate: ['', [Validators.required]],
+      OrderDate: [currentend, [Validators.required]],
       CustomerID: [0, [Validators.min(1)]],
       InventoryType: ['Sellable', [Validators.required]],
       PaymentTermsID: [0, [Validators.min(1)]],
@@ -294,8 +300,11 @@ export class SalesorderComponent implements OnInit {
       IsDiscountApplicable: ['',],
 
     });
+
   }
 
+  orderMinDate: moment.Moment;
+  OrderMaxDate: moment.Moment;
   public onCustomerChange(customerID: number): void {
     console.log("customerID=" + customerID);
     this.objSalesOrder.CustomerID = customerID;

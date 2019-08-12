@@ -256,7 +256,7 @@
         </ng-template>
       </kendo-grid-column>
 
-      <kendo-grid-column field="Rate" title="Rate" width="120">
+      <kendo-grid-column field="Rate" title="Rate per unit without taxes" width="220">
         <ng-template kendoGridEditTemplate let-column="column" let-formGroup="itemFormGroup" let-isNew="isNew">
           <kendo-numerictextbox #ntb="popupAnchor" popupAnchor (valueChange)="onRateChanged($event)"
             [formControl]="itemFormGroup.get(column.field)" format="0.##" maxlength="15"></kendo-numerictextbox>

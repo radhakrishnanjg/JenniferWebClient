@@ -42,6 +42,9 @@ import { PurchaselistComponent } from './purchaselist/purchaselist.component';
 import { PurchaseComponent } from './purchase/purchase.component';
 import { PurchaseviewComponent } from './purchaseview/purchaseview.component';
 import { PoviewComponent } from './poview/poview.component';
+import { BoeComponent } from './boe/boe.component';
+import { BoelistComponent } from './boelist/boelist.component';
+import { BoeviewComponent } from './boeview/boeview.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -91,6 +94,9 @@ import { PoviewComponent } from './poview/poview.component';
     PurchaseComponent,
     PurchaseviewComponent,
     PoviewComponent,
+    BoeComponent,
+    BoelistComponent,
+    BoeviewComponent,
   ],
   providers: [
     // { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

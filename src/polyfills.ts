@@ -10,3 +10,8 @@ import 'web-animations-js';
 // import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 // import { AppModule } from './app/app.module';
 // platformBrowserDynamic().bootstrapModule(AppModule);
+
+
+
+
+import '@webcomponents/webcomponentsjs/custom-elements-es5-adapter.js'; 

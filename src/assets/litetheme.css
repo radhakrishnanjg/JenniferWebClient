@@ -2984,7 +2984,7 @@ sto {
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: #a7cac3;
+    background-color: #dee8ef;
     -webkit-transition: .4s;
     transition: .4s;
   }
@@ -3456,7 +3456,9 @@ table.dataTable tbody th, table.dataTable tbody td:hover {
     font-family: Roboto,sans-serif;
     color: inherit;
     border-radius: 4px;
-    width:410px !important;
+    min-width:235px;
+    max-width: 410px;
+    /* width:410px !important; */
     padding: 4px;
     margin-top: -10px;
     overflow: hidden;
@@ -3469,6 +3471,18 @@ table.dataTable tbody th, table.dataTable tbody td:hover {
     left: auto;
     right: auto;
     display: inline-table;
+}
+.md-drppicker .calendar-time .select .select-item {
+    display: inline-block;
+    width: auto;
+    position: relative;
+    font-family: inherit;
+    background-color: transparent;
+    padding: 5px 5px 5px 0 !important;
+    font-size:12px !important;
+    border-radius: 0;
+    border: none;
+    border-bottom: 1px solid rgba(0,0,0,.12);
 }
 /**SELLECT BOX**/
 select {
@@ -3582,8 +3596,11 @@ select {
     z-index: 10000;
 }
 /**KINDO UI STYLES OVERRIGHT**/
+button.k-button.k-grid-add-command {
+    background: #ccc;
+}
 .k-gantt-toolbar .k-button, .k-gantt>.k-header .k-link, .k-gantt>.k-header li, .k-grid .k-header .k-button, .k-scheduler .k-header .k-button, .k-scheduler .k-header .k-link, .k-scheduler .k-header li, .km-pane-wrapper .k-header .k-button {
-    color:#578278;
+    color:#FFF;
     background-color: #578278;
     border-color: #578278;
     box-shadow: none;
@@ -3618,7 +3635,7 @@ select {
     border-radius: 0 !important;
 }
 .md-drppicker td.available:hover, .md-drppicker th.available:hover {
-    background-color:#578278  !important;
+    background-color:#b3c5c1  !important;
     color: #FFF !important;
     font-weight: bold;
     border-color: transparent;
@@ -3639,8 +3656,8 @@ select {
     color: #fff;
 } 
 .md-drppicker .ranges ul li button.active {
-    background-color:#d24f6d !important;
-    color: #fff;
+    background-color: #e3e8ea !important;
+    color: #080808 !important;
 }
 .md-drppicker .btn.btn-default {
     color: #fff !important; background-color: #d24f6d !important;
@@ -3656,8 +3673,10 @@ select {
     border-width: 0;
     outline: 0;
     padding: 0px 3px !important;
-     font-size: 11px; text-transform: capitalize !important;
-     line-height: 28px !important;
+     font-size: 11px; 
+     text-transform: capitalize !important;
+     line-height: 22px !important;
+     width: 100%;
     cursor: pointer;
     border-radius: 0px;
     box-shadow:0 1px 4px rgba(0, 0, 0, 0.12) !important;
@@ -3679,7 +3698,7 @@ select {
     background: 0 0;
     border: none;
     text-align: left;
-    font-size: 10px;
+    font-size:9px;
     cursor: pointer;
     border-radius: 2px;
 }
@@ -3726,10 +3745,7 @@ label.fa.fa-calendar {
     top: 8px;
     z-index: 111;
 } */
-/****/
-li.list-group-item:hover {
-    background-color: #f5f5f5;
-}
+/****/ 
 .dataTables_wrapper .dataTables_info {
     clear: both;
     float: left;
@@ -3757,4 +3773,37 @@ td.sorting_1 img {
     padding: 0px 0px;
     margin: 0px auto;
     text-align: center;
+}
+/**list-group-item Styles**/
+.list-group-item {
+    position: relative;
+    display: block;
+    padding:2px 2px !important;
+    margin-bottom: -1px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    font-size: 11px;
+    line-height: 14px;
+    font-style: italic;
+}
+li.list-group-item:hover {
+    background-color: #f5f5f5;
+}
+.list-group-item:first-child {
+    border-top-left-radius: 0px !important;
+    border-top-right-radius: 0px !important;
+}
+.list-group-item:last-child {
+    margin-bottom: 0;
+    border-bottom-right-radius: 0px !important;
+    border-bottom-left-radius: 0px !important;
+}
+.list-group-item.active, .list-group-item.active:focus, .list-group-item.active:hover {
+    font-style: normal;
+    z-index: 2;
+    font-weight: bold;
+    color: #fff;
+    background-color: #ce335e !important;
+    text-transform: uppercase;
+    border-color: #ce335e !important;
 }

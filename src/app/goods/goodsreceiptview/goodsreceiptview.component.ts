@@ -17,14 +17,14 @@ import { environment } from '../../../environments/environment';
 export class GoodsreceiptviewComponent implements OnInit {
   obj: GoodsReceipt;
   identity: number = 0;
-  lstinward: Goodsinward[]=[] as any;
+  lstinward: Goodsinward[] = [] as any;
   ItemDetails: GoodsReceiptDetail[];
-  dtOptions: DataTables.Settings = {}; 
-  InventorySellable : number = 0;
-  InventoryShortage : number = 0;
-  InventoryDamage : number = 0;
-  InventoryOthers : number = 0;
-  TotalReceived : number = 0; 
+  dtOptions: DataTables.Settings = {};
+  InventorySellable: number = 0;
+  InventoryShortage: number = 0;
+  InventoryDamage: number = 0;
+  InventoryOthers: number = 0;
+  TotalReceived: number = 0;
   constructor(
     public _goodsreceiptService: GoodsReceiptService,
     public _privateutilityService: PrivateutilityService,
@@ -62,11 +62,12 @@ export class GoodsreceiptviewComponent implements OnInit {
   filterGoodsInward(GRNDetailID: number) {
     this.lstinward = this.obj.lstInwards.filter(a => a.GRNDetailID == GRNDetailID);
     this.dtOptions = {
-      pagingType: 'full_numbers',
+      paging: false,
+      scrollY: '400px',
       "language": {
-        "search":'Filter',
+        "search": 'Filter',
       },
-    }; 
+    };
   }
 
 }

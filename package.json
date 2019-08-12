@@ -81,6 +81,7 @@
     "@types/jasminewd2": "~2.0.3",
     "@types/jquery": "^3.3.29",
     "@types/node": "~8.9.4",
+    "@webcomponents/webcomponentsjs": "^2.2.10",
     "codelyzer": "~4.2.1",
     "jasmine-core": "~2.99.1",
     "jasmine-spec-reporter": "~4.2.1",

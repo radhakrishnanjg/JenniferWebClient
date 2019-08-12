@@ -1,0 +1,273 @@
+<div class="row">
+  <div class="col-sm-6 col-lg-6">
+    <h3>
+      Bill Of Entry
+    </h3>
+  </div>
+  <div class="col-sm-6 col-lg-6">
+    <div class="pull-right hidden-xs">
+      <ol class="breadcrumb" id="dynamicbreadcrumb">
+        <li>
+          <i class="fa fa-shopping-cart"></i> <span> Procurements</span>
+        </li>
+        <li>
+          <i class="fa fa-newspaper-o"></i> <span> BOE </span>
+        </li>
+        <li class="active">
+          <i class="fa fa-save"></i>
+          Save
+        </li>
+      </ol>
+    </div>
+  </div>
+</div>
+<form autocomplete="off" [formGroup]=" boeform" (ngSubmit)="SaveData()" class="form-group">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <div class="row">
+        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+          <span class="spanheader">
+            {{panelTitle}}
+          </span>
+        </div>
+        <div class="col-sm-6">
+        </div>
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 ">
+          <div class="pull-right">
+            <button class="btn btn-primary" routerLink="/BOElist" title="Back">
+              Back
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="panel-body">
+      <span class="groupspanheader"> Purchase Invoice Details </span>
+      <div class="row">
+        <div class="col-md-3 col-xs-12">
+          <div class="form-group">
+            <label class="control-label"> PO No. </label>
+            <div class="">
+              {{obj?.PONumber}}
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 col-xs-12">
+          <div class="form-group">
+            <label class="control-label"> Purchase Invoice No. </label>
+            <div class="">
+              {{obj?.InvoiceNumber}}
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-3 col-xs-12">
+          <div class="form-group">
+            <label class="control-label">Invoice Date </label>
+            <div class="">
+              {{obj?.InvoiceDate | date :"MM-dd-yyyy HH:mm"}}
+            </div>
+          </div>
+        </div>
+
+
+        <div class="col-md-2 col-xs-12">
+          <div class="form-group">
+            <label class="control-label">Vendor Warehouse <span class="mandantory">*</span></label>
+            <div class="">
+              {{obj?.WarehouseName}}
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-1 col-xs-12">
+          <div class="form-group">
+            <label class="control-label"> PI Value </label>
+            <div class="">
+              <b>
+                {{obj?.PIValue | currency: 'INR' }}
+              </b>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="panel-body">
+      <div class="groupspanheader"> BOE Details </div>
+      <div class="row">
+        <div class="col-md-3 col-xs-12">
+          <div class="form-group" [ngClass]="{'has-error': formErrors.BOENumber}">
+            <label class="control-label" for="BOENumber">BOE Number <span class="mandantory">*</span></label>
+            <div class="">
+              <input id="BOENumber" type="text" class="form-control" formControlName="BOENumber"
+                (blur)="logValidationErrors()" maxlength="20">
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrors.BOENumber">
+                  {{formErrors.BOENumber}}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="col-md-3 col-xs-12">
+          <div class="form-group" [ngClass]="{'has-error': formErrors.BOEDate}">
+            <label class="control-label" for="BOEDate">BOE Date<span class="mandantory">*</span></label>
+            <div class="">
+              <div class='input-group date'>
+                <input id="BOEDate" type="text" ngxDaterangepickerMd [timePicker]="true"
+                  (datesUpdated)="BOEDateUpdated($event)" [singleDatePicker]="true"
+                  [locale]="{format: 'MM-DD-YYYY HH:mm'}" [autoApply]="true" class="form-control"
+                  formControlName="BOEDate" (blur)="logValidationErrors()" maxlength="16" [(ngModel)]="BOEDate">
+                <label class="fa fa-calendar"></label>
+              </div>
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrors.BOEDate">
+                  {{formErrors.BOEDate}}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-3 col-xs-12">
+          <div class="form-group" [ngClass]="{'has-error': formErrors.PortCode}">
+            <label class="control-label" for="PortCode"> Port Code<span class="mandantory">*</span></label>
+            <div class="">
+              <input id="PortCode" type="text" class="form-control" formControlName="PortCode"
+                (blur)="logValidationErrors()" maxlength="6">
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrors.PortCode">
+                  {{formErrors.PortCode}}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-12 col-xs-12">
+          <div class="form-group">
+            <label class="control-label" for="ReferenceDetail">Reference Details </label>
+            <div class="">
+              <input id="ReferenceDetail" type="text" class="form-control" formControlName="ReferenceDetail"
+                (blur)="logValidationErrors()" maxlength="500">
+              <div class="help-block-rk">
+                <span class="help-block">
+
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <!-- Editable table -->
+        <div class="col-md-12 col-xs-12">
+          <div class="pull-left">
+            <h3 class="">Invoice Item Details</h3>
+          </div>
+          <div class="pull-right">
+            <!-- <button class="btn btn-success" (click)="Filterzero()" type="button" title="Filter Zero Values">
+              Filter
+            </button>
+            &nbsp;
+            <button class="btn btn-success" (click)="ShowAll()" type="button" title="Show All">
+              Show All
+            </button> -->
+          </div>
+          <table class="table table-bordered table-condensed" *ngIf="lstItem && lstItem.length">
+            <thead>
+              <tr>
+                <th class="text-center">HSN Code</th>
+                <th class="text-center">Duty Type</th>
+                <th class="text-center">Is GST Applicable?</th>
+                <th class="text-center">Duty Percentage (%)</th>
+                <th class="text-center">Duty Amount</th>
+
+                <th class="text-center">IGST Rate</th>
+                <th class="text-center">IGST Value</th>
+                <th class="text-center">Total Value</th>
+              </tr>
+            </thead>
+            <tr *ngFor="let person of lstItem; let id = index">
+
+              <td *ngIf="person.IsView && mergecells(person.HSNCode,id)">
+                <b> {{person.HSNCodeGST}}</b>
+              </td>
+              <td *ngIf="person.IsView && !mergecells(person.HSNCode,id)">
+
+              </td>
+              <td *ngIf="person.IsView">
+                {{person.DutyType }}
+              </td>
+              <td class="text-center" *ngIf="person.IsView">
+                <div *ngIf="(person.IsGSTApplicable ==true )">
+                  <input type="checkbox" checked="checked" [disabled]="person.IGSTRate==0"
+                    (input)="updateListIsGST(id,'IsGSTApplicable',$event.target.checked)">
+                </div>
+                <div *ngIf="(person.IsGSTApplicable !=true)">
+                  <input type="checkbox" [disabled]="person.IGSTRate==0"
+                    (input)="updateListIsGST(id,'IsGSTApplicable',$event.target.checked)">
+                </div>
+              </td>
+              <td class=" text-center" *ngIf="person.IsView">
+                {{person.DutyPercentage | number :'1.2-2' }}
+              </td>
+              <td class="text-right" *ngIf="person.IsView">
+                <input type="number" min="0" step="1" class="form-control" max="100000"
+                  (input)="updateList(id,'DutyAmount',$event.target.value)" value="{{person.DutyAmount}}">
+              </td>
+              <td class="text-right" *ngIf="person.IsView">
+                {{person.IGSTRate }}
+              </td>
+              <td class="text-right" *ngIf="person.IsView">
+                {{person.IGSTValue | currency: 'INR'  }}
+              </td>
+              <td class="text-right" *ngIf="person.IsView && mergecells(person.HSNCode,id)">
+                <b>{{ getSum(person.HSNCode) | currency: 'INR'}} </b>
+              </td>
+              <td *ngIf=" !mergecells(person.HSNCode,id)">
+
+              </td>
+            </tr>
+            <tr>
+              <th>Total</th>
+              <th> </th>
+              <th> </th>
+              <th> </th>
+              <th class="text-right"> {{ TotalDutyAmount | currency: 'INR'}}</th>
+              <th> </th>
+              <th class="text-right"> {{ TotalIGSTValue | currency: 'INR'}}</th>
+              <th class="text-right">
+                {{ TotalTotalValue | currency: 'INR'}}
+              </th>
+            </tr>
+          </table>
+        </div>
+
+
+      </div>
+
+    </div>
+    <div class="panel-footer">
+      <!-- <div class="pull-left btn-toolbar">
+        <button class="btn btn-primary" (click)="Download(obj?.PurchaseID)" title="Download SKU Wise BOE">
+          Download SKU Wise BOE
+        </button>
+      </div> -->
+      <div class="pull-right btn-toolbar">
+        <button class="btn btn-primary" routerLink="/BOElist" title="Cancel">
+          Cancel
+        </button>
+        <button class="btn btn-success" type="submit" prevent-double-submit [disabled]=" boeform.invalid">
+
+          Save
+        </button>
+      </div>
+      <div class="clearfix"></div>
+    </div>
+  </div>
+
+</form>

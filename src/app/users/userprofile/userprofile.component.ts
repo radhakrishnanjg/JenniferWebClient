@@ -96,6 +96,7 @@ export class UserprofileComponent implements OnInit {
     this.obj.FirstName = this.profileForm.controls['FirstName'].value;
     this.obj.LastName = this.profileForm.controls['LastName'].value;
     this.obj.IsMailRequired = this.profileForm.controls['IsMailRequired'].value;
+    this.obj.ImagePathData = this.selectedFile;
     this._spinner.show();
     this.userService.profileUpdate(this.obj).subscribe(
       (data) => {
@@ -147,7 +148,7 @@ export class UserprofileComponent implements OnInit {
       return;
     } else {
       this._spinner.show();
-      this.obj.Filedata = this.selectedFile;
+      this.obj.ImagePathData = this.selectedFile;
       this.obj.FirstName = this.profileForm.controls['FirstName'].value;
       this.obj.LastName = this.profileForm.controls['LastName'].value;
       this.obj.IsMailRequired = this.profileForm.controls['IsMailRequired'].value;

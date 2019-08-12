@@ -97,7 +97,6 @@ export class UomlistComponent implements OnInit {
         }
       );
 
-
     this.SearchBy = '';
     this.SearchKeyword = '';
     this.onLoad(this.SearchBy, this.SearchKeyword, this.Searchaction);
@@ -108,7 +107,7 @@ export class UomlistComponent implements OnInit {
     this.uomForm = this.fb.group({
       UOM: ['', [Validators.required]],
       Description: ['', [Validators.required]],
-      MultiplierValue: [1, [Validators.required, Validators.min(0), Validators.max(100000), Validators.pattern("^[0-9]+(.[0-9]{0,2})?$"), Validators.min(0.01)]],
+      MultiplierValue: [1, [Validators.required, Validators.min(0.01), Validators.max(100000), Validators.pattern("^[0-9]+(.[0-9]{0,2})?$")]],
       IsActive: [0,],
     });
   }
@@ -132,7 +131,7 @@ export class UomlistComponent implements OnInit {
     this.uomForm = this.fb.group({
       UOM: ['', [Validators.required, Validators.maxLength(10)]],
       Description: ['', [Validators.required, Validators.maxLength(20)]],
-      MultiplierValue: [1, [Validators.required, Validators.pattern("^[0-9]+(.[0-9]{0,2})?$"), Validators.min(0.01)]],
+      MultiplierValue: [1, [Validators.required, Validators.min(0.01), Validators.max(100000), Validators.pattern("^[0-9]+(.[0-9]{0,2})?$")]],
       IsActive: [0,],
     });
     this.panelTitle = "Add New UOM";
@@ -153,7 +152,7 @@ export class UomlistComponent implements OnInit {
     this.uomForm = this.fb.group({
       UOM: ['', [Validators.required, Validators.maxLength(10)]],
       Description: ['', [Validators.required, Validators.maxLength(20)]],
-      MultiplierValue: ['', [Validators.required, Validators.pattern("^[0-9]+(.[0-9]{0,2})?$"), Validators.min(0.01)]],
+      MultiplierValue: [1, [Validators.required, Validators.min(0.01), Validators.max(100000), Validators.pattern("^[0-9]+(.[0-9]{0,2})?$")]],
       IsActive: [0,],
     });
     this.panelTitle = "Edit UOM";

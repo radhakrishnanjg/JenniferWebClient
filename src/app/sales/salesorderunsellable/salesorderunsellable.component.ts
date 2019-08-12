@@ -220,10 +220,17 @@ export class SalesorderunsellableComponent implements OnInit {
       }
     );
 
+
+    this.orderMinDate = moment().add(0, 'days');
+    var end = moment().endOf('day');
+    var currentend = new Date();
+    var differ = end.diff(currentend, 'minutes');
+    this.orderMaxDate = moment().add(differ, 'minutes');
+
     this.salesForm = this.fb.group({
       CustomerID: [0, [Validators.min(1)]],
       CustomerWarehouseID: [0, [Validators.min(1)]],
-      OrderDate: ['', [Validators.required]],
+      OrderDate: [currentend, [Validators.required]],
 
 
       IsBillTo_SameAs_ShipTo: ['',],
@@ -240,10 +247,10 @@ export class SalesorderunsellableComponent implements OnInit {
     });
     this.ispickitems = false;
     this.isadditems = false;
-
     localStorage.removeItem("Unsellableqty");
   }
-
+  orderMinDate: moment.Moment;
+  orderMaxDate: moment.Moment;
   public onCustomerChange(customerID: number): void {
     console.log("customerID=" + customerID);
     this.objSalesOrder.CustomerID = customerID;
@@ -376,9 +383,12 @@ export class SalesorderunsellableComponent implements OnInit {
             this.ispickitems = true;
             this.isadditems = false;
 
-            this.dtOptions = { 
+            this.dtOptions = {
               paging: false,
-              scrollY: '400px'
+              scrollY: '400px',
+              "language": {
+                "search": 'Filter',
+              },
             };
           }
           this._spinner.hide();
@@ -466,6 +476,7 @@ export class SalesorderunsellableComponent implements OnInit {
         this.objSalesorderItem = new SalesorderItem();
         this.objSalesorderItem.ItemID = element;
         this.objSalesorderItem.ItemCode = lstunsellqty.filter(a => a.ItemID == element)[0].ItemCode;
+        this.objSalesorderItem.ItemName = lstunsellqty.filter(a => a.ItemID == element)[0].ItemName;
         this.objSalesorderItem.CustomerItemCode = lstunsellqty.filter(a => a.ItemID == element)[0].CustomerItemCode;
         let wa: number = 0;
         let DiscountAmount: number = 0;
@@ -488,13 +499,9 @@ export class SalesorderunsellableComponent implements OnInit {
         this.objSalesorderItem.TotalValue = (this.objSalesorderItem.Qty * this.objSalesorderItem.SellingPrice) -
           this.objSalesorderItem.Discountamt + this.objSalesorderItem.TaxAmount;
         this.objSalesOrder.lstItem.push(this.objSalesorderItem);
-        //total in footer
-        // this.TotalCaseSize = this.objSalesOrder.lstItem.reduce((acc, a) => acc + a.Units, 0);
-        // this.TotalMultiplierValue = this.objSalesOrder.lstItem.reduce((acc, a) => acc + a.MultiplierValue, 0);
         this.TotalQty = this.objSalesOrder.lstItem.reduce((acc, a) => acc + a.Qty, 0);
         this.TotalSellingPrice = this.objSalesOrder.lstItem.reduce((acc, a) => acc + a.SellingPrice, 0);
         this.TotalMRP = this.objSalesOrder.lstItem.reduce((acc, a) => acc + a.MRP, 0);
-        // this.TotalShippingCharges = this.objSalesOrder.lstItem.reduce((acc, a) => acc + a.ShippingCharges, 0);
         this.TotalDiscountamt = this.objSalesOrder.lstItem.reduce((acc, a) => acc + a.Discountamt, 0);
         this.TotalTaxAmount = this.objSalesOrder.lstItem.reduce((acc, a) => acc + a.TaxAmount, 0);
         this.TotalTotalAmount = this.objSalesOrder.lstItem.reduce((acc, a) => acc + a.TotalValue, 0);
@@ -556,9 +563,7 @@ export class SalesorderunsellableComponent implements OnInit {
     this.objSalesOrder.BilledTo = this.BilledTo;
     this.objSalesOrder.InventoryType = this.salesForm.controls['InventoryType'].value;
     this.objSalesOrder.PaymentTermsID = this.salesForm.controls['PaymentTermsID'].value;
-    this.objSalesOrder.DispatchThrough = this.salesForm.controls['DispatchThrough'].value;
-    // this.objSalesOrder.BuyerOrderNo = this.salesForm.controls['BuyerOrderNo'].value;
-    // this.objSalesOrder.DeliveryNote = this.salesForm.controls['DeliveryNote'].value;
+    this.objSalesOrder.DispatchThrough = this.salesForm.controls['DispatchThrough'].value; 
 
     this.objSalesOrder.TransactionType = this.customerList.filter(x => { return x.CustomerID == this.salesForm.controls['CustomerID'].value })[0].CustomerType;
     this.objSalesOrder.TermsOfDelivery = this.salesForm.controls['TermsOfDelivery'].value;

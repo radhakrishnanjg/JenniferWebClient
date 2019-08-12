@@ -19,15 +19,17 @@ export class SalesinvoiceComponent implements OnInit {
   //   "SampleMultipleStringParameter": ["Parameter1", "Parameter2"]
   //   };
   //http://crossborder/Reports/report/Reports/SalesInvoice/SalesInvoice
-  reportServer: string = 'http://crossborder/Reports';
-  reportUrl: string = 'report/Reports/SalesInvoice/SalesInvoice';
+  //http://crossborder/Reports/report/Reports/SalesInvoice/SalesInvoice?PLNum=2&Store=16
+  reportServer: string = 'http://localhost/Reports';
+  //reportUrl: string = 'Reports/SalesInvoice/SalesInvoice?PLNum=2&Store=16';
+  reportUrl: string = 'report/Reports/Test';
   parameters: any = {
   };
   showParameters: string = "true";
 
   language: string = "en-us";
-  width: number = 100;
-  height: number = 100;
+  width: number = 700;
+  height: number = 700;
   toolbar: string = "true";
 
   PickListNumber: number = 0;
@@ -39,16 +41,16 @@ export class SalesinvoiceComponent implements OnInit {
 
   ngOnInit() {
 
-    let currentUser = this.authenticationService.currentUserValue;
-    let CompanyDetailID = currentUser.CompanyDetailID;
+    // let currentUser = this.authenticationService.currentUserValue;
+    // let CompanyDetailID = currentUser.CompanyDetailID;
 
-    this.aroute.paramMap.subscribe(params => {
-      let PickListNumber = +params.get('id');
-      this.parameters = {
-        PickListNumber, CompanyDetailID
-      }
+    // this.aroute.paramMap.subscribe(params => {
+    //   let PickListNumber = +params.get('id');
+    //   this.parameters = {
+    //     PickListNumber, CompanyDetailID
+    //   }
 
-    });
+    // });
   }
 
 }

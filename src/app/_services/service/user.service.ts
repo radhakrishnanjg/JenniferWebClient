@@ -1,5 +1,5 @@
 import { Injectable, } from '@angular/core';
-import { HttpClient, HttpErrorResponse, } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { Observable, throwError, } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -9,7 +9,7 @@ import { NotFoundError } from './../../common/not-found-error';
 import { AppError } from './../../common/app-error';
 
 import { AuthenticationService } from './authentication.service';
-import { IUser, IChangepassword, CompanyRegister, Userpermission, Dropdown ,Result} from '../model/index';
+import { IUser, IChangepassword, CompanyRegister, Userpermission, Dropdown, Result } from '../model/index';
 import { environment } from '../../../environments/environment';
 @Injectable({ providedIn: 'root' })
 
@@ -55,14 +55,14 @@ export class UserService {
     }
 
     public getFullName(Email: string): Observable<IUser> {
-        return this.httpClient.get<IUser>(environment.baseUrl + `User/GetFullName?Email=` +  encodeURIComponent(Email))
+        return this.httpClient.get<IUser>(environment.baseUrl + `User/GetFullName?Email=` + encodeURIComponent(Email))
             .pipe(catchError(this.handleError));
     }
 
     public add(user: IUser): Observable<Result> {
         let currentUser = this.authenticationService.currentUserValue;
         user.CompanyID = currentUser.CompanyID;
-        user.LoginId = currentUser.UserId;
+        user.LoginId = currentUser.UserId; 
         return this.httpClient.post<Result>(environment.baseUrl + `User/Create`, user)
             .pipe(catchError(this.handleError));
     }
@@ -70,7 +70,7 @@ export class UserService {
     public update(user: IUser): Observable<Result> {
         let currentUser = this.authenticationService.currentUserValue;
         user.CompanyID = currentUser.CompanyID;
-        user.LoginId = currentUser.UserId;
+        user.LoginId = currentUser.UserId; 
         return this.httpClient.post<Result>(environment.baseUrl + `User/Update`, user)
             .pipe(catchError(this.handleError));
     }
@@ -92,27 +92,32 @@ export class UserService {
     }
 
     public profileUpdate(user: IUser): Observable<Result> {
-        let currentUser = this.authenticationService.currentUserValue; 
+        let currentUser = this.authenticationService.currentUserValue;
         user.LoginId = currentUser.UserId;
+        let headers = new HttpHeaders();
+        headers.append('Content-Type', 'multipart/form-data');
+        let options = {
+            headers: headers
+        }
         return this.httpClient.post<Result>(environment.baseUrl + `User/ProfileUpdate`, user)
             .pipe(catchError(this.handleError));
     }
 
-    public updateImage(user: IUser): Observable<Result> { 
+    public updateImage(user: IUser): Observable<Result> {
         let frmData = new FormData();
         frmData.append("FirstName", user.FirstName);
-        frmData.append("LastName", user.LastName); 
-        frmData.append("IsMailRequired", user.IsMailRequired? "True":"False");
+        frmData.append("LastName", user.LastName);
+        frmData.append("IsMailRequired", user.IsMailRequired ? "True" : "False");
         frmData.append("LoginId", user.UserId.toString());
-        frmData.append("ImageData", user.Filedata, user.Filedata.name);
+        frmData.append("ImageData", user.ImagePathData, user.ImagePathData.name);
         return this.httpClient.post<Result>(environment.baseUrl + `User/UpdateImage`, frmData)
-          .pipe(catchError(this.handleError));
-      }
+            .pipe(catchError(this.handleError));
+    }
 
     //#region Company Register
 
     public companySearch(Search: string): Observable<CompanyRegister[]> {
-        return this.httpClient.get<CompanyRegister[]>(environment.baseUrl + `User/CompanySearch?Search=` +encodeURIComponent(Search)   )
+        return this.httpClient.get<CompanyRegister[]>(environment.baseUrl + `User/CompanySearch?Search=` + encodeURIComponent(Search))
             .pipe(catchError(this.handleError));
     }
 

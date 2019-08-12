@@ -20,9 +20,12 @@ const createFormGroup = dataItem => new FormGroup({
   'Units': new FormControl(dataItem.Units),
   'UOM': new FormControl(dataItem.UOMID),
   'Rate': new FormControl(dataItem.Rate),
-  // 'ShippingCharges': new FormControl(dataItem.ShippingCharges),
-  'MRP': new FormControl(dataItem.MRP),
   'DiscountValue': new FormControl(dataItem.DiscountValue),
+  'TaxNature': new FormControl(dataItem.TaxNature),
+  'TaxRate': new FormControl(dataItem.TaxRate),
+  'TaxAmount': new FormControl(dataItem.TaxAmount),
+  'DirectCost': new FormControl(dataItem.DirectCost),
+
   'TotalAmount': new FormControl(dataItem.TotalAmount)
 });
 
@@ -323,7 +326,9 @@ export class StoComponent implements OnInit {
       {
         ItemCode: this.itemDetail.ItemCode,
         ItemName: this.itemDetail.ItemName,
-        CustomerItemCode: this.itemDetail.CustomerItemCode
+        CustomerItemCode: this.itemDetail.CustomerItemCode,
+        TaxRate: this.itemDetail.TaxRate,
+        TaxNature: this.objSto.TaxNature,
       });
     this.objStoItem.ItemID = itemID;
     let STODate = this.stoForm.controls['STODate'].value.startDate._d.toLocaleString();
@@ -338,11 +343,9 @@ export class StoComponent implements OnInit {
           if (data != null) {
             this.Rate = data['SellingPrice'];
             this.itemFormGroup.controls['Rate'].setValue(this.Rate);
-            //this.itemFormGroup.controls['MRP'].setValue(data['MRP']);
             let Units = this.itemFormGroup.get("Units").value;
             let MultiplierValue = this.objStoItem.MultiplierValue;
             let Qty = Units * MultiplierValue;
-            //let ShippingCharges = this.itemFormGroup.get("ShippingCharges").value;
             if (this.IsDiscountApplicable) {
               this._spinner.show();
 
@@ -354,7 +357,12 @@ export class StoComponent implements OnInit {
                       //this.objStoItem.DiscountID = data11['DiscountID'];
                       let DiscountAmount = this.Rate * this.DisCountPer / 100 * Qty;
                       this.itemFormGroup.controls['DiscountValue'].setValue(DiscountAmount);
-                      this.itemFormGroup.controls['TotalAmount'].setValue((Qty * this.Rate) - DiscountAmount);
+                      let TaxRate = this.itemFormGroup.get("TaxRate").value;
+                      let DirectCost = this.Rate * Qty;
+                      let TaxAmount = DirectCost * (TaxRate / 100);
+                      this.itemFormGroup.controls['DirectCost'].setValue(DirectCost);
+                      this.itemFormGroup.controls['TaxAmount'].setValue(TaxAmount);
+                      this.itemFormGroup.controls['TotalAmount'].setValue(TaxAmount + (Qty * this.Rate) - DiscountAmount);
                     }
                     this._spinner.hide();
                   },
@@ -364,7 +372,12 @@ export class StoComponent implements OnInit {
                 );
             }
             else {
-              this.itemFormGroup.controls['TotalAmount'].setValue((Qty * this.Rate) - 0);
+              let TaxRate = this.itemFormGroup.get("TaxRate").value;
+              let DirectCost = this.Rate * Qty;
+              let TaxAmount = DirectCost * (TaxRate / 100);
+              this.itemFormGroup.controls['DirectCost'].setValue(DirectCost);
+              this.itemFormGroup.controls['TaxAmount'].setValue(TaxAmount);
+              this.itemFormGroup.controls['TotalAmount'].setValue(TaxAmount + (Qty * this.Rate) - 0);
             }
           }
           else {
@@ -386,11 +399,17 @@ export class StoComponent implements OnInit {
     else {
       this.objStoItem.Qty = Units * this.objStoItem.MultiplierValue;
       let Ratenew = this.Rate * Units * this.objStoItem.MultiplierValue;
-      //  let ShippingCharges = this.itemFormGroup.get("ShippingCharges").value;
+
       let DiscountValue = (this.Rate * this.DisCountPer / 100 * Units * this.objStoItem.MultiplierValue);
-      let TotalAmountNew = Ratenew - DiscountValue;
+
+      let TaxRate = this.itemFormGroup.get("TaxRate").value;
+      let DirectCost = Ratenew;
+      let TaxAmount = DirectCost * (TaxRate / 100);
+      let TotalAmountNew = TaxAmount + DirectCost - DiscountValue;
       this.itemFormGroup.patchValue(
         {
+          DirectCost: DirectCost,
+          TaxAmount: TaxAmount,
           DiscountValue: DiscountValue,
           TotalAmount: TotalAmountNew
         });
@@ -404,12 +423,16 @@ export class StoComponent implements OnInit {
       this.objStoItem.MultiplierValue = uom.MultiplierValue;
       let Units = this.itemFormGroup.get("Units").value;
       this.objStoItem.Qty = Units * this.objStoItem.MultiplierValue;
-      // let ShippingChargesnew = this.itemFormGroup.get("ShippingCharges").value;
       let Ratenew = this.Rate * Units * this.objStoItem.MultiplierValue;
       let DiscountValue = (this.Rate * this.DisCountPer / 100 * Units * this.objStoItem.MultiplierValue);
-      let TotalAmountNew = Ratenew - DiscountValue;
+      let TaxRate = this.itemFormGroup.get("TaxRate").value;
+      let DirectCost = Ratenew;
+      let TaxAmount = DirectCost * (TaxRate / 100);
+      let TotalAmountNew = TaxAmount + DirectCost - DiscountValue;
       this.itemFormGroup.patchValue(
         {
+          DirectCost: DirectCost,
+          TaxAmount: TaxAmount,
           DiscountValue: DiscountValue,
           TotalAmount: TotalAmountNew
         })
@@ -435,10 +458,12 @@ export class StoComponent implements OnInit {
       'Units': 0,
       'UOM': '',
       'Rate': 0,
-      //'ShippingCharges': 0,
-      'MRP': 0,
       'DiscountValue': 0,
-      'TotalAmount': 0
+      'TotalAmount': 0,
+      'TaxNature': '',
+      'TaxRate': 0,
+      'TaxAmount': 0,
+      'DirectCost': 0,
     });
 
     sender.addRow(this.itemFormGroup);
@@ -465,10 +490,13 @@ export class StoComponent implements OnInit {
     this.objStoItem.UOMID = item.UOM;
 
     this.objStoItem.Units = item.Units;
-    this.objStoItem.Rate = item.Rate;
-    //this.objStoItem.MRP = item.MRP;
+    this.objStoItem.Rate = item.Rate; 
     this.objStoItem.DiscountValue = item.DiscountValue;
     this.objStoItem.Qty = item.Units * this.objStoItem.MultiplierValue;
+    this.objStoItem.TaxNature = item.TaxNature;
+    this.objStoItem.TaxRate = item.TaxRate;
+    this.objStoItem.DirectCost = item.DirectCost;
+    this.objStoItem.TaxAmount = item.TaxAmount;
     this.objStoItem.TotalAmount = item.TotalAmount;
     let errorMessage = this.validateItem(this.objStoItem);
     if (errorMessage != null) {

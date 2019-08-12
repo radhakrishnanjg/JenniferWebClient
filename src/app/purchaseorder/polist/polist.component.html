@@ -44,7 +44,7 @@
           <div class="col-md-4 nopading_loct" *ngIf="(SearchBy=='ByPODate')">
             <input type="text" ngxDaterangepickerMd [(ngModel)]="selectedDateRange"
               class="serchcurv form-control btn-group col-xs-12 pointer"
-              style="width:300px;border:1px soloid #ccc !important; padding :3px;left:0px" [showCustomRangeLabel]="true"
+              style="border:1px soloid #ccc !important; padding :3px;left:0px" [showCustomRangeLabel]="true"
               [ranges]="Searchranges" [showCancel]="true" placeholder="Select please..."
               (ngModelChange)="onChange($event)" />
           </div>

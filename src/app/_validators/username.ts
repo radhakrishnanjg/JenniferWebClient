@@ -27,6 +27,7 @@ import { GoodsstorageService } from '../_services/service/goodsstorage.service';
 import { SalesShipmentService } from '../_services/service/sales-shipment.service';
 
 import { GoodsDisputeService } from '../_services/service/goods-dispute.service';
+import { BoeService } from '../_services/service/BOE.service';
 
 @Injectable({ providedIn: 'root' })
 export class UsernameValidator {
@@ -54,13 +55,14 @@ export class UsernameValidator {
     private _goodsstorageService: GoodsstorageService,
     private _goodsDisputeService: GoodsDisputeService,
     private _salesShipmentService: SalesShipmentService,
+    private _BoeService: BoeService,
   ) {
   }
 
 
   checkUsername(): AsyncValidatorFn {
     return (control: AbstractControl): Observable<{ [key: string]: any } | null> => {
-      return this._accountService.isEmailRegisterd(encodeURIComponent(control.value) )
+      return this._accountService.isEmailRegisterd(encodeURIComponent(control.value))
         .pipe(
           map(res => {
             if (res) {
@@ -72,7 +74,7 @@ export class UsernameValidator {
   }
   CheckUserEmail(UserID: number): AsyncValidatorFn {
     return (control: AbstractControl): Observable<{ [key: string]: any } | null> => {
-      return this._userService.isEmailRegisterd(UserID, encodeURIComponent(control.value) )
+      return this._userService.isEmailRegisterd(UserID, encodeURIComponent(control.value))
         .pipe(
           map(res => {
             if (res) {
@@ -85,8 +87,8 @@ export class UsernameValidator {
 
 
   checkCompanyName(): AsyncValidatorFn {
-    return (control: AbstractControl): Observable<{ [key: string]: any } | null> => { 
-      return this._accountService.ExistCompanyName(encodeURIComponent(control.value) )
+    return (control: AbstractControl): Observable<{ [key: string]: any } | null> => {
+      return this._accountService.ExistCompanyName(encodeURIComponent(control.value))
         .pipe(
           map(res => {
             if (res) {
@@ -99,7 +101,7 @@ export class UsernameValidator {
 
   existCompanyEmail(): AsyncValidatorFn {
     return (control: AbstractControl): Observable<{ [key: string]: any } | null> => {
-      return this._accountService.ExistCompanyEmail(encodeURIComponent(control.value) )
+      return this._accountService.ExistCompanyEmail(encodeURIComponent(control.value))
         .pipe(
           map(res => {
             if (res) {
@@ -112,7 +114,7 @@ export class UsernameValidator {
 
   existCompanyPrimaryGST(): AsyncValidatorFn {
     return (control: AbstractControl): Observable<{ [key: string]: any } | null> => {
-      return this._accountService.ExistCompanyPrimaryGST(encodeURIComponent(control.value) )
+      return this._accountService.ExistCompanyPrimaryGST(encodeURIComponent(control.value))
         .pipe(
           map(res => {
             if (res) {
@@ -125,7 +127,7 @@ export class UsernameValidator {
 
   existCompanySecondaryGST(): AsyncValidatorFn {
     return (control: AbstractControl): Observable<{ [key: string]: any } | null> => {
-      return this._accountService.ExistCompanySecondaryGST(encodeURIComponent(control.value) )
+      return this._accountService.ExistCompanySecondaryGST(encodeURIComponent(control.value))
         .pipe(
           map(res => {
             if (res) {
@@ -138,7 +140,7 @@ export class UsernameValidator {
 
   existStoreName(CompanyDetailID: number): AsyncValidatorFn {
     return (control: AbstractControl): Observable<{ [key: string]: any } | null> => {
-      return this._companydetailService.Exist(CompanyDetailID, encodeURIComponent(control.value) )
+      return this._companydetailService.Exist(CompanyDetailID, encodeURIComponent(control.value))
         .pipe(
           map(res => {
             if (res) {
@@ -151,7 +153,7 @@ export class UsernameValidator {
 
   existSellerID(CompanyDetailID: number): AsyncValidatorFn {
     return (control: AbstractControl): Observable<{ [key: string]: any } | null> => {
-      return this._companydetailService.ExistSellerID(CompanyDetailID, encodeURIComponent(control.value) )
+      return this._companydetailService.ExistSellerID(CompanyDetailID, encodeURIComponent(control.value))
         .pipe(
           map(res => {
             if (res) {
@@ -164,7 +166,7 @@ export class UsernameValidator {
 
   existLocationName(LocationID: number): AsyncValidatorFn {
     return (control: AbstractControl): Observable<{ [key: string]: any } | null> => {
-      return this._locationService.existLocationName(LocationID, encodeURIComponent(control.value) )
+      return this._locationService.existLocationName(LocationID, encodeURIComponent(control.value))
         .pipe(
           map(res => {
             if (res) {
@@ -177,7 +179,7 @@ export class UsernameValidator {
 
   existLocationGSTNumber(LocationID: number): AsyncValidatorFn {
     return (control: AbstractControl): Observable<{ [key: string]: any } | null> => {
-      return this._locationService.existGSTNumber(LocationID, encodeURIComponent(control.value) )
+      return this._locationService.existGSTNumber(LocationID, encodeURIComponent(control.value))
         .pipe(
           map(res => {
             if (res) {
@@ -190,7 +192,7 @@ export class UsernameValidator {
 
   existItemCode(ItemID: number): AsyncValidatorFn {
     return (control: AbstractControl): Observable<{ [key: string]: any } | null> => {
-      return this._itemService.existItemCode(ItemID, encodeURIComponent(control.value) )
+      return this._itemService.existItemCode(ItemID, encodeURIComponent(control.value))
         .pipe(
           map(res => {
             if (res) {
@@ -216,7 +218,7 @@ export class UsernameValidator {
 
   existBrand(identity: number): AsyncValidatorFn {
     return (control: AbstractControl): Observable<{ [key: string]: any } | null> => {
-      return this._brandService.exist(identity, encodeURIComponent(control.value) )
+      return this._brandService.exist(identity, encodeURIComponent(control.value))
         .pipe(
           map(res => {
             if (res) {
@@ -229,7 +231,7 @@ export class UsernameValidator {
 
   existProductGroup(identity: number): AsyncValidatorFn {
     return (control: AbstractControl): Observable<{ [key: string]: any } | null> => {
-      return this._productgroupService.exist(identity, encodeURIComponent(control.value) )
+      return this._productgroupService.exist(identity, encodeURIComponent(control.value))
         .pipe(
           map(res => {
             if (res) {
@@ -242,7 +244,7 @@ export class UsernameValidator {
 
   existMarketPlace(identity: number): AsyncValidatorFn {
     return (control: AbstractControl): Observable<{ [key: string]: any } | null> => {
-      return this._marketplaceService.exist(identity, encodeURIComponent(control.value) )
+      return this._marketplaceService.exist(identity, encodeURIComponent(control.value))
         .pipe(
           map(res => {
             if (res) {
@@ -255,7 +257,7 @@ export class UsernameValidator {
 
   existCustomerName(identity: number): AsyncValidatorFn {
     return (control: AbstractControl): Observable<{ [key: string]: any } | null> => {
-      return this._customerService.exist(identity, encodeURIComponent(control.value) )
+      return this._customerService.exist(identity, encodeURIComponent(control.value))
         .pipe(
           map(res => {
             if (res) {
@@ -268,7 +270,7 @@ export class UsernameValidator {
 
   existVendorName(identity: number): AsyncValidatorFn {
     return (control: AbstractControl): Observable<{ [key: string]: any } | null> => {
-      return this._vendorService.exist(identity, encodeURIComponent(control.value) )
+      return this._vendorService.exist(identity, encodeURIComponent(control.value))
         .pipe(
           map(res => {
             if (res) {
@@ -280,7 +282,7 @@ export class UsernameValidator {
   }
   existShipmentNumber(identity: number): AsyncValidatorFn {
     return (control: AbstractControl): Observable<{ [key: string]: any } | null> => {
-      return this._poshipmentService.existShipmentNumber(identity, encodeURIComponent(control.value) )
+      return this._poshipmentService.existShipmentNumber(identity, encodeURIComponent(control.value))
         .pipe(
           map(res => {
             if (res) {
@@ -293,7 +295,7 @@ export class UsernameValidator {
 
   existInvoiceNumber(identity: number): AsyncValidatorFn {
     return (control: AbstractControl): Observable<{ [key: string]: any } | null> => {
-      return this._invoiceService.exist(identity, encodeURIComponent(control.value) )
+      return this._invoiceService.exist(identity, encodeURIComponent(control.value))
         .pipe(
           map(res => {
             if (res) {
@@ -306,7 +308,7 @@ export class UsernameValidator {
 
   existContact_Email(identity: number): AsyncValidatorFn {
     return (control: AbstractControl): Observable<{ [key: string]: any } | null> => {
-      return this._contactService.exist(identity, encodeURIComponent(control.value) )
+      return this._contactService.exist(identity, encodeURIComponent(control.value))
         .pipe(
           map(res => {
             if (res) {
@@ -318,7 +320,7 @@ export class UsernameValidator {
   }
   existContact_Mobile(identity: number): AsyncValidatorFn {
     return (control: AbstractControl): Observable<{ [key: string]: any } | null> => {
-      return this._contactService.existMobile(identity, encodeURIComponent(control.value) )
+      return this._contactService.existMobile(identity, encodeURIComponent(control.value))
         .pipe(
           map(res => {
             if (res) {
@@ -331,7 +333,7 @@ export class UsernameValidator {
 
   validateInwardJenniferSerialNumber(identity: number): AsyncValidatorFn {
     return (control: AbstractControl): Observable<{ [key: string]: any } | null> => {
-      return this._goodsinwardService.exist(identity, encodeURIComponent(control.value) )
+      return this._goodsinwardService.exist(identity, encodeURIComponent(control.value))
         .pipe(
           map(res => {
             if (!res) {
@@ -345,7 +347,7 @@ export class UsernameValidator {
 
   existJenniferSerialNumber(identity: number): AsyncValidatorFn {
     return (control: AbstractControl): Observable<{ [key: string]: any } | null> => {
-      return this._goodsstorageService.exist(identity, encodeURIComponent(control.value) )
+      return this._goodsstorageService.exist(identity, encodeURIComponent(control.value))
         .pipe(
           map(res => {
             if (!res) {
@@ -358,7 +360,7 @@ export class UsernameValidator {
 
   existCourierTrackingID(identity: number): AsyncValidatorFn {
     return (control: AbstractControl): Observable<{ [key: string]: any } | null> => {
-      return this._salesShipmentService.existCourierTrackingID(identity, encodeURIComponent(control.value) )
+      return this._salesShipmentService.existCourierTrackingID(identity, encodeURIComponent(control.value))
         .pipe(
           map(res => {
             if (res) {
@@ -371,7 +373,7 @@ export class UsernameValidator {
 
   notexistCourierTrackingID(identity: number): AsyncValidatorFn {
     return (control: AbstractControl): Observable<{ [key: string]: any } | null> => {
-      return this._salesShipmentService.existCourierTrackingID(identity, encodeURIComponent(control.value) )
+      return this._salesShipmentService.existCourierTrackingID(identity, encodeURIComponent(control.value))
         .pipe(
           map(res => {
             if (!res) {
@@ -381,10 +383,10 @@ export class UsernameValidator {
         );
     };
   }
-  
+
   existJenniferSerialNumberinDispute(identity: number): AsyncValidatorFn {
     return (control: AbstractControl): Observable<{ [key: string]: any } | null> => {
-      return this._goodsDisputeService.exist(identity, encodeURIComponent(control.value) )
+      return this._goodsDisputeService.exist(identity, encodeURIComponent(control.value))
         .pipe(
           map(res => {
             if (!res) {
@@ -394,5 +396,18 @@ export class UsernameValidator {
         );
     };
   }
+  existBOENumber(identity: number): AsyncValidatorFn {
+    return (control: AbstractControl): Observable<{ [key: string]: any } | null> => {
+      return this._BoeService.exist(identity, encodeURIComponent(control.value))
+        .pipe(
+          map(res => {
+            if (res) {
+              return { 'BOENumberInUse': true };
+            }
+          })
+        );
+    };
+  }
+
 
 }

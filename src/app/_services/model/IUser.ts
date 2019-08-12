@@ -25,7 +25,7 @@ export class IUser {
     IsForceChangePwd: boolean;  
     ImagePath: string; 
     LastLogin: Date;
-    Filedata: File;
+    ImagePathData: File;
 }
 
 export class Userpermission {

@@ -21,7 +21,9 @@ export class StoviewComponent implements OnInit {
   TotalUnits : number = 0;
   TotalRate : number = 0;
   TotalDiscountValue : number = 0;
-  Amount : number = 0;
+  TotalMultiplierValue: number = 0;
+  TotalTotalTaxAmount: number = 0;
+  TotalTotalAmountInclTax : number = 0;
 
   constructor(
     public _stoService: StoService,
@@ -41,9 +43,11 @@ export class StoviewComponent implements OnInit {
             (data: Sto) => {
               this.obj = data; 
               this.TotalUnits = data.lstItem.reduce((acc, a) => acc + a.Units, 0);
-              this.TotalRate = data.lstItem.reduce((acc, a) => acc + a.Rate, 0);
-              this.TotalDiscountValue = data.lstItem.reduce((acc, a) => acc + a.DiscountValue, 0);
-              this.Amount = data.lstItem.reduce((acc, a) => acc + a.TotalAmount, 0);
+              this.TotalMultiplierValue = data.lstItem.reduce((acc, a) => acc + a.MultiplierValue, 0);
+              this.TotalRate = data.lstItem.reduce((acc, a) => acc + a.DirectCost, 0);
+              this.TotalDiscountValue =0;// data.lstItem.reduce((acc, a) => acc + a.DirectCost, 0);
+              this.TotalTotalTaxAmount = data.lstItem.reduce((acc, a) => acc + a.TotalTaxAmount, 0);
+              this.TotalTotalAmountInclTax = data.lstItem.reduce((acc, a) => acc + a.TotalAmountInclTax, 0);
 
               this._spinner.hide();
             },

@@ -39,8 +39,8 @@
           <div class="col-md-4 nopading_loct" *ngIf="(SearchBy!='ByStatus')">
             <input [(ngModel)]="SearchKeyword" type="text" class="serchcurv form-control btn-group">
           </div>
-          <div class="col-md-3 nopading_loct" *ngIf="(SearchBy=='ByStatus')"> 
-            <select [(ngModel)]="Searchaction" type="select" class="serchcurv form-control btn-group"> 
+          <div class="col-md-3 nopading_loct" *ngIf="(SearchBy=='ByStatus')">
+            <select [(ngModel)]="Searchaction" type="select" class="serchcurv form-control btn-group">
               <option value="true">Active</option>
               <option value="false">InActive</option>
             </select>
@@ -209,7 +209,7 @@
                   class="mandantory">*</span> </label>
               <div class="col-sm-3">
                 <input id="MultiplierValue" [readonly]="!action" class="form-control" formControlName="MultiplierValue"
-                  (blur)="logValidationErrors()" maxlength="5">
+                  (blur)="logValidationErrors()" type="number">
                 <div class="help-block-rk">
                   <span class="help-block" *ngIf="formErrors.MultiplierValue">
                     {{formErrors.MultiplierValue}}

@@ -92,7 +92,7 @@
                 <input type="text" ngxDaterangepickerMd [timePicker]="true" [singleDatePicker]="true"
                   class="form-control" formControlName="OrderDate" id="OrderDate" (blur)="logValidationErrors()"
                   [locale]="{format: 'MM-DD-YYYY HH:mm'}" [autoApply]="true" (datesUpdated)="OrderDateUpdated($event)"
-                  *ngIf="!hideOrderDate" />
+                  *ngIf="!hideOrderDate" [minDate]="orderMinDate" [maxDate]="orderMaxDate" />
                 <label class="fa fa-calendar" *ngIf="!hideOrderDate"></label>
                 <div *ngIf="hideOrderDate">
                   {{
@@ -287,7 +287,7 @@
         <div class="col-sm-12">
           <div class="form-group pull-left">
             <!-- [disabled]="!salesForm.valid" -->
-            <button type="button" class="btn btn-primary" (click)="chooseitems()">Choose
+            <button type="button" [disabled]="!salesForm.valid" class="btn btn-primary" (click)="chooseitems()">Choose
               Items</button>
             <br />
             <br />

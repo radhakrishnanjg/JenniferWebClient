@@ -64,6 +64,7 @@ export class Poshipment {
     POID: number;
     CarpID: string;
     Appointment: Date;
+    AppointmentDate:Date;
     AttachedFileNames: string;
     Remarks: string;
     IsMailSent: Boolean;
