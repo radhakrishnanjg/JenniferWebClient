@@ -23,8 +23,9 @@ export class LocationComponent implements OnInit {
   obj: Location = {} as any;
   panelTitle: string;
   action: boolean;
-  identity: number = 0; 
+  identity: number = 0;
   emailPattern = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$";
+  dtOptions: DataTables.Settings = {};
   constructor(
     private alertService: ToastrService,
     private fb: FormBuilder,
@@ -60,21 +61,21 @@ export class LocationComponent implements OnInit {
   validationMessages = {
 
     'LocationName': {
-      'required': 'This field is required.',  
-      'LocationNameInUse': 'Location Name already used.',
+      'required': 'This field is required.',
+      'LocationNameInUse': 'Location Name is already registered!',
     },
     'LocaitonAliasName': {
-      'required': 'This field is required.', 
+      'required': 'This field is required.',
     },
 
     'GSTNumber': {
-      'required': 'This field is required.', 
+      'required': 'This field is required.',
       'pattern': 'This field must be Alphanumeric.',
-      'GSTNumberInUse': 'GSTNumber already used.',
+      'GSTNumberInUse': 'GSTNumber is already registered!',
     },
 
     'Address1': {
-      'required': 'This field is required', 
+      'required': 'This field is required',
     },
     'Address2': {
       'maxlength': 'Address2 must be less than 100 charecters.',
@@ -88,7 +89,7 @@ export class LocationComponent implements OnInit {
       'min': 'This field is required.',
     },
     'City': {
-      'required': 'This field is required', 
+      'required': 'This field is required',
       'pattern': 'This field must be alphabets(a-Z)',
     },
     'PostalCode': {
@@ -99,7 +100,7 @@ export class LocationComponent implements OnInit {
     },
 
     'ContactPerson': {
-      'required': 'This field is required', 
+      'required': 'This field is required',
       'pattern': 'This field must be alphabets(a-Z)',
     },
     'ContactNumber': {
@@ -110,7 +111,7 @@ export class LocationComponent implements OnInit {
     },
     'Email': {
       'required': 'This field is required',
-      'pattern': 'Email must be valid one.', 
+      'pattern': 'Email must be valid one.',
     },
   };
 
@@ -129,7 +130,7 @@ export class LocationComponent implements OnInit {
             this.formErrors[key] += messages[errorKey] + ' ';
           }
         }
-      } 
+      }
       if (abstractControl instanceof FormGroup) {
         this.logValidationErrors(abstractControl);
       }
@@ -138,7 +139,7 @@ export class LocationComponent implements OnInit {
 
   ngOnInit() {
 
-    this._spinner.show(); 
+    this._spinner.show();
     this.utilityService.getCountries()
       .subscribe(
         (data: Country[]) => {
@@ -155,12 +156,19 @@ export class LocationComponent implements OnInit {
       this.identity = +params.get('id');
       if (this.identity > 0) {
         this.panelTitle = "Edit Location";
-        this.action = false;  
+        this.action = false;
         this._spinner.show();
         this._locationService.searchById(this.identity)
           .subscribe(
             (data: Location) => {
               this.obj.lstContact = data.lstContact;
+              this.dtOptions = {
+                paging: false,
+                scrollY: '400px',
+                "language": {
+                  "search": 'Filter',
+                },
+              };
               this._spinner.hide();
               var CountryID = data.CountryID.toString();
               this._spinner.show();
@@ -197,6 +205,7 @@ export class LocationComponent implements OnInit {
               });
               this.locationform.get('LocationName').disable();
               this.locationform.get('GSTNumber').disable();
+              this.locationform.get('CountryID').disable();
               this.locationform.get('StateID').disable();
             },
             (err: any) => {
@@ -216,6 +225,13 @@ export class LocationComponent implements OnInit {
             if (this.obj.lstContact != null && this.obj.lstContact.length > 0) {
               this.obj.lstContact.map(a => a.IsActive = false);
             }
+            this.dtOptions = {
+              paging: false,
+              scrollY: '400px',
+              "language": {
+                "search": 'Filter',
+              },
+            };
             this._spinner.hide();
           },
           (err) => {
@@ -241,7 +257,7 @@ export class LocationComponent implements OnInit {
       PostalCode: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(6), Validators.pattern("^([0-9]+)$")]],
 
       ContactPerson: ['', [Validators.required, Validators.pattern("^([a-zA-Z ]+)$")]],
-      ContactNumber: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(12),Validators.pattern("^([0-9]+)$")]],
+      ContactNumber: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(12), Validators.pattern("^([0-9]+)$")]],
       Email: ['', [Validators.required, Validators.pattern(this.emailPattern)]],
 
       IsActive: [0,],
@@ -267,15 +283,16 @@ export class LocationComponent implements OnInit {
     }
   }
 
-  ContactIDFieldsChange(values: any) {
-    this.obj.lstContact.filter(a => a.ContactID == values.currentTarget.id)[0].IsActive = values.currentTarget.checked;
-  }
   SaveData(): void {
     if (this._authorizationGuard.CheckAcess("Locationlist", "ViewEdit")) {
       return;
     }
     // stop here if form is invalid
     if (this.locationform.invalid) {
+      return;
+    }
+    if (this.locationform.pristine) {
+      this.alertService.error('Please change the value for any one control to proceed further!');
       return;
     }
     this.aroute.paramMap.subscribe(params => {
@@ -377,4 +394,13 @@ export class LocationComponent implements OnInit {
     );
   }
 
+  ContactIDFieldsChange(values: any) {
+    this.obj.lstContact.filter(a => a.ContactID == values.currentTarget.id)[0].IsActive = values.currentTarget.checked;
+  }
+  checkcontacts(value: boolean) {
+    for (var i = 0; i < this.obj.lstContact.length; i++) {
+      this.obj.lstContact[i].IsActive = value;
+      $('#' + this.obj.lstContact[i].ContactID).prop("checked", value);
+    }
+  }
 }

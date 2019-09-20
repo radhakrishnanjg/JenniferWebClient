@@ -26,7 +26,7 @@
     <div class="panel-heading">
       <div class="row">
         <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-          <span class="spanheader">
+          <span class="groupspanheader">
             Purchase Invoice View
           </span>
         </div>
@@ -47,7 +47,7 @@
         <div class="col-md-3 col-xs-12">
           <div class="form-group">
             <label class="control-label"> PO No. </label>
-            <div class="">
+            <div >
               {{obj?.PONumber}}
             </div>
           </div>
@@ -55,7 +55,7 @@
         <div class="col-md-3 col-xs-12">
           <div class="form-group">
             <label class="control-label"> Location </label>
-            <div class="">
+            <div >
               {{obj?.LocationName}}
             </div>
           </div>
@@ -64,7 +64,7 @@
         <div class="col-md-3 col-xs-12">
           <div class="form-group">
             <label class="control-label">Vendor <span class="mandantory">*</span></label>
-            <div class="">
+            <div >
               {{obj?.VendorName}}
             </div>
           </div>
@@ -78,7 +78,7 @@
         <div class="col-md-3 col-xs-12">
           <div>
             <label>Invoice Number <span class="mandantory">*</span></label>
-            <div class="">
+            <div >
               {{obj?.InvoiceNumber}}
             </div>
           </div>
@@ -88,7 +88,7 @@
         <div class="col-md-3 col-xs-12">
           <div>
             <label>Invoice Date<span class="mandantory">*</span></label>
-            <div class="">
+            <div >
               {{obj?.InvoiceDate | date :"MM-dd-yyyy HH:mm"}}
             </div>
           </div>
@@ -97,7 +97,7 @@
         <div class="col-md-3 col-xs-12">
           <div>
             <label> Vendor Warehouse <span class="mandantory">*</span></label>
-            <div class="">
+            <div >
               {{obj?.WarehouseName}}
             </div>
           </div>
@@ -106,22 +106,19 @@
         <div class="col-md-12 col-xs-12">
           <div>
             <label>Remarks <span class="mandantory">*</span></label>
-            <div class="">
+            <div >
               {{obj?.Remarks}}
             </div>
           </div>
         </div>
-
-
-        <!-- Editable table -->
+ 
         <div class="col-md-12 col-xs-12">
-          <h3 class="">Order Items</h3>
+          <h3 >Order Items</h3>
           <table class="table table-bordered table-condensed">
             <thead>
               <tr>
                 <th class="text-center">ItemCode</th>
                 <th class="text-center">Vendor ItemCode </th>
-                <!-- <th class="text-center">PO Available Qty</th> -->
                 <th class="text-center">Qty</th>
                 <th class="text-center">Rate</th>
 
@@ -136,10 +133,9 @@
             </thead>
 
             <tbody>
-              <tr *ngFor="let person of lstItem; let id = index">
+              <tr *ngFor="let person of  obj?.lstItem; let id = index">
                 <td > {{person.ItemCode}} </td>
                 <td > {{person.VendorItemCode}} </td>
-                <!-- <td> {{person.AvailableQty}}  </td> -->
                 <td class="text-right"> {{person.Qty}} </td>
                 <td class="text-right"> {{person.Rate}} </td>
 
@@ -155,7 +151,6 @@
               <tr>
                 <th>Total</th>
                 <th> </th>
-                <!-- <th> {{ TotalAvailableQty}} </th> -->
                 <th  class="text-right"> {{ TotalQty}}</th>
                 <th class="text-right"> {{ TotalRate}}</th>
 

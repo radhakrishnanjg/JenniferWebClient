@@ -1,7 +1,7 @@
 import { Injectable, } from '@angular/core';
-import { HttpClient, HttpErrorResponse  } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { map } from 'rxjs/operators';
-import { Observable, throwError,   } from 'rxjs';
+import { Observable, throwError, } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 import { BadRequest } from '../../common/bad-request';
@@ -9,7 +9,7 @@ import { NotFoundError } from '../../common/not-found-error';
 import { AppError } from '../../common/app-error';
 
 import { AuthenticationService } from './authentication.service';
-import {  Location ,Result} from '../model/index';
+import { Location, Result } from '../model/index';
 import { environment } from '../../../environments/environment';
 @Injectable({
   providedIn: 'root'
@@ -22,12 +22,12 @@ export class LocationService {
     private authenticationService: AuthenticationService) {
   }
 
-  public search(SearchBy: string, Search: string,IsActive:Boolean): Observable<Location[]> {
-     
+  public search(SearchBy: string, Search: string, IsActive: Boolean): Observable<Location[]> {
+
     let currentUser = this.authenticationService.currentUserValue;
     let CompanyID = currentUser.CompanyID;
     return this.httpClient.get<Location[]>(environment.baseUrl + `Location/Search?SearchBy=` + encodeURIComponent(SearchBy) + `&Search=` +
-     Search + `&IsActive=` + IsActive + `&CompanyID=` + CompanyID)
+      Search + `&IsActive=` + IsActive + `&CompanyID=` + CompanyID)
       .pipe(catchError(this.handleError));
   }
 
@@ -42,7 +42,7 @@ export class LocationService {
     LocationID = isNaN(LocationID) ? 0 : LocationID;
     let currentUser = this.authenticationService.currentUserValue;
     let CompanyID = currentUser.CompanyID;
-    return this.httpClient.get<Boolean>(environment.baseUrl + `Location/ExistLocationName?LocationID=` + LocationID + `&LocationName=` + LocationName +`&CompanyID=` + CompanyID)
+    return this.httpClient.get<Boolean>(environment.baseUrl + `Location/ExistLocationName?LocationID=` + LocationID + `&LocationName=` + LocationName + `&CompanyID=` + CompanyID)
       .pipe(
         map(users => {
           if (users && users == true)
@@ -57,7 +57,7 @@ export class LocationService {
     LocationID = isNaN(LocationID) ? 0 : LocationID;
     let currentUser = this.authenticationService.currentUserValue;
     let CompanyID = currentUser.CompanyID;
-    return this.httpClient.get<Boolean>(environment.baseUrl + `Location/ExistGSTNumber?LocationID=` + LocationID + `&GSTNumber=` + GSTNumber +`&CompanyID=` + CompanyID)
+    return this.httpClient.get<Boolean>(environment.baseUrl + `Location/ExistGSTNumber?LocationID=` + LocationID + `&GSTNumber=` + GSTNumber + `&CompanyID=` + CompanyID)
       .pipe(
         map(users => {
           if (users && users == true)
@@ -71,7 +71,7 @@ export class LocationService {
   public add(obj: Location): Observable<Result> {
     let currentUser = this.authenticationService.currentUserValue;
     obj.CompanyID = currentUser.CompanyID;
-    obj.LoginId = currentUser.UserId; 
+    obj.LoginId = currentUser.UserId;
     return this.httpClient.post<Result>(environment.baseUrl + `Location/Create`, obj)
       .pipe(catchError(this.handleError));
   }
@@ -84,7 +84,7 @@ export class LocationService {
     return this.httpClient.post<Result>(environment.baseUrl + `Location/Update`, obj)
       .pipe(catchError(this.handleError));
   }
-  
+
   public delete(LocationID: number): Observable<Boolean> {
     let currentUser = this.authenticationService.currentUserValue;
     this.objlocation.LocationID = LocationID;

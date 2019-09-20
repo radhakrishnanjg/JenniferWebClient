@@ -8,7 +8,7 @@
     <div class="pull-right hidden-xs">
       <ol class="breadcrumb" id="dynamicbreadcrumb">
         <li>
-           <i class="fa fa-shopping-cart"></i> <span> Procurements</span>
+          <i class="fa fa-shopping-cart"></i> <span> Procurements</span>
         </li>
         <li>
           <i class="fa fa fa-truck"></i> <span> Shipments</span>
@@ -36,7 +36,7 @@
               <option value="ByDate">PO Date</option>
             </select>
           </div>
-          <div class="col-md-4 nopading_loct" *ngIf="( SearchBy=='ByPONumber'  || SearchBy=='ByShipmentNumber'   )">
+          <div class="col-md-4 nopading_loct" *ngIf="(SearchBy!='ByDate')">
             <input [(ngModel)]="SearchKeyword" type="text" class="serchcurv form-control btn-group">
           </div>
           <div class="col-md-4 nopading_loct" *ngIf="(SearchBy=='ByDate')">
@@ -57,7 +57,7 @@
           </div>
         </div>
       </div>
-      <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 text-right"> 
+      <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 text-right">
         <a class="btn btn-primary" routerLink="/Poshipment/0/0" title="Add New">
           Add New
         </a>
@@ -65,69 +65,47 @@
     </div>
   </div>
   <div class="panel-body">
+    <kendo-grid [data]="gridView" resizable="true" columnMenu="true" [pageSize]="pageSize" [skip]="skip" [pageable]="true"
+      (pageChange)="pageChange($event)" [sortable]="{
+          allowUnsort: allowUnsort,
+          mode:  'single'
+          }" [sort]="sort" (sortChange)="sortChange($event)" [filterable]="true"
+      (dataStateChange)="dataStateChange($event)" [filter]="state.filter">
 
+      <kendo-grid-column field="PONumber" title="PO No.">
+      </kendo-grid-column>
+      <kendo-grid-column field="LocationName" title="Location">
+      </kendo-grid-column>
+      <kendo-grid-column field="PODate" title="PO Date" filter="date" format="{0:d}" [filterable]="false">
+        <ng-template kendoGridCellTemplate let-dataItem>
+          {{ dataItem.PODate | date :"MM-dd-yyyy HH:mm" }}
+        </ng-template>
+      </kendo-grid-column>
+      <kendo-grid-column field="ShipmentNumber" title="Shipment No.">
+      </kendo-grid-column>
+      <kendo-grid-column field="ShipmentName" title="Shipment Name">
+      </kendo-grid-column>
+      <kendo-grid-column field="IsMailSent" title="Mail" width="120">
+        <ng-template kendoGridCellTemplate let-obj>
+          <span *ngIf="(obj.IsMailSent)">Yes</span>
+          <span *ngIf="(!obj.IsMailSent)">No</span>
+        </ng-template>
+      </kendo-grid-column>
+      <kendo-grid-column field="ShipmentStatus" title="Shipment Status">
+      </kendo-grid-column>
 
-    <div class="table-responsive">
-      <table datatable [dtOptions]="dtOptions" class="table table-bordered table-condensed " *ngIf="lst && lst.length">
-        <thead>
-          <tr>
-            <th>PO No.</th>
-            <th>Location</th>
-            <th>PO Date</th>
-            <th>Shipment No.</th>
+      <kendo-grid-column field="ShipmentID" title="Action" [class]="{'text-center': true}"  [filterable]="false" [sortable]="false"  width="80">
+        <ng-template kendoGridCellTemplate let-obj>
+          <i class="fa fa-edit bgblue pointer" [routerLink]="['/Poshipment', obj.ShipmentID, obj.POID]"
+            title="Edit"></i>
+          &nbsp;
+          <i class="fa fa-trash bgred pointer" title="Delete"
+            (click)="confirmDeleteid(obj.ShipmentID,obj.POID,obj.ShipmentNumber)"></i>
+        </ng-template>
+      </kendo-grid-column>
+    </kendo-grid>
 
-            <th>Shipment Name</th>
-            <th>Mail </th>
-            <th>Shipment Status</th>
-            <th class="text-center btnactions">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let user of lst">
-            <td>{{ user.PONumber  }}</td>
-            <td>{{ user.LocationName  }}</td>
-            <td>{{ user.PODate | date :"MM-dd-yyyy HH:mm"   }}</td>
-            <td>{{ user.ShipmentNumber}}</td>
-
-            <td>{{ user.ShipmentName}}</td>
-            <td class="text-center" *ngIf="(user.IsMailSent)">Yes </td>
-            <td class="text-center" *ngIf="(!user.IsMailSent)">No </td>
-            <td>{{ user.ShipmentStatus}}</td>
-            <td class="text-center">
-              <i (click)="editButtonClick(user.ShipmentID,user.POID)" title="Edit"
-                class="fa fa-edit bgblue pointer"></i>
-              &nbsp;
-              <i (click)="confirmDeleteid(user.ShipmentID,user.POID,user.ShipmentNumber)" type="button" title="Delete"
-                class="bgred pointer fa fa-trash"></i>
-
-            </td>
-          </tr>
-        </tbody>
-      </table>
-
-      <table class="table table-bordered table-condensed" *ngIf="lst==null">
-        <thead>
-          <tr>
-            <th>PO No.</th>
-            <th>Location</th>
-            <th>PO Date</th>
-            <th>Shipment No.</th>
-
-            <th>Shipment Name</th>
-            <th>Mail </th>
-            <th>Status</th>
-            <th class="text-center btnactions">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td colspan="8">
-              No Records Found.!
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+    
   </div>
 
   <div id="modaldeleteconfimation" class="modal fade" tabindex="-1" role="dialog"

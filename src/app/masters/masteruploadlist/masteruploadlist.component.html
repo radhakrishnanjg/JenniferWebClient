@@ -58,59 +58,42 @@
   </div>
 
   <div class="panel-body">
-    <div class="table-responsive">
-      <table datatable [dtOptions]="dtOptions" class="table table-bordered table-condensed " *ngIf="lst && lst.length">
-        <thead>
-          <tr>
-            <th>File Type </th>
-            <th>File Name </th>
-            <th>Uploaded By</th>
-            <th>Uploaded Date</th>
-            <th>FileUpload Status</th>
-            <th>Remarks</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let obj of lst">
-            <td>{{obj.FileType}}</td>
-            <td>{{obj.FileName}} 
-            </td>
-            <td>{{obj.UploadedByName}}</td>
-            <td>{{obj.UploadedDate | date :"MM-dd-yyyy HH:mm"}}</td>
-            <td>{{obj.FileUploadStatus}}</td>
-            <td>{{obj.Remarks_UploadStatus}}</td>
-            <td>
-              <i class="fa fa-download bgblue" (click)="downloadFile(obj.FileId,obj.FileName)"></i>
-              &nbsp;
-              <i class="fa fa-download bgred" *ngIf="obj.FileUploadStatus =='REJECTED'"
-                (click)="downloadError(obj.FileId)"></i>
-            </td>
-          </tr>
-        </tbody>
-      </table>
 
-      <table class="table table-bordered table-condensed" *ngIf="lst==null">
-        <thead>
-          <tr>
-            <th>File Type </th>
-            <th>File Name </th>
-            <th>Uploaded By</th>
-            <th>Uploaded Date</th>
-            <th>FileUpload Status</th>
+    <kendo-grid [data]="gridView" resizable="true" columnMenu="true" [pageSize]="pageSize" [skip]="skip" [pageable]="true"
+      (pageChange)="pageChange($event)" [sortable]="{
+      allowUnsort: allowUnsort,
+      mode:  'single'
+      }" [sort]="sort" (sortChange)="sortChange($event)" [filterable]="true"
+      (dataStateChange)="dataStateChange($event)" [filter]="state.filter">
 
-            <th>Remarks</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td colspan="7">
-              No Records Found.!
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+      <kendo-grid-column field="FileType" title="File Type">
+      </kendo-grid-column>
+      <kendo-grid-column field="FileName" title="File Name">
+      </kendo-grid-column>
+      <kendo-grid-column field="UploadedByName" title="Uploaded By">
+      </kendo-grid-column>
+      <kendo-grid-column field="UploadedDate" title="Uploaded Date" filter="date" format="{0:d}" [filterable]="false">
+        <ng-template kendoGridCellTemplate let-dataItem>
+          {{ dataItem.UploadedDate | date :"MM-dd-yyyy HH:mm" }}
+        </ng-template>
+      </kendo-grid-column>
+
+      <kendo-grid-column field="FileUploadStatus" title="Status">
+      </kendo-grid-column>
+      <kendo-grid-column field="Remarks" title="Remarks">
+      </kendo-grid-column>
+      <kendo-grid-column field="BrandID" title="Action" [class]="{'text-center': true}" [filterable]="false"
+        [sortable]="false" width="70">
+        <ng-template kendoGridCellTemplate let-obj>
+          <i class="fa fa-download bgblue" (click)="downloadFile(obj.FileId,obj.FileName)"></i>
+          &nbsp;
+          <i class="fa fa-download bgred" *ngIf="obj.FileUploadStatus =='REJECTED'"
+            (click)="downloadError(obj.FileId)"></i>
+        </ng-template>
+      </kendo-grid-column>
+    </kendo-grid>
+
+
+
   </div>
 </div>

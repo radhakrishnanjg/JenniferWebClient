@@ -8,6 +8,9 @@ import { ToastrService } from 'ngx-toastr';
 import { IUser } from '../../_services/model';
 
 import { AuthorizationGuard } from '../../_guards/Authorizationguard'
+import { process, State } from '@progress/kendo-data-query';
+import { GridDataResult, DataStateChangeEvent, PageChangeEvent } from '@progress/kendo-angular-grid';
+import { SortDescriptor, orderBy } from '@progress/kendo-data-query';
 @Component({
   selector: 'app-userlist',
   templateUrl: './userlist.component.html',
@@ -16,8 +19,7 @@ import { AuthorizationGuard } from '../../_guards/Authorizationguard'
 
 
 export class UserlistComponent implements OnInit {
-  users: IUser[];
-  user: IUser;
+    user: IUser;
   userForm: FormGroup;
 
   selectedDeleteId: number;
@@ -37,22 +39,7 @@ export class UserlistComponent implements OnInit {
 
   ngOnInit() {
     this.onLoad(this.SearchBy, this.SearchKeyword, true);
-  }
-
-
-  editButtonClick(id: number) {
-    if (this._authorizationGuard.CheckAcess("Userlist", "ViewEdit")) {
-      return;
-    }
-    this.router.navigate(['/User', id]);
-  }
-
-  editPermissionClick(id: number) {
-    if (this._authorizationGuard.CheckAcess("Userlist", "ViewEdit")) {
-      return;
-    }
-    this.router.navigate(['/Userpermission', id]);
-  }
+  }  
 
   confirmDeleteid(id: number, DeleteColumnvalue: string) {
     if (this._authorizationGuard.CheckAcess("Userlist", "ViewEdit")) {
@@ -64,25 +51,7 @@ export class UserlistComponent implements OnInit {
     $('#modaldeleteconfimation').modal('show');
   }
 
-  onLoad(SearchBy: string, Search: string, IsActive: Boolean) {
-    this._spinner.show();
-    return this._userService.search(SearchBy, Search, IsActive).subscribe(
-      (employeeList) => {
-        this.users = employeeList;
-        this.dtOptions = {
-          pagingType: 'full_numbers',
-          "language": {
-            "search": 'Filter',
-          },
-        };
-        this._spinner.hide();
-      },
-      (err) => {
-        this._spinner.hide();
-        console.log(err);
-      }
-    );
-  }
+
   Search(): void {
     this.onLoad(this.SearchBy, this.SearchKeyword, this.Searchaction);
   }
@@ -114,5 +83,72 @@ export class UserlistComponent implements OnInit {
       }
     );
   }
+
+
+  onLoad(SearchBy: string, Search: string, IsActive: Boolean) {
+    this._spinner.show();
+    return this._userService.search(SearchBy, Search, IsActive).subscribe(
+      (lst) => { 
+        if (lst != null) { 
+          this.items = lst;
+          this.loadItems(); 
+        }
+        this._spinner.hide();
+      },
+      (err) => {
+        this._spinner.hide();
+        console.log(err);
+      }
+    );
+  }
+
+  //#region Paging Sorting and Filtering Start
+  public allowUnsort = true;
+  public sort: SortDescriptor[] = [{
+    field: 'FirstName',
+    dir: 'asc'
+  }];
+  public gridView: GridDataResult;
+  public pageSize = 10;
+  public skip = 0;
+  private data: Object[];
+  private items: IUser[] = [] as any;
+  public state: State = {
+    skip: 0,
+    take: 5,
+
+    // Initial filter descriptor
+    filter: {
+      logic: 'and',
+      filters: [{ field: 'FirstName', operator: 'contains', value: '' }]
+    }
+  };
+  public pageChange(event: PageChangeEvent): void {
+    this.skip = event.skip;
+    this.loadItems();
+  }
+
+  public sortChange(sort: SortDescriptor[]): void {
+    this.sort = sort;
+    this.loadSortItems();
+  }
+
+  private loadItems(): void {
+    this.gridView = {
+      data: this.items.slice(this.skip, this.skip + this.pageSize),
+      total: this.items.length
+    };
+  }
+  private loadSortItems(): void {
+    this.gridView = {
+      data: orderBy(this.items.slice(this.skip, this.skip + this.pageSize), this.sort),
+      total: this.items.length
+    };
+  }
+  public dataStateChange(state: DataStateChangeEvent): void {
+    this.state = state;
+    this.gridView = process(this.items, this.state);
+  }
+  //#endregion Paging Sorting and Filtering End
 
 }

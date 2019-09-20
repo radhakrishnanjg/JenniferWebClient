@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col-sm-6 col-lg-6">
     <h3>
-     Stock Transfer
+      Stock Transfer
     </h3>
   </div>
   <div class="col-sm-6 col-lg-6">
@@ -21,103 +21,81 @@
     </div>
   </div>
 </div>
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <div class="row">
-        <div class="col-xs-12 col-sm-10 col-md-10 col-lg-10">
-          <div class="input-group col-sm-12" role="group" aria-label="Basic example">
-            <div class="col-md-3 nopading_loct">
-              <select [(ngModel)]="SearchBy" class="serchcurv form-control btn-group">
-                <option value="" selected="select">Search By</option>
-                <option value="BySTONumber">By STO Number</option> 
-                <option value="ByFromLocationName">By From Location Name</option> 
-                <option value="ByToLocationName">By To Location Name</option>
-                <option value="BySTODate">By STO Date</option> 
-              </select>
-            </div>
-            <div class="col-md-3 nopading_loct" *ngIf="(SearchBy!='BySTODate')">
-              <input [(ngModel)]="SearchKeyword" type="text" class="serchcurv form-control btn-group">
-            </div>
-            <div class="col-md-3 nopading_loct" *ngIf="(SearchBy=='BySTODate')">
-              <input type="text" ngxDaterangepickerMd [(ngModel)]="selectedDateRange"
-                class="serchcurv form-control btn-group col-xs-12 pointer"
-                style="border:1px soloid #ccc !important; padding :3px;left:0px" [showCustomRangeLabel]="true"
-                [ranges]="Searchranges" [showCancel]="true" placeholder="Select please..."
-                (ngModelChange)="onChange($event)" />
-            </div>
-            <div class="col-md-2 nopading_loct">
-              <button class="serchcurv btn btn-default btn-group" (click)="Search()" title="Search">
-                <i class="fa fa-search " aria-hidden="true"></i>
-              </button>
-              <button class="serchcurv btn btn-default btn-group" (click)="Refresh()" title="Reset">
-                <i class="fa fa-refresh" aria-hidden="true"></i>
-              </button>
-            </div>  
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <div class="row">
+      <div class="col-xs-12 col-sm-10 col-md-10 col-lg-10">
+        <div class="input-group col-sm-12" role="group" aria-label="Basic example">
+          <div class="col-md-3 nopading_loct">
+            <select [(ngModel)]="SearchBy" class="serchcurv form-control btn-group">
+              <option value="" selected="select">Search By</option>
+              <option value="BySTONumber">By STO Number</option>
+              <option value="ByFromLocationName">By From Location Name</option>
+              <option value="ByToLocationName">By To Location Name</option>
+              <option value="BySTODate">By STO Date</option>
+            </select>
+          </div>
+          <div class="col-md-3 nopading_loct" *ngIf="(SearchBy!='BySTODate')">
+            <input [(ngModel)]="SearchKeyword" type="text" class="serchcurv form-control btn-group">
+          </div>
+          <div class="col-md-3 nopading_loct" *ngIf="(SearchBy=='BySTODate')">
+            <input type="text" ngxDaterangepickerMd [(ngModel)]="selectedDateRange"
+              class="serchcurv form-control btn-group col-xs-12 pointer"
+              style="border:1px soloid #ccc !important; padding :3px;left:0px" [showCustomRangeLabel]="true"
+              [ranges]="Searchranges" [showCancel]="true" placeholder="Select please..."
+              (ngModelChange)="onChange($event)" />
+          </div>
+          <div class="col-md-2 nopading_loct">
+            <button class="serchcurv btn btn-default btn-group" (click)="Search()" title="Search">
+              <i class="fa fa-search " aria-hidden="true"></i>
+            </button>
+            <button class="serchcurv btn btn-default btn-group" (click)="Refresh()" title="Reset">
+              <i class="fa fa-refresh" aria-hidden="true"></i>
+            </button>
           </div>
         </div>
-        <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 text-right">
-          <button class="btn btn-primary" routerLink="/Sto/Create" title="Add New">
-            
-            Add New
-          </button>
-        </div>
+      </div>
+      <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 text-right">
+        <button class="btn btn-primary" routerLink="/Sto/Create" title="Add New">
+
+          Add New
+        </button>
       </div>
     </div>
-  
-    <div class="panel-body">
-      <div class="table-responsive"> 
-        <table datatable [dtOptions]="dtOptions" class="table table-bordered table-condensed table-striped"
-          *ngIf="lst && lst.length">
-          <thead>
-            <tr> 
-              <th>STO Number</th> 
-              <th>STO Date</th>  
-              <th>From Location</th>  
-              <th>To Location</th> 
-              <th>Inventory Type</th> 
-  
-              <th>Qty</th>  
-              <th>Total Amount</th> 
-              <th class="text-center btnactions">Action</th> 
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let user of lst"> 
-              <td>{{ user.STONumber}}</td> 
-              <td>{{ user.STODate | date :"MM-dd-yyyy HH:mm"  }}</td>  
-              <td>{{ user.FromLocation}}</td>   
-              <td>{{ user.ToLocation  }}</td> 
-              <td>{{ user.InventoryType}}</td>  
-  
-              <td class="text-right">{{ user.Qty  }}</td>  
-              <td class="text-right">{{ user.TotalAmountInclTax  }}</td> 
-              <td class="text-center btnactions"> <i class="fa fa-eye bgblue pointer" 
-                (click)="viewButtonClick(user.STOID)" 
-                title="View"></i> </td> 
-            </tr>
-          </tbody>
-        </table>
-  
-        <table class="table table-bordered table-condensed table-striped" *ngIf="lst == null || lst.length == 0">
-          <thead>
-            <tr>
-              <th>STO Number</th> 
-              <th>STO Date</th>  
-              <th>From Location</th>  
-              <th>To Location</th> 
-              <th>Inventory Type</th> 
-  
-              <th>Qty</th>  
-              <th>Total Amount</th> 
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td colspan="7">
-                No Records Found.!
-              </td>
-            </tr>
-          </tbody>
-        </table> 
-      </div>
-    </div>
+  </div>
+
+  <div class="panel-body">
+
+    <kendo-grid [data]="gridView" resizable="true" columnMenu="true" [pageSize]="pageSize" [skip]="skip" [pageable]="true"
+      (pageChange)="pageChange($event)" [sortable]="{
+            allowUnsort: allowUnsort,
+            mode:  'single'
+            }" [sort]="sort" (sortChange)="sortChange($event)" [filterable]="true"
+      (dataStateChange)="dataStateChange($event)" [filter]="state.filter">
+
+      <kendo-grid-column field="STONumber" title="STO No.">
+      </kendo-grid-column>
+      <kendo-grid-column field="STODate" title="STO Date" filter="date" format="{0:d}" [filterable]="false">
+        <ng-template kendoGridCellTemplate let-dataItem>
+          {{ dataItem.STODate | date :"MM-dd-yyyy HH:mm" }}
+        </ng-template>
+      </kendo-grid-column>
+      <kendo-grid-column field="FromLocation" title="From Location">
+      </kendo-grid-column>
+      <kendo-grid-column field="ToLocation" title="To Location">
+      </kendo-grid-column>
+      <kendo-grid-column field="InventoryType" title="Inventory Type">
+      </kendo-grid-column> 
+      <kendo-grid-column field="TotalAmount" title="Total Value" format="{0:##,#.##}">
+      </kendo-grid-column>
+
+      <kendo-grid-column field="STOID" title="Action" [class]="{'text-center': true}" [filterable]="false"
+        [sortable]="false" width="70">
+        <ng-template kendoGridCellTemplate let-obj>
+          <i class="fa fa-edit bgblue pointer" *ngIf="obj.IsEdit" [routerLink]="['/StoEdit', obj.STOID]" title="Edit"></i>
+          &nbsp;
+          <i class="fa fa-eye bgblue pointer" [routerLink]="['/Stoview', obj.STOID]" title="View"></i>
+        </ng-template>
+      </kendo-grid-column>
+    </kendo-grid>
+  </div> 

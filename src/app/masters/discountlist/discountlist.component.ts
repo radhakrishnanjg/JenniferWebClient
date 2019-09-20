@@ -5,9 +5,12 @@ import { ToastrService } from 'ngx-toastr';
 import { DiscountService } from '../../_services/service/discount.service';
 import { Discount, Customer, Dropdown, ProductGroup, Category, SubCategory, Item } from '../../_services/model';
 import { PrivateutilityService } from '../../_services/service/privateutility.service';
-import { AuthorizationGuard } from '../../_guards/Authorizationguard' 
+import { AuthorizationGuard } from '../../_guards/Authorizationguard'
 import * as moment from 'moment';
 
+import { process, State } from '@progress/kendo-data-query';
+import { GridDataResult, DataStateChangeEvent, PageChangeEvent } from '@progress/kendo-angular-grid';
+import { SortDescriptor, orderBy } from '@progress/kendo-data-query';
 
 @Component({
   selector: 'app-discountlist',
@@ -26,7 +29,6 @@ export class DiscountlistComponent implements OnInit {
   lstItem: Item[] = [] as any;
   lstItemSelected: Item[] = [] as any;
   objItem: Item = {} as any;
-  lstDiscount: Discount[];
   objDiscount: Discount = {} as any;
   discountForm: FormGroup;
   panelTitle: string;
@@ -59,7 +61,8 @@ export class DiscountlistComponent implements OnInit {
   config = {
     displayKey: "ItemCode", //if objects array passed which key to be displayed defaults to description
     search: true,
-    limitTo: 3
+    // limitTo: 3    
+    height: '200px'
   };
   constructor(
     private alertService: ToastrService,
@@ -118,8 +121,8 @@ export class DiscountlistComponent implements OnInit {
     'OtherContribution': {
       'required': 'This Field is required.',
       'pattern': 'This Field must be a numeric(0-100).',
-      'min': 'This Field must be a numeric(0.01-100).',
-      'max': 'This Field must be a numeric(0.01-100).',
+      'min': 'This Field must be a numeric(0.00-100).',
+      'max': 'This Field must be a numeric(0.00-100).',
     },
 
     'StartDate': {
@@ -184,7 +187,7 @@ export class DiscountlistComponent implements OnInit {
 
       MarketPlaceContribution: ['', [Validators.required, Validators.min(0.01), Validators.max(100), Validators.pattern("(100|[0-9]{1,2})(\.[0-9]{1,2})?"),]],
       StoreContribution: ['', [Validators.required, Validators.min(0.01), Validators.max(100), Validators.pattern("(100|[0-9]{1,2})(\.[0-9]{1,2})?"),]],
-      OtherContribution: ['', [Validators.required, Validators.min(0.01), Validators.max(100), Validators.pattern("(100|[0-9]{1,2})(\.[0-9]{1,2})?"),]],
+      OtherContribution: ['', [Validators.required, Validators.min(0.00), Validators.max(100), Validators.pattern("(100|[0-9]{1,2})(\.[0-9]{1,2})?"),]],
 
       StartDate: ['', [Validators.required]],
       EndDate: ['', [Validators.required]],
@@ -211,23 +214,32 @@ export class DiscountlistComponent implements OnInit {
 
   }
 
+  private getCurrentServerDateTime() {
+    this._spinner.show();
+    this._PrivateutilityService.getCurrentDate()
+      .subscribe(
+        (data: Date) => {
+          // var mcurrentDate = moment(data, 'YYYY-MM-DD[T]HH:mm').format('MM-DD-YYYY HH:mm').toString();
+          // this.salesratecardForm.patchValue({
+          //   StartDate: { startDate: new Date(mcurrentDate) },
+          // });
+          this.MinDate = moment(data).add(0, 'days');
+          this._spinner.hide();
+        },
+        (err: any) => {
+          console.log(err);
+
+          this._spinner.hide();
+        }
+      );
+  }
+
   newButtonClick() {
-    this.MinDate = moment().add(0, 'days');
+    //this.MinDate = moment().add(0, 'days');
     if (this._authorizationGuard.CheckAcess("Discountlist", "ViewEdit")) {
       return;
     }
-    // this._spinner.show();
-    // this._PrivateutilityService.getCustomers()
-    //   .subscribe(
-    //     (data: Customer[]) => {
-    //       this.lstCustomer = data;
-    //       this._spinner.hide();
-    //     },
-    //     (err: any) => {
-    //       console.log(err);
-    //       this._spinner.hide();
-    //     }
-    //   );
+    this.getCurrentServerDateTime();
     this._spinner.show();
     this._PrivateutilityService.GetValues('TransactionType')
       .subscribe(
@@ -287,140 +299,107 @@ export class DiscountlistComponent implements OnInit {
 
   }
 
-  editButtonClick(id: number) {
-    this.MinDate = moment().add(0, 'days');
-    if (this._authorizationGuard.CheckAcess("Discountlist", "ViewEdit")) {
-      return;
-    }
-    // this._spinner.show();
-    // this._PrivateutilityService.getCustomers()
-    //   .subscribe(
-    //     (data: Customer[]) => {
-    //       this.lstCustomer = data;
-    //       this._spinner.hide();
-    //     },
-    //     (err: any) => {
-    //       console.log(err);
-    //     }
-    //   );
-    this._spinner.show();
-    this._PrivateutilityService.GetValues('TransactionType')
-      .subscribe(
-        (data: Dropdown[]) => {
-          this.lstTransactionType = data;
-          this._spinner.hide();
-        },
-        (err: any) => {
-          console.log(err);
-          this._spinner.hide();
-        }
-      );
-    this._spinner.show();
-    this._PrivateutilityService.GetValues('InventoryType')
-      .subscribe(
-        (data: Dropdown[]) => {
-          this.lstInventoryType = data;
-          this._spinner.hide();
-        },
-        (err: any) => {
-          console.log(err);
-          this._spinner.hide();
-        }
-      );
-    this._spinner.show();
-    this._PrivateutilityService.getProductGroups()
-      .subscribe(
-        (data: ProductGroup[]) => {
-          this.lstProductGroup = data;
-          this._spinner.hide();
-        },
-        (err: any) => {
-          console.log(err);
-          this._spinner.hide();
-        }
-      );
+  // editButtonClick(id: number) {
+  //   this.MinDate = moment().add(0, 'days');
+  //   if (this._authorizationGuard.CheckAcess("Discountlist", "ViewEdit")) {
+  //     return;
+  //   } 
+  //   this._spinner.show();
+  //   this._PrivateutilityService.GetValues('TransactionType')
+  //     .subscribe(
+  //       (data: Dropdown[]) => {
+  //         this.lstTransactionType = data;
+  //         this._spinner.hide();
+  //       },
+  //       (err: any) => {
+  //         console.log(err);
+  //         this._spinner.hide();
+  //       }
+  //     );
+  //   this._spinner.show();
+  //   this._PrivateutilityService.GetValues('InventoryType')
+  //     .subscribe(
+  //       (data: Dropdown[]) => {
+  //         this.lstInventoryType = data;
+  //         this._spinner.hide();
+  //       },
+  //       (err: any) => {
+  //         console.log(err);
+  //         this._spinner.hide();
+  //       }
+  //     );
+  //   this._spinner.show();
+  //   this._PrivateutilityService.getProductGroups()
+  //     .subscribe(
+  //       (data: ProductGroup[]) => {
+  //         this.lstProductGroup = data;
+  //         this._spinner.hide();
+  //       },
+  //       (err: any) => {
+  //         console.log(err);
+  //         this._spinner.hide();
+  //       }
+  //     );
 
-    this.panelTitle = "Edit Discount";
-    this.action = false;
-    this.identity = + id;
-    this._spinner.show();
-    this._discountService.searchById(this.identity)
-      .subscribe(
-        (data: Discount) => {
-          var ItemIDvalue = data.ItemID.toString();
-          this.objItem.ItemID = data.ItemID;
-          this.objItem.ItemCode = data.ItemCode;
-          this.lstItemSelected = [] as any;
-          this.lstItemSelected.push(this.objItem);
-          var StartDate = moment(data.StartDate, 'YYYY-MM-DD[T]HH:mm').format('MM-DD-YYYY HH:mm').toString();
-          var EndDate = moment(data.EndDate, 'YYYY-MM-DD[T]HH:mm').format('MM-DD-YYYY HH:mm').toString();
+  //   this.panelTitle = "Edit Discount";
+  //   this.action = false;
+  //   this.identity = + id;
+  //   this._spinner.show();
+  //   this._discountService.searchById(this.identity)
+  //     .subscribe(
+  //       (data: Discount) => {
+  //         var ItemIDvalue = data.ItemID.toString();
+  //         this.objItem.ItemID = data.ItemID;
+  //         this.objItem.ItemCode = data.ItemCode;
+  //         this.lstItemSelected = [] as any;
+  //         this.lstItemSelected.push(this.objItem);
+  //         var StartDate = moment(data.StartDate, 'YYYY-MM-DD[T]HH:mm').format('MM-DD-YYYY HH:mm').toString();
+  //         var EndDate = moment(data.EndDate, 'YYYY-MM-DD[T]HH:mm').format('MM-DD-YYYY HH:mm').toString();
 
-          this.discountForm.patchValue({
-            CustomerID: data.CustomerID,
-            TransactionType: data.TransactionType,
-            InventoryType: data.InventoryType,
+  //         this.discountForm.patchValue({
+  //           CustomerID: data.CustomerID,
+  //           TransactionType: data.TransactionType,
+  //           InventoryType: data.InventoryType,
 
-            MarketPlaceContribution: data.MarketPlaceContribution,
-            StoreContribution: data.StoreContribution,
-            OtherContribution: data.OtherContribution,
-            TotalDiscountPer: data.TotalDiscountPer,
-            StartDate: data.StartDate,
-            EndDate: data.EndDate,
-            // IsActive: data.IsActive,
-            ItemID: ItemIDvalue,
-          });
-          this.ItemCode = data.ItemCode;
-          this.ItemID = data.ItemID;
-          $("#CustomerID").attr("disabled", "disabled");
-          $("#TransactionType").attr("disabled", "disabled");
-          $("#InventoryType").attr("disabled", "disabled");
-          $("#ItemID").attr("disabled", "disabled");
-          $("#MarketPlaceContribution").attr("disabled", "disabled");
-          $("#StoreContribution").attr("disabled", "disabled");
-          $("#OtherContribution").attr("disabled", "disabled");
+  //           MarketPlaceContribution: data.MarketPlaceContribution,
+  //           StoreContribution: data.StoreContribution,
+  //           OtherContribution: data.OtherContribution,
+  //           TotalDiscountPer: data.TotalDiscountPer,
+  //           StartDate: data.StartDate,
+  //           EndDate: data.EndDate,
+  //           // IsActive: data.IsActive,
+  //           ItemID: ItemIDvalue,
+  //         });
+  //         this.ItemCode = data.ItemCode;
+  //         this.ItemID = data.ItemID;
+  //         $("#CustomerID").attr("disabled", "disabled");
+  //         $("#TransactionType").attr("disabled", "disabled");
+  //         $("#InventoryType").attr("disabled", "disabled");
+  //         $("#ItemID").attr("disabled", "disabled");
+  //         $("#MarketPlaceContribution").attr("disabled", "disabled");
+  //         $("#StoreContribution").attr("disabled", "disabled");
+  //         $("#OtherContribution").attr("disabled", "disabled");
 
 
-          $('#StartDate').val(StartDate);
-          $('#EndDate').val(EndDate);
-          //this.logValidationErrors();
-          this.onchangeContribution();
-          //this.onchangeSubCategoryID("-1");
-          this._spinner.hide();
-        },
-        (err: any) => {
-          console.log(err);
-          this._spinner.hide();
-        }
-      );
-    $('#modalpopup_discount').modal('show');
-  }
-
-  onLoad(SearchBy: string, Search: string, IsActive: Boolean, StartDate: Date, EndDate: Date) {
-    this._spinner.show();
-    return this._discountService.search(SearchBy, Search, IsActive, StartDate, EndDate).subscribe(
-      (employeeList) => {
-        this.lstDiscount = employeeList;
-        this.dtOptions = {
-          pagingType: 'full_numbers',
-          "language": {
-            "search": 'Filter',
-          },
-        };
-
-        this._spinner.hide();
-      },
-      (err) => {
-        this._spinner.hide();
-        console.log(err);
-      }
-    );
-  }
+  //         $('#StartDate').val(StartDate);
+  //         $('#EndDate').val(EndDate);
+  //         //this.logValidationErrors();
+  //         this.onchangeContribution();
+  //         //this.onchangeSubCategoryID("-1");
+  //         this._spinner.hide();
+  //       },
+  //       (err: any) => {
+  //         console.log(err);
+  //         this._spinner.hide();
+  //       }
+  //     );
+  //   $('#modalpopup_discount').modal('show');
+  // }
 
   onchangeTransactionType(selectedValue: string) {
-    let id = (selectedValue);
-    if (id != "") {
+    if (selectedValue != "") {
       this._spinner.show();
-      this._PrivateutilityService.getCustomersBasedType(id)
+      this._PrivateutilityService.getAllCustomersBasedType(selectedValue)
         .subscribe(
           (data: Customer[]) => {
             this.lstCustomer = data
@@ -508,14 +487,19 @@ export class DiscountlistComponent implements OnInit {
     if (this.discountForm.invalid) {
       return;
     }
+    if (this.discountForm.pristine) {
+      this.alertService.error('Please change the value for any one control to proceed further!');
+      return;
+    }
     let StartDate: Date = new Date(moment(new Date(this.discountForm.controls['StartDate'].value.startDate._d)).format("MM-DD-YYYY HH:mm"));
     let EndDate: Date = new Date(moment(new Date(this.discountForm.controls['EndDate'].value.startDate._d)).format("MM-DD-YYYY HH:mm"));
     let currentdate: Date = new Date(moment(new Date()).format("MM-DD-YYYY HH:mm"));
-    if (currentdate > StartDate) {
-      this.alertService.error('The StartDate must be greater than or equal to current datetime.!');
-      return;
-    }
-    else if (StartDate > EndDate) {
+    // if (currentdate > StartDate) {
+    //   this.alertService.error('The StartDate must be greater than or equal to current datetime.!');
+    //   return;
+    // }
+    // else 
+    if (StartDate > EndDate) {
       this.alertService.error('The EndDate must be greater than or equal to StartDate.!');
       return;
     }
@@ -623,7 +607,73 @@ export class DiscountlistComponent implements OnInit {
         console.log(error);
       }
     );
-
   }
+
+  onLoad(SearchBy: string, Search: string, IsActive: Boolean, StartDate: Date, EndDate: Date) {
+    this._spinner.show();
+    return this._discountService.search(SearchBy, Search, IsActive, StartDate, EndDate).subscribe(
+      (lst) => {
+        if (lst != null) {
+          this.items = lst;
+          this.loadItems();
+        }
+        this._spinner.hide();
+      },
+      (err) => {
+        this._spinner.hide();
+        console.log(err);
+      }
+    );
+  }
+
+  //#region Paging Sorting and Filtering Start
+  public allowUnsort = true;
+  public sort: SortDescriptor[] = [{
+    field: 'ItemCode',
+    dir: 'asc'
+  }];
+  public gridView: GridDataResult;
+  public pageSize = 10;
+  public skip = 0;
+  private data: Object[];
+  private items: Discount[] = [] as any;
+  public state: State = {
+    skip: 0,
+    take: 5,
+
+    // Initial filter descriptor
+    filter: {
+      logic: 'and',
+      filters: [{ field: 'CustomerName', operator: 'contains', value: '' }]
+    }
+  };
+  public pageChange(event: PageChangeEvent): void {
+    this.skip = event.skip;
+    this.loadItems();
+  }
+
+  public sortChange(sort: SortDescriptor[]): void {
+    this.sort = sort;
+    this.loadSortItems();
+  }
+
+  private loadItems(): void {
+    this.gridView = {
+      data: this.items.slice(this.skip, this.skip + this.pageSize),
+      total: this.items.length
+    };
+  }
+  private loadSortItems(): void {
+    this.gridView = {
+      data: orderBy(this.items.slice(this.skip, this.skip + this.pageSize), this.sort),
+      total: this.items.length
+    };
+  }
+  public dataStateChange(state: DataStateChangeEvent): void {
+    this.state = state;
+    this.gridView = process(this.items, this.state);
+  }
+
+  //#endregion Paging Sorting and Filtering End
 
 }

@@ -5,15 +5,17 @@ import { ToastrService } from 'ngx-toastr';
 import { UsernameValidator } from '../../_validators/username';
 import { MarketplaceService } from '../../_services/service/marketplace.service';
 import { Marketplace } from '../../_services/model';
-import { AuthorizationGuard } from '../../_guards/Authorizationguard'
+import { AuthorizationGuard } from '../../_guards/Authorizationguard';
+import { process, State } from '@progress/kendo-data-query';
+import { GridDataResult, DataStateChangeEvent, PageChangeEvent } from '@progress/kendo-angular-grid';
+import { SortDescriptor, orderBy } from '@progress/kendo-data-query';
 @Component({
   selector: 'app-marketplacelist',
   templateUrl: './marketplacelist.component.html',
   styleUrls: ['./marketplacelist.component.css']
 })
 export class MarketplacelistComponent implements OnInit {
-
-  lstMarketplace: Marketplace[];
+ 
   objMarketplace: Marketplace = {} as any;
   marketplaceForm: FormGroup;
   panelTitle: string;
@@ -44,7 +46,7 @@ export class MarketplacelistComponent implements OnInit {
       'required': 'This Field is required.',
       'maxlength': 'This Field must be less than or equal to 20 characters.',
       'pattern': 'This Field must be a Alphabet.',
-      'MarketPlaceInUse': 'This Marketplace has been registered already'
+      'MarketPlaceInUse': 'This Marketplace is already registered!'
     },
   };
 
@@ -162,33 +164,16 @@ export class MarketplacelistComponent implements OnInit {
     $('#modaldeleteconfimation').modal('show');
   }
 
-  onLoad(SearchBy: string, Search: string, IsActive: Boolean) {
-    this._spinner.show();
-    return this._marketplaceService.search(SearchBy, Search, IsActive).subscribe(
-      (lst) => {
-        this.lstMarketplace = lst;
-        this.dtOptions = {
-          pagingType: 'full_numbers',
-          "language": {
-            "search": 'Filter',
-          },
-        };
-
-        this._spinner.hide();
-      },
-      (err) => {
-        this._spinner.hide();
-        console.log(err);
-      }
-    );
-  }
-
   SaveData(): void {
     if (this._authorizationGuard.CheckAcess("Marketplacelist", "ViewEdit")) {
       return;
     }
     // stop here if form is invalid
     if (this.marketplaceForm.invalid) {
+      return;
+    }
+    if (this.marketplaceForm.pristine) {
+      this.alertService.error('Please change the value for any one control to proceed further!');
       return;
     }
     if (this.identity > 0) {
@@ -276,4 +261,72 @@ export class MarketplacelistComponent implements OnInit {
     );
   }
 
+  onLoad(SearchBy: string, Search: string, IsActive: Boolean) {
+    this._spinner.show();
+    return this._marketplaceService.search(SearchBy, Search, IsActive).subscribe(
+      (data) => {
+        if (data != null) { 
+          this.items = data;
+          this.loadItems(); 
+        }
+        this._spinner.hide();
+      },
+      (err) => {
+        this._spinner.hide();
+        console.log(err);
+      }
+    );
+  }
+
+    //#region Paging Sorting and Filtering Start
+    public allowUnsort = true;
+    public sort: SortDescriptor[] = [{
+      field: 'MarketPlace',
+      dir: 'asc'
+    }];
+    public gridView: GridDataResult;
+    public pageSize = 10;
+    public skip = 0;
+    private data: Object[];
+    private items: Marketplace[] = [] as any;
+    public state: State = {
+      skip: 0,
+      take: 5,
+  
+      // Initial filter descriptor
+      filter: {
+        logic: 'and',
+        filters: [{ field: 'MarketPlace', operator: 'contains', value: '' }]
+      }
+    };
+    public pageChange(event: PageChangeEvent): void {
+      this.skip = event.skip;
+      this.loadItems();
+    }
+  
+    public sortChange(sort: SortDescriptor[]): void {
+      this.sort = sort;
+      this.loadSortItems();
+    }
+  
+    private loadItems(): void {
+      this.gridView = {
+        data: this.items.slice(this.skip, this.skip + this.pageSize),
+        total: this.items.length
+      };
+    }
+    private loadSortItems(): void {
+      this.gridView = {
+        data: orderBy(this.items.slice(this.skip, this.skip + this.pageSize), this.sort),
+        total: this.items.length
+      };
+    }
+    public dataStateChange(state: DataStateChangeEvent): void {
+      this.state = state;
+      this.gridView = process(this.items, this.state);
+    }
+  
+  
+    //#endregion Paging Sorting and Filtering End
+  
 }

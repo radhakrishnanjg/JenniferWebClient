@@ -26,7 +26,7 @@
     <div class="panel-heading">
       <div class="row">
         <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-          <span class="spanheader">
+          <span class="groupspanheader">
             {{panelTitle}}
           </span>
         </div>
@@ -45,20 +45,18 @@
           <div class="form-group">
             <label class="control-label" for="poOrder.PONumber">PO Number<span class="mandantory"> *</span></label>
             <br />
-            <!-- <input readonly type="text" name="poOrder.PONumber" [(ngModel)]="poOrder.PONumber" id="poOrder.PONumber"
-              class="form-control"> -->
             {{poOrder.PONumber  }}
           </div>
         </div>
         <div class="col-md-3" [ngClass]="{'has-error': formErrors.PODate}">
           <div class="form-group">
             <label class="control-label" for="PODate">PO Date<span class="mandantory"> *</span></label>
-            <div class="">
+            <div>
               <div class='input-group date'>
 
                 <input type="text" ngxDaterangepickerMd [minDate]="poMinDate" [maxDate]="poMaxDate"
                   [singleDatePicker]="true" class="form-control" id="PODate" [locale]="{format: 'MM-DD-YYYY HH:mm'}"
-                  [timePicker]="true" maxlength="16" [autoApply]="true" (blur)="logValidationErrors()"
+                  [timePicker]="true" maxlength="16" [autoApply]="true" (change)="logValidationErrors()"
                   formControlName="PODate" />
 
                 <label class="fa fa-calendar"></label>
@@ -75,13 +73,13 @@
           <div class="form-group">
             <label class="control-label" for="PODeliveryDate">PO DeliveryDate<span class="mandantory">
                 *</span></label>
-            <div class="">
+            <div>
               <div class='input-group date'>
 
                 <input type="text" ngxDaterangepickerMd [minDate]="poDeliveryMinDate" [maxDate]="poDeliveryMaxDate"
-                  [singleDatePicker]="true" class="form-control" id="PODeliveryDate" [locale]="{format: 'MM-DD-YYYY HH:mm'}"
-                   [timePicker]="true" maxlength="16" [autoApply]="true"
-                  (blur)="logValidationErrors()" formControlName="PODeliveryDate" />
+                  [singleDatePicker]="true" class="form-control" id="PODeliveryDate"
+                  [locale]="{format: 'MM-DD-YYYY HH:mm'}" [timePicker]="true" maxlength="16" [autoApply]="true"
+                  (change)="logValidationErrors()" formControlName="PODeliveryDate" />
 
                 <label class="fa fa-calendar"></label>
               </div>
@@ -93,7 +91,7 @@
             </div>
           </div>
         </div>
-        <div class="col-md-3" *ngIf="poOrder.POID == 0">
+        <div class="col-md-3" *ngIf="poOrder.POID == 0" [ngClass]="{'has-error': formErrors.LocationID}">
           <div class="form-group">
             <label class="control-label" for="Location">Location<span class="mandantory"> *</span></label>
             <select class="form-control" name="poOrder.LocationID" id="Location" [disabled]="poOrder.POID > 0"
@@ -122,7 +120,7 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-md-3" *ngIf="poOrder.POID == 0">
+        <div class="col-md-3" *ngIf="poOrder.POID == 0" [ngClass]="{'has-error': formErrors.VendorID}">
           <div class="form-group">
             <label class="control-label" for="Vendor">Vendor<span class="mandantory"> *</span></label>
             <select class="form-control" name="poOrder.VendorID" id="Vendor"
@@ -166,7 +164,7 @@
           </div>
         </div>
         <div class="col-md-3">
-          <div class="form-group">
+          <div class="form-group" [ngClass]="{'has-error': formErrors.OtherReference}">
             <label class="control-label" for="otherreference">Other Reference<span class="mandantory">
                 *</span></label>
             <input type="text" name="poOrder.OtherReference" id="otherreference" class="form-control"
@@ -204,9 +202,20 @@
           </div>
         </div>
       </div>
-    </div>
-    <div>
-      <span class="spanheader">Order Items</span>
+      <div class="row paddingtop20">
+        <div class="col-md-6">
+          <span class="groupspanheader">Order Items</span>
+        </div>
+        <div class="col-md-6">
+          <div class="pull-right">
+            <button (click)="onClickBulkUpload()" type="button" id="bulkupload" class="btn btn-warning"
+              title="Bulk Upload">Add Bulk</button>
+            &nbsp;
+            <button (click)="onDownloadTemplate()" type="button" id="download" class="btn btn-success"
+              title="Download">Download Template </button>
+          </div>
+        </div>
+      </div>
     </div>
     <kendo-grid [data]="gridData" (edit)="editHandler($event)" (cancel)="cancelHandler($event)"
       (save)="saveHandler($event)" (remove)="removeHandler($event)" (add)="addHandler($event)" [height]="410">
@@ -221,18 +230,18 @@
         <ng-template kendoGridEditTemplate let-dataItem="dataItem" let-column="column" let-formGroup="itemFormGroup">
           <kendo-dropdownlist #ddl="popupAnchor" popupAnchor [data]="itemList" textField="ItemCode" valueField="ItemID"
             [valuePrimitive]="true" [formControl]="itemFormGroup.get(column.field)"
-            (valueChange)="getItemDescription($event)">
+            (valueChange)="getItemDescription($event)" [kendoDropDownFilter]="filterSettings">
           </kendo-dropdownlist>
         </ng-template>
       </kendo-grid-column>
 
-      <kendo-grid-column field="ItemName" title="ItemDescription" width="200">
+      <kendo-grid-column field="ItemName" title="Item Description" width="200">
         <ng-template kendoGridEditTemplate let-column="column" let-formGroup="itemFormGroup" let-isNew="isNew">
           <input #input [readonly]="true" class="k-textbox" [formControl]="itemFormGroup.get(column.field)">
         </ng-template>
       </kendo-grid-column>
 
-      <kendo-grid-column field="VendorItemCode" title="VendorItemCode" width="200">
+      <kendo-grid-column field="VendorItemCode" title="Vendor ItemCode" width="200">
         <ng-template kendoGridEditTemplate let-column="column" let-formGroup="itemFormGroup" let-isNew="isNew">
           <input #input [readonly]="true" class="k-textbox" [formControl]="itemFormGroup.get(column.field)">
         </ng-template>
@@ -251,53 +260,49 @@
         </ng-template>
         <ng-template kendoGridEditTemplate let-dataItem="dataItem" let-column="column" let-formGroup="itemFormGroup">
           <kendo-dropdownlist #ddl="popupAnchor" popupAnchor [data]="uomList" textField="UOM" valueField="UOMID"
-            [valuePrimitive]="true" (valueChange)="onUOMChanged($event)" [formControl]="itemFormGroup.get('UOM')">
+            [valuePrimitive]="true" (valueChange)="onUOMChanged($event)" [formControl]="itemFormGroup.get('UOM')"
+            [kendoDropDownFilter]="filterSettings">
           </kendo-dropdownlist>
         </ng-template>
       </kendo-grid-column>
 
-      <kendo-grid-column field="Rate" title="Rate per unit without taxes" width="220">
+      <kendo-grid-column field="Rate" title="Rate per unit without taxes" width="220" format="0.##">
         <ng-template kendoGridEditTemplate let-column="column" let-formGroup="itemFormGroup" let-isNew="isNew">
           <kendo-numerictextbox #ntb="popupAnchor" popupAnchor (valueChange)="onRateChanged($event)"
-            [formControl]="itemFormGroup.get(column.field)" format="0.##" maxlength="15"></kendo-numerictextbox>
-        </ng-template>
-      </kendo-grid-column>
-
-      <kendo-grid-column field="TaxRate" title="TaxRate" width="100">
-        <ng-template kendoGridEditTemplate let-column="column" let-formGroup="itemFormGroup" let-isNew="isNew">
-          <kendo-numerictextbox #ntb="popupAnchor" popupAnchor [readonly]="true"
-            [formControl]="itemFormGroup.get(column.field)" format="0.##"></kendo-numerictextbox>
-        </ng-template>
-      </kendo-grid-column>
-
-      <kendo-grid-column field="DirectCost" title="DirectCost" width="150">
-        <ng-template kendoGridEditTemplate let-column="column" let-formGroup="itemFormGroup" let-isNew="isNew">
-          <kendo-numerictextbox #ntb="popupAnchor" popupAnchor [readonly]="true"
-            [formControl]="itemFormGroup.get(column.field)" format="0.##"></kendo-numerictextbox>
-        </ng-template>
-      </kendo-grid-column>
-
-      <kendo-grid-column field="TaxAmount" title="TaxAmount" width="150">
-        <ng-template kendoGridEditTemplate let-column="column" let-formGroup="itemFormGroup" let-isNew="isNew">
-          <kendo-numerictextbox #ntb="popupAnchor" popupAnchor [readonly]="true"
-            [formControl]="itemFormGroup.get(column.field)" format="0.##"></kendo-numerictextbox>
-        </ng-template>
-      </kendo-grid-column>
-      <!-- [readonly]="totalAmountFieldDisabled" -->
-      <kendo-grid-column field="TotalAmount" title="TotalAmount" width="150">
-        <ng-template kendoGridEditTemplate let-column="column" let-formGroup="itemFormGroup" let-isNew="isNew">
-          <kendo-numerictextbox #ntb="popupAnchor" popupAnchor (valueChange)="onTotalAmountChanged($event)"
-            [formControl]="itemFormGroup.get(column.field)" format="0.##" [readonly]="true">
+            [formControl]="itemFormGroup.get(column.field)" format="0.##" maxlength="15" [autoCorrect]="true">
           </kendo-numerictextbox>
         </ng-template>
       </kendo-grid-column>
 
+      <kendo-grid-column field="TaxRate" title="Tax Rate" width="100" format="0.##">
+        <ng-template kendoGridEditTemplate let-column="column" let-formGroup="itemFormGroup" let-isNew="isNew">
+          <kendo-numerictextbox #ntb="popupAnchor" popupAnchor [readonly]="true"
+            [formControl]="itemFormGroup.get(column.field)" format="0.##"></kendo-numerictextbox>
+        </ng-template>
+      </kendo-grid-column>
 
-      <!-- <kendo-grid-column field="UnitPrice" title="Price" format="{0:c}" width="80" editor="numeric">
-      </kendo-grid-column> -->
+      <kendo-grid-column field="DirectCost" title="Direct Cost" width="150" format="0.##">
+        <ng-template kendoGridEditTemplate let-column="column" let-formGroup="itemFormGroup" let-isNew="isNew">
+          <kendo-numerictextbox #ntb="popupAnchor" popupAnchor [readonly]="true"
+            [formControl]="itemFormGroup.get(column.field)" format="0.##"></kendo-numerictextbox>
+        </ng-template>
+      </kendo-grid-column>
 
+      <kendo-grid-column field="TaxAmount" title="Tax Amount" width="150" format="0.##">
+        <ng-template kendoGridEditTemplate let-column="column" let-formGroup="itemFormGroup" let-isNew="isNew">
+          <kendo-numerictextbox #ntb="popupAnchor" popupAnchor [readonly]="true"
+            [formControl]="itemFormGroup.get(column.field)" format="0.##"></kendo-numerictextbox>
+        </ng-template>
+      </kendo-grid-column>
 
-      <kendo-grid-command-column title="Action" width="220">
+      <kendo-grid-column field="TotalAmount" title="Total Amount" width="150" format="0.##">
+        <ng-template kendoGridEditTemplate let-column="column" let-formGroup="itemFormGroup" let-isNew="isNew">
+          <kendo-numerictextbox #ntb="popupAnchor" popupAnchor (valueChange)="onTotalAmountChanged($event)"
+            [formControl]="itemFormGroup.get(column.field)" format="0.##">
+          </kendo-numerictextbox>
+        </ng-template>
+      </kendo-grid-column>
+      <kendo-grid-command-column title="Action" [class]="{'text-center': true}" width="150">
         <ng-template kendoGridCellTemplate let-isNew="isNew">
           <button kendoGridEditCommand [primary]="true">Edit</button>
           <button kendoGridRemoveCommand>Remove</button>
@@ -319,3 +324,32 @@
     </div>
   </div>
 </form>
+
+
+<div id="modalpopupbulkupload" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modalpopupbulkupload"
+  aria-hidden="true">
+  <div class="modal-dialog ">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="modalpopupbulkupload"> Bulk Upload</h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <div class="col-sm-12">
+            <textarea rows="10" cols="80" maxlength="10000" [(ngModel)]="BulkString" id="BulkUpload"></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="clearfix"> </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" data-dismiss="modal">Cancel</button>
+        &nbsp;
+        <button class="btn btn-success" type="button" (click)="onClickValidate()" prevent-double-submit>
+          Validate
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -4,13 +4,17 @@ import { PoService } from '../../_services/service/po.service';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
-import { Poorder, Location, Vendor, Brand, ProductGroup, Category, SubCategory, Item, UOM, Poorderitem } from '../../_services/model';
+import { isNumeric } from "rxjs/util/isNumeric"
+import {
+  Poorder, Location, Vendor, Brand, ProductGroup, Category, SubCategory,
+  Item, UOM, Poorderitem
+} from '../../_services/model';
 import * as moment from 'moment';
 import { ActivatedRoute, Router } from '@angular/router';
-
 import { AuthorizationGuard } from '../../_guards/Authorizationguard'
+import { DropDownFilterSettings } from '@progress/kendo-angular-dropdowns';
 
-
+import { MasteruploadService } from 'src/app/_services/service/masterupload.service';
 const createFormGroup = dataItem => new FormGroup({
   'ItemCode': new FormControl(dataItem.ItemID),
   'ItemName': new FormControl(dataItem.ItemName),
@@ -18,11 +22,11 @@ const createFormGroup = dataItem => new FormGroup({
   'CaseSize': new FormControl(dataItem.CaseSize,
     [Validators.required, Validators.min(1), Validators.max(1000000), Validators.pattern("^([0-9]+)$")]),
   'UOM': new FormControl(dataItem.UOMID, [Validators.required, Validators.min(1),]),
-  'Rate': new FormControl(dataItem.Rate, [Validators.required, Validators.min(1), Validators.max(99999999), Validators.pattern("^[0-9]+(.[0-9]{0,2})?$")]),
+  'Rate': new FormControl(dataItem.Rate, [Validators.required, Validators.min(1), Validators.max(999999999), Validators.pattern("^[0-9]+(.[0-9]{0,2})?$")]),
   'TaxRate': new FormControl(dataItem.TaxRate),
   'DirectCost': new FormControl(dataItem.DirectCost),
   'TaxAmount': new FormControl(dataItem.TaxAmount),
-  'TotalAmount': new FormControl(dataItem.TotalAmount, [Validators.required, Validators.min(1), Validators.max(99999999), Validators.pattern("^[0-9]+(.[0-9]{0,2})?$")])
+  'TotalAmount': new FormControl(dataItem.TotalAmount, [Validators.required, Validators.min(1), Validators.max(999999999),])
 });
 
 @Component({
@@ -65,16 +69,18 @@ export class PoComponent implements OnInit {
 
   constructor(
     private _poService: PoService,
-    private _privateutilityService: PrivateutilityService,
+    private _PrivateutilityService: PrivateutilityService,
     private _spinner: NgxSpinnerService,
     public _alertService: ToastrService,
     private activatedroute: ActivatedRoute,
     private _authorizationGuard: AuthorizationGuard,
     private router: Router,
     private fb: FormBuilder,
+    public _masteruploadService: MasteruploadService,
+
   ) {
     this.poOrder.lstItem = [];
-    this.poOrder.lstApproval = []; 
+    this.poOrder.lstApproval = [];
     this.rateFieldDisabled = false;
     this.totalAmountFieldDisabled = false;
 
@@ -167,14 +173,20 @@ export class PoComponent implements OnInit {
       Remarks: ['', []],
     });
 
-    this.gridData = this.poOrder.lstItem; 
+    // var PODate = moment(new Date(), 'YYYY-MM-DD[T]HH:mm').format('MM-DD-YYYY HH:mm').toString();
+    // this.poForm.patchValue({
+    //   PODate: { startDate: new Date(PODate) },
+    //   PODeliveryDate: { startDate: new Date(PODate) },
+    // });
+    //this.poMinDate = moment().add(0, 'days'); 
+    // this.poDeliveryMinDate = moment().add(0, 'days');
+    this.getCurrentServerDateTime();
+    this.gridData = this.poOrder.lstItem;
     this.getUOMs();
-    this.poMinDate = moment().add(0, 'days');
     var end = moment().endOf('day');
     var currentend = new Date();
     var differ = end.diff(currentend, 'minutes');
     this.poMaxDate = moment().add(differ, 'minutes');
-    this.poDeliveryMinDate = moment().add(0, 'days');
     this.poDeliveryMaxDate = moment().add(1, 'years');
 
     this.activatedroute.paramMap.subscribe(params => {
@@ -191,6 +203,27 @@ export class PoComponent implements OnInit {
     });
   }
 
+  private getCurrentServerDateTime() {
+    this._spinner.show();
+    this._PrivateutilityService.getCurrentDate()
+      .subscribe(
+        (data: Date) => {
+          var mcurrentDate = moment(data, 'YYYY-MM-DD[T]HH:mm').format('MM-DD-YYYY HH:mm').toString();
+          this.poForm.patchValue({
+            PODate: { startDate: new Date(mcurrentDate) },
+            PODeliveryDate: { startDate: new Date(mcurrentDate) },
+          });
+          this.poMinDate = moment(data).add(0, 'days');
+          this.poDeliveryMinDate = moment(data).add(0, 'days');
+          this._spinner.hide();
+        },
+        (err: any) => {
+          console.log(err);
+
+          this._spinner.hide();
+        }
+      );
+  }
 
   private editPO(poID): void {
     this.poOrder.POID = poID;
@@ -202,7 +235,7 @@ export class PoComponent implements OnInit {
           this.getLocations();
           this.getVendors();
           this.poOrder = data;
-          debugger
+
           this.poForm.get('IsShipmentRequired').disable();
           this.gridData = this.poOrder.lstItem;
           var PODate = moment(data.PODate, 'YYYY-MM-DD[T]HH:mm').format('MM-DD-YYYY HH:mm').toString();
@@ -253,7 +286,7 @@ export class PoComponent implements OnInit {
   //Get Locations
   public getLocations(): void {
     this._spinner.show();
-    this._privateutilityService.getLocations().subscribe(
+    this._PrivateutilityService.getLocations().subscribe(
       (data) => {
         this.locationList = data;
         this._spinner.hide();
@@ -268,7 +301,7 @@ export class PoComponent implements OnInit {
   //Get Vendors
   public getVendors(): void {
     this._spinner.show();
-    this._privateutilityService.getVendors().subscribe(
+    this._PrivateutilityService.getVendors().subscribe(
       (res) => {
         this.vendorList = res;
         this._spinner.hide();
@@ -347,6 +380,8 @@ export class PoComponent implements OnInit {
     }
   }
 
+
+
   // Get Item Description
   public getItemDescription(itemID): void {
     const index = this.poOrder.lstItem.findIndex(({ ItemID }) => ItemID === itemID);
@@ -399,9 +434,9 @@ export class PoComponent implements OnInit {
       let TotalAmount = DirectCost + TaxAmount;
       this.itemFormGroup.patchValue(
         {
-          DirectCost: DirectCost,
-          TaxAmount: TaxAmount,
-          TotalAmount: TotalAmount
+          DirectCost: Number(DirectCost.toFixed(2)),
+          TaxAmount: Number(TaxAmount.toFixed(2)),
+          TotalAmount: Number(TotalAmount.toFixed(2))
         })
     }
   }
@@ -426,15 +461,14 @@ export class PoComponent implements OnInit {
       let CaseSize = this.itemFormGroup.get("CaseSize").value;
       let TaxRate = this.itemFormGroup.get("TaxRate").value;
       let DirectCost = Rate * CaseSize * this.poOrderItem.MultiplierValue;
-      let TaxAmount = DirectCost * (TaxRate / 100);
+      let TaxAmount = (DirectCost * (TaxRate / 100));
       let TotalAmount = DirectCost + TaxAmount;
       this.itemFormGroup.patchValue(
         {
-          DirectCost: DirectCost,
-          TaxAmount: TaxAmount,
-          TotalAmount: TotalAmount
+          DirectCost: Number(DirectCost.toFixed(2)),
+          TaxAmount: Number(TaxAmount.toFixed(2)),
+          TotalAmount: Number(TotalAmount.toFixed(2))
         })
-      this.totalAmountFieldDisabled = Rate > 0;
     }
   }
 
@@ -449,14 +483,14 @@ export class PoComponent implements OnInit {
       let TaxRate = this.itemFormGroup.get("TaxRate").value;
       let DirectCost = TotalAmount / (1 + TaxRate / 100);
       let TaxAmount = TotalAmount - DirectCost;
-      let Rate = DirectCost / (CaseSize * this.poOrderItem.MultiplierValue);
+      let Rate = (DirectCost / (CaseSize * this.poOrderItem.MultiplierValue));
+
       this.itemFormGroup.patchValue(
         {
-          DirectCost: DirectCost,
-          TaxAmount: TaxAmount,
-          Rate: Rate
+          DirectCost: Number(DirectCost.toFixed(2)),
+          TaxAmount: Number(TaxAmount.toFixed(2)),
+          Rate: Number(Rate.toFixed(2))
         })
-      this.rateFieldDisabled = TotalAmount > 0;
     }
   }
 
@@ -469,9 +503,6 @@ export class PoComponent implements OnInit {
     if (this.poForm.invalid) {
       return;
     }
-    // let errorMessage = this.validatePO();
-    // this.poOrder.PODate = this.poOrder.PODate.startDate;
-    // this.poOrder.PODeliveryDate = this.poOrder.PODeliveryDate.startDate;
     if (this.poOrder.PONumber == null || this.poOrder.PONumber == "") {
       this._alertService.error("PO Number required");
       return;
@@ -491,9 +522,18 @@ export class PoComponent implements OnInit {
       } else {
         this.poOrder.PODeliveryDate = this.poForm.controls['PODeliveryDate'].value.startDate.toLocaleString();
       }
+      if (this.poOrder.PODate > this.poOrder.PODeliveryDate) {
+        this._alertService.error('The PO Delivery Date must be greater than or equal to the PODate!');
+        return;
+      }
     } else {
-      this.poOrder.PODate = this.poForm.controls['PODate'].value.startDate._d.toLocaleString();
-      this.poOrder.PODeliveryDate = this.poForm.controls['PODeliveryDate'].value.startDate._d.toLocaleString();
+      this.poOrder.PODate = this.poForm.controls['PODate'].value.startDate;//_d.toLocaleString()
+      this.poOrder.PODeliveryDate = this.poForm.controls['PODeliveryDate'].value.startDate;
+
+      if (this.poOrder.PODate > this.poOrder.PODeliveryDate) {
+        this._alertService.error('The PO Delivery Date must be greater than or equal to the PODate!');
+        return;
+      }
     }
 
     this.poOrder.LocationID = this.poForm.controls['LocationID'].value;
@@ -505,10 +545,6 @@ export class PoComponent implements OnInit {
     this.poOrder.PaymentReference = this.poForm.controls['PaymentReference'].value;
     this.poOrder.Remarks = this.poForm.controls['Remarks'].value;
 
-    // if (errorMessage != null) {
-    //   this._alertService.error(errorMessage);
-    //   return;
-    // };
     this._spinner.show();
     this._poService.InsertOrUpdate(this.poOrder).subscribe(
       (res) => {
@@ -638,47 +674,10 @@ export class PoComponent implements OnInit {
     this.rateFieldDisabled = false;
   }
 
-  private validatePO(): string {
-    if (this.poOrder.PONumber == null || this.poOrder.PONumber == "") {
-      return "PO Number required";
-    }
-    if (this.poOrder.LocationID == null || this.poOrder.LocationID == 0) {
-      return "Location field required";
-    }
-    if (this.poOrder.VendorID == null || this.poOrder.VendorID == 0) {
-      return "Vendor field required";
-    }
-
-    if (this.poOrder.OtherReference == null || this.poOrder.OtherReference.trim().length == 0) {
-      return "Other Reference field required";
-    }
-
-    if (this.poOrder.OtherReference.trim().length > 50) {
-      return "Other Reference must be within 50 characters";
-    }
-
-    if (this.poOrder.AgainstReference != null && this.poOrder.AgainstReference.trim().length > 50) {
-      return "Against Reference must be within 50 characters";
-    }
-
-    if (this.poOrder.PaymentReference != null && this.poOrder.PaymentReference.trim().length > 50) {
-      return "Payment Reference must be within 50 characters";
-    }
-
-    if (this.poOrder.Remarks != null && this.poOrder.Remarks.trim().length > 50) {
-      return "Remarks must be within 250 characters";
-    }
-    if (this.poOrder.lstItem.length == 0) {
-      return "Please add atleast one item";
-    }
-    return null;
-  }
-
   private validateItem(orderItem: Poorderitem): string {
     if (orderItem.ItemID == null || orderItem.ItemID == 0) {
       return "ItemCode field required";
     }
-
     if (orderItem.CaseSize == null || orderItem.CaseSize < 0) {
       return "Unit field must be greater than zero";
     }
@@ -686,18 +685,109 @@ export class PoComponent implements OnInit {
     if (orderItem.UOMID == null || orderItem.UOMID == 0) {
       return "UOM field required";
     }
-
     if (orderItem.Rate == null || orderItem.Rate <= 0) {
       return "Rate field must be greater than zero";
     }
-
-    // if (orderItem.TaxRate == null || orderItem.TaxRate == 0) {
-    //   return "TaxRate field required";
-    // }
-
     if (orderItem.TotalAmount == null || orderItem.TotalAmount <= 0) {
       return "TotalAmount field must be greater than zero";
     }
     return null;
   }
+
+  public filterSettings: DropDownFilterSettings = {
+    caseSensitive: false,
+    operator: 'startsWith'
+  };
+
+  onDownloadTemplate() {
+
+    let filetype = 'POBulk'
+    this._spinner.show();
+    this._masteruploadService.getFileTemplate(filetype)
+      .subscribe(data => {
+        this._spinner.hide(),
+          saveAs(data, filetype + '.xlsx')
+      },
+        (err) => {
+          this._spinner.hide();
+          console.log(err);
+        }
+      );
+  }
+
+
+  onClickBulkUpload() {
+    if (this._authorizationGuard.CheckAcess("Polist", "ViewEdit")) {
+      return;
+    }
+    $('#modalpopupbulkupload').modal('show');
+  }
+
+  BulkString: string;
+  public onClickValidate() {
+    this.poOrder.BulkString = this.BulkString;
+    const csvSeparator = '|';
+    let flag: boolean = true;
+    const lines = this.poOrder.BulkString.split('\n');
+    if (lines == null || lines.length == 0) {
+      this._alertService.error("Item details required to proceed further!");
+      flag = false;
+      return;
+    }
+    else if (lines.length > 500) {
+      this._alertService.error("You can add maximum of 500 rows using bulk upload option.!");
+      flag = false;
+      return;
+    }
+    lines.forEach(element => {
+      const cols: string[] = element.split(csvSeparator);
+      if (cols[1] == null || cols[1] == '' || !isNumeric(cols[1]) || parseInt(cols[1]) < 0) {
+        this._alertService.error("Units column value must be a positive integer.!");
+        flag = false;
+        return;
+      }
+      else if (cols[2] == null || cols[2] == '' || !isNumeric(cols[2]) || parseInt(cols[2]) < 0) {
+        this._alertService.error("UOMID column value must be a positive integer.!");
+        flag = false;
+        return;
+      }
+      if (cols[3] == null || cols[3] == '' || !isNumeric(cols[3]) || parseInt(cols[3]) < 0) {
+        this._alertService.error("Rate column value must be a positive integer.!");
+        flag = false;
+        return;
+      }
+    });
+    if (flag) {
+      this.poOrder.VendorID = this.poForm.controls['VendorID'].value;
+      this.poOrder.BulkString = this.BulkString;
+      this._poService.bulkUpsert(this.poOrder).subscribe(
+        (res: Poorderitem[]) => {
+          this.poOrder.lstItem = res;
+          this.gridData = this.poOrder.lstItem;
+          this._spinner.hide();
+          if (this.gridData.length > 0) {
+            this.poForm.get('VendorID').disable();
+          }
+          if (res.length > 0) {
+            this._alertService.success("Validated successfully");
+          }
+          else if (lines.length > res.length) {
+            this._alertService.warning("Partial records validated successfully. Some of itemcode/UOM ID are not available.!");
+          }
+          else {
+            this._alertService.error("Itemcode/UOM ID are not matched with available data.!");
+          } 
+
+          $('#modalpopupbulkupload').modal('hide');
+        },
+        (err) => {
+          this._spinner.hide();
+          $('#modalpopupbulkupload').modal('hide');
+          console.log(err);
+        });
+    }
+    // console.log(this.parsedCsv);
+  }
+
+
 }

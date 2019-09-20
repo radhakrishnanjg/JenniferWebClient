@@ -5,7 +5,10 @@ import { ToastrService } from 'ngx-toastr';
 import { DropdownService } from '../../_services/service/dropdown.service';
 import { Dropdown } from '../../_services/model';
 import { PrivateutilityService } from '../../_services/service/privateutility.service';
-import { AuthorizationGuard } from '../../_guards/Authorizationguard'
+import { AuthorizationGuard } from '../../_guards/Authorizationguard';
+import { process, State } from '@progress/kendo-data-query';
+import { GridDataResult, DataStateChangeEvent, PageChangeEvent } from '@progress/kendo-angular-grid';
+import { SortDescriptor, orderBy } from '@progress/kendo-data-query';
 
 @Component({
   selector: 'app-dropdownlist',
@@ -15,8 +18,7 @@ import { AuthorizationGuard } from '../../_guards/Authorizationguard'
 export class DropdownlistComponent implements OnInit {
 
   lstDropdownMaster: Dropdown[];
-  lstDropdown: Dropdown[];
-  objDropdown: Dropdown = {} as any;
+   objDropdown: Dropdown = {} as any;
   dropdownForm: FormGroup;
   panelTitle: string;
   action: boolean;
@@ -202,32 +204,6 @@ export class DropdownlistComponent implements OnInit {
     $('#modaldeleteconfimation').modal('show');
   }
 
-  onLoad(SearchBy: string, Search: string, IsActive: Boolean) {
-
-
-
-    this._spinner.show();
-    this._dropdownService.search(SearchBy, Search, IsActive).subscribe(
-      (employeeList) => {
-        this.lstDropdown = employeeList;
-        this.dtOptions = {
-          pagingType: 'full_numbers',
-          "language": {
-            "search": 'Filter',
-          },
-        };
-
-        this._spinner.hide();
-      },
-      (err) => {
-        this._spinner.hide();
-        console.log(err);
-      }
-    );
-
-
-  }
-
   SaveData(): void {
     if (this._authorizationGuard.CheckAcess("Dropdownlist", "ViewEdit")) {
       return;
@@ -356,4 +332,77 @@ export class DropdownlistComponent implements OnInit {
     );
   }
 
+  onLoad(SearchBy: string, Search: string, IsActive: Boolean) {
+
+
+
+    this._spinner.show();
+    this._dropdownService.search(SearchBy, Search, IsActive).subscribe(
+      (data) => {
+        if (data != null) { 
+          this.items = data;
+          this.loadItems(); 
+        }
+        this._spinner.hide();
+      },
+      (err) => {
+        this._spinner.hide();
+        console.log(err);
+      }
+    );
+
+
+  }
+
+   //#region Paging Sorting and Filtering Start
+   public allowUnsort = true;
+   public sort: SortDescriptor[] = [{
+     field: 'DropdownType',
+     dir: 'asc'
+   }];
+   public gridView: GridDataResult;
+   public pageSize = 10;
+   public skip = 0;
+   private data: Object[];
+   private items: Dropdown[] = [] as any;
+   public state: State = {
+     skip: 0,
+     take: 5,
+ 
+     // Initial filter descriptor
+     filter: {
+       logic: 'and',
+       filters: [{ field: 'DropdownType', operator: 'contains', value: '' }]
+     }
+   };
+   public pageChange(event: PageChangeEvent): void {
+     this.skip = event.skip;
+     this.loadItems();
+   }
+ 
+   public sortChange(sort: SortDescriptor[]): void {
+     this.sort = sort;
+     this.loadSortItems();
+   }
+ 
+   private loadItems(): void {
+     this.gridView = {
+       data: this.items.slice(this.skip, this.skip + this.pageSize),
+       total: this.items.length
+     };
+   }
+   private loadSortItems(): void {
+     this.gridView = {
+       data: orderBy(this.items.slice(this.skip, this.skip + this.pageSize), this.sort),
+       total: this.items.length
+     };
+   }
+   public dataStateChange(state: DataStateChangeEvent): void {
+     this.state = state;
+     this.gridView = process(this.items, this.state);
+   }
+ 
+ 
+   //#endregion Paging Sorting and Filtering End
+ 
 }

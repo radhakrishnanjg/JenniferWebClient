@@ -69,14 +69,14 @@ export class InvoiceService {
       .pipe(catchError(this.handleError));
   }
 
-  public getInvoiceItems(PurchaseID: number): Observable<Invoiceitem[]> {
-    let currentUser = this.authenticationService.currentUserValue;
-    let CompanyDetailID = currentUser.CompanyDetailID;
-    let CompanyID = currentUser.CompanyID;
-    return this.httpClient.get<Invoiceitem[]>(environment.baseUrl + `Invoice/GetInvoiceItems?PurchaseID=` + PurchaseID +
-      `&CompanyDetailID=` + CompanyDetailID + `&CompanyID=` + CompanyID)
-      .pipe(catchError(this.handleError));
-  }
+  // public getInvoiceItems(PurchaseID: number): Observable<Invoiceitem[]> {
+  //   let currentUser = this.authenticationService.currentUserValue;
+  //   let CompanyDetailID = currentUser.CompanyDetailID;
+  //   let CompanyID = currentUser.CompanyID;
+  //   return this.httpClient.get<Invoiceitem[]>(environment.baseUrl + `Invoice/GetInvoiceItems?PurchaseID=` + PurchaseID +
+  //     `&CompanyDetailID=` + CompanyDetailID + `&CompanyID=` + CompanyID)
+  //     .pipe(catchError(this.handleError));
+  // }
 
   public getNewInvoice(POID: number): Observable<Invoiceitem[]> {
     let currentUser = this.authenticationService.currentUserValue;

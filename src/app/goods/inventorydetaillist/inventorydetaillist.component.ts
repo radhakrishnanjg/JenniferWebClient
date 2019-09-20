@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner'; 
 import { InventorydetailService } from  '../../_services/service/inventorydetail.service';
 import { Inventorydetail } from  '../../_services/model'; 
+import { process, State } from '@progress/kendo-data-query';
+import { GridDataResult, DataStateChangeEvent, PageChangeEvent } from '@progress/kendo-angular-grid';
+import { SortDescriptor, orderBy } from '@progress/kendo-data-query';
 
 @Component({
   selector: 'app-inventorydetaillist',
@@ -9,8 +12,7 @@ import { Inventorydetail } from  '../../_services/model';
   styleUrls: ['./inventorydetaillist.component.css']
 })
 export class InventorydetaillistComponent implements OnInit {
-
-  lst: Inventorydetail[];
+ 
   obj: Inventorydetail;
     
   dtOptions: DataTables.Settings = {}; 
@@ -26,28 +28,6 @@ export class InventorydetaillistComponent implements OnInit {
     this.onLoad('', '');
   }
 
-  onLoad(SearchBy: string, Search: string) {
- 
-    this._spinner.show();
-    return this._inventoryTypeService.search(SearchBy, Search).subscribe(
-      (data) => {
-        this.lst = data;
-        this.dtOptions = {
-         pagingType: 'full_numbers',
-         "language": {
-           "search": 'Filter',
-         },
-       };
-   
-        this._spinner.hide();
-      },
-      (err) => {
-        this._spinner.hide();
-        console.log(err);
-      }
-    );
-  }
-
   Search(): void {
     this.onLoad(this.SearchBy, this.SearchKeyword);
   }
@@ -57,4 +37,73 @@ export class InventorydetaillistComponent implements OnInit {
     this.SearchKeyword = ''; 
   }
 
+  onLoad(SearchBy: string, Search: string) {
+ 
+    this._spinner.show();
+    return this._inventoryTypeService.search(SearchBy, Search).subscribe(
+      (data) => {
+        if (data != null) { 
+          this.items = data;
+          this.loadItems(); 
+        }
+        this._spinner.hide();
+      },
+      (err) => {
+        this._spinner.hide();
+        console.log(err);
+      }
+    );
+  }
+
+   //#region Paging Sorting and Filtering Start
+   public allowUnsort = true;
+   public sort: SortDescriptor[] = [{
+     field: 'ItemCode',
+     dir: 'asc'
+   }];
+   public gridView: GridDataResult;
+   public pageSize = 10;
+   public skip = 0;
+   private data: Object[];
+   private items: Inventorydetail[] = [] as any;
+   public state: State = {
+     skip: 0,
+     take: 5,
+ 
+     // Initial filter descriptor
+     filter: {
+       logic: 'and',
+       filters: [{ field: 'ItemCode', operator: 'contains', value: '' }]
+     }
+   };
+   public pageChange(event: PageChangeEvent): void {
+     this.skip = event.skip;
+     this.loadItems();
+   }
+ 
+   public sortChange(sort: SortDescriptor[]): void {
+     this.sort = sort;
+     this.loadSortItems();
+   }
+ 
+   private loadItems(): void {
+     this.gridView = {
+       data: this.items.slice(this.skip, this.skip + this.pageSize),
+       total: this.items.length
+     };
+   }
+   private loadSortItems(): void {
+     this.gridView = {
+       data: orderBy(this.items.slice(this.skip, this.skip + this.pageSize), this.sort),
+       total: this.items.length
+     };
+   }
+   public dataStateChange(state: DataStateChangeEvent): void {
+     this.state = state;
+     this.gridView = process(this.items, this.state);
+   }
+ 
+ 
+   //#endregion Paging Sorting and Filtering End
+ 
 }

@@ -26,7 +26,7 @@
       <div class="panel-heading">
         <div class="row">
           <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-            <span class="spanheader">
+            <span class="groupspanheader">
               {{panelTitle}}
             </span>
           </div>
@@ -61,7 +61,7 @@
             <span class="mandantory">*</span></label>
           <div class="col-md-4">
             <input id="InvoiceNumber" type="text" class="form-control" formControlName="InvoiceNumber"
-              [ngbTypeahead]="search" [resultFormatter]="formatter" (blur)="logValidationErrors();" />
+              [ngbTypeahead]="search" [resultFormatter]="formatter" (blur)="logValidationErrors();" maxlength="16" />
             <div class="help-block-rk">
               <span class="help-block" *ngIf="formErrors.InvoiceNumber">
                 {{formErrors.InvoiceNumber}}
@@ -122,7 +122,7 @@
             <span class="mandantory">*</span></label>
           <div class="col-md-2">
             <input id="Weight" type="text" class="form-control" formControlName="Weight"
-              (blur)="logValidationErrors();"  >
+              (blur)="logValidationErrors();"  maxlength="10" >
             <div class="help-block-rk">
               <span class="help-block" *ngIf="formErrors.Weight">
                 {{formErrors.Weight}}
@@ -148,16 +148,15 @@
             </div>
           </div>
         </div>
-        <!-- </div> -->
       </div>
       <div class="panel-footer">
         <div class="pull-right btn-toolbar">
           <button class="btn btn-primary" routerLink="/Salesshipmentlist" title="Cancel">
-            <!-- <i class="fa fa-arrow-left" aria-hidden="true"></i> -->
+           
             Cancel
           </button>
           <button class="btn btn-success" type="submit" prevent-double-submit [disabled]="salesShipmentForm.invalid">
-            <!-- <i class="fa fa-save"></i> -->
+            
             Save
           </button>
         </div>

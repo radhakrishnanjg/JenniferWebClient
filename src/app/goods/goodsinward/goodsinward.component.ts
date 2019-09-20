@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -9,7 +9,7 @@ import { GoodsinwardService } from '../../_services/service/goodsinward.service'
 import { PrivateutilityService } from '../../_services/service/privateutility.service';
 import { AuthenticationService } from '../../_services/service/authentication.service';
 
-import { UsernameValidator } from '../../_validators/username'; 
+import { UsernameValidator } from '../../_validators/username';
 
 @Component({
   selector: 'app-goodsinward',
@@ -104,7 +104,7 @@ export class GoodsinwardComponent implements OnInit {
     this.serial = '';
     this.goodsinwardform = this.fb.group({
       JenniferItemSerial: ['', [Validators.required,],
-        this.usernameValidator.validateInwardJenniferSerialNumber(this.identity)
+        // this.usernameValidator.validateInwardJenniferSerialNumber(this.identity)
       ],
       VendorItemSerialType: ['', [Validators.required]],
       VendorItemSerialNumber: ['', [Validators.required,]]
@@ -138,11 +138,6 @@ export class GoodsinwardComponent implements OnInit {
     }
   }
 
-
-
-
-
-
   JenniferItemSerialonChange(): void {
     if (this.goodsinwardform.valid) {
       this.obj = new Goodsinward();
@@ -153,24 +148,39 @@ export class GoodsinwardComponent implements OnInit {
       this.obj.InventoryType = this.InventoryType;
       this.obj.ItemName = this.ItemName;
 
-      if (this.lstGoodsinward.filter(a => a.JenniferItemSerial == this.obj.JenniferItemSerial).length == 0) {
-        if ((this.GRNNumber != null && this.GRNNumber.length > 0) &&
-          (this.ItemName != null && this.ItemName.length > 0) &&
-          (this.obj.JenniferItemSerial != null && this.obj.JenniferItemSerial.length > 0) &&
-          (this.obj.VendorItemSerialType != null && this.obj.VendorItemSerialType.length > 0) &&
-          (this.obj.VendorItemSerialNumber != null && this.obj.VendorItemSerialNumber.length > 0)) {
-          let currentUser = this._authenticationService.currentUserValue;
-          this.obj.CompanyDetailID = currentUser.CompanyDetailID;
-          this.obj.LoginId = currentUser.UserId;
-          this.lstGoodsinward.push(this.obj);
-          this.Clear();
-          $('#VendorItemSerialNumber').focus();
+      this._spinner.show();
+      this._goodsinwardService.exist(0, this.goodsinwardform.controls['JenniferItemSerial'].value).subscribe(
+        (data) => {
+          this._spinner.hide();
+          if (!data) {
+            this.alertService.error('Jennifer Serial Number is invalid or used.!');
+          }
+          else {
+            if (this.lstGoodsinward.filter(a => a.JenniferItemSerial == this.obj.JenniferItemSerial).length == 0) {
+              if ((this.GRNNumber != null && this.GRNNumber.length > 0) &&
+                (this.ItemName != null && this.ItemName.length > 0) &&
+                (this.obj.JenniferItemSerial != null && this.obj.JenniferItemSerial.length > 0) &&
+                (this.obj.VendorItemSerialType != null && this.obj.VendorItemSerialType.length > 0) &&
+                (this.obj.VendorItemSerialNumber != null && this.obj.VendorItemSerialNumber.length > 0)) {
+                let currentUser = this._authenticationService.currentUserValue;
+                this.obj.CompanyDetailID = currentUser.CompanyDetailID;
+                this.obj.LoginId = currentUser.UserId;
+                this.lstGoodsinward.push(this.obj);
+                this.Clear();
+                $('#VendorItemSerialNumber').focus();
+              }
+            }
+            else {
+              this.alertService.error('Jennifer Item Serial Number is already exist in the list.!');
+              return;
+            }
+          } 
+        },
+        (error: any) => {
+          this._spinner.hide();
+          console.log(error);
         }
-      }
-      else {
-        this.alertService.error('Jennifer Item Serial already exist in the list.!');
-        return;
-      }
+      );
     }
   }
 
@@ -183,25 +193,39 @@ export class GoodsinwardComponent implements OnInit {
       this.obj.GRNNumber = this.GRNNumber;
       this.obj.InventoryType = this.InventoryType;
       this.obj.ItemName = this.ItemName;
-
-      if (this.lstGoodsinward.filter(a => a.JenniferItemSerial == this.obj.JenniferItemSerial).length == 0) {
-        if ((this.GRNNumber != null && this.GRNNumber.length > 0) &&
-          (this.ItemName != null && this.ItemName.length > 0) &&
-          (this.obj.JenniferItemSerial != null && this.obj.JenniferItemSerial.length > 0) &&
-          (this.obj.VendorItemSerialType != null && this.obj.VendorItemSerialType.length > 0) &&
-          (this.obj.VendorItemSerialNumber != null && this.obj.VendorItemSerialNumber.length > 0)) {
-          let currentUser = this._authenticationService.currentUserValue;
-          this.obj.CompanyDetailID = currentUser.CompanyDetailID;
-          this.obj.LoginId = currentUser.UserId;
-          this.lstGoodsinward.push(this.obj);
-          this.Clear();
-          $('#VendorItemSerialNumber').focus();
+      this._spinner.show();
+      this._goodsinwardService.exist(0, this.goodsinwardform.controls['JenniferItemSerial'].value).subscribe(
+        (data) => {
+          this._spinner.hide();
+          if (!data) {
+            this.alertService.error('Jennifer Serial Number is invalid or used.!');
+          }
+          else {
+            if (this.lstGoodsinward.filter(a => a.JenniferItemSerial == this.obj.JenniferItemSerial).length == 0) {
+              if ((this.GRNNumber != null && this.GRNNumber.length > 0) &&
+                (this.ItemName != null && this.ItemName.length > 0) &&
+                (this.obj.JenniferItemSerial != null && this.obj.JenniferItemSerial.length > 0) &&
+                (this.obj.VendorItemSerialType != null && this.obj.VendorItemSerialType.length > 0) &&
+                (this.obj.VendorItemSerialNumber != null && this.obj.VendorItemSerialNumber.length > 0)) {
+                let currentUser = this._authenticationService.currentUserValue;
+                this.obj.CompanyDetailID = currentUser.CompanyDetailID;
+                this.obj.LoginId = currentUser.UserId;
+                this.lstGoodsinward.push(this.obj);
+                this.Clear();
+                $('#VendorItemSerialNumber').focus();
+              }
+            }
+            else {
+              this.alertService.error('Jennifer Item Serial Number is already exist in the list.!');
+              return;
+            }
+          } 
+        },
+        (error: any) => {
+          this._spinner.hide();
+          console.log(error);
         }
-      }
-      else {
-        this.alertService.error('Jennifer Item Serial already exist in the list.!');
-        return;
-      }
+      );
     }
   }
   VendorItemSerialNumberonChange(): void {
@@ -213,25 +237,39 @@ export class GoodsinwardComponent implements OnInit {
       this.obj.GRNNumber = this.GRNNumber;
       this.obj.InventoryType = this.InventoryType;
       this.obj.ItemName = this.ItemName;
-
-      if (this.lstGoodsinward.filter(a => a.JenniferItemSerial == this.obj.JenniferItemSerial).length == 0) {
-        if ((this.GRNNumber != null && this.GRNNumber.length > 0) &&
-          (this.ItemName != null && this.ItemName.length > 0) &&
-          (this.obj.JenniferItemSerial != null && this.obj.JenniferItemSerial.length > 0) &&
-          (this.obj.VendorItemSerialType != null && this.obj.VendorItemSerialType.length > 0) &&
-          (this.obj.VendorItemSerialNumber != null && this.obj.VendorItemSerialNumber.length > 0)) {
-          let currentUser = this._authenticationService.currentUserValue;
-          this.obj.CompanyDetailID = currentUser.CompanyDetailID;
-          this.obj.LoginId = currentUser.UserId;
-          this.lstGoodsinward.push(this.obj);
-          this.Clear();
-          $('#JenniferItemSerial').focus();
+      this._spinner.show();
+      this._goodsinwardService.exist(0, this.goodsinwardform.controls['JenniferItemSerial'].value).subscribe(
+        (data) => { 
+          this._spinner.hide();
+          if (!data) {
+            this.alertService.error('Jennifer Serial Number is invalid or used.!');
+          }
+          else {
+            if (this.lstGoodsinward.filter(a => a.JenniferItemSerial == this.obj.JenniferItemSerial).length == 0) {
+              if ((this.GRNNumber != null && this.GRNNumber.length > 0) &&
+                (this.ItemName != null && this.ItemName.length > 0) &&
+                (this.obj.JenniferItemSerial != null && this.obj.JenniferItemSerial.length > 0) &&
+                (this.obj.VendorItemSerialType != null && this.obj.VendorItemSerialType.length > 0) &&
+                (this.obj.VendorItemSerialNumber != null && this.obj.VendorItemSerialNumber.length > 0)) {
+                let currentUser = this._authenticationService.currentUserValue;
+                this.obj.CompanyDetailID = currentUser.CompanyDetailID;
+                this.obj.LoginId = currentUser.UserId;
+                this.lstGoodsinward.push(this.obj);
+                this.Clear();
+                $('#JenniferItemSerial').focus();
+              }
+            }
+            else {
+              this.alertService.error('Jennifer Item Serial Number is already exist in the list.!');
+              return;
+            }
+          }
+        },
+        (error: any) => {
+          this._spinner.hide();
+          console.log(error);
         }
-      }
-      else {
-        this.alertService.error('Jennifer Item Serial already exist in the list.!');
-        return;
-      }
+      );
     }
   }
 
@@ -256,14 +294,14 @@ export class GoodsinwardComponent implements OnInit {
     this._spinner.show();
     this._goodsinwardService.VendorUpdate(this.lstGoodsinward).subscribe(
       (data) => {
-        if (data && data == true) {
+        if (data != null && data.Flag == true) {
           this._spinner.hide();
-          this.alertService.success('Goods inward data has been updated successful');
+          this.alertService.success(data.Msg);
           this._router.navigate(['/Goodsinwardlist']);
         }
         else {
           this._spinner.hide();
-          this.alertService.error('Goods inward updation failed!');
+          this.alertService.error(data.Msg);
           this._router.navigate(['/Goodsinwardlist']);
         }
         $('#modalpopup_goodsinward').modal('hide');
@@ -275,21 +313,4 @@ export class GoodsinwardComponent implements OnInit {
       }
     )
   }
-
-  // @ViewChild('instance') instance: NgbTypeahead;
-  // focus$ = new Subject<string>();
-  // click$ = new Subject<string>();
-
-  // search = (text$: Observable<string>) => {
-  //   const debouncedText$ = text$.pipe(debounceTime(200), distinctUntilChanged());
-  //   const clicksWithClosedPopup$ = this.click$.pipe(filter(() => !this.instance.isPopupOpen()));
-  //   const inputFocus$ = this.focus$;
-
-  //   return merge(debouncedText$, inputFocus$, clicksWithClosedPopup$).pipe(
-  //     map(term => (term === '' ? this.InwardGRNNumbers
-  //       : this.InwardGRNNumbers.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1)).slice(0, 10))
-  //   );
-  // }
-
-
 }

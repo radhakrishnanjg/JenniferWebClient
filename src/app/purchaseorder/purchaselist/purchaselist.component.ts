@@ -7,6 +7,9 @@ import { Invoice } from '../../_services/model';
 import { AuthorizationGuard } from '../../_guards/Authorizationguard'
 
 import * as moment from 'moment';
+import { process, State } from '@progress/kendo-data-query';
+import { GridDataResult, DataStateChangeEvent, PageChangeEvent } from '@progress/kendo-angular-grid';
+import { SortDescriptor, orderBy } from '@progress/kendo-data-query';
 @Component({
   selector: 'app-purchaselist',
   templateUrl: './purchaselist.component.html',
@@ -15,8 +18,7 @@ import * as moment from 'moment';
 export class PurchaselistComponent implements OnInit {
 
   //#region variable declartion
-
-  lst: Invoice[];
+ 
   obj: Invoice;
 
   selectedDeleteId: number;
@@ -53,27 +55,6 @@ export class PurchaselistComponent implements OnInit {
     let enddate: Date = this.selectedDateRange.endDate._d.toISOString().substring(0, 10);
     this.onLoad(this.SearchBy, this.SearchKeyword, startdate, enddate);
 
-  }
-
-  onLoad(SearchBy: string, Search: string, StartDate: Date, EndDate: Date) {
-    this._spinner.show();
-    return this._invoiceService.search(SearchBy, Search, StartDate, EndDate).subscribe(
-      (data) => {
-        this.lst = data;
-        this.dtOptions = {
-          pagingType: 'full_numbers',
-          "language": {
-            "search": 'Filter',
-          },
-        };
-
-        this._spinner.hide();
-      },
-      (err) => {
-        this._spinner.hide();
-        console.log(err);
-      }
-    );
   }
 
   onChange(range) {
@@ -146,5 +127,73 @@ export class PurchaselistComponent implements OnInit {
       }
     );
   }
+
+  onLoad(SearchBy: string, Search: string, StartDate: Date, EndDate: Date) {
+    this._spinner.show();
+    return this._invoiceService.search(SearchBy, Search, StartDate, EndDate).subscribe(
+      (lst) => {
+        if (lst != null ) { 
+          this.items = lst;
+          this.loadItems(); 
+        }
+        this._spinner.hide();
+      },
+      (err) => {
+        this._spinner.hide();
+        console.log(err);
+      }
+    );
+  }
+
+  //#region Paging Sorting and Filtering Start
+  public allowUnsort = true;
+  public sort: SortDescriptor[] = [{
+    field: 'PONumber',
+    dir: 'asc'
+  }];
+  public gridView: GridDataResult;
+  public pageSize = 10;
+  public skip = 0;
+  private data: Object[];
+  private items: Invoice[] = [] as any;
+  public state: State = {
+    skip: 0,
+    take: 5,
+
+    // Initial filter descriptor
+    filter: {
+      logic: 'and',
+      filters: [{ field: 'PONumber', operator: 'contains', value: '' }]
+    }
+  };
+  public pageChange(event: PageChangeEvent): void {
+    this.skip = event.skip;
+    this.loadItems();
+  }
+
+  public sortChange(sort: SortDescriptor[]): void {
+    this.sort = sort;
+    this.loadSortItems();
+  }
+
+  private loadItems(): void {
+    this.gridView = {
+      data: this.items.slice(this.skip, this.skip + this.pageSize),
+      total: this.items.length
+    };
+  }
+  private loadSortItems(): void {
+    this.gridView = {
+      data: orderBy(this.items.slice(this.skip, this.skip + this.pageSize), this.sort),
+      total: this.items.length
+    };
+  }
+  public dataStateChange(state: DataStateChangeEvent): void {
+    this.state = state;
+    this.gridView = process(this.items, this.state);
+  }
+
+
+  //#endregion Paging Sorting and Filtering End
 
 }

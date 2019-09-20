@@ -6,8 +6,11 @@ import { CategoryService } from '../../_services/service/category.service';
 import { Category, ProductGroup } from '../../_services/model';
 import { PrivateutilityService } from '../../_services/service/privateutility.service';
 import { AuthorizationGuard } from '../../_guards/Authorizationguard';
-import { AbstractControl } from '@angular/forms'; 
+import { AbstractControl } from '@angular/forms';
 
+import { process, State } from '@progress/kendo-data-query';
+import { GridDataResult, DataStateChangeEvent, PageChangeEvent } from '@progress/kendo-angular-grid';
+import { SortDescriptor, orderBy } from '@progress/kendo-data-query';
 @Component({
   selector: 'app-categorylist',
   templateUrl: './categorylist.component.html',
@@ -19,8 +22,7 @@ export class CategorylistComponent implements OnInit {
   //@ViewChild('dataTable') table;
   //dataTable: 
   any;
-  lstProductGroup: ProductGroup[];
-  lstCategory: Category[];
+  lstProductGroup: ProductGroup[]; 
   objCategory: Category = {} as any;
   catgoryForm: FormGroup;
   panelTitle: string;
@@ -53,7 +55,7 @@ export class CategorylistComponent implements OnInit {
       'min': 'This Field is required.',
     },
     'CategoryName': {
-      'required': 'This Field is required.', 
+      'required': 'This Field is required.',
     },
   };
 
@@ -72,7 +74,7 @@ export class CategorylistComponent implements OnInit {
             this.formErrors[key] += messages[errorKey] + ' ';
           }
         }
-      } 
+      }
       if (abstractControl instanceof FormGroup) {
         this.logValidationErrors(abstractControl);
       }
@@ -151,6 +153,7 @@ export class CategorylistComponent implements OnInit {
     this.panelTitle = "Edit Category";
     this.action = false;
     this.identity = + id;
+    this._spinner.show();
     this._categoryService.searchById(this.identity)
       .subscribe(
         (data: Category) => {
@@ -162,9 +165,12 @@ export class CategorylistComponent implements OnInit {
           });
           $("#ProductGroupID").attr("disabled", "disabled");
           this.logValidationErrors();
+          this._spinner.hide();
         },
-        (err: any) =>
-          console.log(err)
+        (err: any) => {
+          console.log(err);
+          this._spinner.hide();
+        }
       );
     $('#modalpopupcategoryupsert').modal('show');
   }
@@ -176,30 +182,6 @@ export class CategorylistComponent implements OnInit {
     this.identity = + id;
     this.deleteColumn = DeleteColumnvalue;
     $('#modaldeleteconfimation').modal('show');
-  }
-
-  onLoad(SearchBy: string, Search: string, IsActive: Boolean) {
-    this._spinner.show();
-    return this._categoryService.search(SearchBy, Search, IsActive).subscribe(
-      (employeeList) => {
-        this.lstCategory = employeeList;
-
-        this.dtOptions = {
-          pagingType: 'full_numbers',
-          "language": {
-            "search": 'Filter',
-          },
-        };
-        // this.dataTable = $(this.table.nativeElement);
-
-        // this.dataTable.DataTable(this.dtOptions);
-        this._spinner.hide();
-      },
-      (err) => {
-        this._spinner.hide();
-        console.log(err);
-      }
-    );
   }
 
   SaveData(): void {
@@ -214,6 +196,9 @@ export class CategorylistComponent implements OnInit {
     if (this.catgoryForm.invalid) {
       return;
     }
+    if (this.catgoryForm.pristine) { 
+      this.alertService.error('Please change the value for any one control to proceed further!'); 
+      return; }
     if (this.identity > 0) {
       this.Update();
     }
@@ -232,7 +217,7 @@ export class CategorylistComponent implements OnInit {
       .subscribe(
         (data) => {
           if (data == true) {
-            this.alertService.error('This Category has been registered already!');
+            this.alertService.error('This Category is already registered');
           }
           else {
             this._spinner.show();
@@ -277,7 +262,7 @@ export class CategorylistComponent implements OnInit {
       .subscribe(
         (data) => {
           if (data == true) {
-            this.alertService.error('This Category has been registered already!');
+            this.alertService.error('This Category is already registered');
           }
           else {
             this._spinner.show();
@@ -330,5 +315,73 @@ export class CategorylistComponent implements OnInit {
       }
     );
   }
+
+  onLoad(SearchBy: string, Search: string, IsActive: Boolean) {
+    this._spinner.show();
+    return this._categoryService.search(SearchBy, Search, IsActive).subscribe(
+      (lst) => {
+        if (lst != null) { 
+          this.items = lst;
+          this.loadItems(); 
+        }
+        this._spinner.hide();
+      },
+      (err) => {
+        this._spinner.hide();
+        console.log(err);
+      }
+    );
+  }
+
+  //#region Paging Sorting and Filtering Start
+  public allowUnsort = true;
+  public sort: SortDescriptor[] = [{
+    field: 'ProductGroupName',
+    dir: 'asc'
+  }];
+  public gridView: GridDataResult;
+  public pageSize = 10;
+  public skip = 0;
+  private data: Object[];
+  private items: Category[] = [] as any;
+  public state: State = {
+    skip: 0,
+    take: 5,
+
+    // Initial filter descriptor
+    filter: {
+      logic: 'and',
+      filters: [{ field: 'ProductGroupName', operator: 'contains', value: '' }]
+    }
+  };
+  public pageChange(event: PageChangeEvent): void {
+    this.skip = event.skip;
+    this.loadItems();
+  }
+
+  public sortChange(sort: SortDescriptor[]): void {
+    this.sort = sort;
+    this.loadSortItems();
+  }
+
+  private loadItems(): void {
+    this.gridView = {
+      data: this.items.slice(this.skip, this.skip + this.pageSize),
+      total: this.items.length
+    };
+  }
+  private loadSortItems(): void {
+    this.gridView = {
+      data: orderBy(this.items.slice(this.skip, this.skip + this.pageSize), this.sort),
+      total: this.items.length
+    };
+  }
+  public dataStateChange(state: DataStateChangeEvent): void {
+    this.state = state;
+    this.gridView = process(this.items, this.state);
+  }
+
+
+  //#endregion Paging Sorting and Filtering End
 
 }

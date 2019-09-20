@@ -63,7 +63,7 @@ export class GoodsDisputeComponent implements OnInit {
   }
   validationMessages = {
     'JenniferItemSerial': {
-      'required': 'This Field Number is required', 
+      'required': 'This Field is required', 
       'JenniferSerialNumberInUse': 'Jennifer Serial Number is invalid or used',
     },
     'DisputeType': {
@@ -149,6 +149,7 @@ export class GoodsDisputeComponent implements OnInit {
         console.log(err);
       });
   }
+
   public getGoodsInwardDisplay(): void {
     let JenniferItemSerial = this.Goodsdisputeform.controls['JenniferItemSerial'].value;
     if (JenniferItemSerial != null && JenniferItemSerial != '') {
@@ -177,75 +178,20 @@ export class GoodsDisputeComponent implements OnInit {
     }
   }
 
-  onFileChanged1(e: any) {
-    // if (e.target.files[0].name != undefined &&
-    //   this.selectedFile2 != undefined &&
-    //   this.selectedFile3 != undefined &&
-    //   this.selectedFile4 != undefined) {
-    //   if (e.target.files[0].name ||
-    //     this.selectedFile2.name ||
-    //     this.selectedFile3.name ||
-    //     this.selectedFile4.name) {
-    //     this.alertService.error("File name must be unqiue for the images!");
-    //     return;
-    //   } else {
-    //     this.selectedFile1 = e.target.files[0];
-    //   }
-    // }
+  onFileChanged1(e: any) { 
     this.selectedFile1 = e.target.files[0];
   }
 
-  onFileChanged2(e: any) {
-    // if (e.target.files[0].name != undefined &&
-    //   this.selectedFile1 != undefined &&
-    //   this.selectedFile2 != undefined &&
-    //   this.selectedFile3 != undefined) {
-    //   if (e.target.files[0].name ||
-    //     this.selectedFile1.name ||
-    //     this.selectedFile2.name ||
-    //     this.selectedFile3.name) {
-    //     this.alertService.error("File name must be unqiue for the images!");
-    //     return;
-    //   } else {
-    //     this.selectedFile2 = e.target.files[0];
-    //   }
-    // } 
+  onFileChanged2(e: any) { 
     this.selectedFile2 = e.target.files[0];
   }
 
   onFileChanged3(e: any) {
-    // if (e.target.files[0].name != undefined &&
-    //   this.selectedFile1 != undefined &&
-    //   this.selectedFile2 != undefined &&
-    //   this.selectedFile4 != undefined) {
-    //   if (e.target.files[0].name ||
-    //     this.selectedFile1.name ||
-    //     this.selectedFile2.name ||
-    //     this.selectedFile4.name) {
-    //     this.alertService.error("File name must be unqiue for the images!");
-    //     return;
-    //   } else {
-    //     this.selectedFile3 = e.target.files[0];
-    //   }
-    // }
+     
     this.selectedFile3 = e.target.files[0];
   }
 
-  onFileChanged4(e: any) {
-    // if (e.target.files[0].name != undefined &&
-    //   this.selectedFile1 != undefined &&
-    //   this.selectedFile2 != undefined &&
-    //   this.selectedFile3 != undefined) {
-    //   if (e.target.files[0].name ||
-    //     this.selectedFile1.name ||
-    //     this.selectedFile2.name ||
-    //     this.selectedFile3.name) {
-    //     this.alertService.error("File name must be unqiue for the images!");
-    //     return;
-    //   } else {
-    //     this.selectedFile4 = e.target.files[0];
-    //   }
-    // }
+  onFileChanged4(e: any) { 
     this.selectedFile4 = e.target.files[0];
   }
 
@@ -277,7 +223,7 @@ export class GoodsDisputeComponent implements OnInit {
     if (this.Goodsdisputeform.invalid) {
       return;
     }
-    if (this._authorizationGuard.CheckAcess("Salesshipmentlist", "ViewEdit")) {
+    if (this._authorizationGuard.CheckAcess("Goodsdisputelist", "ViewEdit")) {
       return;
     } 
     if (this.GRNInwardID == 0) {
@@ -438,7 +384,7 @@ export class GoodsDisputeComponent implements OnInit {
       this.selectedFile5, this.selectedFile6, this.selectedFile7, this.selectedFile8,
       this.selectedFile9, this.selectedFile10).subscribe(
         (data) => {
-          if (data && data == true) {
+          if (data!=null && data == true) {
             this._spinner.hide();
             this.alertService.success('Goods dispute data has been added successful');
             this._router.navigate(['/Goodsdisputelist']);

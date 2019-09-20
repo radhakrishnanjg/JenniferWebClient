@@ -41,9 +41,9 @@
             <input [(ngModel)]="SearchKeyword" type="text" class="serchcurv form-control btn-group">
           </div>
           <div class="col-md-3 nopading_loct" *ngIf="(SearchBy=='ByStatus')">
-            
+
             <select [(ngModel)]="Searchaction" type="select" class="serchcurv form-control btn-group">
-              
+
               <option value="true">Active</option>
               <option value="false">InActive</option>
             </select>
@@ -61,7 +61,7 @@
       </div>
       <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 text-right">
         <button class="btn btn-primary" (click)="newButtonClick()" title="Add New">
-          
+
           Add New
         </button>
       </div>
@@ -69,59 +69,37 @@
   </div>
   <div class="panel-body">
 
+    <kendo-grid [data]="gridView" resizable="true" columnMenu="true" [pageSize]="pageSize" [skip]="skip" [pageable]="true" 
+      (pageChange)="pageChange($event)" [sortable]="{
+        allowUnsort: allowUnsort,
+        mode:  'single'
+        }" [sort]="sort" (sortChange)="sortChange($event)" [filterable]="true"
+      (dataStateChange)="dataStateChange($event)" [filter]="state.filter">
 
-    <div class="table-responsive">
-      <table datatable [dtOptions]="dtOptions" class="table table-bordered table-condensed "
-        *ngIf="lstDropdown && lstDropdown.length">
-        <thead>
-          <tr>
-            <th>Type</th>
-            <th>Value</th>
-            <th>Description</th>
-            <th>Display Order</th>
-            <th class="text-center btnflag">IsActive</th>
-            <th class="text-center btnactions">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let user of lstDropdown">
-            <td>{{ user.DropdownType  }}</td>
-            <td>{{ user.DropdownValue}}</td>
-            <td>{{ user.DropDownDescription}}</td>
-            <td>{{ user.DisplayOrder}}</td>
-            <td class="text-center" *ngIf="(user.IsActive)"><i class="fa fa-check"></i></td>
-            <td class="text-center" *ngIf="(!user.IsActive)"><i class="fa fa-times"></i></td>
-            <td class="text-center">
-              <i (click)="editButtonClick(user.DropdownID)" title="Edit" class="fa fa-edit bgblue pointer"></i>
-              &nbsp;
-              <i class="fa fa-trash bgred pointer" (click)="confirmDeleteid(user.DropdownID,user.DropdownValue)"
-                title="Delete"></i>
+      <kendo-grid-column field="DropdownType" title="Type">
+      </kendo-grid-column>
+      <kendo-grid-column field="DropdownValue" title="Value">
+      </kendo-grid-column>
+      <kendo-grid-column field="DropDownDescription" title="Description">
+      </kendo-grid-column>
+      <kendo-grid-column field="DisplayOrder" title="Display Order">
+      </kendo-grid-column>
+      <kendo-grid-column field="IsActive"  title="IsActive" [class]="{'text-center': true}"  filter="boolean" width="80">
+        <ng-template kendoGridCellTemplate let-dataItem>
+          <i [class]="dataItem.IsActive ? 'fa fa-check': 'fa fa-times'" aria-hidden="true"></i>
+        </ng-template>
+      </kendo-grid-column>
 
-            </td>
-          </tr>
-        </tbody>
-      </table>
-
-      <table class="table table-bordered table-condensed" *ngIf="lstDropdown==null">
-        <thead>
-          <tr>
-            <th>Type</th>
-            <th>Value</th>
-            <th>Description</th>
-            <th>Display Order</th>
-            <th class="text-center btnflag">IsActive</th>
-            <th class="text-center btnactions">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td colspan="6">
-              No Records Found.!
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+      <kendo-grid-column field="DropdownID" title="Action" [class]="{'text-center': true}" [filterable]="false" [sortable]="false" width="70" >
+        <ng-template kendoGridCellTemplate let-obj>
+          <i class="fa fa-edit bgblue pointer" (click)="editButtonClick(obj.DropdownID)" title="Edit"></i>
+          &nbsp;
+          <i (click)="confirmDeleteid(obj.DropdownID,obj.CompanyName )" class="fa fa-trash bgred pointer"
+            title="Delete"></i>
+        </ng-template>
+      </kendo-grid-column>
+    </kendo-grid>
+ 
   </div>
 
 
@@ -151,7 +129,7 @@
         <div class="modal-footer">
           <button class="btn btn-danger btn-sm" (click)="delete()">Yes</button>
           &nbsp;
-          <button class="btn btn-default btn-sm"  data-dismiss="modal">No</button>
+          <button class="btn btn-default btn-sm" data-dismiss="modal">No</button>
         </div>
       </div>
     </div>
@@ -175,7 +153,7 @@
                   class="mandantory">*</span></label>
               <div class="col-sm-9">
                 <select id="DropdownTypeName" class="form-control" formControlName="DropdownTypeName"
-                  (blur)="logValidationErrors()" >
+                  (blur)="logValidationErrors()">
                   <option value="" selected="selected">Select</option>
                   <option *ngFor="let dis of lstDropdownMaster" value={{dis.DropdownType}}>
                     {{dis.DropdownType}}
@@ -244,7 +222,7 @@
             <button class="btn btn-primary" data-dismiss="modal">Cancel</button>
             &nbsp;
             <button class="btn btn-success" type="submit" prevent-double-submit [disabled]="dropdownForm.invalid">
-              <!-- <i class="fa fa-save"></i> -->
+               
               Save
             </button>
           </div>

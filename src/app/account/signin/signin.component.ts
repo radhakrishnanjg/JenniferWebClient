@@ -7,11 +7,12 @@ import { CookieService } from 'ngx-cookie-service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { AuthenticationService, } from '../../_services/service/authentication.service';
 
-import { EncrDecrService } from '../../_services/service/encr-decr.service';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import { Userlog, } from '../../_services/model/';
+import { Userlog, IUser, } from '../../_services/model/';
 import { HttpClient } from '@angular/common/http';
 import { first } from 'rxjs/operators';
+import { switchMap, tap } from 'rxjs/operators';
+import { of } from 'rxjs';
 @Component({
   selector: 'app-signin',
   templateUrl: './signin.component.html',
@@ -21,7 +22,7 @@ import { first } from 'rxjs/operators';
 export class SigninComponent implements OnInit {
 
   //#region Variable declaration
-
+  objuser: IUser;
   signinForm: FormGroup;
   accessForm: FormGroup;
   expiredDate: Date;
@@ -38,7 +39,6 @@ export class SigninComponent implements OnInit {
     private cookieService: CookieService,
     public _spinner: NgxSpinnerService,
     private httpClient: HttpClient,
-    private EncrDecr: EncrDecrService,
     private deviceService: DeviceDetectorService,
   ) {
     // redirect to home if already logged in
@@ -64,11 +64,7 @@ export class SigninComponent implements OnInit {
     'password': {
       'required': 'Password is required.',
       'minlength': 'Password must be greater than 6 characters.',
-      //'maxlength': 'Password must be less than 10 characters.'
     },
-    // 'emailusernameGroup': {
-    //   'emailusernameerror': 'Email and password must be different.'
-    // },
 
   };
 
@@ -143,22 +139,11 @@ export class SigninComponent implements OnInit {
           });
     }
 
-    // this.httpClient.get<{ ip: string }>('https://jsonip.com')
-    //   .subscribe(data1 => {
-    //     console.log('th data', data1);
-    //     this.objuserlog.IPAddress = data1.ip
-    //   })
-
-    // this.authenticationService.getIpAddress().subscribe(data => {
-    //   this.objuserlog.IPAddress = data[0]["ip"]; 
-    // });
-
   }
 
   //&& data.length > 0
   // convenience getter for easy access to form fields
   get f() { return this.signinForm.controls; }
-  get f1() { return this.accessForm.controls; }
   PageSignin() {
 
     //add uselog 
@@ -180,6 +165,26 @@ export class SigninComponent implements OnInit {
     this.objuserlog.IPAddress = '';
     this._spinner.show();
     this.loading = true;
+
+    // this.httpClient.get<{ ip: string }>('https://jsonip.com')
+    //   .pipe(
+    //     tap(output => {
+    //       this.objuserlog.IPAddress = output.ip;
+    //     }),
+    //     switchMap(output1 =>
+    //       this.LoginCheck(this.f.Email.value, this.f.password.value);
+    //     ),
+    //     tap(output2 => {
+    //       console.log(output2);
+    //     }),
+    //   )
+    //   .subscribe(output2 => console.log(output2));
+
+    this.LoginCheck(this.f.Email.value, this.f.password.value);
+  }
+
+  LoginCheck(username: string, password: string) {
+    this._spinner.show();
     this.authenticationService.login(this.f.Email.value, this.f.password.value)
       .pipe(first())
       .subscribe(
@@ -196,6 +201,8 @@ export class SigninComponent implements OnInit {
               this.cookieService.set('gauuid1', this.f.Email.value);
               this.cookieService.set('gauuid2', this.f.password.value);
             }
+            this.objuser = datalogin;
+            this._spinner.show();
             this.authenticationService.adduserLog(this.objuserlog)
               .subscribe(
                 data => {
@@ -224,17 +231,8 @@ export class SigninComponent implements OnInit {
           this.loading = false;
         }
       );
-  }
 
-  checkemailusername(group: AbstractControl): { [key: string]: any } | null {
-    const emailControl = group.get('Email');
-    const confirmEmailControl = group.get('password');
-
-    if (emailControl.value !== confirmEmailControl.value || confirmEmailControl.pristine) {
-      return null;
-    } else {
-      return { 'emailusernameerror': true };
-    }
+    return of(this.objuser);
   }
 }
 

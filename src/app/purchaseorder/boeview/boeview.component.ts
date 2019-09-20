@@ -39,7 +39,7 @@ export class BoeviewComponent implements OnInit {
           .subscribe(
             (data: BOEHeader) => {
               this.obj = data;
-              this.lstItem = data.lstDetail.filter(a => a.DutyAmount > 0);
+              this.lstItem = data.lstDetail;//.filter(a => a.DutyAmount > 0)
               this.TotalDutyAmount = this.lstItem.reduce((acc, a) => acc + a.DutyAmount, 0);
               this.TotalIGSTValue = this.lstItem.reduce((acc, a) => acc + a.IGSTValue, 0);
               this.TotalTotalValue = this.lstItem.reduce((acc, a) => acc + a.TotalValue, 0);
@@ -55,9 +55,10 @@ export class BoeviewComponent implements OnInit {
     });
   }
 
-  mergecells(HSNCode: string, i) {
+  mergecells(HSNCode: string,IGSTRate:number, i:number) {
     let ii = i + 1;
-    let c = this.lstItem.filter(a => a.HSNCode == HSNCode).length;
+    
+    let c = this.lstItem.filter(a => a.HSNCode == HSNCode && a.IGSTRate ==IGSTRate).length;
     let rem = this.lstItem.length % c;
     return ii % c == rem ? true : false;
   }

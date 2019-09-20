@@ -14,11 +14,10 @@ import { Invoice, Invoiceitem } from '../../_services/model';
 export class PurchaseviewComponent implements OnInit {
   obj: Invoice;
   identity: number = 0;
-  POID: number = 0;
-  lstItem: Invoiceitem[];
+  POID: number = 0; 
   TotalQty: number = 0;
   TotalRate: number = 0;
-  TotalMRP: number = 0; 
+  TotalMRP: number = 0;
   TotalDirectCost: number = 0;
   TotalTaxAmount: number = 0;
   TotalTotalAmount: number = 0;
@@ -41,27 +40,13 @@ export class PurchaseviewComponent implements OnInit {
         this._invoiceService.searchById(this.identity, this.POID)
           .subscribe(
             (data: Invoice) => {
-              this.obj = data;
-
-              this._spinner.show();
-              this._invoiceService.getInvoiceItems(this.identity)
-                .subscribe(
-                  (data: Invoiceitem[]) => {
-                    this.lstItem = data;
-                    this.TotalQty = this.lstItem.reduce((acc, a) => acc + a.Qty, 0);
-                    this.TotalRate = this.lstItem.reduce((acc, a) => acc + a.Rate, 0);
-                    this.TotalMRP = this.lstItem.reduce((acc, a) => acc + a.MRP, 0); 
-                    this.TotalTaxAmount = this.lstItem.reduce((acc, a) => acc + a.TaxAmount, 0);
-                    this.TotalDirectCost = this.lstItem.reduce((acc, a) => acc + a.DirectCost, 0);
-                    this.TotalTotalAmount = this.lstItem.reduce((acc, a) => acc + a.TotalAmount, 0);
-                    this._spinner.hide();
-                  },
-                  (err: any) => {
-                    this._spinner.hide();
-                    console.log(err);
-                  }
-                );
-
+              this.obj = data; 
+              this.TotalQty = this.obj.lstItem.reduce((acc, a) => acc + a.Qty, 0);
+              this.TotalRate = this.obj.lstItem.reduce((acc, a) => acc + a.Rate, 0);
+              this.TotalMRP = this.obj.lstItem.reduce((acc, a) => acc + a.MRP, 0);
+              this.TotalTaxAmount = this.obj.lstItem.reduce((acc, a) => acc + a.TaxAmount, 0);
+              this.TotalDirectCost = this.obj.lstItem.reduce((acc, a) => acc + a.DirectCost, 0);
+              this.TotalTotalAmount = this.obj.lstItem.reduce((acc, a) => acc + a.TotalAmount, 0);
               this._spinner.hide();
             },
             (err: any) => {

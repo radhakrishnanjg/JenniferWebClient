@@ -20,7 +20,7 @@ import * as moment from 'moment';
 })
 export class PoshipmentComponent implements OnInit {
 
-  lstpendingshipments: Poorder[];
+  lstpendingshipments: Poshipment[];
   lstpoorderitem: Poorderitem[];
   lstshipmentqty: Poorderitem[];
   lstlocation: Location[];
@@ -47,7 +47,6 @@ export class PoshipmentComponent implements OnInit {
     public _alertService: ToastrService,
     public _spinner: NgxSpinnerService,
     private _authorizationGuard: AuthorizationGuard,
-    private usernameValidator: UsernameValidator,
     private aroute: ActivatedRoute,
   ) {
   }
@@ -73,7 +72,7 @@ export class PoshipmentComponent implements OnInit {
     },
     'ShipmentNumber': {
       'required': 'This Field is required.',
-      'ShipmentNumberInUse': 'This Field already used.',
+      'ShipmentNumberInUse': 'This Field is already registered!',
     },
     'ShipmentName': {
       'required': 'This Field is required.',
@@ -121,7 +120,8 @@ export class PoshipmentComponent implements OnInit {
     this._spinner.show();
     this._poshipmentService.shipment_Pending()
       .subscribe(
-        (data: Poorder[]) => {
+        (data: Poshipment[]) => {
+          
           this.lstpendingshipments = data;
           this._spinner.hide();
         },
@@ -153,7 +153,7 @@ export class PoshipmentComponent implements OnInit {
         this._spinner.show();
         this._poshipmentService.searchById(this.POId, this.identity)
           .subscribe(
-            (data: Poshipment) => {
+            (data: Poshipment) => { 
               var Appointment = moment(data.Appointment, 'YYYY-MM-DD[T]HH:mm').format('MM-DD-YYYY HH:mm').toString();
               this.poshipmentForm.patchValue({
                 POID: data.POID,
@@ -173,6 +173,7 @@ export class PoshipmentComponent implements OnInit {
               this.poshipmentForm.get('ShipmentNumber').disable();
               this.poshipmentForm.get('ShipmentName').disable();
               this.poshipmentForm.get('FileData').disable();
+              this.poshipmentForm.get('Remarks').disable();
               this.lstshipmentqty = data.lstItem;
               this.TotalPOQty = this.lstshipmentqty.reduce((acc, a) => acc + a.POQty, 0);
               this.TotalAvailableQty = this.lstshipmentqty.reduce((acc, a) => acc + a.AvailableQty, 0);
@@ -204,11 +205,11 @@ export class PoshipmentComponent implements OnInit {
         //this.usernameValidator.existShipmentNumber(this.identity)
       ],
       ShipmentName: ['', [Validators.required]],
-      CarpID: ['', [Validators.required]],
-      Appointment: ['', [Validators.required]],
+      CarpID: ['', []],
+      Appointment: ['', []],
 
-      Remarks: ['', [Validators.required, Validators.minLength(3)]],
-      FileData: ['', [Validators.required]],
+      Remarks: ['', []],
+      FileData: ['', []],
       IsMailSent: [0,],
       ShipmentType: ['', Validators.required],
     });
@@ -237,6 +238,10 @@ export class PoshipmentComponent implements OnInit {
           this.TotalPOQty = this.lstpoorderitem.reduce((acc, a) => acc + a.POQty, 0);
           this.TotalAvailableQty = this.lstpoorderitem.reduce((acc, a) => acc + a.AvailableQty, 0);
           this.TotalShipmentQty = this.lstpoorderitem.reduce((acc, a) => acc + a.ShipmentQty, 0);
+          let ShipmentName = this.lstpendingshipments.filter(a => a.POID == selectedValue)[0].ShipmentName;
+          this.poshipmentForm.patchValue({
+            ShipmentName: ShipmentName,
+          });
           this._spinner.hide();
         },
         (err) => {
@@ -308,34 +313,38 @@ export class PoshipmentComponent implements OnInit {
 
 
   Insert() {
-    for (let File of this.selectedFile) {
-      var filesizeMB = Math.round(File.size / 1024 / 1024);
-      var fileexte = File.name.split('.').pop();
-      var allowedmb = parseInt(Apisettings.PDFFiles_Fileszie.toString())
-      if (!this.isInArray(Apisettings.PDFFiles_Ext, fileexte)) {
-        this._alertService.error("File must be extension with " + Apisettings.PDFFiles_Ext);
+    
+    if (this.poshipmentForm.controls['ShipmentType'].value == 'Manual') {
+      if (this.selectedFile == undefined || this.selectedFile == null) {
+        this._alertService.error("Please select shipment files to proceed further.! ");
         return;
       }
-      else if (filesizeMB > allowedmb) {
-        this._alertService.error("File size must be less than or equal to " + Apisettings.PDFFiles_Fileszie + " MB");
-        return;
+      for (let File of this.selectedFile) {
+        var filesizeMB = Math.round(File.size / 1024 / 1024);
+        var fileexte = File.name.split('.').pop();
+        var allowedmb = parseInt(Apisettings.PDFFiles_Fileszie.toString())
+        if (!this.isInArray(Apisettings.PDFFiles_Ext, fileexte)) {
+          this._alertService.error("File must be extension with " + Apisettings.PDFFiles_Ext);
+          return;
+        }
+        else if (filesizeMB > allowedmb) {
+          this._alertService.error("File size must be less than or equal to " + Apisettings.PDFFiles_Fileszie + " MB");
+          return;
+        }
       }
     }
     if (this.lstpoorderitem.filter(a => a.ShipmentQty > 0).length == 0) {
       this._alertService.error("Required order items.!");
       return;
     }
-    // else if (this.lstpoorderitem.filter(a => a.ShipmentQty <= 0).length >= 0) {
-    //   this._alertService.error("Shipment Qty must be greater than to 0.!");
-    //   return;
-    // }
     else {
       this.uploaddata.POID = this.poshipmentForm.controls['POID'].value;
       this.uploaddata.ShipmentNumber = this.poshipmentForm.controls['ShipmentNumber'].value;
       this.uploaddata.ShipmentName = this.poshipmentForm.controls['ShipmentName'].value;
       this.uploaddata.CarpID = this.poshipmentForm.controls['CarpID'].value;
-      this.uploaddata.Appointment = this.poshipmentForm.controls['Appointment'].value.startDate._d.toLocaleString();
-
+      if (this.poshipmentForm.controls['Appointment'].value != '') {
+        this.uploaddata.Appointment = this.poshipmentForm.controls['Appointment'].value.startDate._d.toLocaleString();
+      }
       this.uploaddata.Remarks = this.poshipmentForm.controls['Remarks'].value;
       this.uploaddata.IsMailSent = this.poshipmentForm.controls['IsMailSent'].value;
       this.uploaddata.lstItem = this.lstpoorderitem.filter(a => a.ShipmentQty > 0);
@@ -352,7 +361,6 @@ export class PoshipmentComponent implements OnInit {
             this._alertService.error(data.Msg);
             this.router.navigate(['/Poshipmentlist']);
           }
-
         },
         (error: any) => {
           this._spinner.hide();
@@ -370,10 +378,13 @@ export class PoshipmentComponent implements OnInit {
     this.uploaddata.ShipmentName = this.poshipmentForm.controls['ShipmentName'].value;
     this.uploaddata.CarpID = this.poshipmentForm.controls['CarpID'].value;
     this.uploaddata.IsMailSent = this.poshipmentForm.controls['IsMailSent'].value;
-    if (this.poshipmentForm.controls['Appointment'].value.startDate._d != undefined) {
-      this.uploaddata.AppointmentDate = this.poshipmentForm.controls['Appointment'].value.startDate._d.toLocaleString();
-    } else {
-      this.uploaddata.AppointmentDate = this.poshipmentForm.controls['Appointment'].value.startDate.toLocaleString();
+    
+    if (this.poshipmentForm.controls['Appointment'].value != '') { 
+      if (this.poshipmentForm.controls['Appointment'].value.startDate._d != undefined) {
+        this.uploaddata.AppointmentDate = this.poshipmentForm.controls['Appointment'].value.startDate._d.toLocaleString();
+      } else {
+        this.uploaddata.AppointmentDate = this.poshipmentForm.controls['Appointment'].value.startDate.toLocaleString();
+      }
     }
     this.uploaddata.Remarks = this.poshipmentForm.controls['Remarks'].value;
     this.uploaddata.IsMailSent = this.poshipmentForm.controls['IsMailSent'].value;
@@ -399,10 +410,6 @@ export class PoshipmentComponent implements OnInit {
       }
     );
   }
-
-
-
-
   isInArray(array, word) {
     return array.indexOf(word.toLowerCase()) > -1;
   }

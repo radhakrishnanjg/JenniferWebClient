@@ -9,6 +9,9 @@ import { AuthorizationGuard } from '../../_guards/Authorizationguard';
 import { PrivateutilityService } from '../../_services/service/privateutility.service';
 import { UsernameValidator } from '../../_validators/username';
 import * as moment from 'moment';
+import { process, State } from '@progress/kendo-data-query';
+import { GridDataResult, DataStateChangeEvent, PageChangeEvent } from '@progress/kendo-angular-grid';
+import { SortDescriptor, orderBy } from '@progress/kendo-data-query';
 
 @Component({
   selector: 'app-shipmentoutwardlist',
@@ -20,7 +23,6 @@ export class ShipmentoutwardlistComponent implements OnInit {
 
   shipmentoutwardform: FormGroup;
 
-  lst: Shipmentoutward[];
   obj: Shipmentoutward = {} as any;
   confirmDelete = false;
   panelTitle: string;
@@ -32,6 +34,7 @@ export class ShipmentoutwardlistComponent implements OnInit {
   SearchBy: string = '';
   SearchKeyword: string = '';
   OutwardID: string = '';
+
   //#endregion
   constructor(
     private alertService: ToastrService,
@@ -53,11 +56,9 @@ export class ShipmentoutwardlistComponent implements OnInit {
   validationMessages = {
     'GSTEwayBillNumber': {
       'required': 'This Field is required.',
-      'maxlength': 'This Field must be less than 15 characters.'
     },
     'CourierTrackingID': {
       'required': 'This Field is required.',
-      'maxlength': 'This Field must be less than 30 characters.',
       'CourierTrackingIDInUse': 'This Courier Tracking Id is invalid'
     }
   }
@@ -88,8 +89,8 @@ export class ShipmentoutwardlistComponent implements OnInit {
     this.panelTitle = 'Add New Shipment outward ';
     this.identity = 0;
     this.shipmentoutwardform = this.fb.group({
-      GSTEwayBillNumber: ['', [Validators.required, Validators.maxLength(15)]],
-      CourierTrackingID: ['', [Validators.required, Validators.maxLength(30)],
+      GSTEwayBillNumber: ['', [Validators.required]],
+      CourierTrackingID: ['', [Validators.required],
         this.usernameValidator.notexistCourierTrackingID(this.identity)],
     });
   }
@@ -130,31 +131,10 @@ export class ShipmentoutwardlistComponent implements OnInit {
     this.logValidationErrors();
     this.panelTitle = "Edit Shipment outward";
     this.action = true;
-    let obj = this.lst.filter(x => { return x.OutwardID == id })[0]
+    let obj = this.items.filter(x => { return x.OutwardID == id })[0]
     this.shipmentoutwardform.controls['GSTEwayBillNumber'].setValue(obj.GSTEwayBillNumber);
     this.shipmentoutwardform.controls['CourierTrackingID'].setValue(obj.CourierTrackingID);
     this.OutwardID = obj.OutwardID;
-  }
-
-  onLoad(SearchBy: string, Search: string) {
-    this._spinner.show();
-    return this._shipmentoutwardService.search(SearchBy, Search).subscribe(
-      (data) => {
-        this.lst = data;
-        this.dtOptions = {
-          pagingType: 'full_numbers',
-          "language": {
-            "search": 'Filter',
-          },
-        };
-        this._spinner.hide();
-      },
-
-      (err) => {
-        this._spinner.hide();
-        console.log(err);
-      }
-    );
   }
 
   SaveData(): void {
@@ -175,14 +155,14 @@ export class ShipmentoutwardlistComponent implements OnInit {
     this._spinner.show();
     this._shipmentoutwardService.updateGSTBill(this.obj).subscribe(
       (data) => {
-        if (data && data == true) {
+        if (data != null && data.Flag == true) {
           this._spinner.hide();
-          this.alertService.success('Shipment outward data has been added successful');
+          this.alertService.success(data.Msg);
           this._router.navigate(['/Shipmentoutwardlist']);
         }
         else {
           this._spinner.hide();
-          this.alertService.error('Shipment outward creation failed!');
+          this.alertService.error(data.Msg);
           this._router.navigate(['/Shipmentoutwardlist']);
         }
         $('#modalpopup_shipmentoutward').modal('hide');
@@ -196,6 +176,73 @@ export class ShipmentoutwardlistComponent implements OnInit {
     );
   }
 
+  onLoad(SearchBy: string, Search: string) {
+    this._spinner.show();
+    return this._shipmentoutwardService.search(SearchBy, Search).subscribe(
+      (data) => {
+        if (data != null) {
+          this.items = data;
+          this.loadItems();
+        }
+        this._spinner.hide();
+      },
+
+      (err) => {
+        this._spinner.hide();
+        console.log(err);
+      }
+    );
+  }
+
+  //#region Paging Sorting and Filtering Start
+  public allowUnsort = true;
+  public sort: SortDescriptor[] = [{
+    field: 'OutwardID',
+    dir: 'asc'
+  }];
+  public gridView: GridDataResult;
+  public pageSize = 10;
+  public skip = 0;
+  private data: Object[];
+  private items: Shipmentoutward[] = [] as any;
+  public state: State = {
+    skip: 0,
+    take: 5,
+
+    // Initial filter descriptor
+    filter: {
+      logic: 'and',
+      filters: [{ field: 'OutwardID', operator: 'contains', value: '' }]
+    }
+  };
+  public pageChange(event: PageChangeEvent): void {
+    this.skip = event.skip;
+    this.loadItems();
+  }
+
+  public sortChange(sort: SortDescriptor[]): void {
+    this.sort = sort;
+    this.loadSortItems();
+  }
+
+  private loadItems(): void {
+    this.gridView = {
+      data: this.items.slice(this.skip, this.skip + this.pageSize),
+      total: this.items.length
+    };
+  }
+  private loadSortItems(): void {
+    this.gridView = {
+      data: orderBy(this.items.slice(this.skip, this.skip + this.pageSize), this.sort),
+      total: this.items.length
+    };
+  }
+  public dataStateChange(state: DataStateChangeEvent): void {
+    this.state = state;
+    this.gridView = process(this.items, this.state);
+  }
+
+  //#endregion Paging Sorting and Filtering End
 
 
 }

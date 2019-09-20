@@ -33,7 +33,7 @@ export class AuthenticationService {
         return this.currentUserSubject.value; // != undefined ? this.currentUserSubject.value : null;
     }
 
-    login(username: string, password: string) : Observable<IUser>{
+    login(username: string, password: string): Observable<IUser> {
         return this.http.post<IUser>(environment.baseUrl + `SignIn`, { observe: 'response' },
             {
                 headers: new HttpHeaders(
@@ -63,12 +63,15 @@ export class AuthenticationService {
         //     .pipe(catchError(this.handleError));
     }
 
-    // public getIpAddress() {
-    //     return this.http
-    //         .get('http://freegeoip.net/json/?callback')
-    //         .map(response => response || {})
-    //         .pipe(catchError(this.handleError));
-    // }
+    public getIpAddress() :Observable<string>{
+        // return this.http
+        //     .get('http://freegeoip.net/json/?callback')
+        //     .map(response => response || {})
+        //     .pipe(catchError(this.handleError));
+
+       return this.http.get<string>('https://jsonip.com')
+       .pipe(catchError(this.handleError));
+    }
 
     public adduserLog(userlo: Userlog): Observable<boolean> {
         //rk

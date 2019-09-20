@@ -1,0 +1,104 @@
+<div class="row">
+    <div class="col-sm-6 col-lg-6">
+      <h3>
+        Downloads
+      </h3>
+    </div>
+    <div class="col-sm-6 col-lg-6">
+      <div class="pull-right hidden-xs">
+        <ol class="breadcrumb" id="dynamicbreadcrumb">
+          <li>
+            <i class="fa fa-download"></i> <span> Downloads</span>
+          </li>
+          <li>
+            <i class="fa fa-download"></i> <span> Amazon</span>
+          </li>
+          <li class="active">
+            <i class="fa fa-download" aria-hidden="true"></i>
+            Download
+          </li>
+        </ol>
+      </div>
+    </div>
+  </div>
+  
+  <div class="panel panel-default">
+  
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-xs-12">
+          <form autocomplete="off" (ngSubmit)="Downloadexcel()" class="form-horizontal">
+  
+            <div class="col-md-3">
+  
+              <label class="control-label" for="ScreenName">Report Name <span class="mandantory">*</span></label>
+              <div>
+                <select [(ngModel)]="Download_Master_ID" name="Download_Master_ID" id="Download_Master_ID"
+                  class="form-control" (change)="onScreenNameChange($event.target.value)">
+                  <option value="0" selected="selected">Select</option>
+                  <option *ngFor="let dis of lstDownloadMaster" value={{dis.Download_Master_ID}}>
+                    {{dis.Screen_Name}}
+                  </option>
+                </select>
+              </div>
+            </div>
+  
+            <div id="dv1" class="col-md-2 dvhide" style="display:none">
+              <label class="control-label">
+                {{  Column1  }}
+              </label>
+              <input [(ngModel)]="txtColumn1" name="txtColumn1" id="txtColumn1" type="text" class="form-control"
+                maxlength="30">
+            </div>
+  
+            <div id="dv2" class="col-md-2 dvhide" style="display:none">
+              <label class="control-label">
+                {{  Column2 }}
+              </label>
+              <input [(ngModel)]="txtColumn2" name="txtColumn2" id="txtColumn2" type="text" class="form-control"
+                maxlength="30">
+            </div>
+  
+            <div id="dv3" class="col-md-2 dvhide" style="display:none">
+              <label class="control-label">
+                {{ Column3 }}
+              </label>
+              <input [(ngModel)]="txtColumn3" name="txtColumn3" id="txtColumn3" type="text" class="form-control"
+                maxlength="30">
+            </div>
+  
+            <div id="dv4" class="col-md-2 dvhide" style="display:none">
+              <label class="control-label">
+                {{ Column4 }}
+              </label>
+              <input [(ngModel)]="txtColumn4" name="txtColumn4" id="txtColumn4" type="text" class="form-control"
+                maxlength="30">
+            </div>
+  
+            <div id="dv5" class="col-md-2 dvhide" style="display:none">
+              <label class="control-label">
+                {{ Column5 }}
+              </label>
+              <input [(ngModel)]="txtColumn5" name="txtColumn5" id="txtColumn5" type="text" class="form-control"
+                maxlength="30">
+            </div>
+  
+            <div class="col-md-1 paddingtop20">
+  
+              <button class="btn btn-success" *ngIf="Download_Master_ID!=0" title="Download" prevent-double-submit
+                type="submit">
+                Download
+              </button>
+            </div>
+  
+          </form>
+          <div class="col-md-1 paddingtop20">
+            <button class="btn btn-default" *ngIf="Download_Master_ID!=0" (click)="Refresh()" title="Reset">
+              Reset
+            </button>
+          </div>
+  
+        </div>
+      </div>
+    </div>
+  </div>

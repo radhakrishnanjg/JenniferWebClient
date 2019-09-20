@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { EChartOption } from 'echarts';
-import { DashboardoneService } from '../_services/service/dashboardone.service';
-import { IDashboardBulletValues, } from '../_services/model/index';
+import { DashboardoneService } from '../_services/service/dashboardone.service'; 
 import { NgxSpinnerService } from 'ngx-spinner';
 import * as moment from 'moment';
 import { Userlog, } from '../_services/model';
@@ -10,8 +9,7 @@ import { Userlog, } from '../_services/model';
   templateUrl: './dashboard1.component.html',
   styleUrls: ['./dashboard1.component.css']
 })
-export class Dashboard1Component implements OnInit {
-  DashboardBulletin: IDashboardBulletValues;
+export class Dashboard1Component implements OnInit { 
 
   selectedDateRange: any;
   ranges: any = {

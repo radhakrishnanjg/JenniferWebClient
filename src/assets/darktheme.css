@@ -153,8 +153,7 @@ section.box.marginBottom0,
     padding: 6px 5px;
     font-size: 11px !important;
     line-height: 1.42857143; 
-    color: #343434 !important;
-    background-color: #f7fafe !important;
+    color: #343434 !important; 
     background-image: none;
     border: transparent !important;
     border-radius: 4px !important;
@@ -224,7 +223,7 @@ section.box.marginBottom0,
     .page-topbar i {
         font-size:14px;
         font-weight: 100;
-        color:#be2e55;
+        color:#5d3b44;
     }
 
     .page-topbar .message-toggle-wrapper,
@@ -618,8 +617,8 @@ section.box.marginBottom0,
     width: 220px;
     position: fixed;
     padding: 0px;
-    background-color: #252525;
-    margin-top: 50px;
+    background-color: #252525bf;
+    margin-top:25px;
     overflow: hidden;
     box-shadow: 0 0 1px 0 rgba(33,33,33,.2);
     -webkit-box-shadow: 0 0 1px 0 rgba(33,33,33,.2);
@@ -675,7 +674,7 @@ section.box.marginBottom0,
     list-style-type: none;
     font-size: 14px;
     width: 100%;
-    border-bottom:1px solid rgb(45, 45, 45);
+    border-bottom:1px solid rgb(89, 89, 89);
 }
 
 #main-menu-wrapper li a {
@@ -694,8 +693,8 @@ section.box.marginBottom0,
     font-size: 12px; */
 }
     #main-menu-wrapper li a:hover {
-        background: #ce295e;
-        border-bottom: 1px solid #ce295e;
+        background: #4c4245;
+        border-bottom: 1px solid #847077;
         color: #ffffff;
         border-left: 3px solid #c8e4ff;
     }
@@ -721,10 +720,9 @@ section.box.marginBottom0,
         border-bottom: 1px solid rgb(220, 220, 220);
     }
     #main-menu-wrapper li.open .sub-menu a.active, #main-menu-wrapper li.open .sub-menu a:hover, #main-menu-wrapper li .sub-menu a:hover, #main-menu-wrapper li .sub-menu .active {
-        background-color: #ce295e;
-        color: #fbf8f8 !important;
-        border-bottom: none;
-        border-bottom: 1px solid #212121;
+    background-color: #5f464e;
+    color: #fbf8f8 !important; 
+    border-bottom:1px solid #6f5959;
     }
 #main-menu-wrapper li.open a {
     /* background-color: #272e48; 16-10 shiva made this change for bg colour */
@@ -735,7 +733,7 @@ section.box.marginBottom0,
 }
 
     #main-menu-wrapper li a:hover .arrow:before, #main-menu-wrapper li.open a .arrow:before {
-        color: #7c7781;
+        color: #dfdbe2;
     }
 
 #main-menu-wrapper li .sub-menu a:hover .arrow:before, #main-menu-wrapper li.open .sub-menu a .arrow:before {
@@ -744,10 +742,10 @@ section.box.marginBottom0,
 
 #main-menu-wrapper li.open .sub-menu a {
     /* background-color: #272e48; 20-10 shiva made this change for bg colour */
-    color: #9c9c9c !important;
-    background: #212121;
-    border-left-color: #ce295e;
-    border-bottom: 1px solid #212121;
+    color: #bbb9b9 !important;
+    background: #212121c7;
+    border-left-color: #867f81;
+    border-bottom: 1px solid #8a797900;
     transition: all .2s ease-in-out;
 }
 
@@ -772,7 +770,7 @@ section.box.marginBottom0,
     content: "\f104";
     font-weight: 300;
     text-shadow: none;
-    color: #ce295e;
+    color: #e0dadc;
 }
 
 #main-menu-wrapper li.open a .arrow.open:before {
@@ -1733,15 +1731,15 @@ ul.states li {
         width: 42px;
         top: 0px;
         margin: 0px 3px;
-        color: #ce295e;
-        border: 1px solid #252525;
-        background-color: #252525;
+        color: #d0cdce;
+        border: 1px solid #635e5e;
+        background-color: #5c5c5c;
     }
     
     .page-sidebar.chat_shift #main-menu-wrapper .wraplist li:hover a, .page-sidebar.collapseit #main-menu-wrapper .wraplist li:hover a {
         width: 200px;
-        color: #bc2f5b;
-        background-color: #252525;
+        color: #d0cdce;
+        background-color: #5c5c5c;
         box-shadow: 0 0 1px 0 rgba(33,33,33,.2);
         -webkit-box-shadow: 0 0 1px 0 rgba(33,33,33,.2);
         -moz-box-shadow: 0 0 1px 0 rgba(33,33,33,.2);
@@ -1763,7 +1761,7 @@ ul.states li {
     .page-sidebar.chat_shift .wraplist li:hover .sub-menu, .page-sidebar.collapseit .wraplist li:hover .sub-menu {
         padding-top: 42px !important;
         padding-left: 0px !important;
-        background-color: #272e48;
+        background-color: #5c5c5c;
     }
 
 
@@ -1778,7 +1776,7 @@ ul.states li {
 
     .page-sidebar.chat_shift #main-menu-wrapper .wraplist li:hover .sub-menu a, .page-sidebar.collapseit #main-menu-wrapper .wraplist li:hover .sub-menu a {
         width: 200px;
-        background-color: #252525;
+        background-color: #5c5c5c;
         box-shadow: none;
         -webkit-box-shadow: none;
         -moz-box-shadow: none;
@@ -1787,7 +1785,7 @@ ul.states li {
     }
 
     .page-sidebar.chat_shift #main-menu-wrapper .wraplist li.open .sub-menu a:hover, .page-sidebar.chat_shift #main-menu-wrapper .wraplist li .sub-menu a:hover, .page-sidebar.collapseit #main-menu-wrapper .wraplist li.open .sub-menu a:hover, .page-sidebar.collapseit #main-menu-wrapper .wraplist li .sub-menu a:hover {
-        background-color: #252525 !important;
+        background-color: #5c5c5c !important;
         border-left: 3px solid #5f6061;
         /* border-right: 3px solid #272e48; */
         padding-left: 0;
@@ -2380,7 +2378,7 @@ input.input-validation-error, select.input-validation-error {
 ------------------------------------------*/
 
 #spinner {
-    z-index: 9999;
+    z-index:999999999999;
     position: absolute;
     font-size: 50px;
     left: 50%;
@@ -2954,19 +2952,18 @@ sto {
             } */
             #main-menu-wrapper li a {
                 display: block;
-                line-height:32px;
+                line-height: 32px;
                 min-height: 32px;
                 font-weight: 400;
                 height: auto;
-                color: #ce295e;
+                color: #d6d6d6;
                 text-decoration: none;
                 padding-left: 5px;
                 clear: both;
                 border-left: 3px solid transparent;
-                /* background-color: #2e3550; */
-                background-color: #252525;
+                background-color: #252525bf;
                 font-size: 12px;
-                border-bottom:1px solid #383737;
+                border-bottom: 1px solid #615e5e;
             }
 
             .md-drppicker .ranges ul li {
@@ -3561,7 +3558,7 @@ select {
 /**KINDO UI STYLES OVERRIGHT**/
 .k-grid-header .k-header, .k-grid-header .k-header .k-link, .k-grid-header .k-link, .k-grid-header .k-link:link, .k-pager-info, .k-scheduler-agendaview .k-scheduler-datecolumn, .k-scheduler-header {
     color: #000;
-    background-color:#d6d6d6;
+    background-color: #f6f6f6;
 }
 
 

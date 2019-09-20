@@ -5,8 +5,11 @@ import { ToastrService } from 'ngx-toastr';
 import { MarketplacefeeService } from '../../_services/service/marketplacefee.service';
 import { Marketplacefee, ProductGroup, Category, SubCategory, Item } from '../../_services/model';
 import { PrivateutilityService } from '../../_services/service/privateutility.service';
-import { AuthorizationGuard } from '../../_guards/Authorizationguard' 
+import { AuthorizationGuard } from '../../_guards/Authorizationguard'
 import * as moment from 'moment';
+import { process, State } from '@progress/kendo-data-query';
+import { GridDataResult, DataStateChangeEvent, PageChangeEvent } from '@progress/kendo-angular-grid';
+import { SortDescriptor, orderBy } from '@progress/kendo-data-query';
 @Component({
   selector: 'app-marketplacefeelist',
   templateUrl: './marketplacefeelist.component.html',
@@ -18,8 +21,7 @@ export class MarketplacefeelistComponent implements OnInit {
   lstSubCategory: SubCategory[];
   lstItem: Item[] = [] as any;
   lstItemSelected: Item[] = [] as any;
-  objItem: Item = {} as any;
-  lstMarketplacefee: Marketplacefee[];
+  objItem: Item = {} as any; 
   objMarketplacefee: Marketplacefee = {} as any;
   Marketplacefeeform: FormGroup;
   panelTitle: string;
@@ -45,7 +47,8 @@ export class MarketplacefeelistComponent implements OnInit {
   config = {
     displayKey: "ItemCode", //if objects array passed which key to be displayed defaults to description
     search: true,
-    limitTo: 3
+    // limitTo: 3    
+    height: '200px'
   };
   constructor(
     private alertService: ToastrService,
@@ -71,8 +74,8 @@ export class MarketplacefeelistComponent implements OnInit {
     'ExpenseCharge': {
       'required': 'This Field is required.',
       'pattern': 'This Field must be a numeric(0-100).',
-      'min': 'This Field must be a numeric(0.01-100).',
-      'max': 'This Field must be a numeric(0.01-100).',
+      'min': 'This Field must be a numeric(0.00-100).',
+      'max': 'This Field must be a numeric(0.00-100).',
     },
     'ExpenseGSTTax': {
       'required': 'This Field is required.',
@@ -108,7 +111,7 @@ export class MarketplacefeelistComponent implements OnInit {
             this.formErrors[key] += messages[errorKey] + ' ';
           }
         }
-      } 
+      }
       if (abstractControl instanceof FormGroup) {
         this.logValidationErrors(abstractControl);
       }
@@ -119,10 +122,9 @@ export class MarketplacefeelistComponent implements OnInit {
   onChange(range) {
     let startdate: string = range.startDate._d.toISOString().substring(0, 10);
     let enddate: string = range.endDate._d.toISOString().substring(0, 10);
-  }
-  ngOnInit() {
-    this.MinDate = moment().add(0, 'days');
+  } 
 
+  ngOnInit() {  
     this.SearchBy = '';
     this.SearchKeyword = '';
     this.selectedDateRange = { startDate: moment().subtract(0, 'months').date(1), endDate: moment().subtract(1, 'days') };
@@ -135,7 +137,7 @@ export class MarketplacefeelistComponent implements OnInit {
     this.action = true;
     this.identity = 0;
     this.Marketplacefeeform = this.fb.group({
-      ExpenseCharge: ['', [Validators.required, Validators.min(0.01), Validators.max(100), Validators.pattern("(100|[0-9]{1,2})(\.[0-9]{1,2})?"),]],
+      ExpenseCharge: ['', [Validators.required, Validators.min(0.00), Validators.max(100), Validators.pattern("(100|[0-9]{1,2})(\.[0-9]{1,2})?"),]],
       ExpenseGSTTax: ['', [Validators.required, Validators.min(0.01), Validators.max(100), Validators.pattern("(100|[0-9]{1,2})(\.[0-9]{1,2})?"),]],
       ProductGroupID: [0, []],
       CategoryID: [0, []],
@@ -166,18 +168,39 @@ export class MarketplacefeelistComponent implements OnInit {
 
   }
 
+  private getCurrentServerDateTime() {
+    this._spinner.show();
+    this._PrivateutilityService.getCurrentDate()
+      .subscribe(
+        (data: Date) => {
+          // var mcurrentDate = moment(data, 'YYYY-MM-DD[T]HH:mm').format('MM-DD-YYYY HH:mm').toString();
+          // this.salesratecardForm.patchValue({
+          //   StartDate: { startDate: new Date(mcurrentDate) },
+          // });
+          this.MinDate = moment(data).add(0, 'days');
+          this._spinner.hide();
+        },
+        (err: any) => {
+          console.log(err);
+
+          this._spinner.hide();
+        }
+      );
+  }
+
   newButtonClick() {
-    this.MinDate = moment().add(0, 'days');
+   // this.MinDate = moment().add(0, 'days');
     if (this._authorizationGuard.CheckAcess("Marketplacefeelist", "ViewEdit")) {
       return;
     }
-    this._spinner.show(); 
-   this._PrivateutilityService.getProductGroups()
+    this.getCurrentServerDateTime();
+    this._spinner.show();
+    this._PrivateutilityService.getProductGroups()
       .subscribe(
         (data: ProductGroup[]) => {
           this.lstProductGroup = data;
           this._spinner.hide();
-    
+
         },
         (err: any) => {
           console.log(err);
@@ -207,80 +230,69 @@ export class MarketplacefeelistComponent implements OnInit {
 
   }
 
-  editButtonClick(id: number) {
-    this.MinDate = moment().add(0, 'days');
-    if (this._authorizationGuard.CheckAcess("Marketplacefeelist", "ViewEdit")) {
-      return;
-    }
-    this._PrivateutilityService.getProductGroups()
-      .subscribe(
-        (data: ProductGroup[]) => {
-          this.lstProductGroup = data
-        },
-        (err: any) => {
-          console.log(err);
-        }
-      );
+  // editButtonClick(id: number) {
+  //   this.MinDate = moment().add(0, 'days');
+  //   if (this._authorizationGuard.CheckAcess("Marketplacefeelist", "ViewEdit")) {
+  //     return;
+  //   }
 
-    this.panelTitle = "Edit MarketPlace Fee";
-    this.action = false;
-    this.identity = + id;
-    this._marketplacefeeService.searchById(this.identity)
-      .subscribe(
-        (data: Marketplacefee) => {
-          var ItemIDvalue = data.ItemID.toString();
-          this.objItem.ItemID = data.ItemID;
-          this.objItem.ItemCode = data.ItemCode;
-          this.lstItemSelected = [] as any;
-          this.lstItemSelected.push(this.objItem);
-          var StartDate = moment(data.StartDate, 'YYYY-MM-DD[T]HH:mm').format('MM-DD-YYYY HH:mm').toString();
-          var EndDate = moment(data.EndDate, 'YYYY-MM-DD[T]HH:mm').format('MM-DD-YYYY HH:mm').toString();
+  //   this._spinner.show();
+  //   this._PrivateutilityService.getProductGroups()
+  //     .subscribe(
+  //       (data: ProductGroup[]) => {
+  //         this.lstProductGroup = data;
+  //         this._spinner.hide();
+  //       },
+  //       (err: any) => {
+  //         console.log(err);
+  //         this._spinner.hide();
+  //       }
+  //     );
 
-          this.Marketplacefeeform.patchValue({
-            ExpenseCharge: data.ExpenseCharge,
-            ExpenseGSTTax: data.ExpenseGSTTax,
-            StartDate: data.StartDate,
-            EndDate: data.EndDate,
-            //IsActive: data.IsActive,
-            ItemID: ItemIDvalue,
-          });
-          this.ItemCode = data.ItemCode;
-          $("#ExpenseCharge").attr("disabled", "disabled");
-          $("#ExpenseGSTTax").attr("disabled", "disabled");
-          $("#ItemID").attr("disabled", "disabled");
-          // $('#StartDate').val(data.StartDate.toLocaleTimeString('MM-DD-YYYY HH:mm'));
-          // $('#EndDate').val(data.EndDate.toLocaleTimeString('MM-DD-YYYY HH:mm'));
+  //   this.panelTitle = "Edit MarketPlace Fee";
+  //   this.action = false;
+  //   this.identity = + id;
+  //   this._spinner.show();
+  //   this._marketplacefeeService.searchById(this.identity)
+  //     .subscribe(
+  //       (data: Marketplacefee) => {
+  //         var ItemIDvalue = data.ItemID.toString();
+  //         this.objItem.ItemID = data.ItemID;
+  //         this.objItem.ItemCode = data.ItemCode;
+  //         this.lstItemSelected = [] as any;
+  //         this.lstItemSelected.push(this.objItem);
+  //         var StartDate = moment(data.StartDate, 'YYYY-MM-DD[T]HH:mm').format('MM-DD-YYYY HH:mm').toString();
+  //         var EndDate = moment(data.EndDate, 'YYYY-MM-DD[T]HH:mm').format('MM-DD-YYYY HH:mm').toString();
 
-          $('#StartDate').val(StartDate);
-          $('#EndDate').val(EndDate);
-          //this.logValidationErrors();
-        },
-        (err: any) =>
-          console.log(err)
-      );
-    $('#modalpopup_marketplacefee').modal('show');
-  }
+  //         this.Marketplacefeeform.patchValue({
+  //           ExpenseCharge: data.ExpenseCharge,
+  //           ExpenseGSTTax: data.ExpenseGSTTax,
+  //           StartDate: data.StartDate,
+  //           EndDate: data.EndDate,
+  //           //IsActive: data.IsActive,
+  //           ItemID: ItemIDvalue,
+  //         });
+  //         this.ItemCode = data.ItemCode;
+  //         $("#ExpenseCharge").attr("disabled", "disabled");
+  //         $("#ExpenseGSTTax").attr("disabled", "disabled");
+  //         $("#ItemID").attr("disabled", "disabled");
+  //         // $('#StartDate').val(data.StartDate.toLocaleTimeString('MM-DD-YYYY HH:mm'));
+  //         // $('#EndDate').val(data.EndDate.toLocaleTimeString('MM-DD-YYYY HH:mm'));
 
-  onLoad(SearchBy: string, Search: string, IsActive: Boolean, StartDate: Date, EndDate: Date) {
-    this._spinner.show();
-    return this._marketplacefeeService.search(SearchBy, Search, IsActive, StartDate, EndDate).subscribe(
-      (employeeList) => {
-        this.lstMarketplacefee = employeeList;
-        this.dtOptions = {
-          pagingType: 'full_numbers',
-          "language": {
-            "search": 'Filter',
-          },
-        };
+  //         $('#StartDate').val(StartDate);
+  //         $('#EndDate').val(EndDate);
+  //         //this.logValidationErrors();
+  //         this._spinner.hide();
+  //       },
+  //       (err: any) => {
+  //         console.log(err);
+  //         this._spinner.hide();
+  //       }
+  //     );
+  //   $('#modalpopup_marketplacefee').modal('show');
+  // }
 
-        this._spinner.hide();
-      },
-      (err) => {
-        this._spinner.hide();
-        console.log(err);
-      }
-    );
-  }
+
 
   onchangeProductGroupID(selectedValue: string) {
     let id = parseInt(selectedValue);
@@ -347,11 +359,12 @@ export class MarketplacefeelistComponent implements OnInit {
     let StartDate: Date = new Date(moment(new Date(this.Marketplacefeeform.controls['StartDate'].value.startDate._d)).format("MM-DD-YYYY HH:mm"));
     let EndDate: Date = new Date(moment(new Date(this.Marketplacefeeform.controls['EndDate'].value.startDate._d)).format("MM-DD-YYYY HH:mm"));
     let currentdate: Date = new Date(moment(new Date()).format("MM-DD-YYYY HH:mm"));
-    if (currentdate > StartDate) {
-      this.alertService.error('The StartDate must be greater than or equal to current datetime.!');
-      return;
-    }
-    else if (StartDate > EndDate) {
+    // if (currentdate > StartDate) {
+    //   this.alertService.error('The StartDate must be greater than or equal to current datetime.!');
+    //   return;
+    // }
+    // else
+     if (StartDate > EndDate) {
       this.alertService.error('The EndDate must be greater than or equal to StartDate.');
       return;
     }
@@ -381,8 +394,7 @@ export class MarketplacefeelistComponent implements OnInit {
     this.objMarketplacefee.ItemID = this.Marketplacefeeform.controls['ItemID'].value;
     this.objMarketplacefee.StartDate = this.Marketplacefeeform.controls['StartDate'].value.startDate._d.toLocaleString();
     this.objMarketplacefee.EndDate = this.Marketplacefeeform.controls['EndDate'].value.startDate._d.toLocaleString();
-    //this.objMarketplacefee.IsActive = this.Marketplacefeeform.controls['IsActive'].value;
-    var Itemids = this.Marketplacefeeform.controls['ItemID'].value.map(a => a.ItemID);
+     var Itemids = this.Marketplacefeeform.controls['ItemID'].value.map(a => a.ItemID);
     this._spinner.show();
     this._marketplacefeeService.upsert(this.objMarketplacefee, Itemids).subscribe(
       (data) => {
@@ -416,8 +428,7 @@ export class MarketplacefeelistComponent implements OnInit {
     this.objMarketplacefee.ItemID = this.Marketplacefeeform.controls['ItemID'].value;
     this.objMarketplacefee.StartDate = this.Marketplacefeeform.controls['StartDate'].value.startDate._d.toLocaleString();
     this.objMarketplacefee.EndDate = this.Marketplacefeeform.controls['EndDate'].value.startDate._d.toLocaleString();
-    //this.objMarketplacefee.IsActive = this.Marketplacefeeform.controls['IsActive'].value;
-    this.objItem.ItemID = this.Marketplacefeeform.controls['ItemID'].value;
+     this.objItem.ItemID = this.Marketplacefeeform.controls['ItemID'].value;
     let Itemids: number[] = [] as any;
     Itemids.push(this.Marketplacefeeform.controls['ItemID'].value);
     this._spinner.show();
@@ -445,5 +456,72 @@ export class MarketplacefeelistComponent implements OnInit {
     );
 
   }
+
+
+  onLoad(SearchBy: string, Search: string, IsActive: Boolean, StartDate: Date, EndDate: Date) {
+    this._spinner.show();
+    return this._marketplacefeeService.search(SearchBy, Search, IsActive, StartDate, EndDate).subscribe(
+      (lst) => { 
+        if (lst != null) { 
+          this.items = lst; 
+          this.loadItems(); 
+        } 
+        this._spinner.hide();
+      },
+      (err) => {
+        this._spinner.hide();
+        console.log(err);
+      }
+    );
+  }
+
+  //#region Paging Sorting and Filtering Start
+  public allowUnsort = true;
+  public sort: SortDescriptor[] = [{
+    field: 'MarketPlace',
+    dir: 'asc'
+  }];
+  public gridView: GridDataResult;
+  public pageSize = 10;
+  public skip = 0;
+  private data: Object[];
+  private items: Marketplacefee[] = [] as any;
+  public state: State = {
+    skip: 0,
+    take: 5,
+
+    // Initial filter descriptor
+    filter: {
+      logic: 'and',
+      filters: [{ field: 'MarketPlace', operator: 'contains', value: '' }]
+    }
+  };
+  public pageChange(event: PageChangeEvent): void {
+    this.skip = event.skip;
+    this.loadItems();
+  }
+
+  public sortChange(sort: SortDescriptor[]): void {
+    this.sort = sort;
+    this.loadSortItems();
+  }
+
+  private loadItems(): void {
+    this.gridView = {
+      data: this.items.slice(this.skip, this.skip + this.pageSize),
+      total: this.items.length
+    };
+  }
+  private loadSortItems(): void {
+    this.gridView = {
+      data: orderBy(this.items.slice(this.skip, this.skip + this.pageSize), this.sort),
+      total: this.items.length
+    };
+  }
+  public dataStateChange(state: DataStateChangeEvent): void {
+    this.state = state;
+    this.gridView = process(this.items, this.state);
+  }
+  //#endregion Paging Sorting and Filtering End
 
 }

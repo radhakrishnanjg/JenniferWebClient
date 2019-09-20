@@ -1,236 +1,236 @@
 <div class="row">
-    <div class="col-sm-6 col-lg-6">
-       <h3>
-        Contacts
-       </h3> 
-    </div>
-    <div class="col-sm-6 col-lg-6">
-      <div class="pull-right hidden-xs">
-        <ol class="breadcrumb" id="dynamicbreadcrumb">
-          <li>
-            <i class="fa fa-wrench"></i> <span> Utilities</span>
-          </li>
-          <li>
-            <i class="fa fa-phone"></i> <span> Contacts</span>
-          </li>
-          <li class="active">
-            <i class="fa fa-save"></i>
-            Save
-          </li>
-        </ol>
-      </div>
+  <div class="col-sm-6 col-lg-6">
+    <h3>
+      Contacts
+    </h3>
+  </div>
+  <div class="col-sm-6 col-lg-6">
+    <div class="pull-right hidden-xs">
+      <ol class="breadcrumb" id="dynamicbreadcrumb">
+        <li>
+          <i class="fa fa-wrench"></i> <span> Utilities</span>
+        </li>
+        <li>
+          <i class="fa fa-phone"></i> <span> Contacts</span>
+        </li>
+        <li class="active">
+          <i class="fa fa-save"></i>
+          Save
+        </li>
+      </ol>
     </div>
   </div>
-  <form autocomplete="off" [formGroup]="contactform" (ngSubmit)="SaveData()" class="form-group">
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <div class="row">
-          <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-            <span class="spanheader">
-              {{panelTitle}}
-            </span>
-          </div>
-          <div class="col-sm-6">
-            <div class="pull-left">
-              <div class="form-group" *ngIf="!action">
-                <div class="col-sm-12 inputlevelswtch">
-                  <label class="col-sm-6" for=" IsActive">IsActive </label>
-                  <div class=" col-sm-6">
-                    <label class="switch">
-                      <input type="checkbox" formControlName="IsActive" checked>
-                      <span class="slider round"></span>
-                    </label>
-                  </div>
+</div>
+<form autocomplete="off" [formGroup]="contactform" (ngSubmit)="SaveData()" class="form-group">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <div class="row">
+        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+          <span class="groupspanheader">
+            {{panelTitle}}
+          </span>
+        </div>
+        <div class="col-sm-6">
+          <div class="pull-left">
+            <div class="form-group" *ngIf="!action">
+              <div class="col-sm-12 inputlevelswtch">
+                <label class="col-sm-6" for=" IsActive">IsActive </label>
+                <div class=" col-sm-6">
+                  <label class="switch">
+                    <input type="checkbox" formControlName="IsActive" checked>
+                    <span class="slider round"></span>
+                  </label>
                 </div>
               </div>
             </div>
           </div>
-          <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 ">
-            <div class="pull-right">
-               <button class="btn btn-primary" routerLink="/Contactlist" title="Back">
-                 
-                Back
-              </button>  
-            </div>
+        </div>
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 ">
+          <div class="pull-right">
+            <button class="btn btn-primary" routerLink="/Contactlist" title="Back">
+
+              Back
+            </button>
           </div>
         </div>
       </div>
-      <div class="panel-body">
-        <span class="groupspanheader"> Contact Information </span>
-        <div class="row">
-          <div class="col-md-8 col-xs-12">
-            <div class="form-group" [ngClass]="{'has-error': formErrors.ContactName}">
-              <label class="control-label" for="ContactName">Contact Name <span class="mandantory">*</span></label>
-              <div class="">
-                <input id="ContactName" type="text" class="form-control" formControlName="ContactName"
-                  (blur)="logValidationErrors()" maxlength="50">
-                <div class="help-block-rk">
-                  <span class="help-block" *ngIf="formErrors.ContactName">
-                    {{formErrors.ContactName}}
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4 col-xs-12">
-            <div class="form-group" [ngClass]="{'has-error': formErrors.ContactType}">
-              <div class=" col-sm-12 inputlevel" for="ContactType">
-                <label for="ContactType" class="nopading_loct control-label">Contact Type <span class="mandantory">*</span></label>
-                <select formControlName="ContactType" id='ContactType' type="select" class="form-control"
-                  (blur)="logValidationErrors()"  >
-                  <option value="" selected="selected">Select</option>
-                  <option *ngFor="let dis of lstContactType" value={{dis.DropdownValue}}>
-                    {{dis.DropdownValue}}
-                  </option>
-                </select>
-                <div class="help-block-rk">
-                  <span class="help-block" *ngIf="formErrors.ContactType">
-                    {{formErrors.ContactType}}
-                  </span>
-                </div>
+    </div>
+    <div class="panel-body">
+      <span class="groupspanheader"> Contact Information </span>
+      <div class="row">
+        <div class="col-md-8 col-xs-12">
+          <div class="form-group" [ngClass]="{'has-error': formErrors.ContactName}">
+            <label class="control-label" for="ContactName">Contact Name <span class="mandantory">*</span></label>
+            <div >
+              <input id="ContactName" type="text" class="form-control" formControlName="ContactName"
+                (blur)="logValidationErrors()" maxlength="50">
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrors.ContactName">
+                  {{formErrors.ContactName}}
+                </span>
               </div>
             </div>
           </div>
         </div>
-        <div class="row">
-          <div class="col-md-4 col-xs-12">
-            <div class="form-group" [ngClass]="{'has-error': formErrors.MobileNumber}">
-              <label class="control-label" for="MobileNumber">Mobile Number <span
+        <div class="col-md-4 col-xs-12">
+          <div class="form-group" [ngClass]="{'has-error': formErrors.ContactType}">
+            <div >
+              <label for="ContactType" class="nopading_loct control-label">Contact Type <span
                   class="mandantory">*</span></label>
-              <div class="">
-                <input id="MobileNumber" type="text" class="form-control" formControlName="MobileNumber"
-                  (blur)="logValidationErrors()" maxlength="12" mask="000000000000">
-                <div class="help-block-rk">
-                  <span class="help-block" *ngIf="formErrors.MobileNumber">
-                    {{formErrors.MobileNumber}}
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4 col-xs-12">
-            <div class="form-group" [ngClass]="{'has-error': formErrors.Email}">
-              <label class="control-label" for="Email">Email <span class="mandantory">*</span></label>
-              <div class="">
-                  <input id="Email" type="email" class="form-control" formControlName="Email" (blur)="logValidationErrors()" 
-                  maxlength="50">
-                  <div class="help-block-rk">
-                  <span class="help-block" *ngIf="formErrors.Email">
-                    {{formErrors.Email}}
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4 col-xs-12">
-            <div class="form-group" [ngClass]="{'has-error': formErrors.LandphoneNumber}">
-              <label class="control-label" for="LandphoneNumber">Landline Number </label>
-              <div class="">
-                <input id="LandphoneNumber" type="text" class="form-control" formControlName="LandphoneNumber"
-                  (blur)="logValidationErrors()" maxlength="12">
-                <div class="help-block-rk">
-                  <span class="help-block" *ngIf="formErrors.LandphoneNumber">
-                    {{formErrors.LandphoneNumber}}
-                  </span>
-                </div>
+              <select formControlName="ContactType" id='ContactType' type="select" class="form-control"
+                (blur)="logValidationErrors()">
+                <option value="" selected="selected">Select</option>
+                <option *ngFor="let dis of lstContactType" value={{dis.DropdownValue}}>
+                  {{dis.DropdownValue}}
+                </option>
+              </select>
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrors.ContactType">
+                  {{formErrors.ContactType}}
+                </span>
               </div>
             </div>
           </div>
         </div>
-        <div class="row">
-          <div class="col-sm-4 col-xs-12">
-            <div class="form-group" [ngClass]="{'has-error': formErrors.Designation}">
-              <label class="control-label" for="Designation">Designation <span class="mandantory">*</span></label>
-              <div class="">
-                <input id="Designation" type="text" class="form-control" formControlName="Designation"
-                  (blur)="logValidationErrors()" maxlength="30">
-                <div class="help-block-rk">
-                  <span class="help-block" *ngIf="formErrors.Designation">
-                    {{formErrors.Designation}}
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-sm-4 col-xs-12">
-            <div class="form-group" [ngClass]="{'has-error': formErrors.Department}">
-              <label class="control-label" for="Department">Department <span class="mandantory">*</span></label>
-              <div class="">
-                <input id="Department" type="text" class="form-control" formControlName="Department"
-                  (blur)="logValidationErrors()" maxlength="30">
-                <div class="help-block-rk">
-                  <span class="help-block" *ngIf="formErrors.Department">
-                    {{formErrors.Department}}
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-sm-4 col-xs-12">
-            <div class="form-group" [ngClass]="{'has-error': formErrors.Organization}">
-              <label class="control-label" for="Organization">Organization <span class="mandantory">*</span></label>
-              <div class="">
-                <input id="Organization"  type="text" class="form-control"
-                  formControlName="Organization" (blur)="logValidationErrors()" maxlength="30">
-                <div class="help-block-rk">
-                  <span class="help-block" *ngIf="formErrors.Organization">
-                    {{formErrors.Organization}}
-                  </span>
-                </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4 col-xs-12">
+          <div class="form-group" [ngClass]="{'has-error': formErrors.MobileNumber}">
+            <label class="control-label" for="MobileNumber">Mobile Number <span class="mandantory">*</span></label>
+            <div >
+              <input id="MobileNumber" type="text" class="form-control" formControlName="MobileNumber"
+                (blur)="logValidationErrors()" maxlength="12" mask="000000000000">
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrors.MobileNumber">
+                  {{formErrors.MobileNumber}}
+                </span>
               </div>
             </div>
           </div>
         </div>
-  
+        <div class="col-md-4 col-xs-12">
+          <div class="form-group" [ngClass]="{'has-error': formErrors.Email}">
+            <label class="control-label" for="Email">Email <span class="mandantory">*</span></label>
+            <div >
+              <input id="Email" type="email" class="form-control" formControlName="Email" (blur)="logValidationErrors()"
+                maxlength="50">
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrors.Email">
+                  {{formErrors.Email}}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 col-xs-12">
+          <div class="form-group" [ngClass]="{'has-error': formErrors.LandphoneNumber}">
+            <label class="control-label" for="LandphoneNumber">Landline Number </label>
+            <div >
+              <input id="LandphoneNumber" type="text" class="form-control" formControlName="LandphoneNumber"
+                (blur)="logValidationErrors()" maxlength="12">
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrors.LandphoneNumber">
+                  {{formErrors.LandphoneNumber}}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-4 col-xs-12">
+          <div class="form-group" [ngClass]="{'has-error': formErrors.Designation}">
+            <label class="control-label" for="Designation">Designation <span class="mandantory">*</span></label>
+            <div >
+              <input id="Designation" type="text" class="form-control" formControlName="Designation"
+                (blur)="logValidationErrors()" maxlength="30">
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrors.Designation">
+                  {{formErrors.Designation}}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-4 col-xs-12">
+          <div class="form-group" [ngClass]="{'has-error': formErrors.Department}">
+            <label class="control-label" for="Department">Department <span class="mandantory">*</span></label>
+            <div >
+              <input id="Department" type="text" class="form-control" formControlName="Department"
+                (blur)="logValidationErrors()" maxlength="30">
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrors.Department">
+                  {{formErrors.Department}}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-4 col-xs-12">
+          <div class="form-group" [ngClass]="{'has-error': formErrors.Organization}">
+            <label class="control-label" for="Organization">Organization <span class="mandantory">*</span></label>
+            <div >
+              <input id="Organization" type="text" class="form-control" formControlName="Organization"
+                (blur)="logValidationErrors()" maxlength="30">
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrors.Organization">
+                  {{formErrors.Organization}}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <span class="groupspanheader"> Other Information </span>
+      <div class="row">
+        <div class="col-md-6 col-xs-12">
+          <div class="form-group" [ngClass]="{'has-error': formErrors.Other1}">
+            <label class="control-label" for="Other1">Other 1</label>
+            <div >
+              <textarea id="Other1" type="text" class="form-control" formControlName="Other1"
+                (blur)="logValidationErrors()" rows="2" maxlength="50"></textarea>
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrors.Other1">
+                  {{formErrors.Other1}}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-xs-12">
+          <div class="form-group" [ngClass]="{'has-error': formErrors.Other2}">
+            <label class="control-label" for="Other2">Other 2 </label>
+            <div >
+              <textarea id="Other2" type="text" class="form-control" formControlName="Other2"
+                (blur)="logValidationErrors()" rows="2" maxlength="50"></textarea>
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrors.Other2">
+                  {{formErrors.Other2}}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-  
-    <div class="panel panel-default">
-      <div class="panel-body">
-        <span class="groupspanheader"> Other Information </span>
-        <div class="row">
-          <div class="col-md-6 col-xs-12">
-            <div class="form-group" [ngClass]="{'has-error': formErrors.Other1}">
-              <label class="control-label" for="Other1">Other 1</label>
-              <div class="">
-                <textarea id="Other1" type="text" class="form-control" formControlName="Other1"
-                  (blur)="logValidationErrors()" rows="2" maxlength="50"></textarea>
-                <div class="help-block-rk">
-                  <span class="help-block" *ngIf="formErrors.Other1">
-                    {{formErrors.Other1}}
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-6 col-xs-12">
-            <div class="form-group" [ngClass]="{'has-error': formErrors.Other2}">
-              <label class="control-label" for="Other2">Other 2 </label>
-              <div class="">
-                <textarea id="Other2" type="text" class="form-control" formControlName="Other2"
-                  (blur)="logValidationErrors()" rows="2" maxlength="50"></textarea>
-                <div class="help-block-rk">
-                  <span class="help-block" *ngIf="formErrors.Other2">
-                    {{formErrors.Other2}}
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+    <div class="panel-footer">
+      <div class="pull-right btn-toolbar">
+        <button class="btn btn-primary" routerLink="/Contatlist" title="Cancel">
+         
+          Cancel
+        </button>
+        <button class="btn btn-success" type="submit" prevent-double-submit [disabled]="contactform.invalid">
+          
+          Save
+        </button>
       </div>
-      <div class="panel-footer">
-        <div class="pull-right btn-toolbar">
-          <button class="btn btn-primary" routerLink="/Contatlist" title="Cancel">
-            <!-- <i class="fa fa-arrow-left" aria-hidden="true"></i> -->
-            Cancel
-          </button>
-          <button class="btn btn-success" type="submit" prevent-double-submit [disabled]="contactform.invalid">
-            <!-- <i class="fa fa-save"></i> -->
-            Save
-          </button>
-        </div>
-        <div class="clearfix"></div>
-      </div>
+      <div class="clearfix"></div>
     </div>
-  </form>
+  </div>
+</form>

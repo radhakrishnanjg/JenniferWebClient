@@ -10,6 +10,9 @@ import { AuthorizationGuard } from '../../_guards/Authorizationguard';
 
 import * as moment from 'moment';
 
+import { process, State } from '@progress/kendo-data-query';
+import { GridDataResult, DataStateChangeEvent, PageChangeEvent } from '@progress/kendo-angular-grid';
+import { SortDescriptor, orderBy } from '@progress/kendo-data-query';
 @Component({
   selector: 'app-salesratecardlist',
   templateUrl: './salesratecardlist.component.html',
@@ -21,8 +24,7 @@ export class SalesratecardlistComponent implements OnInit {
 
   lstItem: Item[] = [] as any;
   lstItemSelected: Item[] = [] as any;
-  objItem: Item = {} as any;
-  lstSalesratecard: Salesratecard[];
+  objItem: Item = {} as any; 
   objSalesratecard: Salesratecard = {} as any;
   salesratecardForm: FormGroup;
   panelTitle: string;
@@ -52,6 +54,7 @@ export class SalesratecardlistComponent implements OnInit {
     displayKey: "ItemCode", //if objects array passed which key to be displayed defaults to description
     search: true,
     // limitTo: 3
+    height: '200px'
   };
 
   constructor(
@@ -170,11 +173,33 @@ export class SalesratecardlistComponent implements OnInit {
 
   }
 
+
+  private getCurrentServerDateTime() {
+    this._spinner.show();
+    this._PrivateutilityService.getCurrentDate()
+      .subscribe(
+        (data: Date) => {
+          // var mcurrentDate = moment(data, 'YYYY-MM-DD[T]HH:mm').format('MM-DD-YYYY HH:mm').toString();
+          // this.salesratecardForm.patchValue({
+          //   StartDate: { startDate: new Date(mcurrentDate) },
+          // }); 
+          this.MinDate = moment(data).add(0, 'days');
+          this._spinner.hide();
+        },
+        (err: any) => {
+          console.log(err);
+
+          this._spinner.hide();
+        }
+      );
+  }
   newButtonClick() {
-    this.MinDate = moment().add(0, 'days');
+    //this.MinDate = moment().add(0, 'days');
     if (this._authorizationGuard.CheckAcess("Salesratecardlist", "ViewEdit")) {
       return;
     }
+    this.getCurrentServerDateTime();
+    
     this._spinner.show();
     this._PrivateutilityService.GetValues('InventoryType')
       .subscribe(
@@ -221,58 +246,39 @@ export class SalesratecardlistComponent implements OnInit {
 
   }
 
-  editButtonClick(id: number) {
-    this.MinDate = moment().add(0, 'days');
-    if (this._authorizationGuard.CheckAcess("Salesratecardlist", "ViewEdit")) {
-      return;
-    }
-    this._spinner.show();
-    this._PrivateutilityService.GetValues('InventoryType')
-      .subscribe(
-        (data: Dropdown[]) => {
-          this.lstInventoryType = data;
-          this._spinner.hide();
-        },
-        (err: any) => {
-          console.log(err);
-          this._spinner.hide();
-        }
-      );
-    this._spinner.show();
-    this._PrivateutilityService.getItemLevels()
-      .subscribe(
-        (data: Item[]) => {
+  // editButtonClick(id: number) {
+  //   this.MinDate = moment().add(0, 'days');
+  //   if (this._authorizationGuard.CheckAcess("Salesratecardlist", "ViewEdit")) {
+  //     return;
+  //   }
+  //   this._spinner.show();
+  //   this._PrivateutilityService.GetValues('InventoryType')
+  //     .subscribe(
+  //       (data: Dropdown[]) => {
+  //         this.lstInventoryType = data;
+  //         this._spinner.hide();
+  //       },
+  //       (err: any) => {
+  //         console.log(err);
+  //         this._spinner.hide();
+  //       }
+  //     );
+  //   this._spinner.show();
+  //   this._PrivateutilityService.getItemLevels()
+  //     .subscribe(
+  //       (data: Item[]) => {
 
-          this.lstItem = data;
-          this._spinner.hide();
-        },
-        (err: any) => {
-          console.log(err);
-          this._spinner.hide();
-        }
-      );
-  }
+  //         this.lstItem = data;
+  //         this._spinner.hide();
+  //       },
+  //       (err: any) => {
+  //         console.log(err);
+  //         this._spinner.hide();
+  //       }
+  //     );
+  // }
 
-  onLoad(SearchBy: string, Search: string, StartDate: Date, EndDate: Date, IsActive: boolean) {
-    this._spinner.show();
-    return this._salesratecardService.search(SearchBy, Search, StartDate, EndDate, IsActive).subscribe(
-      (employeeList) => {
-        this.lstSalesratecard = employeeList;
-        this.dtOptions = {
-          pagingType: 'full_numbers',
-          "language": {
-            "search": 'Filter',
-          },
-        };
 
-        this._spinner.hide();
-      },
-      (err) => {
-        this._spinner.hide();
-        console.log(err);
-      }
-    );
-  }
 
   SaveData(): void {
     if (this._authorizationGuard.CheckAcess("Salesratecardlist", "ViewEdit")) {
@@ -285,11 +291,13 @@ export class SalesratecardlistComponent implements OnInit {
     let StartDate: Date = new Date(moment(new Date(this.salesratecardForm.controls['StartDate'].value.startDate._d)).format("MM-DD-YYYY HH:mm"));
     let EndDate: Date = new Date(moment(new Date(this.salesratecardForm.controls['EndDate'].value.startDate._d)).format("MM-DD-YYYY HH:mm"));
     let currentdate: Date = new Date(moment(new Date()).format("MM-DD-YYYY HH:mm"));
-    if (currentdate > StartDate) {
-      this.alertService.error('The StartDate must be greater than or equal to current datetime.!');
-      return;
-    }
-    else if (StartDate > EndDate) {
+
+    // if (currentdate > StartDate) {
+    //   this.alertService.error('The StartDate must be greater than or equal to current datetime.!');
+    //   return;
+    // }
+    // else
+     if (StartDate > EndDate) {
       this.alertService.error('The EndDate must be greater than or equal to StartDate.!');
       return;
     }
@@ -297,12 +305,7 @@ export class SalesratecardlistComponent implements OnInit {
       this.alertService.error('Please select atleast one item in a list.!');
       return;
     }
-    // if (this.identity > 0) {
-    //   this.Update();
-    // }
-    // else {
     this.Insert();
-    // }
   }
   StartDateUpdated(range) {
     this.logValidationErrors();
@@ -346,5 +349,72 @@ export class SalesratecardlistComponent implements OnInit {
 
 
   }
+
+  onLoad(SearchBy: string, Search: string, StartDate: Date, EndDate: Date, IsActive: boolean) {
+    this._spinner.show();
+    return this._salesratecardService.search(SearchBy, Search, StartDate, EndDate, IsActive).subscribe(
+      (lst) => {
+        if (lst != null) { 
+          this.items = lst;
+          this.loadItems(); 
+        }
+        this._spinner.hide();
+      },
+      (err) => {
+        this._spinner.hide();
+        console.log(err);
+      }
+    );
+  }
+
+  //#region Paging Sorting and Filtering Start
+  public allowUnsort = true;
+  public sort: SortDescriptor[] = [{
+    field: 'ItemCode',
+    dir: 'asc'
+  }];
+  public gridView: GridDataResult;
+  public pageSize = 10;
+  public skip = 0;
+  private data: Object[];
+  private items: Salesratecard[] = [] as any;
+  public state: State = {
+    skip: 0,
+    take: 5,
+
+    // Initial filter descriptor
+    filter: {
+      logic: 'and',
+      filters: [{ field: 'ItemCode', operator: 'contains', value: '' }]
+    }
+  };
+  public pageChange(event: PageChangeEvent): void {
+    this.skip = event.skip;
+    this.loadItems();
+  }
+
+  public sortChange(sort: SortDescriptor[]): void {
+    this.sort = sort;
+    this.loadSortItems();
+  }
+
+  private loadItems(): void {
+    this.gridView = {
+      data: this.items.slice(this.skip, this.skip + this.pageSize),
+      total: this.items.length
+    };
+  }
+  private loadSortItems(): void {
+    this.gridView = {
+      data: orderBy(this.items.slice(this.skip, this.skip + this.pageSize), this.sort),
+      total: this.items.length
+    };
+  }
+  public dataStateChange(state: DataStateChangeEvent): void {
+    this.state = state;
+    this.gridView = process(this.items, this.state);
+  }
+
+  //#endregion Paging Sorting and Filtering End
 
 }

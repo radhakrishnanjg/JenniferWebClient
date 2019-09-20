@@ -26,7 +26,7 @@
     <div class="panel-heading">
       <div class="row">
         <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-          <span class="spanheader">
+          <span class="groupspanheader">
             {{panelTitle}}
           </span>
         </div>
@@ -48,7 +48,7 @@
         <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 ">
           <div class="pull-right">
             <button class="btn btn-primary" routerLink="/Userlist" title="Back">
-              <!-- <i class="fa fa-arrow-left" aria-hidden="true"></i> -->
+
               Back
             </button>
           </div>
@@ -81,7 +81,7 @@
                 <div class="help-block-rk">
                   <span class="help-block" *ngIf="formErrors.Email">
                     {{formErrors.Email}}
-                  </span> 
+                  </span>
                   <span class="help-block">
                     {{ UserTypeErrorMessage}}
                   </span>
@@ -121,10 +121,22 @@
 
           </div>
           <div class="col-lg-6">
-            <div class="">
-              <span class="spanheader">
-                Map Stores Access to User
-              </span>
+            <div>
+              <div class="col-lg-12  ">
+                <div class="spanheader pull-left">
+                  Map Stores Access to User
+                </div>
+                <div class="pull-right">
+                  <div class="btn-toolbar">
+                    <button class="btn btn-check" (click)="checkallstore()" title="Check All" type="button">
+                      Check All
+                    </button>
+                    <button class="btn btn-uncheck" (click)="uncheckallstore()" title="UnCheck All" type="button">
+                      UnCheck All
+                    </button>
+                  </div>
+                </div>
+              </div>
               <div>
                 <div class="col-sm-6" *ngFor="let userStore of obj?.lstUserStores">
                   <div *ngIf="(userStore.IsActive ==true)">
@@ -146,27 +158,34 @@
         </div>
         <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
           <div class="col-lg-6 col-sm-12">
-            <div class="">
-              <span class="spanheader">
+            <div class="col-lg-12  ">
+              <div class="spanheader pull-left">
                 Map Bulk Upload Option to user
-              </span>
-              <div>
-                <div class="col-sm-4" *ngFor="let ms of obj?.lstmasterscreens">
-                  <div *ngIf="(ms.IsActive ==true )">
-                    <input type="checkbox" name="{{ms.DropdownValue}}" id="{{ms.DropdownValue  }}" checked="checked"
-                      (change)="masterscreenFieldsChange($event)">
-                    <span class="stornme">{{ms.DropDownDescription }}</span>
-                  </div>
-                  <div *ngIf="(ms.IsActive != true)">
-                    <input type="checkbox" name="{{ms.DropdownValue}}" id="{{ms.DropdownValue }}"
-                      (change)="masterscreenFieldsChange($event)">
-                    <span class="stornme">{{ms.DropDownDescription }}</span>
-                  </div>
+              </div>
+              <div class="pull-right">
+                <div class="btn-toolbar">
+                  <button class="btn btn-check" (click)="checkallmasterupload()" title="Check All" type="button">
+                    Check All
+                  </button>
+                  <button class="btn btn-uncheck" (click)="uncheckallmasterupload()" title="UnCheck All" type="button">
+                    UnCheck All
+                  </button>
                 </div>
               </div>
-
-
-
+            </div>
+            <div class="col-lg-12  ">
+              <div class="col-sm-4" *ngFor="let ms of obj?.lstmasterscreens">
+                <div *ngIf="(ms.IsActive ==true )">
+                  <input type="checkbox" name="{{ms.DropdownValue}}" id="{{ms.DropdownValue  }}" checked="checked"
+                    (change)="masterscreenFieldsChange($event)">
+                  <span class="stornme">{{ms.DropDownDescription }}</span>
+                </div>
+                <div *ngIf="(ms.IsActive != true)">
+                  <input type="checkbox" name="{{ms.DropdownValue}}" id="{{ms.DropdownValue }}"
+                    (change)="masterscreenFieldsChange($event)">
+                  <span class="stornme">{{ms.DropDownDescription }}</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -176,15 +195,14 @@
   <div class="panel-footer">
     <div class="pull-right btn-toolbar">
       <button class="btn btn-primary" routerLink="/Userlist" title="Back">
-        <!-- <i class="fa fa-arrow-left" aria-hidden="true"></i> -->
+
         Cancel
       </button>
-      <button class="btn btn-success" 
-      type="submit" prevent-double-submit [disabled]="userForm.invalid || UserType==1 || UserType==2 ">
-        <!-- <i class="fa fa-save"></i> -->
+      <button class="btn btn-success" type="submit" prevent-double-submit
+        [disabled]="userForm.invalid || UserType==1 || UserType==2 ">
         Save
       </button>
-      <!-- [disabled]="userForm.invalid" -->
+
     </div>
     <div class="clearfix"></div>
   </div>

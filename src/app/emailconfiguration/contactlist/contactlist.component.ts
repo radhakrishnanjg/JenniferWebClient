@@ -2,10 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
-import { ContactService } from  '../../_services/service/contact.service';
-import { Contact } from  '../../_services/model';
-import { AuthorizationGuard } from  '../../_guards/Authorizationguard'
+import { ContactService } from '../../_services/service/contact.service';
+import { Contact } from '../../_services/model';
+import { AuthorizationGuard } from '../../_guards/Authorizationguard'
 
+import { process, State } from '@progress/kendo-data-query';
+import { GridDataResult, DataStateChangeEvent, PageChangeEvent } from '@progress/kendo-angular-grid';
+import { SortDescriptor, orderBy } from '@progress/kendo-data-query';
 @Component({
   selector: 'app-contactlist',
   templateUrl: './contactlist.component.html',
@@ -13,8 +16,7 @@ import { AuthorizationGuard } from  '../../_guards/Authorizationguard'
 })
 export class ContactlistComponent implements OnInit {
   //#region variable declartion
-
-  lst: Contact[];
+ 
   obj: Contact;
   confirmDelete = false;
   selectedDeleteId: number;
@@ -37,28 +39,7 @@ export class ContactlistComponent implements OnInit {
     this.onLoad('', '', true);
   }
 
-  onLoad(SearchBy: string, Search: string, IsActive: Boolean) {
 
-    this._spinner.show();
-    return this._contactService.search(SearchBy, Search, IsActive).subscribe(
-      (data) => {
-        this.lst = data;
-        this.dtOptions = {
-          pagingType: 'full_numbers',
-          "language": {
-            "search":'Filter',
-          },
-        };
-        this._spinner.hide();
-      },
-
-      (err) => {
-        this._spinner.hide();
-        console.log(err);
-      }
-
-    );
-  }
 
   Search(): void {
     this.onLoad(this.SearchBy, this.SearchKeyword, this.Searchaction);
@@ -66,8 +47,8 @@ export class ContactlistComponent implements OnInit {
 
   Refresh(): void {
     this.SearchBy = '',
-    this.SearchKeyword = '',
-    this.Searchaction = true;
+      this.SearchKeyword = '',
+      this.Searchaction = true;
   }
 
   editButtonClick(id: number) {
@@ -108,5 +89,76 @@ export class ContactlistComponent implements OnInit {
       }
     )
   }
+
+  onLoad(SearchBy: string, Search: string, IsActive: Boolean) {
+
+    this._spinner.show();
+    return this._contactService.search(SearchBy, Search, IsActive).subscribe(
+      (lst) => {
+
+        if (lst != null) { 
+          this.items = lst;
+          this.loadItems(); 
+        }
+
+        this._spinner.hide();
+      },
+
+      (err) => {
+        this._spinner.hide();
+        console.log(err);
+      }
+
+    );
+  }
+
+  //#region Paging Sorting and Filtering Start
+  public allowUnsort = true;
+  public sort: SortDescriptor[] = [{
+    field: 'BrandName',
+    dir: 'asc'
+  }];
+  public gridView: GridDataResult;
+  public pageSize = 10;
+  public skip = 0;
+  private data: Object[];
+  private items: Contact[] = [] as any;
+  public state: State = {
+    skip: 0,
+    take: 5,
+
+    // Initial filter descriptor
+    filter: {
+      logic: 'and',
+      filters: [{ field: 'BrandName', operator: 'contains', value: '' }]
+    }
+  };
+  public pageChange(event: PageChangeEvent): void {
+    this.skip = event.skip;
+    this.loadItems();
+  }
+
+  public sortChange(sort: SortDescriptor[]): void {
+    this.sort = sort;
+    this.loadSortItems();
+  }
+
+  private loadItems(): void {
+    this.gridView = {
+      data: this.items.slice(this.skip, this.skip + this.pageSize),
+      total: this.items.length
+    };
+  }
+  private loadSortItems(): void {
+    this.gridView = {
+      data: orderBy(this.items.slice(this.skip, this.skip + this.pageSize), this.sort),
+      total: this.items.length
+    };
+  }
+  public dataStateChange(state: DataStateChangeEvent): void {
+    this.state = state;
+    this.gridView = process(this.items, this.state);
+  }
+  //#endregion Paging Sorting and Filtering End
 
 }

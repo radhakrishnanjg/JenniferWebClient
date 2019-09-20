@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { GoodsstorageService } from '../../_services/service/goodsstorage.service';
-import { UsernameValidator } from '../../_validators/username';
-
 import { Goodsstorage } from '../../_services/model';
 import { AuthorizationGuard } from '../../_guards/Authorizationguard'
-import { AuthenticationService } from '../../_services/service/authentication.service';
+import { process, State } from '@progress/kendo-data-query';
+import { GridDataResult, DataStateChangeEvent, PageChangeEvent } from '@progress/kendo-angular-grid';
+import { SortDescriptor, orderBy } from '@progress/kendo-data-query';
 
 @Component({
   selector: 'app-goodsstoragelist',
@@ -17,7 +17,6 @@ import { AuthenticationService } from '../../_services/service/authentication.se
 })
 export class GoodsstoragelistComponent implements OnInit {
 
-  lst: Goodsstorage[];
   itemlist: Goodsstorage[] = [];
   //obj: Goodsstorage;
   obj: Goodsstorage = {} as any;
@@ -106,28 +105,6 @@ export class GoodsstoragelistComponent implements OnInit {
     this.onLoad(this.SearchBy, this.SearchKeyword);
   }
 
-  onLoad(SearchBy: string, Search: string) {
-    this._spinner.show();
-    return this._goodsstorageService.search(SearchBy, Search).subscribe(
-      (data) => {
-        this.lst = data;
-        this.dtOptions = {
-          pagingType: 'full_numbers',
-          "language": {
-            "search": 'Filter',
-          },
-        };
-        this._spinner.hide();
-      },
-
-      (err) => {
-        this._spinner.hide();
-        console.log(err);
-      }
-
-    );
-  }
-
   editButtonClick(id: number) {
     if (this._authorizationGuard.CheckAcess("Goodsstoragelist", "ViewEdit")) {
       return;
@@ -136,7 +113,7 @@ export class GoodsstoragelistComponent implements OnInit {
     this.logValidationErrors();
     this.panelTitle = "Edit Shipment outward";
     this.identity = id;
-    let obj = this.lst.filter(x => { return x.GoodsStorageID == id })[0]
+    let obj = this.items.filter(x => { return x.GoodsStorageID == id })[0]
     this.goodsstorageform.controls['WarehouseLocation'].setValue(obj.WarehouseLocation);
     this.goodsstorageform.controls['WarehouseRack'].setValue(obj.WarehouseRack);
     this.goodsstorageform.controls['WarehouseBin'].setValue(obj.WarehouseBin);
@@ -144,7 +121,7 @@ export class GoodsstoragelistComponent implements OnInit {
   }
 
   SaveData(): void {
-    debugger
+
     if (this._authorizationGuard.CheckAcess("Goodsstoragelist", "ViewEdit")) {
       return;
     }
@@ -158,7 +135,7 @@ export class GoodsstoragelistComponent implements OnInit {
   }
 
   Update() {
-    debugger
+
     this.obj.GoodsStorageID = this.identity;
     this.obj.WarehouseLocation = this.goodsstorageform.controls['WarehouseLocation'].value;
     this.obj.WarehouseRack = this.goodsstorageform.controls['WarehouseRack'].value;
@@ -167,7 +144,7 @@ export class GoodsstoragelistComponent implements OnInit {
     this._spinner.show();
     this._goodsstorageService.update(this.obj).subscribe(
       (data) => {
-        if (data && data == true) {
+        if (data != null && data == true) {
           this._spinner.hide();
           this.alertService.success('Goods storage data has been updated successful');
           this._router.navigate(['/Goodsstoragelist']);
@@ -187,4 +164,75 @@ export class GoodsstoragelistComponent implements OnInit {
       }
     );
   }
+
+  onLoad(SearchBy: string, Search: string) {
+    this._spinner.show();
+    return this._goodsstorageService.search(SearchBy, Search).subscribe(
+      (data) => {
+        if (data != null) {
+          this.items = data;
+          this.loadItems();
+        }
+        this._spinner.hide();
+      },
+
+      (err) => {
+        this._spinner.hide();
+        console.log(err);
+      }
+
+    );
+  }
+
+  //#region Paging Sorting and Filtering Start
+  public allowUnsort = true;
+  public sort: SortDescriptor[] = [{
+    field: 'OrderID',
+    dir: 'asc'
+  }];
+  public gridView: GridDataResult;
+  public pageSize = 10;
+  public skip = 0;
+  private data: Object[];
+  private items: Goodsstorage[] = [] as any;
+  public state: State = {
+    skip: 0,
+    take: 5,
+
+    // Initial filter descriptor
+    filter: {
+      logic: 'and',
+      filters: [{ field: 'OrderID', operator: 'contains', value: '' }]
+    }
+  };
+  public pageChange(event: PageChangeEvent): void {
+    this.skip = event.skip;
+    this.loadItems();
+  }
+
+  public sortChange(sort: SortDescriptor[]): void {
+    this.sort = sort;
+    this.loadSortItems();
+  }
+
+  private loadItems(): void {
+    this.gridView = {
+      data: this.items.slice(this.skip, this.skip + this.pageSize),
+      total: this.items.length
+    };
+  }
+  private loadSortItems(): void {
+    this.gridView = {
+      data: orderBy(this.items.slice(this.skip, this.skip + this.pageSize), this.sort),
+      total: this.items.length
+    };
+  }
+  public dataStateChange(state: DataStateChangeEvent): void {
+    this.state = state;
+    this.gridView = process(this.items, this.state);
+  }
+
+
+  //#endregion Paging Sorting and Filtering End
+
 }

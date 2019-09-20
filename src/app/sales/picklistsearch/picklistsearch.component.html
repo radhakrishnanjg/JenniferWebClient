@@ -60,75 +60,45 @@
         </div>
       </div>
       <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5 text-right">
-        <!-- <button class="btn btn-primary" routerLink="/Picklist/Create" title="Add New">
-          Add New
-        </button> -->
-        <!-- pdf.component.html -->
-        <!-- <div [id]="'pdf'+i" *ngFor="let item of items; index as i">
-          <h1>{{ item.title }}</h1>
-        </div>
-
-        <button (click)="downloadPDF()">
-          generatePDF
-        </button> -->
       </div>
     </div>
   </div>
-  <div class="panel-body" >
-    <div class="table-responsive">
-      <table datatable [dtOptions]="dtOptions" class="table table-bordered table-condensed "
-        *ngIf="lstPicklist && lstPicklist.length">
-        <thead>
-          <tr>
-            <th>Sales Order Number</th>
-            <th>Inventory Type </th>
-            <th>Picklist Qty </th>
-            <th>Picked Qty </th>
-            <th>Transfer Qty</th>
-            <th>Status</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let obj of lstPicklist">
-            <td>{{ obj.OrderID }}</td>
-            <td>{{ obj.InventoryType}}</td>
-            <td class="text-right">{{ obj.PicklistQty }}</td>
-            <td class="text-right">{{obj.PickedQty}}</td>
-            <td class="text-right">{{obj.TransferQty}}</td>
-            <td>{{ obj.Status }}</td>
-            <td>
-              <i class="fa fa-edit bgblue pointer" (click)="editButtonClick(obj.PickListNumber)" title="Edit"
-                *ngIf="!(obj.Status == 'Confirmed')"></i>
-              &nbsp;
-              <i class="fa fa-eye bgblue pointer" (click)="editInvoiceClick(obj.PickListNumber)" title="Edit"
-                *ngIf="(obj.Status == 'Confirmed')"></i>
-              &nbsp;
-            </td>
-          </tr>
-        </tbody>
-      </table>
+  <div class="panel-body">
+    <kendo-grid [data]="gridView" resizable="true" columnMenu="true" [pageSize]="pageSize" [skip]="skip" [pageable]="true"
+      (pageChange)="pageChange($event)" [sortable]="{
+          allowUnsort: allowUnsort,
+          mode:  'single'
+          }" [sort]="sort" (sortChange)="sortChange($event)" [filterable]="true"
+      (dataStateChange)="dataStateChange($event)" [filter]="state.filter">
 
-      <table class="table table-bordered table-condensed" *ngIf="lstPicklist==null">
-        <thead>
-          <tr>
-            <th>Sales Order Number</th>
-            <th>Inventory Type </th>
-            <th>Picklist Qty </th>
-            <th>Picked Qty </th>
-            <th>Transfer Qty</th>
-            <th>Status</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td colspan="7">
-              No Records Found.!
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+      <kendo-grid-column field="OrderID" title="Order ID">
+      </kendo-grid-column>
+      <kendo-grid-column field="InvoiceNumber" title="Sales Invoice No.">
+      </kendo-grid-column>
+      <kendo-grid-column field="InventoryType" title="Inventory Type">
+      </kendo-grid-column>
+      <kendo-grid-column field="PicklistQty" title="Picklist Qty">
+      </kendo-grid-column>
+      <kendo-grid-column field="PickedQty" title="Picked Qty">
+      </kendo-grid-column>
+      <kendo-grid-column field="TransferQty" title="Transfer Qty">
+      </kendo-grid-column>
+      <kendo-grid-column field="Status" title="Status">
+      </kendo-grid-column>
+
+      <kendo-grid-column field="PickListNumber" title="Action" [class]="{'text-center': true}"  [filterable]="false" [sortable]="false" width="80" >
+        <ng-template kendoGridCellTemplate let-obj>
+          <i class="fa fa-edit bgblue pointer" [routerLink]="['/Picklist', obj.PickListNumber]" title="Edit"
+            *ngIf="!(obj.Status == 'Confirmed')"></i>
+          &nbsp;
+          <i class="fa fa-eye bgblue pointer" *ngIf="(obj.Status == 'Confirmed')"
+            [routerLink]="['/PickListView', obj.PickListNumber]" title="View"></i>
+          &nbsp;
+          <i class="fa fa-download bgblue pointer" *ngIf="(obj.Status == 'Confirmed')"
+            [routerLink]="['/SalesInvoice', obj.PickListNumber]" title="View"></i>
+        </ng-template>
+      </kendo-grid-column>
+    </kendo-grid>
+
   </div>
 </div>

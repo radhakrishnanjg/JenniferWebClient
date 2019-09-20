@@ -57,50 +57,22 @@
     </div>
   </div>
   <div class="panel-body">
+    <kendo-grid [data]="gridView" resizable="true" columnMenu="true" [pageSize]="pageSize" [skip]="skip" [pageable]="true"
+      (pageChange)="pageChange($event)" [sortable]="{
+      allowUnsort: allowUnsort,
+      mode:  'single'
+      }" [sort]="sort" (sortChange)="sortChange($event)" [filterable]="true"
+      (dataStateChange)="dataStateChange($event)" [filter]="state.filter">
 
-    <div class="table-responsive">
-      <table datatable [dtOptions]="dtOptions" class="table table-bordered table-condensed " *ngIf="lst && lst.length">
-        <thead>
-          <tr>
-            <th>OutwardID </th>
-            <th>Courier Tracking ID </th>
-            <th>GST E-Way Bill Number </th>
-            <!-- <th class="text-center btnactions">Action</th> -->
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let obj of lst">
-            <td><b>{{ obj.OutwardID }}</b></td>
-            <td>{{ obj.CourierTrackingID }}</td>
-            <td>{{ obj.GSTEwayBillNumber }}</td>
-            <!-- <td class="text-center btnactions">
-              <i (click)="editButtonClick(obj.CourierTrackingID)" title="Edit" class="fa fa-edit bgblue pointer"
-                *ngIf="obj.IsEditable==true"></i>
-              &nbsp;
-            </td> -->
-          </tr>
-        </tbody>
-      </table>
+      <kendo-grid-column field="OutwardID" title="Outward No.">
+      </kendo-grid-column>
+      <kendo-grid-column field="CourierTrackingID" title="Courier Tracking No.">
+      </kendo-grid-column>
+      <kendo-grid-column field="GSTEwayBillNumber" title="GST E-Way Bill No.">
+      </kendo-grid-column>
+    </kendo-grid>
 
-      <table class="table table-bordered table-condensed" *ngIf="lst==null">
-        <thead>
-          <tr>
-            <th>Outward ID </th>
-            <th>Courier Tracking ID </th>
-            <th>GST E-Way Bill Number </th>
-            <!-- <th class="text-center btnactions">Action</th> -->
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td colspan="3">
-              No Records Found.!
-            </td>
-          </tr>
-        </tbody>
-      </table>
-
-    </div>
+    
   </div>
 
 
@@ -154,7 +126,7 @@
               </div>
               <div class="col-sm-6">
                 <input id="GSTEwayBillNumber" type="text" class="form-control" formControlName="GSTEwayBillNumber"
-                  (blur)="logValidationErrors()" maxlength="30">
+                  (blur)="logValidationErrors()" maxlength="15">
                 <div class="help-block-rk">
                   <span class="help-block" *ngIf="formErrors.GSTEwayBillNumber">
                     {{formErrors.GSTEwayBillNumber}}

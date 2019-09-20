@@ -13,6 +13,7 @@ import {
 } from '../../_services/model';
 import * as moment from 'moment';
 import { ActivatedRoute, Router } from '@angular/router';
+import { DropDownFilterSettings } from '@progress/kendo-angular-dropdowns';
 
 const createFormGroup = dataItem => new FormGroup({
   'ItemCode': new FormControl(dataItem.ItemID),
@@ -20,11 +21,11 @@ const createFormGroup = dataItem => new FormGroup({
   'CustomerItemCode': new FormControl(dataItem.CustomerItemCode),
   'Units': new FormControl(dataItem.Units, [Validators.required, Validators.min(1), Validators.max(1000000), Validators.pattern("^([0-9]+)$")]),
   'UOM': new FormControl(dataItem.UOMID, [Validators.required, Validators.min(1)]),
-  'SellingPrice': new FormControl(dataItem.SellingPrice),
+  'ItemRate': new FormControl(dataItem.ItemRate),
   'ShippingCharges': new FormControl(dataItem.ShippingCharges, [Validators.min(0), Validators.max(1000000), Validators.pattern("^[0-9]+(.[0-9]{0,2})?$")]),
   'MRP': new FormControl(dataItem.MRP),
   'Discountamt': new FormControl(dataItem.Discountamt),
-  'TotalValue': new FormControl(dataItem.TotalValue, Validators.pattern("^[0-9]+(.[0-9]{0,2})?$")),
+  'TotalValue': new FormControl(dataItem.TotalValue),
   'TaxRate': new FormControl(dataItem.TaxRate),
   'TaxAmount': new FormControl(dataItem.TaxAmount),
 });
@@ -65,7 +66,7 @@ export class SalesorderComponent implements OnInit {
   OrderID: string = '';
   ShipTo: string = '';
   BilledTo: string = '';
-  SellingPrice: number = 0.00;
+  ItemRate: number = 0.00;
   DisCountPer: number = 0.00;
   IsDiscountApplicable: boolean;
   IsDisableMasterControls: boolean = true;
@@ -78,7 +79,7 @@ export class SalesorderComponent implements OnInit {
   TotalCaseSize: number = 0;
   TotalMultiplierValue: number = 0;
   TotalQty: number = 0;
-  TotalSellingPrice: number = 0;
+  TotalItemRate: number = 0;
   TotalMRP: number = 0;
   TotalShippingCharges: number = 0;
   TotalDiscountamt: number = 0;
@@ -86,10 +87,12 @@ export class SalesorderComponent implements OnInit {
   TotalTotalAmount: number = 0;
   hideOrderDate: boolean = false;
   OrderDate: Date;
+  orderMinDate: moment.Moment;
+  OrderMaxDate: moment.Moment;
   constructor(
     private _salesService: SalesorderService,
     private _poService: PoService,
-    private _privateutilityService: PrivateutilityService,
+    private _PrivateutilityService: PrivateutilityService,
     private _authorizationGuard: AuthorizationGuard,
     private _spinner: NgxSpinnerService,
     public _alertService: ToastrService,
@@ -200,7 +203,7 @@ export class SalesorderComponent implements OnInit {
               this.TotalCaseSize = data.lstItem.reduce((acc, a) => acc + a.Units, 0);
               this.TotalMultiplierValue = data.lstItem.reduce((acc, a) => acc + a.MultiplierValue, 0);
               this.TotalQty = data.lstItem.reduce((acc, a) => acc + a.Qty, 0);
-              this.TotalSellingPrice = data.lstItem.reduce((acc, a) => acc + a.SellingPrice, 0);
+              this.TotalItemRate = data.lstItem.reduce((acc, a) => acc + a.ItemRate, 0);
               this.TotalMRP = data.lstItem.reduce((acc, a) => acc + a.MRP, 0);
               this.TotalShippingCharges = data.lstItem.reduce((acc, a) => acc + a.ShippingCharges, 0);
               this.TotalDiscountamt = data.lstItem.reduce((acc, a) => acc + a.Discountamt, 0);
@@ -217,7 +220,7 @@ export class SalesorderComponent implements OnInit {
         this.objSalesOrder.lstItem = [];
         this.gridData = this.objSalesOrder.lstItem;
         this._spinner.show();
-        this._privateutilityService.getCustomersSales().subscribe(
+        this._PrivateutilityService.getCustomersSales().subscribe(
           (data) => {
             if (data != null) {
               this.customerList = data;
@@ -238,22 +241,8 @@ export class SalesorderComponent implements OnInit {
             this._spinner.hide();
             console.log(err);
           });
-
-        //this.getAllItems();
-        // this._spinner.show();
-        // this._privateutilityService.GetValues('InventoryType')
-        //   .subscribe(
-        //     (data: Dropdown[]) => {
-        //       this.lstInventoryType = data;
-        //       this._spinner.hide();
-        //     },
-        //     (err: any) => {
-        //       this._spinner.hide();
-        //       console.log(err);
-        //     }
-        //   );
         this._spinner.show();
-        this._privateutilityService.GetValues('Courier')
+        this._PrivateutilityService.GetValues('Courier')
           .subscribe(
             (data: Dropdown[]) => {
               this.lstDispatchThrough = data;
@@ -265,7 +254,7 @@ export class SalesorderComponent implements OnInit {
             }
           );
         this._spinner.show();
-        this._privateutilityService.getPaymentTerms().subscribe(
+        this._PrivateutilityService.getPaymentTerms().subscribe(
           (data: PaymentTermType[]) => {
             this.lstPaymentTermsID = data;
             this._spinner.hide();
@@ -278,7 +267,6 @@ export class SalesorderComponent implements OnInit {
       }
     });
 
-    this.orderMinDate = moment().add(0, 'days');
     var end = moment().endOf('day');
     var currentend = new Date();
     var differ = end.diff(currentend, 'minutes');
@@ -300,11 +288,36 @@ export class SalesorderComponent implements OnInit {
       IsDiscountApplicable: ['',],
 
     });
-
+    this.getCurrentServerDateTime();
+    // this.orderMinDate = moment().add(0, 'days');
+    // var OrderDate = moment(new Date(), 'YYYY-MM-DD[T]HH:mm').format('MM-DD-YYYY HH:mm').toString();
+    // this.salesForm.patchValue({
+    //   OrderDate: { startDate: new Date(OrderDate) },
+    // });
+    // this.OrderDate = new Date(OrderDate);
   }
 
-  orderMinDate: moment.Moment;
-  OrderMaxDate: moment.Moment;
+
+  private getCurrentServerDateTime() {
+    this._spinner.show();
+    this._PrivateutilityService.getCurrentDate()
+      .subscribe(
+        (data: Date) => {
+          var mcurrentDate = moment(data, 'YYYY-MM-DD[T]HH:mm').format('MM-DD-YYYY HH:mm').toString();
+          this.salesForm.patchValue({
+            OrderDate: { startDate: new Date(mcurrentDate) },
+          });
+          this.orderMinDate = moment(data).add(0, 'days');
+          this.OrderDate = new Date(mcurrentDate);
+          this._spinner.hide();
+        },
+        (err: any) => {
+          console.log(err);
+
+          this._spinner.hide();
+        }
+      );
+  }
   public onCustomerChange(customerID: number): void {
     console.log("customerID=" + customerID);
     this.objSalesOrder.CustomerID = customerID;
@@ -321,7 +334,8 @@ export class SalesorderComponent implements OnInit {
       });
     this.getCustomerAddress(customerID);
     this.getCustomerWarehouse(customerID);
-    this._privateutilityService.getCustomerItemLevels(customerID).subscribe(
+    this._spinner.show();
+    this._PrivateutilityService.getCustomerItemLevels(customerID).subscribe(
       (data) => {
         if (data != null) {
           this.itemList = data.filter(a => { return a.Type == 'Item' });
@@ -339,7 +353,7 @@ export class SalesorderComponent implements OnInit {
   public getCustomerAddress(customerID: number): void {
     if (customerID != 0) {
       this._spinner.show();
-      this._privateutilityService.getCustomerAddress(customerID).subscribe(
+      this._PrivateutilityService.getCustomerAddress(customerID).subscribe(
         (data) => {
           if (data != null) {
             this.BilledTo = data['Address1'];
@@ -357,7 +371,7 @@ export class SalesorderComponent implements OnInit {
   public getCustomerWarehouse(customerID: number): void {
     if (customerID != 0) {
       this._spinner.show();
-      this._privateutilityService.getCustomerWarehouse(customerID).subscribe(
+      this._PrivateutilityService.getCustomerWarehouse(customerID).subscribe(
         (data) => {
           if (data != null) {
             this.customerWarehouseList = data;
@@ -375,7 +389,7 @@ export class SalesorderComponent implements OnInit {
   public onCustomerWarehouseIDChange(customerWarehouseID: number): void {
     if (customerWarehouseID != 0) {
       this._spinner.show();
-      this._privateutilityService.getCustomerWarehouseAddress(customerWarehouseID).subscribe(
+      this._PrivateutilityService.getCustomerWarehouseAddress(customerWarehouseID).subscribe(
         (data) => {
           if (data != null) {
             this.ShipTo = data['Address1'];
@@ -401,7 +415,6 @@ export class SalesorderComponent implements OnInit {
   }
 
   onchangeIsBillTo_SameAs_ShipTo1() {
-    // this.IsBillTo_SameAs_ShipTo = this.salesForm.controls['IsBillTo_SameAs_ShipTo'].value;
     if (this.IsBillTo_SameAs_ShipTo) {
       this.IsBillTo_SameAs_ShipTo = true;
       this.BilledTo = this.ShipTo;
@@ -419,7 +432,6 @@ export class SalesorderComponent implements OnInit {
       this.IsDiscountApplicable = false;
     }
   }
-
 
   public onItemCodeChange(itemID): void {
     if (this.salesForm.controls['OrderDate'].value.startDate == null || this.salesForm.controls['OrderDate'].value.startDate == undefined) {
@@ -442,7 +454,6 @@ export class SalesorderComponent implements OnInit {
       }
     }
 
-
     this.itemDetail = this.itemList.filter(a => { return a.ItemID == itemID })[0];
     this.itemFormGroup.patchValue(
       {
@@ -452,18 +463,24 @@ export class SalesorderComponent implements OnInit {
         TaxRate: this.itemDetail.TaxRate,
       });
     this.objSalesorderItem.ItemID = itemID;
-    let OrderDate = this.salesForm.controls['OrderDate'].value.startDate._d.toLocaleString();
+    //let OrderDate = this.salesForm.controls['OrderDate'].value.startDate.toLocaleString();
+    let OrderDate = new Date();
+    if (this.salesForm.controls['OrderDate'].value.startDate._d != undefined) {
+      OrderDate = this.salesForm.controls['OrderDate'].value.startDate._d.toLocaleString();
+    } else {
+      OrderDate = this.salesForm.controls['OrderDate'].value.startDate.toLocaleString();
+    }
     let CustomerID = this.salesForm.get("CustomerID").value;
     let InventoryType = this.salesForm.get("InventoryType").value;
     let TransactionType = this.customerList.filter(x => { return x.CustomerID == this.salesForm.controls['CustomerID'].value })[0].CustomerType;
     this._spinner.show();
-    this._privateutilityService.getSellingPriceMRP(itemID, OrderDate.toString(), InventoryType)
+    this._PrivateutilityService.getSellingPriceMRP(itemID, OrderDate, InventoryType)
       .subscribe(
         (data) => {
           this._spinner.hide();
           if (data != null) {
-            this.SellingPrice = data['SellingPrice'];
-            this.itemFormGroup.controls['SellingPrice'].setValue(this.SellingPrice);
+            this.ItemRate = data['SellingPrice'];
+            this.itemFormGroup.controls['ItemRate'].setValue(this.ItemRate);
             this.itemFormGroup.controls['MRP'].setValue(data['MRP']);
             let Units = this.itemFormGroup.get("Units").value;
             let MultiplierValue = this.objSalesOrder.MultiplierValue;
@@ -471,17 +488,19 @@ export class SalesorderComponent implements OnInit {
             let ShippingCharges = this.itemFormGroup.get("ShippingCharges").value;
             if (this.IsDiscountApplicable) {
               this._spinner.show();
-              this._privateutilityService.getDiscountAmount(itemID, OrderDate.toString(), CustomerID, InventoryType, TransactionType)
+              this._PrivateutilityService.getDiscountAmount(itemID, OrderDate, CustomerID, InventoryType, TransactionType)
                 .subscribe(
                   (data11) => {
                     if (data11 != null) {
                       this.DisCountPer = data11['DiscountAmount'];
                       this.objSalesorderItem.DiscountID = data11['DiscountID'];
-                      let DiscountAmount = this.SellingPrice * this.DisCountPer / 100 * Qty;
-                      this.itemFormGroup.controls['Discountamt'].setValue(DiscountAmount);
-                      this.itemFormGroup.controls['TaxAmount'].setValue(Qty * this.SellingPrice *
+                      this.itemFormGroup.controls['TaxAmount'].setValue(Qty * this.ItemRate *
                         this.itemFormGroup.get("TaxRate").value / 100);
-                      this.itemFormGroup.controls['TotalValue'].setValue((Qty * this.SellingPrice) -
+
+                      let DiscountAmount = this.ItemRate * this.DisCountPer / 100 * Qty +
+                        (this.itemFormGroup.get("TaxAmount").value * this.DisCountPer / 100);
+                      this.itemFormGroup.controls['Discountamt'].setValue(DiscountAmount);
+                      this.itemFormGroup.controls['TotalValue'].setValue((Qty * this.ItemRate) -
                         DiscountAmount + this.itemFormGroup.get("TaxAmount").value + ShippingCharges);
                     }
                     this._spinner.hide();
@@ -492,9 +511,9 @@ export class SalesorderComponent implements OnInit {
                 );
             }
             else {
-              this.itemFormGroup.controls['TaxAmount'].setValue(Qty * this.SellingPrice *
+              this.itemFormGroup.controls['TaxAmount'].setValue(Qty * this.ItemRate *
                 this.itemFormGroup.get("TaxRate").value / 100);
-              this.itemFormGroup.controls['TotalValue'].setValue((Qty * this.SellingPrice) +
+              this.itemFormGroup.controls['TotalValue'].setValue((Qty * this.ItemRate) +
                 + this.itemFormGroup.get("TaxAmount").value + ShippingCharges);
             }
           }
@@ -516,11 +535,12 @@ export class SalesorderComponent implements OnInit {
     }
     else {
       this.objSalesorderItem.Qty = Units * this.objSalesOrder.MultiplierValue;
-      let SellingPricenew = this.SellingPrice * Units * this.objSalesOrder.MultiplierValue;
+      let ItemRatenew = this.ItemRate * Units * this.objSalesOrder.MultiplierValue;
       let ShippingCharges = this.itemFormGroup.get("ShippingCharges").value;
-      let Discountamt = (this.SellingPrice * this.DisCountPer / 100 * Units * this.objSalesOrder.MultiplierValue);
-      let TaxAmountnew = (this.SellingPrice * this.itemFormGroup.get("TaxRate").value / 100 * Units * this.objSalesOrder.MultiplierValue);
-      let TotalValueNew = SellingPricenew - Discountamt + TaxAmountnew + ShippingCharges;
+      let TaxAmountnew = (this.ItemRate * this.itemFormGroup.get("TaxRate").value / 100 * Units * this.objSalesOrder.MultiplierValue);
+      let Discountamt = (this.ItemRate * this.DisCountPer / 100 * Units * this.objSalesOrder.MultiplierValue)
+        + (TaxAmountnew * this.DisCountPer / 100);
+      let TotalValueNew = ItemRatenew - Discountamt + TaxAmountnew + ShippingCharges;
 
       this.itemFormGroup.patchValue(
         {
@@ -539,10 +559,11 @@ export class SalesorderComponent implements OnInit {
       let Units = this.itemFormGroup.get("Units").value;
       this.objSalesorderItem.Qty = Units * this.objSalesOrder.MultiplierValue;
       let ShippingCharges = this.itemFormGroup.get("ShippingCharges").value;
-      let SellingPricenew = this.SellingPrice * Units * this.objSalesOrder.MultiplierValue;
-      let Discountamt = (this.SellingPrice * this.DisCountPer / 100 * Units * this.objSalesOrder.MultiplierValue);
-      let TaxAmountnew = (this.SellingPrice * this.itemFormGroup.get("TaxRate").value / 100 * Units * this.objSalesOrder.MultiplierValue);
-      let TotalValueNew = SellingPricenew - Discountamt + TaxAmountnew + ShippingCharges;
+      let ItemRatenew = this.ItemRate * Units * this.objSalesOrder.MultiplierValue;
+      let TaxAmountnew = (this.ItemRate * this.itemFormGroup.get("TaxRate").value / 100 * Units * this.objSalesOrder.MultiplierValue);
+      let Discountamt = (this.ItemRate * this.DisCountPer / 100 * Units * this.objSalesOrder.MultiplierValue)
+      + (TaxAmountnew * this.DisCountPer / 100);
+     let TotalValueNew = ItemRatenew - Discountamt + TaxAmountnew + ShippingCharges;
       this.itemFormGroup.patchValue(
         {
           Discountamt: Discountamt,
@@ -550,7 +571,6 @@ export class SalesorderComponent implements OnInit {
           TaxAmount: TaxAmountnew
         })
     }
-
   }
 
   public onShippingChargesChanged(ShippingCharges: number): void {
@@ -562,10 +582,11 @@ export class SalesorderComponent implements OnInit {
       let uom = this.uomList.filter(x => { return x.UOMID == this.itemFormGroup.get("UOM").value })[0];
       this.objSalesOrder.MultiplierValue = uom.MultiplierValue;
       let Units = this.itemFormGroup.get("Units").value;
-      let SellingPricenew = this.SellingPrice * Units * this.objSalesOrder.MultiplierValue;
-      let Discountamt = (this.SellingPrice * this.DisCountPer / 100 * Units * this.objSalesOrder.MultiplierValue);
-      let TaxAmountnew = (this.SellingPrice * this.itemFormGroup.get("TaxRate").value / 100 * Units * this.objSalesOrder.MultiplierValue);
-      let TotalValueNew = SellingPricenew - Discountamt + TaxAmountnew + ShippingCharges;
+      let ItemRatenew = this.ItemRate * Units * this.objSalesOrder.MultiplierValue;
+      let TaxAmountnew = (this.ItemRate * this.itemFormGroup.get("TaxRate").value / 100 * Units * this.objSalesOrder.MultiplierValue);
+      let Discountamt = (this.ItemRate * this.DisCountPer / 100 * Units * this.objSalesOrder.MultiplierValue)
+      + (TaxAmountnew * this.DisCountPer / 100);
+      let TotalValueNew = ItemRatenew - Discountamt + TaxAmountnew + ShippingCharges;
       this.itemFormGroup.patchValue(
         {
           Discountamt: Discountamt,
@@ -590,7 +611,7 @@ export class SalesorderComponent implements OnInit {
       'CustomerItemCode': '',
       'Units': 0,
       'UOM': '',
-      'SellingPrice': 0,
+      'ItemRate': 0,
       'ShippingCharges': 0,
       'MRP': 0,
       'Discountamt': 0,
@@ -609,7 +630,7 @@ export class SalesorderComponent implements OnInit {
     this.objSalesorderItem.ItemID = dataItem.ItemID;
     this.objSalesorderItem.TaxRate = dataItem.TaxRate;
     this.objSalesorderItem.TaxAmount = dataItem.TaxAmount;
-    this.SellingPrice = dataItem.SellingPrice;
+    this.ItemRate = dataItem.ItemRate;
     sender.editRow(rowIndex, this.itemFormGroup);
   }
 
@@ -625,7 +646,7 @@ export class SalesorderComponent implements OnInit {
     this.objSalesorderItem.UOMID = item.UOM;
 
     this.objSalesorderItem.Units = item.Units;
-    this.objSalesorderItem.SellingPrice = item.SellingPrice;
+    this.objSalesorderItem.ItemRate = item.ItemRate;
     this.objSalesorderItem.ShippingCharges = item.ShippingCharges;
     this.objSalesorderItem.MRP = item.MRP;
     this.objSalesorderItem.Discountamt = item.Discountamt;
@@ -642,7 +663,6 @@ export class SalesorderComponent implements OnInit {
       this.objSalesOrder.lstItem.splice(0, 0, this.objSalesorderItem);
     }
     else {
-
       let selectedItem = this.objSalesOrder.lstItem[rowIndex];
       Object.assign(
         this.objSalesOrder.lstItem.find(({ ItemID }) => ItemID === selectedItem.ItemID),
@@ -693,15 +713,9 @@ export class SalesorderComponent implements OnInit {
     if (orderItem.UOMID == null || orderItem.UOMID == 0) {
       return "UOM field required";
     }
-    if (orderItem.SellingPrice == null || orderItem.SellingPrice == 0) {
+    if (orderItem.ItemRate == null || orderItem.ItemRate == 0) {
       return "Selling Price field required";
     }
-    // if (orderItem.ShippingCharges == null || orderItem.ShippingCharges == 0) {
-    //   return "ShippingCharges field required";
-    // } 
-    // if (orderItem.Discountamt == null || orderItem.Discountamt == 0) {
-    //   return "Discount Amt field required";
-    // }
     if (orderItem.TotalValue == null || orderItem.TotalValue == 0) {
       return "Total Value field required";
     }
@@ -714,7 +728,7 @@ export class SalesorderComponent implements OnInit {
       return;
     }
     this.objSalesOrder.OrderID = this.OrderID;
-    this.objSalesOrder.OrderDate = this.salesForm.controls['OrderDate'].value.startDate._d.toLocaleString();
+    this.objSalesOrder.OrderDate = this.salesForm.controls['OrderDate'].value.startDate.toLocaleString();
     this.objSalesOrder.CustomerID = this.salesForm.controls['CustomerID'].value;
     this.objSalesOrder.CustomerWarehouseID = this.salesForm.controls['CustomerWarehouseID'].value;
     this.objSalesOrder.ShipTo = this.ShipTo;
@@ -754,4 +768,9 @@ export class SalesorderComponent implements OnInit {
     this.objSalesOrder.lstItem = [];
     this.gridData = this.objSalesOrder.lstItem;
   }
+
+  public filterSettings: DropDownFilterSettings = {
+    caseSensitive: false,
+    operator: 'startsWith'
+  };
 }

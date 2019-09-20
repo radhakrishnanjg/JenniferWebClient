@@ -1,12 +1,31 @@
+<div class="row">
+  <div class="col-sm-6 col-lg-6">
+    <h3>
+      User Profile
+    </h3>
+  </div>
+  <div class="col-sm-6 col-lg-6">
+    <div class="pull-right hidden-xs">
+      <ol class="breadcrumb" id="dynamicbreadcrumb">
+        <li>
+          <i class="fa fa-institution"></i> <span> Profile</span>
+        </li>
+        <li class="active">
+          <i class="fa fa-user"></i>
+          User
+        </li>
+      </ol>
+    </div>
+  </div>
+</div>
+
 <form autocomplete="off" [formGroup]="profileForm" class="form-horizontal" (ngSubmit)="ProfileUpdate()">
 
   <div class="panel panel-default">
     <div class="panel-heading">
-      <!-- <h3 class="panel-title">Profile Update</h3> -->
-
       <div class="row">
         <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-          <span class="spanheader">
+          <span class="groupspanheader">
             Profile Update
           </span>
         </div>
@@ -106,16 +125,6 @@
           </div>
         </div>
       </div>
-
-      <!-- <div class="form-group">
-        <label class="control-label col-sm-2" for="LastLogin">Last Successful Login Time</label>
-        <div class="col-sm-4">
-          {{obj?.LastLogin | date: 'MM-dd-yyyy : HH:mm'}}
-          <div class="help-block-rk">
-
-          </div>
-        </div>
-      </div> -->
 
     </div>
 

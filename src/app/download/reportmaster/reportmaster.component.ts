@@ -4,7 +4,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AuthorizationGuard } from '../../_guards/Authorizationguard'
-import { Download, DownloadDetail, DownloadMaster, Dropdown } from '../../_services/model';
+import { DownloadDetail, DownloadMaster, Dropdown } from '../../_services/model';
 import { DownloadService } from '../../_services/service/download.service';
 import { PrivateutilityService } from '../../_services/service/privateutility.service';
 import { UtilityService } from '../../_services/service/utility.service';
@@ -35,8 +35,7 @@ export class ReportmasterComponent implements OnInit {
     private aroute: ActivatedRoute,
     public _spinner: NgxSpinnerService,
     private _PrivateutilityService: PrivateutilityService,
-    private _authorizationGuard: AuthorizationGuard,
-    private _authenticationService: AuthenticationService,
+    private _authorizationGuard: AuthorizationGuard, 
   ) { }
 
   formErrors = {
@@ -143,7 +142,7 @@ export class ReportmasterComponent implements OnInit {
     )
 
     this._spinner.show();
-    this._PrivateutilityService.GetValues('Inputype').subscribe(
+    this._PrivateutilityService.GetValues('InputType').subscribe(
       (data: Dropdown[]) => {
         this.lstText_Type = data;
         this._spinner.hide();
@@ -163,7 +162,7 @@ export class ReportmasterComponent implements OnInit {
         this._downloadService.searchById(this.identity).subscribe(
           (data: DownloadMaster) => {
             this.objDownloadMaster = data; 
-            debugger
+            
           },
           (err : any) => {
             this._spinner.hide();
@@ -236,7 +235,7 @@ export class ReportmasterComponent implements OnInit {
     this.objDownloadMaster.P_Count  = this.reportmasterform.controls['P_Count'].value;
     this.objDownloadMaster.lstDetail  = this.lstDownloadDetail;
     this._spinner.show();
-    debugger
+    
     if (this.objDownloadMaster.P_Count == this.lstDownloadDetail.length) {
       this._downloadService.add(this.objDownloadMaster).subscribe(
         (data) => {

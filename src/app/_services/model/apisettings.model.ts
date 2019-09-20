@@ -18,8 +18,4 @@ export class Apisettings {
         public static Regex_NumericComma: "/^([0-9,.]+)$/";
         public static Regex_IndiaPincode: "/^\d{6,6}$/";
         public static Regex_Percentage: "/(100|[0-9]{1,2})(\.[0-9]{1,2})?/";
-
-
-
-
 }

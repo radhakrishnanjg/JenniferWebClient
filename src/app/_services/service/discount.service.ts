@@ -6,7 +6,7 @@ import { BadRequest } from './../../common/bad-request';
 import { NotFoundError } from './../../common/not-found-error';
 import { AppError } from './../../common/app-error';
 import { AuthenticationService } from './authentication.service';
-import { Discount, Item, Result } from '../model/index';
+import { Discount,  Result } from '../model/index';
 import { environment } from '../../../environments/environment';
 
 @Injectable({

@@ -21,103 +21,92 @@
     </div>
   </div>
 </div>
-  
-  <div class="row">
-    <div class="col-lg-12">
-      <div class="panel panel-default">
-        <!-- <div class="panel-heading">
-            <div class="row">
-              <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-                <span class="spanheader">
-                  Menus
-                </span>
-              </div>
-              <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 ">
-                <div class="pull-right">
-                </div>
-              </div>
-            </div>
-          </div> -->
-        <div class="panel-body">
-          <div class="table-responsive">
-            <table datatable [dtOptions]="dtOptions" class="table table-bordered table-condensed "
-              *ngIf="lstmenus && lstmenus.length">
-              <thead>
-                <tr>
-                  <th>MenuType</th>
-                  <th>MenuName</th>
-                  <th>DisplayOrder</th>
-                  <th class="text-center btnflag">IsActive</th>
-                  <th class="text-center btnactions">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let user of lstmenus">
-                  <td>{{ user.MenuType   }}</td>
-                  <td>{{ user.MenuName}}</td>
-                  <td>{{ user.DisplayOrder}}</td>
-                  <td class="text-center" *ngIf="(user.IsActive)"><i class="fa fa-check"></i></td>
-                  <td class="text-center" *ngIf="(!user.IsActive)"><i class="fa fa-times"></i></td>
-                  <td class="text-center"> 
-                      <i (click)="confirmDeleteid(user.MenuID,user.MenuName,user.IsActive)" type="button"  title="Activate/Deactivate" class="bgred pointer fa fa-trash"></i>
-                     
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-  
-            <table class="table table-bordered table-condensed" *ngIf="lstmenus==null">
-              <thead>
-                <tr>
-                  <th>MenuType</th>
-                  <th>MenuName</th>
-                  <th>DisplayOrder</th>
-                  <th class="text-center btnflag">IsActive</th>
-                  <th class="text-center btnactions">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td colspan="5">
-                    No Records Found.!
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+
+<div class="row">
+  <div class="col-lg-12">
+    <div class="panel panel-default">
+       
+      <div class="panel-body">
+        <div class="table-responsive">
+          <table datatable [dtOptions]="dtOptions" class="table table-bordered table-condensed "
+            *ngIf="lstmenus && lstmenus.length">
+            <thead>
+              <tr>
+                <th>MenuT ype</th>
+                <th>Menu Name</th>
+                <th>Display Order</th>
+                <th class="text-center btnflag">IsActive</th>
+                <th class="text-center btnactions">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let user of lstmenus">
+                <td>{{ user.MenuType   }}</td>
+                <td>{{ user.MenuName}}</td>
+                <td>{{ user.DisplayOrder}}</td>
+                <td class="text-center" *ngIf="(user.IsActive)"><i class="fa fa-check"></i></td>
+                <td class="text-center" *ngIf="(!user.IsActive)"><i class="fa fa-times"></i></td>
+                <td class="text-center">
+                  <i (click)="confirmDeleteid(user.MenuID,user.MenuName,user.IsActive)" type="button"
+                    title="Activate/Deactivate" class="bgred pointer fa fa-trash"></i>
+
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <table class="table table-bordered table-condensed" *ngIf="lstmenus==null">
+            <thead>
+              <tr>
+                <th>Menu Type</th>
+                <th>Menu Name</th>
+                <th>Display Order</th>
+                <th class="text-center btnflag">IsActive</th>
+                <th class="text-center btnactions">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td colspan="5">
+                  No Records Found.!
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
   </div>
-  
-  <div id="modaldeleteconfimation" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modaldeleteconfimation"
-    aria-hidden="true">
-    <div class="modal-dialog ">
-      <div class="modal-content">
-        <div class="modal-header paddingTopBottom-5 ">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-              aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title" id="modaldeleteconfimation">Confirmation</h4>
-        </div>
-        <div class="modal-body alert-warning">
-          <div class="row">
-            <div class="col-xs-2">
-              <i class="fa fa-warning fa-3x "></i>
-            </div>
-            <div class="col-xs-10">
-              <div>
-                <h5>
-                  Are you sure you want to {{IsActive?'deactivate':'activate'}} this value <span> {{deleteColumn}}</span>?
-                </h5>
-              </div>
+</div>
+
+<div id="modaldeleteconfimation" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modaldeleteconfimation"
+  aria-hidden="true">
+  <div class="modal-dialog ">
+    <div class="modal-content">
+      <div class="modal-header paddingTopBottom-5 ">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="modaldeleteconfimation">Confirmation</h4>
+      </div>
+      <div class="modal-body alert-warning">
+        <div class="row">
+          <div class="col-xs-2">
+            <i class="fa fa-warning fa-3x "></i>
+          </div>
+          <div class="col-xs-10">
+            <div>
+              <h5>
+                Are you sure you want to {{IsActive?'deactivate':'activate'}} this value <span> {{deleteColumn}}</span>?
+              </h5>
             </div>
           </div>
         </div>
-        <div class="modal-footer">
-          <button class="btn btn-danger btn-sm" (click)="delete()">Yes</button>
-          &nbsp;
-          <button class="btn btn-default btn-sm" data-dismiss="modal">No</button>
-        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-danger btn-sm" (click)="delete()">Yes</button>
+        &nbsp;
+        <button class="btn btn-default btn-sm" data-dismiss="modal">No</button>
       </div>
     </div>
   </div>
+</div>

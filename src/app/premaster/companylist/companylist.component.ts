@@ -6,7 +6,10 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { UserService } from  '../../_services/service/user.service';
 import { ToastrService } from 'ngx-toastr';
 import { CompanyRegister } from  '../../_services/model';
-import { AuthorizationGuard } from  '../../_guards/Authorizationguard'
+import { AuthorizationGuard } from  '../../_guards/Authorizationguard';
+import { process, State } from '@progress/kendo-data-query';
+import { GridDataResult, DataStateChangeEvent, PageChangeEvent } from '@progress/kendo-angular-grid';
+import { SortDescriptor, orderBy } from '@progress/kendo-data-query';
 @Component({
   selector: 'app-companylist',
   templateUrl: './companylist.component.html',
@@ -15,8 +18,7 @@ import { AuthorizationGuard } from  '../../_guards/Authorizationguard'
 export class CompanylistComponent implements OnInit {
 
   //#region variable declartion
-
-  companies: CompanyRegister[];
+ 
   company: CompanyRegister;
   
   selectedDeleteId: number;
@@ -38,15 +40,9 @@ export class CompanylistComponent implements OnInit {
 
     
     this.onLoad();
-  }
-  editButtonClick(id: number) {
-    if (this._authorizationGuard.CheckAcess("Companylist", "ViewEdit")) {
-      return;
-    }
-    this.router.navigate(['/Company', id]); 
-  }
-  confirmDeleteid(id: number, DeleteColumnvalue: string) {
-    
+  } 
+
+  confirmDeleteid(id: number, DeleteColumnvalue: string) {    
     this.selectedDeleteId = + id;
     this.deleteColumn = DeleteColumnvalue;
     $('#modaldeleteconfimation').modal('show');
@@ -82,14 +78,12 @@ export class CompanylistComponent implements OnInit {
 
     this._spinner.show();
     return this._userService.companySearch('').subscribe(
-      (data) => { 
-        this.companies = data;
-        this.dtOptions = {
-          pagingType: 'full_numbers',
-          "language": {
-            "search": 'Filter',
-          },
-        }; 
+      (data) => {
+        if (data != null) { 
+          this.items = data;
+          this.loadItems(); 
+
+        }
         this._spinner.hide();
       },
       (err) => {
@@ -99,4 +93,55 @@ export class CompanylistComponent implements OnInit {
     );
   }
 
+   //#region Paging Sorting and Filtering Start
+   public allowUnsort = true;
+   public sort: SortDescriptor[] = [{
+     field: 'CompanyName',
+     dir: 'asc'
+   }];
+   public gridView: GridDataResult;
+   public pageSize = 10;
+   public skip = 0;
+   private data: Object[];
+   private items: CompanyRegister[] = [] as any;
+   public state: State = {
+     skip: 0,
+     take: 5,
+ 
+     // Initial filter descriptor
+     filter: {
+       logic: 'and',
+       filters: [{ field: 'CompanyName', operator: 'contains', value: '' }]
+     }
+   };
+   public pageChange(event: PageChangeEvent): void {
+     this.skip = event.skip;
+     this.loadItems();
+   }
+ 
+   public sortChange(sort: SortDescriptor[]): void {
+     this.sort = sort;
+     this.loadSortItems();
+   }
+ 
+   private loadItems(): void {
+     this.gridView = {
+       data: this.items.slice(this.skip, this.skip + this.pageSize),
+       total: this.items.length
+     };
+   }
+   private loadSortItems(): void {
+     this.gridView = {
+       data: orderBy(this.items.slice(this.skip, this.skip + this.pageSize), this.sort),
+       total: this.items.length
+     };
+   }
+   public dataStateChange(state: DataStateChangeEvent): void {
+     this.state = state;
+     this.gridView = process(this.items, this.state);
+   }
+ 
+ 
+   //#endregion Paging Sorting and Filtering End
+ 
 }

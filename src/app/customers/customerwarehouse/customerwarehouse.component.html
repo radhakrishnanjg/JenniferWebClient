@@ -26,7 +26,7 @@
     <div class="panel-heading">
       <div class="row">
         <div class="col-sm-2">
-          <span class="spanheader">
+          <span class="groupspanheader">
             {{panelTitle}}
           </span>
         </div>
@@ -64,7 +64,7 @@
               <label for="CustomerID" class="nopading_loct control-label">Customer Name <span
                   class="mandantory">*</span></label>
               <select formControlName="CustomerID" id='CustomerID' type="select" class="form-control"
-                (blur)="logValidationErrors()">
+                (blur)="logValidationErrors()" (change)="onchangeCustomerID($event.target.value)">
                 <option value="0" selected="selected">Select</option>
                 <option *ngFor="let c1 of lstCustomer" value={{c1.CustomerID}}>
                   {{c1.CustomerName}}

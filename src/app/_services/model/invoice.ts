@@ -50,7 +50,7 @@ export class Invoiceitem {
 
     //reference for the calculation
     POQty: number;
-    AvailableQty: number;
+    AvailableQty: number; 
 }
 
 
@@ -90,7 +90,7 @@ export class BOEDetail {
     IsGSTApplicable: number;
     DutyPercentage: number;
     DutyAmount: number;
-    IGSTRate: boolean;
+    IGSTRate: number;
 
     IGSTValue: number;
     TotalValue: number;

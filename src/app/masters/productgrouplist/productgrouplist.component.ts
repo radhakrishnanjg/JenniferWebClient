@@ -7,14 +7,16 @@ import { ProductgroupService } from  '../../_services/service/productgroup.servi
 import { ProductGroup } from  '../../_services/model'; 
 import { AuthorizationGuard } from  '../../_guards/Authorizationguard'
 
+import { process, State } from '@progress/kendo-data-query';
+import { GridDataResult, DataStateChangeEvent, PageChangeEvent } from '@progress/kendo-angular-grid';
+import { SortDescriptor, orderBy } from '@progress/kendo-data-query';
 @Component({
   selector: 'app-productgrouplist',
   templateUrl: './productgrouplist.component.html',
   styleUrls: ['./productgrouplist.component.css']
 })
 export class ProductgrouplistComponent implements OnInit {
- 
-  lstProductGroup: ProductGroup[];
+  
   objProductGroup: ProductGroup = {} as any;
   ProductGroupForm: FormGroup;
   panelTitle: string;
@@ -43,7 +45,7 @@ export class ProductgrouplistComponent implements OnInit {
   validationMessages = {
     'ProductGroupName': {
       'required': 'This Field is required.',  
-      'ProductGroupInUse': 'This ProductGroup has been registered already'
+      'ProductGroupInUse': 'This ProductGroup is already registered!'
     },
   };
 
@@ -136,7 +138,8 @@ export class ProductgrouplistComponent implements OnInit {
         , this._usernameValidator.existProductGroup(this.identity)
       ],
       IsActive: [0,],
-    });
+    }); 
+    this._spinner.show();
     this._productgroupService.searchById(this.identity)
       .subscribe(
         (data: ProductGroup) => {
@@ -145,9 +148,11 @@ export class ProductgrouplistComponent implements OnInit {
             IsActive: data.IsActive,
           }); 
           this.logValidationErrors();
+          this._spinner.hide();
         },
         (err: any) =>
-          console.log(err)
+        {  console.log(err);
+          this._spinner.hide();}
       );
     $('#modalpopupbrandupsert').modal('show');
   }
@@ -159,27 +164,6 @@ export class ProductgrouplistComponent implements OnInit {
     this.identity = + id;
     this.deleteColumn = DeleteColumnvalue;
     $('#modaldeleteconfimation').modal('show');
-  }
-
-  onLoad(SearchBy: string, Search: string, IsActive: Boolean) {
-    this._spinner.show();
-    return this._productgroupService.search(SearchBy, Search, IsActive).subscribe(
-      (lst) => {
-        this.lstProductGroup = lst;
-        this.dtOptions = {
-          pagingType: 'full_numbers',
-          "language": {
-            "search": 'Filter',
-          },
-        };
-		
-        this._spinner.hide();
-      },
-      (err) => {
-        this._spinner.hide();
-        console.log(err);
-      }
-    );
   }
 
   SaveData(): void {
@@ -194,6 +178,9 @@ export class ProductgrouplistComponent implements OnInit {
     if (this.ProductGroupForm.invalid) {
       return;
     }
+    if (this.ProductGroupForm.pristine) {      
+      this.alertService.error('Please change the value for any one control to proceed further!'); 
+      return;     }
     if (this.identity > 0) {
       this.Update();
     }
@@ -278,5 +265,73 @@ export class ProductgrouplistComponent implements OnInit {
       }
     );
   }
+
+  onLoad(SearchBy: string, Search: string, IsActive: Boolean) {
+    this._spinner.show();
+    return this._productgroupService.search(SearchBy, Search, IsActive).subscribe(
+      (lst) => {
+        if (lst != null ) { 
+          this.items = lst;
+          this.loadItems(); 
+        }
+        this._spinner.hide();
+      },
+      (err) => {
+        this._spinner.hide();
+        console.log(err);
+      }
+    );
+  }
+
+  //#region Paging Sorting and Filtering Start
+  public allowUnsort = true;
+  public sort: SortDescriptor[] = [{
+    field: 'ProductGroupName',
+    dir: 'asc'
+  }];
+  public gridView: GridDataResult;
+  public pageSize = 10;
+  public skip = 0;
+  private data: Object[];
+  private items: ProductGroup[] = [] as any;
+  public state: State = {
+    skip: 0,
+    take: 5,
+
+    // Initial filter descriptor
+    filter: {
+      logic: 'and',
+      filters: [{ field: 'ProductGroupName', operator: 'contains', value: '' }]
+    }
+  };
+  public pageChange(event: PageChangeEvent): void {
+    this.skip = event.skip;
+    this.loadItems();
+  }
+
+  public sortChange(sort: SortDescriptor[]): void {
+    this.sort = sort;
+    this.loadSortItems();
+  }
+
+  private loadItems(): void { 
+      this.gridView = {
+        data: this.items.slice(this.skip, this.skip + this.pageSize),
+        total: this.items.length
+      }; 
+  }
+  private loadSortItems(): void {
+    this.gridView = {
+      data: orderBy(this.items.slice(this.skip, this.skip + this.pageSize), this.sort),
+      total: this.items.length
+    };
+  }
+  public dataStateChange(state: DataStateChangeEvent): void {
+    this.state = state;
+    this.gridView = process(this.items, this.state);
+  }
+
+
+  //#endregion Paging Sorting and Filtering End
 
 }

@@ -70,7 +70,7 @@ export class MenulistComponent implements OnInit {
             this.alertService.success('Menu data has been actviated successful');
           }
         } else {
-          this.alertService.error('Menu deactivated failure !');
+          this.alertService.error('Menu update is failure !');
         }
         $('#modaldeleteconfimation').modal('hide');
         this._spinner.hide();

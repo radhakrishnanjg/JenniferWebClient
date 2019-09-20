@@ -4,7 +4,10 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { CustomerwarehouseService } from  '../../_services/service/customerwarehouse.service';
 import { Customerwarehouse } from  '../../_services/model';
-import { AuthorizationGuard } from  '../../_guards/Authorizationguard'
+import { AuthorizationGuard } from  '../../_guards/Authorizationguard';
+import { process, State } from '@progress/kendo-data-query';
+import { GridDataResult, DataStateChangeEvent, PageChangeEvent } from '@progress/kendo-angular-grid';
+import { SortDescriptor, orderBy } from '@progress/kendo-data-query';
 @Component({
   selector: 'app-customerwarehouselist',
   templateUrl: './customerwarehouselist.component.html',
@@ -13,8 +16,7 @@ import { AuthorizationGuard } from  '../../_guards/Authorizationguard'
 export class CustomerwarehouselistComponent implements OnInit {
 
   //#region variable declartion
-
-  lst: Customerwarehouse[];
+ 
   obj: Customerwarehouse;
   
   selectedDeleteId: number;
@@ -36,29 +38,6 @@ export class CustomerwarehouselistComponent implements OnInit {
   ngOnInit() {
     
     this.onLoad('', '', true);
-  }
-
-
-  onLoad(SearchBy: string, Search: string, IsActive: Boolean) {
-
-    this._spinner.show();
-    return this._customerwarehouseService.search(SearchBy, Search, IsActive).subscribe(
-      (data) => {
-        this.lst = data;
-        this.dtOptions = {
-          pagingType: 'full_numbers',
-          "language": {
-            "search": 'Filter',
-          },
-        };
-		
-        this._spinner.hide();
-      },
-      (err) => {
-        this._spinner.hide();
-        console.log(err);
-      }
-    );
   }
 
   Search(): void {
@@ -107,6 +86,75 @@ export class CustomerwarehouselistComponent implements OnInit {
         console.log(error);
       }
     );
+  } 
+
+  onLoad(SearchBy: string, Search: string, IsActive: Boolean) {
+
+    this._spinner.show();
+    return this._customerwarehouseService.search(SearchBy, Search, IsActive).subscribe(
+      (lst) => {
+        if (lst != null ) { 
+          this.items = lst;
+          this.loadItems(); 
+        }
+        this._spinner.hide();
+      },
+      (err) => {
+        this._spinner.hide();
+        console.log(err);
+      }
+    );
   }
+
+  //#region Paging Sorting and Filtering Start
+  public allowUnsort = true;
+  public sort: SortDescriptor[] = [{
+    field: 'CustomerName',
+    dir: 'asc'
+  }];
+  public gridView: GridDataResult;
+  public pageSize = 10;
+  public skip = 0;
+  private data: Object[];
+  private items: Customerwarehouse[] = [] as any;
+  public state: State = {
+    skip: 0,
+    take: 5,
+
+    // Initial filter descriptor
+    filter: {
+      logic: 'and',
+      filters: [{ field: 'CustomerName', operator: 'contains', value: '' }]
+    }
+  };
+  public pageChange(event: PageChangeEvent): void {
+    this.skip = event.skip;
+    this.loadItems();
+  }
+
+  public sortChange(sort: SortDescriptor[]): void {
+    this.sort = sort;
+    this.loadSortItems();
+  }
+
+  private loadItems(): void { 
+      this.gridView = {
+        data: this.items.slice(this.skip, this.skip + this.pageSize),
+        total: this.items.length
+      }; 
+  }
+  private loadSortItems(): void {
+    this.gridView = {
+      data: orderBy(this.items.slice(this.skip, this.skip + this.pageSize), this.sort),
+      total: this.items.length
+    };
+  }
+  public dataStateChange(state: DataStateChangeEvent): void {
+    this.state = state;
+    this.gridView = process(this.items, this.state);
+  }
+
+
+  //#endregion Paging Sorting and Filtering End
 
 }

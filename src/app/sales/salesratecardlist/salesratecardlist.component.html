@@ -31,10 +31,10 @@
             <select [(ngModel)]="SearchBy" class="serchcurv form-control btn-group">
               <option value="" selected="select">Search By</option>
               <option value="ByItemCode">ItemCode</option>
-              <option value="ByDate">Effective Date</option> 
+              <option value="ByDate">Effective Date</option>
             </select>
           </div>
-          <div class="col-md-4 nopading_loct" *ngIf="(SearchBy=='ByItemCode' )">
+          <div class="col-md-4 nopading_loct" *ngIf="(SearchBy!= 'ByDate')">
             <input [(ngModel)]="SearchKeyword" type="text" class="serchcurv form-control btn-group">
           </div>
           <div class="col-md-4 nopading_loct" *ngIf="(SearchBy=='ByDate')">
@@ -64,58 +64,31 @@
   </div>
   <div class="panel-body">
 
+    <kendo-grid [data]="gridView" resizable="true" columnMenu="true" [pageSize]="pageSize" [skip]="skip" [pageable]="true"
+      (pageChange)="pageChange($event)" [sortable]="{
+      allowUnsort: allowUnsort,
+      mode:  'single'
+      }" [sort]="sort" (sortChange)="sortChange($event)" [filterable]="true"
+      (dataStateChange)="dataStateChange($event)" [filter]="state.filter">
 
-    <div class="table-responsive">
-      <table datatable [dtOptions]="dtOptions" class="table table-bordered table-condensed "
-        *ngIf="lstSalesratecard && lstSalesratecard.length">
-        <thead>
-          <tr>
-            <th>ItemCode</th>
-            <th>Inventory Type</th>
-
-            <th>Selling Price</th>
-
-            <th>Effective From</th>
-            <th>Effective To</th>
-            <!-- <th class="text-center btnactions">Action</th> -->
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let user of lstSalesratecard">
-            <td>{{ user.ItemCode}}</td>
-            <td>{{ user.InventoryType  }}</td>
-            <td class="text-right">{{ user.SellingPrice | currency: 'INR'}}</td>
-            <td class="text-right">{{ user.StartDate | date :"MM-dd-yyyy HH:mm" }}</td>
-            <td class="text-right">{{ user.EndDate | date :"MM-dd-yyyy HH:mm"}}</td>
-            <!-- <td class="text-center">
-              <i (click)="editButtonClick(user.SalesRateCardID)" title="Edit" class="fa fa-edit bgblue pointer"></i>
-            </td> -->
-          </tr>
-        </tbody>
-      </table>
-
-      <table class="table table-bordered table-condensed" *ngIf="lstSalesratecard==null">
-        <thead>
-          <tr>
-            <th>ItemCode</th>
-            <th>Inventory Type</th>
-
-            <th>Selling Price</th>
-
-            <th>Effective From</th>
-            <th>Effective To</th>
-            <!-- <th class="text-center btnactions">Action</th> -->
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td colspan="5">
-              No Records Found.!
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+      <kendo-grid-column field="ItemCode" title="ItemCode">
+      </kendo-grid-column>
+      <kendo-grid-column field="InventoryType" title="Inventory Type">
+      </kendo-grid-column>
+      <kendo-grid-column field="SellingPrice" title="Selling Price" format="{0:##,#.##}">
+      </kendo-grid-column>
+      <kendo-grid-column field="StartDate" title="Effective From" filter="date" format="{0:d}" [filterable]="false">
+        <ng-template kendoGridCellTemplate let-dataItem>
+          {{ dataItem.StartDate | date :"MM-dd-yyyy HH:mm" }}
+        </ng-template>
+      </kendo-grid-column>
+      <kendo-grid-column field="EndDate" title="Effective To" filter="date" format="{0:d}" [filterable]="false">
+        <ng-template kendoGridCellTemplate let-dataItem>
+          {{ dataItem.EndDate | date :"MM-dd-yyyy HH:mm" }}
+        </ng-template>
+      </kendo-grid-column>
+    </kendo-grid>
+ 
   </div>
 
 
@@ -140,10 +113,6 @@
                   <ngx-select-dropdown formControlName="ItemID" [multiple]="true" [config]="config"
                     (blur)="logValidationErrors()" [options]="lstItem">
                   </ngx-select-dropdown>
-                  <!-- </div> -->
-                  <!-- <div *ngIf="!action">
-                  {{ItemCode}}
-                </div> -->
                   <div class="help-block-rk">
                     <span class="help-block" *ngIf="formErrors.ItemID">
                       {{formErrors.ItemID}}
@@ -187,14 +156,14 @@
               <div class="  form-group col-sm-6" [ngClass]="{'has-error': formErrors.StartDate}">
                 <label class="control-label" for="StartDate">Start Date <span class="mandantory">*</span>
                 </label>
-                <div class="">
+                <div>
                   <div class='input-group date'>
                     <input type="text" ngxDaterangepickerMd [minDate]="MinDate" [timePicker]="true"
                       (datesUpdated)="StartDateUpdated($event)" [singleDatePicker]="true" class="form-control"
-                      formControlName="StartDate" id="StartDate" (blur)="logValidationErrors()"
+                      formControlName="StartDate" id="StartDate" (change)="logValidationErrors()"
                       [locale]="{format: 'MM-DD-YYYY HH:mm'}" maxlength="16" [autoApply]="true" />
 
-                    <label class="fa fa-calendar"></label>
+                    <label class="fa fa-calendar"></label> 
                   </div>
                   <div class="help-block-rk">
                   </div><span class="help-block" *ngIf="formErrors.StartDate">
@@ -207,9 +176,9 @@
                 <label class="control-label" for="EndDate">End Date <span class="mandantory">*</span> </label>
                 <div class=" ">
                   <div class='input-group date'>
-                    <input type="text" ngxDaterangepickerMd [autoApply]="true" [singleDatePicker]="true"
+                    <input type="text" ngxDaterangepickerMd [minDate]="MinDate" [autoApply]="true" [singleDatePicker]="true"
                       (datesUpdated)="EndDateUpdated($event)" [timePicker]="true" class="form-control"
-                      formControlName="EndDate" (blur)="logValidationErrors()" id="EndDate"
+                      formControlName="EndDate" (change)="logValidationErrors()" id="EndDate"
                       [locale]="{format: 'MM-DD-YYYY HH:mm'}" maxlength="16" />
                     <label class="fa fa-calendar"></label>
                   </div>

@@ -3,7 +3,7 @@ import { RouterModule } from '@angular/router';
 import { NgModule, NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgxMaskModule } from 'ngx-mask'
 import { ToastrModule } from 'ngx-toastr';
@@ -13,12 +13,14 @@ import { CookieService } from 'ngx-cookie-service';
 import { SelectDropDownModule } from 'ngx-select-dropdown'
 import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import { DataTablesModule } from 'angular-datatables';
-import { NgxEchartsModule } from 'ngx-echarts';
+
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { NgxTypeaheadModule } from 'ngx-typeahead';
 import { GridModule } from '@progress/kendo-angular-grid';
 import { PopupModule } from '@progress/kendo-angular-popup';
 import { DropDownListModule } from '@progress/kendo-angular-dropdowns';
+import { PDFExportModule } from '@progress/kendo-angular-pdf-export';
+import { IntlModule } from '@progress/kendo-angular-intl';
 import * as bootstrap from "bootstrap";
 import * as $ from "jquery";
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -28,10 +30,9 @@ import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 import { DeviceDetectorModule } from 'ngx-device-detector';
 import { InputsModule } from '@progress/kendo-angular-inputs';
 import { DateInputsModule } from '@progress/kendo-angular-dateinputs';
-import { JwtInterceptor, HttpErrorInterceptor } from '../_helpers';
+
 import { EncrDecrService } from '../_services/service/encr-decr.service';
 import { PopupAnchorDirective } from './salesorder/popup.anchor-target.directive';
-import { ReportViewerModule } from 'ngx-ssrs-reportviewer';
 
 import { SalesratecardlistComponent } from './salesratecardlist/salesratecardlist.component';
 import { SalesorderlistComponent } from './salesorderlist/salesorderlist.component';
@@ -42,11 +43,12 @@ import { ShipmentoutwardlistComponent } from './shipmentoutwardlist/shipmentoutw
 
 import { PicklistComponent } from './picklist/picklist.component';
 import { PicklistsearchComponent } from './picklistsearch/picklistsearch.component';
+import { PicklistviewComponent } from './picklistview/picklistview.component';
 import { SalesinvoiceComponent } from './salesinvoice/salesinvoice.component';
 import { ReceiptslistComponent } from './receiptslist/receiptslist.component';
 import { SalesorderunsellableComponent } from './salesorderunsellable/salesorderunsellable.component';
 import { SalesorderapprovallistComponent } from './salesorderapprovallist/salesorderapprovallist.component';
-	import { SalesorderapprovalComponent } from './salesorderapproval/salesorderapproval.component';
+import { SalesorderapprovalComponent } from './salesorderapproval/salesorderapproval.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -60,7 +62,7 @@ import { SalesorderapprovallistComponent } from './salesorderapprovallist/saleso
     HttpClientModule,
     AngularFontAwesomeModule,
     DataTablesModule,
-    NgxEchartsModule,
+
     NgxSpinnerModule,
     FormsModule,
     // Prevent double submission module
@@ -68,7 +70,7 @@ import { SalesorderapprovallistComponent } from './salesorderapprovallist/saleso
     MomentModule,
     NgxDaterangepickerMd.forRoot(),
     DeviceDetectorModule.forRoot(),
-    
+
     // ModalModule.forRoot()
     BrowserAnimationsModule, // required animations module
     ToastrModule.forRoot({
@@ -86,7 +88,9 @@ import { SalesorderapprovallistComponent } from './salesorderapprovallist/saleso
     PopupModule,
     NgbModule,
     DateInputsModule,
-    ReportViewerModule,
+
+    IntlModule,
+    PDFExportModule,
   ],
 
   declarations: [
@@ -103,13 +107,13 @@ import { SalesorderapprovallistComponent } from './salesorderapprovallist/saleso
     ReceiptslistComponent,
     SalesorderunsellableComponent,
     SalesorderapprovallistComponent,
-    SalesorderapprovalComponent
+    SalesorderapprovalComponent,
+    PicklistviewComponent
   ],
   providers: [
-    // { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
-    // { provide: HTTP_INTERCEPTORS, useClass: HttpErrorInterceptor, multi: true },
+
     CookieService,
-    
+
     EncrDecrService
   ],
   schemas: [

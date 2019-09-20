@@ -10,7 +10,7 @@ import { AppError } from '../../common/app-error';
 
 import { AuthenticationService } from './authentication.service';
 import { environment } from '../../../environments/environment';
-import { SalesShipment } from '../model';
+import { SalesShipment, Result } from '../model';
 @Injectable({
   providedIn: 'root'
 })
@@ -72,7 +72,7 @@ export class SalesShipmentService {
       ShipmentOutwardID + `&CourierTrackingID=` + CourierTrackingID + `&CompanyDetailID=` + CompanyDetailID)
       .pipe(
         map(data => {
-          if (data && data == true)
+          if (data!=null && data == true)
             return true;
           else
             return false;
@@ -87,11 +87,11 @@ export class SalesShipmentService {
       .pipe(catchError(this.handleError));
   }
 
-  public add(obj: SalesShipment): Observable<Boolean> {
+  public add(obj: SalesShipment): Observable<Result> {
     let currentUser = this.authenticationService.currentUserValue;
     obj.CompanyDetailID = currentUser.CompanyDetailID;
     obj.LoginId = currentUser.UserId;
-    return this.httpClient.post<Boolean>(environment.baseUrl + `SalesShipment/Create`, obj)
+    return this.httpClient.post<Result>(environment.baseUrl + `SalesShipment/Create`, obj)
       .pipe(catchError(this.handleError));
   }
 

@@ -58,7 +58,7 @@ export class BoeComponent implements OnInit {
     'BOENumber': {
       'required': 'This Field is required.',
       'maxlength': 'This Field must be less than or equal to 20 charecters.',
-      'BOENumberInUse': 'This Field already used.',
+      'BOENumberInUse': 'This Value is already registered!',
     },
     'BOEDate': {
       'required': 'This Field is required.',
@@ -118,8 +118,7 @@ export class BoeComponent implements OnInit {
               this.boeform.get('BOENumber').disable();
               var BOEDate1 = moment(data.BOEDate, 'YYYY-MM-DD[T]HH:mm').
                 format('MM-DD-YYYY HH:mm').toString();
-              this.BOEDate = { startDate: new Date(BOEDate1) };
-              this.ShowAll();
+              this.BOEDate = { startDate: new Date(BOEDate1) }; 
 
               this.boeform.patchValue({
                 BOENumber: data.BOENumber,
@@ -147,8 +146,7 @@ export class BoeComponent implements OnInit {
               this.TotalIGSTValue = this.lstItem.reduce((acc, a) => acc + a.IGSTValue, 0);
               this.TotalTotalValue = this.lstItem.reduce((acc, a) => acc + a.TotalValue, 0);
               this.TotalSumTotalValue = this.lstItem.reduce((acc, a) => acc + a.SumTotalValue, 0);
-              this._spinner.hide();
-              this.ShowAll();
+              this._spinner.hide(); 
               var BOEDate1 = moment(data.InvoiceDate, 'YYYY-MM-DD[T]HH:mm').
                 format('MM-DD-YYYY HH:mm').toString();
               this.BOEDate = { startDate: new Date(BOEDate1) };
@@ -226,22 +224,32 @@ export class BoeComponent implements OnInit {
     }
   }
 
-  mergecells(HSNCode: string, i) {
+  mergecells(HSNCode: string, IGSTRate: number, i: number) {
+    let ii = i + 1;
+    
+    let c = this.lstItem.filter(a => a.HSNCode == HSNCode && a.IGSTRate == IGSTRate).length;
+    let rem = this.lstItem.length % c;
+    return ii % c == rem ? true : false;
+  }
+
+  mergecellsclass(HSNCode: string, i) {
     let ii = i + 1;
     let c = this.lstItem.filter(a => a.HSNCode == HSNCode).length;
     let rem = this.lstItem.length % c;
-    return ii % c == rem ? true : false;
+    let a = ii % c;
+    let b = rem;
+    return a / 2 == b / 2 ? true : false;
   }
 
-  mergecells0(HSNCode: string, i) {
-    let ii = i + 1;
-    let c = this.lstItem.filter(a => a.HSNCode == HSNCode && a.DutyAmount > 0).length;
-    let rem = this.lstItem.length % c;
-    return ii % c == rem ? true : false;
-  }
+
 
   filter(HSNCode: string) {
-    return this.lstItem.filter(a => a.HSNCode == HSNCode).length;
+    return this.lstItem.filter(a => a.HSNCode == HSNCode);
+  }
+
+  getlength(HSNCode: string) {
+    let c = this.lstItem.filter(a => a.HSNCode == HSNCode).length;
+    return c;
   }
 
   getSum(HSNCode: string) {
@@ -249,40 +257,9 @@ export class BoeComponent implements OnInit {
       reduce((acc, a) => acc + a.DutyAmount, 0) +
       this.lstItem.filter(a => a.HSNCode == HSNCode).reduce((acc, a) => acc + a.IGSTValue, 0);
   }
-
-  Filterzero() {
-    this.lstItem.forEach((element, i) => {
-      if (element.DutyAmount > 0) {
-        element.IsView = true;
-      } else {
-        element.IsView = false;
-      }
-    });
-    // const itemids = [];
-    // const map = new Map();
-    // for (const item of this.lstItem) {
-    //   if (!map.has(item.HSNCode)) {
-    //     map.set(item.HSNCode, true);    // set any value to Map
-    //     itemids.push(item.HSNCode);
-    //   }
-    // }
-    // itemids.forEach(E => {
-    //   let len = this.lstItem.filter(a => a.HSNCode == E && a.DutyAmount > 0).length;
-    //   this.mergecells(E, len);
-    // });
-  }
-
-  ShowAll() {
-    this.lstItem.forEach((element, i) => {
-      element.IsView = true;
-      this.mergecells(element.HSNCode, i)
-    });
-  }
   BOEDateUpdated(range) {
     this.logValidationErrors();
   }
-
-
   SaveData(): void {
     if (this._authorizationGuard.CheckAcess("BOElist", "ViewEdit")) {
       return;
@@ -356,7 +333,6 @@ export class BoeComponent implements OnInit {
   Update() {
     this.obj.PurchaseID = this.identity;
     this.obj.BOENumber = this.boeform.controls['BOENumber'].value;
-    //this.obj.BOEDate = this. boeform.controls['BOEDate'].value.startDate.toLocaleString();
     if (this.boeform.controls['BOEDate'].value.startDate._d != undefined) {
       this.obj.BOEDate = this.boeform.controls['BOEDate'].value.startDate._d.toLocaleString();
     } else {
@@ -368,7 +344,6 @@ export class BoeComponent implements OnInit {
     this.obj.PurchaseID = this.PurchaseID;
     this.obj.lstDetail = this.lstItem.filter(a => a.DutyAmount > 0);
     this._spinner.show();
-
     this._BoeService.upsert(this.obj).subscribe(
       (data) => {
         if (data != null && data.Flag == true) {
@@ -388,20 +363,6 @@ export class BoeComponent implements OnInit {
         console.log(error);
       }
     );
-  }
-
-  Download(PurchaseID: number) {
-    this._spinner.show();
-    this._BoeService.DownloadSKUWiseData(PurchaseID)
-      .subscribe(data => {
-        this._spinner.hide(),
-          saveAs(data, PurchaseID + '.xlsx')
-      },
-        (err) => {
-          this._spinner.hide();
-          console.log(err);
-        }
-      );
-  }
+  } 
 
 }

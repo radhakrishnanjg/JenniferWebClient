@@ -76,14 +76,17 @@ export class MasteruploadComponent implements OnInit {
   }
 
   ngOnInit() {
+    this._spinner.show();
     this._UserService.getUserMasterUploadScreens()
       .subscribe(
         (data: Dropdown[]) => {
-
           this.lstmasterscreens = data;
+          this._spinner.hide();
         },
-        (err: any) =>
+        (err: any) => {
+          this._spinner.hide();
           console.log(err)
+        }
       );
 
     this.MasterUploadForm = this.fb.group({

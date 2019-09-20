@@ -3,7 +3,7 @@ import { RouterModule } from '@angular/router';
 import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClientModule} from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgxMaskModule } from 'ngx-mask'
 import { ToastrModule } from 'ngx-toastr';
@@ -13,7 +13,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { SelectDropDownModule } from 'ngx-select-dropdown'
 import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import { DataTablesModule } from 'angular-datatables';
-import { NgxEchartsModule } from 'ngx-echarts';
+
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { NgxTypeaheadModule } from 'ngx-typeahead';
 import { GridModule } from '@progress/kendo-angular-grid';
@@ -28,12 +28,20 @@ import { MomentModule } from 'ngx-moment';
 import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 import { DeviceDetectorModule } from 'ngx-device-detector';
 
-import { JwtInterceptor, HttpErrorInterceptor } from '../_helpers';
+
 import { EncrDecrService } from '../_services/service/encr-decr.service';
 
 import { ReportmasterlistComponent } from './reportmasterlist/reportmasterlist.component';
 import { ReportmasterComponent } from './reportmaster/reportmaster.component';
 import { D1Component } from './d1/d1.component';
+import { D2Component } from './d2/d2.component';
+import { ReportsinventoryComponent } from './reportsinventory/reportsinventory.component';
+import { ReportsamazonComponent } from './reportsamazon/reportsamazon.component';
+import { ReportscomplianceComponent } from './reportscompliance/reportscompliance.component';
+import { ReportsanalyticsComponent } from './reportsanalytics/reportsanalytics.component';
+import { ReportsmisComponent } from './reportsmis/reportsmis.component';
+import { ReportsothersComponent } from './reportsothers/reportsothers.component';
+import { ReportAmazonMTRComponent } from './report-amazon-mtr/report-amazon-mtr.component';
 
 @NgModule({
   imports: [
@@ -45,7 +53,7 @@ import { D1Component } from './d1/d1.component';
     HttpClientModule,
     AngularFontAwesomeModule,
     DataTablesModule,
-    NgxEchartsModule,
+    
     NgxSpinnerModule,
     FormsModule,
     // Prevent double submission module
@@ -71,11 +79,10 @@ import { D1Component } from './d1/d1.component';
     PopupModule,
     NgbModule,
   ],
-  declarations: [ReportmasterlistComponent, ReportmasterComponent, D1Component],
+  declarations: [ReportmasterlistComponent, ReportmasterComponent, D1Component, D2Component, ReportsinventoryComponent, ReportsamazonComponent, ReportscomplianceComponent, ReportsanalyticsComponent, ReportsmisComponent, ReportsothersComponent, ReportAmazonMTRComponent],
 
   providers: [
-    // { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
-    // { provide: HTTP_INTERCEPTORS, useClass: HttpErrorInterceptor, multi: true },
+    
     CookieService,
     
     EncrDecrService

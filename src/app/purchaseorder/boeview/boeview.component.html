@@ -25,7 +25,7 @@
   <div class="panel-heading">
     <div class="row">
       <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-        <span class="spanheader">
+        <span class="groupspanheader">
           {{panelTitle}}
         </span>
       </div>
@@ -46,7 +46,7 @@
       <div class="col-md-3 col-xs-12">
         <div class="form-group">
           <label class="control-label"> PO No. </label>
-          <div class="">
+          <div >
             {{obj?.PONumber}}
           </div>
         </div>
@@ -54,7 +54,7 @@
       <div class="col-md-3 col-xs-12">
         <div class="form-group">
           <label class="control-label"> Purchase Invoice No. </label>
-          <div class="">
+          <div >
             {{obj?.InvoiceNumber}}
           </div>
         </div>
@@ -62,7 +62,7 @@
       <div class="col-md-3 col-xs-12">
         <div class="form-group">
           <label class="control-label">Invoice Date </label>
-          <div class="">
+          <div >
             {{obj?.InvoiceDate | date :"MM-dd-yyyy HH:mm"}}
           </div>
         </div>
@@ -72,7 +72,7 @@
       <div class="col-md-2 col-xs-12">
         <div class="form-group">
           <label class="control-label">Vendor Warehouse </label>
-          <div class="">
+          <div >
             {{obj?.WarehouseName}}
           </div>
         </div>
@@ -81,7 +81,7 @@
       <div class="col-md-1 col-xs-12">
         <div class="form-group">
           <label class="control-label"> PI Value </label>
-          <div class="">
+          <div >
             <b>
               {{obj?.PIValue | currency: 'INR' }}
             </b>
@@ -97,7 +97,7 @@
       <div class="col-md-3 col-xs-12">
         <div class="form-group">
           <label class="control-label" for="BOENumber">BOE Number <span class="mandantory">*</span></label>
-          <div class="">
+          <div >
             {{obj?.BOENumber}}
             <div class="help-block-rk">
               <span class="help-block">
@@ -112,7 +112,7 @@
       <div class="col-md-3 col-xs-12">
         <div class="form-group">
           <label class="control-label" for="BOEDate">BOE Date<span class="mandantory">*</span></label>
-          <div class="">
+          <div >
             <div class='input-group date'>
               {{obj?.BOEDate | date :"MM-dd-yyyy HH:mm"}}
             </div>
@@ -128,7 +128,7 @@
       <div class="col-md-3 col-xs-12">
         <div class="form-group">
           <label class="control-label" for="PortCode"> Port Code<span class="mandantory">*</span></label>
-          <div class="">
+          <div >
             {{obj?.PortCode}}
             <div class="help-block-rk">
               <span class="help-block">
@@ -142,7 +142,7 @@
       <div class="col-md-12 col-xs-12">
         <div class="form-group">
           <label class="control-label" for="ReferenceDetail">Reference Details </label>
-          <div class="">
+          <div >
             {{obj?.ReferenceDetail}}
             <div class="help-block-rk">
               <span class="help-block">
@@ -154,7 +154,7 @@
       </div>
       <div class="col-md-12 col-xs-12">
         <div class="pull-left">
-          <h3 class="">Invoice Item Details</h3>
+          <h3 >Invoice Item Details</h3>
         </div>
         <table class="table table-bordered table-condensed" *ngIf="lstItem && lstItem.length">
           <thead>
@@ -172,22 +172,16 @@
           </thead>
           <tr *ngFor="let person of lstItem; let id = index">
 
-            <td *ngIf="mergecells(person.HSNCode,id)">
+            <td *ngIf="mergecells(person.HSNCode,person.IGSTRate,id)">
               <b> {{person.HSNCodeGST}}</b>
             </td>
-            <td *ngIf="!mergecells(person.HSNCode,id)">
+            <td *ngIf="!mergecells(person.HSNCode,person.IGSTRate,id)">
 
             </td>
             <td>
               {{person.DutyType }}
             </td>
             <td class="text-center">
-              <!-- <div *ngIf="(person.IsGSTApplicable ==true )">
-                <input type="checkbox" checked="checked">
-              </div>
-              <div *ngIf="(person.IsGSTApplicable !=true)">
-                <input type="checkbox">
-              </div> -->
               <div *ngIf="(person.IsGSTApplicable ==true )">
                 <i class="fa fa-check"></i>
               </div>
@@ -207,10 +201,10 @@
             <td class="text-right">
               {{person.IGSTValue | currency: 'INR'  }}
             </td>
-            <td class="text-right" *ngIf=" mergecells(person.HSNCode,id)">
+            <td class="text-right" *ngIf=" mergecells(person.HSNCode,person.IGSTRate,id)">
               {{ getSum(person.HSNCode) | currency: 'INR'}}
             </td>
-            <td *ngIf=" !mergecells(person.HSNCode,id)">
+            <td *ngIf=" !mergecells(person.HSNCode,person.IGSTRate,id)">
 
             </td>
           </tr>

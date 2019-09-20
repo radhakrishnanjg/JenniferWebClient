@@ -62,7 +62,7 @@ export class UserService {
     public add(user: IUser): Observable<Result> {
         let currentUser = this.authenticationService.currentUserValue;
         user.CompanyID = currentUser.CompanyID;
-        user.LoginId = currentUser.UserId; 
+        user.LoginId = currentUser.UserId;
         return this.httpClient.post<Result>(environment.baseUrl + `User/Create`, user)
             .pipe(catchError(this.handleError));
     }
@@ -70,7 +70,7 @@ export class UserService {
     public update(user: IUser): Observable<Result> {
         let currentUser = this.authenticationService.currentUserValue;
         user.CompanyID = currentUser.CompanyID;
-        user.LoginId = currentUser.UserId; 
+        user.LoginId = currentUser.UserId;
         return this.httpClient.post<Result>(environment.baseUrl + `User/Update`, user)
             .pipe(catchError(this.handleError));
     }
@@ -110,6 +110,7 @@ export class UserService {
         frmData.append("IsMailRequired", user.IsMailRequired ? "True" : "False");
         frmData.append("LoginId", user.UserId.toString());
         frmData.append("ImageData", user.ImagePathData, user.ImagePathData.name);
+        //frmData.append("ImageData", user.ImagePath);
         return this.httpClient.post<Result>(environment.baseUrl + `User/UpdateImage`, frmData)
             .pipe(catchError(this.handleError));
     }
@@ -125,10 +126,11 @@ export class UserService {
         return this.httpClient.get<CompanyRegister>(environment.baseUrl + `User/CompanySearchById?CompanyID=` + CompanyID)
             .pipe(catchError(this.handleError));
     }
-    public CompanyAuthorise(CompanyID: number): Observable<Result> {
+    public CompanyAuthorise(CompanyID: number,Email:string ): Observable<Result> {
         let currentUser = this.authenticationService.currentUserValue;
         this.company.CompanyID = CompanyID;
         this.company.LoginId = currentUser.UserId;
+        this.company.EMail = Email;
         return this.httpClient.post<Result>(environment.baseUrl + `User/CompanyAuthorise`, this.company)
             .pipe(catchError(this.handleError));
     }

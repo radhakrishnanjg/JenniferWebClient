@@ -66,13 +66,13 @@ export class ContactComponent implements OnInit {
       'minlength': 'This Field must be 10 - 12 characters.',
       'pattern': 'This Field  must be Numeric',
       'required': 'This Field is required',
-      'Contact_MobileInUse': 'Mobile Number already used'
+      'Contact_MobileInUse': 'Mobile Number is already registered!'
     },
     'Email': {
       'required': 'This Field is required',
       'pattern': 'This Field must be valid one.',
       'maxlength': 'This Field must be less than 50 characters.',
-      'Contact_EmailInUse': 'Email already used'
+      'Contact_EmailInUse': 'Email is already registered!'
     },
     'Designation': {
       'required': 'This Field is required'
@@ -224,7 +224,7 @@ export class ContactComponent implements OnInit {
     this._spinner.show();
     this._contactService.add(this.obj).subscribe(
       (data) => {
-        if (data && data == true) {
+        if (data!=null && data == true) {
           this._spinner.hide();
           this.alertService.success('Contact data has been added successful');
           this._router.navigate(['/Contactlist']);
@@ -263,7 +263,7 @@ export class ContactComponent implements OnInit {
     this._spinner.show();
     this._contactService.update(this.obj).subscribe(
       (data) => {
-        if (data && data == true) {
+        if (data!=null && data == true) {
           this._spinner.hide();
           this.alertService.success('Contact detail data has been updated successful');
           this._router.navigate(['/Contactlist']);

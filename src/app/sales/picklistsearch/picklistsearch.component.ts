@@ -1,21 +1,18 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { ToastrService } from 'ngx-toastr';
 import { PicklistService } from '../../_services/service/picklist.service';
 import { PrivateutilityService } from '../../_services/service/privateutility.service';
-import { AuthorizationGuard } from '../../_guards/Authorizationguard'
-import { Picklistheader, Location } from '../../_services/model';
-// import html2canvas from 'html2canvas';
-// import * as jsPDF from 'jspdf';
+import { Picklistheader, Location, } from '../../_services/model';
+import { process, State } from '@progress/kendo-data-query';
+import { GridDataResult, DataStateChangeEvent, PageChangeEvent } from '@progress/kendo-angular-grid';
+import { SortDescriptor, orderBy } from '@progress/kendo-data-query';
 @Component({
   selector: 'app-picklistsearch',
   templateUrl: './picklistsearch.component.html',
   styleUrls: ['./picklistsearch.component.css']
 })
 export class PicklistsearchComponent implements OnInit {
-  lstPicklist: Picklistheader[];
-  obj: Picklistheader;
+   obj: Picklistheader;
   deleteColumn: string;
   SearchBy: string = '';
   SearchKeyword: string = '';
@@ -23,55 +20,12 @@ export class PicklistsearchComponent implements OnInit {
   locations: Location[];
   dtOptions: DataTables.Settings = {};
   selectedDeleteId: number;
-  
-  // items = [{ title: 'first' }, { title: 'second' }] // Content of the pages
-  // counter: number
-  // length: number
-  // pdf: jsPDF
 
-  // downloadPDF() {
-  //   this.pdf = new jsPDF('p', 'mm', 'a4') // A4 size page of PDF
-  //   this.length = this.items.length
-  //   this.counter = 0
-
-  //   this.generatePDF()
-  // }
-
-  // generatePDF() {
-  //   var data = document.getElementById('pdf' + this.counter)
-  //   //var data = document.getElementById('samplepdf');
-  //   html2canvas(data, {
-  //     scale: 3 // make better quality ouput
-  //   }).then((canvas) => {
-  //     this.counter++
-
-  //     // Few necessary setting options
-  //     var imgWidth = 208
-  //     var imgHeight = (canvas.height * imgWidth) / canvas.width
-
-  //     const contentDataURL = canvas.toDataURL('image/png')
-  //     var position = 0
-  //     this.pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight)
-
-  //     // Control if new page needed, else generate the pdf
-  //     if (this.counter < this.length) {
-  //       this.pdf.addPage()
-  //       //this.getLetter()
-  //     } else {
-  //       this.pdf.save('samplepdf.pdf') // Generated PDF
-  //       return true
-  //     }
-  //   })
-  // }
 
   constructor(
-    private alertService: ToastrService,
-    private router: Router,
     private _picklistService: PicklistService,
     private _privateutilityService: PrivateutilityService,
     private _spinner: NgxSpinnerService,
-    private _authorizationGuard: AuthorizationGuard,
-    private aroute: ActivatedRoute,
   ) { }
 
   ngOnInit() {
@@ -90,26 +44,7 @@ export class PicklistsearchComponent implements OnInit {
           console.log(err);
         }
       );
-  }
-
-  onLoad(SearchBy: string, Search: string, LocationID: number) {
-    this._spinner.show();
-    return this._picklistService.search(SearchBy, Search, LocationID).subscribe(
-      (data) => {
-        this.lstPicklist = data;
-        this.dtOptions = {
-          pagingType: 'full_numbers',
-          "language": {
-            "search": 'Filter',
-          },
-        };
-        this._spinner.hide();
-      },
-      (err) => {
-        this._spinner.hide();
-        console.log(err);
-      }
-    );
+    this.onLoad(this.SearchBy, this.SearchKeyword, this.LocationID);
   }
 
   Search(): void {
@@ -122,18 +57,72 @@ export class PicklistsearchComponent implements OnInit {
     this.LocationID = 0;
   }
 
-
-  editButtonClick(id: number) {
-    if (this._authorizationGuard.CheckAcess("Picklistsearch", "ViewEdit")) {
-      return;
-    }
-    this.router.navigate(['/Picklist', id]);
+  onLoad(SearchBy: string, Search: string, LocationID: number) {
+    this._spinner.show();
+    return this._picklistService.search(SearchBy, Search, LocationID).subscribe(
+      (data) => {
+        if (data != null) { 
+          this.items = data;
+          this.loadItems(); 
+        }
+        this._spinner.hide();
+      },
+      (err) => {
+        this._spinner.hide();
+        console.log(err);
+      }
+    );
   }
 
-  editInvoiceClick(id: number) {
-    if (this._authorizationGuard.CheckAcess("Picklistsearch", "ViewEdit")) {
-      return;
+  //#region Paging Sorting and Filtering Start
+  public allowUnsort = true;
+  public sort: SortDescriptor[] = [{
+    field: 'OrderID',
+    dir: 'asc'
+  }];
+  public gridView: GridDataResult;
+  public pageSize = 10;
+  public skip = 0;
+  private data: Object[];
+  private items: Picklistheader[] = [] as any;
+  public state: State = {
+    skip: 0,
+    take: 5,
+
+    // Initial filter descriptor
+    filter: {
+      logic: 'and',
+      filters: [{ field: 'OrderID', operator: 'contains', value: '' }]
     }
-    this.router.navigate(['/SalesInvoice', id]);
+  };
+  public pageChange(event: PageChangeEvent): void {
+    this.skip = event.skip;
+    this.loadItems();
   }
+
+  public sortChange(sort: SortDescriptor[]): void {
+    this.sort = sort;
+    this.loadSortItems();
+  }
+
+  private loadItems(): void {
+    this.gridView = {
+      data: this.items.slice(this.skip, this.skip + this.pageSize),
+      total: this.items.length
+    };
+  }
+  private loadSortItems(): void {
+    this.gridView = {
+      data: orderBy(this.items.slice(this.skip, this.skip + this.pageSize), this.sort),
+      total: this.items.length
+    };
+  }
+  public dataStateChange(state: DataStateChangeEvent): void {
+    this.state = state;
+    this.gridView = process(this.items, this.state);
+  }
+
+
+  //#endregion Paging Sorting and Filtering End
+
 }

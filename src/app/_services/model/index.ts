@@ -5,8 +5,7 @@ export * from './IUser';
 // export * from './userlog';
 
 export * from './masterupload'; 
-export * from './apisettings.model'; 
-export * from './IDashboardBulletValues';
+export * from './apisettings.model';  
 
 export * from './company-register';
 // export * from './Companydetails';

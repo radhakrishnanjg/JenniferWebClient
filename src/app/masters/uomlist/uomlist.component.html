@@ -66,55 +66,35 @@
   </div>
   <div class="panel-body">
 
-
-    <div class="table-responsive">
-      <table datatable [dtOptions]="dtOptions" class="table table-bordered table-condensed "
-        *ngIf="lstUOM && lstUOM.length">
-        <thead>
-          <tr>
-            <th>UOM</th>
-            <th>Description</th>
-            <th>Multiplier Value</th>
-            <th class="text-center btnflag">IsActive</th>
-            <th class="text-center btnactions">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let user of lstUOM">
-            <td>{{ user.UOM  }}</td>
-            <td>{{ user.Description}}</td>
-            <td>{{ user.MultiplierValue}}</td>
-            <td class="text-center" *ngIf="(user.IsActive)"><i class="fa fa-check"></i></td>
-            <td class="text-center" *ngIf="(!user.IsActive)"><i class="fa fa-times"></i></td>
-            <td class="text-center">
-              <i (click)="editButtonClick(user.UOMID)" title="Edit" class="fa fa-edit bgblue pointer"></i>
-              &nbsp;
-              <i class="fa fa-trash bgred pointer" (click)="confirmDeleteid(user.UOMID,user.UOM)" title="Delete"></i>
-
-            </td>
-          </tr>
-        </tbody>
-      </table>
-
-      <table class="table table-bordered table-condensed" *ngIf="lstUOM==null">
-        <thead>
-          <tr>
-            <th>UOM</th>
-            <th>Description</th>
-            <th>Multiplier Value</th>
-            <th class="text-center btnflag">IsActive</th>
-            <th class="text-center btnactions">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td colspan="5">
-              No Records Found.!
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+    <kendo-grid [data]="gridView" resizable="true" columnMenu="true" [pageSize]="pageSize" [skip]="skip" [pageable]="true"
+      (pageChange)="pageChange($event)" [sortable]="{
+        allowUnsort: allowUnsort,
+        mode:  'single'
+        }" [sort]="sort" (sortChange)="sortChange($event)" [filterable]="true"
+      (dataStateChange)="dataStateChange($event)" [filter]="state.filter">
+      <kendo-grid-column field="UOMID" title="UOM ID">
+      </kendo-grid-column>
+      <kendo-grid-column field="UOM" title="Unit of Measurement">
+      </kendo-grid-column>
+      <kendo-grid-column field="Description" title="Description">
+      </kendo-grid-column>
+      <kendo-grid-column field="MultiplierValue" title="Multiplier Value">
+      </kendo-grid-column>
+      <kendo-grid-column field="IsActive" title="IsActive" [class]="{'text-center': true}" filter="boolean" width="80">
+        <ng-template kendoGridCellTemplate let-dataItem>
+          <i [class]="dataItem.IsActive ? 'fa fa-check': 'fa fa-times'" aria-hidden="true"></i>
+        </ng-template>
+      </kendo-grid-column>
+      <kendo-grid-column field="UOMID" title="Action" [class]="{'text-center': true}" [filterable]="false"
+        [sortable]="false" width="70">
+        <ng-template kendoGridCellTemplate let-dataItem>
+          <i (click)="editButtonClick(dataItem.UOMID)" title="Edit" class="fa fa-edit bgblue pointer"></i>
+          &nbsp;
+          <i class="fa fa-trash bgred pointer" (click)="confirmDeleteid(dataItem.UOMID,dataItem.UOM)"
+            title="Delete"></i>
+        </ng-template>
+      </kendo-grid-column>
+    </kendo-grid>
   </div>
 
 
@@ -162,17 +142,6 @@
             <h4 class="modal-title" id="modalpopupuomupsert"> {{panelTitle}}</h4>
           </div>
           <div class="modal-body">
-
-            <!-- <div class="form-group" [ngClass]="{'has-error': formErrors.UOM}">
-              <label class="col-sm-3 control-label" for="UOM">UOM <span class="mandantory">*</span> </label>
-              <div class="col-sm-9">
-                <input id="UOM" [readonly]="!action" type="text" class="form-control" formControlName="UOM"
-                  (blur)="logValidationErrors()">
-                <span class="help-block" *ngIf="formErrors.UOM">
-                  {{formErrors.UOM}}
-                </span>
-              </div>
-            </div> -->
 
             <div class="form-group" [ngClass]="{'has-error': formErrors.UOM}">
               <label class="col-sm-3 control-label" for="UOM">UOM <span class="mandantory">*</span></label>
@@ -231,7 +200,7 @@
             <button class="btn btn-primary" data-dismiss="modal">Cancel</button>
             &nbsp;
             <button class="btn btn-success" type="submit" prevent-double-submit [disabled]="uomForm.invalid">
-              <!-- <i class="fa fa-save"></i> -->
+
               Save
             </button>
           </div>

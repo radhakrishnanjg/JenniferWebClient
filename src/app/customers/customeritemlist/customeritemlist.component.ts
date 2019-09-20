@@ -5,7 +5,10 @@ import { ToastrService } from 'ngx-toastr';
 import { CustomeritemService } from '../../_services/service/customeritem.service';
 import { Customeritem, Customer, ProductGroup, Category, SubCategory, Item } from '../../_services/model';
 import { PrivateutilityService } from '../../_services/service/privateutility.service';
-import { AuthorizationGuard } from '../../_guards/Authorizationguard'
+import { AuthorizationGuard } from '../../_guards/Authorizationguard';
+import { process, State } from '@progress/kendo-data-query';
+import { GridDataResult, DataStateChangeEvent, PageChangeEvent } from '@progress/kendo-angular-grid';
+import { SortDescriptor, orderBy } from '@progress/kendo-data-query';
 @Component({
   selector: 'app-customeritemlist',
   templateUrl: './customeritemlist.component.html',
@@ -17,8 +20,7 @@ export class CustomeritemlistComponent implements OnInit {
   lstProductGroup: ProductGroup[];
   lstCategory: Category[];
   lstSubCategory: SubCategory[];
-  lstItem: Item[];
-  lstCustomeritem: Customeritem[];
+  lstItem: Item[]; 
   objCustomeritem: Customeritem = {} as any;
   CustomerItemForm: FormGroup;
   panelTitle: string;
@@ -54,7 +56,7 @@ export class CustomeritemlistComponent implements OnInit {
     'CustomerID': {
       'min': 'This Field is required.',
     },
-    'ItemID': { 
+    'ItemID': {
       'min': 'This Field is required.',
     },
   };
@@ -96,11 +98,11 @@ export class CustomeritemlistComponent implements OnInit {
     this.identity = 0;
     this.CustomerItemForm = this.fb.group({
       CustomerItemCode: ['', [Validators.required]],
-      CustomerID: [0, [ Validators.min(1)]],
+      CustomerID: [0, [Validators.min(1)]],
       ProductGroupID: [0, []],
       CategoryID: [0, []],
       SubCategoryID: [0, []],
-      ItemID: [0, [ Validators.min(1)]],
+      ItemID: [0, [Validators.min(1)]],
       IsActive: [0,],
     });
   }
@@ -240,27 +242,6 @@ export class CustomeritemlistComponent implements OnInit {
     $('#modaldeleteconfimation').modal('show');
   }
 
-  onLoad(SearchBy: string, Search: string, IsActive: Boolean) {
-    this._spinner.show();
-    return this._customeritemService.search(SearchBy, Search, IsActive).subscribe(
-      (employeeList) => {
-        this.lstCustomeritem = employeeList;
-        this.dtOptions = {
-          pagingType: 'full_numbers',
-          "language": {
-            "search": 'Filter',
-          },
-        };
-
-        this._spinner.hide();
-      },
-      (err) => {
-        this._spinner.hide();
-        console.log(err);
-      }
-    );
-  }
-
   onchangeProductGroupID(selectedValue: string) {
     let id = parseInt(selectedValue);
     if (id > 0) {
@@ -325,6 +306,10 @@ export class CustomeritemlistComponent implements OnInit {
     }
     // stop here if form is invalid
     if (this.CustomerItemForm.invalid) {
+      return;
+    }
+    if (this.CustomerItemForm.pristine) {
+      this.alertService.error('Please change the value for any one control to proceed further!');
       return;
     }
     if (this.identity > 0) {
@@ -447,5 +432,73 @@ export class CustomeritemlistComponent implements OnInit {
       }
     );
   }
+
+  onLoad(SearchBy: string, Search: string, IsActive: Boolean) {
+    this._spinner.show();
+    return this._customeritemService.search(SearchBy, Search, IsActive).subscribe(
+      (lst) => {
+        if (lst != null) { 
+          this.items = lst;
+          this.loadItems(); 
+        }
+        this._spinner.hide();
+      },
+      (err) => {
+        this._spinner.hide();
+        console.log(err);
+      }
+    );
+  }
+
+  //#region Paging Sorting and Filtering Start
+  public allowUnsort = true;
+  public sort: SortDescriptor[] = [{
+    field: 'CustomerName',
+    dir: 'asc'
+  }];
+  public gridView: GridDataResult;
+  public pageSize = 10;
+  public skip = 0;
+  private data: Object[];
+  private items: Customeritem[] = [] as any;
+  public state: State = {
+    skip: 0,
+    take: 5,
+
+    // Initial filter descriptor
+    filter: {
+      logic: 'and',
+      filters: [{ field: 'CustomerName', operator: 'contains', value: '' }]
+    }
+  };
+  public pageChange(event: PageChangeEvent): void {
+    this.skip = event.skip;
+    this.loadItems();
+  }
+
+  public sortChange(sort: SortDescriptor[]): void {
+    this.sort = sort;
+    this.loadSortItems();
+  }
+
+  private loadItems(): void {
+    this.gridView = {
+      data: this.items.slice(this.skip, this.skip + this.pageSize),
+      total: this.items.length
+    };
+  }
+  private loadSortItems(): void {
+    this.gridView = {
+      data: orderBy(this.items.slice(this.skip, this.skip + this.pageSize), this.sort),
+      total: this.items.length
+    };
+  }
+  public dataStateChange(state: DataStateChangeEvent): void {
+    this.state = state;
+    this.gridView = process(this.items, this.state);
+  }
+
+
+  //#endregion Paging Sorting and Filtering End
 
 }

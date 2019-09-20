@@ -2,7 +2,7 @@
   <div class="card col-md-12">
     <div class="card-body">
 
-      <form autocomplete="off" [formGroup]="registerForm" (ngSubmit)="RegisterCompany()" class="">
+      <form autocomplete="off" [formGroup]="registerForm" (ngSubmit)="RegisterCompany()" >
         <div class='landscren'>
           <div class='text-left'>
             <img src="assets\images\logo.png" alt="Logo" height="50" style="margin-top:10px;margin-bottom:10px;" />
@@ -15,7 +15,7 @@
             <div class="form-group col-md-6 col-sm-6"
               [ngClass]="{'has-error': formErrors.CompanyName ||formErrors.CompanyNameInUse}">
               <label class="control-label" for="CompanyName">Company Name<span class="mandantory">*</span></label>
-              <div class="">
+              <div >
                 <input id="CompanyName" type="text" class="form-control" formControlName="CompanyName"
                   (blur)="logValidationErrors()" maxlength="150">
                 <div class="help-block-rk">
@@ -26,7 +26,7 @@
             </div>
             <div class="form-group col-md-6 col-sm-6" [ngClass]="{'has-error': formErrors.CompnayAliasName}">
               <label class="control-label" for="CompnayAliasName">Company Alias Name</label>
-              <div class="">
+              <div >
                 <input id="CompnayAliasName" type="text" class="form-control" formControlName="CompnayAliasName"
                   (blur)="logValidationErrors()" maxlength="10">
                 <div class="help-block-rk"><span class="help-block" *ngIf="formErrors.CompnayAliasName">
@@ -38,9 +38,9 @@
           <div class="row">
             <div class="form-group col-md-6 col-sm-6" [ngClass]="{'has-error': formErrors.EMail}">
               <label class="control-label" for="EMail">Email<span class="mandantory">*</span></label>
-              <div class="">
+              <div >
                 <input id="EMail" type="text" class="form-control" formControlName="EMail"
-                  (blur)="logValidationErrors()" maxlength="=50">
+                  (blur)="logValidationErrors()" maxlength="50">
                 <div class="help-block-rk"><span class="help-block" *ngIf="formErrors.EMail">
                     {{formErrors.EMail}}
                   </span> </div>
@@ -48,7 +48,7 @@
             </div>
             <div class="form-group col-md-6 col-sm-6" [ngClass]="{'has-error': formErrors.MobileNumber}">
               <label class="control-label" for="MobileNumber">Mobile Number<span class="mandantory">*</span></label>
-              <div class="">
+              <div >
                 <input id="MobileNumber" type="text" class="form-control" formControlName="MobileNumber" maxlength="10"
                   (blur)="logValidationErrors()" maxlength="10" mask="0000000000">
                 <div class="help-block-rk"><span class="help-block" *ngIf="formErrors.MobileNumber">
@@ -60,7 +60,7 @@
           <div class="row">
             <div class="form-group col-md-6 col-sm-6" [ngClass]="{'has-error': formErrors.ContactPerson}">
               <label class="control-label" for="ContactPerson">Contact Person<span class="mandantory">*</span></label>
-              <div class="">
+              <div >
                 <input id="ContactPerson" type="text" class="form-control" formControlName="ContactPerson"
                   (blur)="logValidationErrors()" maxlength="50">
                 <div class="help-block-rk"><span class="help-block" *ngIf="formErrors.ContactPerson">
@@ -71,12 +71,10 @@
 
             <div class="form-group col-md-6 col-sm-6">
               <label class="control-label" for="ContactNumber">Contact Number</label>
-              <div class="">
+              <div >
                 <input id="ContactNumber" type="text" class="form-control" formControlName="ContactNumber"
                   (blur)="logValidationErrors()" maxlength="10" mask="0000000000">
-                <!-- <div class="help-block-rk"><span class="help-block" *ngIf="formErrors.ContactNumber">
-                    {{formErrors.ContactNumber}}
-                  </span> </div> -->
+              
               </div>
             </div>
           </div>
@@ -87,7 +85,7 @@
             </div>
             <div class="form-group col-sm-3" [ngClass]="{'has-error': formErrors.PrimaryCountryID}">
               <label class="control-label" for="PrimaryCountryID">Country<span class="mandantory">*</span></label>
-              <div class="">
+              <div >
                 <select id="PrimaryCountryID" class="form-control" formControlName="PrimaryCountryID"
                   (blur)="logValidationErrors()" (change)="onchangePrimaryCountryID($event.target.value)">
                   <option value="0" selected="selected">Select</option>
@@ -103,7 +101,7 @@
 
             <div class="form-group col-sm-3" [ngClass]="{'has-error': formErrors.PrimaryStateID}">
               <label class="control-label" for="PrimaryStateID">State<span class="mandantory">*</span></label>
-              <div class="">
+              <div >
                 <select id="PrimaryStateID" class="form-control" formControlName="PrimaryStateID"
                   (blur)="logValidationErrors()">
                   <option value="0" selected="selected">Select</option>
@@ -119,7 +117,7 @@
 
             <div class="form-group col-sm-3" [ngClass]="{'has-error': formErrors.PrimaryDistrict}">
               <label class="control-label" for="PrimaryDistrict">District<span class="mandantory">*</span></label>
-              <div class="">
+              <div >
                 <input id="PrimaryDistrict" type="text" class="form-control" formControlName="PrimaryDistrict"
                   (blur)="logValidationErrors()" maxlength="50">
                 <div class="help-block-rk"><span class="help-block" *ngIf="formErrors.PrimaryDistrict">
@@ -130,7 +128,7 @@
 
             <div class="form-group col-sm-3" [ngClass]="{'has-error': formErrors.PrimaryCity}">
               <label class="control-label" for="PrimaryCity">City<span class="mandantory">*</span></label>
-              <div class="">
+              <div >
                 <input id="PrimaryCity" type="text" class="form-control" formControlName="PrimaryCity"
                   (blur)="logValidationErrors()" maxlength="50">
                 <div class="help-block-rk"><span class="help-block" *ngIf="formErrors.PrimaryCity">
@@ -142,7 +140,7 @@
           <div class="row">
             <div class="form-group col-sm-3" [ngClass]="{'has-error': formErrors.PrimaryPostalCode}">
               <label class="control-label" for="PrimaryPostalCode">Postal Code<span class="mandantory">*</span></label>
-              <div class="">
+              <div >
                 <input id="PrimaryPostalCode" type="text" class="form-control" formControlName="PrimaryPostalCode"
                   (blur)="logValidationErrors()" maxlength="6" mask="000000">
                 <div class="help-block-rk"><span class="help-block" *ngIf="formErrors.PrimaryPostalCode">
@@ -152,7 +150,7 @@
             </div>
             <div class="form-group col-sm-3" [ngClass]="{'has-error': formErrors.PrimaryAddress1}">
               <label class="control-label" for="PrimaryAddress1">Address line 1<span class="mandantory">*</span></label>
-              <div class="">
+              <div >
                 <input id="PrimaryAddress1" type="text" class="form-control" formControlName="PrimaryAddress1"
                   (blur)="logValidationErrors()" maxlength="150">
                 <div class="help-block-rk"><span class="help-block" *ngIf="formErrors.PrimaryAddress1">
@@ -163,7 +161,7 @@
 
             <div class="form-group col-sm-3" [ngClass]="{'has-error': formErrors.PrimaryAddress2}">
               <label class="control-label" for="PrimaryAddress2">Address line 2</label>
-              <div class="">
+              <div >
                 <input id="PrimaryAddress2" type="text" class="form-control" formControlName="PrimaryAddress2"
                   (blur)="logValidationErrors()" maxlength="100">
                 <div class="help-block-rk"><span class="help-block" *ngIf="formErrors.PrimaryAddress2">
@@ -174,7 +172,7 @@
 
             <div class="form-group col-sm-3" [ngClass]="{'has-error': formErrors.PrimaryGST}">
               <label class="control-label" for="PrimaryGST">GST<span class="mandantory">*</span></label>
-              <div class="">
+              <div >
                 <input id="PrimaryGST" type="text" class="form-control" formControlName="PrimaryGST"
                   (blur)="logValidationErrors()" maxlength="30">
                 <div class="help-block-rk"><span class="help-block" *ngIf="formErrors.PrimaryGST">
@@ -197,7 +195,7 @@
             </div>
             <div class="form-group col-sm-3" [ngClass]="{'has-error': formErrors.SecondaryCountryID}">
               <label class="control-label" for="SecondaryCountryID">Country<span class="mandantory">*</span></label>
-              <div class="">
+              <div >
                 <select id="SecondaryCountryID" class="form-control" formControlName="SecondaryCountryID"
                   (blur)="logValidationErrors()" (change)="onchangeSecondaryCountryID($event.target.value)">
                   <option value="0" selected="selected">Select</option>
@@ -213,7 +211,7 @@
 
             <div class="form-group col-sm-3" [ngClass]="{'has-error': formErrors.SecondaryStateID}">
               <label class="control-label" for="SecondaryStateID">State<span class="mandantory">*</span></label>
-              <div class="">
+              <div >
                 <select id="SecondaryStateID" class="form-control" formControlName="SecondaryStateID"
                   (blur)="logValidationErrors()">
                   <option value="0" selected="selected">Select</option>
@@ -229,7 +227,7 @@
 
             <div class="form-group col-sm-3" [ngClass]="{'has-error': formErrors.SecondaryDistrict}">
               <label class="control-label" for="SecondaryDistrict">District<span class="mandantory">*</span></label>
-              <div class="">
+              <div >
                 <input id="SecondaryDistrict" type="text" class="form-control" formControlName="SecondaryDistrict"
                   (blur)="logValidationErrors()" maxlength="50">
                 <div class="help-block-rk"><span class="help-block" *ngIf="formErrors.SecondaryDistrict">
@@ -240,7 +238,7 @@
 
             <div class="form-group col-sm-3" [ngClass]="{'has-error': formErrors.SecondaryCity}">
               <label class="control-label" for="SecondaryCity">City<span class="mandantory">*</span></label>
-              <div class="">
+              <div >
                 <input id="SecondaryCity" type="text" class="form-control" formControlName="SecondaryCity"
                   (blur)="logValidationErrors()" maxlength="50">
                 <div class="help-block-rk"><span class="help-block" *ngIf="formErrors.SecondaryCity">
@@ -253,7 +251,7 @@
             <div class="form-group col-sm-3" [ngClass]="{'has-error': formErrors.SecondaryPostalCode}">
               <label class="control-label" for="SecondaryPostalCode">Postal Code<span
                   class="mandantory">*</span></label>
-              <div class="">
+              <div >
                 <input id="SecondaryPostalCode" type="text" class="form-control" formControlName="SecondaryPostalCode"
                   (blur)="logValidationErrors()" maxlength="6" mask="000000">
                 <div class="help-block-rk"><span class="help-block" *ngIf="formErrors.SecondaryPostalCode">
@@ -264,7 +262,7 @@
             <div class="form-group col-sm-3" [ngClass]="{'has-error': formErrors.SecondaryAddress1}">
               <label class="control-label" for="SecondaryAddress1">Address line 1<span
                   class="mandantory">*</span></label>
-              <div class="">
+              <div >
                 <input id="SecondaryAddress1" type="text" class="form-control" formControlName="SecondaryAddress1"
                   (blur)="logValidationErrors()" maxlength="150">
                 <div class="help-block-rk"><span class="help-block" *ngIf="formErrors.SecondaryAddress1">
@@ -275,7 +273,7 @@
 
             <div class="form-group col-sm-3" [ngClass]="{'has-error': formErrors.SecondaryAddress2}">
               <label class="control-label" for="SecondaryAddress2">Address line 2</label>
-              <div class="">
+              <div >
                 <input id="SecondaryAddress2" type="text" class="form-control" formControlName="SecondaryAddress2"
                   (blur)="logValidationErrors()" maxlength="100">
                 <div class="help-block-rk"><span class="help-block" *ngIf="formErrors.SecondaryAddress2">
@@ -286,41 +284,29 @@
 
             <div class="form-group col-sm-3" [ngClass]="{'has-error': formErrors.SecondaryGST}">
               <label class="control-label" for="SecondaryGST">GST<span class="mandantory">*</span></label>
-              <div class="">
+              <div >
                 <input id="SecondaryGST" type="text" class="form-control" formControlName="SecondaryGST"
-                  (blur)="logValidationErrors()">
-                <div class="help-block-rk"><span class="help-block" *ngIf="formErrors.SecondaryGST">
+                  (blur)="logValidationErrors()" maxlength="30">
+                <div class="help-block-rk">
+                  <span class="help-block" *ngIf="formErrors.SecondaryGST">
                     {{formErrors.SecondaryGST}}
                   </span> </div>
               </div>
             </div>
-          </div>
-
-
-          <!-- <div class="form-group col-sm-6">
-            <label class="col-sm-3 control-label" for="SelectSelect">Company Logo </label>
-            <input class="col-md-9" type="file" id="file" (change)="onFileChanged($event)" accept="image/*"
-              formControlName="CompanyLogoPath">
-            <div class="help-block-rk"><span class="help-block" *ngIf="formErrors.CompanyLogoPath">
-              {{formErrors.CompanyLogoPath}}
-             </span> </div>
-          </div> -->
+          </div> 
 
 
           <div class="form-group">
 
             <div class="pull-right btn-toolbar">
-              <!-- <button class="btn btn-default" type="submit" (click)="Reset()"> Reset</button> -->
-              <!-- <button class="btn btn-success" type="submit" prevent-double-submit [disabled]="registerForm.invalid"> Register</button> -->
-              <button class="btn btn-success" type="submit" prevent-double-submit [disabled]="registerForm.invalid">
-                Register</button>
-
+               <button class="btn btn-success" type="submit" prevent-double-submit [disabled]="registerForm.invalid">
+                Register</button> 
               <div class="clearfix"></div>
 
             </div>
             <div class="pull-left">
 
-              <p class="">
+              <p >
                 <a routerLinkActive="active" routerLink="/Signin">Already a Member ? Signin.</a>
               </p>
             </div>

@@ -26,7 +26,7 @@
     <div class="panel-heading">
       <div class="row">
         <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-          <span class="spanheader">
+          <span class="groupspanheader">
             {{panelTitle}}
           </span>
         </div>
@@ -54,7 +54,7 @@
               <span class="mandantory">*</span>
 
             </label>
-            <div class="">
+            <div >
               <input id="JenniferItemSerial" type="text" class="form-control" formControlName="JenniferItemSerial"
                 (blur)="logValidationErrors(); " (change)="getGoodsInwardDisplay()" maxlength="20">
               <div class="help-block-rk">
@@ -70,7 +70,7 @@
             <label class="control-label" for="GRNInwardID">GRN Number <span class="mandantory">*</span>
 
             </label>
-            <div class="">
+            <div >
               {{ GRNNumber}}
             </div>
           </div>
@@ -80,7 +80,7 @@
             <label class="control-label" for="InventoryType">Inventory Type <span class="mandantory">*</span>
 
             </label>
-            <div class="">
+            <div >
               {{ InventoryType}}
             </div>
           </div>
@@ -90,7 +90,7 @@
             <label class="control-label" for="ItemName">Item Code-Description <span class="mandantory">*</span>
 
             </label>
-            <div class="">
+            <div >
               {{ ItemName}}
             </div>
           </div>
@@ -101,7 +101,7 @@
         <div class="col-md-4 col-xs-12">
           <div class="form-group" [ngClass]="{'has-error': formErrors.DisputeType}">
             <label class="control-label" for="DisputeType">Dispute Type<span class="mandantory">*</span></label>
-            <div class="">
+            <div >
               <select id="DisputeType" class="form-control" formControlName="DisputeType"
                 (blur)="logValidationErrors()">
                 <option value="0" selected="selected">Select</option>
@@ -123,7 +123,7 @@
               <span class="mandantory"></span>
 
             </label>
-            <div class="">
+            <div >
               <input id="OtherItemID" type="text" class="form-control" formControlName="OtherItemID"
                 (blur)="logValidationErrors()" maxlength="40">
               <div class="help-block-rk">
@@ -154,7 +154,7 @@
         <div class="col-md-8 col-xs-12">
           <div class="form-group" [ngClass]="{'has-error': formErrors.Remarks}">
             <label class="control-label" for="Remarks">Remarks</label>
-            <div class="">
+            <div >
               <textarea id="Remarks" type="text" class="form-control" formControlName="Remarks"
                 (blur)="logValidationErrors()" rows="2" cols="5" maxlength="250" placeholder="Remarks">
               </textarea>
@@ -168,8 +168,7 @@
         </div>
       </div>
     </div>
-  </div>
-  <!--IMAGES UPLOAD SECTION BELLOW-->
+  </div> 
   <div class="panel">
     <div class="panel-body">
       <span class="groupspanheader">Upload Images</span>
@@ -180,7 +179,7 @@
               <label class="nopading_loct control-label" for="SelectSelect">Browse Image 1
                 <span class="mandantory">*</span>
               </label>
-              <input class="" type="file" id="file" accept="image/*" formControlName="FileData1"
+              <input  type="file" id="file" accept="image/*" formControlName="FileData1"
                 (change)="onFileChanged1($event)">
               <div class="help-block-rk">
                 <span class="help-block" *ngIf="formErrors.FileData1">
@@ -196,7 +195,7 @@
               <label class="nopading_loct control-label" for="SelectSelect">Browse Image 2
                 <span class="mandantory">*</span>
               </label>
-              <input class="" type="file" id="file" accept="image/*" formControlName="FileData2"
+              <input  type="file" id="file" accept="image/*" formControlName="FileData2"
                 (change)="onFileChanged2($event)">
               <div class="help-block-rk">
                 <span class="help-block" *ngIf="formErrors.FileData2">
@@ -212,7 +211,7 @@
               <label class="nopading_loct control-label" for="SelectSelect">Browse Image 3
                 <span class="mandantory">*</span>
               </label>
-              <input class="" type="file" id="file" accept="image/*" formControlName="FileData3"
+              <input  type="file" id="file" accept="image/*" formControlName="FileData3"
                 (change)="onFileChanged3($event)">
               <div class="help-block-rk">
                 <span class="help-block" *ngIf="formErrors.FileData3">
@@ -228,7 +227,7 @@
               <label class="nopading_loct control-label" for="SelectSelect">Browse Image 4
                 <span class="mandantory">*</span>
               </label>
-              <input class="" type="file" id="file" accept="image/*" formControlName="FileData4"
+              <input  type="file" id="file" accept="image/*" formControlName="FileData4"
                 (change)="onFileChanged4($event)">
               <div class="help-block-rk">
                 <span class="help-block" *ngIf="formErrors.FileData4">
@@ -244,7 +243,7 @@
           <div class="form-group">
             <div class=" col-sm-12 inputlevel">
               <label class="nopading_loct control-label" for="SelectSelect">Browse Image 5</label>
-              <input class="" type="file" id="file" accept="image/*" formControlName="FileData5"
+              <input  type="file" id="file" accept="image/*" formControlName="FileData5"
                 (change)="onFileChanged5($event)">
               <div class="help-block-rk">
               </div>
@@ -255,7 +254,7 @@
           <div class="form-group">
             <div class=" col-sm-12 inputlevel">
               <label class="nopading_loct control-label" for="SelectSelect">Browse Image 6</label>
-              <input class="" type="file" id="file" accept="image/*" formControlName="FileData6"
+              <input  type="file" id="file" accept="image/*" formControlName="FileData6"
                 (change)="onFileChanged6($event)">
               <div class="help-block-rk">
               </div>
@@ -266,7 +265,7 @@
           <div class="form-group">
             <div class=" col-sm-12 inputlevel">
               <label class="nopading_loct control-label" for="SelectSelect">Browse Image 7</label>
-              <input class="" type="file" id="file" accept="image/*" formControlName="FileData7"
+              <input  type="file" id="file" accept="image/*" formControlName="FileData7"
                 (change)="onFileChanged7($event)">
               <div class="help-block-rk">
               </div>
@@ -277,7 +276,7 @@
           <div class="form-group">
             <div class=" col-sm-12 inputlevel">
               <label class="nopading_loct control-label" for="SelectSelect">Browse Image 8</label>
-              <input class="" type="file" id="file" accept="image/*" formControlName="FileData8"
+              <input  type="file" id="file" accept="image/*" formControlName="FileData8"
                 (change)="onFileChanged8($event)">
               <div class="help-block-rk">
               </div>
@@ -290,7 +289,7 @@
           <div class="form-group">
             <div class=" col-sm-12 inputlevel">
               <label class="nopading_loct control-label" for="SelectSelect">Browse Image 9</label>
-              <input class="" type="file" id="file" accept="image/*" formControlName="FileData9"
+              <input  type="file" id="file" accept="image/*" formControlName="FileData9"
                 (change)="onFileChanged9($event)">
               <div class="help-block-rk">
               </div>
@@ -301,7 +300,7 @@
           <div class="form-group">
             <div class=" col-sm-12 inputlevel">
               <label class="nopading_loct control-label" for="SelectSelect">Browse Image 10</label>
-              <input class="" type="file" id="file" accept="image/*" formControlName="FileData10"
+              <input  type="file" id="file" accept="image/*" formControlName="FileData10"
                 (change)="onFileChanged10($event)">
               <div class="help-block-rk">
               </div>
@@ -309,8 +308,7 @@
           </div>
         </div>
       </div>
-    </div>
-    <!---->
+    </div> 
     <div class="panel-footer">
       <div class="pull-right btn-toolbar">
         <button class="btn btn-primary" routerLink="/Goodsdisputelist" title="Cancel">

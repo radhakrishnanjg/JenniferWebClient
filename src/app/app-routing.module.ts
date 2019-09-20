@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AuthGuard, StoreGuard } from './_guards';
+import { AuthGuard, StoreGuard, MaintenanceGuard } from './_guards';
 // Import the components so they can be referenced in routes
 
 import { PrivatelayoutComponent } from './privatelayout/privatelayout.component';
@@ -19,7 +19,7 @@ import { ChangepasswordComponent } from './users/changepassword/changepassword.c
 import { CompanydetailsComponent } from './users/companydetails/companydetails.component';
 import { CompanydetaillistComponent } from './users/companydetaillist/companydetaillist.component';
 import { UserprofileComponent } from './users/userprofile/userprofile.component';
-
+import { CompanyprofileComponent } from './users/companyprofile/companyprofile.component';
 
 import { DropdownlistComponent } from './premaster/dropdownlist/dropdownlist.component';
 import { MarketplacelistComponent } from './premaster/marketplacelist/marketplacelist.component';
@@ -82,6 +82,7 @@ import { GoodsDisputeComponent } from './goods/goods-dispute/goods-dispute.compo
 import { GoodsDisputeListComponent } from './goods/goods-dispute-list/goods-dispute-list.component';
 import { StoListComponent } from './goods/sto-list/sto-list.component';
 import { StoComponent } from './goods/sto/sto.component';
+import { StoeditComponent } from './goods/stoedit/stoedit.component';
 import { InventorydetaillistComponent } from './goods/inventorydetaillist/inventorydetaillist.component';
 import { GoodsreceiptviewComponent } from './goods/goodsreceiptview/goodsreceiptview.component';
 import { GoodsdisputeviewComponent } from './goods/goodsdisputeview/goodsdisputeview.component';
@@ -95,6 +96,7 @@ import { SalesShipmentListComponent } from './sales/sales-shipment-list/sales-sh
 import { ShipmentoutwardlistComponent } from './sales/shipmentoutwardlist/shipmentoutwardlist.component';
 import { PicklistComponent } from './sales/picklist/picklist.component';
 import { PicklistsearchComponent } from './sales/picklistsearch/picklistsearch.component';
+import { PicklistviewComponent } from './sales/picklistview/picklistview.component';
 import { SalesinvoiceComponent } from './sales/salesinvoice/salesinvoice.component';
 import { ReceiptslistComponent } from './sales/receiptslist/receiptslist.component';
 import { SalesorderunsellableComponent } from './sales/salesorderunsellable/salesorderunsellable.component';
@@ -106,7 +108,15 @@ import { SalesorderapprovalComponent } from './sales/salesorderapproval/salesord
 import { ReportmasterlistComponent } from './download/reportmasterlist/reportmasterlist.component';
 import { ReportmasterComponent } from './download/reportmaster/reportmaster.component';
 import { D1Component } from './download/d1/d1.component';
+import { ReportsinventoryComponent } from './download/reportsinventory/reportsinventory.component';
+import { ReportsamazonComponent } from './download/reportsamazon/reportsamazon.component';
+import { ReportscomplianceComponent } from './download/reportscompliance/reportscompliance.component';
+import { ReportsanalyticsComponent } from './download/reportsanalytics/reportsanalytics.component';
+import { ReportsmisComponent } from './download/reportsmis/reportsmis.component';
+import { ReportsothersComponent } from './download/reportsothers/reportsothers.component';
+import { ReportAmazonMTRComponent } from './download/report-amazon-mtr/report-amazon-mtr.component';
 
+import { MaintenanceComponent } from './maintenance/maintenance.component';
 // The last route is the empty path route. This specifies
 // the route to redirect to if the client side path is empty.
 const appRoutes: Routes = [
@@ -121,11 +131,13 @@ const appRoutes: Routes = [
       //users module      
       { path: 'Userlist', component: UserlistComponent, canActivate: [AuthGuard] },
       { path: 'User/:id', component: UserComponent, canActivate: [AuthGuard] },
-      { path: 'Userpermission/:id', component: UserpermissionComponent, canActivate: [AuthGuard] },
+      { path: 'Userpermission/:id/:email', component: UserpermissionComponent, canActivate: [AuthGuard] },
       { path: 'ChangePassword', component: ChangepasswordComponent },
+      { path: 'Profile', component: UserprofileComponent },
+      { path: 'CompanyProfile', component: CompanyprofileComponent },
+
       { path: 'Companydetails/:id', component: CompanydetailsComponent, canActivate: [AuthGuard] },
       { path: 'Companydetaillist', component: CompanydetaillistComponent, canActivate: [AuthGuard] },
-      { path: 'Profile', component: UserprofileComponent },
       //masters module
       { path: 'Location/:id', component: LocationComponent, canActivate: [AuthGuard] },
       { path: 'Locationlist', component: LocationlistComponent, canActivate: [AuthGuard] },
@@ -187,10 +199,11 @@ const appRoutes: Routes = [
       { path: 'Goodsstoragelist', component: GoodsstoragelistComponent, canActivate: [AuthGuard, StoreGuard] },
       { path: 'StoList', component: StoListComponent, canActivate: [AuthGuard, StoreGuard] },
       { path: 'Sto/:id', component: StoComponent, canActivate: [AuthGuard, StoreGuard] },
+      { path: 'StoEdit/:id', component: StoeditComponent, canActivate: [AuthGuard, StoreGuard] },
+      { path: 'Stoview/:id', component: StoviewComponent, canActivate: [AuthGuard, StoreGuard] },
       { path: 'Inventorydetaillist', component: InventorydetaillistComponent, canActivate: [AuthGuard, StoreGuard] },
       { path: 'Goodsreceiptview/:id', component: GoodsreceiptviewComponent, canActivate: [AuthGuard, StoreGuard] },
       { path: 'Goodsdisputeview/:id', component: GoodsdisputeviewComponent, canActivate: [AuthGuard, StoreGuard] },
-      { path: 'Stoview/:id', component: StoviewComponent, canActivate: [AuthGuard, StoreGuard] },
       // Sales module
       { path: 'Salesorder/:id', component: SalesorderComponent, canActivate: [AuthGuard, StoreGuard] },
       { path: 'Salesorderunsellable/:id', component: SalesorderunsellableComponent, canActivate: [AuthGuard, StoreGuard] },
@@ -203,6 +216,7 @@ const appRoutes: Routes = [
       { path: 'Salesratecardlist', component: SalesratecardlistComponent, canActivate: [AuthGuard, StoreGuard] },
 
       { path: 'Picklist/:id', component: PicklistComponent, canActivate: [AuthGuard, StoreGuard] },
+      { path: 'PickListView/:id', component: PicklistviewComponent, canActivate: [AuthGuard, StoreGuard] },
       { path: 'Picklistsearch', component: PicklistsearchComponent, canActivate: [AuthGuard, StoreGuard] },
       { path: 'SalesInvoice/:id', component: SalesinvoiceComponent, },
       { path: 'Receiptslist', component: ReceiptslistComponent, canActivate: [AuthGuard, StoreGuard] },
@@ -219,8 +233,15 @@ const appRoutes: Routes = [
       { path: 'Reportmaster/:id', component: ReportmasterComponent, canActivate: [AuthGuard] },
       { path: 'Reportmasterlist', component: ReportmasterlistComponent, canActivate: [AuthGuard, StoreGuard] },
       { path: 'D1', component: D1Component, canActivate: [AuthGuard] },
+      { path: 'Reportsinventory', component: ReportsinventoryComponent, canActivate: [AuthGuard, StoreGuard] },
+      { path: 'Reportsamazon', component: ReportsamazonComponent, canActivate: [AuthGuard, StoreGuard] },
+      { path: 'Reportscompliance', component: ReportscomplianceComponent, canActivate: [AuthGuard, StoreGuard] },
+      { path: 'Reportsanalytics', component: ReportsanalyticsComponent, canActivate: [AuthGuard, StoreGuard] },
+      { path: 'Reportsmis', component: ReportsmisComponent, canActivate: [AuthGuard, StoreGuard] },
+      { path: 'Reportsothers', component: ReportsothersComponent, canActivate: [AuthGuard, StoreGuard] },
+      { path: 'ReportAmazonMTR', component: ReportAmazonMTRComponent, canActivate: [AuthGuard, StoreGuard] },
 
-      { path: '', redirectTo: '/Signin', pathMatch: 'full' },
+      { path: '', redirectTo: '/Signin', pathMatch: 'full', canActivate: [MaintenanceGuard] },
       // .. routes 
       // {
       //   path: 'not-found',
@@ -233,10 +254,11 @@ const appRoutes: Routes = [
     ]
   },
   //no layout routes
-  { path: '', redirectTo: '/Signin', pathMatch: 'full' },
-  { path: 'Signin', component: SigninComponent },
+  { path: '', redirectTo: '/Signin', pathMatch: 'full', canActivate: [MaintenanceGuard] },
+  { path: 'Signin', component: SigninComponent, canActivate: [MaintenanceGuard] },//canActivate: [MaintenanceGuard]
   { path: 'ForgotPassword', component: ForgotpasswordComponent },
   { path: 'Companyregister', component: CompanyregisterComponent },
+  { path: 'Maintenance', component: MaintenanceComponent },
   // { path: 'Requestform', component: RequestformComponent, },
 
 ];

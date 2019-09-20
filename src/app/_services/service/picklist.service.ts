@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http'; 
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError, } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
@@ -8,7 +8,7 @@ import { NotFoundError } from '../../common/not-found-error';
 import { AppError } from '../../common/app-error';
 
 import { AuthenticationService } from './authentication.service';
-import { Picklistheader, Result, Picklistsummary} from '../model/index';
+import { Picklistheader, Result, Picklistview, SalesInvoiceHeader } from '../model/index';
 import { environment } from '../../../environments/environment';
 
 @Injectable({
@@ -22,14 +22,14 @@ export class PicklistService {
   }
 
   public search(SearchBy: string, Search: string, LocationID: number):
-  Observable<Picklistheader[]> {
-  let currentUser = this.authenticationService.currentUserValue;
-  let CompanyDetailID = currentUser.CompanyDetailID;
-  return this.httpClient.get<Picklistheader[]>(environment.baseUrl + 
-    `Picklist/Search?CompanyDetailID=` + CompanyDetailID
-    + `&SearchBy=` + encodeURIComponent(SearchBy) + `&Search=` + Search
-    + `&LocationID=` + LocationID)
-    .pipe(catchError(this.handleError));
+    Observable<Picklistheader[]> {
+    let currentUser = this.authenticationService.currentUserValue;
+    let CompanyDetailID = currentUser.CompanyDetailID;
+    return this.httpClient.get<Picklistheader[]>(environment.baseUrl +
+      `Picklist/Search?CompanyDetailID=` + CompanyDetailID
+      + `&SearchBy=` + encodeURIComponent(SearchBy) + `&Search=` + Search
+      + `&LocationID=` + LocationID)
+      .pipe(catchError(this.handleError));
   }
 
   public searchById(PickListNumber: number): Observable<Picklistheader> {
@@ -42,7 +42,7 @@ export class PicklistService {
 
   public processSearchByID(objPicklistheader: Picklistheader): Observable<Picklistheader> {
     let currentUser = this.authenticationService.currentUserValue;
-    objPicklistheader.CompanyDetailID = currentUser.CompanyDetailID;  
+    objPicklistheader.CompanyDetailID = currentUser.CompanyDetailID;
     objPicklistheader.LoginId = currentUser.UserId;
     return this.httpClient.post<Picklistheader>(environment.baseUrl + `Picklist/ProcessSearchByID`, objPicklistheader)
       .pipe(catchError(this.handleError));
@@ -50,7 +50,7 @@ export class PicklistService {
 
   public process(objPicklistheader: Picklistheader): Observable<Picklistheader> {
     let currentUser = this.authenticationService.currentUserValue;
-    objPicklistheader.CompanyDetailID = currentUser.CompanyDetailID;  
+    objPicklistheader.CompanyDetailID = currentUser.CompanyDetailID;
     objPicklistheader.LoginId = currentUser.UserId;
     return this.httpClient.post<Picklistheader>(environment.baseUrl + `Picklist/Process`, objPicklistheader)
       .pipe(catchError(this.handleError));
@@ -58,7 +58,7 @@ export class PicklistService {
 
   public saveAsDraft(objPicklistheader: Picklistheader): Observable<Result> {
     let currentUser = this.authenticationService.currentUserValue;
-    objPicklistheader.CompanyDetailID = currentUser.CompanyDetailID; 
+    objPicklistheader.CompanyDetailID = currentUser.CompanyDetailID;
     objPicklistheader.LoginId = currentUser.UserId;
     return this.httpClient.post<Result>(environment.baseUrl + `Picklist/SaveAsDraft`, objPicklistheader)
       .pipe(catchError(this.handleError));
@@ -66,9 +66,29 @@ export class PicklistService {
 
   public saveAsClose(objPicklistheader: Picklistheader): Observable<Result> {
     let currentUser = this.authenticationService.currentUserValue;
-    objPicklistheader.CompanyDetailID = currentUser.CompanyDetailID; 
+    objPicklistheader.CompanyDetailID = currentUser.CompanyDetailID;
     objPicklistheader.LoginId = currentUser.UserId;
     return this.httpClient.post<Result>(environment.baseUrl + `Picklist/SaveAsClose`, objPicklistheader)
+      .pipe(catchError(this.handleError));
+  }
+
+
+
+  public InvoiceDownload(PLNum: number): Observable<SalesInvoiceHeader> {
+    let currentUser = this.authenticationService.currentUserValue;
+    let CompanyDetailID = currentUser.CompanyDetailID;
+    return this.httpClient.get<SalesInvoiceHeader>(environment.baseUrl
+      + `Picklist/InvoiceDownload?PLNum=` + PLNum
+      + `&CompanyDetailID=` + CompanyDetailID)
+      .pipe(catchError(this.handleError));
+  }
+
+  public PicklistView(PLNum: number): Observable<Picklistview> {
+    let currentUser = this.authenticationService.currentUserValue;
+    let CompanyDetailID = currentUser.CompanyDetailID;
+    return this.httpClient.get<Picklistview>(environment.baseUrl
+      + `Picklist/PicklistView?PickListNumber=` + PLNum
+      + `&CompanyDetailID=` + CompanyDetailID)
       .pipe(catchError(this.handleError));
   }
 

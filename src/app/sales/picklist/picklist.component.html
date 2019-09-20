@@ -22,13 +22,11 @@
   </div>
 </div>
 
-
-<!-- <form autocomplete="off" (ngSubmit)="saveData()" [formGroup]="picklistForm"> -->
 <div class="panel panel-default">
   <div class="panel-heading">
     <div class="row">
       <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-        <span class="spanheader">
+        <span class="groupspanheader">
           {{panelTitle}}
         </span>
       </div>
@@ -174,8 +172,7 @@
                   <tr *ngFor="let obj1 of lstPicklistdetail; let id = index">
                     <td>{{ id +1 }}</td>
                     <td>{{ obj1.JenniferItemSerial}}</td>
-                    <td>
-                      <!-- {{obj1.Flag }} -->
+                    <td> 
                       <i class="fa fa-trash bgred pointer" title="Remove" (click)="removeRow(id)"
                         *ngIf="obj1.Flag==false"></i>
                     </td>
@@ -236,4 +233,3 @@
     <div class="clearfix"></div>
   </div>
 </div>
-<!-- </form> -->

@@ -16,10 +16,20 @@ export class GoodsReceipt {
     InventoryType: string;
     Remarks: string;
     ItemDetails: GoodsReceiptDetail[];
-    lstInwards : Goodsinward[];
+    lstInwards: Goodsinward[];
     TotalReceivedQty: number;
     LoginId: number;
-    CompanyDetailID: number
+    CompanyDetailID: number;
+    ImagePath1: string;
+    ImagePath2: string;
+    ImagePath3: string;
+    ImagePath4: string;
+    
+    GRNType: string;
+    VendorWarehouseID: number;
+    TrackingNumber: string;
+    GRNStatus:string;
+ 
 }
 
 export class GoodsReceiptDetail {
@@ -54,6 +64,7 @@ export class PONumber {
     LocationName: string;
     VendorID: number;
     VendorName: string;
+    GRNType: string; 
 }
 
 export class Goodsinward {
@@ -81,7 +92,7 @@ export class Goodsstorage {
     JenniferItemSerial: string;
     WarehouseLocation: string;
     WarehouseRack: string;
-    WarehouseBin: string; 
+    WarehouseBin: string;
     IsEditable: boolean;
 
     //master values     
@@ -144,15 +155,15 @@ export class Inventorydetail {
     UnsellableQty: number;
     SellableCurrentStock: number;
 
-    UnsellableCurrentStock: number; 
+    UnsellableCurrentStock: number;
     SellableWarehouseQty: number;
     UnSellableWarehouseQty: number;
-    ActiveStockRecord: Boolean; 
+    ActiveStockRecord: Boolean;
     LoginId: number;
-    
+
     LocationName: string;
     ItemCode: string;
-    ItemName: string; 
-    BrandID: number; 
+    ItemName: string;
+    BrandID: number;
     BrandName: string;
 } 

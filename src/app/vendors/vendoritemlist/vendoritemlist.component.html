@@ -40,8 +40,8 @@
           <div class="col-md-4 nopading_loct" *ngIf="(SearchBy!='ByStatus')">
             <input [(ngModel)]="SearchKeyword" type="text" class="serchcurv form-control btn-group">
           </div>
-          <div class="col-md-3 nopading_loct" *ngIf="(SearchBy=='ByStatus')"> 
-            <select [(ngModel)]="Searchaction" type="select" class="serchcurv form-control btn-group"> 
+          <div class="col-md-3 nopading_loct" *ngIf="(SearchBy=='ByStatus')">
+            <select [(ngModel)]="Searchaction" type="select" class="serchcurv form-control btn-group">
               <option value="true">Active</option>
               <option value="false">InActive</option>
             </select>
@@ -59,7 +59,7 @@
       </div>
       <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 text-right">
         <button class="btn btn-primary" (click)="newButtonClick()" title="Add New">
-          
+
           Add New
         </button>
       </div>
@@ -67,59 +67,39 @@
   </div>
   <div class="panel-body">
 
+    <kendo-grid [data]="gridView" resizable="true" columnMenu="true" [pageSize]="pageSize" [skip]="skip" [pageable]="true" 
+      (pageChange)="pageChange($event)" [sortable]="{
+        allowUnsort: allowUnsort,
+        mode:  'single'
+        }" [sort]="sort" (sortChange)="sortChange($event)" [filterable]="true"
+      (dataStateChange)="dataStateChange($event)" [filter]="state.filter"  >
 
-    <div class="table-responsive">
-      <table datatable [dtOptions]="dtOptions" class="table table-bordered table-condensed "
-        *ngIf="lstVendoritem && lstVendoritem.length">
-        <thead>
-          <tr>
-            <th>Vendor</th>
-            <th>Item Code</th>
-            <th>VendorItemCode</th>
-            <th>CommercialType</th>
-            <th class="text-center btnflag">IsActive</th>
-            <th class="text-center btnactions">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let user of lstVendoritem">
-            <td>{{ user.VendorName  }}</td>
-            <td>{{ user.ItemCode}}</td>
-            <td>{{ user.VendorItemCode}}</td>
-            <td>{{ user.CommercialType}}</td>
-            <td class="text-center" *ngIf="(user.IsActive)"><i class="fa fa-check"></i></td>
-            <td class="text-center" *ngIf="(!user.IsActive)"><i class="fa fa-times"></i></td>
-            <td class="text-center">
-              <i (click)="editButtonClick(user.VendorItemID)" title="Edit" class="fa fa-edit bgblue pointer"></i>
-              &nbsp;
-              <i class="fa fa-trash bgred pointer" (click)="confirmDeleteid(user.VendorItemID,user.VendorItemCode)"
-                title="Delete"></i>
+      <kendo-grid-column field="VendorName" title="Vendor">
+      </kendo-grid-column>
+      <kendo-grid-column field="ItemCode" title="ItemCode">
+      </kendo-grid-column>
+      <kendo-grid-column field="VendorItemCode" title="Vendor ItemCode">
+      </kendo-grid-column>
 
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <kendo-grid-column field="CommercialType" title="Commercial Type">
+      </kendo-grid-column>
+      <kendo-grid-column field="IsActive"  title="IsActive" [class]="{'text-center': true}"  filter="boolean" width="80">
+        <ng-template kendoGridCellTemplate let-dataItem>
+          <i [class]="dataItem.IsActive ? 'fa fa-check': 'fa fa-times'" aria-hidden="true"></i>
+        </ng-template>
+      </kendo-grid-column>
+      <kendo-grid-column field="BrandID" title="Action" [class]="{'text-center': true}"  [filterable]="false" [sortable]="false" width="70">
+        <ng-template kendoGridCellTemplate let-user>
+          <i (click)="editButtonClick(user.VendorItemID)" title="Edit" class="fa fa-edit bgblue pointer"></i>
+          &nbsp;
+          <i class="fa fa-trash bgred pointer" (click)="confirmDeleteid(user.VendorItemID,user.VendorItemCode)"
+            title="Delete"></i>
+        </ng-template>
+      </kendo-grid-column>
+    </kendo-grid>
 
-      <table class="table table-bordered table-condensed" *ngIf="lstVendoritem==null">
-        <thead>
-          <tr>
-            <th>Vendor</th>
-            <th>Item Code</th>
-            <th>VendorItemCode</th>
-            <th>CommercialType</th>
-            <th class="text-center btnflag">IsActive</th>
-            <th class="text-center btnactions">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td colspan="6">
-              No Records Found.!
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+
+     
   </div>
 
 
@@ -258,16 +238,16 @@
             </div>
 
             <div class="form-group" *ngIf="!action">
-                <label class="col-sm-4 control-label" >
-                    Item Code <span class="mandantory">*</span>
-                </label>
-                <div class="col-sm-8">
-                  {{ItemCode}}
-                  <div class="help-block-rk">
-  
-                  </div>
+              <label class="col-sm-4 control-label">
+                Item Code <span class="mandantory">*</span>
+              </label>
+              <div class="col-sm-8">
+                {{ItemCode}}
+                <div class="help-block-rk">
+
                 </div>
               </div>
+            </div>
 
             <div class="form-group" [ngClass]="{'has-error': formErrors.CommercialType}">
               <label class="col-sm-4 control-label" for="CommercialType">Commercial Type<span
@@ -317,7 +297,7 @@
             <button class="btn btn-primary" data-dismiss="modal">Cancel</button>
             &nbsp;
             <button class="btn btn-success" type="submit" prevent-double-submit [disabled]="vendortemForm.invalid">
-              <!-- <i class="fa fa-save"></i> -->
+              
               Save
             </button>
           </div>

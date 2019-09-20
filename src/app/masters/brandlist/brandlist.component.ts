@@ -1,11 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms'; 
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
-import { UsernameValidator } from  '../../_validators/username';
-import { BrandService } from  '../../_services/service/brand.service';
-import { Brand } from  '../../_services/model'; 
-import { AuthorizationGuard } from  '../../_guards/Authorizationguard'
+import { UsernameValidator } from '../../_validators/username';
+import { BrandService } from '../../_services/service/brand.service';
+import { Brand } from '../../_services/model';
+import { AuthorizationGuard } from '../../_guards/Authorizationguard'
+import { process, State } from '@progress/kendo-data-query';
+import { GridDataResult, DataStateChangeEvent, PageChangeEvent } from '@progress/kendo-angular-grid';
+import { SortDescriptor, orderBy } from '@progress/kendo-data-query';
 @Component({
   selector: 'app-brandlist',
   templateUrl: './brandlist.component.html',
@@ -13,7 +16,6 @@ import { AuthorizationGuard } from  '../../_guards/Authorizationguard'
 })
 export class BrandlistComponent implements OnInit {
  
-  lstBrand: Brand[];
   objBrand: Brand = {} as any;
   brandForm: FormGroup;
   panelTitle: string;
@@ -25,12 +27,12 @@ export class BrandlistComponent implements OnInit {
   SearchKeyword: string = '';
   Searchaction: boolean = true;
   constructor(
-    private alertService: ToastrService, 
+    private alertService: ToastrService,
     private _usernameValidator: UsernameValidator,
     private _uomService: BrandService,
     private _spinner: NgxSpinnerService,
     private _authorizationGuard: AuthorizationGuard,
-    private fb: FormBuilder, 
+    private fb: FormBuilder,
   ) { }
 
   //#region Validation Start
@@ -41,8 +43,8 @@ export class BrandlistComponent implements OnInit {
   // This object contains all the validation messages for this form
   validationMessages = {
     'BrandName': {
-      'required': 'This Field is required.',  
-      'BrandInUse': 'This Brand has been registered already'
+      'required': 'This Field is required.',
+      'BrandInUse': 'This Brand is already registered!'
     },
   };
 
@@ -61,7 +63,7 @@ export class BrandlistComponent implements OnInit {
             this.formErrors[key] += messages[errorKey] + ' ';
           }
         }
-      } 
+      }
       if (abstractControl instanceof FormGroup) {
         this.logValidationErrors(abstractControl);
       }
@@ -71,13 +73,13 @@ export class BrandlistComponent implements OnInit {
 
 
   ngOnInit() {
- 
 
-    
+
+
     this.SearchBy = '';
     this.SearchKeyword = '';
     this.onLoad(this.SearchBy, this.SearchKeyword, this.Searchaction);
- 
+
     this.brandForm = this.fb.group({
       BrandName: ['', [Validators.required, Validators.maxLength(30)]
         , this._usernameValidator.existBrand(this.identity)
@@ -118,14 +120,14 @@ export class BrandlistComponent implements OnInit {
     this.brandForm.patchValue({
       BrandName: '',
       IsActive: '',
-    }); 
+    });
   }
 
-  editButtonClick(id: number) { 
+  editButtonClick(id: number) {
     if (this._authorizationGuard.CheckAcess("Brandlist", "ViewEdit")) {
       return;
     }
-    
+
     this.panelTitle = "Edit Brand";
     this.action = false;
     this.identity = + id;
@@ -136,43 +138,28 @@ export class BrandlistComponent implements OnInit {
       ],
       IsActive: [0,],
     });
+    this._spinner.show();
     this._uomService.searchById(this.identity)
       .subscribe(
         (data: Brand) => {
           this.brandForm.patchValue({
             BrandName: data.BrandName,
             IsActive: data.IsActive,
-          }); 
+          });
           this.logValidationErrors();
+          this._spinner.hide();
         },
-        (err: any) =>
+        (err: any) => {
+          this._spinner.hide();
           console.log(err)
+        }
       );
     $('#modalpopupbrandupsert').modal('show');
   }
 
-  
 
-  onLoad(SearchBy: string, Search: string, IsActive: Boolean) {
-    this._spinner.show();
-    return this._uomService.search(SearchBy, Search, IsActive).subscribe(
-      (lst) => {
-        this.lstBrand = lst;
-        this.dtOptions = {
-          pagingType: 'full_numbers',
-          "language": {
-            "search": 'Filter',
-          },
-        };
-		
-        this._spinner.hide();
-      },
-      (err) => {
-        this._spinner.hide();
-        console.log(err);
-      }
-    );
-  }
+
+
 
   SaveData(): void {
     if (this._authorizationGuard.CheckAcess("Brandlist", "ViewEdit")) {
@@ -184,6 +171,10 @@ export class BrandlistComponent implements OnInit {
     }
     // stop here if form is invalid
     if (this.brandForm.invalid) {
+      return;
+    }
+    if (this.brandForm.pristine) {
+      this.alertService.error('Please change the value for any one control to proceed further!');
       return;
     }
     if (this.identity > 0) {
@@ -201,7 +192,7 @@ export class BrandlistComponent implements OnInit {
     this._spinner.show();
     this._uomService.add(this.objBrand).subscribe(
       (data) => {
-        if (data !=null && data == true) {
+        if (data != null && data == true) {
           this._spinner.hide();
           this.alertService.success('Brand data has been added successfully');
         }
@@ -230,7 +221,7 @@ export class BrandlistComponent implements OnInit {
     this._spinner.show();
     this._uomService.update(this.objBrand).subscribe(
       (data) => {
-        if (data !=null && data == true) {
+        if (data != null && data == true) {
           this._spinner.hide();
           this.alertService.success('Brand data has been updated successful');
         }
@@ -279,4 +270,69 @@ export class BrandlistComponent implements OnInit {
     );
   }
 
+  onLoad(SearchBy: string, Search: string, IsActive: Boolean) {
+    this._spinner.show();
+    return this._uomService.search(SearchBy, Search, IsActive).subscribe(
+      (lst) => {
+        if (lst != null) { 
+          this.items = lst;
+          this.loadItems(); 
+        }
+        this._spinner.hide();
+      },
+      (err) => {
+        this._spinner.hide();
+        console.log(err);
+      }
+    );
+  }
+
+  //#region Paging Sorting and Filtering Start
+  public allowUnsort = true;
+  public sort: SortDescriptor[] = [{
+    field: 'BrandName',
+    dir: 'asc'
+  }];
+  public gridView: GridDataResult;
+  public pageSize = 10;
+  public skip = 0;
+  private data: Object[];
+  private items: Brand[] = [] as any;
+  public state: State = {
+    skip: 0,
+    take: 5,
+
+    // Initial filter descriptor
+    filter: {
+      logic: 'and',
+      filters: [{ field: 'BrandName', operator: 'contains', value: '' }]
+    }
+  };
+  public pageChange(event: PageChangeEvent): void {
+    this.skip = event.skip;
+    this.loadItems();
+  }
+
+  public sortChange(sort: SortDescriptor[]): void {
+    this.sort = sort;
+    this.loadSortItems();
+  }
+
+  private loadItems(): void {
+    this.gridView = {
+      data: this.items.slice(this.skip, this.skip + this.pageSize),
+      total: this.items.length
+    };
+  }
+  private loadSortItems(): void {
+    this.gridView = {
+      data: orderBy(this.items.slice(this.skip, this.skip + this.pageSize), this.sort),
+      total: this.items.length
+    };
+  }
+  public dataStateChange(state: DataStateChangeEvent): void {
+    this.state = state;
+    this.gridView = process(this.items, this.state);
+  }
+  //#endregion Paging Sorting and Filtering End
 }

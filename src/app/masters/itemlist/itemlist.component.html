@@ -14,7 +14,7 @@
           <i class="fa fa-list-alt"></i> <span> Items</span>
         </li>
         <li class="active">
-          <i class="fa fa-obj" aria-hidden="true"></i>
+          <i class="fa fa-list-alt" aria-hidden="true"></i>
           List
         </li>
       </ol>
@@ -40,7 +40,7 @@
             <input [(ngModel)]="SearchKeyword" type="text" class="serchcurv  form-control btn-group">
           </div>
           <div class="col-md-3 nopading_loct" *ngIf="(SearchBy=='ByStatus')">
-            
+
             <select [(ngModel)]="Searchaction" type="select" class="serchcurv form-control btn-group">
 
               <option value="true">Active</option>
@@ -60,87 +60,57 @@
       </div>
       <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 text-right">
         <button class="btn btn-primary" routerLink="/Item/Create" title="Add New">
-          
+
           Add New
         </button>
       </div>
     </div>
   </div>
   <div class="panel-body">
-    <div class="table-responsive">
-      <table datatable [dtOptions]="dtOptions" class="table table-bordered table-condensed " *ngIf="lst && lst.length">
-        <thead>
-          <tr>
-            <th>Image </th>
-            <th>Category </th>
-            <th>Brand </th>
-            <th>Item Code</th>
-            <th>Item Name</th>
+    <kendo-grid [data]="gridView" resizable="true" columnMenu="true" [pageSize]="pageSize" [skip]="skip" [pageable]="true"
+      (pageChange)="pageChange($event)" [sortable]="{
+          allowUnsort: allowUnsort,
+          mode:  'single'
+          }" [sort]="sort" (sortChange)="sortChange($event)" [filterable]="true"
+      (dataStateChange)="dataStateChange($event)" [filter]="state.filter">
 
-            <th>Color</th>
-            <th>MRP</th>
-            <th>Tax Rate</th>
-            <th class="text-center">Is Active</th>
-            <th class="text-center btnactions">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let obj of lst">
-            <td lass="text-center" >
-            <img [src]="obj.ImagePath" width="60" height="60" title="SKU Image" class="img-responsive img-thumbnail " />
+      <kendo-grid-column field="ImagePath" title="Image" [filterable]="false" width="80"
+        [class]="{'text-center': true}">
+        <ng-template kendoGridCellTemplate let-obj>
+          <img [src]="addpath(obj.ImagePath)" width="60" height="60" title="SKU Image"
+            class="img-responsive img-thumbnail " />
+        </ng-template>
+      </kendo-grid-column>
+      <kendo-grid-column field="CategoryName" title="Category Name">
+      </kendo-grid-column>
+      <kendo-grid-column field="BrandName" title="Brand">
+      </kendo-grid-column>
+      <kendo-grid-column field="ItemCode" title="ItemCode">
+      </kendo-grid-column>
+      <kendo-grid-column field="ItemName" title="Item Name">
+      </kendo-grid-column>
+      <kendo-grid-column field="ItemColor" title="Color">
+      </kendo-grid-column>
+      <kendo-grid-column field="MRP" title="MRP" format="{0:##,#.##}">
+      </kendo-grid-column>
+      <kendo-grid-column field="TaxRate" title="Tax Rate">
+      </kendo-grid-column>
 
-            </td>
-            
-            <td>{{ obj.CategoryName }}</td>
-            <td>{{ obj.BrandName }}</td>
-            <td>{{ obj.ItemCode }}</td>
-            <td>{{ obj.ItemName }}</td>
+      <kendo-grid-column field="IsActive" title="IsActive" [class]="{'text-center': true}" filter="boolean" width="80">
+        <ng-template kendoGridCellTemplate let-dataItem>
+          <i [class]="dataItem.IsActive ? 'fa fa-check': 'fa fa-times'" aria-hidden="true"></i>
+        </ng-template>
+      </kendo-grid-column>
+      <kendo-grid-column field="ItemID" title="Action" [class]="{'text-center': true}" [filterable]="false"
+        [sortable]="false" width="70">
+        <ng-template kendoGridCellTemplate let-obj>
+          <i class="fa fa-edit bgblue pointer" title="Edit" [routerLink]="['/Item', obj.ItemID]"></i>
+          &nbsp;
+          <i class="fa fa-trash bgred pointer" title="Delete" (click)="confirmDeleteid(obj.ItemID,obj.ItemCode)"></i>
+        </ng-template>
+      </kendo-grid-column>
+    </kendo-grid>
 
-            <td>{{ obj.ItemColor }}</td>
-            <td>{{ obj.MRP }}</td>
-            <td>{{ obj.TaxRate }}</td>
-            <td class="text-center" *ngIf="(obj.IsActive)"><i class="fa fa-check"></i></td>
-            <td class="text-center" *ngIf="(!obj.IsActive)"><i class="fa fa-times"></i></td>
-            <td class="text-center btnactions">
-              <i class="fa fa-edit bgblue pointer" title="Edit" (click)="editButtonClick(obj.ItemID)"></i>
-              &nbsp;
-              <i class="fa fa-trash bgred pointer" title="Delete"
-                (click)="confirmDeleteid(obj.ItemID,obj.ItemCode)"></i>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-
-      <table class="table table-bordered table-condensed" *ngIf="lst==null">
-        <thead>
-          <tr>
-            <th>Image </th>
-            <th>Category </th>
-
-            <th>Brand </th>
-            <th>Item Code</th>
-            <th>Item Name</th>
-
-            <th> Color</th>
-            <th>MRP</th>
-            <th>Tax Rate</th>
-            <th class="text-center">Is Active</th>
-            <th class="text-center btnactions">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td colspan="10">
-              No Records Found.!
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <!-- <div class="panel-footer  ">
-            <div class="pull-right btn-toolbar"> </div>
-            <div class="clearfix"></div>
-          </div> -->
-    </div>
   </div>
   <div id="modaldeleteconfimation" class="modal fade" tabindex="-1" role="dialog"
     aria-labelledby="modaldeleteconfimation" aria-hidden="true">

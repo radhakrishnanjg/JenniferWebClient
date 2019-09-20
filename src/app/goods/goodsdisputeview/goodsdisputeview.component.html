@@ -20,13 +20,12 @@
       </ol>
     </div>
   </div>
-</div>
-<form autocomplete="off">
+</div> 
   <div class="panel panel-default">
     <div class="panel-heading">
       <div class="row">
         <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-          <span class="spanheader">
+          <span class="groupspanheader">
             Goods Dispute View
           </span>
         </div>
@@ -37,13 +36,11 @@
         </div>
         <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 ">
           <div class="pull-right">
-            <button class="btn btn-default" title="DownloadImages" (click)="DownloadButtonClick(obj?.DisputeID)">
-
+            <button class="btn btn-default" title="DownloadImages" (click)="DownloadButtonClick(obj?.DisputeID)"> 
               Download Images
             </button>
             &nbsp;
-            <button class="btn btn-default" routerLink="/Goodsdisputelist" title="Back">
-
+            <button class="btn btn-primary" routerLink="/Goodsdisputelist" title="Back"> 
               Back
             </button>
           </div>
@@ -59,7 +56,7 @@
               <span class="mandantory">*</span>
 
             </label>
-            <div class="">
+            <div >
               {{obj?.JenniferItemSerial}}
             </div>
           </div>
@@ -69,7 +66,7 @@
             <label class="control-label" for="GRNInwardID">GRN Number <span class="mandantory">*</span>
 
             </label>
-            <div class="">
+            <div >
               {{ obj?.GRNNumber}}
             </div>
           </div>
@@ -79,7 +76,7 @@
             <label class="control-label" for="InventoryType">Inventory Type <span class="mandantory">*</span>
 
             </label>
-            <div class="">
+            <div >
               {{ obj?.InventoryType}}
             </div>
           </div>
@@ -89,7 +86,7 @@
             <label class="control-label" for="ItemName">Item Code-Description <span class="mandantory">*</span>
 
             </label>
-            <div class="">
+            <div >
               {{ obj?.ItemName}}
             </div>
           </div>
@@ -100,7 +97,7 @@
         <div class="col-md-4 col-xs-12">
           <div>
             <label class="control-label" for="DisputeType">Dispute Type<span class="mandantory">*</span></label>
-            <div class="">
+            <div >
               {{obj?.DisputeType}}
             </div>
           </div>
@@ -111,7 +108,7 @@
               <span class="mandantory"></span>
 
             </label>
-            <div class="">
+            <div >
               {{obj?.OtherItemID}}
             </div>
           </div>
@@ -130,18 +127,17 @@
         <div class="col-md-8 col-xs-12">
           <div>
             <label class="control-label" for="Remarks">Remarks</label>
-            <div class="">
+            <div >
               {{obj?.Remarks}}
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-  <!--IMAGES UPLOAD SECTION BELLOW-->
+  </div> 
   <div class="panel">
     <div class="panel-body">
-      <span class="groupspanheader">Images</span>
+      <span class="groupspanheader">Upload Images</span>
       <div class="row">
         <div class="col-sm-3 col-xs-12">
           <div>
@@ -150,7 +146,7 @@
                 <span class="mandantory">*</span>
               </label>
               <br>
-              <img [src]="obj?.Image1" width="200" height="200" title="SKU Image 1" />
+              <img [src]="obj?.Image1" width="200" height="200" title="Dispute Image 1" />
             </div>
           </div>
         </div>
@@ -161,7 +157,7 @@
                 <span class="mandantory">*</span>
               </label>
               <br>
-              <img [src]="obj?.Image2" width="200" height="200" title="SKU Image 2" />
+              <img [src]="obj?.Image2" width="200" height="200" title="Dispute Image 2" />
             </div>
           </div>
         </div>
@@ -172,7 +168,7 @@
                 <span class="mandantory">*</span>
               </label>
               <br>
-              <img [src]="obj?.Image3" width="200" height="200" title="SKU Image 3" />
+              <img [src]="obj?.Image3" width="200" height="200" title="Dispute Image 3" />
             </div>
           </div>
         </div>
@@ -183,7 +179,7 @@
                 <span class="mandantory">*</span>
               </label>
               <br>
-              <img [src]="obj?.Image4" width="200" height="200" title="SKU Image 4" />
+              <img [src]="obj?.Image4" width="200" height="200" title="Dispute Image 4" />
             </div>
           </div>
         </div>
@@ -194,7 +190,7 @@
             <div class=" col-sm-12 inputlevel">
               <label class="nopading_loct control-label" for="SelectSelect">Image 5</label>
               <br>
-              <img [src]="obj?.Image5" width="200" height="200" title="SKU Image 5" />
+              <img [src]="obj?.Image5" width="200" height="200" title="Dispute Image 5" />
             </div>
           </div>
         </div>
@@ -203,7 +199,7 @@
             <div class=" col-sm-12 inputlevel">
               <label class="nopading_loct control-label" for="SelectSelect">Image 6</label>
               <br>
-              <img [src]="obj?.Image6" width="200" height="200" title="SKU Image 6" />
+              <img [src]="obj?.Image6" width="200" height="200" title="Dispute Image 6" />
             </div>
           </div>
         </div>
@@ -212,7 +208,7 @@
             <div class=" col-sm-12 inputlevel">
               <label class="nopading_loct control-label" for="SelectSelect">Image 7</label>
               <br>
-              <img [src]="obj?.Image7" width="200" height="200" title="SKU Image 7" />
+              <img [src]="obj?.Image7" width="200" height="200" title="Dispute Image 7" />
             </div>
           </div>
         </div>
@@ -221,7 +217,7 @@
             <div class=" col-sm-12 inputlevel">
               <label class="nopading_loct control-label" for="SelectSelect">Image 8</label>
               <br>
-              <img [src]="obj?.Image8" width="200" height="200" title="SKU Image 8" />
+              <img [src]="obj?.Image8" width="200" height="200" title="Dispute Image 8" />
             </div>
           </div>
         </div>
@@ -232,7 +228,7 @@
             <div class=" col-sm-12 inputlevel">
               <label class="nopading_loct control-label" for="SelectSelect">Image 9</label>
               <br>
-              <img [src]="obj?.Image9" width="200" height="200" title="SKU Image 9" />
+              <img [src]="obj?.Image9" width="200" height="200" title="Dispute Image 9" />
             </div>
           </div>
         </div>
@@ -241,11 +237,10 @@
             <div class=" col-sm-12 inputlevel">
               <label class="nopading_loct control-label" for="SelectSelect">Image 10</label>
               <br>
-              <img [src]="obj?.Image10" width="200" height="200" title="SKU Image 10" />
+              <img [src]="obj?.Image10" width="200" height="200" title="Dispute Image 10" />
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</form>
+  </div> 

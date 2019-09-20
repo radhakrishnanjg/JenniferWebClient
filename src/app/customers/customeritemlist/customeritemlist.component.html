@@ -41,9 +41,9 @@
             <input [(ngModel)]="SearchKeyword" type="text" class="serchcurv form-control btn-group">
           </div>
           <div class="col-md-3 nopading_loct" *ngIf="(SearchBy=='ByStatus')">
-            
+
             <select [(ngModel)]="Searchaction" type="select" class="serchcurv form-control btn-group">
-              
+
               <option value="true">Active</option>
               <option value="false">InActive</option>
             </select>
@@ -61,64 +61,43 @@
       </div>
       <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 text-right">
         <button class="btn btn-primary" (click)="newButtonClick()" title="Add New">
-          
+
           Add New
         </button>
       </div>
     </div>
   </div>
   <div class="panel-body">
+    <kendo-grid [data]="gridView" resizable="true" columnMenu="true" [pageSize]="pageSize" [skip]="skip" [pageable]="true" 
+      (pageChange)="pageChange($event)" [sortable]="{
+          allowUnsort: allowUnsort,
+          mode:  'single'
+          }" [sort]="sort" (sortChange)="sortChange($event)" [filterable]="true"
+      (dataStateChange)="dataStateChange($event)" [filter]="state.filter"  >
 
+      <kendo-grid-column field="CustomerName" title="Customer">
+      </kendo-grid-column>
+      <kendo-grid-column field="ItemCode" title="ItemCode">
+      </kendo-grid-column>
+      <kendo-grid-column field="CustomerItemCode" title="Customer ItemCode">
+      </kendo-grid-column>
 
-    <div class="table-responsive">
-      <table datatable [dtOptions]="dtOptions" class="table table-bordered table-condensed "
-        *ngIf="lstCustomeritem && lstCustomeritem.length">
-        <thead>
-          <tr>
-            <th>Customer</th>
-            <th>ItemCode</th>
-            <th>Customer ItemCode</th>
-            <th class="text-center btnflag">IsActive</th>
-            <th class="text-center btnactions">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let user of lstCustomeritem">
-            <td>{{ user.CustomerName  }}</td>
-            <td>{{ user.ItemCode}}</td>
-            <td>{{ user.CustomerItemCode}}</td>
-            <td class="text-center" *ngIf="(user.IsActive)"><i class="fa fa-check"></i></td>
-            <td class="text-center" *ngIf="(!user.IsActive)"><i class="fa fa-times"></i></td>
-            <td class="text-center">
-              <i (click)="editButtonClick(user.CustomerItemID)" title="Edit" class="fa fa-edit bgblue pointer"></i>
-              &nbsp;
-              <i class="fa fa-trash bgred pointer" (click)="confirmDeleteid(user.CustomerItemID,user.CustomerItemCode)"
-                title="Delete"></i>
+      <kendo-grid-column field="IsActive"  title="IsActive" [class]="{'text-center': true}"  filter="boolean" width="80">
+        <ng-template kendoGridCellTemplate let-dataItem>
+          <i [class]="dataItem.IsActive ? 'fa fa-check': 'fa fa-times'" aria-hidden="true"></i>
+        </ng-template>
+      </kendo-grid-column> 
+      <kendo-grid-column field="CustomerItemID" title="Action" [class]="{'text-center': true}"  [filterable]="false" [sortable]="false" width="70">
+        <ng-template kendoGridCellTemplate let-dataItem>
+          <i (click)="editButtonClick(dataItem.CustomerItemID)" title="Edit" class="fa fa-edit bgblue pointer"></i>
+          &nbsp;
+          <i class="fa fa-trash bgred pointer" (click)="confirmDeleteid(dataItem.CustomerItemID,dataItem.CustomerItemCode)"
+            title="Delete"></i>
+        </ng-template>
+      </kendo-grid-column>
+    </kendo-grid>
 
-            </td>
-          </tr>
-        </tbody>
-      </table>
-
-      <table class="table table-bordered table-condensed" *ngIf="lstCustomeritem==null">
-        <thead>
-          <tr>
-            <th>Customer</th>
-            <th>Itemcode</th>
-            <th>Customer ItemCode</th>
-            <th class="text-center btnflag">IsActive</th>
-            <th class="text-center btnactions">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td colspan="5">
-              No Records Found.!
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+     
   </div>
 
 
@@ -148,7 +127,7 @@
         <div class="modal-footer">
           <button class="btn btn-danger btn-sm" (click)="delete()">Yes</button>
           &nbsp;
-          <button class="btn btn-default btn-sm"  data-dismiss="modal">No</button>
+          <button class="btn btn-default btn-sm" data-dismiss="modal">No</button>
         </div>
       </div>
     </div>
@@ -187,75 +166,75 @@
             </div>
 
             <div class="form-group" [ngClass]="{'has-error': formErrors.ProductGroupID}" *ngIf="action">
-                <label class="col-sm-4  control-label" for="ProductGroupID">Product Group
-                </label>
-                <div class="col-sm-8">
-                  <select id="ProductGroupID" class="form-control" formControlName="ProductGroupID"
-                    (blur)="logValidationErrors()" (change)="onchangeProductGroupID($event.target.value)">
-                    <option value="0" selected="selected">Select</option>
-                    <option *ngFor="let c1 of lstProductGroup" value={{c1.ProductGroupID}}>
-                      {{c1.ProductGroupName}}
-                    </option>
-                  </select>
-                  <div class="help-block-rk">
-                    <span class="help-block" *ngIf="formErrors.ProductGroupID">
-                      {{formErrors.ProductGroupID}}
-                    </span>
-                  </div>
+              <label class="col-sm-4  control-label" for="ProductGroupID">Product Group
+              </label>
+              <div class="col-sm-8">
+                <select id="ProductGroupID" class="form-control" formControlName="ProductGroupID"
+                  (blur)="logValidationErrors()" (change)="onchangeProductGroupID($event.target.value)">
+                  <option value="0" selected="selected">Select</option>
+                  <option *ngFor="let c1 of lstProductGroup" value={{c1.ProductGroupID}}>
+                    {{c1.ProductGroupName}}
+                  </option>
+                </select>
+                <div class="help-block-rk">
+                  <span class="help-block" *ngIf="formErrors.ProductGroupID">
+                    {{formErrors.ProductGroupID}}
+                  </span>
                 </div>
               </div>
-              <div class="form-group" [ngClass]="{'has-error': formErrors.CategoryID}" *ngIf="action">
-                <label class="col-sm-4 control-label" for="CategoryID">Category </label>
-                <div class="col-sm-8">
-                  <select formControlName="CategoryID" id='CategoryID' type="select" class="form-control"
-                    (blur)="logValidationErrors()" (change)="onchangeCategoryID($event.target.value)">
-  
-                    <option value="0" selected="selected">Select</option>
-                    <option *ngFor="let c1 of lstCategory" value={{c1.CategoryID}}>
-                      {{c1.CategoryName}}
-                    </option>
-                  </select>
-                  <div class="help-block-rk">
-                    <span class="help-block" *ngIf="formErrors.CategoryID">
-                      {{formErrors.CategoryID}}
-                    </span>
-                  </div>
+            </div>
+            <div class="form-group" [ngClass]="{'has-error': formErrors.CategoryID}" *ngIf="action">
+              <label class="col-sm-4 control-label" for="CategoryID">Category </label>
+              <div class="col-sm-8">
+                <select formControlName="CategoryID" id='CategoryID' type="select" class="form-control"
+                  (blur)="logValidationErrors()" (change)="onchangeCategoryID($event.target.value)">
+
+                  <option value="0" selected="selected">Select</option>
+                  <option *ngFor="let c1 of lstCategory" value={{c1.CategoryID}}>
+                    {{c1.CategoryName}}
+                  </option>
+                </select>
+                <div class="help-block-rk">
+                  <span class="help-block" *ngIf="formErrors.CategoryID">
+                    {{formErrors.CategoryID}}
+                  </span>
                 </div>
               </div>
-              <div class="form-group" [ngClass]="{'has-error': formErrors.SubCategoryID}" *ngIf="action">
-                <label class="col-sm-4 control-label " for="SubCategoryID">Sub Category </label>
-                <div class="col-sm-8">
-                  <select formControlName="SubCategoryID" id='SubCategoryID' type="select" class="form-control"
-                    (blur)="logValidationErrors()" (change)="onchangeSubCategoryID($event.target.value)">
-                    <option value="0" selected="selected">Select</option>
-                    <option *ngFor="let c1 of lstSubCategory" value={{c1.SubCategoryID}}>
-                      {{c1.SubCategoryName}}
-                    </option>
-                  </select>
-                  <div class="help-block-rk">
-                    <span class="help-block" *ngIf="formErrors.SubCategoryID">
-                      {{formErrors.SubCategoryID}}
-                    </span>
-                  </div>
+            </div>
+            <div class="form-group" [ngClass]="{'has-error': formErrors.SubCategoryID}" *ngIf="action">
+              <label class="col-sm-4 control-label " for="SubCategoryID">Sub Category </label>
+              <div class="col-sm-8">
+                <select formControlName="SubCategoryID" id='SubCategoryID' type="select" class="form-control"
+                  (blur)="logValidationErrors()" (change)="onchangeSubCategoryID($event.target.value)">
+                  <option value="0" selected="selected">Select</option>
+                  <option *ngFor="let c1 of lstSubCategory" value={{c1.SubCategoryID}}>
+                    {{c1.SubCategoryName}}
+                  </option>
+                </select>
+                <div class="help-block-rk">
+                  <span class="help-block" *ngIf="formErrors.SubCategoryID">
+                    {{formErrors.SubCategoryID}}
+                  </span>
                 </div>
               </div>
-  
-              <div class="form-group" [ngClass]="{'has-error': formErrors.ItemID}" *ngIf="action">
-                <label class="col-sm-4 control-label" for="ItemID">Item Code <span class="mandantory">*</span></label>
-                <div class="col-sm-8">
-                  <select id="ItemID" class="form-control" formControlName="ItemID" (blur)="logValidationErrors()">
-                    <option value="0" selected="selected">Select</option>
-                    <option *ngFor="let dis of lstItem" value={{dis.ItemID}}>
-                      {{dis.ItemCode}}
-                    </option>
-                  </select>
-                  <div class="help-block-rk">
-                    <span class="help-block" *ngIf="formErrors.ItemID">
-                      {{formErrors.ItemID}}
-                    </span>
-                  </div>
+            </div>
+
+            <div class="form-group" [ngClass]="{'has-error': formErrors.ItemID}" *ngIf="action">
+              <label class="col-sm-4 control-label" for="ItemID">Item Code <span class="mandantory">*</span></label>
+              <div class="col-sm-8">
+                <select id="ItemID" class="form-control" formControlName="ItemID" (blur)="logValidationErrors()">
+                  <option value="0" selected="selected">Select</option>
+                  <option *ngFor="let dis of lstItem" value={{dis.ItemID}}>
+                    {{dis.ItemCode}}
+                  </option>
+                </select>
+                <div class="help-block-rk">
+                  <span class="help-block" *ngIf="formErrors.ItemID">
+                    {{formErrors.ItemID}}
+                  </span>
                 </div>
               </div>
+            </div>
 
             <div class="form-group" [ngClass]="{'has-error': formErrors.CustomerItemCode}">
               <label class="col-sm-4 control-label" for="CustomerItemCode">Customer ItemCode
@@ -286,7 +265,7 @@
             <button class="btn btn-primary" data-dismiss="modal">Cancel</button>
             &nbsp;
             <button class="btn btn-success" type="submit" prevent-double-submit [disabled]="CustomerItemForm.invalid">
-              <!-- <i class="fa fa-save"></i> -->
+              
               Save
             </button>
           </div>

@@ -14,7 +14,7 @@
           <i class="fa fa-newspaper-o"></i> <span> Report Master</span>
         </li>
         <li class="active">
-          <i class="fa fa-obj" aria-hidden="true"></i>
+          <i class="fa fa-list-alt" aria-hidden="true"></i>
           List
         </li>
       </ol>
@@ -65,59 +65,38 @@
     </div>
   </div>
   <div class="panel-body">
-    <div class="table-responsive">
-      <table datatable [dtOptions]="dtOptions" class="table table-bordered table-condensed " *ngIf="lst && lst.length">
-        <thead>
-          <tr>
-            <th>Report Type</th>
-            <th>Screen Name </th>
-            <th>Stor Proc Name </th>
-            <th>Total Parameters </th>
-            <th class="text-center">Is Active</th>
 
-            <th class="text-center btnactions">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let obj of lst">
-            <td>{{ obj.Report_Type }}</td>
-            <td>{{ obj.Screen_Name }}</td>
-            <td>{{ obj.SP_Name }}</td>
-            <td>{{ obj.P_Count }}</td>
-            <td class="text-center" *ngIf="(obj.Status)"><i class="fa fa-check"></i></td>
-            <td class="text-center" *ngIf="(!obj.Status)"><i class="fa fa-times"></i></td>
+    <kendo-grid [data]="gridView" resizable="true" columnMenu="true" [pageSize]="pageSize" [skip]="skip" [pageable]="true"
+      (pageChange)="pageChange($event)" [sortable]="{
+          allowUnsort: allowUnsort,
+          mode:  'single'
+          }" [sort]="sort" (sortChange)="sortChange($event)" [filterable]="true"
+      (dataStateChange)="dataStateChange($event)" [filter]="state.filter">
 
-            <td class="text-center btnactions">
-              <i class="fa fa-eye bgblue pointer" title="View" (click)="viewButtonClick(obj.Download_Master_ID)"></i>
-              &nbsp;
-              <i class="fa fa-trash bgred pointer" title="Delete"
-                (click)="confirmDeleteid(obj.Download_Master_ID,obj.Screen_Name)"></i>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <kendo-grid-column field="Report_Type" title="Report Type">
+      </kendo-grid-column>
+      <kendo-grid-column field="Screen_Name" title="Screen Name">
+      </kendo-grid-column>
+      <kendo-grid-column field="SP_Name" title="Stor Proc Name">
+      </kendo-grid-column>
+      <kendo-grid-column field="P_Count" title="Total Parameters">
+      </kendo-grid-column>
 
-      <table class="table table-bordered table-condensed" *ngIf="lst==null">
-        <thead>
-          <tr>
-            <th>Report Type</th>
-            <th>Screen Name </th>
-            <th>Stor Proc Name </th>
-            <th>Total Parameters </th>
-            <th class="text-center">Is Active</th>
+      <kendo-grid-column field="IsActive"  title="IsActive" [class]="{'text-center': true}"  filter="boolean" width="120">
+        <ng-template kendoGridCellTemplate let-dataItem>
+          <i [class]="dataItem.IsActive ? 'fa fa-check': 'fa fa-times'" aria-hidden="true"></i>
+        </ng-template>
+      </kendo-grid-column>
+      <kendo-grid-column field="Download_Master_ID" title="Action" [class]="{'text-center': true}"  [filterable]="false" [sortable]="false" width="120">
+        <ng-template kendoGridCellTemplate let-dataItem>
+          <i class="fa fa-eye bgblue pointer" title="View" [routerLink]="['/Reportmaster', dataItem.Download_Master_ID]"></i>
+          &nbsp;
+          <i class="fa fa-trash bgred pointer" title="Delete"
+            (click)="confirmDeleteid(obj.Download_Master_ID,obj.Screen_Name)"></i>
+        </ng-template>
+      </kendo-grid-column>
+    </kendo-grid>
 
-            <th class="text-center btnactions">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td colspan="6">
-              No Records Found.!
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
   </div>
   <div id="modaldeleteconfimation" class="modal fade" tabindex="-1" role="dialog"
     aria-labelledby="modaldeleteconfimation" aria-hidden="true">

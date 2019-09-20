@@ -6,6 +6,10 @@ import { UomService } from '../../_services/service/uom.service';
 import { UOM, Dropdown } from '../../_services/model';
 import { PrivateutilityService } from '../../_services/service/privateutility.service';
 import { AuthorizationGuard } from '../../_guards/Authorizationguard'
+
+import { process, State } from '@progress/kendo-data-query';
+import { GridDataResult, DataStateChangeEvent, PageChangeEvent } from '@progress/kendo-angular-grid';
+import { SortDescriptor, orderBy } from '@progress/kendo-data-query';
 @Component({
   selector: 'app-uomlist',
   templateUrl: './uomlist.component.html',
@@ -13,8 +17,7 @@ import { AuthorizationGuard } from '../../_guards/Authorizationguard'
 })
 export class UomlistComponent implements OnInit {
   lstUOMMaster: Dropdown[];
-  lstUOM: UOM[];
-  objUOM: UOM = {} as any;
+   objUOM: UOM = {} as any;
   uomForm: FormGroup;
   panelTitle: string;
   action: boolean;
@@ -45,7 +48,7 @@ export class UomlistComponent implements OnInit {
   validationMessages = {
     'UOM': {
       'required': 'This Field is required.',
-      'UOMInUse': 'This UOM has been registered already'
+      'UOMInUse': 'This UOM is already registered!'
     },
     'Description': {
       'required': 'This Field is required.',
@@ -53,7 +56,7 @@ export class UomlistComponent implements OnInit {
     },
     'MultiplierValue': {
       'required': 'This Field is required.',
-      'pattern': 'This Field  must be decimal value.',
+      'pattern': 'This Field  must be numeric value.',
       'min': 'This Field must be 0-100000.',
       'max': 'This Field must be 0-100000.',
     }
@@ -107,7 +110,15 @@ export class UomlistComponent implements OnInit {
     this.uomForm = this.fb.group({
       UOM: ['', [Validators.required]],
       Description: ['', [Validators.required]],
-      MultiplierValue: [1, [Validators.required, Validators.min(0.01), Validators.max(100000), Validators.pattern("^[0-9]+(.[0-9]{0,2})?$")]],
+      MultiplierValue: [1, [Validators.required,
+      // Validators.min(0.01),
+      Validators.min(1),
+      Validators.max(100000),
+      //  Validators.pattern("^[0-9]+(.[0-9]{0,2})?$")
+      Validators.pattern("^([0-9]+)$")
+      ]
+
+      ],
       IsActive: [0,],
     });
   }
@@ -129,9 +140,17 @@ export class UomlistComponent implements OnInit {
     $('#modalpopupuomupsert').modal('show');
     this.logValidationErrors();
     this.uomForm = this.fb.group({
-      UOM: ['', [Validators.required, Validators.maxLength(10)]],
-      Description: ['', [Validators.required, Validators.maxLength(20)]],
-      MultiplierValue: [1, [Validators.required, Validators.min(0.01), Validators.max(100000), Validators.pattern("^[0-9]+(.[0-9]{0,2})?$")]],
+      UOM: ['', [Validators.required]],
+      Description: ['', [Validators.required]],
+      MultiplierValue: [1, [Validators.required,
+      // Validators.min(0.01),
+      Validators.min(1),
+      Validators.max(100000),
+      //  Validators.pattern("^[0-9]+(.[0-9]{0,2})?$")
+      Validators.pattern("^([0-9]+)$")
+      ]
+
+      ],
       IsActive: [0,],
     });
     this.panelTitle = "Add New UOM";
@@ -150,9 +169,17 @@ export class UomlistComponent implements OnInit {
       return;
     }
     this.uomForm = this.fb.group({
-      UOM: ['', [Validators.required, Validators.maxLength(10)]],
-      Description: ['', [Validators.required, Validators.maxLength(20)]],
-      MultiplierValue: [1, [Validators.required, Validators.min(0.01), Validators.max(100000), Validators.pattern("^[0-9]+(.[0-9]{0,2})?$")]],
+      UOM: ['', [Validators.required]],
+      Description: ['', [Validators.required]],
+      MultiplierValue: [1, [Validators.required,
+      // Validators.min(0.01),
+      Validators.min(1),
+      Validators.max(100000),
+      //  Validators.pattern("^[0-9]+(.[0-9]{0,2})?$")
+      Validators.pattern("^([0-9]+)$")
+      ]
+
+      ],
       IsActive: [0,],
     });
     this.panelTitle = "Edit UOM";
@@ -189,26 +216,6 @@ export class UomlistComponent implements OnInit {
     $('#modaldeleteconfimation').modal('show');
   }
 
-  onLoad(SearchBy: string, Search: string, IsActive: Boolean) {
-    this._spinner.show();
-    return this._uomService.getUOMS(SearchBy, Search, IsActive).subscribe(
-      (employeeList) => {
-        this.lstUOM = employeeList;
-        this.dtOptions = {
-          pagingType: 'full_numbers',
-          "language": {
-            "search": 'Filter',
-          },
-        };
-        this._spinner.hide();
-      },
-      (err) => {
-        this._spinner.hide();
-        console.log(err);
-      }
-    );
-  }
-
   SaveData(): void {
     if (this._authorizationGuard.CheckAcess("Uomlist", "ViewEdit")) {
       return;
@@ -219,6 +226,10 @@ export class UomlistComponent implements OnInit {
     }
     // stop here if form is invalid
     if (this.uomForm.invalid) {
+      return;
+    }
+    if (this.uomForm.pristine) {
+      this.alertService.error('Please change the value for any one control to proceed further!');
       return;
     }
     if (this.identity > 0) {
@@ -240,7 +251,7 @@ export class UomlistComponent implements OnInit {
       .subscribe(
         (data) => {
           if (data == true) {
-            this.alertService.error('This UOM has been registered already!');
+            this.alertService.error('This UOM is already registered');
           }
           else {
             this._spinner.show();
@@ -287,7 +298,7 @@ export class UomlistComponent implements OnInit {
       .subscribe(
         (data) => {
           if (data == true) {
-            this.alertService.error('This UOM has been registered already!');
+            this.alertService.error('This UOM is already registered');
           }
           else {
             this._spinner.show();
@@ -340,5 +351,74 @@ export class UomlistComponent implements OnInit {
       }
     );
   }
+
+  onLoad(SearchBy: string, Search: string, IsActive: Boolean) {
+    this._spinner.show();
+    return this._uomService.getUOMS(SearchBy, Search, IsActive).subscribe(
+      (lst) => {
+        
+        if (lst != null) { 
+          this.items = lst;
+          this.loadItems(); 
+        }
+        this._spinner.hide();
+      },
+      (err) => {
+        this._spinner.hide();
+        console.log(err);
+      }
+    );
+  }
+
+  //#region Paging Sorting and Filtering Start
+  public allowUnsort = true;
+  public sort: SortDescriptor[] = [{
+    field: 'UOM',
+    dir: 'asc'
+  }];
+  public gridView: GridDataResult;
+  public pageSize = 10;
+  public skip = 0;
+  private data: Object[];
+  private items: UOM[] = [] as any;
+  public state: State = {
+    skip: 0,
+    take: 5,
+
+    // Initial filter descriptor
+    filter: {
+      logic: 'and',
+      filters: [{ field: 'UOM', operator: 'contains', value: '' }]
+    }
+  };
+  public pageChange(event: PageChangeEvent): void {
+    this.skip = event.skip;
+    this.loadItems();
+  }
+
+  public sortChange(sort: SortDescriptor[]): void {
+    this.sort = sort;
+    this.loadSortItems();
+  }
+
+  private loadItems(): void {
+    this.gridView = {
+      data: this.items.slice(this.skip, this.skip + this.pageSize),
+      total: this.items.length
+    };
+  }
+  private loadSortItems(): void {
+    this.gridView = {
+      data: orderBy(this.items.slice(this.skip, this.skip + this.pageSize), this.sort),
+      total: this.items.length
+    };
+  }
+  public dataStateChange(state: DataStateChangeEvent): void {
+    this.state = state;
+    this.gridView = process(this.items, this.state);
+  }
+
+
+  //#endregion Paging Sorting and Filtering End
 
 }

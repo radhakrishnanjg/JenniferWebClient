@@ -7,7 +7,7 @@ import { AppError } from '../../common/app-error';
 import { BadRequest } from '../../common/bad-request';
 import { NotFoundError } from '../../common/not-found-error';
 
-import { Salesorder, Item, SalesorderItem, Result, SalesorderunsellableQty } from '../model/index';
+import { Salesorder,  SalesorderItem, Result, SalesorderunsellableQty } from '../model/index';
 import { AuthenticationService } from './authentication.service';
 import { environment } from '../../../environments/environment';
 

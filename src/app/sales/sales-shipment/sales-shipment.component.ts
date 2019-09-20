@@ -80,7 +80,7 @@ export class SalesShipmentComponent implements OnInit {
 
     'CourierTrackingID': {
       'required': 'This Field is required.',
-      'CourierTrackingIDInUse': 'This Tracking Id already Used'
+      'CourierTrackingIDInUse': 'This Tracking Id is already registered!'
     },
 
     'AirwayBillNumber': {
@@ -214,8 +214,7 @@ export class SalesShipmentComponent implements OnInit {
 
   Insert() {
     this.obj.SalesShipmentID = this.salesShipmentForm.controls['SalesShipmentID'].value;
-    this.obj.SalesInvoiceID = this.lstInvoiceNumber.
-      filter(a => a.InvoiceNumber == this.salesShipmentForm.controls['InvoiceNumber'].value)[0].SalesInvoiceID;
+    this.obj.InvoiceNumber = this.salesShipmentForm.controls['InvoiceNumber'].value;
     this.obj.CourierName = this.salesShipmentForm.controls['CourierName'].value;
     this.obj.CourierTrackingID = this.salesShipmentForm.controls['CourierTrackingID'].value;
     this.obj.AirwayBillNumber = this.salesShipmentForm.controls['AirwayBillNumber'].value;
@@ -225,14 +224,14 @@ export class SalesShipmentComponent implements OnInit {
     this._spinner.show();
     this._salesShipmentService.add(this.obj).subscribe(
       (data) => {
-        if (data && data == true) {
+        if (data != null && data.Flag == true) {
           this._spinner.hide();
-          this.alertService.success('Sales Shipment data has been added successful');
+          this.alertService.success(data.Msg);
           this._router.navigate(['/Salesshipmentlist']);
         }
         else {
           this._spinner.hide();
-          this.alertService.error('Sales Shipment creation failed!');
+          this.alertService.error(data.Msg);
           this._router.navigate(['/Salesshipmentlist']);
         }
       },

@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -28,8 +28,7 @@ export class CompanydetailsComponent implements OnInit {
   public value: Date = new Date(2000, 2, 10, 13, 30, 0);
 
   constructor(
-    private alertService: ToastrService,
-    private router: Router,
+    private alertService: ToastrService, 
     private fb: FormBuilder,
     private _router: Router,
     private aroute: ActivatedRoute,
@@ -54,7 +53,7 @@ export class CompanydetailsComponent implements OnInit {
   validationMessages = {
     'StoreName': {
       'required': 'This field is required.',
-      'StoreNameInUse': 'Store Name already used.',
+      'StoreNameInUse': 'Store Name is already registered!',
     },
     'BusinessLaunchDate': {
       'required': 'This field is required.',
@@ -62,7 +61,7 @@ export class CompanydetailsComponent implements OnInit {
     },
     'MarketPlaceSellerID': {
       'required': 'This field is required.',
-      'SellerIDInUse': 'Seller ID already used.',
+      'SellerIDInUse': 'Seller ID is already registered!',
     },
     'MarketPlaceAPIToken': {
       'required': 'This field is required.',
@@ -160,14 +159,16 @@ export class CompanydetailsComponent implements OnInit {
     });
   }
 
-  SaveData(): void {
-
+  SaveData(): void { 
     if (this._authorizationGuard.CheckAcess("Companydetaillist", "ViewEdit")) {
       return;
-    }
-
+    } 
     // stop here if form is invalid
     if (this.companyDetailsform.invalid) {
+      return;
+    }
+    if (this.companyDetailsform.pristine) {
+      this.alertService.error('Please change the value for any one control to proceed further!');
       return;
     }
     this.aroute.paramMap.subscribe(params => {
@@ -221,8 +222,7 @@ export class CompanydetailsComponent implements OnInit {
       this.obj.BusinessLaunchDate = this.companyDetailsform.controls['BusinessLaunchDate'].value.startDate._d.toLocaleString();
     } else {
       this.obj.BusinessLaunchDate = this.companyDetailsform.controls['BusinessLaunchDate'].value.startDate.toLocaleString();
-    }
-
+    } 
     this.obj.MarketPlaceSellerID = this.companyDetailsform.controls['MarketPlaceSellerID'].value;
     this.obj.MarketPlaceAPIToken = this.companyDetailsform.controls['MarketPlaceAPIToken'].value;
     this.obj.MarketplaceID = this.companyDetailsform.controls['MarketplaceID'].value;

@@ -26,7 +26,7 @@
     <div class="panel-heading">
       <div class="row">
         <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-          <span class="spanheader">
+          <span class="groupspanheader">
             {{panelTitle}}
           </span>
         </div>
@@ -63,7 +63,7 @@
           <div class="form-group" [ngClass]="{'has-error': formErrors.ItemName}">
             <label class="control-label" for="ItemName"> Name<span class="mandantory">*</span>
             </label>
-            <div class="">
+            <div >
               <input id="ItemName" type="text" class="form-control" formControlName="ItemName"
                 (blur)="logValidationErrors()" maxlength="250">
               <div class="help-block-rk">
@@ -77,7 +77,7 @@
         <div class="col-md-3 col-xs-12">
           <div class="form-group" [ngClass]="{'has-error': formErrors.ItemCode}">
             <label class="control-label" for="ItemCode"> Code <span class="mandantory">*</span></label>
-            <div class="">
+            <div >
               <input id="ItemCode" type="text" class="form-control" formControlName="ItemCode"
                 (blur)="logValidationErrors()" maxlength="50">
               <div class="help-block-rk">
@@ -91,7 +91,7 @@
         <div class="col-md-3 col-xs-12">
           <div class="form-group" [ngClass]="{'has-error': formErrors.BrandID}">
             <label class="control-label" for="BrandID">Brand <span class="mandantory">*</span></label>
-            <div class="">
+            <div >
               <select id="BrandID" class="form-control" formControlName="BrandID" (blur)="logValidationErrors()">
                 <option value="0" selected="selected">Select</option>
                 <option *ngFor="let c1 of lstBrand" value={{c1.BrandID}}>
@@ -112,7 +112,7 @@
           <div class="form-group" [ngClass]="{'has-error': formErrors.ProductGroupID}">
             <label class="control-label" for="ProductGroupID">Product Group <span class="mandantory">*</span>
             </label>
-            <div class="">
+            <div >
               <select id="ProductGroupID" class="form-control" formControlName="ProductGroupID"
                 (blur)="logValidationErrors()" (change)="onchangeProductGroupID($event.target.value)">
                 <option value="0" selected="selected">Select</option>
@@ -131,7 +131,7 @@
         <div class="col-md-3 col-xs-12">
           <div class="form-group" [ngClass]="{'has-error': formErrors.CategoryID}">
             <label class="control-label" for="CategoryID">Category <span class="mandantory">*</span></label>
-            <div class="">
+            <div >
               <select formControlName="CategoryID" id='CategoryID' type="select" class="form-control"
                 (blur)="logValidationErrors()" (change)="onchangeCategoryID($event.target.value)">
 
@@ -170,17 +170,14 @@
         <div class="col-md-3 col-xs-12">
           <div class="form-group" [ngClass]="{'has-error': formErrors.UOMID}">
             <label class="control-label" for="UOMID">UOM <span class="mandantory">*</span></label>
-            <div class="">
+            <div >
               <select id="UOMID" class="form-control" formControlName="UOMID" (blur)="logValidationErrors()"
                 (change)="onchangeUOMID($event.target.value)">
                 <option value="0" selected="selected">Select</option>
                 <option *ngFor="let c1 of lstUOM" value={{c1.UOMID}}>
                   {{c1.UOM}}
                 </option>
-              </select>
-              <div class="small">
-                {{UOMDescription}}
-              </div>
+              </select> 
               <div class="help-block-rk">
                 <span class="help-block" *ngIf="formErrors.UOMID">
                   {{formErrors.UOMID}}
@@ -195,7 +192,7 @@
           <div class="form-group" [ngClass]="{'has-error': formErrors.ItemColor}">
             <label class="control-label" for="ItemColor"> Color
             </label>
-            <div class="">
+            <div >
               <input id="ItemColor" type="text" class="form-control" formControlName="ItemColor"
                 (blur)="logValidationErrors()" maxlength="20">
               <div class="help-block-rk">
@@ -210,7 +207,7 @@
           <div class="form-group" [ngClass]="{'has-error': formErrors.ItemModel_Style}">
             <label class="control-label" for="ItemModel_Style"> Model/Style
             </label>
-            <div class="">
+            <div >
               <input id="ItemModel_Style" type="text" class="form-control" formControlName="ItemModel_Style"
                 (blur)="logValidationErrors()" maxlength="20">
               <div class="help-block-rk">
@@ -245,7 +242,7 @@
       <div class="row">
         <div class="col-md-2 col-xs-12">
           <label class="control-label custom-control-label chkbx" for="IsTaxExempted"> Is Tax Exempted</label>
-          <div class="">
+          <div >
             <input type="checkbox" formControlName="IsTaxExempted" value="" id="IsTaxExempted"
               (change)="onchangeIsTaxExempted($event)">
           </div>
@@ -253,7 +250,7 @@
         <div class="col-md-2 col-xs-12">
           <div class="form-group" [ngClass]="{'has-error': formErrors.TaxRate}">
             <label class="control-label" for="TaxRate">Tax Rate <span class="mandantory">*</span></label>
-            <div class="">
+            <div >
               <input id="TaxRate" type="text" class="form-control" formControlName="TaxRate"
                 (blur)="logValidationErrors()" maxlength="5">
 
@@ -268,7 +265,7 @@
         <div class="col-md-2 col-xs-12">
           <div class="form-group" [ngClass]="{'has-error': formErrors.Margin}">
             <label class=" control-label" for="Margin">Margin </label>
-            <div class="">
+            <div >
               <input id="Margin" type="text" class="form-control" formControlName="Margin"
                 (blur)="logValidationErrors()" maxlength="5"> 
               <div class="help-block-rk">
@@ -298,7 +295,7 @@
           <div class="form-group" [ngClass]="{'has-error': formErrors.HSNCode}">
             <label class="control-label" for="HSNCode">HSN Code
               <span class="mandantory">*</span></label>
-            <div class="">
+            <div >
               <input id="HSNCode" type="text" class="form-control" formControlName="HSNCode"  
                 (blur)="logValidationErrors()" mask="0000000000" maxlength="10">
               <div class="help-block-rk">
@@ -314,7 +311,7 @@
           <div class="form-group" [ngClass]="{'has-error': formErrors.EAN_UPCCode}">
             <label class="control-label" for="EAN_UPCCode">EAN/UPC Code
             </label>
-            <div class="">
+            <div >
               <input id="EAN_UPCCode" type="text" class="form-control" formControlName="EAN_UPCCode"
                 (blur)="logValidationErrors()" maxlength="50">
               <div class="help-block-rk">
@@ -330,11 +327,11 @@
     <div class="panel-footer">
       <div class="pull-right btn-toolbar">
         <button class="btn btn-primary" routerLink="/Itemlist" title="Cancel">
-          <!-- <i class="fa fa-arrow-left" aria-hidden="true"></i> -->
+         
           Cancel
         </button>
         <button class="btn btn-success" type="submit" prevent-double-submit [disabled]="itemform.invalid">
-          <!-- <i class="fa fa-save"></i> -->
+          
           Save
         </button>
       </div>
@@ -358,8 +355,7 @@
           <label class="control-label custom-control-label chkbx" for="ImagePathChange"> Change Image </label>
           <input type="checkbox" value="" id="ImagePathChange" (change)="onchangeImagePathChange($event)">
         </div>
-        <div class="form-group" *ngIf="ImagePathChange==false">
-          <!-- *ngIf="ImagePathChange==null"  -->
+        <div class="form-group" *ngIf="ImagePathChange==false"> 
           <img [src]="ImagePath" width="200" height="200" title="SKU Image" />
         </div>
         <div class="form-group" *ngIf="ImagePathChange==true || ImagePath==null">

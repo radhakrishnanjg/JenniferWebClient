@@ -98,7 +98,7 @@ export class ForgotpasswordComponent implements OnInit {
     this._accountService.ForgotPassword(EmailId, EmailOTP).subscribe(
       (data) => {
         if (data) {
-          this.alertService.success('Password Changed successfully' );
+          this.alertService.success('Password Changed successfully, Please check your email.!');
           this._router.navigate(['/ForgotPassword']);
         }
         else {

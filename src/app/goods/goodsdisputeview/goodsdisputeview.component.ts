@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { FormGroup,   } from '@angular/forms';
+import { ActivatedRoute,   } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { GoodsDisputeService } from '../../_services/service/goods-dispute.service';
-import { PrivateutilityService } from '../../_services/service/privateutility.service';
-import { AuthorizationGuard } from '../../_guards/Authorizationguard'
+import { PrivateutilityService } from '../../_services/service/privateutility.service'; 
 import { Goodsdispute, } from '../../_services/model';
 import { environment } from '../../../environments/environment';
 @Component({
@@ -35,7 +34,6 @@ export class GoodsdisputeviewComponent implements OnInit {
           .subscribe(
             (data: Goodsdispute) => {
               this.obj = data;
-
               let itempath1 = data.Image1 == null ? environment.defaultImageUrl : data.Image1;
               this.obj.Image1 = environment.basedomain + itempath1;
               this.obj.Image2 = environment.basedomain + data.Image2;

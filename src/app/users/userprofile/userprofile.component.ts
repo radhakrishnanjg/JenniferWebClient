@@ -91,12 +91,14 @@ export class UserprofileComponent implements OnInit {
 
     if (this.profileForm.invalid) {
       return;
+    } 
+    if (this.profileForm.pristine) {
+      this.alertService.error('Please change the value for any one control to proceed further!');
+      return;
     }
-    //this.obj.Filedata = this.selectedFile;
     this.obj.FirstName = this.profileForm.controls['FirstName'].value;
     this.obj.LastName = this.profileForm.controls['LastName'].value;
-    this.obj.IsMailRequired = this.profileForm.controls['IsMailRequired'].value;
-    this.obj.ImagePathData = this.selectedFile;
+    this.obj.IsMailRequired = this.profileForm.controls['IsMailRequired'].value;  
     this._spinner.show();
     this.userService.profileUpdate(this.obj).subscribe(
       (data) => {
@@ -159,7 +161,7 @@ export class UserprofileComponent implements OnInit {
             this._spinner.hide();
             let itempath = data.Msg.split('|')[1];
             this.ImagePath = environment.basedomain + itempath;
-            this.obj.ImagePath = itempath;
+            this.obj.ImagePath = itempath; 
             var encrypted = this.EncrDecr.set('Radha@123!()', JSON.stringify(this.obj));
             localStorage.setItem('currentJennifer1', encrypted);
             this.ImagePathChange = false;

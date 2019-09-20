@@ -61,62 +61,35 @@
   </div>
   <div class="panel-body">
 
+    <kendo-grid [data]="gridView" resizable="true" columnMenu="true" [pageSize]="pageSize" [skip]="skip" [pageable]="true" 
+      (pageChange)="pageChange($event)" [sortable]="{
+            allowUnsort: allowUnsort,
+            mode:  'single'
+            }" [sort]="sort" (sortChange)="sortChange($event)" [filterable]="true"
+      (dataStateChange)="dataStateChange($event)" [filter]="state.filter">
 
-    <div class="table-responsive">
-      <table datatable [dtOptions]="dtOptions" class="table table-bordered table-condensed " *ngIf="lst && lst.length">
-        <thead>
-          <tr>
-            <th>GRN Number</th>
-            <th>Inventory Type</th>
-            <th>Item Code</th>
-            <th>Item Description</th>
-            <th>Jennifer Item Serial Number</th>
+      <kendo-grid-column field="GRNNumber" title="GRN No.">
+      </kendo-grid-column>
+      <kendo-grid-column field="InventoryType" title="Inventory Type">
+      </kendo-grid-column>
+      <kendo-grid-column field="ItemCode" title="ItemCode">
+      </kendo-grid-column>
+      <kendo-grid-column field="ItemName" title="Item Description">
+      </kendo-grid-column>
+      <kendo-grid-column field="JenniferItemSerial" title="Jennifer Item Serial No.">
+      </kendo-grid-column>
+      <kendo-grid-column field="VendorItemSerialType" title="Vendor Item Serial Type">
+      </kendo-grid-column>
+      <kendo-grid-column field="VendorItemSerialNumber" title="Vendor Item Serial No.">
+      </kendo-grid-column>
 
-            <th>Vendor Item Serial Type</th>
-            <th>Vendor Item Serial Number</th>
-            <th class="text-center btnactions">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let user of lst">
-            <td>{{ user.GRNNumber}}</td>
-            <td>{{ user.InventoryType  }}</td>
-            <td>{{ user.ItemCode}}</td>
-            <td>{{ user.ItemName}}</td>
-            <td>{{ user.JenniferItemSerial  }}</td>
-
-            <td>{{ user.VendorItemSerialType}}</td>
-            <td>{{ user.VendorItemSerialNumber  }}</td>
-            <td class="text-center btnactions">
-              <i class="fa fa-trash bgred pointer" title="Delete" *ngIf="user.IsDeleteAllowed==true"
-                (click)="confirmDeleteid(user.GRNInwardID,user.JenniferItemSerial)"></i>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-
-      <table class="table table-bordered table-condensed" *ngIf="lst==null">
-        <thead>
-          <tr>
-            <th>GRN Number</th>
-            <th>Inventory Type</th>
-            <th>Item Code</th>
-            <th>Item Description</th>
-            <th>Jennifer Item Serial Number</th>
-
-            <th>Vendor Item Serial Type</th>
-            <th>Vendor Item Serial Number</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td colspan="7">
-              No Records Found.!
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+      <kendo-grid-column field="GRNNumber" title="Action" [class]="{'text-center': true}"  [filterable]="false" [sortable]="false" width="70">
+        <ng-template kendoGridCellTemplate let-obj>
+          <i class="fa fa-trash bgred pointer" title="Delete" *ngIf="obj.IsDeleteAllowed==true"
+            (click)="confirmDeleteid(obj.GRNInwardID,obj.JenniferItemSerial)"></i>
+        </ng-template>
+      </kendo-grid-column>
+    </kendo-grid> 
   </div>
 
   <div id="modaldeleteconfimation" class="modal fade" tabindex="-1" role="dialog"

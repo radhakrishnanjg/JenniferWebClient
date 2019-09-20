@@ -6,8 +6,7 @@ import { ContactService } from '../../_services/service/contact.service';
 import { Emailtemplate, Contact } from '../../_services/model';
 import { AuthorizationGuard } from '../../_guards/Authorizationguard'
 import { PrivateutilityService } from '../../_services/service/privateutility.service';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { concat } from 'rxjs/operators';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms'; 
 @Component({
   selector: 'app-emailconfig',
   templateUrl: './emailconfig.component.html',
@@ -84,20 +83,6 @@ export class EmailconfigComponent implements OnInit {
           this._spinner.hide();
         }
       );
-
-    this._spinner.show();
-    this._PrivateutilityService.getEmailTemplates()
-      .subscribe(
-        (data: Emailtemplate[]) => {
-          this.lstemailtemplates = data;
-          this._spinner.hide();
-        },
-        (err: any) => {
-          console.log(err);
-          this._spinner.hide();
-        }
-      );
-
     this.emailtemplateform = this.fb.group({
       EmailTemplateID: [0, [Validators.min(1)]],
     });
@@ -138,13 +123,11 @@ export class EmailconfigComponent implements OnInit {
           (data: Contact[]) => {
             if (data != null) {
               this.lstContact = data;
-              this.filterInternal('Internal');
-              this.filterExternal('External');
-              this.filterMarketPlace('MarketPlace');
+              this.filterInternal('INTERNAL');
+              this.filterExternal('EXTERNAL');
+              this.filterMarketPlace('MARKETPLACE');
               this.HtmlContent = this.lstemailtemplates.filter(a => a.EmailTemplateID == EmailTemplateID)[0].TemplateBody;
-              // this.lstContact.filter(a=>a.IsActive==true).forEach(
-              //   this.MailTo= a.
-              // );
+              
               this.MailTo = this.lstContact.filter(a => a.IsActive == true).map(a => a.Email).toString();
             }
             this._spinner.hide();
@@ -193,7 +176,7 @@ export class EmailconfigComponent implements OnInit {
         if (data != null && data.Flag == true) {
           this._spinner.hide();
           this.alertService.success(data.Msg);
-          this._router.navigate(['/Emailconfig']);
+          this.onchangeEmailTemplateID(this.obj.EmailTemplateID.toString());
         }
         else {
           this._spinner.hide();

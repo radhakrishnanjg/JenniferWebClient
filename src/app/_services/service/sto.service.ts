@@ -7,7 +7,7 @@ import { AppError } from '../../common/app-error';
 import { BadRequest } from '../../common/bad-request';
 import { NotFoundError } from '../../common/not-found-error';
 
-import { Sto, Result } from '../model/index';
+import { Sto, Stodetail,Result } from '../model/index';
 import { AuthenticationService } from './authentication.service';
 import { environment } from '../../../environments/environment';
 
@@ -39,6 +39,15 @@ export class StoService {
       .pipe(catchError(this.handleError));
   }
 
+  public getStockDiscountItems(STOID: number, IsDiscount: boolean): Observable<Stodetail[]> {
+    let currentUser = this.authenticationService.currentUserValue;
+    let CompanyDetailID = currentUser.CompanyDetailID;
+    return this.httpClient.get<Stodetail[]>(environment.baseUrl + `STO/GetStockDiscountItems?STOID=` + STOID
+      + `&CompanyDetailID=` + CompanyDetailID
+      + `&IsDiscount=` + IsDiscount)
+      .pipe(catchError(this.handleError));
+  }
+
   public generateSTONumber(): Observable<string> {
     let currentUser = this.authenticationService.currentUserValue;
     let CompanyDetailID = currentUser.CompanyDetailID;
@@ -52,6 +61,15 @@ export class StoService {
     objSto.CompanyID = currentUser.CompanyID;
     objSto.LoginId = currentUser.UserId;
     return this.httpClient.post<Result>(environment.baseUrl + `STO/Insert`, objSto)
+      .pipe(catchError(this.handleError));
+  }
+
+  public Update(objSto: Sto): Observable<Result> {
+    let currentUser = this.authenticationService.currentUserValue;
+    objSto.CompanyDetailID = currentUser.CompanyDetailID;
+    objSto.CompanyID = currentUser.CompanyID;
+    objSto.LoginId = currentUser.UserId;
+    return this.httpClient.post<Result>(environment.baseUrl + `STO/Update`, objSto)
       .pipe(catchError(this.handleError));
   }
 

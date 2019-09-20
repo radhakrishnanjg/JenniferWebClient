@@ -1,0 +1,97 @@
+
+Version 2.0
+    Date
+        Sep 5th th 2019
+    Descriptions
+        All common bugs has been fixed
+        checkall and uncheck all option added store selection and bulk option mapping in the user screen
+        Profile screen added for image upload,first name and last name and mail required to change
+        Approval details added in PO View screen
+        UOM multipler value resticted only numbers not a decimal values 
+        redirection link (Dashborad ) added if user click the logo.
+
+    Functions included
+        Master Bulk upload Screen fixed
+        Masters
+            Stores
+            Locations
+            UOMS
+            Brands
+            Productgroups
+            Catergories
+            SubCategories
+            Items
+        Suppliers/Vendors
+            Vendors
+            Vendor Warehouses
+            Vendor Items
+        Debtors/Customers
+            Customers
+            Customer Warehouses
+            Customer Items
+        Pricing 
+            Sales Rates
+            Discounts 
+            MarketPlace Fees
+        Procurements
+            Purchase Order 
+            PO Approval
+            Shipments
+            Purchase Invoices
+            BOE
+        GRN
+            Goods Receipts
+            Gooods Inward
+            Goods Storage
+            Goods Disputes
+            Inventory Details
+        Journals
+            Stock Transfers
+        Revenue
+            Sales Order 
+            Sale Order Approval
+            Picklists
+            Sales Shipments
+            Shipments Outwards 
+        Uploads
+            Master Data
+        Utilities
+            Users
+            Contacts 
+            Email Config
+            Receipts
+        Jennifer Admin
+            Companies
+            Menus 
+            MarketPlaces
+            Report Master
+        Download 
+            Inventory
+            Amazon
+            Compliance 
+            Analytics
+            Mis 
+            Others
+            Amazon MTR
+        
+Version 1.0.1
+    Functions included
+        Master Bulk upload Screen fixed
+    Date
+        Aug 12 th 2019   
+
+Version 1
+    Functions included
+        All the master 
+        procurement
+        sales
+        upload 
+        utilities
+        customers
+        vendors
+        pricing
+    Date
+        July 18 th 2019
+
+        
+

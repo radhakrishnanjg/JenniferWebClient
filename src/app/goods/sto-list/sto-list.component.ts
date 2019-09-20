@@ -1,17 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,OnDestroy  } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Router } from '@angular/router';
 import { Sto } from '../../_services/model';
 import { StoService } from '../../_services/service/sto.service';
 import { AuthorizationGuard } from '../../_guards/Authorizationguard'
 import * as moment from 'moment';
+import { process, State } from '@progress/kendo-data-query';
+import { GridDataResult, DataStateChangeEvent, PageChangeEvent } from '@progress/kendo-angular-grid';
+import { SortDescriptor, orderBy } from '@progress/kendo-data-query';
+import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-sto-list',
   templateUrl: './sto-list.component.html',
   styleUrls: ['./sto-list.component.css']
 })
-export class StoListComponent implements OnInit {
-  lst: Sto[];
+export class StoListComponent implements OnInit, OnDestroy {
   obj: Sto;
 
   dtOptions: DataTables.Settings = {};
@@ -44,29 +47,6 @@ export class StoListComponent implements OnInit {
     this.onLoad(this.SearchBy, this.SearchKeyword);
   }
 
-  onLoad(SearchBy: string, Search: string) {
-    let startdate: Date = this.selectedDateRange.startDate._d.toISOString().substring(0, 10);
-    let endDate: Date = this.selectedDateRange.endDate._d.toISOString().substring(0, 10);
-    this._spinner.show();
-    return this._stoService.search(SearchBy, Search, startdate, endDate).subscribe(
-      (data) => {
-        this.lst = data; 
-        this.dtOptions = {
-          pagingType: 'full_numbers',
-          "language": {
-            "search": 'Filter',
-          },
-        };
-
-        this._spinner.hide();
-      },
-      (error) => {
-        this._spinner.hide();
-        console.log(error);
-      }
-    )
-  }
-
   Search(): void {
     this.onLoad(this.SearchBy, this.SearchKeyword);
   }
@@ -81,11 +61,76 @@ export class StoListComponent implements OnInit {
     this.SearchKeyword = '';
   }
 
-  viewButtonClick(id: number) {
-    if (this._authorizationGuard.CheckAcess("StoList", "ViewEdit")) {
-      return;
-    }
-    this.router.navigate(['/Stoview', id]);
+  onLoad(SearchBy: string, Search: string) {
+    let startdate: Date = this.selectedDateRange.startDate._d.toISOString().substring(0, 10);
+    let endDate: Date = this.selectedDateRange.endDate._d.toISOString().substring(0, 10);
+    this._spinner.show();
+    return this._stoService.search(SearchBy, Search, startdate, endDate).subscribe(
+      (data) => {
+        if (data != null) {
+          this.items = data;
+          this.loadItems();
+        }
+        this._spinner.hide();
+      },
+      (error) => {
+        this._spinner.hide();
+        console.log(error);
+      }
+    )
   }
 
+  //#region Paging Sorting and Filtering Start
+  public allowUnsort = true;
+  public sort: SortDescriptor[] = [{
+    field: 'OrderID',
+    dir: 'asc'
+  }];
+  public gridView: GridDataResult;
+  public pageSize = 10;
+  public skip = 0;
+  private data: Object[];
+  private items: Sto[] = [] as any;
+  public state: State = {
+    skip: 0,
+    take: 5,
+
+    // Initial filter descriptor
+    filter: {
+      logic: 'and',
+      filters: [{ field: 'OrderID', operator: 'contains', value: '' }]
+    }
+  };
+  public pageChange(event: PageChangeEvent): void {
+    this.skip = event.skip;
+    this.loadItems();
+  }
+
+  public sortChange(sort: SortDescriptor[]): void {
+    this.sort = sort;
+    this.loadSortItems();
+  }
+
+  private loadItems(): void {
+    this.gridView = {
+      data: this.items.slice(this.skip, this.skip + this.pageSize),
+      total: this.items.length
+    };
+  }
+  private loadSortItems(): void {
+    this.gridView = {
+      data: orderBy(this.items.slice(this.skip, this.skip + this.pageSize), this.sort),
+      total: this.items.length
+    };
+  }
+  public dataStateChange(state: DataStateChangeEvent): void {
+    this.state = state;
+    this.gridView = process(this.items, this.state);
+  }
+ 
+  //#endregion Paging Sorting and Filtering End
+  private subscriptions: Subscription[] = [];
+  ngOnDestroy() {
+    this.subscriptions.forEach(s => s.unsubscribe());
+  }
 }

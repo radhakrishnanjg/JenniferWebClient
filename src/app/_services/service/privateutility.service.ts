@@ -11,8 +11,8 @@ import {
   CompanyRegister, Companydetails, Marketplace,
   Brand, Category, SubCategory,
   UOM, ProductGroup, Dropdown,
-  Vendor, Customer, Item, Location, Emailtemplate,
-  Goodsinward, Customerwarehouse, Salesorder, InvoiceNumber,
+  Vendor, Vendorwarehouse, Customer, Item, Location, Emailtemplate,
+  Customerwarehouse, InvoiceNumber,
   PaymentTermType, Salesratecard, Discount, Result
 } from '../../_services/model';
 
@@ -22,19 +22,6 @@ import { environment } from '../../../environments/environment';
 })
 
 export class PrivateutilityService {
-  companies: CompanyRegister[];
-  companydetails: Companydetails[];
-  marketplaces: Marketplace[];
-  lstBrand: Brand[];
-  lstCategory: Category[];
-  lstSubCategory: SubCategory[];
-  lstUOM: UOM[];
-  lstProductGroup: ProductGroup[];
-  lstDropdown: Dropdown[];
-  lstVendor: Vendor[];
-  lstCustomer: Customer[];
-  lstItem: Item[];
-  lstLocation: Location[];
   constructor(private httpClient: HttpClient,
     private authenticationService: AuthenticationService) {
   }
@@ -253,27 +240,28 @@ export class PrivateutilityService {
       .pipe(catchError(this.handleError));
   }
 
-  public getSTOFromLocations(): Observable<Location[]> {
+  public getSTOFromLocations(InventoryType: string): Observable<Location[]> {
     let currentUser = this.authenticationService.currentUserValue;
     let CompanyID = currentUser.CompanyID;
-    return this.httpClient.get<Location[]>(environment.baseUrl + `PrivateUtility/GetSTOFromLocations?CompanyID=` + CompanyID)
+    return this.httpClient.get<Location[]>(environment.baseUrl + `PrivateUtility/GetSTOFromLocations?CompanyID=` + CompanyID + `&InventoryType=` + InventoryType)
       .pipe(catchError(this.handleError));
   }
 
-  public getSTOToLocations(LocationID: number): Observable<Location[]> {
+  public getSTOToLocations(LocationID: number, InventoryType: string): Observable<Location[]> {
     let currentUser = this.authenticationService.currentUserValue;
     let CompanyID = currentUser.CompanyID;
     return this.httpClient.get<Location[]>(environment.baseUrl +
       `PrivateUtility/GetSTOToLocations?CompanyID=` + CompanyID
-      + `&LocationID=` + LocationID)
+      + `&LocationID=` + LocationID
+      + `&InventoryType=` + InventoryType)
       .pipe(catchError(this.handleError));
   }
 
-  public getCheckSTODateValidation(STODate: string): Observable<any> {
+  public getCheckSTODateValidation(STODate: Date): Observable<Result> {
     let currentUser = this.authenticationService.currentUserValue;
     let CompanyID = currentUser.CompanyID;
 
-    return this.httpClient.get<any>(environment.baseUrl + `PrivateUtility/GetCheckSTODateValidation?CompanyID=` + CompanyID
+    return this.httpClient.get<Result>(environment.baseUrl + `PrivateUtility/GetCheckSTODateValidation?CompanyID=` + CompanyID
       + `&STODate=` + STODate)
       .pipe(catchError(this.handleError));
   }
@@ -306,7 +294,33 @@ export class PrivateutilityService {
       .pipe(catchError(this.handleError));
   }
 
+  public getCurrentDate(): Observable<Date> {
+    return this.httpClient.get<Date>(environment.baseUrl + `PrivateUtility/GetCurrentDate`)
+      .pipe(catchError(this.handleError));
+  }
 
+  public getSTOGRNLocation(): Observable<Location[]> {
+    let currentUser = this.authenticationService.currentUserValue;
+    let CompanyID = currentUser.CompanyID;
+    return this.httpClient.get<Location[]>(environment.baseUrl + `PrivateUtility/GetSTOGRNLocation?CompanyID=` + CompanyID)
+      .pipe(catchError(this.handleError));
+  }
+
+  public getSTOGRNVendorWarehouse(): Observable<Vendorwarehouse[]> {
+    let currentUser = this.authenticationService.currentUserValue;
+    let CompanyID = currentUser.CompanyID;
+    return this.httpClient.get<Vendorwarehouse[]>(environment.baseUrl + `PrivateUtility/GetSTOGRNVendorWarehouse?CompanyID=` + CompanyID)
+      .pipe(catchError(this.handleError));
+  }
+
+  public getAllCustomersBasedType(customertype: string): Observable<Customer[]> {
+    let currentUser = this.authenticationService.currentUserValue;
+    let CompanyID = currentUser.CompanyID;
+    return this.httpClient.get<Customer[]>(environment.baseUrl +
+      `PrivateUtility/GetAllCustomersBasedType?CompanyID=` + CompanyID
+      + `&Type=` + customertype)
+      .pipe(catchError(this.handleError));
+  }
 
   private handleError(error: HttpErrorResponse) {
 

@@ -1,14 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { PrivateutilityService } from '../../_services/service/privateutility.service';
+import { Component, OnInit } from '@angular/core'; 
 import { SalesorderService } from '../../_services/service/salesorder.service';
-import { FormGroup, FormBuilder, } from '@angular/forms';
+import { FormGroup, } from '@angular/forms';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { AuthorizationGuard } from '../../_guards/Authorizationguard';
 import {
-  Salesorder, Brand, ProductGroup, Category, SubCategory,
-  Item, UOM, Customer, Customerwarehouse, Dropdown, PaymentTermType,
-  SalesorderItem
+  Salesorder, 
 } from '../../_services/model';
 import * as moment from 'moment';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -39,8 +36,7 @@ export class SalesorderapprovalComponent implements OnInit {
     private _salesService: SalesorderService, 
     private _authorizationGuard: AuthorizationGuard,
     private _spinner: NgxSpinnerService,
-    public _alertService: ToastrService,
-    private fb: FormBuilder,
+    public _alertService: ToastrService, 
     private router: Router,
     private aroute: ActivatedRoute,
   ) {
@@ -63,7 +59,7 @@ export class SalesorderapprovalComponent implements OnInit {
               this.TotalCaseSize = data.lstItem.reduce((acc, a) => acc + a.Units, 0);
               this.TotalMultiplierValue = data.lstItem.reduce((acc, a) => acc + a.MultiplierValue, 0);
               this.TotalQty = data.lstItem.reduce((acc, a) => acc + a.Qty, 0);
-              this.TotalSellingPrice = data.lstItem.reduce((acc, a) => acc + a.SellingPrice, 0);
+              this.TotalSellingPrice = data.lstItem.reduce((acc, a) => acc + a.ItemRate, 0);
               this.TotalMRP = data.lstItem.reduce((acc, a) => acc + a.MRP, 0);
               this.TotalShippingCharges = data.lstItem.reduce((acc, a) => acc + a.ShippingCharges, 0);
               this.TotalDiscountamt = data.lstItem.reduce((acc, a) => acc + a.Discountamt, 0);
@@ -78,10 +74,12 @@ export class SalesorderapprovalComponent implements OnInit {
       }
     });
   }
-
-
-
+ 
   saveData(buttonType): void {
+    if (this._authorizationGuard.CheckAcess("Salesorderapprovallist", "ViewEdit")) {
+      return;
+    }
+
     this.aroute.paramMap.subscribe(params => {
       this.identity = +params.get('id');
     });

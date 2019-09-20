@@ -26,7 +26,7 @@
     <div class="panel-heading">
       <div class="row">
         <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-          <span class="spanheader">
+          <span class="groupspanheader">
             {{panelTitle}}
           </span>
         </div>
@@ -56,11 +56,6 @@
       <div class="form-group" [ngClass]="{'has-error': formErrors.MarketplaceID}">
         <label class="col-sm-4 control-label" for="MarketplaceID">Market Place <span class="mandantory">*</span></label>
         <div class="col-sm-2">
-          <!-- <select formControlName="MarketplaceID" type="select" class="form-control" (blur)="logValidationErrors()">
-                  <option value="Amazon">Amazon
-                  <option value="Flipkart">Flipkart
-                </select> -->
-
           <select id="MarketplaceID" class="form-control" formControlName="MarketplaceID" (blur)="logValidationErrors()"
             maxlength="30">
             <option value="0" selected="selected">Select</option>
@@ -95,7 +90,7 @@
           <div class='input-group date'>
             <input id=calendar-input type="text" ngxDaterangepickerMd [autoApply]="true" [maxDate]="maxDate"
               [singleDatePicker]="true" class="form-control" id="BusinessLaunchDate"
-              formControlName="BusinessLaunchDate" (blur)="logValidationErrors()" [locale]="{format: 'MM-DD-YYYY'}"
+              formControlName="BusinessLaunchDate" (change)="logValidationErrors()" [locale]="{format: 'MM-DD-YYYY'}"
               (datesUpdated)="logValidationErrors()" maxlength="10" />
             <label class="fa fa-calendar"></label>
           </div>
@@ -125,24 +120,17 @@
             class="mandantory">*</span></label>
         <div class="col-sm-4">
           <input id="MarketPlaceAPIToken" type="text" class="form-control" formControlName="MarketPlaceAPIToken"
-            (blur)="logValidationErrors()" maxlength="150">
-          <div class="help-block-rk"> <span class="help-block" *ngIf="formErrors.MarketPlaceAPIToken">
+            (blur)="logValidationErrors()" maxlength="150" *ngIf="action">
+          <div *ngIf="!action">
+            ********************************
+          </div>
+          <div class="help-block-rk">
+            <span class="help-block" *ngIf="formErrors.MarketPlaceAPIToken">
               {{formErrors.MarketPlaceAPIToken}}
             </span>
           </div>
         </div>
       </div>
-
-
-      <!-- <div class="form-group" *ngIf="!action">
-          <label class="col-sm-4 control-label custom-control-label" for="IsActive"> Is Active </label>
-          <div class="col-sm-6">
-            <label class="switch">
-              <input type="checkbox" checked formControlName="IsActive" id="IsActive">
-              <span class="slider round"></span>
-            </label>
-          </div>
-        </div> -->
     </div>
     <div class="panel-footer  ">
       <div class="pull-right btn-toolbar">

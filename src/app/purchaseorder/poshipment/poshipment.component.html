@@ -26,7 +26,7 @@
   <div class="panel-heading">
     <div class="row">
       <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-        <span class="spanheader">
+        <span class="groupspanheader">
           {{panelTitle}}
         </span>
       </div>
@@ -39,8 +39,7 @@
   </div>
   <form autocomplete="off" [formGroup]="poshipmentForm" (ngSubmit)="uploadFiles()" class="form-horizontal">
     <div class="panel-body">
-      <div class="row">
-
+      <div class="row"> 
         <div class="col-sm-4">
           <div class="form-group  " [ngClass]="{'has-error': formErrors.POID}" *ngIf="action">
             <div class="col-sm-12 inputlevel">
@@ -152,7 +151,7 @@
         <div class=" col-md-4">
           <div class="form-group" [ngClass]="{'has-error': formErrors.CarpID}">
             <div class="col-sm-12 inputlevel">
-              <label class="control-label" for="CarpID">Carp ID <span class="mandantory">*</span></label>
+              <label class="control-label" for="CarpID">Carp ID  </label>
 
               <input id="CarpID" type="text" class="form-control" formControlName="CarpID"
                 (blur)="logValidationErrors()" maxlength="50">
@@ -168,7 +167,7 @@
         <div class=" col-md-4">
           <div class="form-group" [ngClass]="{'has-error': formErrors.Appointment}">
             <div class="col-sm-12 inputlevel">
-              <label class="control-label" for="Appointment"> Appointment <span class="mandantory">*</span></label>
+              <label class="control-label" for="Appointment"> Appointment  </label>
 
               <div class='input-group date'>
                 <input type="text" ngxDaterangepickerMd [minDate]="MinDate" [timePicker]="true"
@@ -188,7 +187,7 @@
         <div class=" col-md-4" *ngIf="action">
           <div class="form-group inputlevel" [ngClass]="{'has-error': formErrors.FileData}">
             <div class="col-sm-12 inputlevel">
-              <label class="control-label" for="SelectSelect">File <span class="mandantory">*</span> </label>
+              <label class="control-label" for="SelectSelect">File  <span *ngIf="(ShipmentType=='Manual')" class="mandantory">*</span> </label>
 
               <input type="file" id="file" (change)="onFileChanged($event)" multiple="multiple"
                 formControlName="FileData" accept="application/pdf">
@@ -217,7 +216,7 @@
         <div class=" col-md-12">
           <div class="form-group" [ngClass]="{'has-error': formErrors.Remarks}">
             <div class="col-sm-12 inputlevel">
-              <label class=" control-label" for="Remarks">Remarks <span class="mandantory">*</span></label>
+              <label class=" control-label" for="Remarks">Remarks  </label>
 
               <textarea id="Remarks" type="text" row="5" maxlength="250" class="form-control" formControlName="Remarks"
                 (blur)="logValidationErrors()"> </textarea>
@@ -229,13 +228,13 @@
         </div>
 
         <div class="col-sm-12">
-          <span class="spanheader"> Order Items</span>
+          <span class="groupspanheader"> Order Items</span>
           <table class="table table-bordered table-condensed " *ngIf="lstpoorderitem && lstpoorderitem.length">
             <thead>
               <tr>
                 <th>ItemCode</th>
-                <th>POQty</th>
-                <th>AvailableQty</th>
+                <th>PO Qty</th>
+                <th>Available Qty</th>
                 <th>Qty</th>
                 <th>Location </th>
                 <th>PO Date</th>
@@ -271,8 +270,8 @@
             <thead>
               <tr>
                 <th>ItemCode</th>
-                <th>POQty</th>
-                <th>AvailableQty</th>
+                <th>PO Qty</th>
+                <th>Available Qty</th>
                 <th>Shipment Qty</th>
                 <th>Location </th>
                 <th>PO Date</th>

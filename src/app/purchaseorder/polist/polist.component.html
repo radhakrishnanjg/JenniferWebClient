@@ -37,8 +37,7 @@
               <option value="ByPODate">PO Date</option>
             </select>
           </div>
-          <div class="col-md-4 nopading_loct" *ngIf="( SearchBy=='ByPONumber'  || SearchBy=='ByVendor'  || SearchBy=='ByLocation' 
-          || SearchBy=='ByItemCode' || SearchBy=='ByOtherReferenceNo' )">
+          <div class="col-md-4 nopading_loct" *ngIf="(SearchBy!='ByPODate')">
             <input [(ngModel)]="SearchKeyword" type="text" class="serchcurv form-control btn-group">
           </div>
           <div class="col-md-4 nopading_loct" *ngIf="(SearchBy=='ByPODate')">
@@ -68,69 +67,46 @@
     </div>
   </div>
   <div class="panel-body">
-    <div class="table-responsive">
-      <table datatable [dtOptions]="dtOptions" class="table table-bordered table-condensed " *ngIf="lst && lst.length">
-        <thead>
-          <tr>
-            <th>PO No.</th>
-            <th>PO Date </th>
-            <th>Vendor </th>
-            <th>Shipment ID </th>
-            <th>PO Status</th>
+    <kendo-grid [data]="gridView" resizable="true" columnMenu="true"  [pageSize]="pageSize" [skip]="skip"
+      [pageable]="true" (pageChange)="pageChange($event)" [sortable]="{
+          allowUnsort: allowUnsort,
+          mode:  'single'
+          }" [sort]="sort" (sortChange)="sortChange($event)" [filterable]="true"
+      (dataStateChange)="dataStateChange($event)" [filter]="state.filter">
 
-            <th>Approval</th>
-            <th class="text-center btnactions">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let obj of lst">
-            <td>{{ obj.PONumber }}</td>
-            <td>{{ obj.PODate | date:'MM-dd-yyyy HH:mm' }}</td>
-            <td>{{ obj.VendorName }}</td>
-            <td>{{obj.ShipmentNumber}}</td>
-            <td>{{ obj.DeliveryStatus }}</td>
-            <td>{{ obj.ApprovalStatus }}</td>
-            <td class="text-center btnactions">
-              <i class="fa fa-edit bgblue pointer" (click)="editButtonClick(obj.POID)" title="Edit"
-                *ngIf="!(obj.ApprovalStatus == 'Approved')"></i>
-              &nbsp;
-              <i class="fa fa-eye bgblue pointer" (click)="viewButtonClick(obj.POID)" title="View"></i>
+      <kendo-grid-column field="PONumber" title="PO No.">
+      </kendo-grid-column>
+      <kendo-grid-column field="PODate" title="PO Date" filter="date" format="{0:d}" [filterable]="false">
+        <ng-template kendoGridCellTemplate let-dataItem>
+          {{ dataItem.PODate | date :"MM-dd-yyyy HH:mm" }}
+        </ng-template>
+      </kendo-grid-column>
+      <kendo-grid-column field="VendorName" title="Vendor Name">
+      </kendo-grid-column>
+      <kendo-grid-column field="ShipmentNumber" title="Shipment No.">
+      </kendo-grid-column>
+      <kendo-grid-column field="ApprovalStatus" title="Approval Status">
+      </kendo-grid-column>
+
+      <kendo-grid-column field="POID" title="Action" [class]="{'text-center': true}" [filterable]="false"
+        [sortable]="false" width="80">
+        <ng-template kendoGridCellTemplate let-obj>
+          <i class="fa fa-edit bgblue pointer" [routerLink]="['/PO', obj.POID]" title="Edit"
+            *ngIf="!(obj.ApprovalStatus == 'Approved')"></i>
+          &nbsp;
+          <i class="fa fa-eye bgblue pointer" (click)="viewButtonClick(obj.POID)" title="View"></i>
 
 
-              &nbsp;
-              <i class="fa fa-trash bgred pointer" *ngIf="!(obj.ApprovalStatus == 'Approved')" title="Delete"
-                (click)="confirmDeleteid(obj.POID,obj.LocationID,obj.PONumber)"></i>
-              &nbsp;
-              <i class="fa fa-plus bgblue pointer" *ngIf="(obj.ApprovalStatus == 'Approved')"
-                (click)="AddNewPurchaseButtonClick(obj.POID)" title="Add New Purchase"></i>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+          &nbsp;
+          <i class="fa fa-trash bgred pointer" *ngIf="!(obj.ApprovalStatus == 'Approved')" title="Delete"
+            (click)="confirmDeleteid(obj.POID,obj.LocationID,obj.PONumber)"></i>
+          &nbsp;
+          <i class="fa fa-plus bgblue pointer" *ngIf="(obj.ApprovalStatus == 'Approved' && obj.IsPOClosed==false)"
+            (click)="AddNewPurchaseButtonClick(obj.POID)" title="Add New Purchase"></i>
 
-      <table class="table table-bordered table-condensed" *ngIf="lst==null">
-        <thead>
-          <tr>
-            <th>PONumber</th>
-            <th>PODate </th>
-            <th>Vendor </th>
-            <th>ShipmentID </th>
-            <th>POStatus</th>
-
-            <th>Approval</th>
-            <th class="text-center btnactions">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td colspan="7">
-              No Records Found.!
-            </td>
-          </tr>
-        </tbody>
-      </table>
-
-    </div>
+        </ng-template>
+      </kendo-grid-column>
+    </kendo-grid>
   </div>
   <div id="modaldeleteconfimation" class="modal fade" tabindex="-1" role="dialog"
     aria-labelledby="modaldeleteconfimation" aria-hidden="true">

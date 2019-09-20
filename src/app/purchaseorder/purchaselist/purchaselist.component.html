@@ -58,71 +58,46 @@
         </div>
       </div>
       <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 text-right">
-        <!-- <button class="btn btn-primary" routerLink="/Location/Create" title="Add New">
-          Add New
-        </button> -->
+
       </div>
     </div>
   </div>
 
   <div class="panel-body">
-    <div class="table-responsive">
-      <table datatable [dtOptions]="dtOptions" class="table table-bordered table-condensed table-striped"
-        *ngIf="lst && lst.length">
-        <thead>
-          <tr>
-            <th>PO No.</th>
-            <th>Invoice No.</th>
-            <th>Purchase Date</th>
-            <th>Vendor Warehouse</th>
-            <th>Location</th>
 
-            <th class="text-center btnactions">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let loc of lst">
-            <td>{{ loc.PONumber }}</td>
-            <td>{{ loc.InvoiceNumber }}</td>
-            <td>{{ loc.InvoiceDate | date :"MM-dd-yyyy HH:mm"}}</td>
-            <td>{{ loc.WarehouseName }}</td>
-            <td>{{ loc.LocationName }}</td>
-            <td class="text-center">
-              <i class="fa fa-edit bgblue pointer" (click)="editButtonClick(loc.PurchaseID,loc.POID)" title="Edit"></i>
-              &nbsp;
-              <i class="fa fa-eye bgblue pointer" (click)="viewButtonClick(loc.PurchaseID,loc.POID)" title="View"></i>
-              &nbsp;
-              <i class="fa fa-trash bgred pointer" (click)="confirmDeleteid(loc.PurchaseID,loc.InvoiceNumber)"
-                title="Delete"></i>
-                &nbsp;
-              <i *ngIf="loc.ISBOE" class="fa fa-plus bgblue pointer" (click)="NewBOW(loc.PurchaseID)"
-                title="New BOE"></i>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+    <kendo-grid [data]="gridView" resizable="true" columnMenu="true" [pageSize]="pageSize" [skip]="skip" [pageable]="true"
+      (pageChange)="pageChange($event)" [sortable]="{
+          allowUnsort: allowUnsort,
+          mode:  'single'
+          }" [sort]="sort" (sortChange)="sortChange($event)" [filterable]="true"
+      (dataStateChange)="dataStateChange($event)" [filter]="state.filter">
 
-      <table class="table table-bordered table-condensed table-striped" *ngIf="lst==null">
-        <thead>
-          <tr>
-            <th>PO No.</th>
-            <th>Invoice No.</th>
-            <th>Purchase Date</th>
-            <th>Vendor Warehouse</th>
-            <th>Location</th>
-
-            <th class="text-center btnactions">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td colspan="6">
-              No Records Found.!
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+      <kendo-grid-column field="PONumber" title="PO No.">
+      </kendo-grid-column>
+      <kendo-grid-column field="InvoiceNumber" title="Invoice No.">
+      </kendo-grid-column>
+      <kendo-grid-column field="InvoiceDate" title="Invoice Date" filter="date" format="{0:d}" [filterable]="false">
+        <ng-template kendoGridCellTemplate let-dataItem>
+          {{ dataItem.InvoiceDate | date :"MM-dd-yyyy HH:mm" }}
+        </ng-template>
+      </kendo-grid-column>
+      <kendo-grid-column field="WarehouseName" title="Vendor Warehouse">
+      </kendo-grid-column>
+      <kendo-grid-column field="LocationName" title="Location">
+      </kendo-grid-column>
+      <kendo-grid-column field="PurchaseID" title="Action" [class]="{'text-center': true}"  [filterable]="false" [sortable]="false"  width="100">
+        <ng-template kendoGridCellTemplate let-obj>
+          <i class="fa fa-edit bgblue pointer" [routerLink]="['/Purchase', obj.PurchaseID, obj.POID]" title="Edit"></i>
+          &nbsp;
+          <i class="fa fa-eye bgblue pointer" (click)="viewButtonClick(obj.PurchaseID,obj.POID)" title="View"></i>
+          &nbsp;
+          <i class="fa fa-trash bgred pointer" title="Delete"
+            (click)="confirmDeleteid(obj.PurchaseID,obj.InvoiceNumber)"></i>
+          &nbsp;
+          <i class="fa fa-plus bgblue pointer" *ngIf="(obj.ISBOE)" (click)="NewBOW(obj.PurchaseID)" title="New BOE"></i>
+        </ng-template>
+      </kendo-grid-column>
+    </kendo-grid> 
   </div>
 
   <div id="modaldeleteconfimation" class="modal fade" tabindex="-1" role="dialog"

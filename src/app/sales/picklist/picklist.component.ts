@@ -94,12 +94,13 @@ export class PicklistComponent implements OnInit {
   public onJenniferItemSerialChange(value): void {
     if (value != undefined && value != "") {
       if (this.lstPicklistdetail.filter(a => a.JenniferItemSerial == value).length > 0) {
-        this.alertService.error("Jennifer Item Serial Number is already added.");
+        this.alertService.error("Jennifer Item Serial Number is already added in the Scanned list.!");
         return;
       }
       else {
         this.objPicklistdetail = new Picklistdetail();
         this.objPicklistdetail.JenniferItemSerial = value;
+        this.objPicklistdetail.Flag = false;
         this.lstPicklistdetail.push(this.objPicklistdetail);
         // this.JenniferItemSerial = '';
         $('#JenniferItemSerial').val('');
@@ -134,7 +135,6 @@ export class PicklistComponent implements OnInit {
       let removeqty = scannedqty - this.PicklistQty;
       this.lstPicklistdetail.splice(removeqty, this.PicklistQty);
     }
-    
   }
 
   Process(): void {
@@ -150,32 +150,34 @@ export class PicklistComponent implements OnInit {
       this.alertService.error('Jennifer Item Serial Numbers scanned quantity is greater than Picklist Qty.Please remove some Numbers.!');
       return;
     }
-
-    this.objPicklistheader.PickListNumber = this.identity;
-    this.objPicklistheader.lstSerialNums = this.lstPicklistdetail;
-    this._spinner.show();
-    this._picklistService.process(this.objPicklistheader).subscribe(
-      (data1) => {
-        if (data1 != null) {
-          this.lstPicklistdetail = data1.lstSerialNums;
-          this.lstPicklistsummary = data1.lstSummary;
-          this.Btnenable = true;
-          this.dtOptions = {
-            "scrollY": "200px",
-            "scrollCollapse": true,
-            "paging": false,
-            "ordering": false,
-            "searching": false
-          };
+    else { 
+      this.objPicklistheader.PickListNumber = this.identity;
+      this.objPicklistheader.lstSerialNums = this.lstPicklistdetail;
+      this._spinner.show();
+      this._picklistService.process(this.objPicklistheader).subscribe(
+        (data1) => {
+          if (data1 != null) {
+            this.lstPicklistdetail = data1.lstSerialNums;
+            this.lstPicklistsummary = data1.lstSummary;
+            this.Btnenable = true;
+            this.dtOptions = {
+              "scrollY": "200px",
+              "scrollCollapse": true,
+              "paging": false,
+              "ordering": false,
+              "searching": false
+            };
+          }
+          this.CheckCount();
+          this._spinner.hide();
+        },
+        (err) => {
+          this._spinner.hide();
+          console.log(err);
         }
-        this.CheckCount();
-        this._spinner.hide();
-      },
-      (err) => {
-        this._spinner.hide();
-        console.log(err);
-      }
-    );
+      );
+    }
+
   }
 
   SaveData(): void {
@@ -194,8 +196,7 @@ export class PicklistComponent implements OnInit {
     this.aroute.paramMap.subscribe(params => {
       this.identity = +params.get('id');
     });
-    if (this.identity > 0) {
-
+    if (this.identity > 0) { 
       if (this.Status == "Draft") {
         this.SaveAsDraft();
       }

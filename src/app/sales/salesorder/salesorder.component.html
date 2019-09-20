@@ -26,9 +26,9 @@
     <div class="panel-heading">
       <div class="row">
         <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-          <span class="spanheader">
-            {{panelTitle}}  <span *ngIf="!action">
-              -  {{objSalesOrder?.ApprovalStatus}}
+          <span class="groupspanheader">
+            {{panelTitle}} <span *ngIf="!action">
+              - {{objSalesOrder?.ApprovalStatus}}
             </span>
           </span>
         </div>
@@ -54,7 +54,7 @@
     </div>
 
     <div class="panel-body">
-      <!-- <span class="groupspanheader"> General Information </span> -->
+      
       <div class="row">
 
         <div class="col-md-3 col-xs-12">
@@ -72,7 +72,6 @@
                 <span class="help-block" *ngIf="formErrors.CustomerID">
                   {{formErrors.CustomerID}}
                 </span>
-                <!-- {{IsDisableMasterControls}} -->
               </div>
             </div>
             <div *ngIf="!action">
@@ -97,7 +96,7 @@
             <div *ngIf="action">
               <div class='input-group date'>
                 <input type="text" ngxDaterangepickerMd [timePicker]="true" [singleDatePicker]="true"
-                  class="form-control" formControlName="OrderDate" id="OrderDate" (blur)="logValidationErrors()"
+                  class="form-control" formControlName="OrderDate" id="OrderDate" (change)="logValidationErrors()"
                   [locale]="{format: 'MM-DD-YYYY HH:mm'}" [autoApply]="true" (datesUpdated)="OrderDateUpdated($event)"
                   *ngIf="!hideOrderDate" [minDate]="orderMinDate" [maxDate]="OrderMaxDate" />
                 <label class="fa fa-calendar" *ngIf="!hideOrderDate"></label>
@@ -111,7 +110,7 @@
               </div><span class="help-block" *ngIf="formErrors.OrderDate">
                 {{formErrors.OrderDate}}
               </span>
-            </div> 
+            </div>
             <div *ngIf="!action">
               {{objSalesOrder?.OrderDate | date:'MM-dd-yyyy HH:mm' }}
             </div>
@@ -207,13 +206,6 @@
           <div class="form-group" [ngClass]="{'has-error': formErrors.InventoryType}">
             <label class="control-label" for="InventoryType">Inventory Type <span class="mandantory">*</span></label>
             <div *ngIf="action">
-              <!-- <select id="InventoryType" class="form-control" formControlName="InventoryType" type="select"
-                (blur)="logValidationErrors()">
-                <option value="" selected="selected">Select</option>
-                <option *ngFor="let dis of lstInventoryType" value={{dis.DropdownValue}}>
-                  {{dis.DropdownValue}}
-                </option>
-              </select> -->
               <input type="text" id="InventoryType" class="form-control" formControlName="InventoryType"
                 disabled="disabled">
               <div class="help-block-rk">
@@ -350,7 +342,7 @@
     </div>
 
     <div>
-      <span class="spanheader">Order Items</span>
+      <span class="groupspanheader">Order Items</span>
     </div>
     <div *ngIf="action">
       <kendo-grid [data]="gridData" (edit)="editHandler($event)" (cancel)="cancelHandler($event)"
@@ -366,12 +358,12 @@
           <ng-template kendoGridEditTemplate let-dataItem="dataItem" let-column="column" let-formGroup="itemFormGroup">
             <kendo-dropdownlist #ddl="popupAnchor" popupAnchor [data]="itemList" textField="ItemCode"
               valueField="ItemID" [valuePrimitive]="true" [formControl]="itemFormGroup.get(column.field)"
-              (valueChange)="onItemCodeChange($event)">
+              (valueChange)="onItemCodeChange($event)" [kendoDropDownFilter]="filterSettings">
             </kendo-dropdownlist>
           </ng-template>
         </kendo-grid-column>
 
-        <kendo-grid-column field="ItemName" title="ItemDescription" width="200">
+        <kendo-grid-column field="ItemName" title="Item Description" width="200">
           <ng-template kendoGridEditTemplate let-column="column" let-formGroup="itemFormGroup" let-isNew="isNew">
             <input #input [readonly]="true" class="k-textbox" [formControl]="itemFormGroup.get(column.field)">
           </ng-template>
@@ -397,19 +389,20 @@
           </ng-template>
           <ng-template kendoGridEditTemplate let-dataItem="dataItem" let-column="column" let-formGroup="itemFormGroup">
             <kendo-dropdownlist #ddl="popupAnchor" popupAnchor [data]="uomList" textField="UOM" valueField="UOMID"
-              [valuePrimitive]="true" (valueChange)="onUOMChanged($event)" [formControl]="itemFormGroup.get('UOM')">
+              [valuePrimitive]="true" (valueChange)="onUOMChanged($event)" [formControl]="itemFormGroup.get('UOM')"
+              [kendoDropDownFilter]="filterSettings" >
             </kendo-dropdownlist>
           </ng-template>
         </kendo-grid-column>
 
-        <kendo-grid-column field="SellingPrice" title="SellingPrice" width="120">
+        <kendo-grid-column field="ItemRate" title="Selling Price" width="120" format="0.##" >
           <ng-template kendoGridEditTemplate let-column="column" let-formGroup="itemFormGroup" let-isNew="isNew">
             <kendo-numerictextbox #ntb="popupAnchor" popupAnchor [readonly]="true"
               [formControl]="itemFormGroup.get(column.field)" format="0.##"></kendo-numerictextbox>
           </ng-template>
         </kendo-grid-column>
 
-        <kendo-grid-column field="MRP" title="MRP" width="100">
+        <kendo-grid-column field="MRP" title="MRP" width="100" format="0.##">
           <ng-template kendoGridEditTemplate let-column="column" let-formGroup="itemFormGroup" let-isNew="isNew">
             <kendo-numerictextbox #ntb="popupAnchor" popupAnchor [readonly]="true"
               [formControl]="itemFormGroup.get(column.field)" format="0.##">
@@ -418,7 +411,7 @@
         </kendo-grid-column>
 
 
-        <kendo-grid-column field="TaxRate" title="TaxRate" width="75">
+        <kendo-grid-column field="TaxRate" title="Tax Rate" width="75" format="0.##">
           <ng-template kendoGridEditTemplate let-column="column" let-formGroup="itemFormGroup" let-isNew="isNew">
             <kendo-numerictextbox #ntb="popupAnchor" popupAnchor [formControl]="itemFormGroup.get(column.field)"
               [formControl]="itemFormGroup.get(column.field)" [readonly]="true" format="0.##">
@@ -426,7 +419,7 @@
           </ng-template>
         </kendo-grid-column>
 
-        <kendo-grid-column field="TaxAmount" title="TaxAmount" width="150">
+        <kendo-grid-column field="TaxAmount" title="Tax Amount" width="150" format="0.##">
           <ng-template kendoGridEditTemplate let-column="column" let-formGroup="itemFormGroup" let-isNew="isNew">
             <kendo-numerictextbox #ntb="popupAnchor" popupAnchor [formControl]="itemFormGroup.get(column.field)"
               [formControl]="itemFormGroup.get(column.field)" [readonly]="true" format="0.##">
@@ -434,7 +427,7 @@
           </ng-template>
         </kendo-grid-column>
 
-        <kendo-grid-column field="Discountamt" title="DiscountAmount" width="150">
+        <kendo-grid-column field="Discountamt" title="Discount Amount" width="150" format="0.##">
           <ng-template kendoGridEditTemplate let-column="column" let-formGroup="itemFormGroup" let-isNew="isNew">
             <kendo-numerictextbox #ntb="popupAnchor" popupAnchor [formControl]="itemFormGroup.get(column.field)"
               [formControl]="itemFormGroup.get(column.field)" [readonly]="true" format="0.##">
@@ -443,7 +436,7 @@
         </kendo-grid-column>
 
 
-        <kendo-grid-column field="ShippingCharges" title="ShippingCharges" width="150">
+        <kendo-grid-column field="ShippingCharges" title="Shipping Charges" width="150" format="0.##">
           <ng-template kendoGridEditTemplate let-column="column" let-formGroup="itemFormGroup" let-isNew="isNew">
             <kendo-numerictextbox #ntb="popupAnchor" popupAnchor [formControl]="itemFormGroup.get(column.field)"
               (valueChange)="onShippingChargesChanged($event)" format="0.##">
@@ -452,14 +445,14 @@
         </kendo-grid-column>
 
 
-        <kendo-grid-column field="TotalValue" title="TotalValue" width="150">
+        <kendo-grid-column field="TotalValue" title="Total Value" width="150" format="0.##">
           <ng-template kendoGridEditTemplate let-column="column" let-formGroup="itemFormGroup" let-isNew="isNew">
             <kendo-numerictextbox #ntb="popupAnchor" popupAnchor [readonly]="true"
               [formControl]="itemFormGroup.get(column.field)" format="0.##"></kendo-numerictextbox>
           </ng-template>
         </kendo-grid-column>
 
-        <kendo-grid-command-column title="Action" width="220">
+        <kendo-grid-command-column title="Action" [class]="{'text-center': true}"  width="150">
           <ng-template kendoGridCellTemplate let-isNew="isNew">
             <button kendoGridEditCommand [primary]="true">Edit</button>
             <button kendoGridRemoveCommand>Remove</button>
@@ -478,17 +471,17 @@
           <tr>
             <th>ItemCode</th>
             <th>Item Name</th>
-            <th>CustomerItemCode</th>
+            <th>Customer ItemCode</th>
             <th *ngIf="(objSalesOrder?.InventoryType=='Sellable')">Units</th>
             <th *ngIf="(objSalesOrder?.InventoryType=='Sellable')">UOM </th>
             <th>Qty </th>
 
 
-            <th>SellingPrice</th>
+            <th>Selling Price</th>
             <th>TaxRate</th>
             <th>Tax Amt</th>
             <th>Discount Amt</th>
-            <th>ShippingCharges</th>
+            <th>Shipping Charges</th>
             <th>Total value</th>
           </tr>
         </thead>
@@ -498,11 +491,12 @@
             <td>{{data.ItemName  }}</td>
             <td>{{data.CustomerItemCode}}</td>
             <td *ngIf="(objSalesOrder?.InventoryType=='Sellable')" class="text-right">{{data.Units}}</td>
-            <td *ngIf="(objSalesOrder?.InventoryType=='Sellable')" class="text-right">{{data.MultiplierValue}}</td>
+            <td *ngIf="(objSalesOrder?.InventoryType=='Sellable')" class="text-right">
+              {{data.MultiplierValue}}</td>
             <td class="text-right">{{data.Qty}}</td>
 
 
-            <td class="text-right">{{data.SellingPrice | currency: 'INR'}}</td>
+            <td class="text-right">{{data.ItemRate | currency: 'INR'}}</td>
             <td class="text-right">{{data.TaxRate  }}</td>
             <td class="text-right">{{data.TaxAmount | currency: 'INR'}}</td>
             <td class="text-right">{{data.Discountamt | currency: 'INR'}}</td>
@@ -520,7 +514,7 @@
 
 
             <th class="text-right">
-              {{ TotalSellingPrice | currency: 'INR'}}
+              {{ TotalItemRate | currency: 'INR'}}
             </th>
             <th class="text-right">
             </th>

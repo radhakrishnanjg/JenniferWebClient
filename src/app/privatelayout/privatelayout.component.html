@@ -1,6 +1,8 @@
 <div class='page-topbar '>
     <div class='logo-area'>
-        <img src="assets\images\logo.png" alt="Logo" height="40" />
+        <a routerLink="/Dashboard1">
+            <img src="assets\images\logo.png" alt="Logo" height="40" />
+        </a>
     </div>
     <div class='quick-area'>
         <div class='pull-left'>
@@ -17,7 +19,7 @@
                 <div class="search-container">
                     <form>
                         <input class='top-search' type="text" placeholder="Tell me what you want to do" name="search">
-                        <button type="submit" class="">
+                        <button type="submit">
                             <i class="fa fa-search"></i>
                         </button>
                     </form>
@@ -27,20 +29,13 @@
         <div class='pull-right'>
             <ul class="info-menu right-links list-inline list-unstyled">
                 <li>
-                    <!-- <ngx-spinner bdColor="rgba(51,51,51,0.8)" size="S" color="#fff" type="ball-scale-multiple">
-                        <p style="font-size: 20px; color:#cc4141">Loading...</p>
-                    </ngx-spinner> -->
-
                     <ngx-spinner bdOpacity=0.9 size="medium" color="#ce295e" type="ball-fussion" [fullScreen]="true">
                         <p style="color: #000000"> Fetching for you ... </p>
                     </ngx-spinner>
-
-                    <!-- <alert></alert> -->
                 </li>
                 <li>
                     <select id="CompanyID" class="form-control topdropbx" [(ngModel)]="CompanyID"
                         (change)="onchangeCompanyID($event.target.value)">
-                        <!-- <option value="0" selected="selected">Company</option> -->
                         <option *ngFor="let c1 of lstCompanies" value={{c1.CompanyID}}>
                             {{c1.CompanyName}}
                         </option>
@@ -75,19 +70,19 @@
                                 Profile Update
                             </a>
                         </li>
-                        <!--  <li *ngIf="(usertype=='1')">
+                        <li *ngIf="(usertype=='Admin')">
                             <a routerLinkActive="active" routerLink="/CompanyProfile">
                                 <i class="fa fa-institution"></i>
                                 Company Profile
                             </a>
-                        </li> -->
+                        </li>
                         <li>
                             <a routerLinkActive="active" (click)="logout()">
                                 <i class="fa fa-fw fa-power-off"></i>
                                 Signout</a>
                         </li>
                         <li>
-                            <a type="button" data-toggle="modal" data-target="#myModal" class="">
+                            <a type="button" data-toggle="modal" data-target="#myModal">
                                 <i class="fa fa-snowflake-o"></i>
                                 Select Theme</a>
                         </li>
@@ -203,7 +198,6 @@
                 </div>
             </div>
             <div class="modal-footer padding0">
-                <!-- <button class="btn btn-default btn-sm" data-dismiss="modal">Ok</button> -->
                 <button class="btn btn-default btn-block" data-dismiss="modal" routerLink="/Signin" title="Signin">
                     Back to Signin
                 </button>
@@ -240,16 +234,12 @@
             </div>
             <div class="modal-footer padding0">
                 <button class="btn btn-default btn-sm" data-dismiss="modal">Ok</button>
-                <!-- <button class="btn btn-default btn-block" data-dismiss="modal" routerLink="/Signin" title="Signin">
-                    Back to Signin
-                </button> -->
+
             </div>
         </div>
     </div>
 </div>
 
-
-<!-- Theme Modal start-->
 <div id="myModal" class="modal fade" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -278,7 +268,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary">Cancel</button>
+                <button type="button" data-dismiss="modal" class="btn btn-primary">Cancel</button>
                 &nbsp;
                 <button type="button" class="btn btn-success" (click)="SaveTheme()" data-dismiss="modal">Ok</button>
             </div>

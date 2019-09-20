@@ -214,6 +214,7 @@ export class CustomerwarehouseComponent implements OnInit {
                 IsActive: data.IsActive,
               });
               this.customerwarehouseform.get('CustomerID').disable();
+              this.customerwarehouseform.get('CountryID').disable();
               this.customerwarehouseform.get('StateID').disable();
             },
             (err: any) =>
@@ -247,6 +248,18 @@ export class CustomerwarehouseComponent implements OnInit {
     });
   }
 
+  onchangeCustomerID(selectedValue: number) {
+    if (selectedValue != 0) {
+      let CustomerType = this.lstCustomer.filter(a => a.CustomerID == selectedValue)[0].CustomerType;
+      if (CustomerType == "B2B") {
+        this.customerwarehouseform.get('GSTNumber').enable();
+      } else {
+        $('#GSTNumber').val(' ');
+        this.customerwarehouseform.get('GSTNumber').disable(); 
+      }
+    }
+  }
+
   onchangeCountryID(selectedValue: string) {
     let countrid = parseInt(selectedValue);
     if (countrid > 0) {
@@ -270,6 +283,10 @@ export class CustomerwarehouseComponent implements OnInit {
     }
     // stop here if form is invalid
     if (this.customerwarehouseform.invalid) {
+      return;
+    }
+    if (this.customerwarehouseform.pristine) {
+      this.alertService.error('Please change the value for any one control to proceed further!');
       return;
     }
     this.aroute.paramMap.subscribe(params => {
@@ -307,7 +324,7 @@ export class CustomerwarehouseComponent implements OnInit {
       .subscribe(
         (data) => {
           if (data == true) {
-            this.alertService.error('This warehouse has been registered already!');
+            this.alertService.error('This warehouse is already registered');
           }
           else {
             this._spinner.show();
@@ -363,7 +380,7 @@ export class CustomerwarehouseComponent implements OnInit {
       .subscribe(
         (data) => {
           if (data == true) {
-            this.alertService.error('This warehouse has been registered already!');
+            this.alertService.error('This warehouse is already registered');
           }
           else {
             this._spinner.show();

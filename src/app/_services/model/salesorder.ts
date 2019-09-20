@@ -64,7 +64,7 @@ export class SalesorderItem {
     Units: number = 0;
     MultiplierValue: number = 1;
     Qty: number = 0;
-    SellingPrice: number = 0.00;
+    ItemRate: number = 0.00;
     MRP: number = 0.00;
     SalesRateCardID: number;
     ShippingCharges: number = 0.00;
@@ -149,8 +149,7 @@ export class SalesShipment {
     LoginId: number;
 }
 
-export class InvoiceNumber {
-    SalesInvoiceID: number;
+export class InvoiceNumber { 
     InvoiceNumber: string;
 }
 export class Shipmentoutward {

@@ -3,7 +3,7 @@ import { RouterModule } from '@angular/router';
 import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClientModule} from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgxMaskModule } from 'ngx-mask'
 import { ToastrModule } from 'ngx-toastr';
@@ -13,7 +13,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { SelectDropDownModule } from 'ngx-select-dropdown'
 import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import { DataTablesModule } from 'angular-datatables';
-import { NgxEchartsModule } from 'ngx-echarts';
+
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { NgxTypeaheadModule } from 'ngx-typeahead';
 import { GridModule } from '@progress/kendo-angular-grid';
@@ -29,7 +29,7 @@ import { DeviceDetectorModule } from 'ngx-device-detector';
 import { InputsModule } from '@progress/kendo-angular-inputs';
 
 import { DateInputsModule } from '@progress/kendo-angular-dateinputs';
-import { JwtInterceptor, HttpErrorInterceptor } from '../_helpers';
+
 import { EncrDecrService } from '../_services/service/encr-decr.service';
 import { PopupAnchorDirective } from '../purchaseorder/po/popup.anchor-target.directive';
 
@@ -40,6 +40,7 @@ import { ChangepasswordComponent } from './changepassword/changepassword.compone
 import { CompanydetailsComponent } from './companydetails/companydetails.component';
 import { CompanydetaillistComponent } from './companydetaillist/companydetaillist.component';
 import { UserprofileComponent } from './userprofile/userprofile.component';
+import { CompanyprofileComponent } from './companyprofile/companyprofile.component';
 @NgModule({
     imports: [
         CommonModule,
@@ -53,7 +54,7 @@ import { UserprofileComponent } from './userprofile/userprofile.component';
         HttpClientModule,
         AngularFontAwesomeModule,
         DataTablesModule,
-        NgxEchartsModule,
+        
         NgxSpinnerModule,
         FormsModule,
         // Prevent double submission module
@@ -89,7 +90,8 @@ import { UserprofileComponent } from './userprofile/userprofile.component';
             ChangepasswordComponent,
             CompanydetailsComponent,
             CompanydetaillistComponent,
-            UserprofileComponent
+            UserprofileComponent,
+            CompanyprofileComponent
         ],
     // If you want the components that belong to this module, available to
     // other modules, that import this module, then include all those

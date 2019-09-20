@@ -26,7 +26,7 @@
     <div class="panel-heading">
       <div class="row">
         <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-          <span class="spanheader">
+          <span class="groupspanheader">
             {{panelTitle}}
           </span>
         </div>
@@ -46,16 +46,13 @@
       </div>
     </div>
     <div class="panel-body">
-      <!-- <span class="groupspanheader"> General Information </span> -->
       <div class="row">
 
         <div class="col-md-3 col-xs-12">
-          <div class="form-group">
+          <div class="form-group" [ngClass]="{'has-error':formErrors.PONumber}">
             <label class="control-label" for="PONumber">PO Number <span class="mandantory">*</span>
-
             </label>
-
-            <div class="">
+            <div>
               <input id="PONumber" type="text" class="form-control" formControlName="PONumber" [ngbTypeahead]="search"
                 [resultFormatter]="formatter" (blur)="logValidationErrors();" (change)="onPONumberChange()" />
               <div class="help-block-rk">
@@ -71,21 +68,34 @@
           <div class="form-group">
             <label class="control-label" for="GRNNumber">GRN Number <span class="mandantory">*</span>
             </label>
-            <div class="">
+            <div>
               {{ objGoodsReceipt?.GRNNumber }}
             </div>
           </div>
         </div>
-        
+
         <div class="col-md-3 col-xs-12">
           <div class="form-group">
             <label class="control-label" for="LocationID">Location <span class="mandantory">*</span>
             </label>
-            <div class="">
+            <div *ngIf="(GRNType=='P')">
               {{
                 LocationName
               }}
               <input id="LocationID" type="hidden" class="form-control" formControlName="LocationID">
+            </div>
+            <div *ngIf="(GRNType!='P')">
+              <select class="form-control" id="LocationID" (blur)="logValidationErrors()" formControlName="LocationID">
+                <option value="0" selected="selected">Select</option>
+                <option *ngFor="let location of locationList" value={{location.LocationID}}>
+                  {{location.LocationName}}
+                </option>
+              </select>
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrors.LocationID">
+                  {{formErrors.LocationID}}
+                </span>
+              </div>
             </div>
           </div>
         </div>
@@ -94,11 +104,24 @@
             <label class="control-label" for="VendorID">Vendor <span class="mandantory">*</span>
 
             </label>
-            <div class="">
+            <div *ngIf="(GRNType=='P')">
               {{
                   VendorName
                 }}
               <input id="VendorID" type="hidden" class="form-control" formControlName="VendorID">
+            </div>
+            <div *ngIf="(GRNType!='P')">
+              <select class="form-control" id="VendorID" (blur)="logValidationErrors()" formControlName="VendorID">
+                <option value="0" selected="selected">Select</option>
+                <option *ngFor="let vendor of Vendorwarehouselist" value={{vendor.VendorWarehouseID}}>
+                  {{vendor.WarehouseName}}
+                </option>
+              </select>
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrors.VendorID">
+                  {{formErrors.VendorID}}
+                </span>
+              </div>
             </div>
           </div>
         </div>
@@ -111,13 +134,17 @@
             </label>
             <div class='input-group date' id="GRNDate">
               <input type="text" ngxDaterangepickerMd [autoApply]="true" [singleDatePicker]="true" class="form-control"
-                formControlName="GRNDate" (blur)="logValidationErrors()" [locale]="{format: 'MM-DD-YYYY HH:mm'}"
-                maxlength="16" [minDate]="GRNMinDate" [maxDate]="GRNMaxDate" />
+                formControlName="GRNDate" (change)="logValidationErrors()" [locale]="{format: 'MM-DD-YYYY HH:mm'}"
+                maxlength="16" [minDate]="GRNMinDate" [maxDate]="GRNMaxDate" [timePicker]="true" [autoApply]="true"
+                (ngModelChange)="onSTODateChange($event)" />
               <label class="fa fa-calendar"></label>
             </div>
             <div class="help-block-rk">
               <span class="help-block" *ngIf="formErrors.GRNDate">
                 {{formErrors.GRNDate}}
+              </span>
+              <span class="help-block">
+                {{objResult?.Msg}}
               </span>
             </div>
           </div>
@@ -126,7 +153,7 @@
           <div class="form-group" [ngClass]="{'has-error': formErrors.InvoiceNumber}">
             <label class="control-label" for="InvoiceNumber">Purchase Invoice Number<span
                 class="mandantory">*</span></label>
-            <div class="">
+            <div>
               <input id="InvoiceNumber" type="text" class="form-control" formControlName="InvoiceNumber"
                 (blur)="logValidationErrors()" maxlength="30">
               <div class="help-block-rk">
@@ -140,7 +167,7 @@
         <div class="col-md-3 col-xs-12">
           <div class="form-group" [ngClass]="{'has-error': formErrors.InventoryType}">
             <label class="control-label" for="InventoryType">Inventory Type<span class="mandantory">*</span></label>
-            <div class="">
+            <div>
               <select id="InventoryType" class="form-control" formControlName="InventoryType"
                 (blur)="logValidationErrors()">
                 <option value="" selected="selected">Select</option>
@@ -159,7 +186,7 @@
         <div class="col-md-3 col-xs-12">
           <div class="form-group" [ngClass]="{'has-error': formErrors.OtherReference}">
             <label class="control-label" for="OtherReference">Other Reference Number </label>
-            <div class="">
+            <div>
               <input id="OtherReference" type="text" class="form-control" formControlName="OtherReference"
                 (blur)="logValidationErrors()" maxlength="30">
               <div class="help-block-rk">
@@ -176,7 +203,7 @@
         <div class="col-md-3 col-xs-12">
           <div class="form-group" [ngClass]="{'has-error': formErrors.VehicleNumber}">
             <label class="control-label" for="VehicleNumber">Vehicle Number </label>
-            <div class="">
+            <div>
               <input id="VehicleNumber" type="text" class="form-control" formControlName="VehicleNumber"
                 (blur)="logValidationErrors()" maxlength="15">
               <div class="help-block-rk">
@@ -190,7 +217,7 @@
         <div class="col-md-3 col-xs-12">
           <div class="form-group" [ngClass]="{'has-error': formErrors.EwayBillNumber}">
             <label class="control-label" for="EwayBillNumber">Eway Bill Number </label>
-            <div class="">
+            <div>
               <input id="EwayBillNumber" type="text" class="form-control" formControlName="EwayBillNumber"
                 (blur)="logValidationErrors()" maxlength="20">
               <div class="help-block-rk">
@@ -204,7 +231,7 @@
         <div class="col-md-6 col-xs-12">
           <div class="form-group" [ngClass]="{'has-error': formErrors.Remarks}">
             <label class="control-label" for="Remarks">Remarks </label>
-            <div class="">
+            <div>
               <textarea id="Remarks" type="text" class="form-control" formControlName="Remarks"
                 (blur)="logValidationErrors()" rows="2" maxlength="250"></textarea>
               <div class="help-block-rk">
@@ -216,14 +243,82 @@
           </div>
         </div>
       </div>
-      <div class="spanheader"> Order Items</div>
+
+      <span class="groupspanheader">Upload Images</span>
+      <div class="row">
+        <div class="col-sm-3 col-xs-12">
+          <div class="form-group" [ngClass]="{'has-error': formErrors.FileData1}">
+            <div class=" col-sm-12 inputlevel">
+              <label class="nopading_loct control-label" for="SelectSelect">Browse Image 1
+                <span class="mandantory">*</span>
+              </label>
+              <input type="file" id="file" accept="image/*" formControlName="FileData1"
+                (change)="onFileChanged1($event)">
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrors.FileData1">
+                  {{formErrors.FileData1}}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-3 col-xs-12">
+          <div class="form-group" [ngClass]="{'has-error': formErrors.FileData1}">
+            <div class=" col-sm-12 inputlevel">
+              <label class="nopading_loct control-label" for="SelectSelect">Browse Image 2
+                <span class="mandantory">*</span>
+              </label>
+              <input type="file" id="file" accept="image/*" formControlName="FileData2"
+                (change)="onFileChanged2($event)">
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrors.FileData2">
+                  {{formErrors.FileData2}}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-3 col-xs-12">
+          <div class="form-group">
+            <div class=" col-sm-12 inputlevel">
+              <label class="nopading_loct control-label" for="SelectSelect">Browse Image 3
+
+              </label>
+              <input type="file" id="file" accept="image/*" formControlName="FileData3"
+                (change)="onFileChanged3($event)">
+              <div class="help-block-rk">
+                <span class="help-block">
+
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-3 col-xs-12">
+          <div class="form-group">
+            <div class=" col-sm-12 inputlevel">
+              <label class="nopading_loct control-label" for="SelectSelect">Browse Image 4
+
+              </label>
+              <input type="file" id="file" accept="image/*" formControlName="FileData4"
+                (change)="onFileChanged4($event)">
+              <div class="help-block-rk">
+                <span class="help-block">
+
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="groupspanheader"> Order Items</div>
       <div class="table-responsive">
         <table class="table table-bordered table-condensed table-striped">
           <thead>
             <tr>
               <th>Vendor Item Code</th>
               <th>Item Description</th>
-              <th>Item code</th>
+              <th>ItemCode</th>
               <th>PO Qty</th>
               <th>Available Qty</th>
 
@@ -240,49 +335,72 @@
           </thead>
           <tbody>
             <tr *ngFor="let item of lstGoodsReceiptDetail; let i = index;">
-              <td>{{item.VendorItemCode}}</td>
-              <td>{{item.ItemDescription}}</td>
-              <td>{{item.ItemCode}}</td>
-              <td>{{item.POQTY}}</td>
-              <td>{{item.AvailableQty}}</td>
+              <td [ngClass]="(item.ItemID==0)?'bgred':''">{{item.VendorItemCode}}</td>
+              <td [ngClass]="(item.ItemID==0)?'bgred':''">{{item.ItemDescription}}</td>
+              <td [ngClass]="(item.ItemID==0)?'bgred':''">{{item.ItemCode}}</td>
+              <td [ngClass]="(item.ItemID==0)?'bgred':''">{{item.POQTY}}</td>
+              <td [ngClass]="(item.ItemID==0)?'bgred':''">{{item.AvailableQty}}</td>
 
-              <td><input id="InventorySellableQty" type="number" min="0" step="1" class="form-control" max="100000"
+              <td [ngClass]="(item.ItemID==0)?'bgred':''">
+                <input id="InventorySellableQty" type="number" min="0" step="1" class="form-control" max="100000"
                   (input)="onInventorySellableQtyChange(i,'InventorySellableQty',$event.target.value)"
-                  value="{{item.InventorySellableQty}}"> </td>
-              <td><input id="InventoryShortageQty" type="number" min="0" step="1" class="form-control" max="100000"
+                  value="{{item.InventorySellableQty}}">
+              </td>
+              <td [ngClass]="(item.ItemID==0)?'bgred':''"><input id="InventoryShortageQty" type="number" min="0"
+                  step="1" class="form-control" max="100000"
                   (input)="onInventoryShortageQtyChange(i,'InventoryShortageQty',$event.target.value)"
                   value="{{item.InventoryShortageQty}}"> </td>
-              <td><input id="InventoryDamageQty" type="number" min="0" step="1" class="form-control" max="100000"
+              <td [ngClass]="(item.ItemID==0)?'bgred':''"><input id="InventoryDamageQty" type="number" min="0" step="1"
+                  class="form-control" max="100000"
                   (input)="onInventoryDamageQtyChange(i,'InventoryDamageQty',$event.target.value)"
                   value="{{item.InventoryDamageQty}}"> </td>
-              <td><input id="InventoryOthersQty" type="number" min="0" step="1" class="form-control" max="100000"
+              <td [ngClass]="(item.ItemID==0)?'bgred':''"><input id="InventoryOthersQty" type="number" min="0" step="1"
+                  class="form-control" max="100000"
                   (input)="onInventoryOthersQtyChange(i,'InventoryOthersQty',$event.target.value)"
                   value="{{item.InventoryOthersQty}}"> </td>
 
-              <td>
+              <td [ngClass]="(item.ItemID==0)?'bgred':''">
                 {{item.TotalReceivedQty}} </td>
-
-              <td><input id="ShortageRemarks" type="text" class="form-control" value="{{item.ShortageRemarks}}"
+              <td [ngClass]="(item.ItemID==0)?'bgred':''">
+                <input id="ShortageRemarks" type="text" class="form-control" value="{{item.ShortageRemarks}}"
                   (input)="onRemarksChange(i,'ShortageRemarks',$event.target.value)" maxlength="100"> </td>
-              <td><input id="DamageRemarks" type="text" class="form-control" value="{{item.DamageRemarks}}"
+              <td [ngClass]="(item.ItemID==0)?'bgred':''">
+                <input id="DamageRemarks" type="text" class="form-control" value="{{item.DamageRemarks}}"
                   (input)="onRemarksChange(i,'DamageRemarks',$event.target.value)" maxlength="100"> </td>
-              <td><input id="OthersRemarks" type="text" class="form-control" value="{{item.OthersRemarks}}"
+              <td [ngClass]="(item.ItemID==0)?'bgred':''">
+                <input id="OthersRemarks" type="text" class="form-control" value="{{item.OthersRemarks}}"
                   (input)="onRemarksChange(i,'OthersRemarks',$event.target.value)" maxlength="100"> </td>
+            </tr>
+
+            <tr *ngIf="lstGoodsReceiptDetail.length>0">
+              <th>Total</th>
+              <th> </th>
+              <th> </th>
+              <th>{{ TotalPOQty}}</th>
+              <th>{{ TotalAvailableQty}}</th>
+
+              <th>{{ TotalInventorySellableQty}} </th>
+              <th> {{ TotalInventoryShortageQty}} </th>
+              <th>{{ TotalInventoryDamagedQty}} </th>
+              <th>{{ TotalInventoryOthersQty}} </th>
+              <th>{{ TotalTotalReceivedQty}} </th>
+
+              <th> </th>
+              <th> </th>
+              <th> </th>
             </tr>
           </tbody>
         </table>
       </div>
     </div>
-    <!---->
     <div class="panel-footer">
       <div class="pull-right btn-toolbar">
-        <button class="btn btn-primary" routerLink="/Goodsreceiptlist" title="Cancel">
-          <!-- <i class="fa fa-arrow-left" aria-hidden="true"></i> -->
+        <button class="btn btn-primary" routerLink="/Goodsreceiptlist" title="Cancel"> 
           Cancel
         </button>
         <button class="btn btn-warning" type="button" data-toggle="modal" data-target="#modalgrnconfimation"
-          [disabled]="goodsForm.invalid">
-          <!-- <i class="fa fa-save"></i> -->
+          [disabled]="goodsForm.invalid || (objResult?.Msg!='' && GRNType == 'S')">
+          <!-- || (objResult?.Msg!='' && GRNType == 'S') -->
           Save
         </button>
       </div>

@@ -27,6 +27,8 @@ export class Poorder {
     POApprovalID: number;
     // who is doing this task
     LoginId: number;
+    IsPOClosed:boolean;
+    BulkString:string;
 }
 export class Poorderitem {
 
@@ -81,7 +83,10 @@ export class Poshipment {
 
     // who is doing this task
     LoginId: number;
-} export class Poapprovaldetail {
+} 
+ 
+
+export class Poapprovaldetail {
     ApprovalStatus: string;
     Remarks: string;
     ActionBy: string;

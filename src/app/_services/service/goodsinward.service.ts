@@ -2,14 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { catchError } from 'rxjs/operators';
-import { observable, throwError, Observable } from 'rxjs';
+import { throwError, Observable } from 'rxjs';
 import { BadRequest } from './../../common/bad-request';
 import { AppError } from './../../common/app-error';
 import { NotFoundError } from './../../common/not-found-error';
 import { AuthenticationService } from './authentication.service';
-import { Goodsinward } from './../model/index';
-import { environment } from '../../../environments/environment';
-import { from } from 'rxjs';
+import { Goodsinward ,Result} from './../model/index';
+import { environment } from '../../../environments/environment'; 
 
 @Injectable({
   providedIn: 'root'
@@ -52,8 +51,8 @@ export class GoodsinwardService {
       );
   } 
 
-  public VendorUpdate(objGoodsinward: Goodsinward[]): Observable<boolean> {
-    return this.httpClient.post<boolean>(environment.baseUrl + `Goodsinward/VendorUpdate`, objGoodsinward)
+  public VendorUpdate(objGoodsinward: Goodsinward[]): Observable<Result> {
+    return this.httpClient.post<Result>(environment.baseUrl + `Goodsinward/VendorUpdate`, objGoodsinward)
       .pipe(catchError(this.handleError));
   }
 

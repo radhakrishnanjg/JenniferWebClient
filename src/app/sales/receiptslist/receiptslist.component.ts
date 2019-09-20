@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { ReceiptsService } from '../../_services/service/receipts.service';
@@ -7,7 +6,7 @@ import { Receipts } from '../../_services/model';
 import { AuthorizationGuard } from '../../_guards/Authorizationguard'
 
 import * as moment from 'moment';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, } from '@angular/forms';
 
 const createFormGroup = dataItem => new FormGroup({
   'FileID': new FormControl(dataItem.FileID),
@@ -54,7 +53,6 @@ export class ReceiptslistComponent implements OnInit {
 
   constructor(
     private alertService: ToastrService,
-    private router: Router,
     private _receiptsService: ReceiptsService,
     private _spinner: NgxSpinnerService,
     private _authorizationGuard: AuthorizationGuard,
@@ -87,7 +85,7 @@ export class ReceiptslistComponent implements OnInit {
             item.BankReceiptDate = new Date(item.BankReceiptDate);
             return item;
           });
-        }  
+        }
         this._spinner.hide();
       },
       (err) => {
@@ -173,7 +171,7 @@ export class ReceiptslistComponent implements OnInit {
 
             );
             this.gridDataunreconciled.splice(rowIndex, 1);
-            this.gridDatareconciled.push(selectedItem); 
+            this.gridDatareconciled.push(selectedItem);
             this.obj = new Receipts();
             sender.closeRow(rowIndex);
           }
@@ -192,6 +190,9 @@ export class ReceiptslistComponent implements OnInit {
   }
 
   public saveHandler2({ sender, rowIndex, formGroup, isNew }): void {
+    if (this._authorizationGuard.CheckAcess("Receiptslist", "ViewEdit")) {
+      return;
+    }
     const item = formGroup.value;
     this.obj.FileID = item.FileID;
     if (item.IsEditable == null || item.IsEditable == false) {
@@ -247,5 +248,70 @@ export class ReceiptslistComponent implements OnInit {
     }
 
   }
+
+
+  // public removeHandler({ rowIndex }): void {
+
+  //   let selectedItem = this.gridDataunreconciled[rowIndex];
+  //   const ReportID = selectedItem.Filename;
+  //   this._spinner.show();
+  //   this._receiptsService.DownloadReceiptFile(ReportID)
+  //     .subscribe(data => {
+  //       this._spinner.hide(),
+  //         saveAs(data, ReportID.toString());//+ '.csv'
+  //     },
+  //       (err) => {
+  //         this._spinner.hide();
+  //         console.log(err);
+  //       }
+  //     );
+  // }
+
+  // public removeHandler2({ rowIndex }): void {
+
+  //   let selectedItem = this.gridDatareconciled[rowIndex];
+  //   const ReportID = selectedItem.Filename;
+  //   this._spinner.show();
+  //   this._receiptsService.DownloadReceiptFile(ReportID)
+  //     .subscribe(data => {
+  //       this._spinner.hide(),
+  //         saveAs(data, ReportID.toString());//+ '.csv'
+  //     },
+  //       (err) => {
+  //         this._spinner.hide();
+  //         console.log(err);
+  //       }
+  //     );
+  // }
+
+  public removeHandler(Filename:string ): void {
+    this._spinner.show();
+    this._receiptsService.DownloadReceiptFile(Filename)
+      .subscribe(data => {
+        this._spinner.hide(),
+          saveAs(data, Filename.toString());//+ '.csv'
+      },
+        (err) => {
+          this._spinner.hide();
+          console.log(err);
+        }
+      );
+  }
+
+  public removeHandler2(Filename:string ): void {
+
+    this._spinner.show();
+    this._receiptsService.DownloadReceiptFile(Filename)
+      .subscribe(data => {
+        this._spinner.hide(),
+          saveAs(data, Filename.toString());//+ '.csv'
+      },
+        (err) => {
+          this._spinner.hide();
+          console.log(err);
+        }
+      );
+  }
+
 
 }

@@ -39,15 +39,15 @@
             <input [(ngModel)]="SearchKeyword" type="text" class="form-control btn-group serchcurv">
           </div>
           <div class="col-md-3 nopading_loct" *ngIf="(SearchBy=='ByStatus')">
-               
-              <select [(ngModel)]="Searchaction" type="select" class="serchcurv form-control btn-group">
-                
-                <option value="true">Active</option>
-                <option value="false">InActive</option>
-              </select>
-  
-            </div>
-          <div class="col-md-3 nopading_loct" >
+
+            <select [(ngModel)]="Searchaction" type="select" class="serchcurv form-control btn-group">
+
+              <option value="true">Active</option>
+              <option value="false">InActive</option>
+            </select>
+
+          </div>
+          <div class="col-md-3 nopading_loct">
             <button class="btn btn-default btn-group serchcurv" (click)="Search()" title="Search">
               <i class="fa fa-search " aria-hidden="true"></i>
             </button>
@@ -59,79 +59,55 @@
       </div>
       <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5 text-right">
         <button class="btn btn-primary" routerLink="/Customer/Create" title="Add New">
-          
+
           Add New
         </button>
       </div>
     </div>
   </div>
   <div class="panel-body">
-    <div class="table-responsive">
-      <table datatable [dtOptions]="dtOptions" class="table table-bordered table-condensed " *ngIf="lst && lst.length">
-        <thead>
-          <tr>
-            <th>Customer Name</th>
-            <th>Customer Alias Name </th>
-            <th>City </th>
-            <th>State </th>
-            <th>GSTN No.</th>
+    <kendo-grid [data]="gridView" resizable="true" columnMenu="true" [pageSize]="pageSize" [skip]="skip"
+      [pageable]="true" (pageChange)="pageChange($event)" [sortable]="{
+          allowUnsort: allowUnsort,
+          mode:  'single'
+          }" [sort]="sort" (sortChange)="sortChange($event)" [filterable]="true"
+      (dataStateChange)="dataStateChange($event)" [filter]="state.filter">
 
-            <th>Contact Person </th>
-            <th>Contact Number</th>
-            <th>Email</th>
-            <th class="text-center">IsActive</th>
-            <th class="text-center btnactions">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let obj of lst">
-            <td>{{ obj.CustomerName }}</td>
-            <td>{{ obj.CustomerAliasName }}</td>
-            <td>{{ obj.City }}</td>
-            <td>{{ obj.StateName }}</td>
-            <td>{{ obj.GSTNumber }}</td>
+      <kendo-grid-column field="CustomerName" title="Customer Name">
+      </kendo-grid-column>
+      <!-- <kendo-grid-column field="CustomerAliasName" title="Alias Name">
+      </kendo-grid-column> -->
 
-            <td>{{ obj.ContactPerson }}</td>
-            <td>{{ obj.ContactNumber }}</td>
-            <td>{{ obj.Email }}</td>
-            <td class="text-center btnflag" *ngIf="(obj.IsActive)"><i class="fa fa-check"></i></td>
-            <td class="text-center btnflag" *ngIf="(!obj.IsActive)"><i class="fa fa-times"></i></td> 
-            <td class="text-center btnactions">
-              <i class="fa fa-edit bgblue pointer" title="Edit" (click)="editButtonClick(obj.CustomerID)"></i>
-              &nbsp;
-              <i class="fa fa-trash bgred pointer" title="Delete"
-                (click)="confirmDeleteid(obj.CustomerID,obj.CustomerName)"></i>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <kendo-grid-column field="CustomerType" title="Customer Type">
+      </kendo-grid-column>
+      <kendo-grid-column field="City" title="City">
+      </kendo-grid-column>
+      <kendo-grid-column field="StateName" title="State">
+      </kendo-grid-column>
+      <kendo-grid-column field="GSTNumber" title="GSTIN No.">
+      </kendo-grid-column>
+      <kendo-grid-column field="ContactPerson" title="Contact Person">
+      </kendo-grid-column>
+      <kendo-grid-column field="ContactNumber" title="Contact No.">
+      </kendo-grid-column>
+      <kendo-grid-column field="Email" title="Email">
+      </kendo-grid-column>
 
-      <table class="table table-bordered table-condensed" *ngIf="lst==null">
-        <thead>
-          <tr>
-            <th>Customer Name</th>
-            <th>Customer Alias Name </th>
-            <th>City </th>
-            <th>State </th>
-            <th>GSTN No.</th>
-
-            <th> Contact Person </th>
-            <th>Contact Number</th>
-            <th>Email</th>
-            <th class="text-center">IsActive</th>
-            <th class="text-center btnactions">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td colspan="10">
-              No Records Found.!
-            </td>
-          </tr>
-        </tbody>
-      </table>
-
-    </div>
+      <kendo-grid-column field="IsActive" title="IsActive" [class]="{'text-center': true}" filter="boolean" width="80">
+        <ng-template kendoGridCellTemplate let-dataItem>
+          <i [class]="dataItem.IsActive ? 'fa fa-check': 'fa fa-times'" aria-hidden="true"></i>
+        </ng-template>
+      </kendo-grid-column>
+      <kendo-grid-column field="CustomerID" title="Action" [class]="{'text-center': true}" [filterable]="false"
+        [sortable]="false" width="70">
+        <ng-template kendoGridCellTemplate let-obj>
+          <i class="fa fa-edit bgblue pointer" title="Edit" [routerLink]="['/Customer', obj.CustomerID]"></i>
+          &nbsp;
+          <i class="fa fa-trash bgred pointer" title="Delete"
+            (click)="confirmDeleteid(obj.CustomerID,obj.CustomerName)"></i>
+        </ng-template>
+      </kendo-grid-column>
+    </kendo-grid>
   </div>
   <div id="modaldeleteconfimation" class="modal fade" tabindex="-1" role="dialog"
     aria-labelledby="modaldeleteconfimation" aria-hidden="true">

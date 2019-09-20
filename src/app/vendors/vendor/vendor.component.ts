@@ -10,6 +10,8 @@ import { VendorService } from '../../_services/service/vendor.service';
 import { PrivateutilityService } from '../../_services/service/privateutility.service';
 import { UtilityService } from '../../_services/service/utility.service';
 import { ContactService } from '../../_services/service/contact.service';
+import { switchMap, tap, flatMap } from 'rxjs/operators';
+// import {do }from 'rxjs/operators';
 @Component({
   selector: 'app-vendor',
   templateUrl: './vendor.component.html',
@@ -27,6 +29,7 @@ export class VendorComponent implements OnInit {
   identity: number = 0;
   Searchaction: boolean = true;
   emailPattern = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$";
+  dtOptions: DataTables.Settings = {};
   constructor(
     private alertService: ToastrService,
     private fb: FormBuilder,
@@ -34,11 +37,12 @@ export class VendorComponent implements OnInit {
     private aroute: ActivatedRoute,
     public _spinner: NgxSpinnerService,
     private usernameValidator: UsernameValidator,
-    private _customerService: VendorService,
+    private _vendorService: VendorService,
     private utilityService: UtilityService,
     private _PrivateutilityService: PrivateutilityService,
     private _authorizationGuard: AuthorizationGuard,
     private _contactService: ContactService,
+
   ) { }
 
   formErrors = {
@@ -63,7 +67,7 @@ export class VendorComponent implements OnInit {
   validationMessages = {
     'VendorName': {
       'required': 'This field is required.',
-      'VendorNameInUse': 'Vendor Name already used.',
+      'VendorNameInUse': 'Vendor Name is already registered!',
 
     },
     'VendorAliasName': {
@@ -78,12 +82,11 @@ export class VendorComponent implements OnInit {
       'required': 'This field is required',
     },
     'Address2': {
-      'maxlength': 'This field must be less than 100 charecters.',
     },
-    'CountryID': { 
+    'CountryID': {
       'min': 'This field is required.',
     },
-    'StateID': { 
+    'StateID': {
       'min': 'This field is required.',
     },
     'City': {
@@ -94,7 +97,6 @@ export class VendorComponent implements OnInit {
       'required': 'This field is required.',
       'pattern': 'This field must be 6 digit numeric(0-9).',
       'minlength': 'This field must be 6 digit numeric(0-9).',
-      'maxlength': 'This field must be 6 digit numeric(0-9).',
     },
 
     'ContactPerson': {
@@ -102,7 +104,6 @@ export class VendorComponent implements OnInit {
       'pattern': 'This field must be alphabets(a-Z)',
     },
     'ContactNumber': {
-      'maxlength': 'This field must be 10 - 12 charecters.',
       'minlength': 'This field must be 10 - 12 charecters.',
       'pattern': 'This field must be numeric(0-9)',
       'required': 'This field is required',
@@ -116,7 +117,6 @@ export class VendorComponent implements OnInit {
       'pattern': 'This field must be alphabets(a-Z)',
     },
     'BeneficiaryName': {
-      'maxlength': 'This field must be less than 30 charecters.',
     },
     'IFSCCode': {
       'pattern': 'This field must be Alphanumeric',
@@ -150,103 +150,47 @@ export class VendorComponent implements OnInit {
   }
   ngOnInit() {
 
-    this._spinner.show();
-    this.utilityService.getCountries()
-      .subscribe(
-        (data: Country[]) => {
-          this.countries = data;
-          this._spinner.hide();
-        },
-        (err: any) => {
-          this._spinner.hide();
-          console.log(err);
-        }
-      );
-    this._spinner.show();
-    this._PrivateutilityService.GetValues('BankAccountType')
-      .subscribe(
-        (data: Dropdown[]) => {
-          this.lstAccountType = data;
-          this._spinner.hide();
-        },
-        (err: any) => {
-          this._spinner.hide();
-          console.log(err);
-        }
-      );
+    this.BindCountries();
+    this.BindAccountTypes();
 
     this.aroute.paramMap.subscribe(params => {
       this.identity = +params.get('id');
       if (this.identity > 0) {
         this.panelTitle = "Edit Vendor";
         this.action = false;
+        // nested subscribe
+        // this.userService.getUser().pipe(
+        //   tap(u => this.user = u),
+        //   flatMap(u => this.userService.getPreferences(u.username))
+        // ).subscribe(p => this.preferences = p);
+
         this._spinner.show();
-        this._customerService.searchById(this.identity)
-          .subscribe(
-            (data: Vendor) => {
-              this.obj.lstContact = data.lstContact;
-              var CountryID = data.CountryID.toString();
-              this.utilityService.getStates(parseInt(CountryID))
-                .subscribe(
-                  (statesa: State[]) => {
-                    this.states = statesa;
-                    this._spinner.hide();
-                  },
-                  (err: any) => 
-                  {
-                    this._spinner.hide();
-                  }
-                );
-
-              var StateID = data.StateID.toString();
-              this.vendorform.patchValue({
-                VendorName: data.VendorName,
-                VendorAliasName: data.VendorAliasName,
-                GSTNumber: data.GSTNumber,
-
-                Address1: data.Address1,
-                Address2: data.Address2,
-                CountryID: data.CountryID,
-                StateID: StateID,
-                City: data.City,
-                PostalCode: data.PostalCode,
-
-                ContactPerson: data.ContactPerson,
-                ContactNumber: data.ContactNumber,
-                Email: data.Email,
-
-                AccountNumber: data.AccountNumber,
-                BeneficiaryName: data.BeneficiaryName,
-                BankName: data.BankName,
-                IFSCCode: data.IFSCCode,
-                AccountType: data.AccountType,
-
-                IsActive: data.IsActive,
-              });
-              //this.vendorform.get('VendorName').disable();
-              this.vendorform.get('StateID').disable();
-            },
-            (err: any) =>
-              console.log(err)
-          );
+        this._vendorService.searchById(this.identity).pipe(
+          tap(data => {
+            this.obj.lstContact = data.lstContact;
+            this.dtOptions = {
+              paging: false,
+              scrollY: '400px',
+              "language": {
+                "search": 'Filter',
+              },
+            };
+            this.BindVenderData(data);
+          }),
+          flatMap(u => this.utilityService.getStates(u.CountryID))
+        ).subscribe(p => {
+          this.states = p;
+          this._spinner.hide();
+        }),
+          (err) => {
+            this._spinner.hide();
+            console.log(err);
+          };
       }
       else {
         this.action = true;
         this.panelTitle = "Add New Vendor";
-        this._spinner.show();
-        this._contactService.searchByType('External').subscribe(
-          (data) => {
-            this.obj.lstContact = data;
-            if (this.obj.lstContact != null && this.obj.lstContact.length > 0) {
-              this.obj.lstContact.map(a => a.IsActive = false);
-            }
-            this._spinner.hide();
-          },
-          (err) => {
-            this._spinner.hide();
-            console.log(err);
-          }
-        );
+        this.BindNewContacts();
       }
     });
 
@@ -259,25 +203,100 @@ export class VendorComponent implements OnInit {
       GSTNumber: ['', [Validators.required, Validators.pattern("^([a-zA-Z0-9]+)$")]],
 
       Address1: ['', [Validators.required]],
-      Address2: ['', [Validators.maxLength(100)]],
-      CountryID: [0, [ Validators.min(1)]],
-      StateID: [0, [ Validators.min(1)]],
+      Address2: ['', []],
+      CountryID: [0, [Validators.min(1)]],
+      StateID: [0, [Validators.min(1)]],
       City: ['', [Validators.required, Validators.pattern("^([a-zA-Z ]+)$")]],
-      PostalCode: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(6), Validators.pattern("^([0-9]+)$")]],
+      PostalCode: ['', [Validators.required, Validators.minLength(6), Validators.pattern("^([0-9]+)$")]],
 
       ContactPerson: ['', [Validators.required, Validators.pattern("^([a-zA-Z ]+)$")]],
-      ContactNumber: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(12), Validators.pattern("^([0-9]+)$")]],
+      ContactNumber: ['', [Validators.required, Validators.minLength(10), Validators.pattern("^([0-9]+)$")]],
       Email: ['', [Validators.required, Validators.pattern(this.emailPattern)]],
 
       AccountType: ['',],
       AccountNumber: ['', [Validators.pattern("^([a-zA-Z0-9]+)$")]],
-      BeneficiaryName: ['', [Validators.maxLength(30)]],
+      BeneficiaryName: ['', []],
       BankName: ['', [Validators.pattern("^([a-zA-Z ]+)$")]],
       IFSCCode: ['', [Validators.pattern("^([a-zA-Z0-9]+)$")]],
 
       IsActive: [0,],
     });
   }
+
+  private BindNewContacts() {
+    this._spinner.show();
+    this._contactService.searchByType('External').subscribe((data) => {
+      this.obj.lstContact = data;
+      if (this.obj.lstContact != null && this.obj.lstContact.length > 0) {
+        this.obj.lstContact.map(a => a.IsActive = false);
+      }
+      this.dtOptions = {
+        paging: false,
+        scrollY: 'auto',
+        "language": {
+          "search": 'Filter',
+        },
+      };
+      this._spinner.hide();
+    }, (err) => {
+      this._spinner.hide();
+      console.log(err);
+    });
+  }
+
+  private BindCountries() {
+    this._spinner.show();
+    this.utilityService.getCountries()
+      .subscribe(
+        (data: Country[]) => {
+          this.countries = data;
+          this._spinner.hide();
+        },
+        (err: any) => {
+          this._spinner.hide();
+          console.log(err);
+        }
+      );
+  }
+
+  private BindAccountTypes() {
+    this._spinner.show();
+    this._PrivateutilityService.GetValues('BankAccountType')
+      .subscribe((data: Dropdown[]) => {
+        this.lstAccountType = data;
+        this._spinner.hide();
+      }, (err: any) => {
+        this._spinner.hide();
+        console.log(err);
+      });
+  }
+
+  private BindVenderData(data: Vendor) {
+    var StateID = data.StateID.toString();
+    this.vendorform.patchValue({
+      VendorName: data.VendorName,
+      VendorAliasName: data.VendorAliasName,
+      GSTNumber: data.GSTNumber,
+      Address1: data.Address1,
+      Address2: data.Address2,
+      CountryID: data.CountryID,
+      StateID: StateID,
+      City: data.City,
+      PostalCode: data.PostalCode,
+      ContactPerson: data.ContactPerson,
+      ContactNumber: data.ContactNumber,
+      Email: data.Email,
+      AccountNumber: data.AccountNumber,
+      BeneficiaryName: data.BeneficiaryName,
+      BankName: data.BankName,
+      IFSCCode: data.IFSCCode,
+      AccountType: data.AccountType,
+      IsActive: data.IsActive,
+    });
+    this.vendorform.get('CountryID').disable();
+    this.vendorform.get('StateID').disable();
+  }
+
 
   onchangeCountryID(selectedValue: string) {
     let countrid = parseInt(selectedValue);
@@ -303,6 +322,10 @@ export class VendorComponent implements OnInit {
     }
     // stop here if form is invalid
     if (this.vendorform.invalid) {
+      return;
+    }
+    if (this.vendorform.pristine) {
+      this.alertService.error('Please change the value for any one control to proceed further!');
       return;
     }
     this.aroute.paramMap.subscribe(params => {
@@ -344,15 +367,15 @@ export class VendorComponent implements OnInit {
       this.obj.lstContact = this.obj.lstContact.filter(a => a.IsActive == true);
     }
     this._spinner.show();
-    this._customerService.existGSTNumber(this.obj.VendorID, this.obj.GSTNumber)
+    this._vendorService.existGSTNumber(this.obj.VendorID, this.obj.GSTNumber)
       .subscribe(
         (data) => {
           if (data == true) {
-            this.alertService.error('This GSTNumber has been registered already!');
+            this.alertService.error('This GSTNumber is already registered');
           }
           else {
             this._spinner.show();
-            this._customerService.add(this.obj).subscribe(
+            this._vendorService.add(this.obj).subscribe(
               (data) => {
                 if (data != null && data.Flag == true) {
                   this._spinner.hide();
@@ -412,15 +435,15 @@ export class VendorComponent implements OnInit {
       this.obj.lstContact = this.obj.lstContact.filter(a => a.IsActive == true);
     }
     this._spinner.show();
-    this._customerService.existGSTNumber(this.obj.VendorID, this.obj.GSTNumber)
+    this._vendorService.existGSTNumber(this.obj.VendorID, this.obj.GSTNumber)
       .subscribe(
         (data) => {
           if (data == true) {
-            this.alertService.error('This GSTNumber has been registered already!');
+            this.alertService.error('This GSTNumber is already registered');
           }
           else {
             this._spinner.show();
-            this._customerService.update(this.obj).subscribe(
+            this._vendorService.update(this.obj).subscribe(
               (data) => {
                 if (data != null && data.Flag == true) {
                   this._spinner.hide();
@@ -451,5 +474,12 @@ export class VendorComponent implements OnInit {
 
   ContactIDFieldsChange(values: any) {
     this.obj.lstContact.filter(a => a.ContactID == values.currentTarget.id)[0].IsActive = values.currentTarget.checked;
+  }
+
+  checkcontacts(value: boolean) {
+    for (var i = 0; i < this.obj.lstContact.length; i++) {
+      this.obj.lstContact[i].IsActive = value;
+      $('#' + this.obj.lstContact[i].ContactID).prop("checked", value);
+    }
   }
 }

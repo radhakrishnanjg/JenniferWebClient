@@ -39,8 +39,8 @@
             <input [(ngModel)]="SearchKeyword" placeholder="Enter {{SearchBy}}" type="text"
               class="serchcurv  form-control btn-group">
           </div>
-          <div class="col-md-3 nopading_loct" *ngIf="(SearchBy=='ByStatus')"> 
-            <select [(ngModel)]="Searchaction" type="select" class="serchcurv form-control btn-group"> 
+          <div class="col-md-3 nopading_loct" *ngIf="(SearchBy=='ByStatus')">
+            <select [(ngModel)]="Searchaction" type="select" class="serchcurv form-control btn-group">
               <option value="true">Active</option>
               <option value="false">InActive</option>
             </select>
@@ -65,76 +65,42 @@
     </div>
 
   </div>
-  <!-- <div class="row">
-        <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-          <span class="spanheader">
-            Users
-          </span>
-        </div>
-        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 ">
-          <div class="pull-right">
-            <button class="btn btn-primary" routerLink="/User/Create">Add New</button>
-          </div>
-        </div>
-      </div> -->
-
   <div class="panel-body">
 
-    <div class="table-responsive">
-      <table datatable [dtOptions]="dtOptions" class="table table-bordered table-condensed "
-        *ngIf="users && users.length">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th>User Type</th>
-            <th class="text-center">IsActive</th>
-            <th class="text-center">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let user of users">
-            <td>{{ user.FirstName +' '+ user.LastName }}</td>
-            <td>{{ user.Email}}</td>
-            <td>{{ user.UserType}}</td>
-            <td class="text-center btnflag" *ngIf="(user.IsActive)"><i class="fa fa-check"></i></td>
-            <td class="text-center btnflag" *ngIf="(!user.IsActive)"><i class="fa fa-times"></i></td>
-            <td class="text-center btnactions">
-              <i (click)="editButtonClick(user.UserId)" title="Edit" class="bgblue pointer fa fa-edit"></i>
-              &nbsp;
+    <kendo-grid [data]="gridView" resizable="true" columnMenu="true" [pageSize]="pageSize" [skip]="skip" [pageable]="true"
+      (pageChange)="pageChange($event)" [sortable]="{
+        allowUnsort: allowUnsort,
+        mode:  'single'
+        }" [sort]="sort" (sortChange)="sortChange($event)" [filterable]="true"
+      (dataStateChange)="dataStateChange($event)" [filter]="state.filter">
 
-              <i (click)="confirmDeleteid(user.UserId,user.Email)" type="button" class="bgred pointer fa fa-trash"
-                title="Delete"></i>
+      <kendo-grid-column field="FirstName" title="Name">
+        <ng-template kendoGridCellTemplate let-user>
+          {{ user.FirstName +' '+ user.LastName }}
+        </ng-template>
+      </kendo-grid-column>
 
-              &nbsp;
-
-              <i class="fa fa-shield bgblue pointer" (click)="editPermissionClick(user.UserId)" title="Permission"></i>
-
-              &nbsp;
-            </td>
-          </tr>
-        </tbody>
-      </table>
-
-      <table class="table table-bordered table-condensed" *ngIf="users==null">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th>User Type</th>
-            <th class="text-center btnflag">IsActive</th>
-            <th class="text-center btnactions">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td colspan="5">
-              No Records Found.!
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+      <kendo-grid-column field="Email" title="Email">
+      </kendo-grid-column>
+      <kendo-grid-column field="UserType" title="User Type">
+      </kendo-grid-column>
+      <kendo-grid-column field="IsActive" title="IsActive" [class]="{'text-center': true}" filter="boolean" width="80">
+        <ng-template kendoGridCellTemplate let-dataItem>
+          <i [class]="dataItem.IsActive ? 'fa fa-check': 'fa fa-times'" aria-hidden="true"></i>
+        </ng-template>
+      </kendo-grid-column>
+      <kendo-grid-column field="BrandID" title="Action" [class]="{'text-center': true}" [filterable]="false"
+        [sortable]="false" width="80">
+        <ng-template kendoGridCellTemplate let-user>
+          <i [routerLink]="['/User', user.UserId]" title="Edit" class="bgblue pointer fa fa-edit"></i>
+          &nbsp;
+          <i (click)="confirmDeleteid(user.UserId,user.Email)" type="button" class="bgred pointer fa fa-trash"
+            title="Delete"></i>
+          &nbsp;
+          <i class="fa fa-shield bgblue pointer" [routerLink]="['/Userpermission', user.UserId,user.Email]" title="Permission"></i>
+        </ng-template>
+      </kendo-grid-column>
+    </kendo-grid>
 
   </div>
 </div>

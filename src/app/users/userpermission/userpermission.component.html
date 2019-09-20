@@ -29,14 +29,14 @@
       <div class="panel-heading">
         <div class="row">
           <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-            <span class="spanheader">
-              User Permission
+            <span class="groupspanheader">
+              User Permission - {{email}}
             </span>
           </div>
           <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 ">
             <div class="pull-right">
               <a class="btn btn-primary" routerLink="/Userlist" routerlinkactive="active" title="Back">
-                <!-- <i class="fa fa-arrow-left" aria-hidden="true"></i> -->
+
                 Back
               </a>
             </div>
@@ -47,63 +47,151 @@
 
       <div class="panel-body">
 
-        <div class="userpermheader">
-          <div class="parcol">
-            <b>Page Name</b>
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+          <li class="nav-item">
+            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home"
+              aria-selected="true">Page Details</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile"
+              aria-selected="false">Report Details </a>
+          </li>
+        </ul>
+
+        <div class="tab-content" id="myTabContent">
+          <div class="tab-pane  active" id="home" role="tabpanel" aria-labelledby="home-tab">
+
+            <div class="userpermheader">
+              <div class="parcol">
+                <b>Page Name</b>
+              </div>
+              <div class="parcol">
+                <b>None</b>
+              </div>
+              <div class="parcol">
+                <b>View</b>
+              </div>
+              <div class="parcol">
+                <b>View & Edit</b>
+              </div>
+            </div>
+            <div *ngFor="let parent of filter(0)" class="userpermodd">
+              <div class="parcol">
+                <div [ngClass]="(parent.AngularRouteName == '#')?'bold':'paddingleft30'">
+                  {{parent.MenuName }}
+                </div>
+              </div>
+              <div *ngIf="(parent.AngularRouteName == '#')">
+                <div class="parcol" (click)="fnusercheckall_None(parent.MenuID)">
+                  <button value="Check All" class="btn btn-check btn-sm">
+                    Check All
+                    <i class="fa fa-check" aria-hidden="true"></i>
+                  </button>
+                </div>
+                <div class="parcol" (click)="fnusercheckall_View(parent.MenuID)">
+                  <button value="Check All" class="btn btn-check btn-sm">
+                    Check All
+                    <i class="fa fa-check" aria-hidden="true"></i>
+                  </button>
+                </div>
+                <div class="parcol" (click)="fnusercheckall_ViewEdit(parent.MenuID)">
+                  <button value="Check All" class="btn btn-check btn-sm">
+                    Check All
+                    <i class="fa fa-check" aria-hidden="true"></i>
+                  </button>
+                </div>
+              </div>
+              <div *ngIf="(parent.AngularRouteName != '#')">
+                <div class="parcol">
+                  <input type="radio" name="{{parent.MenuID}}" id="{{parent.MenuID + '_None'}}"
+                    [checked]="parent.IsViewEdit == '0'" (click)="fnusermenu_None(parent.MenuID)">
+                </div>
+
+                <div class="parcol">
+                  <input type="radio" name="{{parent.MenuID}}" id="{{parent.MenuID + '_View'}}"
+                    [checked]="parent.IsViewEdit == '1'" (click)="fnusermenu_View(parent.MenuID)">
+                </div>
+
+                <div class="parcol">
+                  <input type="radio" name="{{parent.MenuID}}" id="{{parent.MenuID + '_ViewEdit'}}"
+                    [checked]="parent.IsViewEdit == '2'" (click)="fnusermenu_ViewEdit(parent.MenuID)">
+                </div>
+              </div>
+            </div>
+
           </div>
-          <div class="parcol">
-            <b>None</b>
-          </div>
-          <div class="parcol">
-            <b>View</b>
-          </div>
-          <div class="parcol">
-            <b>View & Edit</b>
+          <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+
+
+            <div class="userpermheader">
+              <div class="parcol">
+                <b>Page Name</b>
+              </div>
+              <div class="parcol">
+                <b>None</b>
+              </div>
+              <div class="parcol">
+                <b>Store Level</b>
+              </div>
+              <div class="parcol">
+                <b>Company Level </b>
+              </div>
+            </div>
+            <div *ngFor="let parent of filter(1)" class="userpermodd">
+              <div class="parcol">
+                <div [ngClass]="(parent.AngularRouteName == '#')?'bold':'paddingleft30'">
+                  {{parent.MenuName }}
+                </div>
+              </div>
+
+              <div *ngIf="(parent.AngularRouteName == '#')">
+                <div class="parcol" (click)="fnusercheckall_None(parent.MenuID)">
+                  <button value="Check All" class="btn btn-check btn-sm">
+                    Check All
+                    <i class="fa fa-check" aria-hidden="true"></i>
+                  </button>
+                </div>
+                <div class="parcol" (click)="fnusercheckall_View3(parent.MenuID)">
+                  <button value="Check All" class="btn btn-check btn-sm">
+                    Check All
+                    <i class="fa fa-check" aria-hidden="true"></i>
+                  </button>
+                </div>
+                <div class="parcol" (click)="fnusercheckall_View4(parent.MenuID)">
+                  <button value="Check All" class="btn btn-check btn-sm">
+                    Check All
+                    <i class="fa fa-check" aria-hidden="true"></i>
+                  </button>
+                </div>
+              </div>
+              <div *ngIf="(parent.AngularRouteName != '#')">
+                <div class="parcol">
+                  <input type="radio" name="{{parent.MenuID}}" id="{{parent.MenuID + '_None'}}"
+                    [checked]="parent.IsViewEdit == '0'" (click)="fnusermenu_None(parent.MenuID)">
+                </div>
+
+                <div class="parcol">
+                  <input type="radio" name="{{parent.MenuID}}" id="{{parent.MenuID + '_View3'}}"
+                    [checked]="parent.IsViewEdit == '3'" (click)="fnusermenu_View3(parent.MenuID)">
+                </div>
+
+                <div class="parcol">
+                  <input type="radio" name="{{parent.MenuID}}" id="{{parent.MenuID + '_View4'}}"
+                    [checked]="parent.IsViewEdit == '4'" (click)="fnusermenu_View4(parent.MenuID)">
+                </div>
+              </div>
+            </div>
+
           </div>
         </div>
-        <!-- orderBy : 'DisplayOrder' -->
-        <div *ngFor="let parent of lstUserpermission  " class="userpermodd">
-          <div class="parcol">
-            {{parent.MenuName }}
-          </div>
 
-          <div *ngIf="(parent.AngularRouteName == '#')">
-            <div class="parcol" (click)="fnusercheckall_None(parent.MenuID)">
-              <input type="button" value="Check All" class="btn btn-default btn-sm">
-            </div>
-            <div class="parcol" (click)="fnusercheckall_View(parent.MenuID)">
-              <input type="button" value="Check All" class="btn btn-default btn-sm">
-            </div>
-            <div class="parcol" (click)="fnusercheckall_ViewEdit(parent.MenuID)">
-              <input type="button" value="Check All" class="btn btn-default btn-sm">
-            </div>
+        <div class="panel-footer">
+          <div class="pull-right btn-toolbar">
+            <button class="btn btn-primary" routerLink="/Userlist">Cancel</button>
+            <button class="btn btn-success" type="submit" (click)="savepermission()" prevent-double-submit>Save</button>
           </div>
-          <div *ngIf="(parent.AngularRouteName != '#')">
-            <div class="parcol">
-              <input type="radio" name="{{parent.MenuID}}" id="{{parent.MenuID + '_None'}}"
-                [checked]="parent.IsViewEdit == '0'" (click)="fnusermenu_None(parent.MenuID)">
-            </div>
-
-            <div class="parcol">
-              <input type="radio" name="{{parent.MenuID}}" id="{{parent.MenuID + '_View'}}"
-                [checked]="parent.IsViewEdit == '1'" (click)="fnusermenu_View(parent.MenuID)">
-            </div>
-
-            <div class="parcol">
-              <input type="radio" name="{{parent.MenuID}}" id="{{parent.MenuID + '_ViewEdit'}}"
-                [checked]="parent.IsViewEdit == '2'" (click)="fnusermenu_ViewEdit(parent.MenuID)">
-            </div>
-          </div>
+          <div class="clearfix"></div>
         </div>
+
       </div>
-
-      <div class="panel-footer">
-        <div class="pull-right btn-toolbar">
-          <button class="btn btn-primary" routerLink="/Userlist">Cancel</button>
-          <button class="btn btn-success" type="submit" (click)="savepermission()" prevent-double-submit>Save</button>
-        </div>
-        <div class="clearfix"></div>
-      </div>
-
     </div>
-  </div>

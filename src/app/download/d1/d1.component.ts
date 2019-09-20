@@ -1,9 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { Component, OnInit } from '@angular/core'; 
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
-import { DownloadMaster, DownloadDetail } from '../../_services/model';
-import { PrivateutilityService } from '../../_services/service/privateutility.service';
+import { DownloadMaster, DownloadDetail } from '../../_services/model'; 
 import { DownloadService } from '../../_services/service/download.service';
 import { AuthorizationGuard } from '../../_guards/Authorizationguard'
 
@@ -30,16 +28,14 @@ export class D1Component implements OnInit {
   constructor(
     private alertService: ToastrService,
     private _spinner: NgxSpinnerService,
-    private _authorizationGuard: AuthorizationGuard,
-    private fb: FormBuilder,
-    private _PrivateutilityService: PrivateutilityService,
+    private _authorizationGuard: AuthorizationGuard, 
     private _DownloadService: DownloadService,
   ) { }
 
   ngOnInit() {
     this.Download_Master_ID = 0;
     this._spinner.show();
-    this._DownloadService.getDownloadScreens('GENERAL')
+    this._DownloadService.getDownloadScreens('OTHERS')
       .subscribe(
         (data: DownloadMaster[]) => {
           this.lstDownloadMaster = data;
@@ -53,8 +49,12 @@ export class D1Component implements OnInit {
   }
 
   Downloadexcel(): void {
+
+    if (this._authorizationGuard.CheckAcess("Reportsothers", "ViewEdit")) {
+      return;
+    }
     if (this.Download_Master_ID == 0) {
-      this.alertService.error('Please select screen name!');
+      this.alertService.error('Please select report name!');
       return;
     }
     if (this.lstDownloadDetail.length > 0) {
@@ -64,7 +64,7 @@ export class D1Component implements OnInit {
       $("#txtColumn3").val('');
       $("#txtColumn4").val('');
       $("#txtColumn5").val('');
-      let dyamicspstring = 'exec ';
+      let dyamicspstring = ' ';
       var SP_Name = this.lstDownloadDetail[0].SP_Name;
       var Screen_Name = this.lstDownloadDetail[0].Screen_Name;
       dyamicspstring += SP_Name;
@@ -87,15 +87,22 @@ export class D1Component implements OnInit {
         }
       });
       //var newStr = dyamicspstring.substring(0, dyamicspstring.length - 1);
+    // 87	-Inventory
+    // 88	-Amazon
+    // 89	-Compliance
+    // 90	-Analytics
+    // 91	-MIS
+    // 92	-Others 
+      const MenuId = 92; //87|88|89|90|91|92; 
       this._spinner.show(),
-        this._DownloadService.downloadExcel(Screen_Name, dyamicspstring)
+        this._DownloadService.downloadExcel(MenuId, Screen_Name, dyamicspstring)
           .subscribe(data => {
             if (data != null) {
               this._spinner.show(),
                 this._DownloadService.Download(Screen_Name)
                   .subscribe(data1 => {
                     this._spinner.hide();
-                    saveAs(data1, Screen_Name + '.xls');
+                    saveAs(data1, Screen_Name + '.xls');//+ '.xls'
                     this.alertService.success("File downloaded succesfully.!");
                   },
                     (err) => {
@@ -136,28 +143,28 @@ export class D1Component implements OnInit {
               this.lstDownloadDetail.forEach((element) => {
                 var Text_Type = element.Text_Type;
                 var Download_Detail_ID = element.Download_Detail_ID;
-                if (Text_Type == "Text") {
+                if (Text_Type == "TEXT") {
                   $("#txtColumn" + Download_Detail_ID).attr("type", "text");
                 }
-                else if (Text_Type == "Date") {
+                else if (Text_Type == "DATE") {
                   $("#txtColumn" + Download_Detail_ID).attr("type", "date");
                 }
-                else if (Text_Type == "Number") {
+                else if (Text_Type == "NUMBER") {
                   $("#txtColumn" + Download_Detail_ID).attr("type", "number");
                   $("#txtColumn" + Download_Detail_ID).attr("min", "1");
                   $("#txtColumn" + Download_Detail_ID).attr("max", "10000000");
                 }
-                else if (Text_Type == "Day") {
+                else if (Text_Type == "DAY") {
                   $("#txtColumn" + Download_Detail_ID).attr("type", "number");
                   $("#txtColumn" + Download_Detail_ID).attr("min", "1");
                   $("#txtColumn" + Download_Detail_ID).attr("max", "31");
                 }
-                else if (Text_Type == "Month") {
+                else if (Text_Type == "MONTH") {
                   $("#txtColumn" + Download_Detail_ID).attr("type", "number");
                   $("#txtColumn" + Download_Detail_ID).attr("min", "1");
                   $("#txtColumn" + Download_Detail_ID).attr("max", "12");
                 }
-                else if (Text_Type == "Year") {
+                else if (Text_Type == "YEAR") {
                   $("#txtColumn" + Download_Detail_ID).attr("type", "number");
                   $("#txtColumn" + Download_Detail_ID).attr("min", "2015");
                   $("#txtColumn" + Download_Detail_ID).attr("max", "2025");

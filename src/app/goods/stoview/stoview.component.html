@@ -14,8 +14,8 @@
           <i class="fa fa-arrows-h"></i> <span>Stock Transfer</span>
         </li>
         <li class="active">
-          <i class="fa fa-save"></i>
-          Save
+          <i class="fa fa-eye"></i>
+          View
         </li>
       </ol>
     </div>
@@ -25,7 +25,7 @@
   <div class="panel-heading">
     <div class="row">
       <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-        <span class="spanheader">
+        <span class="groupspanheader">
           Stock Transfer View
         </span>
       </div>
@@ -49,7 +49,7 @@
         <div>
           <label>STO Number <span class="mandantory">*</span>
           </label>
-          <div class="">
+          <div>
             {{obj?.STONumber}}
           </div>
         </div>
@@ -66,7 +66,7 @@
       <div class="col-md-4 col-xs-12">
         <div>
           <label>Inventory Type<span class="mandantory">*</span></label>
-          <div class="">
+          <div>
             {{obj?.InventoryType}}
           </div>
         </div>
@@ -92,7 +92,7 @@
       <div class="col-md-4 col-xs-12">
         <div>
           <label>Other Reference<span class="mandantory">*</span></label>
-          <div class="">
+          <div>
             {{obj?.OtherReference}}
           </div>
         </div>
@@ -114,14 +114,14 @@
       <div class="col-md-8 col-xs-12">
         <div>
           <label>Remarks<span class="mandantory">*</span></label>
-          <div class="">
+          <div>
             {{obj?.Remarks}}
           </div>
         </div>
       </div>
     </div>
 
-    <div class="spanheader"> Order Items</div>
+    <div class="groupspanheader"> Order Items</div>
     <div class="table-responsive">
       <table class="table table-bordered table-condensed table-striped">
         <thead>
@@ -129,15 +129,17 @@
             <th>Item code</th>
             <th>Item Description</th>
             <th>Customer Item Code</th>
-            <th>Units</th>
-            <th>UOM</th>
+            <!-- <th>Units</th>
+            <th>UOM</th> -->
+            <th>Qty</th>
 
             <th>Rate</th>
             <th>Tax Nature</th>
             <th>Tax Rate</th>
             <th>Tax Amount</th>
+            <th>Direct Cost</th>
             <th>Discount Value</th>
-            <th>Total Amount InclTax</th>
+            <th>Total Amount </th>
           </tr>
         </thead>
         <tbody>
@@ -145,29 +147,33 @@
             <td>{{item.ItemCode}}</td>
             <td>{{item.ItemName}}</td>
             <td>{{item.CustomerItemCode}}</td>
-            <td class="text-right">{{item.Units}}</td>
-            <td class="text-right">{{item.MultiplierValue}}</td>
+            <td class="text-right">{{item.Qty}}</td>
+            <!-- <td class="text-right">{{item.Units}}</td>
+            <td class="text-right">{{item.MultiplierValue}}</td> -->
 
-            <td class="text-right">{{item.DirectCost | currency: 'INR'}}</td>
+            <td class="text-right">{{item.ItemRate | currency: 'INR'}}</td>
             <td class="text-right">{{item.TaxNature }} </td>
             <td class="text-right">{{item.TaxRate }} </td>
-            <td class="text-right">{{item.TotalTaxAmount | currency: 'INR'}} </td>
+            <td class="text-right">{{item.TaxAmount | currency: 'INR'}} </td>
+            <td class="text-right">{{item.DirectCost | currency: 'INR'}} </td>
             <td class="text-right">{{item.DiscountValue | currency: 'INR'}} </td>
-            <td class="text-right">{{item.TotalAmountInclTax | currency: 'INR'}} </td>
+            <td class="text-right">{{item.TotalAmount | currency: 'INR'}} </td>
           </tr>
           <tr>
             <th> Total </th>
             <td> </td>
             <td> </td>
-            <th class="text-right">{{TotalUnits}}</th>
-            <th class="text-right">{{TotalMultiplierValue}}</th>
+            <th class="text-right"> {{TotalQty  }}</th>
+            <!-- <th class="text-right">{{TotalUnits}}</th>
+            <th class="text-right">{{TotalMultiplierValue}}</th> -->
 
-            <th class="text-right"> {{TotalRate  | currency: 'INR'}}</th>
+            <th class="text-right"> {{TotalItemRate  | currency: 'INR'}}</th>
             <td class="text-right"> </td>
             <td class="text-right"> </td>
-            <td class="text-right">{{TotalTotalTaxAmount  | currency: 'INR'}} </td>
+            <td class="text-right">{{TotalTaxAmount  | currency: 'INR'}} </td>
+            <td class="text-right">{{TotalDirectCost  | currency: 'INR'}} </td>
             <th class="text-right">{{TotalDiscountValue | currency: 'INR' }} </th>
-            <th class="text-right">{{TotalTotalAmountInclTax  | currency: 'INR'}} </th>
+            <th class="text-right">{{TotalTotalAmount  | currency: 'INR'}} </th>
           </tr>
         </tbody>
       </table>

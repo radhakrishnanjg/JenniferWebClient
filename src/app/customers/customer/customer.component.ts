@@ -28,6 +28,7 @@ export class CustomerComponent implements OnInit {
   identity: number = 0;
   Searchaction: boolean = true;
   emailPattern = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$";
+  dtOptions: DataTables.Settings = {};
   constructor(
     private alertService: ToastrService,
     private fb: FormBuilder,
@@ -70,7 +71,7 @@ export class CustomerComponent implements OnInit {
     },
     'CustomerName': {
       'required': 'This field is required.',
-      'CustomerNameInUse': 'Customer Name already used.',
+      'CustomerNameInUse': 'Customer Name is already registered!',
     },
     'CustomerAliasName': {
       'required': 'This field is required',
@@ -206,6 +207,13 @@ export class CustomerComponent implements OnInit {
           .subscribe(
             (data: Customer) => {
               this.obj.lstContact = data.lstContact;
+              this.dtOptions = {
+                paging: false,
+                scrollY: '400px',
+                "language": {
+                  "search": 'Filter',
+                },
+              };
               var CountryID = data.CountryID.toString();
               this._spinner.show();
               this.utilityService.getStates(parseInt(CountryID))
@@ -248,6 +256,7 @@ export class CustomerComponent implements OnInit {
               });
               //this.customerform.get('CustomerName').disable();
               this.customerform.get('CustomerType').disable();
+              this.customerform.get('CountryID').disable();
               this.customerform.get('StateID').disable();
               this.onchangeCustomerType(data.CustomerType);
             },
@@ -262,10 +271,17 @@ export class CustomerComponent implements OnInit {
         this._contactService.searchByType('External').subscribe(
           (data) => {
             this.obj.lstContact = data;
-
+            
             if (this.obj.lstContact != null && this.obj.lstContact.length > 0) {
               this.obj.lstContact.map(a => a.IsActive = false);
             }
+            this.dtOptions = {
+              paging: false,
+              scrollY: '400px',
+              "language": {
+                "search": 'Filter',
+              },
+            };
             this._spinner.hide();
           },
           (err) => {
@@ -323,8 +339,7 @@ export class CustomerComponent implements OnInit {
     }
   }
 
-  onchangeCustomerType(selectedValue: string) {
-
+  onchangeCustomerType(selectedValue: string) { 
     if (selectedValue == "B2B") {
       this.customerform.get('GSTNumber').enable();
     } else {
@@ -334,9 +349,6 @@ export class CustomerComponent implements OnInit {
     }
   }
 
-  ContactIDFieldsChange(values: any) {
-    this.obj.lstContact.filter(a => a.ContactID == values.currentTarget.id)[0].IsActive = values.currentTarget.checked;
-  }
   SaveData(): void {
     if (this._authorizationGuard.CheckAcess("Customerlist", "ViewEdit")) {
       return;
@@ -344,6 +356,10 @@ export class CustomerComponent implements OnInit {
 
     // stop here if form is invalid
     if (this.customerform.invalid) {
+      return;
+    }
+    if (this.customerform.pristine) {
+      this.alertService.error('Please change the value for any one control to proceed further!');
       return;
     }
     this.aroute.paramMap.subscribe(params => {
@@ -391,7 +407,7 @@ export class CustomerComponent implements OnInit {
         .subscribe(
           (data) => {
             if (data == true) {
-              this.alertService.error('This GSTNumber has been registered already!');
+              this.alertService.error('This GSTNumber is already registered');
             }
             else {
               this._spinner.show();
@@ -481,7 +497,7 @@ export class CustomerComponent implements OnInit {
         .subscribe(
           (data) => {
             if (data == true) {
-              this.alertService.error('This GSTNumber has been registered already!');
+              this.alertService.error('This GSTNumber is already registered');
             }
             else {
               this._spinner.show();
@@ -534,5 +550,16 @@ export class CustomerComponent implements OnInit {
       );
     }
 
+  }
+
+  ContactIDFieldsChange(values: any) {
+    this.obj.lstContact.filter(a => a.ContactID == values.currentTarget.id)[0].IsActive = values.currentTarget.checked;
+  }
+  
+  checkcontacts(value: boolean) {
+    for (var i = 0; i < this.obj.lstContact.length; i++) {
+      this.obj.lstContact[i].IsActive = value;
+      $('#' + this.obj.lstContact[i].ContactID).prop("checked", value);
+    }
   }
 }

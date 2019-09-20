@@ -2,14 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { catchError } from 'rxjs/operators';
-import { observable, throwError, Observable } from 'rxjs';
+import {  throwError, Observable } from 'rxjs';
 import { BadRequest } from './../../common/bad-request';
 import { AppError } from './../../common/app-error';
 import { NotFoundError } from './../../common/not-found-error';
 import { AuthenticationService } from './authentication.service';
-import { Goodsstorage } from './../model/index';
-import { environment } from '../../../environments/environment';
-import { from } from 'rxjs';
+import { Goodsstorage,Result } from './../model/index';
+import { environment } from '../../../environments/environment'; 
 
 @Injectable({
   providedIn: 'root'
@@ -51,8 +50,8 @@ export class GoodsstorageService {
       );
   }
 
-  public add(objGoodsstorage: Goodsstorage[]): Observable<boolean> {
-    return this.httpClient.post<boolean>(environment.baseUrl + `Goodsstorage/Insert`, objGoodsstorage)
+  public add(objGoodsstorage: Goodsstorage[]): Observable<Result> {
+    return this.httpClient.post<Result>(environment.baseUrl + `Goodsstorage/Insert`, objGoodsstorage)
       .pipe(catchError(this.handleError));
   }
 

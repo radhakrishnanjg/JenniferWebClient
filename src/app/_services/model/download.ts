@@ -1,6 +1,3 @@
-export class Download {
-}
-
 export class DownloadMaster { 
     Download_Master_ID: number; 
     Screen_Name: string;
@@ -32,3 +29,10 @@ export class DownloadDetail {
     // who is doing this task
     LoginId: number;
 }
+export class AmazonMTR {  
+    ReportId: string;
+    DownloadPath: string;    
+    FileName: string;
+    CreatedDate: Date;  
+}
+

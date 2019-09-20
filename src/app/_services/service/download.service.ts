@@ -1,13 +1,12 @@
 import { Injectable, } from '@angular/core';
 import { HttpClient, HttpErrorResponse, } from '@angular/common/http';
-import { map } from 'rxjs/operators';
 import { Observable, throwError, } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { BadRequest } from './../../common/bad-request';
 import { NotFoundError } from './../../common/not-found-error';
 import { AppError } from './../../common/app-error';
 import { AuthenticationService } from './authentication.service';
-import { DownloadMaster, DownloadDetail, Result } from '../model/index';
+import { DownloadMaster, DownloadDetail, AmazonMTR, Result } from '../model/index';
 import { environment } from '../../../environments/environment';
 
 @Injectable({
@@ -57,11 +56,13 @@ export class DownloadService {
       .pipe(catchError(this.handleError));
   }
 
-  public downloadExcel(Filename: string, DynamicQuery: string): Observable<Result> {
+  public downloadExcel(MenuId: number, Filename: string, DynamicQuery: string): Observable<Result> {
     this.objDownloadMaster.Filename = Filename;
     let currentUser = this.authenticationService.currentUserValue;
+    DynamicQuery += "@CompanyID=" + currentUser.CompanyID + ",";
     DynamicQuery += "@CompanyDetailID=" + currentUser.CompanyDetailID + ",";
-    DynamicQuery += "@CompanyID=" + currentUser.CompanyID;
+    DynamicQuery += "@UserId=" + currentUser.UserId  + ",";
+    DynamicQuery += "@MenuId=" + MenuId + "";
     this.objDownloadMaster.DynamicQuery = DynamicQuery;
     return this.httpClient.post<Result>(environment.baseUrl + `Download/DownloadExcel`, this.objDownloadMaster)
       .pipe(catchError(this.handleError));
@@ -76,6 +77,23 @@ export class DownloadService {
       .pipe(catchError(this.handleError));
   }
 
+
+  public getAmazonMTR(SearchBy: string, Search: string, StartDate: Date, EndDate: Date): Observable<AmazonMTR[]> {
+    let currentUser = this.authenticationService.currentUserValue;
+    let CompanyDetailID = currentUser.CompanyDetailID;
+    return this.httpClient.get<AmazonMTR[]>(environment.baseUrl +
+      `Download/AmazonMTRFiles?SearchBy=` + encodeURIComponent(SearchBy) + `&Search=` + Search +
+      `&CompanyDetailID=` + CompanyDetailID + `&StartDate=` + StartDate + `&EndDate=` + EndDate)
+      .pipe(catchError(this.handleError));
+  }
+
+  public downloadAmazonMTR(FilePath: string) {
+    return this.httpClient.get(environment.baseUrl + `Download/DownloadAmazonMTRFile?FilePath=` +
+     encodeURIComponent(FilePath)
+      ,
+      { responseType: 'blob' })
+      .pipe(catchError(this.handleError));
+  }
 
   private handleError(error: HttpErrorResponse) {
 

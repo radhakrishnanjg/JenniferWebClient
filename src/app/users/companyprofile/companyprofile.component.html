@@ -1,0 +1,151 @@
+<div class="row">
+  <div class="col-sm-6 col-lg-6">
+    <h3>
+      Company Profile
+    </h3>
+  </div>
+  <div class="col-sm-6 col-lg-6">
+    <div class="pull-right hidden-xs">
+      <ol class="breadcrumb" id="dynamicbreadcrumb">
+        <li>
+          <i class="fa fa-institution"></i> <span> Profile</span>
+        </li>
+        <li class="active">
+          <i class="fa fa-institution"></i>
+          Company
+        </li>
+      </ol>
+    </div>
+  </div>
+</div>
+<div>
+  <div class="panel panel-default" *ngIf="(usertype=='Admin')">
+    <div class="panel-heading">
+      <div class="row">
+        <div class="col-sm-6">
+          <span class="groupspanheader">
+            Detail
+          </span>
+        </div>
+        <div class="col-sm-6">
+          <div class="pull-right">
+            <div class=" btn-toolbar">
+              <button class="btn btn-primary" routerLink="/Companylist">Back</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="panel-body">
+      <div class="col-xs-3">
+        <b> Company Name </b> <br>
+        {{company?.CompanyName}}
+      </div>
+      <div class="col-xs-3">
+        <b> Company Alias Name </b> <br>
+        {{company?.CompnayAliasName}}
+      </div>
+      <div class="col-xs-3">
+        <b> E-mail</b> <br>
+        {{company?.EMail}}
+      </div>
+      <div class="col-xs-3">
+        <b> Mobile Number </b> <br>
+        {{company?.MobileNumber}}
+      </div>
+      <div>
+        <h3><span class="groupspanheader">Primary Details</span></h3>
+      </div>
+      <div class="col-xs-3">
+        <b> Primary Address1 </b> <br>
+        {{company?.PrimaryAddress1}}
+      </div>
+      <div class="col-xs-3">
+        <b> Primary Address2 </b> <br>
+        {{company?.PrimaryAddress2}}
+      </div>
+      <div class="col-xs-3">
+        <b> Primary City </b> <br>
+        {{company?.PrimaryCity}}
+      </div>
+      <div class="col-xs-3">
+        <b> Primary District </b> <br>
+        {{company?.PrimaryDistrict}}
+      </div>
+      <div class="col-xs-3">
+        <b> Primary State </b> <br>
+        {{company?.PrimaryStateName}}
+      </div>
+      <div class="col-xs-3">
+        <b> Primary Country </b> <br>
+        {{company?.PrimaryCountryName}}
+      </div>
+      <div class="col-xs-3">
+        <b> Primary Postal Code </b> <br>
+        {{company?.PrimaryPostalCode}}
+      </div>
+      <div class="col-xs-3">
+        <b> Primary GST </b> <br>
+        {{company?.PrimaryGST}}
+      </div>
+      <hr>
+      <div>
+        <h3><span class="groupspanheader">Secondary Details</span></h3>
+      </div>
+      <div class="col-xs-3">
+        <b> Secondary Address1 </b> <br>
+        {{company?.SecondaryAddress1}}
+      </div>
+      <div class="col-xs-3">
+        <b> Secondary Address2 </b> <br>
+        {{company?.SecondaryAddress2}}
+      </div>
+      <div class="col-xs-3">
+        <b> Secondary City </b> <br>
+        {{company?.SecondaryCity}}
+      </div>
+      <div class="col-xs-3">
+        <b> Secondary District </b> <br>
+        {{company?.SecondaryDistrict}}
+      </div>
+      <div class="col-xs-3">
+        <b> Secondary State </b> <br>
+        {{company?.SecondaryStateName}}
+      </div>
+      <div class="col-xs-3">
+        <b> Secondary Country </b> <br>
+        {{company?.SecondaryCountryName}}
+      </div>
+      <div class="col-xs-3">
+        <b> Secondary Postal Code </b> <br>
+        {{company?.SecondaryPostalCode}}
+      </div>
+      <div class="col-xs-3">
+        <b> Secondary GST </b> <br>
+        {{company?.SecondaryGST}}
+      </div>
+      <div>
+        <h3><span class="groupspanheader">Contact Details</span></h3>
+      </div>
+      <div class="col-xs-3">
+        <b> Contact Person </b> <br>
+        {{company?.ContactPerson}}
+      </div>
+      <div class="col-xs-3">
+        <b> Contact Number </b> <br>
+        {{company?.ContactNumber}}
+      </div>
+      <div class="col-xs-6">
+        <b> Authorized Date </b> <br>
+        {{company?.AuthorisedDate }}
+      </div>
+    </div>
+  </div>
+
+  <div class="panel-heading" *ngIf="(usertype!='Admin')">
+    <div class="panel-body">
+      {{
+                panelTitle}}
+    </div>
+  </div>
+</div>

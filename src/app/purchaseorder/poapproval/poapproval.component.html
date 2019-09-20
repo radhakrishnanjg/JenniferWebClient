@@ -26,7 +26,7 @@
   <div class="panel-heading">
     <div class="row">
       <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-        <span class="spanheader">
+        <span class="groupspanheader">
           {{panelTitle}} - <b> {{obj?.ApprovalStatus }}</b>
         </span>
       </div>
@@ -110,7 +110,7 @@
 
         </div>
         <div class="col-sm-12">
-          <span class="spanheader"> Order Items</span>
+          <span class="groupspanheader"> Order Items</span>
           <table class="table table-bordered table-condensed " *ngIf="obj?.lstItem && obj?.lstItem.length">
             <thead>
               <tr>
@@ -223,8 +223,7 @@
                   formControlName="ApprovalStatus" (change)="onchangeApprovalStatus($event.target.value)"
                   (blur)="logValidationErrors()">
                   <option value="" selected="selected">Select</option>
-                  <option value="Approve">Approve</option>
-                  <!-- <option value="ApproveWithShipment">Approve With Shipment</option> -->
+                  <option value="Approve">Approve</option> 
                   <option value="Reject">Reject</option>
                 </select>
                 <div class="help-block-rk">
@@ -296,7 +295,7 @@
         </div>
 
         <div class="col-sm-12">
-          <span class="spanheader"> Approval Details</span>
+          <span class="groupspanheader"> Approval Details</span>
           <table class="table table-bordered table-condensed " *ngIf="obj?.lstApproval && obj?.lstApproval.length">
             <thead>
               <tr>

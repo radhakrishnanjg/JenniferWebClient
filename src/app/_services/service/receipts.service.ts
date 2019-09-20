@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { map } from 'rxjs/operators';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http'; 
 import { Observable, throwError, } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
@@ -34,6 +33,15 @@ export class ReceiptsService {
     obj1.CompanyDetailID = currentUser.CompanyDetailID; 
     obj1.LoginId = currentUser.UserId; 
     return this.httpClient.post<Result>(environment.baseUrl + `Receipts/Update`, obj1)
+      .pipe(catchError(this.handleError));
+  }
+
+  public DownloadReceiptFile(ReportID: string) {
+    let currentUser = this.authenticationService.currentUserValue;
+    let CompanyDetailID = currentUser.CompanyDetailID; 
+    return this.httpClient.get(environment.baseUrl + `Receipts/DownloadReceiptFile?` +
+      `CompanyDetailID=` + CompanyDetailID + `&ReportID=` + ReportID,
+      { responseType: 'blob' })
       .pipe(catchError(this.handleError));
   }
 

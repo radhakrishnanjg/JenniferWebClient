@@ -71,10 +71,10 @@ export class VendorwarehouseComponent implements OnInit {
     'Address2': {
       'maxlength': 'This field must be less than 100 charecters.',
     },
-    'CountryID': { 
+    'CountryID': {
       'min': 'This field is required.',
     },
-    'StateID': { 
+    'StateID': {
       'min': 'This field is required.',
     },
     'City': {
@@ -161,7 +161,7 @@ export class VendorwarehouseComponent implements OnInit {
         this.action = false;
         this._vendorwarehouseService.searchById(this.identity)
           .subscribe(
-            (data: Vendorwarehouse) => { 
+            (data: Vendorwarehouse) => {
               var CountryID = data.CountryID.toString();
               this._spinner.show();
               this.utilityService.getStates(parseInt(CountryID))
@@ -170,13 +170,12 @@ export class VendorwarehouseComponent implements OnInit {
                     this.states = statesa;
                     this._spinner.hide();
                   },
-                  (err: any) =>
-                  {
+                  (err: any) => {
                     console.log(err);
                     this._spinner.hide();
                   }
                 );
-                this._spinner.show();
+              this._spinner.show();
               this._PrivateutilityService.getVendors()
                 .subscribe(
                   (data1: Vendor[]) => {
@@ -209,7 +208,8 @@ export class VendorwarehouseComponent implements OnInit {
                 IsActive: data.IsActive,
               });
               this.vendorwarehouseform.get('VendorID').disable();
-              this.vendorwarehouseform.get('StateID').disable(); 
+              this.vendorwarehouseform.get('CountryID').disable();
+              this.vendorwarehouseform.get('StateID').disable();
             },
             (err: any) =>
               console.log(err)
@@ -228,8 +228,8 @@ export class VendorwarehouseComponent implements OnInit {
 
       Address1: ['', [Validators.required]],
       Address2: ['', [Validators.maxLength(100)]],
-      CountryID: [0, [ Validators.min(1)]],
-      StateID: [0, [ Validators.min(1)]],
+      CountryID: [0, [Validators.min(1)]],
+      StateID: [0, [Validators.min(1)]],
       City: ['', [Validators.required, Validators.pattern("^([a-zA-Z ]+)$")]],
       PostalCode: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(6), Validators.pattern("^([0-9]+)$")]],
 
@@ -268,6 +268,10 @@ export class VendorwarehouseComponent implements OnInit {
     if (this.vendorwarehouseform.invalid) {
       return;
     }
+    if (this.vendorwarehouseform.pristine) {
+      this.alertService.error('Please change the value for any one control to proceed further!');
+      return;
+    }
     this.aroute.paramMap.subscribe(params => {
       this.identity = +params.get('id');
     });
@@ -303,7 +307,7 @@ export class VendorwarehouseComponent implements OnInit {
       .subscribe(
         (data) => {
           if (data == true) {
-            this.alertService.error('This warehouse has been registered already!');
+            this.alertService.error('This warehouse is already registered');
           }
           else {
             this._spinner.show();
@@ -359,7 +363,7 @@ export class VendorwarehouseComponent implements OnInit {
       .subscribe(
         (data) => {
           if (data == true) {
-            this.alertService.error('This warehouse has been registered already!');
+            this.alertService.error('This warehouse is already registered');
           }
           else {
             this._spinner.show();

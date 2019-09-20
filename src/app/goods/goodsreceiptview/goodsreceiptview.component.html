@@ -14,8 +14,8 @@
           <i class="fa fa-truck"></i> <span> Goods Receipts</span>
         </li>
         <li class="active">
-          <i class="fa fa-save"></i>
-          Save
+          <i class="fa fa-eye"></i>
+          View
         </li>
       </ol>
     </div>
@@ -25,7 +25,7 @@
   <div class="panel-heading">
     <div class="row">
       <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-        <span class="spanheader">
+        <span class="groupspanheader">
           Goods Receipt View
         </span>
       </div>
@@ -53,7 +53,7 @@
 
           </label>
 
-          <div class="">
+          <div>
             {{obj?.PONumber}}
           </div>
         </div>
@@ -63,7 +63,7 @@
         <div>
           <label>GRN Number <span class="mandantory">*</span>
           </label>
-          <div class="">
+          <div>
             {{ obj?.GRNNumber }}
           </div>
         </div>
@@ -73,7 +73,7 @@
         <div class="form-group">
           <label>Location <span class="mandantory">*</span>
           </label>
-          <div class="">
+          <div>
             {{obj?.LocationName }}
           </div>
         </div>
@@ -83,7 +83,7 @@
           <label for="VendorID">Vendor
             <span class="mandantory">*</span>
           </label>
-          <div class="">
+          <div>
             {{ obj?.VendorName }}
           </div>
         </div>
@@ -103,7 +103,7 @@
       <div class="col-md-3 col-xs-12">
         <div>
           <label>Purchase Invoice Number<span class="mandantory">*</span></label>
-          <div class="">
+          <div>
             {{obj?.InvoiceNumber}}
           </div>
         </div>
@@ -111,7 +111,7 @@
       <div class="col-md-3 col-xs-12">
         <div>
           <label>Inventory Type<span class="mandantory">*</span></label>
-          <div class="">
+          <div>
             {{obj?.InventoryType}}
           </div>
         </div>
@@ -119,7 +119,7 @@
       <div class="col-md-3 col-xs-12">
         <div>
           <label>Other Reference Number </label>
-          <div class="">
+          <div>
             {{obj?.OtherReference}}
           </div>
         </div>
@@ -130,7 +130,7 @@
       <div class="col-md-3 col-xs-12">
         <div>
           <label>Vehicle Number </label>
-          <div class="">
+          <div>
             {{obj?.VehicleNumber}}
           </div>
         </div>
@@ -138,7 +138,7 @@
       <div class="col-md-3 col-xs-12">
         <div>
           <label>Eway Bill Number </label>
-          <div class="">
+          <div>
             {{obj?.EwayBillNumber}}
           </div>
         </div>
@@ -146,13 +146,60 @@
       <div class="col-md-6 col-xs-12">
         <div>
           <label>Remarks </label>
-          <div class="">
+          <div>
             {{obj?.Remarks}}
           </div>
         </div>
       </div>
     </div>
-    <div class="spanheader"> Order Items</div>
+    <span class="groupspanheader">Upload Images</span>
+    <div class="row">
+      <div class="col-sm-3 col-xs-12">
+        <div>
+          <div class=" col-sm-12 inputlevel">
+            <label class="nopading_loct control-label" for="SelectSelect">Image 1
+              <span class="mandantory">*</span>
+            </label>
+            <br>
+            <img [src]="obj?.ImagePath1" width="200" height="200" title="Image 1" />
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-3 col-xs-12">
+        <div>
+          <div class=" col-sm-12 inputlevel">
+            <label class="nopading_loct control-label" for="SelectSelect">Image 2
+              <span class="mandantory">*</span>
+            </label>
+            <br>
+            <img [src]="obj?.ImagePath2" width="200" height="200" title="Image 2" />
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-3 col-xs-12">
+        <div>
+          <div class=" col-sm-12 inputlevel">
+            <label class="nopading_loct control-label" for="SelectSelect">Image 3
+
+            </label>
+            <br>
+            <img [src]="obj?.ImagePath3" width="200" height="200" title="Image 3" />
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-3 col-xs-12">
+        <div>
+          <div class=" col-sm-12 inputlevel">
+            <label class="nopading_loct control-label" for="SelectSelect">Image 4
+
+            </label>
+            <br>
+            <img [src]="obj?.ImagePath4" width="200" height="200" title="Image 4" />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="groupspanheader"> Order Items</div>
     <div class="table-responsive">
       <table class="table table-bordered table-condensed table-striped">
         <thead>
@@ -160,17 +207,15 @@
             <th>Vendor Item Code</th>
             <th>Item Description</th>
             <th>Item code</th>
-            <!-- <th>PO Qty</th>
-              <th>Available Qty</th> -->
-
             <th>Inventory Sellable Qty</th>
             <th>Inventory Shortage Qty</th>
+
             <th>Inventory Damaged Qty</th>
             <th>Inventory Others Qty </th>
             <th>Total Received Qty <span class="mandantory">*</span> </th>
-
             <th>Shortage Remarks </th>
             <th>Damage Remarks</th>
+
             <th>Others Remarks</th>
             <th>Action</th>
           </tr>
@@ -180,30 +225,24 @@
             <td>{{item.VendorItemCode}}</td>
             <td>{{item.ItemDescription}}</td>
             <td>{{item.ItemCode}}</td>
-            <!-- <td>{{item.POQTY}}</td>
-              <td>{{item.AvailableQty}}</td> -->
-
             <td class="text-right">{{item.InventorySellableQty}}</td>
             <td class="text-right">{{item.InventoryShortageQty}} </td>
+
             <td class="text-right">{{item.InventoryDamageQty}} </td>
             <td class="text-right">{{item.InventoryOthersQty}} </td>
             <td class="text-right"> {{item.TotalReceivedQty}} </td>
-
             <td>{{item.ShortageRemarks}} </td>
             <td>{{item.DamageRemarks}} </td>
+
             <td>{{item.OthersRemarks}} </td>
-            <td>
-              <button class="btn btn-info" (click)="filterGoodsInward(item.GRNDetailID)"
-                title="View Goods Inward">View</button>
+            <td class="text-center">
+              <i class="fa fa-eye pointer" (click)="filterGoodsInward(item.GRNDetailID)" title="View Goods Inward"></i>
             </td>
           </tr>
           <tr>
             <th> Total </th>
             <td> </td>
             <td> </td>
-            <!-- <td>{{item.POQTY}}</td>
-              <td>{{item.AvailableQty}}</td> -->
-
             <th class="text-right">{{InventorySellable }}</th>
             <th class="text-right">{{InventoryShortage }} </th>
             <th class="text-right">{{InventoryDamage }} </th>
@@ -218,7 +257,7 @@
         </tbody>
       </table>
     </div>
-    <div class="spanheader"> Goods Inwards</div>
+    <div class="groupspanheader"  *ngIf="lstinward.length > 0"> Goods Inwards</div>
     <div class="table-responsive">
       <table datatable [dtOptions]="dtOptions" class="table table-bordered table-condensed table-striped"
         *ngIf="lstinward.length > 0">

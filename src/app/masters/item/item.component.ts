@@ -69,7 +69,7 @@ export class ItemComponent implements OnInit {
     },
     'ItemCode': {
       'required': 'This field is required.',
-      'ItemCodeInUse': 'Item Code already used.',
+      'ItemCodeInUse': 'Item Code is already registered!',
     },
     'BrandID': {
       'min': 'This field is required.',
@@ -100,7 +100,7 @@ export class ItemComponent implements OnInit {
       'min': 'This field must be more than 0.00',
       'max': 'This field can not exceed 10000000.00'
     },
-    'Margin': { 
+    'Margin': {
       'pattern': 'This field must be numeric with only 2 decimals.',
       'min': 'This field must be more than 0.00',
       'max': 'This field can not exceed 100.00'
@@ -118,7 +118,7 @@ export class ItemComponent implements OnInit {
       'maxlength': 'This field must be less than or equal to 50 charecters.',
       'pattern': 'This field must be Alphanumeric.',
     },
-    'ProductGroupID': { 
+    'ProductGroupID': {
       'min': 'This field is required.',
     }
 
@@ -225,6 +225,7 @@ export class ItemComponent implements OnInit {
       if (this.identity > 0) {
         this.panelTitle = "Edit Item";
         this.action = false;
+        this._spinner.show();
         this._itemService.getItem(this.identity)
           .subscribe(
             (data: Item) => {
@@ -289,10 +290,15 @@ export class ItemComponent implements OnInit {
               this.itemform.get('MRP').disable();
               this.itemform.get('Margin').disable();
               this.itemform.get('UOMID').disable();
+              this.itemform.get('IsTaxExempted').disable();
               this.itemform.get('TaxRate').disable();
+              this.itemform.get('HSNCode').disable();
+
             },
-            (err: any) =>
-              console.log(err)
+            (err: any) => {
+              this._spinner.hide();
+              console.log(err);
+            }
           );
       }
       else {
@@ -310,7 +316,7 @@ export class ItemComponent implements OnInit {
       BrandID: [0, [Validators.required, Validators.min(1)]],
       HSNCode: ['', [Validators.required]],
       EAN_UPCCode: ['', [Validators.pattern("^([a-zA-Z0-9]+)$")]],
-      ProductGroupID: [0, [  Validators.min(1)]],
+      ProductGroupID: [0, [Validators.min(1)]],
       CategoryID: [0, [Validators.required, Validators.min(1)]],
       SubCategoryID: [0, [Validators.required, Validators.min(1)]],
       TaxRate: ['', [Validators.required, Validators.min(0.01), Validators.max(100), Validators.pattern("(100|[0-9]{1,2})(\.[0-9]{1,2})?"),]],
@@ -392,6 +398,10 @@ export class ItemComponent implements OnInit {
 
     // stop here if form is invalid
     if (this.itemform.invalid) {
+      return;
+    }
+    if (this.itemform.pristine) {
+      this.alertService.error('Please change the value for any one control to proceed further!');
       return;
     }
     this.aroute.paramMap.subscribe(params => {

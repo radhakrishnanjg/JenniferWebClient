@@ -1,0 +1,121 @@
+<div class="row">
+  <div class="col-sm-6 col-lg-6">
+    <h3>
+      Picklist
+    </h3>
+  </div>
+  <div class="col-sm-6 col-lg-6">
+    <div class="pull-right hidden-xs">
+      <ol class="breadcrumb" id="dynamicbreadcrumb">
+        <li>
+          <i class="fa fa-money"></i> <span> Revenue</span>
+        </li>
+        <li>
+          <i class="fa fa-truck"></i> <span> PickList</span>
+        </li>
+        <li class="active">
+          <i class="fa fa-eye" aria-hidden="true"></i>
+          View
+        </li>
+      </ol>
+    </div>
+  </div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <div class="row">
+      <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+        <span class="groupspanheader">
+          Picklist View
+        </span>
+      </div>
+      <div class="col-sm-6">
+        <div class="pull-left">
+
+        </div>
+      </div>
+      <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 ">
+        <div class="pull-right">
+          <button class="btn btn-primary" routerLink="/Picklistsearch" title="Back">
+            Back
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel-body">
+    <div class="col-md-12">
+      <div class="row">
+        <span class="groupspanheader"> Basic Details</span>
+        <div class="table-responsive">
+          <table class="table table-bordered table-condensed "
+            *ngIf="objPicklistview?.lstHeader && objPicklistview?.lstHeader.length">
+            <thead>
+              <tr>
+                <th>Location Name</th>
+                <th>Inventory Type </th>
+                <th>Picked Qty</th>
+                <th>Status </th>
+                <th>WarehouseLocation</th>
+
+                <th>WarehouseRack </th>
+                <th>WarehouseBin </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let obj of objPicklistview?.lstHeader">
+                <td>{{ obj.LocationName }}</td>
+                <td>{{ obj.InventoryType }}</td>
+                <td>{{ obj.PickedQty }}</td>
+                <td>{{ obj.Status }}</td>
+                <td>{{ obj.WarehouseLocation}}</td>
+
+                <td>{{ obj.WarehouseRack }}</td>
+                <td>{{obj.WarehouseBin}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <span class="groupspanheader"> Item Details</span>
+        <div class="table-responsive">
+          <table class="table table-bordered table-condensed "
+            *ngIf="objPicklistview?.lstSerialNums && objPicklistview?.lstSerialNums.length">
+            <thead>
+              <tr>
+                <th>Warehouse Location</th>
+                <th>Warehouse Rack </th>
+                <th>Warehouse Bin </th>
+                <th>Item Code </th>
+                <th>Item Name </th>
+
+                <th>Customer ItemCode</th>
+                <th>Jennifer Item Serial</th>
+
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let obj of objPicklistview?.lstSerialNums">
+                <td>{{ obj.WarehouseLocation}}</td>
+                <td>{{ obj.WarehouseRack }}</td>
+                <td>{{obj.WarehouseBin}}</td>
+                <td>{{ obj.ItemCode }}</td>
+                <td>{{ obj.ItemName }}</td>
+
+                <td>{{obj.CustomerItemCode}}</td>
+                <td>{{obj.ItemSerialNumber}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="panel-footer">
+    <div class="btn-toolbar pull-right">
+      <button type="button" class="btn btn-primary" routerLink="/Picklistsearch" title="Cancel">Cancel</button>
+    </div>
+    <div class="clearfix"></div>
+  </div>
+</div>

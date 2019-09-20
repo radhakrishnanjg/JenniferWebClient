@@ -1,14 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { FormGroup, FormBuilder, Validators, FormControl, FormArray } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
+import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AuthorizationGuard } from '../../_guards/Authorizationguard'
-import { Dropdown } from '../../_services/model';
+import { Dropdown, Apisettings } from '../../_services/model';
 import { GoodsReceipt, GoodsReceiptDetail, PONumber } from '../../_services/model/goodsreceipt.model';
 import { Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 import { GoodsReceiptService } from '../../_services/service/goods-receipt.service';
+import { PrivateutilityService } from '../../_services/service/privateutility.service';
+import { Location, Vendorwarehouse, Result } from '../../_services/model';
+import { UsernameValidator } from '../../_validators/username';
 import * as moment from 'moment';
 @Component({
   selector: 'app-goods-receipt',
@@ -36,13 +39,34 @@ export class GoodsReceiptComponent implements OnInit {
   selectedRowIndex: number = -1;
   Searchaction: boolean = true;
   public itemFormGroup: FormGroup;
+  selectedFile1: File;
+  selectedFile2: File;
+  selectedFile3: File;
+  selectedFile4: File;
+
+  GRNType: string = '';
+  TrackingNumber: string = '';
+
+  locationList: Location[];
+  Vendorwarehouselist: Vendorwarehouse[];
+  VendorWarehouseID: number = 0;
+  objResult: Result = {} as any;
+  TotalPOQty: number = 0;
+  TotalAvailableQty: number = 0;
+  TotalInventorySellableQty: number = 0;
+  TotalInventoryShortageQty: number = 0;
+  TotalInventoryDamagedQty: number = 0;
+  TotalInventoryOthersQty: number = 0;
+  TotalTotalReceivedQty: number = 0;
   constructor(
     private fb: FormBuilder,
     public _spinner: NgxSpinnerService,
     private _goodsReceiptService: GoodsReceiptService,
     private alertService: ToastrService,
     private _authorizationGuard: AuthorizationGuard,
-    private _router: Router
+    private _privateutilityService: PrivateutilityService,
+    private _router: Router,
+    private usernameValidator: UsernameValidator,
   ) { }
 
   formErrors = {
@@ -58,13 +82,16 @@ export class GoodsReceiptComponent implements OnInit {
     'VechicleNumber': '',
     'EwayBillNumber': '',
     'Remarks': '',
+    'FileData1': '',
+    'FileData2': '',
   }
   validationMessages = {
     'PONumber': {
       'required': 'This Field is required'
     },
     'InvoiceNumber': {
-      'required': 'This Field is required'
+      'required': 'This Field is required',
+      'GRNInvoiceNumberInUse': 'This Value is already registered!',
     },
     'GRNDate': {
       'required': 'This Field is required',
@@ -83,6 +110,18 @@ export class GoodsReceiptComponent implements OnInit {
     },
     'Remarks': {
       'maxlength': 'Remarks must be less than or equal to 250 charecters.',
+    },
+    'FileData1': {
+      'required': 'This Field is required',
+    },
+    'FileData2': {
+      'required': 'This Field is required',
+    },
+    'LocationID': {
+      'min': 'This Field is required.',
+    },
+    'VendorID': {
+      'min': 'This Field is required.',
     },
   }
 
@@ -109,7 +148,10 @@ export class GoodsReceiptComponent implements OnInit {
   }
 
   ngOnInit() {
-
+    this.objResult = new Result();
+    this.objResult.Msg = '';
+    this.objResult.Flag = true;
+    this.GRNMinDate = moment().subtract(7, 'days');
     this.GRNMaxDate = moment().add(0, 'days');
 
     this.getGRNNumber();
@@ -117,15 +159,25 @@ export class GoodsReceiptComponent implements OnInit {
     this.getInventoryTypes();
     this.goodsForm = this.fb.group({
       PONumber: ['', [Validators.required]],
-      InvoiceNumber: ['', [Validators.required,]],
-      LocationID: [''],
-      VendorID: [''],
+      InvoiceNumber: ['', [Validators.required,],
+        this.usernameValidator.existGRNInvoiceNumber(this.identity)],
+      LocationID: [0, [Validators.min(1)]],
+      VendorID: [0, [Validators.min(1)]],
       GRNDate: ['', [Validators.required]],
       InventoryType: ['', [Validators.required]],
       VehicleNumber: ['', []],
       EwayBillNumber: ['', []],
       OtherReference: ['', []],
       Remarks: ['', []],
+      FileData1: ['', [Validators.required]],
+      FileData2: ['', [Validators.required]],
+      FileData3: ['', []],
+      FileData4: ['', []],
+    });
+
+    var GRNDate = moment(new Date(), 'YYYY-MM-DD[T]HH:mm').format('MM-DD-YYYY HH:mm').toString();
+    this.goodsForm.patchValue({
+      GRNDate: { startDate: new Date(GRNDate) },
     });
   }
 
@@ -179,8 +231,6 @@ export class GoodsReceiptComponent implements OnInit {
 
   public onPONumberChange(): void {
     let selectedPONumber = this.goodsForm.controls["PONumber"].value;
-    this.goodsForm.controls["LocationID"].setValue(0);
-    this.goodsForm.controls["VendorID"].setValue(0);
     this.lstGoodsReceiptDetail = [];
     if (selectedPONumber != "") {
       let poDetail = this.poNumbers.filter(x => { return x.PONumber == selectedPONumber })[0];
@@ -188,15 +238,30 @@ export class GoodsReceiptComponent implements OnInit {
         this.LocationName = poDetail.LocationName;
         this.VendorName = poDetail.VendorName;
         this.PODate = poDetail.PODate;
-        var Podatemom = moment(poDetail.PODate);
-        var diff = Podatemom.diff(new Date());
-        this.GRNMinDate = moment().add(diff, 'days');
-        this.goodsForm.controls["LocationID"].setValue(poDetail.LocationID);
-        this.goodsForm.controls["VendorID"].setValue(poDetail.VendorID);
+        this.GRNType = poDetail.GRNType;
+        if (poDetail.GRNType == 'S') {
+          this.TrackingNumber = poDetail.PONumber;
+          this.getLocations();
+          this.getVendorwarehouses();
+        }
+        else {
+          
+          this.TrackingNumber = '';
+          this.goodsForm.controls["LocationID"].setValue(poDetail.LocationID);
+          this.goodsForm.controls["VendorID"].setValue(poDetail.VendorID);
+        }
+        this.GRNMinDate = moment(poDetail.PODate).add(1, 'minutes');//moment().subtract(diff, 'days');
         this._spinner.show();
-        this._goodsReceiptService.getItems(poDetail.POID).subscribe(
+        this._goodsReceiptService.getItems(poDetail.POID, this.GRNType, this.TrackingNumber).subscribe(
           (res) => {
             this.lstGoodsReceiptDetail = res;
+            this.TotalPOQty = this.lstGoodsReceiptDetail.reduce((acc, a) => acc + a.POQTY, 0);
+            this.TotalAvailableQty = this.lstGoodsReceiptDetail.reduce((acc, a) => acc + a.AvailableQty, 0);
+            this.TotalInventorySellableQty = this.lstGoodsReceiptDetail.reduce((acc, a) => acc + a.InventorySellableQty, 0);
+            this.TotalInventoryShortageQty = this.lstGoodsReceiptDetail.reduce((acc, a) => acc + a.InventoryShortageQty, 0);
+            this.TotalInventoryDamagedQty = this.lstGoodsReceiptDetail.reduce((acc, a) => acc + a.InventoryDamageQty, 0);
+            this.TotalInventoryOthersQty = this.lstGoodsReceiptDetail.reduce((acc, a) => acc + a.InventoryOthersQty, 0);
+            this.TotalTotalReceivedQty = this.lstGoodsReceiptDetail.reduce((acc, a) => acc + a.TotalReceivedQty, 0);
             this._spinner.hide();
           }, (err) => {
             this._spinner.hide();
@@ -205,6 +270,34 @@ export class GoodsReceiptComponent implements OnInit {
       }
 
     }
+  }
+
+  //Get Locations
+  public getLocations(): void {
+    this._spinner.show();
+    this._privateutilityService.getSTOGRNLocation().subscribe(
+      (data) => {
+        this.locationList = data;
+        this._spinner.hide();
+      },
+      (err) => {
+        this._spinner.hide();
+        console.log(err);
+      }
+    );
+  }
+
+  //Get Vendors
+  public getVendorwarehouses(): void {
+    this._spinner.show();
+    this._privateutilityService.getSTOGRNVendorWarehouse().subscribe(
+      (res) => {
+        this.Vendorwarehouselist = res;
+        this._spinner.hide();
+      }, (err) => {
+        this._spinner.hide();
+        console.log(err);
+      });
   }
 
   public onInventorySellableQtyChange(index, key, value: number): void {
@@ -223,11 +316,19 @@ export class GoodsReceiptComponent implements OnInit {
       return;
     }
     else {
-      this.lstGoodsReceiptDetail[index][key] = value;
+      this.lstGoodsReceiptDetail[index][key] = parseInt(value.toString());
       this.lstGoodsReceiptDetail[index].TotalReceivedQty = +this.lstGoodsReceiptDetail[index].InventorySellableQty
         + +this.lstGoodsReceiptDetail[index].InventoryShortageQty
         + +this.lstGoodsReceiptDetail[index].InventoryDamageQty
         + +this.lstGoodsReceiptDetail[index].InventoryOthersQty;
+
+      this.TotalPOQty = this.lstGoodsReceiptDetail.reduce((acc, a) => acc + a.POQTY, 0);
+      this.TotalAvailableQty = this.lstGoodsReceiptDetail.reduce((acc, a) => acc + a.AvailableQty, 0);
+      this.TotalInventorySellableQty = this.lstGoodsReceiptDetail.reduce((acc, a) => acc + a.InventorySellableQty, 0);
+      this.TotalInventoryShortageQty = this.lstGoodsReceiptDetail.reduce((acc, a) => acc + a.InventoryShortageQty, 0);
+      this.TotalInventoryDamagedQty = this.lstGoodsReceiptDetail.reduce((acc, a) => acc + a.InventoryDamageQty, 0);
+      this.TotalInventoryOthersQty = this.lstGoodsReceiptDetail.reduce((acc, a) => acc + a.InventoryOthersQty, 0);
+      this.TotalTotalReceivedQty = this.lstGoodsReceiptDetail.reduce((acc, a) => acc + a.TotalReceivedQty, 0);
     }
   }
 
@@ -247,11 +348,19 @@ export class GoodsReceiptComponent implements OnInit {
       return;
     }
     else {
-      this.lstGoodsReceiptDetail[index][key] = value;
+      this.lstGoodsReceiptDetail[index][key] = parseInt(value.toString());
       this.lstGoodsReceiptDetail[index].TotalReceivedQty = +this.lstGoodsReceiptDetail[index].InventorySellableQty
         + +this.lstGoodsReceiptDetail[index].InventoryShortageQty
         + +this.lstGoodsReceiptDetail[index].InventoryDamageQty
         + +this.lstGoodsReceiptDetail[index].InventoryOthersQty;
+
+      this.TotalPOQty = this.lstGoodsReceiptDetail.reduce((acc, a) => acc + a.POQTY, 0);
+      this.TotalAvailableQty = this.lstGoodsReceiptDetail.reduce((acc, a) => acc + a.AvailableQty, 0);
+      this.TotalInventorySellableQty = this.lstGoodsReceiptDetail.reduce((acc, a) => acc + a.InventorySellableQty, 0);
+      this.TotalInventoryShortageQty = this.lstGoodsReceiptDetail.reduce((acc, a) => acc + a.InventoryShortageQty, 0);
+      this.TotalInventoryDamagedQty = this.lstGoodsReceiptDetail.reduce((acc, a) => acc + a.InventoryDamageQty, 0);
+      this.TotalInventoryOthersQty = this.lstGoodsReceiptDetail.reduce((acc, a) => acc + a.InventoryOthersQty, 0);
+      this.TotalTotalReceivedQty = this.lstGoodsReceiptDetail.reduce((acc, a) => acc + a.TotalReceivedQty, 0);
     }
   }
 
@@ -271,11 +380,19 @@ export class GoodsReceiptComponent implements OnInit {
       return;
     }
     else {
-      this.lstGoodsReceiptDetail[index][key] = value;
+      this.lstGoodsReceiptDetail[index][key] = parseInt(value.toString());
       this.lstGoodsReceiptDetail[index].TotalReceivedQty = +this.lstGoodsReceiptDetail[index].InventorySellableQty
         + +this.lstGoodsReceiptDetail[index].InventoryShortageQty
         + +this.lstGoodsReceiptDetail[index].InventoryDamageQty
         + +this.lstGoodsReceiptDetail[index].InventoryOthersQty;
+
+      this.TotalPOQty = this.lstGoodsReceiptDetail.reduce((acc, a) => acc + a.POQTY, 0);
+      this.TotalAvailableQty = this.lstGoodsReceiptDetail.reduce((acc, a) => acc + a.AvailableQty, 0);
+      this.TotalInventorySellableQty = this.lstGoodsReceiptDetail.reduce((acc, a) => acc + a.InventorySellableQty, 0);
+      this.TotalInventoryShortageQty = this.lstGoodsReceiptDetail.reduce((acc, a) => acc + a.InventoryShortageQty, 0);
+      this.TotalInventoryDamagedQty = this.lstGoodsReceiptDetail.reduce((acc, a) => acc + a.InventoryDamageQty, 0);
+      this.TotalInventoryOthersQty = this.lstGoodsReceiptDetail.reduce((acc, a) => acc + a.InventoryOthersQty, 0);
+      this.TotalTotalReceivedQty = this.lstGoodsReceiptDetail.reduce((acc, a) => acc + a.TotalReceivedQty, 0);
     }
   }
 
@@ -295,11 +412,19 @@ export class GoodsReceiptComponent implements OnInit {
       return;
     }
     else {
-      this.lstGoodsReceiptDetail[index][key] = value;
+      this.lstGoodsReceiptDetail[index][key] = parseInt(value.toString());
       this.lstGoodsReceiptDetail[index].TotalReceivedQty = +this.lstGoodsReceiptDetail[index].InventorySellableQty
         + +this.lstGoodsReceiptDetail[index].InventoryShortageQty
         + +this.lstGoodsReceiptDetail[index].InventoryDamageQty
         + +this.lstGoodsReceiptDetail[index].InventoryOthersQty;
+
+      this.TotalPOQty = this.lstGoodsReceiptDetail.reduce((acc, a) => acc + a.POQTY, 0);
+      this.TotalAvailableQty = this.lstGoodsReceiptDetail.reduce((acc, a) => acc + a.AvailableQty, 0);
+      this.TotalInventorySellableQty = this.lstGoodsReceiptDetail.reduce((acc, a) => acc + a.InventorySellableQty, 0);
+      this.TotalInventoryShortageQty = this.lstGoodsReceiptDetail.reduce((acc, a) => acc + a.InventoryShortageQty, 0);
+      this.TotalInventoryDamagedQty = this.lstGoodsReceiptDetail.reduce((acc, a) => acc + a.InventoryDamageQty, 0);
+      this.TotalInventoryOthersQty = this.lstGoodsReceiptDetail.reduce((acc, a) => acc + a.InventoryOthersQty, 0);
+      this.TotalTotalReceivedQty = this.lstGoodsReceiptDetail.reduce((acc, a) => acc + a.TotalReceivedQty, 0);
     }
   }
 
@@ -311,11 +436,106 @@ export class GoodsReceiptComponent implements OnInit {
     this.lstGoodsReceiptDetail[index][key] = value;
   }
 
-  public saveData(): void {
+  onFileChanged1(e: any) {
+    this.selectedFile1 = e.target.files[0];
+  }
 
+  onFileChanged2(e: any) {
+    this.selectedFile2 = e.target.files[0];
+  }
+
+  onFileChanged3(e: any) {
+    this.selectedFile3 = e.target.files[0];
+  }
+
+  onFileChanged4(e: any) {
+    this.selectedFile4 = e.target.files[0];
+  }
+
+
+  onSTODateChange(range) {
+    if (this.GRNType == 'S') {
+      if (this.goodsForm.controls['GRNDate'].value.startDate == null ||
+        this.goodsForm.controls['GRNDate'].value.startDate == undefined) {
+        this.alertService.error("Please enter GRN date!.");
+        return;
+      }
+      let STODate = this.goodsForm.controls['GRNDate'].value.startDate._d.toLocaleString();
+      this._spinner.show();
+      this._privateutilityService.getCheckSTODateValidation(STODate).subscribe(
+        (res) => {
+          this.objResult = res;
+          this._spinner.hide();
+        }, (err) => {
+          this._spinner.hide();
+          console.log(err);
+        });
+    }
+    else {
+      this.objResult = new Result();
+      this.objResult.Msg = '';
+      this.objResult.Flag = true;
+    }
+  }
+
+  public saveData(): void {
+    if (this._authorizationGuard.CheckAcess("Goodsreceiptlist", "ViewEdit")) {
+      return;
+    }
     // stop here if form is invalid
     if (this.goodsForm.invalid) {
       return;
+    }
+    if (this.selectedFile1 != null) {
+      var filesizeMB1 = Math.round(this.selectedFile1.size / 1024 / 1024);
+      var fileexte1 = this.selectedFile1.name.split('.').pop();
+      if (!this.isInArray(Apisettings.IMGFiles_Ext, fileexte1)) {
+        this.alertService.error("File 1 must be extension with " + Apisettings.IMGFiles_Ext);
+        return;
+      }
+      else if (filesizeMB1 > parseInt(Apisettings.IMGFiles_Fileszie.toString().toString())) {
+        this.alertService.error("File 1 size must be less than or equal to " + parseInt(Apisettings.IMGFiles_Fileszie.toString()) + " MB.!");
+        return;
+      }
+    }
+
+    if (this.selectedFile2 != null) {
+      var filesizeMB2 = Math.round(this.selectedFile2.size / 1024 / 1024);
+      var fileexte2 = this.selectedFile2.name.split('.').pop();
+      if (!this.isInArray(Apisettings.IMGFiles_Ext, fileexte2)) {
+        this.alertService.error("File 2 must be extension with " + Apisettings.IMGFiles_Ext);
+        return;
+      }
+      else if (filesizeMB2 > parseInt(Apisettings.IMGFiles_Fileszie.toString())) {
+        this.alertService.error("File 2 size must be less than or equal to " + parseInt(Apisettings.IMGFiles_Fileszie.toString()) + " MB.!");
+        return;
+      }
+    }
+
+    if (this.selectedFile3 != null) {
+      var filesizeMB3 = Math.round(this.selectedFile3.size / 1024 / 1024);
+      var fileexte3 = this.selectedFile3.name.split('.').pop();
+      if (!this.isInArray(Apisettings.IMGFiles_Ext, fileexte3)) {
+        this.alertService.error("File 3 must be extension with " + Apisettings.IMGFiles_Ext);
+        return;
+      }
+      else if (filesizeMB3 > parseInt(Apisettings.IMGFiles_Fileszie.toString())) {
+        this.alertService.error("File 3 size must be less than or equal to " + parseInt(Apisettings.IMGFiles_Fileszie.toString()) + " MB.!");
+        return;
+      }
+    }
+
+    if (this.selectedFile4 != null) {
+      var filesizeMB4 = Math.round(this.selectedFile4.size / 1024 / 1024);
+      var fileexte4 = this.selectedFile4.name.split('.').pop();
+      if (!this.isInArray(Apisettings.IMGFiles_Ext, fileexte4)) {
+        this.alertService.error("File 4 must be extension with " + Apisettings.IMGFiles_Ext);
+        return;
+      }
+      else if (filesizeMB4 > parseInt(Apisettings.IMGFiles_Fileszie.toString())) {
+        this.alertService.error("File 4 size must be less than or equal to " + parseInt(Apisettings.IMGFiles_Fileszie.toString()) + " MB.!");
+        return;
+      }
     }
     if (this._authorizationGuard.CheckAcess("Goodsreceiptlist", "ViewEdit")) {
       return;
@@ -324,37 +544,40 @@ export class GoodsReceiptComponent implements OnInit {
       this.alertService.error("Total Received Qty must be greater than 0 for atleast one item.!");
       return;
     }
-    // else if (this.lstGoodsReceiptDetail.filter(a => a.InventorySellableQty <= 0).length >= 0) {
-    //   this.alertService.error("Inventory Sellable Qty must be greater than or equal to 0.!");
-    //   return;
-    // }
-    // else if (this.lstGoodsReceiptDetail.filter(a => a.InventoryShortageQty <= 0).length >= 0) {
-    //   this.alertService.error("Inventory Shortage Qty must be greater than or equal to 0.!");
-    //   return;
-    // }
-    // else if (this.lstGoodsReceiptDetail.filter(a => a.InventoryDamageQty <= 0).length >= 0) {
-    //   this.alertService.error("Inventory  Damage Qty must be greater than or equal to 0.!");
-    //   return;
-    // }
-    // else if (this.lstGoodsReceiptDetail.filter(a => a.InventoryOthersQty <= 0).length >= 0) {
-    //   this.alertService.error("Inventory Others Qty must be greater than or equal to 0.!");
-    //   return;
-    // }
     this.objGoodsReceipt.ItemDetails = this.lstGoodsReceiptDetail;
     if (this.lstPONumber.filter(x => { return x.PONumber == this.goodsForm.controls['PONumber'].value }).length > 0) {
       this.objGoodsReceipt.POID = this.lstPONumber.filter(x => { return x.PONumber == this.goodsForm.controls['PONumber'].value })[0].POID;
-
       this.objGoodsReceipt.LocationID = this.goodsForm.controls["LocationID"].value;
-      this.objGoodsReceipt.VendorID = this.goodsForm.controls["VendorID"].value;
+      if (this.GRNType == 'P') {
+        this.objGoodsReceipt.VendorID = this.goodsForm.controls["VendorID"].value;
+      } else {
+        this.objGoodsReceipt.VendorWarehouseID = this.goodsForm.controls["VendorID"].value;
+        this.objGoodsReceipt.VendorID =
+          this.Vendorwarehouselist.filter(x => { return x.VendorWarehouseID == this.goodsForm.controls['VendorID'].value })[0].VendorID;
+
+      }
+      this.objGoodsReceipt.TrackingNumber = this.TrackingNumber;
+      this.objGoodsReceipt.GRNType = this.GRNType;
     }
     else {
       this.alertService.error("Please select valid PO Number in the list.!");
       return;
     }
+    if (this.GRNType == 'S') {
+      if (this.TotalPOQty != this.TotalTotalReceivedQty) {
+        this.alertService.error("The sum of PO Qty and sum of Total Received Qty must be same to proceed further.!");
+        return;
+      }
+    }
+    let GRN_Date = new Date(moment(new Date(this.goodsForm.controls['GRNDate'].value.startDate)).format("MM-DD-YYYY HH:mm"));
+    let currentdate: Date = new Date(moment(new Date()).format("MM-DD-YYYY HH:mm"));
+    let PODate: Date = new Date(moment(new Date(this.lstPONumber.filter(x => { return x.PONumber == this.goodsForm.controls['PONumber'].value })[0].PODate)).format("MM-DD-YYYY HH:mm"));
+    if (!(GRN_Date > PODate && GRN_Date <= currentdate)) {
+      this.alertService.error('The GRN Date must be between PO Date and current datetime.!');
+      return;
+    }
     this.objGoodsReceipt.InvoiceNumber = this.goodsForm.controls["InvoiceNumber"].value;
-    //this.objGoodsReceipt.GRNDate = this.goodsForm.controls["GRNDate"].value.startDate._d.toLocalDateString();
-
-    let GRNDate: Date = new Date(moment(new Date(this.goodsForm.controls['GRNDate'].value.startDate._d)).format("MM-DD-YYYY HH:mm"));
+    let GRNDate: Date = new Date(moment(new Date(this.goodsForm.controls['GRNDate'].value.startDate)).format("MM-DD-YYYY HH:mm"));
     this.objGoodsReceipt.GRNDate = GRNDate;
     this.objGoodsReceipt.VehicleNumber = this.goodsForm.controls["VehicleNumber"].value;
     this.objGoodsReceipt.EwayBillNumber = this.goodsForm.controls["EwayBillNumber"].value;
@@ -365,14 +588,32 @@ export class GoodsReceiptComponent implements OnInit {
 
   }
 
+
   insert(): void {
     this._spinner.show();
     this._goodsReceiptService.Insert(this.objGoodsReceipt).subscribe(
       (data) => {
+        $('#modalgrnconfimation').modal('hide');
         if (data != null && data.Flag == true) {
-          $('#modalgrnconfimation').modal('hide');
-          this.alertService.success(data.Msg);
-          this._router.navigate(['/Goodsreceiptlist']);
+          this._spinner.show();
+          this._goodsReceiptService.updateImage(
+            this.selectedFile1, this.selectedFile2, this.selectedFile3, this.selectedFile4,
+            this.objGoodsReceipt.GRNNumber).subscribe(
+              (data1) => {
+                if (data1 && data1 == true) {
+                  this.alertService.success(data.Msg);
+                }
+                else {
+                  this.alertService.error(data.Msg);
+                }
+                this._spinner.hide();
+                this._router.navigate(['/Goodsreceiptlist']);
+              },
+              (error: any) => {
+                this._spinner.hide();
+                console.log(error);
+              }
+            )
         }
         else {
           this.alertService.error(data.Msg);
@@ -388,5 +629,7 @@ export class GoodsReceiptComponent implements OnInit {
     );
   }
 
-
+  isInArray(array, word) {
+    return array.indexOf(word.toLowerCase()) > -1;
+  }
 }

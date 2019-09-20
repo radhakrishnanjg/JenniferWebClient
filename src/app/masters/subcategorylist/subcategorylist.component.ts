@@ -6,6 +6,9 @@ import { SubcategoryService } from '../../_services/service/subcategory.service'
 import { ProductGroup, Category, SubCategory } from '../../_services/model';
 import { PrivateutilityService } from '../../_services/service/privateutility.service';
 import { AuthorizationGuard } from '../../_guards/Authorizationguard'
+import { process, State } from '@progress/kendo-data-query';
+import { GridDataResult, DataStateChangeEvent, PageChangeEvent } from '@progress/kendo-angular-grid';
+import { SortDescriptor, orderBy } from '@progress/kendo-data-query';
 @Component({
   selector: 'app-subcategorylist',
   templateUrl: './subcategorylist.component.html',
@@ -14,8 +17,7 @@ import { AuthorizationGuard } from '../../_guards/Authorizationguard'
 export class SubcategorylistComponent implements OnInit {
   lstProductGroup: ProductGroup[];
   lstCategory: Category[];
-  lstSubCategory: SubCategory[];
-  objSubCategory: SubCategory = {} as any;
+   objSubCategory: SubCategory = {} as any;
   subcatgoryForm: FormGroup;
   panelTitle: string;
   action: boolean;
@@ -101,14 +103,13 @@ export class SubcategorylistComponent implements OnInit {
     this._PrivateutilityService.getProductGroups()
       .subscribe(
         (data: ProductGroup[]) => {
-          this.lstProductGroup = data; 
+          this.lstProductGroup = data;
           this._spinner.hide();
         },
-        (err: any) =>
-         {
+        (err: any) => {
           console.log(err);
           this._spinner.hide();
-         }
+        }
       );
 
 
@@ -140,7 +141,7 @@ export class SubcategorylistComponent implements OnInit {
   }
 
   newButtonClick() {
-    if (this._authorizationGuard.CheckAcess("Categorylist", "ViewEdit")) {
+    if (this._authorizationGuard.CheckAcess("SubCategorylist", "ViewEdit")) {
       return;
     }
     $('#modalpopupsubcategoryupsert').modal('show');
@@ -163,7 +164,7 @@ export class SubcategorylistComponent implements OnInit {
   }
 
   editButtonClick(id: number) {
-    if (this._authorizationGuard.CheckAcess("Categorylist", "ViewEdit")) {
+    if (this._authorizationGuard.CheckAcess("SubCategorylist", "ViewEdit")) {
       return;
     }
     this.subcatgoryForm = this.fb.group({
@@ -175,6 +176,7 @@ export class SubcategorylistComponent implements OnInit {
     this.panelTitle = "Edit SubCategory";
     this.action = false;
     this.identity = + id;
+    this._spinner.show();
     this._subcategoryService.searchById(this.identity)
       .subscribe(
         (data: SubCategory) => {
@@ -188,15 +190,18 @@ export class SubcategorylistComponent implements OnInit {
           this.CategoryName = data.CategoryName;
           $("#CategoryID").attr("disabled", "disabled");
           this.logValidationErrors();
+          this._spinner.hide();
         },
-        (err: any) =>
-          console.log(err)
+        (err: any) => {
+          console.log(err);
+          this._spinner.hide();
+        }
       );
     $('#modalpopupsubcategoryupsert').modal('show');
   }
 
   confirmDeleteid(id: number, DeleteColumnvalue: string) {
-    if (this._authorizationGuard.CheckAcess("Categorylist", "ViewEdit")) {
+    if (this._authorizationGuard.CheckAcess("SubCategorylist", "ViewEdit")) {
       return;
     }
     this.identity = + id;
@@ -204,29 +209,8 @@ export class SubcategorylistComponent implements OnInit {
     $('#modaldeleteconfimation').modal('show');
   }
 
-  onLoad(SearchBy: string, Search: string, IsActive: Boolean) {
-    this._spinner.show();
-    return this._subcategoryService.search(SearchBy, Search, IsActive).subscribe(
-      (lst) => {
-        this.lstSubCategory = lst;
-        this.dtOptions = {
-          pagingType: 'full_numbers',
-          "language": {
-            "search": 'Filter',
-          },
-        };
-
-        this._spinner.hide();
-      },
-      (err) => {
-        this._spinner.hide();
-        console.log(err);
-      }
-    );
-  }
-
   SaveData(): void {
-    if (this._authorizationGuard.CheckAcess("Categorylist", "ViewEdit")) {
+    if (this._authorizationGuard.CheckAcess("SubCategorylist", "ViewEdit")) {
       return;
     }
     if (this.subcatgoryForm.controls['SubCategoryName'].value.replace(/\s/g, '').length == 0) {
@@ -235,6 +219,10 @@ export class SubcategorylistComponent implements OnInit {
     }
     // stop here if form is invalid
     if (this.subcatgoryForm.invalid) {
+      return;
+    }
+    if (this.subcatgoryForm.pristine) {
+      this.alertService.error('Please change the value for any one control to proceed further!');
       return;
     }
     if (this.identity > 0) {
@@ -255,7 +243,7 @@ export class SubcategorylistComponent implements OnInit {
       .subscribe(
         (data) => {
           if (data == true) {
-            this.alertService.error('This SubCategory has been registered already!');
+            this.alertService.error('This SubCategory is already registered');
           }
           else {
             this._spinner.show();
@@ -300,7 +288,7 @@ export class SubcategorylistComponent implements OnInit {
       .subscribe(
         (data) => {
           if (data == true) {
-            this.alertService.error('This SubCategory has been registered already!');
+            this.alertService.error('This SubCategory is already registered');
           }
           else {
             this._spinner.show();
@@ -353,5 +341,73 @@ export class SubcategorylistComponent implements OnInit {
       }
     );
   }
+
+  onLoad(SearchBy: string, Search: string, IsActive: Boolean) {
+    this._spinner.show();
+    return this._subcategoryService.search(SearchBy, Search, IsActive).subscribe(
+      (lst) => {
+        if (lst != null) { 
+          this.items = lst;
+          this.loadItems(); 
+        }
+        this._spinner.hide();
+      },
+      (err) => {
+        this._spinner.hide();
+        console.log(err);
+      }
+    );
+  }
+
+  //#region Paging Sorting and Filtering Start
+  public allowUnsort = true;
+  public sort: SortDescriptor[] = [{
+    field: 'ProductGroupName',
+    dir: 'asc'
+  }];
+  public gridView: GridDataResult;
+  public pageSize = 10;
+  public skip = 0;
+  private data: Object[];
+  private items: SubCategory[] = [] as any;
+  public state: State = {
+    skip: 0,
+    take: 5,
+
+    // Initial filter descriptor
+    filter: {
+      logic: 'and',
+      filters: [{ field: 'ProductGroupName', operator: 'contains', value: '' }]
+    }
+  };
+  public pageChange(event: PageChangeEvent): void {
+    this.skip = event.skip;
+    this.loadItems();
+  }
+
+  public sortChange(sort: SortDescriptor[]): void {
+    this.sort = sort;
+    this.loadSortItems();
+  }
+
+  private loadItems(): void {
+    this.gridView = {
+      data: this.items.slice(this.skip, this.skip + this.pageSize),
+      total: this.items.length
+    };
+  }
+  private loadSortItems(): void {
+    this.gridView = {
+      data: orderBy(this.items.slice(this.skip, this.skip + this.pageSize), this.sort),
+      total: this.items.length
+    };
+  }
+  public dataStateChange(state: DataStateChangeEvent): void {
+    this.state = state;
+    this.gridView = process(this.items, this.state);
+  }
+
+
+  //#endregion Paging Sorting and Filtering End
 
 }

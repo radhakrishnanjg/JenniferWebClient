@@ -66,55 +66,33 @@
     </div>
   </div>
   <div class="panel-body">
+    <kendo-grid [data]="gridView" resizable="true" columnMenu="true" [pageSize]="pageSize" [skip]="skip" [pageable]="true" 
+      (pageChange)="pageChange($event)" [sortable]="{
+        allowUnsort: allowUnsort,
+        mode:  'single'
+        }" [sort]="sort" (sortChange)="sortChange($event)" [filterable]="true"
+      (dataStateChange)="dataStateChange($event)" [filter]="state.filter"  >
 
+      <kendo-grid-column field="ProductGroupName" title="Product Group">
+      </kendo-grid-column>
+      <kendo-grid-column field="CategoryName" title="Category Name">
+      </kendo-grid-column>
+      <kendo-grid-column field="IsActive"  title="IsActive" [class]="{'text-center': true}"  filter="boolean" width="80">
+        <ng-template kendoGridCellTemplate let-dataItem>
+          <i [class]="dataItem.IsActive ? 'fa fa-check': 'fa fa-times'" aria-hidden="true"></i>
+        </ng-template>
+      </kendo-grid-column>
+      <kendo-grid-column field="CategoryID" title="Action" [class]="{'text-center': true}"  [filterable]="false" [sortable]="false" width="70">
+        <ng-template kendoGridCellTemplate let-dataItem>
+          <i (click)="editButtonClick(dataItem.CategoryID)" title="Edit" class="fa fa-edit bgblue pointer"></i>
+          &nbsp;
+          <i class="fa fa-trash bgred pointer" (click)="confirmDeleteid(dataItem.CategoryID,dataItem.CategoryName)"
+            title="Delete"></i>
+        </ng-template>
+      </kendo-grid-column>
+    </kendo-grid>
 
-    <div class="table-responsive">
-      <!-- #dataTable -->
-      <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-bordered table-condensed "
-        *ngIf="lstCategory && lstCategory.length">
-        <thead>
-          <tr>
-            <th>Product Group</th>
-            <th>Category</th>
-            <th class="text-center btnflag">IsActive</th>
-            <th class="text-center btnactions">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let user of lstCategory">
-            <td>{{ user.ProductGroupName  }}</td>
-            <td>{{ user.CategoryName}}</td>
-            <td class="text-center" *ngIf="(user.IsActive)"><i class="fa fa-check"></i></td>
-            <td class="text-center" *ngIf="(!user.IsActive)"><i class="fa fa-times"></i></td>
-            <td class="text-center">
-              <i (click)="editButtonClick(user.CategoryID)" title="Edit" class="fa fa-edit bgblue pointer"></i>
-              &nbsp;
-              <i class="fa fa-trash bgred pointer" (click)="confirmDeleteid(user.CategoryID,user.CategoryName)"
-                title="Delete"></i>
-
-            </td>
-          </tr>
-        </tbody>
-      </table>
-
-      <table class="table table-bordered table-condensed" *ngIf="lstCategory==null">
-        <thead>
-          <tr>
-            <th>Product Group</th>
-            <th>Category</th>
-            <th class="text-center btnflag">IsActive</th>
-            <th class="text-center btnactions">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td colspan="5">
-              No Records Found.!
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+     
   </div>
 
 
@@ -208,7 +186,7 @@
             <button class="btn btn-primary" data-dismiss="modal">Cancel</button>
             &nbsp;
             <button class="btn btn-success" type="submit" prevent-double-submit [disabled]="catgoryForm.invalid">
-              <!-- <i class="fa fa-save"></i> -->
+              
               Save
             </button>
           </div>

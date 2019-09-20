@@ -59,64 +59,37 @@
   </div>
 
   <div class="panel-body">
-    <div class="table-responsive">
-      <table datatable [dtOptions]="dtOptions" class="table table-bordered table-condensed table-striped"
-        *ngIf="lst && lst.length">
-        <thead>
-          <tr>
-            <th>Item Code</th>
-            <th>Item Descripation</th>
-            <th>Vendor Item Code</th>
-            <th>Jennifer Item Serial Number</th>
-            <th>Storage Location</th>
 
-            <th>Rack Number</th>
-            <th>BIN Number</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let user of lst">
-            <td>{{ user.ItemCode}}</td>
-            <td>{{ user.ItemName}}</td>
-            <td>{{ user.VendorItemCode}}</td>
-            <td>{{ user.JenniferItemSerial  }}</td>
-            <td>{{ user.WarehouseLocation  }}</td>
+    <kendo-grid [data]="gridView" resizable="true" columnMenu="true" [pageSize]="pageSize" [skip]="skip" [pageable]="true" 
+      (pageChange)="pageChange($event)" [sortable]="{
+            allowUnsort: allowUnsort,
+            mode:  'single'
+            }" [sort]="sort" (sortChange)="sortChange($event)" [filterable]="true"
+      (dataStateChange)="dataStateChange($event)" [filter]="state.filter">
 
-            <td>{{ user.WarehouseRack}}</td>
-            <td>{{ user.WarehouseBin  }}</td>
-            <td class="text-center btnactions">
-              <i class="fa fa-edit bgblue pointer" *ngIf="user.IsEditable"
-                (click)="editButtonClick(user.GoodsStorageID)" title="Edit">
-              </i>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <kendo-grid-column field="ItemCode" title="ItemCode">
+      </kendo-grid-column>
+      <kendo-grid-column field="ItemName" title="Item Description">
+      </kendo-grid-column>
+      <kendo-grid-column field="VendorItemCode" title="Vendor ItemCode">
+      </kendo-grid-column>
+      <kendo-grid-column field="JenniferItemSerial" title="Jennifer Item Serial No.">
+      </kendo-grid-column>
+      <kendo-grid-column field="WarehouseLocation" title="Storage Location">
+      </kendo-grid-column>
+      <kendo-grid-column field="WarehouseRack" title="Rack No.">
+      </kendo-grid-column>
+      <kendo-grid-column field="WarehouseBin" title="Bin No.">
+      </kendo-grid-column>
 
-      <table class="table table-bordered table-condensed table-striped" *ngIf="lst == null || lst.length == 0">
-        <thead>
-          <tr>
-            <th>Item Code</th>
-            <th>Item Descripation</th>
-            <th>Vendor Item Code</th>
-            <th>Item Serial Number</th>
-            <th>Storage Location</th>
-
-            <th>Rack Number</th>
-            <th>BIN Number</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td colspan="8">
-              No Records Found.!
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+      <kendo-grid-column field="GoodsStorageID" title="Action" [class]="{'text-center': true}"  [filterable]="false" [sortable]="false" width="70">
+        <ng-template kendoGridCellTemplate let-obj>
+          <i class="fa fa-edit bgblue pointer" *ngIf="obj.IsEditable"
+          (click)="editButtonClick(obj.GoodsStorageID)" title="Edit">
+          </i>
+        </ng-template>
+      </kendo-grid-column>
+    </kendo-grid> 
   </div>
 
   <div id="modalpopup_goodsstorage" class="modal fade" tabindex="-1" role="dialog"
@@ -198,8 +171,7 @@
           <div class="modal-footer">
             <button class="btn btn-primary" data-dismiss="modal">Cancel</button>
             &nbsp;
-            <button class="btn btn-success" type="submit" 
-            prevent-double-submit [disabled]="goodsstorageform.invalid">
+            <button class="btn btn-success" type="submit" prevent-double-submit [disabled]="goodsstorageform.invalid">
               Save
             </button>
           </div>

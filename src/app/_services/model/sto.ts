@@ -21,7 +21,8 @@ export class Sto {
     CompanyID: number;
     TaxNature: string
     lstItem: Stodetail[];
-    IsShipmentRequired:boolean;
+    IsShipmentRequired: boolean;
+    IsEdit: boolean;
 
     // who is doing this task
     LoginId: number;
@@ -38,35 +39,26 @@ export class Stodetail {
     Qty: number;
     TaxNature: string;
     ItemRate: number;
-    IGSTRate: number;
-
-    CGSTRate: number;
-    SGSTRate: number;
-    UTGSTRate: number;
+    
+    DisCountPer: number;
     DiscountValue: number;
-    IGSTAmount: number;
-
-    CGSTAmount: number;
-    SGSTAmount: number;
-    UTGSTAmount: number;
-    DirectCost: number;
-    TotalTaxAmount: number;
-
-    TotalAmountExclTax: number;
-    TotalAmountInclTax: number;
+     
+    DirectCost: number; 
     Rate: number;
     TaxAmount: number;
     TotalAmount: number;
 
     //master tables 
     ItemCode: string;
-    ItemName:string ;
-    CustomerItemCode:string;
+    ItemName: string;
+    CustomerItemCode: string;
     UOM: string;
-    MultiplierValue: number; 
+    MultiplierValue: number;
     TaxRate: number;
-    MRP:number;
-    CustomerID:number;
+    MRP: number;
+    CustomerID: number;
+    SalesRateCardID: number;
+    DiscountID: number;
 
 }
 

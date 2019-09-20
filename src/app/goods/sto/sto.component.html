@@ -26,7 +26,7 @@
     <div class="panel-heading">
       <div class="row">
         <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-          <span class="spanheader">
+          <span class="groupspanheader">
             {{panelTitle}}
           </span>
         </div>
@@ -51,7 +51,7 @@
           <div class="form-group">
             <label class="control-label">STO Number <span class="mandantory">*</span>
             </label>
-            <div class="">
+            <div>
 
               {{STONumber}}
             </div>
@@ -62,10 +62,11 @@
             <label class="control-label" for="STODate"> STO Date <span class="mandantory">*</span>
             </label>
             <div class='input-group date'>
-              <input type="text" ngxDaterangepickerMd [autoApply]="true" [singleDatePicker]="true" class="form-control"
-                formControlName="STODate" (blur)="logValidationErrors()" [locale]="{format: 'MM-DD-YYYY HH:mm'}"
-                maxlength="16" id="STODate" (ngModelChange)="onSTODateChange($event)"
-                (datesUpdated)="STODateUpdated($event)" [timePicker]="true" *ngIf="!hideSTODate" />
+              <input type="text" ngxDaterangepickerMd [autoApply]="true" [singleDatePicker]="true" [maxDate]="maxDate"
+                class="form-control" formControlName="STODate" (blur)="logValidationErrors()"
+                [locale]="{format: 'MM-DD-YYYY HH:mm'}" maxlength="16" id="STODate"
+                (ngModelChange)="onSTODateChange($event)" (datesUpdated)="STODateUpdated($event)" [timePicker]="true"
+                *ngIf="!hideSTODate" />
               <label *ngIf="!hideSTODate" class="fa fa-calendar"></label>
               <div *ngIf="hideSTODate">
                 {{
@@ -77,8 +78,8 @@
               <span class="help-block" *ngIf="formErrors.STODate">
                 {{formErrors.STODate}}
               </span>
-              <span class="help-block" *ngIf="objResult.Flag">
-                {{objResult.Msg}}
+              <span class="help-block">
+                {{objResult?.Msg}}
               </span>
             </div>
           </div>
@@ -86,14 +87,16 @@
         <div class="col-md-4 col-xs-12">
           <div class="form-group" [ngClass]="{'has-error': formErrors.InventoryType}">
             <label class="control-label" for="InventoryType">Inventory Type<span class="mandantory">*</span></label>
-            <div class="">
-              <select id="InventoryType" class="form-control" formControlName="InventoryType"
+            <div>
+              <!-- <select id="InventoryType" class="form-control" formControlName="InventoryType"
                 (blur)="logValidationErrors()" (change)="onInventoryTypeChange($event.target.value)">
                 <option value="" selected="selected">Select</option>
                 <option *ngFor="let type of lstInventoryType" value={{type.DropdownValue}}>
                   {{type.DropdownValue}}
                 </option>
-              </select>
+              </select> -->
+              <input type="text" id="InventoryType" class="form-control" formControlName="InventoryType"
+                disabled="disabled">
               <div class="help-block-rk">
                 <span class="help-block" *ngIf="formErrors.InventoryType">
                   {{formErrors.InventoryType}}
@@ -145,9 +148,9 @@
         <div class="col-md-4 col-xs-12">
           <div class="form-group" [ngClass]="{'has-error': formErrors.OtherReference}">
             <label class="control-label" for="OtherReference">Other Reference<span class="mandantory">*</span></label>
-            <div class="">
+            <div>
               <input id="OtherReference" type="text" class="form-control" formControlName="OtherReference"
-                (blur)="logValidationErrors()" maxlength="30">
+                (blur)="logValidationErrors()" maxlength="50">
               <div class="help-block-rk">
                 <span class="help-block" *ngIf="formErrors.OtherReference">
                   {{formErrors.OtherReference}}
@@ -171,7 +174,7 @@
         <div class="col-md-8 col-xs-12">
           <div class="form-group" [ngClass]="{'has-error': formErrors.Remarks}">
             <label class="control-label" for="Remarks">Remarks<span class="mandantory">*</span></label>
-            <div class="">
+            <div>
               <textarea id="Remarks" type="text" class="form-control" formControlName="Remarks"
                 (blur)="logValidationErrors()" rows="2" maxlength="250"></textarea>
               <div class="help-block-rk">
@@ -185,7 +188,7 @@
       </div>
 
       <div>
-        <span class="spanheader">Order Items</span>
+        <span class="groupspanheader">Order Items</span>
       </div>
       <kendo-grid [data]="gridData" (edit)="editHandler($event)" (cancel)="cancelHandler($event)"
         (save)="saveHandler($event)" (remove)="removeHandler($event)" (add)="addHandler($event)" [height]="410">
@@ -200,12 +203,12 @@
           <ng-template kendoGridEditTemplate let-dataItem="dataItem" let-column="column" let-formGroup="itemFormGroup">
             <kendo-dropdownlist #ddl="popupAnchor" popupAnchor [data]="itemList" textField="ItemCode"
               valueField="ItemID" [valuePrimitive]="true" [formControl]="itemFormGroup.get(column.field)"
-              (valueChange)="onItemCodeChange($event)">
+              (valueChange)="onItemCodeChange($event)" [kendoDropDownFilter]="filterSettings">
             </kendo-dropdownlist>
           </ng-template>
         </kendo-grid-column>
 
-        <kendo-grid-column field="ItemName" title="ItemDescription" width="200">
+        <kendo-grid-column field="ItemName" title="Item Description" width="200">
           <ng-template kendoGridEditTemplate let-column="column" let-formGroup="itemFormGroup" let-isNew="isNew">
             <input #input [readonly]="true" class="k-textbox" [formControl]="itemFormGroup.get(column.field)">
           </ng-template>
@@ -231,33 +234,34 @@
           </ng-template>
           <ng-template kendoGridEditTemplate let-dataItem="dataItem" let-column="column" let-formGroup="itemFormGroup">
             <kendo-dropdownlist #ddl="popupAnchor" popupAnchor [data]="uomList" textField="UOM" valueField="UOMID"
-              [valuePrimitive]="true" (valueChange)="onUOMChanged($event)" [formControl]="itemFormGroup.get('UOM')">
+              [valuePrimitive]="true" (valueChange)="onUOMChanged($event)" [formControl]="itemFormGroup.get('UOM')"
+              [kendoDropDownFilter]="filterSettings">
             </kendo-dropdownlist>
           </ng-template>
         </kendo-grid-column>
 
-        <kendo-grid-column field="Rate" title="Rate" width="120">
+        <kendo-grid-column field="Rate" title="Rate" width="120" format="0.##">
           <ng-template kendoGridEditTemplate let-column="column" let-formGroup="itemFormGroup" let-isNew="isNew">
             <kendo-numerictextbox #ntb="popupAnchor" popupAnchor [readonly]="true"
               [formControl]="itemFormGroup.get(column.field)"></kendo-numerictextbox>
           </ng-template>
         </kendo-grid-column>
 
-        <kendo-grid-column field="TaxNature" title="TaxNature" width="120">
+        <kendo-grid-column field="TaxNature" title="Tax Nature" width="120" format="0.##">
           <ng-template kendoGridEditTemplate let-column="column" let-formGroup="itemFormGroup" let-isNew="isNew">
             <input #input [readonly]="true" class="k-textbox" [formControl]="itemFormGroup.get(column.field)">
           </ng-template>
         </kendo-grid-column>
 
 
-        <kendo-grid-column field="TaxRate" title="TaxRate" width="120">
+        <kendo-grid-column field="TaxRate" title="Tax Rate" width="120" format="0.##">
           <ng-template kendoGridEditTemplate let-column="column" let-formGroup="itemFormGroup" let-isNew="isNew">
             <kendo-numerictextbox #ntb="popupAnchor" popupAnchor [readonly]="true"
               [formControl]="itemFormGroup.get(column.field)" format="0.##"></kendo-numerictextbox>
           </ng-template>
         </kendo-grid-column>
 
-        <kendo-grid-column field="TaxAmount" title="TaxAmount" width="120">
+        <kendo-grid-column field="TaxAmount" title="Tax Amount" width="120" format="0.##">
           <ng-template kendoGridEditTemplate let-column="column" let-formGroup="itemFormGroup" let-isNew="isNew">
             <kendo-numerictextbox #ntb="popupAnchor" popupAnchor [readonly]="true"
               [formControl]="itemFormGroup.get(column.field)" format="0.##"></kendo-numerictextbox>
@@ -265,14 +269,14 @@
         </kendo-grid-column>
 
 
-        <kendo-grid-column field="DirectCost" title="DirectCost" width="120">
+        <kendo-grid-column field="DirectCost" title="Direct Cost" width="120" format="0.##">
           <ng-template kendoGridEditTemplate let-column="column" let-formGroup="itemFormGroup" let-isNew="isNew">
             <kendo-numerictextbox #ntb="popupAnchor" popupAnchor [readonly]="true"
               [formControl]="itemFormGroup.get(column.field)" format="0.##"></kendo-numerictextbox>
           </ng-template>
         </kendo-grid-column>
 
-        <kendo-grid-column field="DiscountValue" title="DiscountValue" width="150">
+        <kendo-grid-column field="DiscountValue" title="Discount Value" width="150" format="0.##">
           <ng-template kendoGridEditTemplate let-column="column" let-formGroup="itemFormGroup" let-isNew="isNew">
             <kendo-numerictextbox #ntb="popupAnchor" popupAnchor [formControl]="itemFormGroup.get(column.field)"
               [formControl]="itemFormGroup.get(column.field)" [readonly]="true" format="0.##">
@@ -280,14 +284,14 @@
           </ng-template>
         </kendo-grid-column>
 
-        <kendo-grid-column field="TotalAmount" title="TotalAmount" width="150">
+        <kendo-grid-column field="TotalAmount" title="Total Amount" width="150" format="0.##">
           <ng-template kendoGridEditTemplate let-column="column" let-formGroup="itemFormGroup" let-isNew="isNew">
             <kendo-numerictextbox #ntb="popupAnchor" popupAnchor [readonly]="true"
               [formControl]="itemFormGroup.get(column.field)" format="0.##"></kendo-numerictextbox>
           </ng-template>
         </kendo-grid-column>
 
-        <kendo-grid-command-column title="Action" width="220">
+        <kendo-grid-command-column title="Action" [class]="{'text-center': true}" width="150">
           <ng-template kendoGridCellTemplate let-isNew="isNew">
             <button kendoGridEditCommand [primary]="true">Edit</button>
             <button kendoGridRemoveCommand>Remove</button>
@@ -297,15 +301,15 @@
         </kendo-grid-command-column>
       </kendo-grid>
     </div>
-    <!---->
     <div class="panel-footer">
       <div class="pull-right btn-toolbar">
         <button class="btn btn-primary" routerLink="/StoList" title="Cancel">
-          <!-- <i class="fa fa-arrow-left" aria-hidden="true"></i> -->
+
           Cancel
         </button>
-        <button class="btn btn-success" type="submit" prevent-double-submit [disabled]="stoForm.invalid">
-          <!-- <i class="fa fa-save"></i> -->
+        <button class="btn btn-success" type="submit" prevent-double-submit
+          [disabled]="stoForm.invalid || objResult?.Msg!=''  ">
+
           Save
         </button>
       </div>

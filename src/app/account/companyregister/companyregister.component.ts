@@ -51,7 +51,7 @@ export class CompanyregisterComponent implements OnInit {
   validationMessages = {
     'CompanyName': {
       'required': 'This field is required.',
-      'CompanyNameInUse': 'Company Name already used.',
+      'CompanyNameInUse': 'Company Name is already registered!',
     },
     'CompnayAliasName': {
       'maxlength': 'This field Name must be less than or equal to 10 characters.'
@@ -59,7 +59,7 @@ export class CompanyregisterComponent implements OnInit {
     'EMail': {
       'required': 'This field is required.',
       'email': 'This field must be valid E-mail.',
-      'CompanyEmailInUse': 'Email already used.',
+      'CompanyEmailInUse': 'Email is already registered!',
     },
 
     'MobileNumber': {
@@ -95,7 +95,7 @@ export class CompanyregisterComponent implements OnInit {
     },
     'PrimaryGST': {
       'required': 'This field is required.',
-      'CompanyPrimaryGSTInUse': 'Primary GST already used.',
+      'CompanyPrimaryGSTInUse': 'Primary GST is already registered!',
     },
     'ContactPerson': {
       'required': 'This field is required.',
@@ -128,7 +128,7 @@ export class CompanyregisterComponent implements OnInit {
     },
     'SecondaryGST': {
       'required': 'This field is required.',
-      'CompanySecondaryGSTInUse': 'Secondary GST already used.',
+      'CompanySecondaryGSTInUse': 'Secondary GST is already registered!',
     },
     // 'CompanyLogoPath': {
     //   'required': 'CompanyLogoPath is required.',
@@ -178,7 +178,7 @@ export class CompanyregisterComponent implements OnInit {
     'SecondaryGST',
     'SecondaryPostalCode'
   ];
-  
+
   emailPattern = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$";
   constructor(
     private router: Router,
@@ -214,17 +214,17 @@ export class CompanyregisterComponent implements OnInit {
 
 
       CompanyName: ['', [Validators.required]
-        //, this.usernameValidator.checkCompanyName()
+        , this.usernameValidator.checkCompanyName()
       ],
       CompnayAliasName: ['', [Validators.maxLength(10)]],
       EMail: ['', [Validators.required, Validators.pattern(this.emailPattern)]
         , this.usernameValidator.existCompanyEmail()
       ],
-      MobileNumber: ['', [Validators.required,]],
+      MobileNumber: ['', [Validators.required,Validators.minLength(10)]],
       PrimaryAddress1: ['', [Validators.required]],
 
       PrimaryAddress2: ['', [Validators.maxLength(100)]],
-      PrimaryPostalCode: ['', [Validators.required]],
+      PrimaryPostalCode: ['', [Validators.required,Validators.minLength(6)]],
       PrimaryCity: ['', [Validators.required]],
       PrimaryDistrict: ['', [Validators.required]],
       PrimaryStateID: [0, [Validators.min(1),]],
@@ -233,10 +233,10 @@ export class CompanyregisterComponent implements OnInit {
       PrimaryGST: ['', [Validators.required]
       ],
       ContactPerson: ['', [Validators.required, Validators.pattern("^([a-zA-Z ]+)$")]],
-      ContactNumber: ['', []],
+      ContactNumber: ['', [Validators.minLength(10)]],
       SecondaryAddress1: ['', [Validators.required]],
       SecondaryAddress2: ['', [Validators.maxLength(100)]],
-      SecondaryPostalCode: ['', [Validators.required,]],
+      SecondaryPostalCode: ['', [Validators.required,Validators.minLength(6)]],
 
       SecondaryDistrict: ['', [Validators.required]],
       SecondaryCity: ['', [Validators.required]],

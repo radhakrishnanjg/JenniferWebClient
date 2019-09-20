@@ -1,0 +1,194 @@
+<div class="row">
+  <div class="col-sm-6 col-lg-6">
+    <h3>
+      Stock Transfer
+    </h3>
+  </div>
+  <div class="col-sm-6 col-lg-6">
+    <div class="pull-right hidden-xs">
+      <ol class="breadcrumb" id="dynamicbreadcrumb">
+        <li>
+          <i class="fa fa-arrows-h"></i> <span> Journals</span>
+        </li>
+        <li>
+          <i class="fa fa-arrows-h"></i> <span>Stock Transfer</span>
+        </li>
+        <li class="active">
+          <i class="fa fa-edit"></i>
+          Edit
+        </li>
+      </ol>
+    </div>
+  </div>
+</div>
+
+<form autocomplete="off" (ngSubmit)="SaveData()" class="form-group">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <div class="row">
+        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+          <span class="groupspanheader">
+            Stock Transfer Edit
+          </span>
+        </div>
+        <div class="col-sm-6">
+          <div class="pull-left">
+
+          </div>
+        </div>
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 ">
+          <div class="pull-right">
+            <button class="btn btn-primary" routerLink="/StoList" title="Back">
+              Back
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-md-4 col-xs-12">
+          <div>
+            <label>STO Number <span class="mandantory">*</span>
+            </label>
+            <div>
+              {{obj?.STONumber}}
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 col-xs-12">
+          <div>
+            <label> STO Date <span class="mandantory">*</span>
+            </label>
+            <div>
+              {{ obj?.STODate | date:'MM-dd-yyyy HH:mm' }}
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 col-xs-12">
+          <div>
+            <label>Inventory Type<span class="mandantory">*</span></label>
+            <div>
+              {{obj?.InventoryType}}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4 col-xs-12">
+          <div>
+            <label>From Location <span class="mandantory">*</span></label>
+            <div>
+              {{obj?.FromLocation}}
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 col-xs-12">
+          <div>
+            <label>To Location <span class="mandantory">*</span></label>
+            <div>
+              {{obj?.ToLocation}}
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 col-xs-12">
+          <div>
+            <label>Other Reference<span class="mandantory">*</span></label>
+            <div>
+              {{obj?.OtherReference}}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-2 col-xs-12">
+          <label> Discount Applicable </label> <br />
+          <input type="checkbox" id="IsDiscountApplicable" name="IsDiscountApplicable"
+            [(ngModel)]="IsDiscountApplicable" (change)="onchangeIsDiscountApplicable($event)">
+        </div>
+        <div class="col-md-2 col-xs-12">
+          <label> Is Shipment Required </label>
+
+          <div *ngIf="(obj?.IsShipmentRequired)"><i class="fa fa-check"></i></div>
+          <div *ngIf="(!obj?.IsShipmentRequired)"><i class="fa fa-times"></i></div>
+        </div>
+        <div class="col-md-8 col-xs-12">
+          <div>
+            <label>Remarks<span class="mandantory">*</span></label>
+            <div>
+              {{obj?.Remarks}}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="groupspanheader"> Order Items</div>
+      <div class="table-responsive">
+        <table class="table table-bordered table-condensed table-striped">
+          <thead>
+            <tr>
+              <th>Item code</th>
+              <th>Item Description</th>
+              <th>Customer Item Code</th>
+              <th>Qty</th>
+              <th>Rate</th>
+              <th>Tax Nature</th>
+
+              <th>Tax Rate</th>
+              <th>Direct Cost</th>
+              <th>Tax Amount</th>
+              <th>Discount Value</th>
+              <th>Total Amount </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of obj?.lstItem; let id = index;">
+              <td [ngClass]="((item.SalesRateCardID==0 && obj?.InventoryType=='SELLABLE') || (item.ItemRate==0 && obj?.InventoryType=='UNSELLABLE')) ?'bgred':''" >{{item.ItemCode}}</td>
+              <td [ngClass]="((item.SalesRateCardID==0 && obj?.InventoryType=='SELLABLE') || (item.ItemRate==0 && obj?.InventoryType=='UNSELLABLE')) ?'bgred':''" >{{item.ItemName}}</td>
+              <td [ngClass]="((item.SalesRateCardID==0 && obj?.InventoryType=='SELLABLE') || (item.ItemRate==0 && obj?.InventoryType=='UNSELLABLE')) ?'bgred':''" >{{item.CustomerItemCode}}</td>
+              <td [ngClass]="((item.SalesRateCardID==0 && obj?.InventoryType=='SELLABLE') || (item.ItemRate==0 && obj?.InventoryType=='UNSELLABLE')) ?'bgred':''" >{{item.Qty}}</td>
+              <td [ngClass]="((item.SalesRateCardID==0 && obj?.InventoryType=='SELLABLE') || (item.ItemRate==0 && obj?.InventoryType=='UNSELLABLE')) ?'bgred':''" class="text-right">
+                <input type="number" min="0" step="1" class="form-control"
+                  (input)="updateList(id,'ItemRate',$event.target.value)" value="{{item.ItemRate}}">
+              </td>
+              <td [ngClass]="((item.SalesRateCardID==0 && obj?.InventoryType=='SELLABLE') || (item.ItemRate==0 && obj?.InventoryType=='UNSELLABLE')) ?'bgred':''" class="text-right">{{item.TaxNature }} </td>
+
+              <td [ngClass]="((item.SalesRateCardID==0 && obj?.InventoryType=='SELLABLE') || (item.ItemRate==0 && obj?.InventoryType=='UNSELLABLE')) ?'bgred':''" class="text-right">{{item.TaxRate  }} </td>
+              <td [ngClass]="((item.SalesRateCardID==0 && obj?.InventoryType=='SELLABLE') || (item.ItemRate==0 && obj?.InventoryType=='UNSELLABLE')) ?'bgred':''" class="text-right">{{item.DirectCost | currency: 'INR'}} </td>
+              <td [ngClass]="((item.SalesRateCardID==0 && obj?.InventoryType=='SELLABLE') || (item.ItemRate==0 && obj?.InventoryType=='UNSELLABLE')) ?'bgred':''" class="text-right">{{item.TaxAmount | currency: 'INR'}} </td>
+              <td [ngClass]="((item.SalesRateCardID==0 && obj?.InventoryType=='SELLABLE') || (item.ItemRate==0 && obj?.InventoryType=='UNSELLABLE')) ?'bgred':''" class="text-right">{{item.DiscountValue | currency: 'INR'}} </td>
+              <td [ngClass]="((item.SalesRateCardID==0 && obj?.InventoryType=='SELLABLE') || (item.ItemRate==0 && obj?.InventoryType=='UNSELLABLE')) ?'bgred':''" class="text-right">{{item.TotalAmount  | currency: 'INR'}} </td>
+            </tr>
+            <tr *ngIf="obj?.lstItem.length>0">
+              <th> Total </th>
+              <td> </td>
+              <td> </td>
+              <th class="text-right"> {{TotalQty  }}</th>
+              <th class="text-right"> {{TotalItemRate  | currency: 'INR'}}</th>
+              <td class="text-right"> </td>
+              <td class="text-right"> </td>
+              <td class="text-right">{{TotalDirectCost  | currency: 'INR'}} </td>
+              <td class="text-right">{{TotalTaxAmount  | currency: 'INR'}} </td>
+              <th class="text-right">{{TotalDiscountValue | currency: 'INR' }} </th>
+              <th class="text-right">{{TotalTotalAmount    | currency: 'INR'}} </th>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="panel-footer" *ngIf="obj?.IsEdit">
+      <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+          <div class="pull-right btn-toolbar">
+            <button class="btn btn-primary" routerLink="/StoList" title="Cancel">
+              Cancel
+            </button>
+            <button class="btn btn-success" type="submit" prevent-double-submit [disabled]="obj?.lstItem.length==0">
+              Save
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

@@ -14,9 +14,6 @@ export class AuthGuard implements CanActivate {
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
         const currentUser = this.authenticationService.currentUserValue;
         this.routename = route.routeConfig.path;
-        // if (currentUser.Email == 'radhakrishnanjg@gmail.com') {
-        //     return true;
-        // }
         if (currentUser != null) {
             if (currentUser.lstUserPermission != null && currentUser.lstUserPermission.length != 0) {
                 const Routestring = currentUser.lstUserPermission.filter(a =>

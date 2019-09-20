@@ -26,7 +26,7 @@
     <div class="panel-heading">
       <div class="row">
         <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-          <span class="spanheader">
+          <span class="groupspanheader">
             {{panelTitle}}
           </span>
         </div>
@@ -50,7 +50,7 @@
         <div class="col-md-3 col-xs-12">
           <div class="form-group" [ngClass]="{'has-error': formErrors.InvoiceNumber}">
             <label class="control-label" for="InvoiceNumber">Invoice Number <span class="mandantory">*</span></label>
-            <div class="">
+            <div>
               <input id="InvoiceNumber" type="text" class="form-control" formControlName="InvoiceNumber"
                 (blur)="logValidationErrors()" maxlength="30">
               <div class="help-block-rk">
@@ -66,12 +66,13 @@
         <div class="col-md-3 col-xs-12">
           <div class="form-group" [ngClass]="{'has-error': formErrors.InvoiceDate}">
             <label class="control-label" for="InvoiceDate">Invoice Date<span class="mandantory">*</span></label>
-            <div class="">
+            <div>
               <div class='input-group date'>
                 <input id="InvoiceDate" type="text" ngxDaterangepickerMd [timePicker]="true"
                   (datesUpdated)="InvoiceDateUpdated($event)" [singleDatePicker]="true"
                   [locale]="{format: 'MM-DD-YYYY HH:mm'}" [autoApply]="true" class="form-control"
-                  formControlName="InvoiceDate" (blur)="logValidationErrors()" maxlength="16" [(ngModel)]="InvoiceDate">
+                  formControlName="InvoiceDate" (change)="logValidationErrors()" maxlength="16"
+                  [(ngModel)]="InvoiceDate">
                 <label class="fa fa-calendar"></label>
               </div>
               <div class="help-block-rk">
@@ -87,7 +88,7 @@
           <div class="form-group" [ngClass]="{'has-error': formErrors.VendorWarehouseID}">
             <label class="control-label" for="VendorWarehouseID"> Vendor Warehouse <span
                 class="mandantory">*</span></label>
-            <div class="">
+            <div>
               <select id="VendorWarehouseID" class="form-control" formControlName="VendorWarehouseID"
                 (blur)="logValidationErrors()" (change)="onchangeVendorWarehouseID($event.target.value)">
                 <option value="0" selected="selected">Select</option>
@@ -107,7 +108,7 @@
         <div class="col-md-12 col-xs-12">
           <div class="form-group" [ngClass]="{'has-error': formErrors.Remarks}">
             <label class="control-label" for="Remarks">Remarks <span class="mandantory">*</span></label>
-            <div class="">
+            <div>
               <input id="Remarks" type="text" class="form-control" formControlName="Remarks"
                 (blur)="logValidationErrors()" maxlength="250">
               <div class="help-block-rk">
@@ -119,11 +120,9 @@
           </div>
         </div>
 
-
-        <!-- Editable table -->
         <div class="col-md-12 col-xs-12">
-          <h3 class="">Order Items</h3>
-          <table class="table table-bordered table-condensed" *ngIf="lstItem && lstItem.length">
+          <h3>Order Items</h3>
+          <table class="table table-bordered table-condensed" *ngIf="obj?.lstItem && obj?.lstItem.length">
             <thead>
               <tr>
                 <th class="text-center">ItemCode</th>
@@ -141,68 +140,68 @@
               </tr>
             </thead>
 
-            <tr *ngFor="let person of lstItem; let id = index">
+            <tr *ngFor="let person of obj?.lstItem; let id = index">
               <td>
-                <span contenteditable="false">{{person.ItemCode}}</span>
+                <span>{{person.ItemCode}}</span>
               </td>
               <td>
-                <span contenteditable="false">{{person.VendorItemCode}}</span>
+                <span>{{person.VendorItemCode}}</span>
               </td>
               <td class="text-right">
-                <span contenteditable="false">{{person.AvailableQty}}</span>
+                <span>{{person.AvailableQty}}</span>
               </td>
               <td class="text-right">
 
                 <input type="number" min="0" step="1" class="form-control" max="100000"
                   (input)="updateList(id,'Qty',$event.target.value)" value="{{person.Qty}}">
               </td>
-              <td>
-                <span contenteditable="false">{{person.Rate}}</span>
+              <td class="text-right">
+                <span>{{person.Rate}}</span>
               </td>
 
               <td class="text-right">
-                <span contenteditable="false">{{person.MRP}}</span>
+                <span>{{person.MRP}}</span>
               </td>
               <td class="text-right">
-                <span contenteditable="false">{{person.TaxRate}}</span>
+                <span>{{person.TaxRate}}</span>
               </td>
               <td class="text-right">
-                <span contenteditable="false">{{person.TaxNature}}</span>
+                <span>{{person.TaxNature}}</span>
               </td>
               <td class="text-right">
-                <span contenteditable="false">{{person.DirectCost}}</span>
+                <span>{{person.DirectCost}}</span>
               </td>
               <td class="text-right">
-                <span contenteditable="false">{{person.TaxAmount}}</span>
+                <span>{{person.TaxAmount}}</span>
               </td>
 
               <td class="text-right">
-                <span contenteditable="false">{{person.TotalAmount}}</span>
+                <span>{{person.TotalAmount}}</span>
               </td>
             </tr>
             <tr>
               <th>Total</th>
               <th> </th>
               <th> </th>
-              <th  class="text-right"> {{ TotalQty}}</th>
-              <th  class="text-right"> {{ TotalRate}}</th>
+              <th class="text-right"> {{ TotalQty}}</th>
+              <th class="text-right"> {{ TotalRate}}</th>
 
 
-              <th  class="text-right">
+              <th class="text-right">
                 {{ TotalMRP | currency: 'INR' }}
               </th>
-              <th  class="text-right">
+              <th class="text-right">
                 {{ TotalTaxRate | currency: 'INR'}}
               </th>
               <th> </th>
 
-              <th  class="text-right">
+              <th class="text-right">
                 {{ TotalDirectCost | currency: 'INR'}}
               </th>
-              <th  class="text-right">
+              <th class="text-right">
                 {{ TotalTaxAmount | currency: 'INR'}}
               </th>
-              <th  class="text-right">
+              <th class="text-right">
                 {{ TotalTotalAmount | currency: 'INR'}}
               </th>
             </tr>
@@ -222,7 +221,7 @@
         <div class="col-md-3 col-xs-12">
           <div class="form-group">
             <label class="control-label"> PO No. </label>
-            <div class="">
+            <div>
               {{PONumber}}
             </div>
           </div>
@@ -230,7 +229,7 @@
         <div class="col-md-3 col-xs-12">
           <div class="form-group">
             <label class="control-label"> Location </label>
-            <div class="">
+            <div>
               {{LocationName}}
             </div>
           </div>
@@ -239,7 +238,7 @@
         <div class="col-md-3 col-xs-12">
           <div class="form-group">
             <label class="control-label">Vendor <span class="mandantory">*</span></label>
-            <div class="">
+            <div>
               {{VendorName}}
             </div>
           </div>
@@ -250,11 +249,11 @@
     <div class="panel-footer" *ngIf="IsEditable">
       <div class="pull-right btn-toolbar">
         <button class="btn btn-primary" routerLink="/Purchaselist" title="Cancel">
-          <!-- <i class="fa fa-arrow-left" aria-hidden="true"></i> -->
+
           Cancel
         </button>
         <button class="btn btn-success" type="submit" prevent-double-submit [disabled]="invoiceform.invalid">
-          <!-- <i class="fa fa-save"></i> -->
+
           Save
         </button>
       </div>

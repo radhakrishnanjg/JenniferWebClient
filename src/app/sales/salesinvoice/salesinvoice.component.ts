@@ -1,56 +1,56 @@
-import { Component, NgModule, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { AuthenticationService } from '../../_services/service/authentication.service';
+import { Component,OnInit } from '@angular/core';
+import { ActivatedRoute, } from '@angular/router';
+import { PicklistService } from '../../_services/service/picklist.service';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { SalesInvoiceHeader, } from '../../_services/model';
+
 @Component({
   selector: 'app-salesinvoice',
   templateUrl: './salesinvoice.component.html',
   styleUrls: ['./salesinvoice.component.css']
 })
+
 export class SalesinvoiceComponent implements OnInit {
+ 
+  objSalesInvoiceHeader: SalesInvoiceHeader = new SalesInvoiceHeader();
+  public breakParagraphs = false;
+  public get keepTogether(): string {
+    return this.breakParagraphs ? '' : 'div';
+  } 
+  public repeatHeaders = true;  
+  TotalQty: number = 0;
+  TotalTaxableValue: number = 0
+  TotalIGSTTaxAmount: number = 0;
+  TotalCGSTTaxAmount: number = 0;
+  TotalSGSTTaxAmount: number = 0;
+  TotalTaxAmount: number = 0;
 
-  // reportServer: string = 'http://myreportserver/reportserver';
-  // reportUrl: string = 'MyReports/SampleReport';
-  // parameters: any = {
-  //   "SampleStringParameter": null,
-  //   "SampleBooleanParameter" : false,
-  //   "SampleDateTimeParameter" : "9/1/2017",
-  //   "SampleIntParameter" : 1,
-  //   "SampleFloatParameter" : "123.1234",
-  //   "SampleMultipleStringParameter": ["Parameter1", "Parameter2"]
-  //   };
-  //http://crossborder/Reports/report/Reports/SalesInvoice/SalesInvoice
-  //http://crossborder/Reports/report/Reports/SalesInvoice/SalesInvoice?PLNum=2&Store=16
-  reportServer: string = 'http://localhost/Reports';
-  //reportUrl: string = 'Reports/SalesInvoice/SalesInvoice?PLNum=2&Store=16';
-  reportUrl: string = 'report/Reports/Test';
-  parameters: any = {
-  };
-  showParameters: string = "true";
-
-  language: string = "en-us";
-  width: number = 700;
-  height: number = 700;
-  toolbar: string = "true";
-
-  PickListNumber: number = 0;
   constructor(
-    private router: Router,
     private aroute: ActivatedRoute,
-    private authenticationService: AuthenticationService
+    private _PicklistService: PicklistService,
+    private _spinner: NgxSpinnerService,
   ) { }
 
   ngOnInit() {
-
-    // let currentUser = this.authenticationService.currentUserValue;
-    // let CompanyDetailID = currentUser.CompanyDetailID;
-
-    // this.aroute.paramMap.subscribe(params => {
-    //   let PickListNumber = +params.get('id');
-    //   this.parameters = {
-    //     PickListNumber, CompanyDetailID
-    //   }
-
-    // });
+    this.aroute.paramMap.subscribe(params => {
+      let PickListNumber = +params.get('id');
+      this._spinner.show();
+      this._PicklistService.InvoiceDownload(PickListNumber)
+        .subscribe(data => {
+          this.objSalesInvoiceHeader = data;
+          this.TotalQty = data.lstDetail.reduce((acc, a) => acc + a.Qty, 0);
+          //hsn total
+          this.TotalTaxableValue = data.lstHSNCode.reduce((acc, a) => acc + a.TaxableValue, 0);
+          this.TotalIGSTTaxAmount = data.lstHSNCode.reduce((acc, a) => acc + a.IGSTTaxAmount, 0);
+          this.TotalCGSTTaxAmount = data.lstHSNCode.reduce((acc, a) => acc + a.CGSTTaxAmount, 0);
+          this.TotalSGSTTaxAmount = data.lstHSNCode.reduce((acc, a) => acc + a.SGSTTaxAmount, 0);
+          this.TotalTaxAmount = data.lstHSNCode.reduce((acc, a) => acc + a.TaxAmount, 0);
+          this._spinner.hide();
+        },
+          (err) => {
+            this._spinner.hide();
+            console.log(err);
+          });
+    });
   }
-
 }

@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col-sm-6 col-lg-6">
     <h3>
-     Goods Dispute  
+      Goods Dispute
     </h3>
   </div>
   <div class="col-sm-6 col-lg-6">
@@ -29,14 +29,16 @@
           <div class="col-md-3 nopading_loct">
             <select [(ngModel)]="SearchBy" class="serchcurv form-control btn-group">
               <option value="" selected="select">Search By</option>
-              <option value="GRNNumber">GRN Number</option> 
-              <option value="ItemCode">Item Code</option> 
+              <option value="GRNNumber">GRN Number</option>
+              <option value="ItemCode">Item Code</option>
               <option value="ItemName">Item Descripation</option>
-              <option value="DisputeType">Dispute Type</option> 
+              <option value="DisputeType">Dispute Type</option>              
+              <option value="JenniferItemSerial">Jennifer Item Serial</option>
             </select>
           </div>
           <div class="col-md-3 nopading_loct">
-            <input type="text" [(ngModel)]="SearchKeyword" class="serchcurv form-control btn-group" id="GRN" aria-describedby="GRN">
+            <input type="text" [(ngModel)]="SearchKeyword" class="serchcurv form-control btn-group" id="GRN"
+              aria-describedby="GRN">
           </div>
           <div class="col-md-2 nopading_loct">
             <button class="serchcurv btn btn-default btn-group" (click)="Search()" title="Search">
@@ -45,12 +47,11 @@
             <button class="serchcurv btn btn-default btn-group" (click)="Refresh()" title="Reset">
               <i class="fa fa-refresh" aria-hidden="true"></i>
             </button>
-          </div>  
+          </div>
         </div>
       </div>
       <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 text-right">
         <button class="btn btn-primary" routerLink="/Goodsdispute/Create" title="Add New">
-          
           Add New
         </button>
       </div>
@@ -58,48 +59,29 @@
   </div>
 
   <div class="panel-body">
-    <div class="table-responsive"> 
-      <table datatable [dtOptions]="dtOptions" class="table table-bordered table-condensed table-striped"
-        *ngIf="lst && lst.length">
-        <thead>
-          <tr>
-            <th>GRN Number</th>
-            <th>Item Code</th>
-            <th>Item Descripation</th>
-            <th>Dispute Type</th>
-            <th class="text-center btnactions">Action</th> 
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let obj of lst">
-            <td>{{ obj.GRNNumber }} </td>
-            <td> {{ obj.ItemCode }}</td>
-            <td>{{ obj.ItemName }} </td>
-            <td> {{ obj.DisputeType }}</td>
-            <td class="text-center btnactions"> <i class="fa fa-eye bgblue pointer" (click)="editButtonClick(obj.DisputeID)" 
-              title="View"></i> </td> 
-          </tr>
-        </tbody>
-      </table>
+    <kendo-grid [data]="gridView" resizable="true" columnMenu="true" [pageSize]="pageSize" [skip]="skip" [pageable]="true"
+      (pageChange)="pageChange($event)" [sortable]="{
+            allowUnsort: allowUnsort,
+            mode:  'single'
+            }" [sort]="sort" (sortChange)="sortChange($event)" [filterable]="true"
+      (dataStateChange)="dataStateChange($event)" [filter]="state.filter">
 
-      <table class="table table-bordered table-condensed table-striped"
-        *ngIf="lst == null">
-        <thead>
-          <tr>
-              <th>GRN Number</th>
-              <th>Item Code</th>
-              <th>Item Descripation</th>
-              <th>Dispute Type</th>
-              <!-- <th>Action</th>  -->
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td colspan="4">
-              No Records Found.!
-            </td>
-          </tr>
-        </tbody>
-      </table> 
-    </div>
+      <kendo-grid-column field="GRNNumber" title="GRN Number">
+      </kendo-grid-column>
+      <kendo-grid-column field="ItemCode" title="ItemCode">
+      </kendo-grid-column>
+      <kendo-grid-column field="ItemName" title="Item Description">
+      </kendo-grid-column>
+      
+      <kendo-grid-column field="JenniferItemSerial" title="Jennifer Item Serial No.">
+        </kendo-grid-column>
+      <kendo-grid-column field="DisputeType" title="Dispute Type">
+      </kendo-grid-column>
+
+      <kendo-grid-column field="DisputeID" title="Action" [class]="{'text-center': true}" [filterable]="false" [sortable]="false" width="70" >
+        <ng-template kendoGridCellTemplate let-obj>
+          <i class="fa fa-eye bgblue pointer" (click)="editButtonClick(obj.DisputeID)" title="View"></i>
+        </ng-template>
+      </kendo-grid-column>
+    </kendo-grid> 
   </div>

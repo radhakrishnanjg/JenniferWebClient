@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { map } from 'rxjs/operators';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http'; 
 import { Observable, throwError, } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
@@ -10,8 +9,7 @@ import { AppError } from '../../common/app-error';
 
 import { AuthenticationService } from './authentication.service';
 import { Poorder, Poorderitem, Result, Brand, ProductGroup, Category, SubCategory, UOM, Item } from '../model/index';
-import { environment } from '../../../environments/environment';
-
+import { environment } from '../../../environments/environment'; 
 @Injectable({
   providedIn: 'root'
 })
@@ -23,6 +21,7 @@ export class PoService {
 
   public search(SearchBy: string, Search: string, StartDate: Date, EndDate: Date):
     Observable<Poorder[]> {
+
     let currentUser = this.authenticationService.currentUserValue;
     let CompanyDetailID = currentUser.CompanyDetailID;
     return this.httpClient.get<Poorder[]>(environment.baseUrl + `POOrder/Search?CompanyDetailID=` + CompanyDetailID
@@ -61,7 +60,7 @@ export class PoService {
     objPoorder1.CompanyDetailID = currentUser.CompanyDetailID;
     objPoorder1.CompanyID = currentUser.CompanyID;
     objPoorder1.LoginId = currentUser.UserId;
-    
+
     return this.httpClient.post<Result>(environment.baseUrl + `POOrder/Upsert`, objPoorder1)
       .pipe(catchError(this.handleError));
   }
@@ -147,6 +146,14 @@ export class PoService {
     this.objPoorder.CompanyDetailID = currentUser.CompanyDetailID;
     this.objPoorder.LoginId = currentUser.UserId;
     return this.httpClient.post<Result>(environment.baseUrl + `POOrder/Delete`, this.objPoorder)
+      .pipe(catchError(this.handleError));
+  }
+
+  public bulkUpsert(obj: Poorder): Observable<Poorderitem[]> {
+    let currentUser = this.authenticationService.currentUserValue;
+    obj.CompanyDetailID = currentUser.CompanyDetailID;
+    obj.CompanyID = currentUser.CompanyID;
+    return this.httpClient.post<Poorderitem[]>(environment.baseUrl + `POOrder/BulkUpsert`, obj)
       .pipe(catchError(this.handleError));
   }
 

@@ -34,7 +34,7 @@ export class VendorwarehouseService {
       .pipe(catchError(this.handleError));
   }
 
-  public exist(VendorWarehouseID: number, WarehouseName: string,VendorID:number) {
+  public exist(VendorWarehouseID: number, WarehouseName: string, VendorID: number) {
     VendorWarehouseID = isNaN(VendorWarehouseID) ? 0 : VendorWarehouseID;
     let currentUser = this.authenticationService.currentUserValue;
     let CompanyID = currentUser.CompanyID;

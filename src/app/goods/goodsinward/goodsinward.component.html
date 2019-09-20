@@ -25,7 +25,7 @@
   <div class="panel-heading">
     <div class="row">
       <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-        <span class="spanheader">
+        <span class="groupspanheader">
           {{panelTitle}}
         </span>
       </div>
@@ -46,7 +46,6 @@
   <form autocomplete="off" [formGroup]="goodsinwardform" (ngSubmit)="SaveData()" class="form-horizontal">
 
     <div class="panel-body">
-      <span class="groupspanheader"> Goods Inward Information </span>
       <div class="row">
 
         <div class="col-md-6">
@@ -57,14 +56,14 @@
           <div class="col-md-6 col-xs-12">
             <input id="JenniferItemSerial" type="text" class="form-control" formControlName="JenniferItemSerial"
               (blur)="logValidationErrors();getGoodsInwardDisplay();" (change)="JenniferItemSerialonChange()"
-              maxlength="20" >
+              maxlength="20">
             <div class="help-block-rk">
               <span class="help-block" *ngIf="formErrors.JenniferItemSerial">
                 {{formErrors.JenniferItemSerial}}
               </span>
             </div>
           </div>
-          <div class="col-md-6 col-xs-12 form-group">
+          <div class="col-md-6 col-xs-12 form-group" [ngClass]="{'has-error': formErrors.VendorItemSerialType}">
             <label for="VendorItemSerialType" class="nopading_loct control-label">Vendor Item Serial Type
               <span class="mandantory">*</span>
             </label>
@@ -90,8 +89,7 @@
           </div>
           <div class="col-md-6 col-xs-12">
             <input id="VendorItemSerialNumber" type="text" class="form-control" formControlName="VendorItemSerialNumber"
-              (blur)="logValidationErrors(); " (change)="VendorItemSerialNumberonChange()"
-              maxlength="30" >
+              (blur)="logValidationErrors(); " (change)="VendorItemSerialNumberonChange()" maxlength="30">
             <div class="help-block-rk">
               <span class="help-block" *ngIf="formErrors.VendorItemSerialNumber">
                 {{formErrors.VendorItemSerialNumber}}
@@ -101,7 +99,7 @@
         </div>
         <div class="col-md-6">
           <div class="row">
-
+            <div class="groupspanheader"> GRN Information </div>
             <div class="col-md-6 col-xs-12 form-group">
               <label class="control-label" for="InventoryType">Inventory Type</label>
             </div>
@@ -130,19 +128,6 @@
           </div>
         </div>
       </div>
-
-      <!-- <div class="row">
-        <div class="col-md-6">
-          <div class="pull-right btn-toolbar">
-            <button class="btn btn-primary" (click)="Clear()" title="Clear">
-              Clear
-            </button>
-            <button class="btn btn-success" type="submit" (click)="onTextChange()">
-              Add
-            </button>
-          </div>
-        </div>
-      </div> -->
 
       <div class="table-responsive">
         <table class="table table-bordered table-condensed table-striped">

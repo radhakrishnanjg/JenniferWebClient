@@ -26,7 +26,7 @@
     <div class="panel-heading">
       <div class="row">
         <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-          <span class="spanheader">
+          <span class="groupspanheader">
             {{panelTitle}}
           </span>
         </div>
@@ -44,8 +44,7 @@
         </div>
       </div>
     </div>
-    <div class="panel-body">
-      <!-- <span class="groupspanheader"> General Information </span> -->
+    <div class="panel-body"> 
       <div class="row">
         <div class="container container-table">
           <div class="row vertical-center-row">
@@ -56,7 +55,7 @@
                   <label class="control-label" for="WarehouseLocation">Storage Location
                     <span class="mandantory">*</span>
                   </label>
-                  <div class="">
+                  <div >
                     <div class="input-group">
                       <input id="WarehouseLocation" type="text" class="form-control" formControlName="WarehouseLocation"
                         (blur)="logValidationErrors();" maxlength="30" (change)="onChangeJenniferItemSerial()">
@@ -81,7 +80,7 @@
                   <label class="control-label" for="WarehouseRack">Rack Number
                     <span class="mandantory">*</span>
                   </label>
-                  <div class="">
+                  <div >
                     <div class="input-group">
                       <input id="WarehouseRack" type="text" class="form-control" formControlName="WarehouseRack"
                         (blur)="logValidationErrors(); " maxlength="20" (change)="onChangeJenniferItemSerial()">
@@ -106,7 +105,7 @@
                   <label class="control-label" for="WarehouseBin">BIN Number
                     <span class="mandantory">*</span>
                   </label>
-                  <div class="">
+                  <div >
                     <div class="input-group">
                       <input id="WarehouseBin" type="text" class="form-control" formControlName="WarehouseBin"
                         (blur)="logValidationErrors(); " maxlength="20" (change)="onChangeJenniferItemSerial()">
@@ -131,9 +130,9 @@
                   <label class="control-label" for="JenniferItemSerial">Jennifer Item Serial Number
                     <span class="mandantory">*</span>
                   </label>
-                  <div class="">
+                  <div >
                     <input id="JenniferItemSerial" type="text" class="form-control" formControlName="JenniferItemSerial"
-                      (blur)="logValidationErrors();" maxlength="30" (change)="onChangeJenniferItemSerial()">
+                      (blur)="logValidationErrors();" maxlength="20" (change)="onChangeJenniferItemSerial()">
                     <div class="help-block-rk">
                       <span class="help-block" *ngIf="formErrors.JenniferItemSerial">
                         {{formErrors.JenniferItemSerial}}
@@ -148,7 +147,6 @@
       </div>
       <div class="row">
         <div class="col-md-12 col-xs-12">
-          <!---->
           <div class="table-responsive">
             <table class="table table-bordered table-condensed table-striped">
               <thead>
@@ -173,7 +171,6 @@
               </tbody>
             </table>
           </div>
-          <!---->
         </div>
       </div>
     </div>
@@ -181,11 +178,11 @@
     <div class="panel-footer">
       <div class="pull-right btn-toolbar">
         <button class="btn btn-primary" routerLink="Goodsstoragelist" title="Cancel">
-          <!-- <i class="fa fa-arrow-left" aria-hidden="true"></i> -->
+         
           Cancel
         </button>
         <button class="btn btn-success" type="submit" prevent-double-submit [disabled]="lstGoodsstorage.length == 0">
-          <!-- <i class="fa fa-save"></i> -->
+          
           Save
         </button>
       </div>

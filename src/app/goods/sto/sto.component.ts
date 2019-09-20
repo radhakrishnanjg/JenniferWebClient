@@ -11,14 +11,15 @@ import {
   Item, UOM, Location, Dropdown, Result
 } from '../../_services/model';
 import * as moment from 'moment';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
+import { DropDownFilterSettings } from '@progress/kendo-angular-dropdowns';
 
 const createFormGroup = dataItem => new FormGroup({
   'ItemCode': new FormControl(dataItem.ItemID),
   'ItemName': new FormControl(dataItem.ItemName),
   'CustomerItemCode': new FormControl(dataItem.CustomerItemCode),
-  'Units': new FormControl(dataItem.Units),
-  'UOM': new FormControl(dataItem.UOMID),
+  'Units': new FormControl(dataItem.Units, [Validators.required, Validators.min(1), Validators.max(1000000), Validators.pattern("^([0-9]+)$")]),
+  'UOM': new FormControl(dataItem.UOMID, [Validators.required, Validators.min(1)]),
   'Rate': new FormControl(dataItem.Rate),
   'DiscountValue': new FormControl(dataItem.DiscountValue),
   'TaxNature': new FormControl(dataItem.TaxNature),
@@ -68,6 +69,7 @@ export class StoComponent implements OnInit {
   hideSTODate: boolean = false;
   STODate: Date;
   CustomerID: number = 0;
+  maxDate: moment.Moment;
   constructor(
     private _StoService: StoService,
     private _poService: PoService,
@@ -136,7 +138,7 @@ export class StoComponent implements OnInit {
   ngOnInit() {
     this.objSto.lstItem = [];
     this.gridData = this.objSto.lstItem;
-
+    this.maxDate = moment().add(0, 'days');
     this._spinner.show();
     this._poService.getOrderUOMs().subscribe(
       (res) => {
@@ -174,29 +176,27 @@ export class StoComponent implements OnInit {
         console.log(err);
       });
 
-    this._spinner.show();
-    this._privateutilityService.getSTOFromLocations().subscribe(
-      (res) => {
-        this.fromlocationList = res;
-        this._spinner.hide();
 
-      }, (err) => {
-        this._spinner.hide();
-        console.log(err);
-      });
 
     this.stoForm = this.fb.group({
       STODate: ['', [Validators.required]],
-      InventoryType: ['', [Validators.required]],
+      InventoryType: ['Sellable', [Validators.required]],
       FromLocationID: [0, [Validators.min(1)]],
       ToLocationID: [0, [Validators.min(1)]],
       OtherReference: ['', [Validators.required]],
       IsDiscountApplicable: ['',],
       IsShipmentRequired: ['',],
       Remarks: ['', [Validators.required]],
-
     });
+    this.onInventoryTypeChange('Sellable');
+    this.objResult = new Result();
+    this.objResult.Msg = '';
+    this.objResult.Flag = true;
   }
+
+
+
+
 
   onSTODateChange(range) {
     if (this.stoForm.controls['STODate'].value.startDate == null || this.stoForm.controls['STODate'].value.startDate == undefined) {
@@ -222,10 +222,14 @@ export class StoComponent implements OnInit {
 
   public onFromLocationIDChange(FromLocationID: number): void {
     if (FromLocationID > 0) {
+      if (this.stoForm.controls['InventoryType'].value == null || this.stoForm.controls['InventoryType'].value == '') {
+        this._alertService.error("Please select Inventory Type!.");
+        return;
+      }
       this.objSto.FromLocationID = FromLocationID;
       let LocationID = this.fromlocationList.filter(a => a.FromLocationID == FromLocationID)[0].LocationID;
       this._spinner.show();
-      this._privateutilityService.getSTOToLocations(LocationID).subscribe(
+      this._privateutilityService.getSTOToLocations(LocationID, this.stoForm.controls['InventoryType'].value).subscribe(
         (res) => {
           this.tolocationList = res;
           this.objSto.lstItem = [];
@@ -244,6 +248,7 @@ export class StoComponent implements OnInit {
 
     this.objSto.lstItem = [];
     this.gridData = this.objSto.lstItem;
+    this._spinner.show();
     this._privateutilityService.getCustomerItemLevels(this.CustomerID).subscribe(
       (data) => {
         if (data != null) {
@@ -269,9 +274,6 @@ export class StoComponent implements OnInit {
     else {
       this.stoForm.get('IsShipmentRequired').enable();
     }
-    // if (this.objSto.lstItem.length > 0) {
-    //   this.objSto.lstItem.map(a => a.TaxNature = this.objSto.TaxNature);
-    // }
   }
 
   public onInventoryTypeChange(InventoryType: string): void {
@@ -285,6 +287,16 @@ export class StoComponent implements OnInit {
     else {
       this.stoForm.get('IsShipmentRequired').enable();
     }
+    this._spinner.show();
+    this._privateutilityService.getSTOFromLocations(InventoryType).subscribe(
+      (res) => {
+        this.fromlocationList = res;
+        this._spinner.hide();
+
+      }, (err) => {
+        this._spinner.hide();
+        console.log(err);
+      });
   }
 
   onchangeIsDiscountApplicable(event: any) {
@@ -308,7 +320,7 @@ export class StoComponent implements OnInit {
       this._alertService.error("Please select To Location!.");
       return;
     }
-    if (this.stoForm.controls['InventoryType'].value == null || this.stoForm.controls['InventoryType'].value == 0) {
+    if (this.stoForm.controls['InventoryType'].value == null || this.stoForm.controls['InventoryType'].value == '') {
       this._alertService.error("Please select Inventory Type!.");
       return;
     }
@@ -319,8 +331,6 @@ export class StoComponent implements OnInit {
         return;
       }
     }
-
-
     this.itemDetail = this.itemList.filter(a => { return a.ItemID == itemID })[0];
     this.itemFormGroup.patchValue(
       {
@@ -341,6 +351,7 @@ export class StoComponent implements OnInit {
         (data) => {
           this._spinner.hide();
           if (data != null) {
+            this.objStoItem.SalesRateCardID = data['SalesRateCardID'];
             this.Rate = data['SellingPrice'];
             this.itemFormGroup.controls['Rate'].setValue(this.Rate);
             let Units = this.itemFormGroup.get("Units").value;
@@ -348,18 +359,17 @@ export class StoComponent implements OnInit {
             let Qty = Units * MultiplierValue;
             if (this.IsDiscountApplicable) {
               this._spinner.show();
-
               this._privateutilityService.getDiscountAmount(itemID, STODate.toString(), CustomerID, InventoryType, TransactionType)
                 .subscribe(
                   (data11) => {
                     if (data11 != null) {
                       this.DisCountPer = data11['DiscountAmount'];
-                      //this.objStoItem.DiscountID = data11['DiscountID'];
-                      let DiscountAmount = this.Rate * this.DisCountPer / 100 * Qty;
-                      this.itemFormGroup.controls['DiscountValue'].setValue(DiscountAmount);
+                      this.objStoItem.DiscountID = data11['DiscountID'];
                       let TaxRate = this.itemFormGroup.get("TaxRate").value;
                       let DirectCost = this.Rate * Qty;
                       let TaxAmount = DirectCost * (TaxRate / 100);
+                      let DiscountAmount = this.Rate * this.DisCountPer / 100 * Qty + (TaxAmount * this.DisCountPer / 100);
+                      this.itemFormGroup.controls['DiscountValue'].setValue(DiscountAmount);
                       this.itemFormGroup.controls['DirectCost'].setValue(DirectCost);
                       this.itemFormGroup.controls['TaxAmount'].setValue(TaxAmount);
                       this.itemFormGroup.controls['TotalAmount'].setValue(TaxAmount + (Qty * this.Rate) - DiscountAmount);
@@ -392,19 +402,19 @@ export class StoComponent implements OnInit {
   }
 
   public onUnitsChanged(Units: number): void {
-    if (isNaN(Units) || Units < 0) {
-      this._alertService.error("The value must greater or equal to Zero.!");
+    if (isNaN(Units) || Units <= 0) {
+      this._alertService.error("The value must greater Zero.!");
       return;
     }
     else {
       this.objStoItem.Qty = Units * this.objStoItem.MultiplierValue;
       let Ratenew = this.Rate * Units * this.objStoItem.MultiplierValue;
-
-      let DiscountValue = (this.Rate * this.DisCountPer / 100 * Units * this.objStoItem.MultiplierValue);
-
       let TaxRate = this.itemFormGroup.get("TaxRate").value;
       let DirectCost = Ratenew;
       let TaxAmount = DirectCost * (TaxRate / 100);
+
+      let DiscountValue = (this.Rate * this.DisCountPer / 100 * Units * this.objStoItem.MultiplierValue)
+        + (TaxAmount * this.DisCountPer / 100);
       let TotalAmountNew = TaxAmount + DirectCost - DiscountValue;
       this.itemFormGroup.patchValue(
         {
@@ -424,10 +434,11 @@ export class StoComponent implements OnInit {
       let Units = this.itemFormGroup.get("Units").value;
       this.objStoItem.Qty = Units * this.objStoItem.MultiplierValue;
       let Ratenew = this.Rate * Units * this.objStoItem.MultiplierValue;
-      let DiscountValue = (this.Rate * this.DisCountPer / 100 * Units * this.objStoItem.MultiplierValue);
       let TaxRate = this.itemFormGroup.get("TaxRate").value;
       let DirectCost = Ratenew;
       let TaxAmount = DirectCost * (TaxRate / 100);
+      let DiscountValue = (this.Rate * this.DisCountPer / 100 * Units * this.objStoItem.MultiplierValue)
+       + (TaxAmount * this.DisCountPer / 100); 
       let TotalAmountNew = TaxAmount + DirectCost - DiscountValue;
       this.itemFormGroup.patchValue(
         {
@@ -483,6 +494,10 @@ export class StoComponent implements OnInit {
   }
 
   public saveHandler({ sender, rowIndex, formGroup, isNew }): void {
+    if (this.stoForm.controls['InventoryType'].value == null || this.stoForm.controls['InventoryType'].value == '') {
+      this._alertService.error("Please select Inventory Type!.");
+      return;
+    }
     const item = formGroup.value;
     this.objStoItem.ItemCode = item.ItemCode;
     this.objStoItem.ItemName = item.ItemName;
@@ -490,7 +505,7 @@ export class StoComponent implements OnInit {
     this.objStoItem.UOMID = item.UOM;
 
     this.objStoItem.Units = item.Units;
-    this.objStoItem.Rate = item.Rate; 
+    this.objStoItem.Rate = item.Rate;
     this.objStoItem.DiscountValue = item.DiscountValue;
     this.objStoItem.Qty = item.Units * this.objStoItem.MultiplierValue;
     this.objStoItem.TaxNature = item.TaxNature;
@@ -566,12 +581,23 @@ export class StoComponent implements OnInit {
     if (orderItem.TotalAmount == null || orderItem.TotalAmount == 0) {
       return "Total Value field required";
     }
+    if (orderItem.Units == null || orderItem.TotalAmount <= 0) {
+      return "Unit Value field must greater than zero";
+    }
     return null;
   }
 
   public saveData(): void {
 
+    // stop here if form is invalid
+    if (this.stoForm.invalid) {
+      return;
+    }
     if (this._authorizationGuard.CheckAcess("StoList", "ViewEdit")) {
+      return;
+    }
+    if (this.objSto.lstItem == null || this.objSto.lstItem.length == 0) {
+      this._alertService.error("Order Item required");
       return;
     }
     this.objSto.STONumber = this.STONumber;
@@ -607,5 +633,10 @@ export class StoComponent implements OnInit {
     this.objSto.lstItem = [];
     this.gridData = this.objSto.lstItem;
   }
+
+  public filterSettings: DropDownFilterSettings = {
+    caseSensitive: false,
+    operator: 'startsWith'
+  };
 
 }

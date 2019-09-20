@@ -2,19 +2,17 @@ import { Component, OnInit } from '@angular/core';
 import { PrivateutilityService } from '../../_services/service/privateutility.service';
 import { SalesorderService } from '../../_services/service/salesorder.service';
 import { PoService } from '../../_services/service/po.service';
-import { FormGroup, FormControl, Validators, FormBuilder, } from '@angular/forms';
+import { FormGroup, Validators, FormBuilder, } from '@angular/forms';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { AuthorizationGuard } from '../../_guards/Authorizationguard';
 import {
   Salesorder, Brand, ProductGroup, Category, SubCategory,
   Item, UOM, Customer, Customerwarehouse, Dropdown, PaymentTermType,
-  SalesorderItem, SalesorderunsellableQty, unsellqty
+  SalesorderItem, SalesorderunsellableQty,
 } from '../../_services/model';
 import * as moment from 'moment';
 import { ActivatedRoute, Router } from '@angular/router';
-import { of } from 'rxjs';
-import { distinct } from 'rxjs/operators';
 
 @Component({
   selector: 'app-salesorderunsellable',
@@ -73,13 +71,15 @@ export class SalesorderunsellableComponent implements OnInit {
   TotalTaxAmount: number = 0;
   hideOrderDate: boolean = false;
   OrderDate: Date;
+  orderMinDate: moment.Moment;
+  orderMaxDate: moment.Moment;
   objunsell: SalesorderunsellableQty = new SalesorderunsellableQty();
   ispickitems: boolean = false;
   isadditems: boolean = false;
   constructor(
     private _salesService: SalesorderService,
     private _poService: PoService,
-    private _privateutilityService: PrivateutilityService,
+    private _PrivateutilityService: PrivateutilityService,
     private _authorizationGuard: AuthorizationGuard,
     private _spinner: NgxSpinnerService,
     public _alertService: ToastrService,
@@ -171,11 +171,13 @@ export class SalesorderunsellableComponent implements OnInit {
   }
 
   ngOnInit() {
+
+
     this.action = true;
     this.objSalesOrder.lstItem = [];
     this.gridData = this.objSalesOrder.lstItem;
     this._spinner.show();
-    this._privateutilityService.getCustomersSales().subscribe(
+    this._PrivateutilityService.getCustomersSales().subscribe(
       (data) => {
         if (data != null) {
           this.customerList = data;
@@ -197,7 +199,7 @@ export class SalesorderunsellableComponent implements OnInit {
         console.log(err);
       });
     this._spinner.show();
-    this._privateutilityService.GetValues('Courier')
+    this._PrivateutilityService.GetValues('Courier')
       .subscribe(
         (data: Dropdown[]) => {
           this.lstDispatchThrough = data;
@@ -209,7 +211,7 @@ export class SalesorderunsellableComponent implements OnInit {
         }
       );
     this._spinner.show();
-    this._privateutilityService.getPaymentTerms().subscribe(
+    this._PrivateutilityService.getPaymentTerms().subscribe(
       (data: PaymentTermType[]) => {
         this.lstPaymentTermsID = data;
         this._spinner.hide();
@@ -221,7 +223,6 @@ export class SalesorderunsellableComponent implements OnInit {
     );
 
 
-    this.orderMinDate = moment().add(0, 'days');
     var end = moment().endOf('day');
     var currentend = new Date();
     var differ = end.diff(currentend, 'minutes');
@@ -248,9 +249,37 @@ export class SalesorderunsellableComponent implements OnInit {
     this.ispickitems = false;
     this.isadditems = false;
     localStorage.removeItem("Unsellableqty");
+
+    this.getCurrentServerDateTime();
+    // this.orderMinDate = moment().add(0, 'days');
+    // var OrderDate = moment(new Date(), 'YYYY-MM-DD[T]HH:mm').format('MM-DD-YYYY HH:mm').toString();
+    // this.salesForm.patchValue({
+    //   OrderDate: { startDate: new Date(OrderDate) },
+    // });
+    // this.OrderDate = new Date(OrderDate);
   }
-  orderMinDate: moment.Moment;
-  orderMaxDate: moment.Moment;
+
+  private getCurrentServerDateTime() {
+    this._spinner.show();
+    this._PrivateutilityService.getCurrentDate()
+      .subscribe(
+        (data: Date) => {
+          var mcurrentDate = moment(data, 'YYYY-MM-DD[T]HH:mm').format('MM-DD-YYYY HH:mm').toString();
+          this.salesForm.patchValue({
+            OrderDate: { startDate: new Date(mcurrentDate) },
+          });
+          this.orderMinDate = moment(data).add(0, 'days');
+          this.OrderDate = new Date(mcurrentDate);
+          this._spinner.hide();
+        },
+        (err: any) => {
+          console.log(err);
+
+          this._spinner.hide();
+        }
+      );
+  }
+
   public onCustomerChange(customerID: number): void {
     console.log("customerID=" + customerID);
     this.objSalesOrder.CustomerID = customerID;
@@ -267,7 +296,8 @@ export class SalesorderunsellableComponent implements OnInit {
       });
     this.getCustomerAddress(customerID);
     this.getCustomerWarehouse(customerID);
-    this._privateutilityService.getCustomerItemLevels(customerID).subscribe(
+    this._spinner.show();
+    this._PrivateutilityService.getCustomerItemLevels(customerID).subscribe(
       (data) => {
         if (data != null) {
           this.itemList = data.filter(a => { return a.Type == 'Item' });
@@ -285,7 +315,7 @@ export class SalesorderunsellableComponent implements OnInit {
   public getCustomerAddress(customerID: number): void {
     if (customerID != 0) {
       this._spinner.show();
-      this._privateutilityService.getCustomerAddress(customerID).subscribe(
+      this._PrivateutilityService.getCustomerAddress(customerID).subscribe(
         (data) => {
           if (data != null) {
             this.BilledTo = data['Address1'];
@@ -303,7 +333,7 @@ export class SalesorderunsellableComponent implements OnInit {
   public getCustomerWarehouse(customerID: number): void {
     if (customerID != 0) {
       this._spinner.show();
-      this._privateutilityService.getCustomerWarehouse(customerID).subscribe(
+      this._PrivateutilityService.getCustomerWarehouse(customerID).subscribe(
         (data) => {
           if (data != null) {
             this.customerWarehouseList = data;
@@ -321,7 +351,7 @@ export class SalesorderunsellableComponent implements OnInit {
   public onCustomerWarehouseIDChange(customerWarehouseID: number): void {
     if (customerWarehouseID != 0) {
       this._spinner.show();
-      this._privateutilityService.getCustomerWarehouseAddress(customerWarehouseID).subscribe(
+      this._PrivateutilityService.getCustomerWarehouseAddress(customerWarehouseID).subscribe(
         (data) => {
           if (data != null) {
             this.ShipTo = data['Address1'];
@@ -347,7 +377,6 @@ export class SalesorderunsellableComponent implements OnInit {
   }
 
   onchangeIsBillTo_SameAs_ShipTo1() {
-    // this.IsBillTo_SameAs_ShipTo = this.salesForm.controls['IsBillTo_SameAs_ShipTo'].value;
     if (this.IsBillTo_SameAs_ShipTo) {
       this.IsBillTo_SameAs_ShipTo = true;
       this.BilledTo = this.ShipTo;
@@ -361,16 +390,22 @@ export class SalesorderunsellableComponent implements OnInit {
 
   public chooseitems(): void {
     //stop here if form is invalid
-    // if (this.salesForm.invalid) {
-    //   return;
-    // }
+    if (this.salesForm.invalid) {
+      return;
+    }
 
     if (this._authorizationGuard.CheckAcess("Salesorderlist", "ViewEdit")) {
       return;
     }
 
     if (localStorage.getItem("Unsellableqty") == null) {
-      let OrderDate = this.salesForm.controls['OrderDate'].value.startDate._d.toLocaleString();
+      let OrderDate = '';
+      if (this.salesForm.controls['OrderDate'].value.startDate._d != undefined) {
+        OrderDate = this.salesForm.controls['OrderDate'].value.startDate._d.toLocaleString();
+      } else {
+        OrderDate = this.salesForm.controls['OrderDate'].value.startDate.toLocaleString();
+      }
+      //let OrderDate = OrderDate1;
       let CustomerID = this.salesForm.get("CustomerID").value;
       let TransactionType = this.customerList.filter(x => { return x.CustomerID == this.salesForm.controls['CustomerID'].value })[0].CustomerType;
       this._spinner.show();
@@ -399,7 +434,6 @@ export class SalesorderunsellableComponent implements OnInit {
     } else {
       this.ispickitems = true;
       this.isadditems = false;
-      //this.ClearAll();
     }
   }
 
@@ -413,10 +447,11 @@ export class SalesorderunsellableComponent implements OnInit {
   }
 
   onchangeProductGroupID(selectedValue: string) {
+
     selectedValue = selectedValue == "ProductGroup" ? "" : selectedValue;
     let lstunsellqty = JSON.parse(localStorage.getItem("Unsellableqty"));
     if (selectedValue != "") {
-      lstunsellqty = lstunsellqty.filter(a => a.ProductGroup == selectedValue);
+      lstunsellqty = lstunsellqty.filter(a => a.ProductGroupName == selectedValue);
     }
     this.objunsell.lstunsellqty = lstunsellqty;
   }
@@ -425,7 +460,7 @@ export class SalesorderunsellableComponent implements OnInit {
     selectedValue = selectedValue == "Category" ? "" : selectedValue;
     let lstunsellqty = JSON.parse(localStorage.getItem("Unsellableqty"));
     if (selectedValue != "") {
-      lstunsellqty = lstunsellqty.filter(a => a.Category == selectedValue);
+      lstunsellqty = lstunsellqty.filter(a => a.CategoryName == selectedValue);
     }
     this.objunsell.lstunsellqty = lstunsellqty;
   }
@@ -434,7 +469,7 @@ export class SalesorderunsellableComponent implements OnInit {
     selectedValue = selectedValue == "SubCategory" ? "" : selectedValue;
     let lstunsellqty = JSON.parse(localStorage.getItem("Unsellableqty"));
     if (selectedValue != "") {
-      lstunsellqty = lstunsellqty.filter(a => a.SubCategory == selectedValue);
+      lstunsellqty = lstunsellqty.filter(a => a.SubCategoryName == selectedValue);
     }
     this.objunsell.lstunsellqty = lstunsellqty;
 
@@ -479,28 +514,41 @@ export class SalesorderunsellableComponent implements OnInit {
         this.objSalesorderItem.ItemName = lstunsellqty.filter(a => a.ItemID == element)[0].ItemName;
         this.objSalesorderItem.CustomerItemCode = lstunsellqty.filter(a => a.ItemID == element)[0].CustomerItemCode;
         let wa: number = 0;
-        let DiscountAmount: number = 0;
+        //let DiscountAmount: number = 0;
         lstunsellqty.filter(a => a.ItemID == element).forEach((w, index) => {
           wa += lstunsellqty.filter(a => a.ItemID == w.ItemID)[index].LiquidationRate *
             lstunsellqty.filter(a => a.ItemID == w.ItemID)[index].Qty;
-          DiscountAmount += ((lstunsellqty.filter(a => a.ItemID == w.ItemID)[index].SellingPrice
-            * lstunsellqty.filter(a => a.ItemID == w.ItemID)[index].Qty) -
-            (lstunsellqty.filter(a => a.ItemID == w.ItemID)[index].LiquidationRate)
-            * lstunsellqty.filter(a => a.ItemID == w.ItemID)[index].Qty);
+          // DiscountAmount += (
+          //   ( (lstunsellqty.filter(a => a.ItemID == w.ItemID)[index].SellingPrice
+          //     * lstunsellqty.filter(a => a.ItemID == w.ItemID)[index].Qty)) + 
+
+          //   (lstunsellqty.filter(a => a.ItemID == w.ItemID)[index].TaxRate
+          //     * lstunsellqty.filter(a => a.ItemID == w.ItemID)[index].Qty)
+
+          // );
         });
-        this.objSalesorderItem.SellingPrice = wa /
+        debugger
+        this.objSalesorderItem.ItemRate = wa /
           lstunsellqty.filter(a => a.ItemID == element).reduce((acc, a) => acc + a.Qty, 0);
         this.objSalesorderItem.Qty = lstunsellqty.filter(a => a.ItemID == element).reduce((acc, a) => acc + a.Qty, 0);
         this.objSalesorderItem.DiscountID = lstunsellqty.filter(a => a.ItemID == element)[0].DiscountID;
-        this.objSalesorderItem.Discountamt = DiscountAmount;
         this.objSalesorderItem.TaxRate = lstunsellqty.filter(a => a.ItemID == element)[0].TaxRate;
-        this.objSalesorderItem.TaxAmount = this.objSalesorderItem.SellingPrice * this.objSalesorderItem.Qty * this.objSalesorderItem.TaxRate / 100;
+        this.objSalesorderItem.TaxAmount =
+          this.objSalesorderItem.ItemRate * this.objSalesorderItem.Qty * this.objSalesorderItem.TaxRate / 100;
+        let LiquidationPercent = lstunsellqty.filter(a => a.ItemID == element)[0].LiquidationPercent;
+        if (this.objSalesorderItem.DiscountID > 0) {
+          this.objSalesorderItem.Discountamt = ((this.objSalesorderItem.ItemRate * this.objSalesorderItem.Qty) +
+            this.objSalesorderItem.TaxAmount) *
+            ((100 - LiquidationPercent) / 100);
+        } else {
+          this.objSalesorderItem.Discountamt = 0;
+        }
 
-        this.objSalesorderItem.TotalValue = (this.objSalesorderItem.Qty * this.objSalesorderItem.SellingPrice) -
-          this.objSalesorderItem.Discountamt + this.objSalesorderItem.TaxAmount;
+        this.objSalesorderItem.TotalValue = (this.objSalesorderItem.Qty * this.objSalesorderItem.ItemRate) + this.objSalesorderItem.TaxAmount -
+          this.objSalesorderItem.Discountamt;
         this.objSalesOrder.lstItem.push(this.objSalesorderItem);
         this.TotalQty = this.objSalesOrder.lstItem.reduce((acc, a) => acc + a.Qty, 0);
-        this.TotalSellingPrice = this.objSalesOrder.lstItem.reduce((acc, a) => acc + a.SellingPrice, 0);
+        this.TotalSellingPrice = this.objSalesOrder.lstItem.reduce((acc, a) => acc + a.ItemRate, 0);
         this.TotalMRP = this.objSalesOrder.lstItem.reduce((acc, a) => acc + a.MRP, 0);
         this.TotalDiscountamt = this.objSalesOrder.lstItem.reduce((acc, a) => acc + a.Discountamt, 0);
         this.TotalTaxAmount = this.objSalesOrder.lstItem.reduce((acc, a) => acc + a.TaxAmount, 0);
@@ -554,7 +602,7 @@ export class SalesorderunsellableComponent implements OnInit {
     }
     this.objSalesOrder.lstItemUnsellable = this.objunsell.lstunsellqty.filter(a => a.Qty > 0);
     this.objSalesOrder.OrderID = this.OrderID;
-    this.objSalesOrder.OrderDate = this.salesForm.controls['OrderDate'].value.startDate._d.toLocaleString();
+    this.objSalesOrder.OrderDate = this.salesForm.controls['OrderDate'].value.startDate.toLocaleString();
     this.objSalesOrder.CustomerID = this.salesForm.controls['CustomerID'].value;
     this.objSalesOrder.CustomerWarehouseID = this.salesForm.controls['CustomerWarehouseID'].value;
     this.objSalesOrder.ShipTo = this.ShipTo;
@@ -563,7 +611,7 @@ export class SalesorderunsellableComponent implements OnInit {
     this.objSalesOrder.BilledTo = this.BilledTo;
     this.objSalesOrder.InventoryType = this.salesForm.controls['InventoryType'].value;
     this.objSalesOrder.PaymentTermsID = this.salesForm.controls['PaymentTermsID'].value;
-    this.objSalesOrder.DispatchThrough = this.salesForm.controls['DispatchThrough'].value; 
+    this.objSalesOrder.DispatchThrough = this.salesForm.controls['DispatchThrough'].value;
 
     this.objSalesOrder.TransactionType = this.customerList.filter(x => { return x.CustomerID == this.salesForm.controls['CustomerID'].value })[0].CustomerType;
     this.objSalesOrder.TermsOfDelivery = this.salesForm.controls['TermsOfDelivery'].value;

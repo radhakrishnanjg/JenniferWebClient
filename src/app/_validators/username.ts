@@ -28,7 +28,7 @@ import { SalesShipmentService } from '../_services/service/sales-shipment.servic
 
 import { GoodsDisputeService } from '../_services/service/goods-dispute.service';
 import { BoeService } from '../_services/service/BOE.service';
-
+import { GoodsReceiptService } from '../_services/service/goods-receipt.service';
 @Injectable({ providedIn: 'root' })
 export class UsernameValidator {
 
@@ -56,6 +56,7 @@ export class UsernameValidator {
     private _goodsDisputeService: GoodsDisputeService,
     private _salesShipmentService: SalesShipmentService,
     private _BoeService: BoeService,
+    private _goodsReceiptService: GoodsReceiptService,
   ) {
   }
 
@@ -408,6 +409,19 @@ export class UsernameValidator {
         );
     };
   }
+  existGRNInvoiceNumber(identity: number): AsyncValidatorFn {
+    return (control: AbstractControl): Observable<{ [key: string]: any } | null> => {
+      return this._goodsReceiptService.exist(identity, encodeURIComponent(control.value))
+        .pipe(
+          map(res => {
+            if (res) {
+              return { 'GRNInvoiceNumberInUse': true };
+            }
+          })
+        );
+    };
+  }
+
 
 
 }

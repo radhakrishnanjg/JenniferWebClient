@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError, } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-
+import { map } from 'rxjs/operators';
 import { BadRequest } from '../../common/bad-request';
 import { NotFoundError } from '../../common/not-found-error';
 import { AppError } from '../../common/app-error';
@@ -39,11 +39,14 @@ export class GoodsReceiptService {
       .pipe(catchError(this.handleError));
   }
 
-  public getItems(POID: number): Observable<GoodsReceiptDetail[]> {
+  public getItems(POID: number,GRNType:string ,TrackingNumber:string): Observable<GoodsReceiptDetail[]> {
     let currentUser = this.authenticationService.currentUserValue;
     let CompanyDetailID = currentUser.CompanyDetailID;
+    
     return this.httpClient.get<GoodsReceiptDetail[]>(environment.baseUrl + `GoodsReceipt/GetItemDetails?POID=` + POID +
-      `&CompanyDetailID=` + CompanyDetailID)
+      `&CompanyDetailID=` + CompanyDetailID +
+      `&GRNType=` + GRNType +
+      `&TrackingNumber=` + TrackingNumber)
       .pipe(catchError(this.handleError));
   }
 
@@ -64,6 +67,22 @@ export class GoodsReceiptService {
   public getInventoryType(): Observable<Dropdown[]> {
     return this.httpClient.get<Dropdown[]>(environment.baseUrl + `GoodsReceipt/GetInventoryType`)
       .pipe(catchError(this.handleError));
+  }
+
+  public exist(GRNID: number, InvoiceNumber: string) {
+    GRNID = isNaN(GRNID) ? 0 : GRNID;
+    let currentUser = this.authenticationService.currentUserValue;
+    let CompanyDetailID = currentUser.CompanyDetailID;
+    return this.httpClient.get<Boolean>(environment.baseUrl +
+      `GoodsReceipt/Exist?CompanyDetailID=` + CompanyDetailID + 
+      `&InvoiceNumber=` + encodeURIComponent(InvoiceNumber) + `&GRNID=` + GRNID)
+      .pipe(map(users => {
+        if (users)
+          return true;
+        else
+          return false;
+      })
+      );
   }
 
   public Insert(goodsReceipt: GoodsReceipt): Observable<Result> {
@@ -89,6 +108,24 @@ export class GoodsReceiptService {
     return this.httpClient.get(environment.baseUrl + `GoodsReceipt/Download?CompanyDetailID=` + CompanyDetailID +
       `&GRNNumber=` + GRNNumber,
       { responseType: 'blob' })
+      .pipe(catchError(this.handleError));
+  }
+
+  public updateImage(Filedata1: File,Filedata2: File,Filedata3: File,Filedata4: File, GRNNumber: string): Observable<boolean> {
+    let currentUser = this.authenticationService.currentUserValue;
+    let frmData = new FormData();
+    frmData.append("CompanyDetailID", currentUser.CompanyDetailID.toString());
+    frmData.append("GRNNumber", GRNNumber);
+    frmData.append("LoginId", currentUser.UserId.toString());
+    frmData.append("Image1", Filedata1, Filedata1.name);
+    frmData.append("Image2", Filedata2, Filedata2.name);
+    if (Filedata3 != null) {
+      frmData.append("Image3", Filedata3, Filedata3.name);
+    }
+    if (Filedata4 != null) {
+      frmData.append("Image4", Filedata4, Filedata4.name);
+    }
+    return this.httpClient.post<boolean>(environment.baseUrl + `GoodsReceipt/UpdateImage`, frmData)
       .pipe(catchError(this.handleError));
   }
 

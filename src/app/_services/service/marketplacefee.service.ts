@@ -6,7 +6,7 @@ import { BadRequest } from './../../common/bad-request';
 import { NotFoundError } from './../../common/not-found-error';
 import { AppError } from './../../common/app-error';
 import { AuthenticationService } from './authentication.service';
-import { Marketplacefee, Item,Result } from '../model/index';
+import { Marketplacefee,  Result } from '../model/index';
 import { environment } from '../../../environments/environment';
 @Injectable({
   providedIn: 'root'

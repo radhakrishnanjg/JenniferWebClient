@@ -25,7 +25,7 @@
   <div class="panel-heading">
     <div class="row">
       <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-        <span class="spanheader">
+        <span class="groupspanheader">
           {{panelTitle}}- {{objSalesOrder?.ApprovalStatus}}
         </span>
       </div>
@@ -50,7 +50,7 @@
   </div>
 
   <div class="panel-body">
-    <!-- <span class="groupspanheader"> General Information </span> -->
+    
     <div class="row">
 
       <div class="col-md-3 col-xs-12">
@@ -128,13 +128,6 @@
           </div>
         </div>
       </div>
-      <!-- <div class="col-md-6">
-        <div class="form-group">
-          <label class="control-label"> Is discount applicable </label> <br />
-          <div *ngIf="(objSalesOrder?.IsDiscountApplicable)"><i class="fa fa-check"></i></div>
-          <div *ngIf="(!objSalesOrder?.IsDiscountApplicable)"><i class="fa fa-times"></i></div>
-        </div>
-      </div> -->
     </div>
     <div class="row">
       <div class="col-md-3 col-xs-12">
@@ -206,7 +199,7 @@
   </div>
 
   <div>
-    <span class="spanheader">Order Items</span>
+    <span class="groupspanheader">Order Items</span>
   </div>
   <div>
     <table class="table table-bordered table-condensed table-striped"
@@ -215,17 +208,17 @@
         <tr>
           <th>ItemCode</th>
           <th>Item Name</th>
-          <th>CustomerItemCode</th>
+          <th>Customer ItemCode</th>
           <th *ngIf="(objSalesOrder?.InventoryType=='Sellable')">Units</th>
           <th *ngIf="(objSalesOrder?.InventoryType=='Sellable')">UOM </th>
           <th>Qty </th>
 
 
-          <th>SellingPrice</th>
+          <th>Selling Price</th>
           <th>TaxRate</th>
           <th>Tax Amt</th>
           <th>Discount Amt</th>
-          <th>ShippingCharges</th>
+          <th>Shipping Charges</th>
           <th>Total value</th>
         </tr>
       </thead>
@@ -239,7 +232,7 @@
           <td class="text-right">{{data.Qty}}</td>
 
 
-          <td class="text-right">{{data.SellingPrice | currency: 'INR'}}</td>
+          <td class="text-right">{{data.ItemRate | currency: 'INR'}}</td>
           <td class="text-right">{{data.TaxRate  }}</td>
           <td class="text-right">{{data.TaxAmount | currency: 'INR'}}</td>
           <td class="text-right">{{data.Discountamt | currency: 'INR'}}</td>

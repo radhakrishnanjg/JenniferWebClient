@@ -59,9 +59,7 @@
               </div>
               <div class="col-md-3">
                 <div class="pull-right">
-                  <!-- <button class="btn btn-success" title="Preview">
-                    Preview
-                  </button> -->
+                   
                 </div>
               </div>
             </div>
@@ -71,7 +69,7 @@
       <span class="groupspanheader"> Internal </span>
       <div class="table-responsive">
         <table class="table table-bordered table-condensed "
-          *ngIf="lstContact && lstContact.length && Internalflag==true">
+          *ngIf="lstContact && lstContact.length>0 && Internalflag==true">
           <thead>
             <tr>
               <th class="text-center ">Check</th>
@@ -85,7 +83,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let ms of filterInternal('Internal')">
+            <tr *ngFor="let ms of filterInternal('INTERNAL')">
 
               <td class="text-center ">
                 <div *ngIf="(ms.IsActive ==true)">
@@ -134,7 +132,7 @@
       <span class="groupspanheader"> External </span>
       <div class="table-responsive">
         <table class="table table-bordered table-condensed "
-          *ngIf="lstContact && lstContact.length && Externalflag==true">
+          *ngIf="lstContact && lstContact.length >0 && Externalflag==true">
           <thead>
             <tr>
               <th class=" text-center ">Check</th>
@@ -148,7 +146,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor=" let ms of filterExternal('External')">
+            <tr *ngFor=" let ms of filterExternal('EXTERNAL')">
               <td class="text-center ">
                 <div *ngIf="(ms.IsActive ==true)">
                   <input type="checkbox" name="{{ms.ContactID}}" id="{{ms.ContactID }}" checked="checked"
@@ -195,7 +193,7 @@
       <span class="groupspanheader"> Market Place </span>
       <div class="table-responsive">
         <table class="table table-bordered table-condensed "
-          *ngIf="lstContact && lstContact.length && MarketPlaceflag==true">
+          *ngIf="lstContact && lstContact.length >0 && MarketPlaceflag==true">
           <thead>
             <tr>
               <th class=" text-center ">Check</th>
@@ -209,7 +207,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor=" let ms of filterMarketPlace('MarketPlace')">
+            <tr *ngFor=" let ms of filterMarketPlace('MARKETPLACE')">
               <td class="text-center ">
                 <div *ngIf="(ms.IsActive ==true)">
                   <input type="checkbox" name="{{ms.ContactID}}" id="{{ms.ContactID }}" checked="checked"

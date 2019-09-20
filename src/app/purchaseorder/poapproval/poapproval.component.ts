@@ -169,10 +169,7 @@ export class PoapprovalComponent implements OnInit {
       this.objResult.Flag = false;
       this.objResult.Msg = ' ';
     }
-  }
-
-
-
+  } 
 
   Update() {
     if (this._authorizationGuard.CheckAcess("Poapprovallist", "ViewEdit")) {
@@ -185,23 +182,18 @@ export class PoapprovalComponent implements OnInit {
     if (this.poapprovalForm.controls['ApprovalStatus'].value == "Approve") {
       this.obj.IsShipmentRequired = false;
       this.obj.ApprovalStatus = "Approved";
-    }
-    // else if (this.poapprovalForm.controls['ApprovalStatus'].value == "ApproveWithShipment") {
-    //   this.obj.IsShipmentRequired = true;
-    //   this.obj.ApprovalStatus = "Approved";
-    // }
+    } 
     else if (this.poapprovalForm.controls['ApprovalStatus'].value == "Reject") {
       this.obj.IsShipmentRequired = false;
       this.obj.ApprovalStatus = "Rejected";
     }
-    this.obj.Remarks = this.poapprovalForm.controls['Remarks'].value;
-
+    this.obj.Remarks = this.poapprovalForm.controls['Remarks'].value; 
     this._spinner.show();
     this._poapprovalService.update(this.obj).subscribe(
       (data) => {
 
         if (data && data.Flag == true) {
-          this._alertService.success('PO Approval data has been updated successful');
+          this._alertService.success(data.Msg);
           this.router.navigate(['/Poapprovallist']);
         }
         else {

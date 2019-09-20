@@ -6,6 +6,9 @@ import { VendoritemService } from '../../_services/service/vendoritem.service';
 import { Vendoritem, Vendor, Dropdown, ProductGroup, Category, SubCategory, Item } from '../../_services/model';
 import { PrivateutilityService } from '../../_services/service/privateutility.service';
 import { AuthorizationGuard } from '../../_guards/Authorizationguard'
+import { process, State } from '@progress/kendo-data-query';
+import { GridDataResult, DataStateChangeEvent, PageChangeEvent } from '@progress/kendo-angular-grid';
+import { SortDescriptor, orderBy } from '@progress/kendo-data-query';
 
 @Component({
   selector: 'app-vendoritemlist',
@@ -18,8 +21,7 @@ export class VendoritemlistComponent implements OnInit {
   lstCategory: Category[];
   lstSubCategory: SubCategory[];
   lstItem: Item[];
-  lstCommercialType: Dropdown[];
-  lstVendoritem: Vendoritem[];
+  lstCommercialType: Dropdown[]; 
   objVendoritem: Vendoritem = {} as any;
   vendortemForm: FormGroup;
   panelTitle: string;
@@ -54,10 +56,10 @@ export class VendoritemlistComponent implements OnInit {
     'VendorItemCode': {
       'required': 'This Field is required.',
     },
-    'VendorID': { 
+    'VendorID': {
       'min': 'This Field is required.',
     },
-    'ItemID': { 
+    'ItemID': {
       'min': 'This Field is required.',
     },
     'CommercialType': {
@@ -99,11 +101,11 @@ export class VendoritemlistComponent implements OnInit {
     this.identity = 0;
     this.vendortemForm = this.fb.group({
       VendorItemCode: ['', [Validators.required]],
-      VendorID: [0, [ Validators.min(1)]],
+      VendorID: [0, [Validators.min(1)]],
       ProductGroupID: [0, []],
       CategoryID: [0, []],
       SubCategoryID: [0, []],
-      ItemID: [0, [ Validators.min(1)]],
+      ItemID: [0, [Validators.min(1)]],
       CommercialType: ['', [Validators.required,]],
       IsActive: [0,],
     });
@@ -280,26 +282,7 @@ export class VendoritemlistComponent implements OnInit {
     $('#modaldeleteconfimation').modal('show');
   }
 
-  onLoad(SearchBy: string, Search: string, IsActive: Boolean) {
-    this._spinner.show();
-    return this._vendoritemService.search(SearchBy, Search, IsActive).subscribe(
-      (employeeList) => {
-        this.lstVendoritem = employeeList;
-        this.dtOptions = {
-          pagingType: 'full_numbers',
-          "language": {
-            "search": 'Filter',
-          },
-        };
 
-        this._spinner.hide();
-      },
-      (err) => {
-        this._spinner.hide();
-        console.log(err);
-      }
-    );
-  }
 
   onchangeProductGroupID(selectedValue: string) {
     let id = parseInt(selectedValue);
@@ -367,6 +350,10 @@ export class VendoritemlistComponent implements OnInit {
     }
     // stop here if form is invalid
     if (this.vendortemForm.invalid) {
+      return;
+    }
+    if (this.vendortemForm.pristine) {
+      this.alertService.error('Please change the value for any one control to proceed further!');
       return;
     }
     if (this.identity > 0) {
@@ -491,5 +478,73 @@ export class VendoritemlistComponent implements OnInit {
       }
     );
   }
+
+  onLoad(SearchBy: string, Search: string, IsActive: Boolean) {
+    this._spinner.show();
+    return this._vendoritemService.search(SearchBy, Search, IsActive).subscribe(
+      (lst) => {
+        if (lst != null ) { 
+          this.items = lst;
+          this.loadItems(); 
+        }
+
+
+        this._spinner.hide();
+      },
+      (err) => {
+        this._spinner.hide();
+        console.log(err);
+      }
+    );
+  }
+  //#region Paging Sorting and Filtering Start
+  public allowUnsort = true;
+  public sort: SortDescriptor[] = [{
+    field: 'VendorName',
+    dir: 'asc'
+  }];
+  public gridView: GridDataResult;
+  public pageSize = 10;
+  public skip = 0;
+  private data: Object[];
+  private items: Vendoritem[] = [] as any;
+  public state: State = {
+    skip: 0,
+    take: 5,
+
+    // Initial filter descriptor
+    filter: {
+      logic: 'and',
+      filters: [{ field: 'VendorName', operator: 'contains', value: '' }]
+    }
+  };
+  public pageChange(event: PageChangeEvent): void {
+    this.skip = event.skip;
+    this.loadItems();
+  }
+
+  public sortChange(sort: SortDescriptor[]): void {
+    this.sort = sort;
+    this.loadSortItems();
+  }
+
+  private loadItems(): void {
+    this.gridView = {
+      data: this.items.slice(this.skip, this.skip + this.pageSize),
+      total: this.items.length
+    };
+  }
+  private loadSortItems(): void {
+    this.gridView = {
+      data: orderBy(this.items.slice(this.skip, this.skip + this.pageSize), this.sort),
+      total: this.items.length
+    };
+  }
+  public dataStateChange(state: DataStateChangeEvent): void {
+    this.state = state;
+    this.gridView = process(this.items, this.state);
+  }
+  //#endregion Paging Sorting and Filtering End
+
 
 }

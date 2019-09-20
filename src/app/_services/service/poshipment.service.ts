@@ -9,7 +9,7 @@ import { NotFoundError } from '../../common/not-found-error';
 import { AppError } from '../../common/app-error';
 
 import { AuthenticationService } from './authentication.service';
-import { Poshipment, Poorder, Poorderitem,Result } from '../model/index';
+import { Poshipment,  Poorderitem, Result } from '../model/index';
 import { environment } from '../../../environments/environment';
 @Injectable({
   providedIn: 'root'
@@ -42,15 +42,24 @@ export class PoshipmentService {
       .pipe(catchError(this.handleError));
   }
 
-  public shipment_Pending():
-    Observable<Poorder[]> {
+  public shipment_Pending(): Observable<Poshipment[]> {
     let currentUser = this.authenticationService.currentUserValue;
     let CompanyDetailID = currentUser.CompanyDetailID;
-    return this.httpClient.get<Poorder[]>(environment.baseUrl +
+    return this.httpClient.get<Poshipment[]>(environment.baseUrl +
       `Poshipment/shipment_Pending?CompanyDetailID=` + CompanyDetailID
     )
       .pipe(catchError(this.handleError));
   }
+
+  // public shipment_Pending():
+  //   Observable<Poorder[]> {
+  //   let currentUser = this.authenticationService.currentUserValue;
+  //   let CompanyDetailID = currentUser.CompanyDetailID;
+  //   return this.httpClient.get<Poorder[]>(environment.baseUrl +
+  //     `Poshipment/shipment_Pending?CompanyDetailID=` + CompanyDetailID
+  //   )
+  //     .pipe(catchError(this.handleError));
+  // }
 
   public getShipmentAvailableQty(POID: number): Observable<Poorderitem[]> {
     let currentUser = this.authenticationService.currentUserValue;
@@ -85,11 +94,14 @@ export class PoshipmentService {
     frmData.append("ShipmentName", obj.ShipmentName);
     frmData.append("CompanyDetailID", CompanyDetailID.toString());
     frmData.append("POID", obj.POID.toString());
-    frmData.append("CarpID", obj.CarpID);
-
-    frmData.append("Appointment", obj.Appointment.toString());
+    if (obj.CarpID != null) {
+      frmData.append("CarpID", obj.CarpID);
+    }
+    if (obj.Appointment != null) {
+      frmData.append("Appointment", obj.Appointment.toString());
+    }
     frmData.append("Remarks", obj.Remarks);
-    frmData.append("IsMailSent", obj.IsMailSent? "True":"False");
+    frmData.append("IsMailSent", obj.IsMailSent ? "True" : "False");
     frmData.append("ShipmentStatus", '');
     frmData.append("LoginId", LoginId.toString());
     let ItemIdsData: string = '';
@@ -99,10 +111,11 @@ export class PoshipmentService {
     ItemIdsData = ItemIdsData.substring(0, ItemIdsData.length - 1);
     frmData.append("ItemIdsData", ItemIdsData.toString());
 
-    for (var i = 0; i < Filedata.length; i++) {
-      frmData.append("fileUpload", Filedata[i]);
+    if (Filedata != null && Filedata.length > 0) {
+      for (var i = 0; i < Filedata.length; i++) {
+        frmData.append("fileUpload", Filedata[i]);
+      }
     }
-
     return this.httpClient.post<Result>(environment.baseUrl + `Poshipment/Create`, frmData)
       .pipe(catchError(this.handleError));
   }

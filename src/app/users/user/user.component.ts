@@ -58,7 +58,7 @@ export class UserComponent implements OnInit {
       'required': 'This Field is required.',
       'email': 'This Field  must be valid one.',
       'maxlength': 'This Field must be less than or equal to 50 characters.',
-      'EmailIdInUse': 'This email has been registered already'
+      'EmailIdInUse': 'This email is already registered!'
     },
   };
 
@@ -150,11 +150,13 @@ export class UserComponent implements OnInit {
             }
           );
         this._spinner.show();
-        this._PrivateutilityService.GetValues('MasterUpload')
+        // this._PrivateutilityService.GetValues('MasterUpload')
+        this._userService.getUserMasterUploadScreensEdit(0)
           .subscribe(
             (data: Dropdown[]) => {
               this.obj.lstmasterscreens = data;
-              this.obj.lstmasterscreens.map(a => a.UserId = this.identity);
+              this.uncheckallmasterupload();
+              //this.obj.lstmasterscreens.map(a => a.UserId = this.identity);
               this._spinner.hide();
             },
             (err: any) => {
@@ -169,7 +171,7 @@ export class UserComponent implements OnInit {
 
 
     this.userForm = this.fb.group({
-      FirstName: ['', [Validators.required,Validators.pattern("^([a-zA-Z ]+)$")]],
+      FirstName: ['', [Validators.required, Validators.pattern("^([a-zA-Z ]+)$")]],
       LastName: ['', [Validators.pattern("^([a-zA-Z ]+)$")]],
       Email: ['', [Validators.required, Validators.email]
         //, this.usernameValidator.CheckUserEmail(this.identity)
@@ -181,9 +183,8 @@ export class UserComponent implements OnInit {
   //getFullName
 
   onchangeEmail() {
-    this._spinner.show();
-    ;
     let email = this.userForm.controls['Email'].value;
+    this._spinner.show();
     this._userService.getFullName(email).subscribe(
       (data) => {
         if (data != null) {
@@ -193,12 +194,32 @@ export class UserComponent implements OnInit {
             IsActive: data.IsActive
           });
           this.identity = data.UserId;
+
+          this._spinner.show();
           this._PrivateutilityService.getEditUserStores(this.identity)
             .subscribe(
               (data: Companydetails[]) => {
-                this.obj.lstUserStores = data
+                this.obj.lstUserStores = data;
+                this._spinner.hide();
               },
-              (err: any) => console.log(err)
+              (err: any) => {
+                console.log(err);
+                this._spinner.hide();
+              }
+            );
+
+          this._spinner.show();
+          this._userService.getUserMasterUploadScreensEdit(this.identity)
+            .subscribe(
+              (data: Dropdown[]) => {
+                this.obj.lstmasterscreens = data;
+                this.obj.lstmasterscreens.map(a => a.UserId = this.identity);
+                this._spinner.hide();
+              },
+              (err: any) => {
+                console.log(err);
+                this._spinner.hide();
+              }
             );
 
           this.userForm.get('FirstName').disable();
@@ -216,18 +237,44 @@ export class UserComponent implements OnInit {
   }
 
   storeFieldsChange(values: any) {
-    this.obj.lstUserStores.filter(a => a.CompanyDetailID == values.currentTarget.id)[0].IsActive = values.currentTarget.checked;
+    this.obj.lstUserStores.filter(a => a.CompanyDetailID == values.currentTarget.id)[0].IsActive
+      = values.currentTarget.checked;
   }
   masterscreenFieldsChange(values: any) {
     this.obj.lstmasterscreens.filter(a => a.DropdownValue == values.currentTarget.id)[0].IsActive = values.currentTarget.checked;
   }
+  checkallstore() {
+    for (var i = 0; i < this.obj.lstUserStores.length; i++) {
+      this.obj.lstUserStores[i].IsActive = true;
+      $('#' + this.obj.lstUserStores[i].CompanyDetailID).prop("checked", true);
+    }
+  }
+  uncheckallstore() {
+    for (var i = 0; i < this.obj.lstUserStores.length; i++) {
+      this.obj.lstUserStores[i].IsActive = false;
+      $('#' + this.obj.lstUserStores[i].CompanyDetailID).prop("checked", false);
+    }
+  }
+
+  checkallmasterupload() {
+
+    for (var i = 0; i < this.obj.lstmasterscreens.length; i++) {
+      this.obj.lstmasterscreens[i].IsActive = true;
+      $('#' + this.obj.lstmasterscreens[i].DropdownValue).prop("checked", true);
+    }
+  }
+  uncheckallmasterupload() {
+    for (var i = 0; i < this.obj.lstmasterscreens.length; i++) {
+      this.obj.lstmasterscreens[i].IsActive = false;
+      $('#' + this.obj.lstmasterscreens[i].DropdownValue).prop("checked", false);
+    }
+  }
 
   SaveData(): void {
-    ;
+
     if (this._authorizationGuard.CheckAcess("Userlist", "ViewEdit")) {
       return;
     }
-
     // stop here if form is invalid
     if (this.userForm.invalid) {
       return;
@@ -236,13 +283,9 @@ export class UserComponent implements OnInit {
       this.alertService.error('Select atleast one store name.!');
       return;
     }
-    // this.aroute.paramMap.subscribe(params => {
-    //   this.identity = +params.get('id');
-    // });
     this.obj.FirstName = this.userForm.controls['FirstName'].value;
     this.obj.LastName = this.userForm.controls['LastName'].value;
     this.obj.Email = this.userForm.controls['Email'].value;
-    // this.user.Password = this.userForm.controls['password'].value;
     this.obj.IsActive = this.userForm.controls['IsActive'].value;
     if (this.identity > 0) {
       this.obj.UserId = this.identity;
@@ -295,8 +338,6 @@ export class UserComponent implements OnInit {
           console.log(error);
         }
       );
-
-
     }
   }
 

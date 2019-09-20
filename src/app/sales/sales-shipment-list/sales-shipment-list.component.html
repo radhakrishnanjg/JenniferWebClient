@@ -36,11 +36,10 @@
               <option value="AirwayBillNumber">Ariway Bill Number</option>
             </select>
           </div>
-          <div class="col-md-4 nopading_loct" *ngIf="( SearchBy=='SalesShipmentID'  || SearchBy=='InvoiceNumber'  || SearchBy=='CourierName' 
-          || SearchBy=='CourierTrackingID' || SearchBy=='AirwayBillNumber' )">
+          <div class="col-md-4 nopading_loct">
             <input [(ngModel)]="SearchKeyword" type="text" class="serchcurv form-control btn-group">
           </div>
-          
+
           <div class="col-md-2 nopading_loct">
             <button class="serchcurv btn btn-default btn-group" (click)="Search()" title="Search">
               <i class="fa fa-search " aria-hidden="true"></i>
@@ -52,64 +51,32 @@
         </div>
       </div>
       <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5 text-right">
-        <button class="btn btn-primary"  routerLink="/Salesshipment/Create" title="Add New">
-          
+        <button class="btn btn-primary" routerLink="/Salesshipment/Create" title="Add New">
+
           Add New
         </button>
       </div>
     </div>
   </div>
   <div class="panel-body">
-    <div class="table-responsive">
-      <table class="table table-bordered table-condensed " *ngIf="shipmentList && shipmentList.length">
-        <thead>
-          <tr>
-            <th>Sales ShipmentID</th>
-            <th>Sales Invoice Number </th>
-            <th>Courier Name </th>
-            <th>Courier TrackingID </th>
-            <th>Airway Bill Number</th>
-            <!-- <th class="text-center btnactions">Action</th> -->
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let obj of shipmentList">
-            <td>{{ obj.SalesShipmentID }}</td>
-            <td>{{ obj.InvoiceNumber}}</td>
-            <td>{{ obj.CourierName }}</td>
-            <td>{{obj.CourierTrackingID}}</td>
-            <td>{{ obj.AirwayBillNumber }}</td>
-            <!-- <td class="text-center btnactions">
-              <i class="fa fa-edit bgblue pointer" (click)="editButtonClick(obj.ShipmentOutWardID)" title="Edit"></i>
-              &nbsp;
-              <i class="fa fa-trash bgred pointer"  title="Delete"
-                (click)="confirmDeleteid(obj.ShipmentOutWardID, obj.SalesShipmentID)"></i>
-            </td> -->
-          </tr>
-        </tbody>
-      </table>
+    <kendo-grid [data]="gridView" resizable="true" columnMenu="true" [pageSize]="pageSize" [skip]="skip" [pageable]="true"
+      (pageChange)="pageChange($event)" [sortable]="{
+          allowUnsort: allowUnsort,
+          mode:  'single'
+          }" [sort]="sort" (sortChange)="sortChange($event)" [filterable]="true"
+      (dataStateChange)="dataStateChange($event)" [filter]="state.filter">
 
-      <table class="table table-bordered table-condensed" *ngIf="shipmentList==null">
-        <thead>
-          <tr>
-            <th>Sales ShipmentID</th>
-            <th>Sales Invoice Number </th>
-            <th>Courier Name </th>
-            <th>Courier TrackingID </th>
-            <th>Airway Bill Number</th>
-            <!-- <th class="text-center btnactions">Action</th> -->
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td colspan="5">
-              No Records Found.!
-            </td>
-          </tr>
-        </tbody>
-      </table>
-
-    </div>
+      <kendo-grid-column field="SalesShipmentID" title="Sales Shipment No.">
+      </kendo-grid-column>
+      <kendo-grid-column field="InvoiceNumber" title="Sales Invoice No.">
+      </kendo-grid-column>
+      <kendo-grid-column field="CourierName" title="Courier">
+      </kendo-grid-column>
+      <kendo-grid-column field="CourierTrackingID" title="Courier Tracking No.">
+      </kendo-grid-column>
+      <kendo-grid-column field="AirwayBillNumber" title="Airway Bill No.">
+      </kendo-grid-column>
+    </kendo-grid> 
   </div>
   <div id="modaldeleteconfimation" class="modal fade" tabindex="-1" role="dialog"
     aria-labelledby="modaldeleteconfimation" aria-hidden="true">
@@ -134,8 +101,7 @@
             </div>
           </div>
         </div>
-        <div class="modal-footer">
-          <!-- <button class="btn btn-danger btn-sm" (click)="delete()">Yes</button> -->
+        <div class="modal-footer"> 
           &nbsp;
           <button class="btn btn-default btn-sm" data-dismiss="modal">No</button>
         </div>
