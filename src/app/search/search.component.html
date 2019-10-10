@@ -1,0 +1,133 @@
+<div class="row">
+  <div class="panel panel-default widget">
+    <div class="panel-heading">
+      <span class="fa fa-comment"></span>
+      <h3 class="panel-title">
+        Search Result</h3>
+      <span class="label label-info">
+        {{totalrows}}</span>
+    </div>
+    <div class="panel-body">
+      <ul class="list-group">
+        <li class="list-group-item" *ngFor="let obj of lst">
+          <div class="row" *ngIf="(obj.ScreenType=='PO')">
+            <div class="col-xs-2 col-md-1">
+              <img src="assets\images\PO.png" class="img-circle img-responsive" alt="" /></div>
+            <div class="col-xs-10 col-md-11">
+              <div>
+                <h1>
+                  <a (click)="navigate(obj.ScreenType, obj.UniqueID1, obj.UniqueID2)"> PO Number :
+                    {{obj.UniqueNumber}}</a>
+                </h1>
+              </div>
+              <div class="comment-text">
+                Details
+              </div>
+              <div class="action">
+                <div class="form-group"><b>Location : </b>{{obj.Column1}}
+                </div>
+                <div class="form-group"><b>Vendor : </b>
+                  {{obj.Column2}}
+                </div>
+                <div class="form-group"><b>Against Reference : </b>{{obj.Column3}}
+                </div>
+                <div class="form-group"><b>Payment Reference : </b>
+                  {{obj.Column4}}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row" *ngIf="(obj.ScreenType=='SHIP')">
+            <div class="col-xs-2 col-md-1">
+              <img src="assets\images\SHIP.png" class="img-circle img-responsive" alt="" /></div>
+            <div class="col-xs-10 col-md-11">
+              <div>
+                <h1><a (click)="navigate(obj.ScreenType, obj.UniqueID2, obj.UniqueID1)"> Shipment Number :
+                    {{obj.UniqueNumber}}</a>
+                </h1>
+              </div>
+              <div class="comment-text">
+                Details
+              </div>
+              <div class="action">
+                <div class="form-group"><b> Shipment Type : </b>
+                  {{obj.Column1}} </div>
+                <div class="form-group"><b> Location : </b>
+                  {{obj.Column2}}
+                </div>
+                <div class="form-group"><b> Shipment Name : </b>
+                  {{obj.Column3}}
+                </div>
+                <div class="form-group"><b> Carp ID : </b>
+                  {{obj.Column4}}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row" *ngIf="(obj.ScreenType=='GRN')">
+            <div class="col-xs-2 col-md-1">
+              <img src="assets\images\GRN.png" class="img-circle img-responsive" alt="" /></div>
+            <div class="col-xs-10 col-md-11">
+              <div>
+                <h1><a (click)="navigate(obj.ScreenType, obj.UniqueID1, obj.UniqueID2)"> GRN Number :
+                    {{obj.UniqueNumber}}</a>
+                </h1>
+                <!-- <div class="mic-info">Created By :  <a href="#">Radhakrishna</a> on 2 Aug 2019
+                  </div> -->
+              </div>
+              <div class="comment-text">
+                Details
+              </div>
+              <div class="action">
+                <div class="form-group"><b> Invoice Number : </b>
+                  {{obj.Column1}}
+                </div>
+                <div class="form-group"><b> Other Reference : </b>
+                  {{obj.Column2}}
+                </div>
+                <div class="form-group"><b> Location : </b>
+                  {{obj.Column3}}
+                </div>
+                <div class="form-group"><b> Vendor : </b>
+                  {{obj.Column4}}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row" *ngIf="(obj.ScreenType=='SO')">
+            <div class="col-xs-2 col-md-1">
+              <img src="assets\images\SO.png" class="img-circle img-responsive" alt="" /></div>
+            <div class="col-xs-10 col-md-11">
+              <div>
+                <h1><a (click)="navigate(obj.ScreenType, obj.UniqueID1, obj.UniqueID2)"> Order ID :
+                    {{obj.UniqueNumber}}</a>
+                </h1>
+                <!-- <div class="mic-info">Created By :  <a href="#">Radhakrishna</a> on 2 Aug 2019
+                  </div> -->
+              </div>
+              <div class="comment-text">
+                Details
+              </div>
+              <div class="action">
+                <div class="form-group"><b> Customer Name : </b>
+                  {{obj.Column1}}
+                </div>
+                <div class="form-group"><b> Inventory Type : </b>
+                  {{obj.Column2}}
+                </div>
+                <div class="form-group"><b> Transaction Type : </b> {{obj.Column3}}
+                </div>
+                <div class="form-group"><b>Order Status : </b>
+                  {{obj.Column4}}
+                </div>
+              </div>
+            </div>
+          </div>
+        </li>
+        <div *ngIf="lst==null || lst.length==0">
+          No Records Found.!
+        </div>
+      </ul>
+    </div>
+  </div>
+</div>

@@ -8,13 +8,13 @@
     <div class="pull-right hidden-xs">
       <ol class="breadcrumb" id="dynamicbreadcrumb">
         <li>
-          <i class="fa fa-shield"></i> <span> Downloaded</span>
+          <span> Downloaded</span>
         </li>
         <li>
-          <i class="fa fa-newspaper-o"></i> <span> Amazon MTR</span>
+          <span> Amazon MTR</span>
         </li>
         <li class="active">
-          <i class="fa fa-eye" aria-hidden="true"></i>
+
           View
         </li>
       </ol>
@@ -60,12 +60,12 @@
     </div>
   </div>
   <div class="panel-body">
-    <kendo-grid [data]="gridView" resizable="true" columnMenu="true" [pageSize]="pageSize" [skip]="skip" [pageable]="true"
-      (pageChange)="pageChange($event)" [sortable]="{
+    <kendo-grid [data]="gridView" resizable="true" columnMenu="true" [pageSize]="pageSize" [skip]="skip"
+      [pageable]="true" (pageChange)="pageChange($event)" [sortable]="{
             allowUnsort: allowUnsort,
             mode:  'single'
             }" [sort]="sort" (sortChange)="sortChange($event)" [filterable]="true"
-      (dataStateChange)="dataStateChange($event)" [filter]="state.filter" (remove)="removeHandler($event)">
+      (dataStateChange)="dataStateChange($event)" [filter]="state.filter">
 
       <kendo-grid-column field="ReportId" title="Report Id">
       </kendo-grid-column>
@@ -78,7 +78,7 @@
       </kendo-grid-column>
       <kendo-grid-command-column title="Download" [class]="{'text-center': true}" width="80">
         <ng-template kendoGridCellTemplate let-isNew="isNew" let-obj>
-          <i (click)="removeHandler(obj.DownloadPath)"  class="fa fa-download bgblue pointer"></i>
+          <i (click)="removeHandler(obj.DownloadPath,obj.FileName)" class="fa fa-download bgblue pointer"></i>
         </ng-template>
       </kendo-grid-command-column>
     </kendo-grid>

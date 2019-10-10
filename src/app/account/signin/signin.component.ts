@@ -122,7 +122,7 @@ export class SigninComponent implements OnInit {
             }
             else {
               if (datalogin.IsForceChangePwd) {
-                this.alertService.success('Login Successful.Please change the password,currently you are using auto generated password.!');
+                this.alertService.warning('Login Successful.Please change the password,currently you are using auto generated password.!');
               }
               else {
                 this.alertService.success('Login Successful.!');

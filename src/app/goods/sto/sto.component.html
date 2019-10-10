@@ -14,7 +14,7 @@
           <i class="fa fa-arrows-h"></i> <span>Stock Transfer</span>
         </li>
         <li class="active">
-          <i class="fa fa-save"></i>
+
           Save
         </li>
       </ol>
@@ -62,11 +62,12 @@
             <label class="control-label" for="STODate"> STO Date <span class="mandantory">*</span>
             </label>
             <div class='input-group date'>
-              <input type="text" ngxDaterangepickerMd [autoApply]="true" [singleDatePicker]="true" [maxDate]="maxDate"
-                class="form-control" formControlName="STODate" (blur)="logValidationErrors()"
+              <input type="text" ngxDaterangepickerMd [autoApply]="true" [singleDatePicker]="true" [minDate]="STOMinDate"
+                [maxDate]="maxDate" class="form-control" formControlName="STODate" (blur)="logValidationErrors()"
                 [locale]="{format: 'MM-DD-YYYY HH:mm'}" maxlength="16" id="STODate"
-                (ngModelChange)="onSTODateChange($event)" (datesUpdated)="STODateUpdated($event)" [timePicker]="true"
+                (datesUpdated)="STODateUpdated($event)" [timePicker]="true"
                 *ngIf="!hideSTODate" />
+                <!-- (ngModelChange)="onSTODateChange($event)"  -->
               <label *ngIf="!hideSTODate" class="fa fa-calendar"></label>
               <div *ngIf="hideSTODate">
                 {{

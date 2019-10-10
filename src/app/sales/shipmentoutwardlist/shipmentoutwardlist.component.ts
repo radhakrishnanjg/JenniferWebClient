@@ -105,6 +105,9 @@ export class ShipmentoutwardlistComponent implements OnInit {
   }
 
   newButtonClick() {
+    if (this._authorizationGuard.CheckAcess("Shipmentoutwardlist", "ViewEdit")) {
+      return;
+    }
     $('#modalpopup_shipmentoutward').modal('show');
     this.logValidationErrors();
     this.panelTitle = "Add New Shipment Outward";
@@ -157,13 +160,11 @@ export class ShipmentoutwardlistComponent implements OnInit {
       (data) => {
         if (data != null && data.Flag == true) {
           this._spinner.hide();
-          this.alertService.success(data.Msg);
-          this._router.navigate(['/Shipmentoutwardlist']);
+          this.alertService.success(data.Msg); 
         }
         else {
           this._spinner.hide();
-          this.alertService.error(data.Msg);
-          this._router.navigate(['/Shipmentoutwardlist']);
+          this.alertService.error(data.Msg); 
         }
         $('#modalpopup_shipmentoutward').modal('hide');
         this.onLoad(this.SearchBy, this.SearchKeyword);
@@ -233,7 +234,7 @@ export class ShipmentoutwardlistComponent implements OnInit {
   }
   private loadSortItems(): void {
     this.gridView = {
-      data: orderBy(this.items.slice(this.skip, this.skip + this.pageSize), this.sort),
+      data: orderBy(this.items, this.sort).slice(this.skip, this.skip + this.pageSize),
       total: this.items.length
     };
   }

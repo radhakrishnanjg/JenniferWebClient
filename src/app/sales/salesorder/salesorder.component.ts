@@ -159,7 +159,7 @@ export class SalesorderComponent implements OnInit {
   logValidationErrors(group: FormGroup = this.salesForm): void {
     Object.keys(group.controls).forEach((key: string) => {
       const abstractControl = group.get(key);
-      if (abstractControl && abstractControl.value && abstractControl.value.length > 0 && !abstractControl.value.replace(/\s/g, '').length) {
+      if (abstractControl && abstractControl.value && abstractControl.value.length > 0 && !abstractControl.value.replace(/^\s+|\s+$/gm, '').length) {
         abstractControl.setValue('');
       }
       this.formErrors[key] = '';
@@ -188,7 +188,7 @@ export class SalesorderComponent implements OnInit {
     this.aroute.paramMap.subscribe(params => {
       this.identity = +params.get('id');
       if (this.identity > 0) {
-        this.panelTitle = "View SalesOrder";
+        this.panelTitle = "View Sales Order";
         this.action = false;
         this._spinner.show();
         this._salesService.searchById(this.identity)
@@ -275,7 +275,7 @@ export class SalesorderComponent implements OnInit {
     this.salesForm = this.fb.group({
       OrderDate: [currentend, [Validators.required]],
       CustomerID: [0, [Validators.min(1)]],
-      InventoryType: ['Sellable', [Validators.required]],
+      InventoryType: ['SELLABLE', [Validators.required]],
       PaymentTermsID: [0, [Validators.min(1)]],
       DispatchThrough: ['', [Validators.required]],
 
@@ -486,7 +486,8 @@ export class SalesorderComponent implements OnInit {
             let MultiplierValue = this.objSalesOrder.MultiplierValue;
             let Qty = Units * MultiplierValue;
             let ShippingCharges = this.itemFormGroup.get("ShippingCharges").value;
-            if (this.IsDiscountApplicable) {
+            let IsDiscountApplicable = this.salesForm.get("IsDiscountApplicable").value; 
+            if (IsDiscountApplicable) {
               this._spinner.show();
               this._PrivateutilityService.getDiscountAmount(itemID, OrderDate, CustomerID, InventoryType, TransactionType)
                 .subscribe(
@@ -511,6 +512,8 @@ export class SalesorderComponent implements OnInit {
                 );
             }
             else {
+              this.itemFormGroup.controls['Discountamt'].setValue(0);
+              this.DisCountPer =0;
               this.itemFormGroup.controls['TaxAmount'].setValue(Qty * this.ItemRate *
                 this.itemFormGroup.get("TaxRate").value / 100);
               this.itemFormGroup.controls['TotalValue'].setValue((Qty * this.ItemRate) +

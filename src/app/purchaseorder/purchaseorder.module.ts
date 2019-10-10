@@ -45,6 +45,7 @@ import { PoviewComponent } from './poview/poview.component';
 import { BoeComponent } from './boe/boe.component';
 import { BoelistComponent } from './boelist/boelist.component';
 import { BoeviewComponent } from './boeview/boeview.component';
+import { ShipmentviewComponent } from './shipmentview/shipmentview.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -97,6 +98,7 @@ import { BoeviewComponent } from './boeview/boeview.component';
     BoeComponent,
     BoelistComponent,
     BoeviewComponent,
+    ShipmentviewComponent,
   ],
   providers: [
     

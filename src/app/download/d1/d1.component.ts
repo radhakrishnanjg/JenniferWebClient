@@ -99,7 +99,7 @@ export class D1Component implements OnInit {
           .subscribe(data => {
             if (data != null) {
               this._spinner.show(),
-                this._DownloadService.Download(Screen_Name)
+                this._DownloadService.Download(Screen_Name,MenuId)
                   .subscribe(data1 => {
                     this._spinner.hide();
                     saveAs(data1, Screen_Name + '.xls');//+ '.xls'

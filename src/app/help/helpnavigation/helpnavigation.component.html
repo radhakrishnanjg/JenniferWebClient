@@ -1,0 +1,69 @@
+<div class="row">
+  <div class="col-sm-6 col-lg-6">
+    <h3>
+      Jennifer Help
+    </h3>
+  </div>
+  <div class="col-sm-6 col-lg-6">
+    <div class="pull-right hidden-xs">
+      <ol class="breadcrumb" id="dynamicbreadcrumb">
+        <li>
+          <span> Help</span>
+        </li>
+      </ol>
+    </div>
+  </div>
+</div>
+
+<div class="col-md-3">
+  <div class="">
+    <ul class="tree" *ngIf="leftmenus && leftmenus.length">
+      <li *ngFor="let parent of leftmenus">
+        <a *ngIf="(parent.MenuType=='ParentMenu' )" (click)="scroll1(parent.HelpMenuID)">
+          <i class="fa fa-folder" aria-hidden="true"></i>
+          {{parent.LinkText}}
+        </a>
+        <ul *ngFor="let sub of filter(parent.HelpMenuID)">
+          <li>
+            <a *ngIf="(sub.MenuType=='SubMenu' )" (click)="scroll1(sub.HelpMenuID)">
+              <i class="fa fa-folder" aria-hidden="true"></i>
+              {{sub.LinkText}}
+            </a>
+            <ul *ngFor="let child of childfilter(sub.HelpMenuID)">
+              <li>
+                <a *ngIf="(child.MenuType=='ChildMenu' )" (click)="scroll1(child.HelpMenuID)">
+
+                  {{child.LinkText}}
+                </a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+
+  </div>
+</div>
+<div class="col-md-9">
+
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <div class="row">
+        <div class="col-xs-12 col-sm-10 col-md-10 col-lg-10">
+          <div class="col-md-4 nopading_loct">
+            <input placeholder="Search any Keywords" [(ngModel)]="SearchKeyword" type="text"
+              class="serchcurv form-control btn-group">
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="panel-body">
+      <div *ngFor="let obj of items|filter:SearchKeyword">
+        <div [id]="'div' + obj.HelpMenuID">
+          <div [innerHTML]="(obj.PageContent | safeHtml)"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

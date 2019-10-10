@@ -8,13 +8,13 @@
     <div class="pull-right hidden-xs">
       <ol class="breadcrumb" id="dynamicbreadcrumb">
         <li>
-          <i class="fa fa-money"></i> <span> Revenue</span>
+           <span> Revenue</span>
         </li>
         <li>
-          <i class="fa fa-shopping-cart"></i> <span> Sales Order</span>
+           <span> Sales Order</span>
         </li>
         <li class="active">
-          <i class="fa fa-save"></i>
+          
           Save
         </li>
       </ol>
@@ -472,8 +472,8 @@
             <th>ItemCode</th>
             <th>Item Name</th>
             <th>Customer ItemCode</th>
-            <th *ngIf="(objSalesOrder?.InventoryType=='Sellable')">Units</th>
-            <th *ngIf="(objSalesOrder?.InventoryType=='Sellable')">UOM </th>
+            <th *ngIf="(objSalesOrder?.InventoryType=='SELLABLE')">Units</th>
+            <th *ngIf="(objSalesOrder?.InventoryType=='SELLABLE')">UOM </th>
             <th>Qty </th>
 
 
@@ -490,8 +490,8 @@
             <td>{{data.ItemCode}}</td>
             <td>{{data.ItemName  }}</td>
             <td>{{data.CustomerItemCode}}</td>
-            <td *ngIf="(objSalesOrder?.InventoryType=='Sellable')" class="text-right">{{data.Units}}</td>
-            <td *ngIf="(objSalesOrder?.InventoryType=='Sellable')" class="text-right">
+            <td *ngIf="(objSalesOrder?.InventoryType=='SELLABLE')" class="text-right">{{data.Units}}</td>
+            <td *ngIf="(objSalesOrder?.InventoryType=='SELLABLE')" class="text-right">
               {{data.MultiplierValue}}</td>
             <td class="text-right">{{data.Qty}}</td>
 
@@ -508,8 +508,8 @@
             <th>Total</th>
             <th> </th>
             <th> </th>
-            <th *ngIf="(objSalesOrder?.InventoryType=='Sellable')" class="text-right"> {{ TotalCaseSize}}</th>
-            <th *ngIf="(objSalesOrder?.InventoryType=='Sellable')" class="text-right"> {{ TotalMultiplierValue}}</th>
+            <th *ngIf="(objSalesOrder?.InventoryType=='SELLABLE')" class="text-right"> {{ TotalCaseSize}}</th>
+            <th *ngIf="(objSalesOrder?.InventoryType=='SELLABLE')" class="text-right"> {{ TotalMultiplierValue}}</th>
             <th class="text-right"> {{ TotalQty}}</th>
 
 

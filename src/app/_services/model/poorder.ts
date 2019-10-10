@@ -83,6 +83,7 @@ export class Poshipment {
 
     // who is doing this task
     LoginId: number;
+    ShipmentType:string;
 } 
  
 

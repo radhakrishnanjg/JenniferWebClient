@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="-99 1 512 512" style="enable-background:new -99 1 512 512;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#FFFFFF;}
+	.st1{fill:#FF8B00;}
+	.st2{fill:#FFF800;}
+	.st3{fill:#DB7200;}
+	.st4{fill:#231F20;}
+</style>
+<circle id="XMLID_6_" class="st0" cx="157.7" cy="257.7" r="254.3"/>
+<g>
+	<path class="st1" d="M289,361.5H25v55h264L289,361.5L289,361.5z M179,394.5H58H179z"/>
+	<path class="st2" d="M289,350.5L267,97.5H47L25,350.5v11h264L289,350.5L289,350.5z M228.5,284.5H85.5l-21.9-110l55,44l38.4-66
+		l38.4,66l55.1-44L228.5,284.5z"/>
+	<path id="XMLID_14_" class="st3" d="M157,152.5l-38.5,66l-54.9-44l22,110h143l21.9-110l-55,44L157,152.5z"/>
+	<g>
+		<path id="XMLID_13_" class="st4" d="M184.5,378h-11v11h-110v-11H52.5v22h132V378z"/>
+		<path id="XMLID_12_" class="st4" d="M245,383.5h22v11h-22V383.5z"/>
+		<path id="XMLID_11_" class="st4" d="M217.5,383.5h22v11h-22V383.5z"/>
+		<path class="st4" d="M294.5,350L272.5,97c-0.2-2.9-2.6-5-5.5-5H47c-2.9,0-5.3,2.2-5.5,5l-22,253.4v66c0,3,2.5,5.5,5.5,5.5h264
+			c3,0,5.5-2.5,5.5-5.5V350z M52.1,103h209.9l21.5,247.5v5.5H30.5v-5L52.1,103z M283.5,411H30.5v-44h253L283.5,411L283.5,411z"/>
+		<path class="st4" d="M80.1,285.6c0.6,2.6,2.8,4.4,5.4,4.4h143c2.6,0,4.9-1.8,5.4-4.4l22-110c0.6-3-1.4-5.8-4.3-6.5
+			c-1.6-0.3-3.2,0.1-4.5,1l-50.1,40l-35.1-60.5c-1-1.7-2.8-2.7-4.8-2.7c-1.9,0-3.8,1-4.7,2.7L117,210.2l-50.1-40
+			c-2.4-1.9-5.8-1.5-7.8,0.9c-1,1.3-1.4,2.9-1.1,4.5L80.1,285.6z M115,222.8c2.4,1.9,5.8,1.5,7.8-0.9c0.2-0.2,0.3-0.4,0.5-0.6
+			l33.7-57.8l33.6,57.8c1.5,2.6,4.9,3.5,7.5,2c0.2-0.2,0.5-0.3,0.6-0.5l43.3-34.6L228.4,257h-10.9v11h8.7l-2.2,11H90l-2.2-11h8.7
+			v-11H85.6l-13.8-68.7L115,222.8z"/>
+		<path id="XMLID_5_" class="st4" d="M107.5,257h11v11h-11V257z"/>
+		<path id="XMLID_4_" class="st4" d="M173.5,257h11v11h-11V257z"/>
+		<path id="XMLID_3_" class="st4" d="M195.5,257h11v11h-11L195.5,257L195.5,257z"/>
+		<path id="XMLID_2_" class="st4" d="M151.5,257h11v11h-11V257z"/>
+		<path id="XMLID_1_" class="st4" d="M129.5,257h11v11h-11V257z"/>
+	</g>
+</g>
+</svg>

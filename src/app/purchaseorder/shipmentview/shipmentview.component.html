@@ -1,0 +1,207 @@
+<div class="row">
+  <div class="col-sm-6 col-lg-6">
+    <h3>
+      Shipments
+    </h3>
+  </div>
+  <div class="col-sm-6 col-lg-6">
+    <div class="pull-right hidden-xs">
+      <ol class="breadcrumb" id="dynamicbreadcrumb">
+        <li>
+          <span> Procurements</span>
+        </li>
+        <li>
+          <span> Shipments</span>
+        </li>
+        <li class="active">
+
+          View
+        </li>
+      </ol>
+    </div>
+  </div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <div class="row">
+      <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+        <span class="groupspanheader">
+          {{panelTitle}}
+        </span>
+      </div>
+      <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 ">
+        <div class="pull-right">
+          <button class="btn btn-primary" routerLinkActive="active" routerLink="/Poshipmentlist">Back</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="panel-body">
+    <div class="row">
+
+      <div class="col-md-4 ">
+        <div class="form-group">
+          <div class="col-sm-12 inputlevel">
+
+            <label class="control-label" for="POID">PO Number <span class="mandantory">*</span></label>
+            <div>
+
+
+              {{obj?.PONumber}}
+              <div class="help-block-rk">
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class=" col-md-4">
+        <div class="form-group">
+          <div class="col-sm-12  inputlevel">
+            <label class="control-label" for="ShipmentType">Shipment Type
+              <span class="mandantory">*</span></label>
+            <br />
+            {{obj?.ShipmentType}}
+            <div class="help-block-rk">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class=" col-md-4">
+        <div class="form-group">
+          <div class="col-sm-12  inputlevel">
+            <label class="control-label" for="ShipmentNumber">Shipment Number
+              <span class="mandantory">*</span></label>
+            <br />
+            {{obj?.ShipmentNumber}}
+            <div class="help-block-rk">
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class=" col-md-4">
+        <div class="form-group">
+          <div class="col-sm-12 inputlevel">
+            <label class="control-label" for="ShipmentName">Shipment Name <span class="mandantory">*</span></label>
+            <br />
+            {{obj?.ShipmentName}}
+            <div class="help-block-rk">
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class=" col-md-4">
+        <div class="form-group">
+          <div class="col-sm-12 inputlevel">
+            <label class="control-label" for="CarpID">Carp ID </label><br />
+            {{obj?.CarpID}}
+            <div class="help-block-rk">
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class=" col-md-4">
+        <div class="form-group">
+          <div class="col-sm-12 inputlevel">
+            <label class="control-label" for="Appointment"> Appointment </label>
+
+            <div class='input-group date'>
+              {{obj?.Appointment | date :"MM-dd-yyyy HH:mm" }}
+            </div>
+            <div class="help-block-rk">
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class=" col-md-4">
+        <div class="form-group">
+          <div class="col-sm-12 inputlevel">
+            <label class="control-label">Is Mail Required
+            </label> <br />
+            <div *ngIf="obj?.IsMailSent">
+              Yes
+            </div>
+            <div *ngIf="!obj?.IsMailSent">
+              No
+            </div>
+            <div class="help-block-rk">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class=" col-md-12">
+        <div class="form-group">
+          <div class="col-sm-12 inputlevel">
+            <label class=" control-label" for="Remarks">Remarks </label>
+            <br />
+            {{obj?.Remarks}}
+            <div class="help-block-rk">
+              <span class="help-block">
+
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-12">
+        <span class="groupspanheader"> Order Items</span>
+        <table class="table table-bordered table-condensed " *ngIf="lstshipmentqty && lstshipmentqty.length">
+          <thead>
+            <tr>
+              <th>ItemCode</th>
+              <th>PO Qty</th>
+              <th>Available Qty</th>
+              <th>Shipment Qty</th>
+              <th>Location </th>
+              <th>PO Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let user of lstshipmentqty ">
+              <td>{{ user.ItemCode  }}</td>
+              <td class="text-right">{{ user.POQty  }}</td>
+              <td class="text-right">{{ user.AvailableQty  }}</td>
+              <td class="text-right"> {{user.ShipmentQty}}
+              </td>
+              <td>{{ user.LocationName}}</td>
+              <td>{{ user.PODate | date :"MM-dd-yyyy HH:mm"   }}</td>
+            </tr>
+            <tr>
+              <th>Total</th>
+              <th class="text-right"> {{ TotalPOQty}} </th>
+              <th class="text-right"> {{TotalAvailableQty}} </th>
+              <th class="text-right"> {{ TotalShipmentQty}}</th>
+              <th>
+              </th>
+              <th>
+              </th>
+            </tr>
+          </tbody>
+        </table>
+
+      </div>
+    </div>
+  </div>
+  <div class="panel-footer">
+    <div class="pull-right btn-toolbar">
+      <button class="btn btn-primary" routerLinkActive="active" routerLink="/Poshipmentlist">Cancel</button>
+
+    </div>
+    <div class="clearfix"></div>
+  </div>
+</div>

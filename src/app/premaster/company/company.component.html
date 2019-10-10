@@ -8,20 +8,20 @@
     <div class="pull-right hidden-xs">
       <ol class="breadcrumb" id="dynamicbreadcrumb">
         <li>
-          <i class="fa fa-shield"></i> <span>Jennifer Admin</span>
+          <span>Jennifer Admin</span>
         </li>
         <li>
-          <i class="fa fa-institution"></i> <span> Companies</span>
+           <span> Companies</span>
         </li>
         <li class="active">
-          <i class="fa fa-eyes"></i>
+          
           Detail
         </li>
       </ol>
     </div>
   </div>
 </div>
-<div >
+<div>
   <div class="panel panel-default">
     <div class="panel-heading">
       <div class="row">
@@ -40,6 +40,9 @@
       </div>
     </div>
     <div class="panel-body">
+      <div>
+        <h3><span class="groupspanheader">Basic Details</span></h3>
+      </div>
       <div class="col-xs-3">
         <b> Company Name </b> <br>
         {{company?.CompanyName}}
@@ -92,7 +95,7 @@
         {{company?.PrimaryGST}}
       </div>
       <hr>
-      <div> 
+      <div>
         <h3><span class="groupspanheader">Secondary Details</span></h3>
       </div>
       <div class="col-xs-3">
@@ -127,7 +130,7 @@
         <b> Secondary GST </b> <br>
         {{company?.SecondaryGST}}
       </div>
-      <div> 
+      <div>
         <h3><span class="groupspanheader">Contact Details</span></h3>
       </div>
       <div class="col-xs-3">

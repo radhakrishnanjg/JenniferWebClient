@@ -17,10 +17,11 @@
         <div class="search-base">
             <div class="topnav">
                 <div class="search-container">
-                    <form>
-                        <input class='top-search' type="text" placeholder="Tell me what you want to do" name="search">
-                        <button type="submit">
-                            <i class="fa fa-search"></i>
+                    <form (ngSubmit)="SearchData()">
+                        <input class='top-search' type="text" [(ngModel)]="SearchBy"
+                            placeholder="Tell me what you want to do" name="search" maxlength="50">
+                        <button type="submit" prevent-double-submit>
+                            <i class="fa fa-search pointer"></i>
                         </button>
                     </form>
                 </div>
@@ -72,7 +73,7 @@
                         </li>
                         <li *ngIf="(usertype=='Admin')">
                             <a routerLinkActive="active" routerLink="/CompanyProfile">
-                                <i class="fa fa-institution"></i>
+
                                 Company Profile
                             </a>
                         </li>
@@ -87,6 +88,12 @@
                                 Select Theme</a>
                         </li>
                     </ul>
+                </li>
+
+                <li style="padding-top:5px">
+                    <a routerLinkActive="active" routerLink="/Help">
+                        <i class="fa fa-question-circle"></i> <span> Help</span>
+                    </a>
                 </li>
             </ul>
         </div>

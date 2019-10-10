@@ -8,10 +8,10 @@
     <div class="pull-right hidden-xs">
       <ol class="breadcrumb" id="dynamicbreadcrumb">
         <li>
-          <i class="fa fa-asterisk"></i> <span> Master</span>
+           <span> Master</span>
         </li>
         <li>
-          <i class="fa fa-list-alt"></i> <span> Items</span>
+           <span> Items</span>
         </li>
         <li class="active">
           <i class="fa fa-list-alt" aria-hidden="true"></i>
@@ -32,7 +32,7 @@
               <option value="ByItemName">Item Name</option>
               <option value="ByCategory">Category</option>
               <option value="ByBrand">Brand</option>
-              <option value="ByProductGroup">Product Group</option>
+              <!-- <option value="ByProductGroup">Product Group</option> -->
               <option value="ByStatus">Status</option>
             </select>
           </div>
@@ -59,7 +59,7 @@
         </div>
       </div>
       <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 text-right">
-        <button class="btn btn-primary" routerLink="/Item/Create" title="Add New">
+        <button class="btn btn-primary" (click)="AddNewLink()" title="Add New">
 
           Add New
         </button>

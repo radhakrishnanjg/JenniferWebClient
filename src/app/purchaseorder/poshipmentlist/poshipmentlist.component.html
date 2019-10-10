@@ -8,13 +8,13 @@
     <div class="pull-right hidden-xs">
       <ol class="breadcrumb" id="dynamicbreadcrumb">
         <li>
-          <i class="fa fa-shopping-cart"></i> <span> Procurements</span>
+           <span> Procurements</span>
         </li>
         <li>
-          <i class="fa fa fa-truck"></i> <span> Shipments</span>
+           <span> Shipments</span>
         </li>
         <li class="active">
-          <i class="fa fa-th-list"></i>
+          
           List
         </li>
       </ol>
@@ -58,15 +58,15 @@
         </div>
       </div>
       <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 text-right">
-        <a class="btn btn-primary" routerLink="/Poshipment/0/0" title="Add New">
+        <a class="btn btn-primary" (click)="AddNewLink()" title="Add New">
           Add New
         </a>
       </div>
     </div>
   </div>
   <div class="panel-body">
-    <kendo-grid [data]="gridView" resizable="true" columnMenu="true" [pageSize]="pageSize" [skip]="skip" [pageable]="true"
-      (pageChange)="pageChange($event)" [sortable]="{
+    <kendo-grid [data]="gridView" resizable="true" columnMenu="true" [pageSize]="pageSize" [skip]="skip"
+      [pageable]="true" (pageChange)="pageChange($event)" [sortable]="{
           allowUnsort: allowUnsort,
           mode:  'single'
           }" [sort]="sort" (sortChange)="sortChange($event)" [filterable]="true"
@@ -80,6 +80,8 @@
         <ng-template kendoGridCellTemplate let-dataItem>
           {{ dataItem.PODate | date :"MM-dd-yyyy HH:mm" }}
         </ng-template>
+      </kendo-grid-column> 
+      <kendo-grid-column field="ShipmentType" title="Shipment Type">
       </kendo-grid-column>
       <kendo-grid-column field="ShipmentNumber" title="Shipment No.">
       </kendo-grid-column>
@@ -94,18 +96,21 @@
       <kendo-grid-column field="ShipmentStatus" title="Shipment Status">
       </kendo-grid-column>
 
-      <kendo-grid-column field="ShipmentID" title="Action" [class]="{'text-center': true}"  [filterable]="false" [sortable]="false"  width="80">
+      <kendo-grid-column field="ShipmentID" title="Action" [class]="{'text-center': true}" [filterable]="false"
+        [sortable]="false" width="80">
         <ng-template kendoGridCellTemplate let-obj>
           <i class="fa fa-edit bgblue pointer" [routerLink]="['/Poshipment', obj.ShipmentID, obj.POID]"
             title="Edit"></i>
           &nbsp;
           <i class="fa fa-trash bgred pointer" title="Delete"
             (click)="confirmDeleteid(obj.ShipmentID,obj.POID,obj.ShipmentNumber)"></i>
+          &nbsp;
+          <i class="fa fa-eye bgblue pointer" [routerLink]="['/Poshipmentview', obj.ShipmentID, obj.POID]"
+            title="View"></i>
         </ng-template>
       </kendo-grid-column>
-    </kendo-grid>
+    </kendo-grid> 
 
-    
   </div>
 
   <div id="modaldeleteconfimation" class="modal fade" tabindex="-1" role="dialog"

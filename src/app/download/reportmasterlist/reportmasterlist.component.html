@@ -8,10 +8,10 @@
     <div class="pull-right hidden-xs">
       <ol class="breadcrumb" id="dynamicbreadcrumb">
         <li>
-          <i class="fa fa-shield"></i> <span> Jennifer Admin</span>
+          <span> Jennifer Admin</span>
         </li>
         <li>
-          <i class="fa fa-newspaper-o"></i> <span> Report Master</span>
+           <span> Report Master</span>
         </li>
         <li class="active">
           <i class="fa fa-list-alt" aria-hidden="true"></i>
@@ -57,7 +57,7 @@
         </div>
       </div>
       <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 text-right">
-        <button class="btn btn-primary" routerLink="/Reportmaster/Create" title="Add New">
+        <button class="btn btn-primary" (click)="AddNewLink()" title="Add New">
 
           Add New
         </button>

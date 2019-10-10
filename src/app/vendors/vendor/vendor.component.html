@@ -8,13 +8,12 @@
     <div class="pull-right hidden-xs">
       <ol class="breadcrumb" id="dynamicbreadcrumb">
         <li>
-          <i class="fa fa-user-plus"></i> <span> Suppliers</span>
+          <span> Suppliers</span>
         </li>
         <li>
-          <i class="fa fa-handshake-o"></i> <span> Vendor Master</span>
+          <span> Vendor Master</span>
         </li>
-        <li class="śve">
-          <i class="fa fa-save"></i>
+        <li>
           <span> Save </span>
         </li>
       </ol>
@@ -373,7 +372,7 @@
           *ngIf="obj?.lstContact && obj?.lstContact.length">
           <thead>
             <tr>
-              <th class="text-center "> 
+              <th class="text-center ">
                 <input type="checkbox" (change)="checkcontacts($event.currentTarget.checked)">
               </th>
               <th class="text-center ">Contact Name</th>

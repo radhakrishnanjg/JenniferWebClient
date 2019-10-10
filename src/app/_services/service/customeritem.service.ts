@@ -34,12 +34,29 @@ export class CustomeritemService {
       .pipe(catchError(this.handleError));
   }
 
-  public exist(CustomerItemID: number, ItemID: number,CustomerID :number) {
+  public exist(CustomerItemID: number, ItemID: number, CustomerID: number) {
     CustomerItemID = isNaN(CustomerItemID) ? 0 : CustomerItemID;
     let currentUser = this.authenticationService.currentUserValue;
     let CompanyDetailID = currentUser.CompanyDetailID;
     return this.httpClient.get<Boolean>(environment.baseUrl +
-      `Customeritem/Exist?CompanyDetailID=` + CompanyDetailID + `&ItemID=` + ItemID +  `&CustomerID=` + CustomerID + `&CustomerItemID=` + CustomerItemID)
+      `Customeritem/Exist?CompanyDetailID=` + CompanyDetailID + `&ItemID=` + ItemID + `&CustomerID=` + CustomerID + `&CustomerItemID=` + CustomerItemID)
+      .pipe(map(users => {
+        if (users)
+          return true;
+        else
+          return false;
+      })
+      );
+  }
+
+  public existCustomerItemCode(CustomerItemID: number, CustomerItemCode: string) {
+    CustomerItemID = isNaN(CustomerItemID) ? 0 : CustomerItemID;
+    let currentUser = this.authenticationService.currentUserValue;
+    let CompanyDetailID = currentUser.CompanyDetailID;
+    return this.httpClient.get<Boolean>(environment.baseUrl +
+      `Customeritem/ExistCustomerItemCode?CompanyDetailID=` + CompanyDetailID +
+      `&CustomerItemCode=` + encodeURIComponent(CustomerItemCode) +
+      `&CustomerItemID=` + CustomerItemID)
       .pipe(map(users => {
         if (users)
           return true;

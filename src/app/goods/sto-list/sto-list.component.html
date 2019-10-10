@@ -14,7 +14,7 @@
           <i class="fa fa-arrows-h"></i> <span>Stock Transfer</span>
         </li>
         <li class="active">
-          <i class="fa fa-list" aria-hidden="true"></i>
+
           List
         </li>
       </ol>
@@ -29,10 +29,10 @@
           <div class="col-md-3 nopading_loct">
             <select [(ngModel)]="SearchBy" class="serchcurv form-control btn-group">
               <option value="" selected="select">Search By</option>
-              <option value="BySTONumber">By STO Number</option>
-              <option value="ByFromLocationName">By From Location Name</option>
-              <option value="ByToLocationName">By To Location Name</option>
-              <option value="BySTODate">By STO Date</option>
+              <option value="BySTONumber">STO Number</option>
+              <option value="ByFromLocationName">From Location</option>
+              <option value="ByToLocationName">To Location </option>
+              <option value="BySTODate">STO Date</option>
             </select>
           </div>
           <div class="col-md-3 nopading_loct" *ngIf="(SearchBy!='BySTODate')">
@@ -66,8 +66,8 @@
 
   <div class="panel-body">
 
-    <kendo-grid [data]="gridView" resizable="true" columnMenu="true" [pageSize]="pageSize" [skip]="skip" [pageable]="true"
-      (pageChange)="pageChange($event)" [sortable]="{
+    <kendo-grid [data]="gridView" resizable="true" columnMenu="true" [pageSize]="pageSize" [skip]="skip"
+      [pageable]="true" (pageChange)="pageChange($event)" [sortable]="{
             allowUnsort: allowUnsort,
             mode:  'single'
             }" [sort]="sort" (sortChange)="sortChange($event)" [filterable]="true"
@@ -85,17 +85,18 @@
       <kendo-grid-column field="ToLocation" title="To Location">
       </kendo-grid-column>
       <kendo-grid-column field="InventoryType" title="Inventory Type">
-      </kendo-grid-column> 
+      </kendo-grid-column>
       <kendo-grid-column field="TotalAmount" title="Total Value" format="{0:##,#.##}">
       </kendo-grid-column>
 
       <kendo-grid-column field="STOID" title="Action" [class]="{'text-center': true}" [filterable]="false"
         [sortable]="false" width="70">
         <ng-template kendoGridCellTemplate let-obj>
-          <i class="fa fa-edit bgblue pointer" *ngIf="obj.IsEdit" [routerLink]="['/StoEdit', obj.STOID]" title="Edit"></i>
+          <i class="fa fa-edit bgblue pointer" *ngIf="obj.IsEdit" [routerLink]="['/StoEdit', obj.STOID]"
+            title="Edit"></i>
           &nbsp;
           <i class="fa fa-eye bgblue pointer" [routerLink]="['/Stoview', obj.STOID]" title="View"></i>
         </ng-template>
       </kendo-grid-column>
     </kendo-grid>
-  </div> 
+  </div>

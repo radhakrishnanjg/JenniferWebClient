@@ -34,12 +34,29 @@ export class VendoritemService {
       .pipe(catchError(this.handleError));
   }
 
-  public exist(VendorItemID: number, ItemID: number ,VendorID:number) {
+  public exist(VendorItemID: number, ItemID: number, VendorID: number) {
     VendorItemID = isNaN(VendorItemID) ? 0 : VendorItemID;
     let currentUser = this.authenticationService.currentUserValue;
     let CompanyDetailID = currentUser.CompanyDetailID;
     return this.httpClient.get<Boolean>(environment.baseUrl +
-      `Vendoritem/Exist?CompanyDetailID=` + CompanyDetailID + `&ItemID=` + ItemID + `&VendorID=` + VendorID+ `&VendorItemID=` + VendorItemID)
+      `Vendoritem/Exist?CompanyDetailID=` + CompanyDetailID + `&ItemID=` + ItemID + `&VendorID=` + VendorID + `&VendorItemID=` + VendorItemID)
+      .pipe(map(users => {
+        if (users)
+          return true;
+        else
+          return false;
+      })
+      );
+  }
+
+  public existVendorItemCode(VendorItemID: number, VendorItemCode: string) {
+    VendorItemID = isNaN(VendorItemID) ? 0 : VendorItemID;
+    let currentUser = this.authenticationService.currentUserValue;
+    let CompanyDetailID = currentUser.CompanyDetailID;
+    return this.httpClient.get<Boolean>(environment.baseUrl +
+      `Vendoritem/ExistVendorItemCode?CompanyDetailID=` + CompanyDetailID
+      + `&VendorItemCode=` + encodeURIComponent(VendorItemCode)
+      + `&VendorItemID=` + VendorItemID)
       .pipe(map(users => {
         if (users)
           return true;

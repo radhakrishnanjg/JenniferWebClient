@@ -115,8 +115,8 @@ export class DiscountlistComponent implements OnInit {
     'StoreContribution': {
       'required': 'This Field is required.',
       'pattern': 'This Field must be a numeric(0-100).',
-      'min': 'This Field must be a numeric(0.01-100).',
-      'max': 'This Field must be a numeric(0.01-100).',
+      'min': 'This Field must be a numeric(0.00-100).',
+      'max': 'This Field must be a numeric(0.00-100).',
     },
     'OtherContribution': {
       'required': 'This Field is required.',
@@ -138,7 +138,7 @@ export class DiscountlistComponent implements OnInit {
   logValidationErrors(group: FormGroup = this.discountForm): void {
     Object.keys(group.controls).forEach((key: string) => {
       const abstractControl = group.get(key);
-      // if (abstractControl && abstractControl.value && abstractControl.value.length > 0 && !abstractControl.value.replace(/\s/g, '').length) {
+      // if (abstractControl && abstractControl.value && abstractControl.value.length > 0 && !abstractControl.value.replace(/^\s+|\s+$/gm, '').length) {
       //   abstractControl.setValue('');
       // }
       this.formErrors[key] = '';
@@ -186,7 +186,7 @@ export class DiscountlistComponent implements OnInit {
       ItemID: ['', [Validators.min(1)]],
 
       MarketPlaceContribution: ['', [Validators.required, Validators.min(0.01), Validators.max(100), Validators.pattern("(100|[0-9]{1,2})(\.[0-9]{1,2})?"),]],
-      StoreContribution: ['', [Validators.required, Validators.min(0.01), Validators.max(100), Validators.pattern("(100|[0-9]{1,2})(\.[0-9]{1,2})?"),]],
+      StoreContribution: ['', [Validators.required, Validators.min(0.00), Validators.max(100), Validators.pattern("(100|[0-9]{1,2})(\.[0-9]{1,2})?"),]],
       OtherContribution: ['', [Validators.required, Validators.min(0.00), Validators.max(100), Validators.pattern("(100|[0-9]{1,2})(\.[0-9]{1,2})?"),]],
 
       StartDate: ['', [Validators.required]],
@@ -219,10 +219,6 @@ export class DiscountlistComponent implements OnInit {
     this._PrivateutilityService.getCurrentDate()
       .subscribe(
         (data: Date) => {
-          // var mcurrentDate = moment(data, 'YYYY-MM-DD[T]HH:mm').format('MM-DD-YYYY HH:mm').toString();
-          // this.salesratecardForm.patchValue({
-          //   StartDate: { startDate: new Date(mcurrentDate) },
-          // });
           this.MinDate = moment(data).add(0, 'days');
           this._spinner.hide();
         },
@@ -487,24 +483,14 @@ export class DiscountlistComponent implements OnInit {
     if (this.discountForm.invalid) {
       return;
     }
-    if (this.discountForm.pristine) {
-      this.alertService.error('Please change the value for any one control to proceed further!');
-      return;
-    }
     let StartDate: Date = new Date(moment(new Date(this.discountForm.controls['StartDate'].value.startDate._d)).format("MM-DD-YYYY HH:mm"));
     let EndDate: Date = new Date(moment(new Date(this.discountForm.controls['EndDate'].value.startDate._d)).format("MM-DD-YYYY HH:mm"));
-    let currentdate: Date = new Date(moment(new Date()).format("MM-DD-YYYY HH:mm"));
-    // if (currentdate > StartDate) {
-    //   this.alertService.error('The StartDate must be greater than or equal to current datetime.!');
-    //   return;
-    // }
-    // else 
     if (StartDate > EndDate) {
       this.alertService.error('The EndDate must be greater than or equal to StartDate.!');
       return;
     }
-    else if (this.TotalDiscountPer != 100) {
-      this.alertService.error('The sum of MarketPlace , Store and Other Contribution must be 100.!');
+    else if (this.TotalDiscountPer > 100) {
+      this.alertService.error('The sum of MarketPlace , Store and Other Contribution must be less than or equal to 100.!');
       return;
     }
     else if (this.discountForm.controls['ItemID'].value == "") {
@@ -665,7 +651,7 @@ export class DiscountlistComponent implements OnInit {
   }
   private loadSortItems(): void {
     this.gridView = {
-      data: orderBy(this.items.slice(this.skip, this.skip + this.pageSize), this.sort),
+      data: orderBy(this.items, this.sort).slice(this.skip, this.skip + this.pageSize),
       total: this.items.length
     };
   }

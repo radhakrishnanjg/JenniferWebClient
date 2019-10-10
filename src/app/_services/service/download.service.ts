@@ -56,23 +56,26 @@ export class DownloadService {
       .pipe(catchError(this.handleError));
   }
 
+
   public downloadExcel(MenuId: number, Filename: string, DynamicQuery: string): Observable<Result> {
     this.objDownloadMaster.Filename = Filename;
+    this.objDownloadMaster.MenuID = MenuId;
     let currentUser = this.authenticationService.currentUserValue;
-    DynamicQuery += "@CompanyID=" + currentUser.CompanyID + ",";
+    DynamicQuery += " @CompanyID=" + currentUser.CompanyID + ",";
     DynamicQuery += "@CompanyDetailID=" + currentUser.CompanyDetailID + ",";
-    DynamicQuery += "@UserId=" + currentUser.UserId  + ",";
+    DynamicQuery += "@UserId=" + currentUser.UserId + ",";
     DynamicQuery += "@MenuId=" + MenuId + "";
     this.objDownloadMaster.DynamicQuery = DynamicQuery;
     return this.httpClient.post<Result>(environment.baseUrl + `Download/DownloadExcel`, this.objDownloadMaster)
       .pipe(catchError(this.handleError));
   }
 
-  public Download(filename: string) {
+  public Download(filename: string, MenuId: number) {
     let currentUser = this.authenticationService.currentUserValue;
     let CompanyDetailID = currentUser.CompanyDetailID;
     return this.httpClient.get(environment.baseUrl + `Download/Download?CompanyDetailID=` + CompanyDetailID +
-      `&filename=` + filename,
+      `&filename=` + filename +
+      `&MenuId=` + MenuId,
       { responseType: 'blob' })
       .pipe(catchError(this.handleError));
   }
@@ -89,7 +92,7 @@ export class DownloadService {
 
   public downloadAmazonMTR(FilePath: string) {
     return this.httpClient.get(environment.baseUrl + `Download/DownloadAmazonMTRFile?FilePath=` +
-     encodeURIComponent(FilePath)
+      encodeURIComponent(FilePath)
       ,
       { responseType: 'blob' })
       .pipe(catchError(this.handleError));

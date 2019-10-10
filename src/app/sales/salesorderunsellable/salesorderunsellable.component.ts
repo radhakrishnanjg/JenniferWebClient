@@ -146,7 +146,7 @@ export class SalesorderunsellableComponent implements OnInit {
   logValidationErrors(group: FormGroup = this.salesForm): void {
     Object.keys(group.controls).forEach((key: string) => {
       const abstractControl = group.get(key);
-      if (abstractControl && abstractControl.value && abstractControl.value.length > 0 && !abstractControl.value.replace(/\s/g, '').length) {
+      if (abstractControl && abstractControl.value && abstractControl.value.length > 0 && !abstractControl.value.replace(/^\s+|\s+$/gm, '').length) {
         abstractControl.setValue('');
       }
       this.formErrors[key] = '';
@@ -235,7 +235,7 @@ export class SalesorderunsellableComponent implements OnInit {
 
 
       IsBillTo_SameAs_ShipTo: ['',],
-      InventoryType: ['Unsellable', [Validators.required]],
+      InventoryType: ['UNSELLABLE', [Validators.required]],
       PaymentTermsID: [0, [Validators.min(1)]],
       DispatchThrough: ['', [Validators.required]],
 
@@ -601,8 +601,12 @@ export class SalesorderunsellableComponent implements OnInit {
       return;
     }
     this.objSalesOrder.lstItemUnsellable = this.objunsell.lstunsellqty.filter(a => a.Qty > 0);
-    this.objSalesOrder.OrderID = this.OrderID;
-    this.objSalesOrder.OrderDate = this.salesForm.controls['OrderDate'].value.startDate.toLocaleString();
+    this.objSalesOrder.OrderID = this.OrderID; 
+    if (this.salesForm.controls['OrderDate'].value.startDate._d != undefined) {
+      this.objSalesOrder.OrderDate = this.salesForm.controls['OrderDate'].value.startDate._d.toLocaleString();
+    } else {
+      this.objSalesOrder.OrderDate = this.salesForm.controls['OrderDate'].value.startDate.toLocaleString();
+    }
     this.objSalesOrder.CustomerID = this.salesForm.controls['CustomerID'].value;
     this.objSalesOrder.CustomerWarehouseID = this.salesForm.controls['CustomerWarehouseID'].value;
     this.objSalesOrder.ShipTo = this.ShipTo;

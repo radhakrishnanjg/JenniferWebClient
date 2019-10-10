@@ -66,3 +66,5 @@ export * from './receipts';
 
 
 export * from './download'; 
+export * from './helpmenu'; 
+export * from './Search'; 

@@ -66,7 +66,7 @@ export class GoodsstoragelistComponent implements OnInit {
   logValidationErrors(group: FormGroup = this.goodsstorageform): void {
     Object.keys(group.controls).forEach((key: string) => {
       const abstractControl = group.get(key);
-      if (abstractControl && abstractControl.value && !abstractControl.value.replace(/\s/g, '').length) {
+      if (abstractControl && abstractControl.value && !abstractControl.value.replace(/^\s+|\s+$/gm, '').length) {
         abstractControl.setValue('');
       }
       this.formErrors[key] = '';
@@ -184,6 +184,13 @@ export class GoodsstoragelistComponent implements OnInit {
     );
   }
 
+  AddNewLink() {
+    if (this._authorizationGuard.CheckAcess("Goodsstoragelist", "ViewEdit")) {
+      return;
+    }
+    this._router.navigate(['/Goodsstorage/Create',]);
+  }
+
   //#region Paging Sorting and Filtering Start
   public allowUnsort = true;
   public sort: SortDescriptor[] = [{
@@ -223,7 +230,7 @@ export class GoodsstoragelistComponent implements OnInit {
   }
   private loadSortItems(): void {
     this.gridView = {
-      data: orderBy(this.items.slice(this.skip, this.skip + this.pageSize), this.sort),
+      data: orderBy(this.items, this.sort).slice(this.skip, this.skip + this.pageSize),
       total: this.items.length
     };
   }

@@ -127,6 +127,13 @@ export class PoshipmentlistComponent implements OnInit {
     );
   }
 
+  AddNewLink() {
+    if (this._authorizationGuard.CheckAcess("Poshipmentlist", "ViewEdit")) {
+      return;
+    }
+    this.router.navigate(['/Poshipment/0/0',]);
+  }
+
   //#region Paging Sorting and Filtering Start
   public allowUnsort = true;
   public sort: SortDescriptor[] = [{
@@ -166,7 +173,7 @@ export class PoshipmentlistComponent implements OnInit {
   }
   private loadSortItems(): void {
     this.gridView = {
-      data: orderBy(this.items.slice(this.skip, this.skip + this.pageSize), this.sort),
+      data: orderBy(this.items, this.sort).slice(this.skip, this.skip + this.pageSize),
       total: this.items.length
     };
   }

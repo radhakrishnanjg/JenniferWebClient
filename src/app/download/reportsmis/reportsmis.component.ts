@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core'; 
+import { Component, OnInit } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
-import { DownloadMaster, DownloadDetail } from '../../_services/model'; 
+import { DownloadMaster, DownloadDetail } from '../../_services/model';
 import { DownloadService } from '../../_services/service/download.service';
 import { AuthorizationGuard } from '../../_guards/Authorizationguard'
 @Component({
@@ -28,7 +28,7 @@ export class ReportsmisComponent implements OnInit {
   constructor(
     private alertService: ToastrService,
     private _spinner: NgxSpinnerService,
-    private _authorizationGuard: AuthorizationGuard, 
+    private _authorizationGuard: AuthorizationGuard,
     private _DownloadService: DownloadService,
   ) { }
 
@@ -87,19 +87,19 @@ export class ReportsmisComponent implements OnInit {
         }
       });
       //var newStr = dyamicspstring.substring(0, dyamicspstring.length - 1);
-    // 87	-Inventory
-    // 88	-Amazon
-    // 89	-Compliance
-    // 90	-Analytics
-    // 91	-MIS
-    // 92	-Others 
+      // 87	-Inventory
+      // 88	-Amazon
+      // 89	-Compliance
+      // 90	-Analytics
+      // 91	-MIS
+      // 92	-Others 
       const MenuId = 91; //87|88|89|90|91|92; 
       this._spinner.show(),
         this._DownloadService.downloadExcel(MenuId, Screen_Name, dyamicspstring)
           .subscribe(data => {
-            if (data != null) {
+            if (data != null && data.Flag == true) {
               this._spinner.show(),
-                this._DownloadService.Download(Screen_Name)
+                this._DownloadService.Download(Screen_Name,MenuId)
                   .subscribe(data1 => {
                     this._spinner.hide();
                     saveAs(data1, Screen_Name + '.xls');//+ '.xls'

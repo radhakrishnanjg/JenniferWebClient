@@ -16,7 +16,9 @@ import { MarketplaceService } from '../_services/service/marketplace.service';
 
 
 import { CustomerService } from '../_services/service/customer.service';
+import { CustomeritemService } from '../_services/service/customeritem.service';
 import { VendorService } from '../_services/service/vendor.service';
+import { VendoritemService } from '../_services/service/vendoritem.service';
 
 import { PoshipmentService } from '../_services/service/poshipment.service';
 import { InvoiceService } from '../_services/service/invoice.service';
@@ -46,7 +48,9 @@ export class UsernameValidator {
     private _productgroupService: ProductgroupService,
     private _marketplaceService: MarketplaceService,
     private _customerService: CustomerService,
+    private _customeritemService: CustomeritemService,
     private _vendorService: VendorService,
+    private _vendoritemService: VendoritemService,
     private _poshipmentService: PoshipmentService,
 
     private _invoiceService: InvoiceService,
@@ -269,6 +273,19 @@ export class UsernameValidator {
     };
   }
 
+  existCustomerItemCode(identity: number): AsyncValidatorFn {
+    return (control: AbstractControl): Observable<{ [key: string]: any } | null> => {
+      return this._customeritemService.existCustomerItemCode(identity, encodeURIComponent(control.value))
+        .pipe(
+          map(res => {
+            if (res) {
+              return { 'CustomerItemCodeInUse': true };
+            }
+          })
+        );
+    };
+  }
+
   existVendorName(identity: number): AsyncValidatorFn {
     return (control: AbstractControl): Observable<{ [key: string]: any } | null> => {
       return this._vendorService.exist(identity, encodeURIComponent(control.value))
@@ -281,6 +298,20 @@ export class UsernameValidator {
         );
     };
   }
+
+  existVendorItemCode(identity: number): AsyncValidatorFn {
+    return (control: AbstractControl): Observable<{ [key: string]: any } | null> => {
+      return this._vendoritemService.existVendorItemCode(identity, encodeURIComponent(control.value))
+        .pipe(
+          map(res => {
+            if (res) {
+              return { 'VendorItemCodeInUse': true };
+            }
+          })
+        );
+    };
+  } 
+
   existShipmentNumber(identity: number): AsyncValidatorFn {
     return (control: AbstractControl): Observable<{ [key: string]: any } | null> => {
       return this._poshipmentService.existShipmentNumber(identity, encodeURIComponent(control.value))

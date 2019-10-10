@@ -62,7 +62,7 @@ export class CategorylistComponent implements OnInit {
   logValidationErrors(group: FormGroup = this.catgoryForm): void {
     Object.keys(group.controls).forEach((key: string) => {
       const abstractControl = group.get(key);
-      // if (abstractControl && abstractControl.value && abstractControl.value.length > 0 && !abstractControl.value.replace(/\s/g, '').length) {
+      // if (abstractControl && abstractControl.value && abstractControl.value.length > 0 && !abstractControl.value.replace(/^\s+|\s+$/gm, '').length) {
       //   abstractControl.setValue('');
       // }
       this.formErrors[key] = '';
@@ -188,7 +188,7 @@ export class CategorylistComponent implements OnInit {
     if (this._authorizationGuard.CheckAcess("Categorylist", "ViewEdit")) {
       return;
     }
-    if (this.catgoryForm.controls['CategoryName'].value.replace(/\s/g, '').length == 0) {
+    if (this.catgoryForm.controls['CategoryName'].value.replace(/^\s+|\s+$/gm, '').length == 0) {
       this.alertService.error('Please enter Category Name!');
       return;
     }
@@ -372,7 +372,7 @@ export class CategorylistComponent implements OnInit {
   }
   private loadSortItems(): void {
     this.gridView = {
-      data: orderBy(this.items.slice(this.skip, this.skip + this.pageSize), this.sort),
+      data: orderBy(this.items, this.sort).slice(this.skip, this.skip + this.pageSize),
       total: this.items.length
     };
   }

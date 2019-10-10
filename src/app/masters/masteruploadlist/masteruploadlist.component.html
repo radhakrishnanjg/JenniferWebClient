@@ -8,13 +8,13 @@
     <div class="pull-right hidden-xs">
       <ol class="breadcrumb" id="dynamicbreadcrumb">
         <li>
-          <i class="fa fa-file"></i> <span>Upload</span>
+           <span>Upload</span>
         </li>
         <li>
-          <i class="fa fa-file"></i> <span> Masters</span>
+           <span> Masters</span>
         </li>
         <li class="active">
-          <i class="fa fa-th-list"></i>
+          
           List
         </li>
       </ol>
@@ -50,7 +50,7 @@
         </div>
       </div>
       <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 text-right">
-        <button class="btn btn-primary" routerLink="/MasterUpload/Create" title="Upload New">
+        <button class="btn btn-primary" (click)="AddNewLink()" title="Upload New">
           Upload New
         </button>
       </div>

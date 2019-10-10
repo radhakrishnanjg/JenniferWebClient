@@ -98,6 +98,13 @@ export class GoodsinwardlistComponent implements OnInit {
     );
   }
 
+  AddNewLink() {
+    if (this._authorizationGuard.CheckAcess("Goodsinwardlist", "ViewEdit")) {
+      return;
+    }
+    this.router.navigate(['/Goodsinward/Create',]);
+  }
+
 
   //#region Paging Sorting and Filtering Start
   public allowUnsort = true;
@@ -138,8 +145,8 @@ export class GoodsinwardlistComponent implements OnInit {
   }
   private loadSortItems(): void {
     this.gridView = {
-      //data: orderBy(this.items.slice(this.skip, this.skip + this.pageSize), this.sort),
-      data: orderBy(this.items.slice(this.skip, this.skip + this.pageSize), this.sort),
+      //data: orderBy(this.items, this.sort).slice(this.skip, this.skip + this.pageSize),
+      data: orderBy(this.items, this.sort).slice(this.skip, this.skip + this.pageSize),
       total: this.items.length
     };
   }

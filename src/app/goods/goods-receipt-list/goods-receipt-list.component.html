@@ -8,13 +8,13 @@
     <div class="pull-right hidden-xs">
       <ol class="breadcrumb" id="dynamicbreadcrumb">
         <li>
-          <i class="fa fa-truck"></i> <span> GRN</span>
+           <span> GRN</span>
         </li>
         <li>
-          <i class="fa fa-truck"></i> <span> Goods Receipts</span>
+           <span> Goods Receipts</span>
         </li>
         <li class="active">
-          <i class="fa fa-list" aria-hidden="true"></i>
+          
           List
         </li>
       </ol>
@@ -63,7 +63,7 @@
         </div>
       </div>
       <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 text-right">
-        <button class="btn btn-primary" routerLink="/Goodsreceipt/Create" title="Add New">
+        <button class="btn btn-primary" (click)="AddNewLink()" title="Add New">
           Add New
         </button>
       </div>

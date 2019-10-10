@@ -260,9 +260,15 @@ export class PrivateutilityService {
   public getCheckSTODateValidation(STODate: Date): Observable<Result> {
     let currentUser = this.authenticationService.currentUserValue;
     let CompanyID = currentUser.CompanyID;
-
     return this.httpClient.get<Result>(environment.baseUrl + `PrivateUtility/GetCheckSTODateValidation?CompanyID=` + CompanyID
       + `&STODate=` + STODate)
+      .pipe(catchError(this.handleError));
+  }
+
+  public GetGSTClimableDate(): Observable<Date> {
+    let currentUser = this.authenticationService.currentUserValue;
+    let CompanyID = currentUser.CompanyID; 
+    return this.httpClient.get<Date>(environment.baseUrl + `PrivateUtility/GetGSTClimableDate?CompanyID=` + CompanyID )
       .pipe(catchError(this.handleError));
   }
 

@@ -40,6 +40,8 @@ export class PurchaseComponent implements OnInit {
   TotalTotalAmount: number = 0;
   InvoiceDate: any;
   IsEditable: boolean = true;
+  InvoiceMinDate: moment.Moment;
+  InvoiceMaxDate: moment.Moment;
   constructor(
     private alertService: ToastrService,
     private fb: FormBuilder,
@@ -82,7 +84,7 @@ export class PurchaseComponent implements OnInit {
   logValidationErrors(group: FormGroup = this.invoiceform): void {
     Object.keys(group.controls).forEach((key: string) => {
       const abstractControl = group.get(key);
-      if (abstractControl && abstractControl.value && abstractControl.value.length > 0 && !abstractControl.value.replace(/\s/g, '').length) {
+      if (abstractControl && abstractControl.value && abstractControl.value.length > 0 && !abstractControl.value.replace(/^\s+|\s+$/gm, '').length) {
         abstractControl.setValue('');
       }
       this.formErrors[key] = '';
@@ -117,6 +119,8 @@ export class PurchaseComponent implements OnInit {
             this.LocationName = data.LocationName;
             this.VendorID = data.VendorID;
             this.VendorName = data.VendorName;
+            this.InvoiceMinDate = moment(this.PODate).add(1, 'minutes');
+            this.InvoiceMaxDate = moment().add(0, 'days');
             this._spinner.hide();
             this._spinner.show();
             this._invoiceService.getVendorWarehouses(this.VendorID)

@@ -70,6 +70,7 @@ export class StoComponent implements OnInit {
   STODate: Date;
   CustomerID: number = 0;
   maxDate: moment.Moment;
+  STOMinDate: moment.Moment;
   constructor(
     private _StoService: StoService,
     private _poService: PoService,
@@ -135,9 +136,26 @@ export class StoComponent implements OnInit {
     });
   }
 
+  BindGSTClaimableDate() {
+    this._spinner.show();
+    this._privateutilityService.GetGSTClimableDate().subscribe(
+      (res) => {
+        this.STOMinDate = moment(res).add(1, 'minutes');
+        var STODate = moment(new Date(), 'YYYY-MM-DD[T]HH:mm').format('MM-DD-YYYY HH:mm').toString();
+        this.stoForm.patchValue({
+          STODate: { startDate: new Date(STODate) },
+        });
+        this.STODate = new Date();
+        this._spinner.hide();
+      }, (err) => {
+        this._spinner.hide();
+        console.log(err);
+      });
+  }
   ngOnInit() {
     this.objSto.lstItem = [];
     this.gridData = this.objSto.lstItem;
+    this.BindGSTClaimableDate();
     this.maxDate = moment().add(0, 'days');
     this._spinner.show();
     this._poService.getOrderUOMs().subscribe(
@@ -180,7 +198,7 @@ export class StoComponent implements OnInit {
 
     this.stoForm = this.fb.group({
       STODate: ['', [Validators.required]],
-      InventoryType: ['Sellable', [Validators.required]],
+      InventoryType: ['SELLABLE', [Validators.required]],
       FromLocationID: [0, [Validators.min(1)]],
       ToLocationID: [0, [Validators.min(1)]],
       OtherReference: ['', [Validators.required]],
@@ -188,7 +206,7 @@ export class StoComponent implements OnInit {
       IsShipmentRequired: ['',],
       Remarks: ['', [Validators.required]],
     });
-    this.onInventoryTypeChange('Sellable');
+    this.onInventoryTypeChange('SELLABLE');
     this.objResult = new Result();
     this.objResult.Msg = '';
     this.objResult.Flag = true;
@@ -264,7 +282,7 @@ export class StoComponent implements OnInit {
     );
 
 
-    if (this.IsToLocationInvoicing || this.stoForm.controls['InventoryType'].value == 'Unsellable') {
+    if (this.IsToLocationInvoicing || this.stoForm.controls['InventoryType'].value == 'UNSELLABLE') {
       this.stoForm.patchValue(
         {
           IsShipmentRequired: false,
@@ -308,9 +326,16 @@ export class StoComponent implements OnInit {
   }
 
   public onItemCodeChange(itemID): void {
-    if (this.stoForm.controls['STODate'].value.startDate == null || this.stoForm.controls['STODate'].value.startDate == undefined) {
-      this._alertService.error("Please enter STO date!.");
-      return;
+    // if (this.stoForm.controls['STODate'].value.startDate == null || this.stoForm.controls['STODate'].value.startDate == undefined) {
+    //   this._alertService.error("Please enter STO date!.");
+    //   return;
+    // }
+    let STODate = new Date();
+    if (this.stoForm.controls['STODate'].value.startDate._d != undefined) {
+      STODate = this.stoForm.controls['STODate'].value.startDate._d.toLocaleString();
+
+    } else {
+      STODate = this.stoForm.controls['STODate'].value.startDate.toLocaleString();
     }
     if (this.stoForm.controls['FromLocationID'].value == null || this.stoForm.controls['FromLocationID'].value == 0) {
       this._alertService.error("Please select From Location!.");
@@ -341,12 +366,11 @@ export class StoComponent implements OnInit {
         TaxNature: this.objSto.TaxNature,
       });
     this.objStoItem.ItemID = itemID;
-    let STODate = this.stoForm.controls['STODate'].value.startDate._d.toLocaleString();
     let CustomerID = this.CustomerID;
     let InventoryType = this.stoForm.get("InventoryType").value;
     let TransactionType = "B2B";
     this._spinner.show();
-    this._privateutilityService.getSellingPriceMRP(itemID, STODate.toString(), InventoryType)
+    this._privateutilityService.getSellingPriceMRP(itemID, STODate, InventoryType)
       .subscribe(
         (data) => {
           this._spinner.hide();
@@ -357,9 +381,10 @@ export class StoComponent implements OnInit {
             let Units = this.itemFormGroup.get("Units").value;
             let MultiplierValue = this.objStoItem.MultiplierValue;
             let Qty = Units * MultiplierValue;
-            if (this.IsDiscountApplicable) {
+            let IsDiscountApplicable = this.stoForm.get("IsDiscountApplicable").value;
+            if (IsDiscountApplicable) {
               this._spinner.show();
-              this._privateutilityService.getDiscountAmount(itemID, STODate.toString(), CustomerID, InventoryType, TransactionType)
+              this._privateutilityService.getDiscountAmount(itemID, STODate, CustomerID, InventoryType, TransactionType)
                 .subscribe(
                   (data11) => {
                     if (data11 != null) {
@@ -382,6 +407,8 @@ export class StoComponent implements OnInit {
                 );
             }
             else {
+              this.itemFormGroup.controls['DiscountValue'].setValue(0);
+              this.DisCountPer = 0;
               let TaxRate = this.itemFormGroup.get("TaxRate").value;
               let DirectCost = this.Rate * Qty;
               let TaxAmount = DirectCost * (TaxRate / 100);
@@ -438,7 +465,7 @@ export class StoComponent implements OnInit {
       let DirectCost = Ratenew;
       let TaxAmount = DirectCost * (TaxRate / 100);
       let DiscountValue = (this.Rate * this.DisCountPer / 100 * Units * this.objStoItem.MultiplierValue)
-       + (TaxAmount * this.DisCountPer / 100); 
+        + (TaxAmount * this.DisCountPer / 100);
       let TotalAmountNew = TaxAmount + DirectCost - DiscountValue;
       this.itemFormGroup.patchValue(
         {
@@ -518,6 +545,7 @@ export class StoComponent implements OnInit {
       this._alertService.error(errorMessage);
       return;
     };
+    debugger
     if (isNew) {
       this.objSto.lstItem.splice(0, 0, this.objStoItem);
     }
@@ -601,7 +629,12 @@ export class StoComponent implements OnInit {
       return;
     }
     this.objSto.STONumber = this.STONumber;
-    this.objSto.STODate = this.stoForm.controls['STODate'].value.startDate._d.toLocaleString();
+
+    if (this.stoForm.controls['STODate'].value.startDate._d != undefined) {
+      this.objSto.STODate = this.stoForm.controls['STODate'].value.startDate._d.toLocaleString();
+    } else {
+      this.objSto.STODate = this.stoForm.controls['STODate'].value.startDate.toLocaleString();
+    }
     this.objSto.FromLocationID = this.stoForm.controls['FromLocationID'].value;
     this.objSto.ToLocationID = this.stoForm.controls['ToLocationID'].value;
 

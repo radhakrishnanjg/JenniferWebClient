@@ -8,13 +8,13 @@
     <div class="pull-right hidden-xs">
       <ol class="breadcrumb" id="dynamicbreadcrumb">
         <li>
-          <i class="fa fa-money"></i> <span> Revenue</span>
+           <span> Revenue</span>
         </li>
         <li>
-          <i class="fa fa-newspaper-o"></i> <span> Receipts</span>
+           <span> Receipts</span>
         </li>
         <li class="active">
-          <i class="fa fa-save"></i>
+          
           Save
         </li>
       </ol>
@@ -122,7 +122,7 @@
             </ng-template>
           </kendo-grid-command-column>
 
-          <kendo-grid-command-column title="Download" width="120">
+          <kendo-grid-command-column title="Download" width="70" [class]="{'text-center': true}">
             <ng-template kendoGridCellTemplate let-isNew="isNew" let-obj>
               <i (click)="removeHandler(obj.Filename)" class="fa fa-download bgblue pointer"></i>
             </ng-template>
@@ -182,7 +182,7 @@
           </kendo-grid-command-column> -->
 
 
-          <kendo-grid-command-column title="Download" width="120">
+          <kendo-grid-command-column title="Download" width="70" [class]="{'text-center': true}">
             <ng-template kendoGridCellTemplate let-isNew="isNew" let-obj>
               <i (click)="removeHandler2(obj.Filename)" class="fa fa-download bgblue pointer"></i>
             </ng-template>

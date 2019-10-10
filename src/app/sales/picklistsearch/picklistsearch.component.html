@@ -8,13 +8,13 @@
     <div class="pull-right hidden-xs">
       <ol class="breadcrumb" id="dynamicbreadcrumb">
         <li>
-          <i class="fa fa-money"></i> <span> Revenue</span>
+           <span> Revenue</span>
         </li>
         <li>
-          <i class="fa fa-truck"></i> <span> PickList</span>
+           <span> PickList</span>
         </li>
         <li class="active">
-          <i class="fa fa-list" aria-hidden="true"></i>
+          
           List
         </li>
       </ol>
@@ -33,7 +33,7 @@
               <option value="InventoryType">Inventory Type</option>
               <option value="PicklistStatus">Picklist Status</option>
               <option value="RackNumber">Rack Number</option>
-              <option value="StorageNumber">Storage Number</option>
+              <!-- <option value="StorageNumber">Storage Number</option> -->
             </select>
           </div>
           <div class="col-md-3 nopading_loct">
@@ -77,6 +77,8 @@
       </kendo-grid-column>
       <kendo-grid-column field="InventoryType" title="Inventory Type">
       </kendo-grid-column>
+      <kendo-grid-column field="LocationName" title="Location Name">
+      </kendo-grid-column> 
       <kendo-grid-column field="PicklistQty" title="Picklist Qty">
       </kendo-grid-column>
       <kendo-grid-column field="PickedQty" title="Picked Qty">

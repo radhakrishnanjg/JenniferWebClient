@@ -1,0 +1,92 @@
+<div class="row">
+  <div class="col-sm-6 col-lg-6">
+    <h3>
+      HelpMenu
+    </h3>
+  </div>
+  <div class="col-sm-6 col-lg-6">
+    <div class="pull-right hidden-xs">
+      <ol class="breadcrumb" id="dynamicbreadcrumb">
+        <li>
+          <span> Support</span>
+        </li>
+        <li>
+          <span> HelpMenu</span>
+        </li>
+        <li class="active">
+
+          List
+        </li>
+      </ol>
+    </div>
+  </div>
+</div>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <div class="row">
+      <div class="col-xs-12 col-sm-7 col-md-7 col-lg-7">
+        <div class="input-group col-sm-12" role="group" aria-label="Basic example">
+          <div class="col-md-3 nopading_loct">
+            <select [(ngModel)]="SearchBy" class="form-control serchcurv btn-group">
+              <option value="" selected="select">Search By</option>
+              <option value="LinkText"> Link Text</option>
+              <option value="ShortDescription">Short Description</option>
+              <option value="Status">Status</option>
+            </select>
+          </div>
+          <div class="col-md-3 nopading_loct" *ngIf="(SearchBy!='Status')">
+            <input [(ngModel)]="SearchKeyword" type="text" class="form-control btn-group serchcurv">
+          </div>
+          <div class="col-md-3 nopading_loct" *ngIf="(SearchBy=='Status')">
+            <select [(ngModel)]="Searchaction" type="select" class="serchcurv form-control btn-group">
+              <option value="true">Active</option>
+              <option value="false">InActive</option>
+            </select>
+          </div>
+          <div class="col-md-3 nopading_loct">
+            <button class="btn btn-default btn-group serchcurv" (click)="Search()" title="Search">
+              <i class="fa fa-search " aria-hidden="true"></i>
+            </button>
+            <button class="btn btn-default btn-group serchcurv" (click)="Refresh()" title="Reset">
+              <i class="fa fa-refresh" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5 text-right">
+        <button class="btn btn-primary" (click)="AddNewLink()" title="Add New">
+
+          Add New
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="panel-body">
+    <kendo-grid [data]="gridView" resizable="true" columnMenu="true" [pageSize]="pageSize" [skip]="skip"
+      [pageable]="true" (pageChange)="pageChange($event)" [sortable]="{
+          allowUnsort: allowUnsort,
+          mode:  'single'
+          }" [sort]="sort" (sortChange)="sortChange($event)" [filterable]="true"
+      (dataStateChange)="dataStateChange($event)" [filter]="state.filter">
+
+      <kendo-grid-column field="MenuType" title="Menu Type">
+      </kendo-grid-column>
+      <kendo-grid-column field="LinkText" title="Link Text">
+      </kendo-grid-column>
+      <kendo-grid-column field="ShortDescription" title="Short Description">
+      </kendo-grid-column>
+      <kendo-grid-column field="IsActive" title="IsActive" [class]="{'text-center': true}" filter="boolean" width="80">
+        <ng-template kendoGridCellTemplate let-dataItem>
+          <i [class]="dataItem.IsActive ? 'fa fa-check': 'fa fa-times'" aria-hidden="true"></i>
+        </ng-template>
+      </kendo-grid-column>
+      <kendo-grid-column field="HelpMenuID" title="Action" [class]="{'text-center': true}" [filterable]="false"
+        [sortable]="false" width="70">
+        <ng-template kendoGridCellTemplate let-obj>
+          <i class="fa fa-edit bgblue pointer" title="Edit" [routerLink]="['/Helpmenu', obj.HelpMenuID]"></i>
+
+        </ng-template>
+      </kendo-grid-column>
+    </kendo-grid>
+  </div>
+</div>

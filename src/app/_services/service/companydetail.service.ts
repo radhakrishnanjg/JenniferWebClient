@@ -9,7 +9,7 @@ import { NotFoundError } from '../../common/not-found-error';
 import { AppError } from '../../common/app-error';
 import { AuthenticationService } from './authentication.service';
 
-import {  Companydetails, Result } from '../model/index';
+import { Companydetails, Result } from '../model/index';
 import { environment } from '../../../environments/environment';
 import { BehaviorSubject } from 'rxjs';
 @Injectable({
@@ -19,13 +19,13 @@ export class CompanydetailService {
 
   lstcompanydetails: Companydetails[];
   objcompanydetail: Companydetails = {} as any;
-  private messageSource = new BehaviorSubject( new Companydetails()); 
+  private messageSource = new BehaviorSubject(new Companydetails());
   currentMessage = this.messageSource.asObservable();
 
-  changeMessage(message: Companydetails) { 
+  changeMessage(message: Companydetails) {
     this.messageSource.next(message)
   }
-  
+
   constructor(private httpClient: HttpClient,
     private authenticationService: AuthenticationService) {
   }
@@ -34,7 +34,7 @@ export class CompanydetailService {
     let currentUser = this.authenticationService.currentUserValue;
     let CompanyID = currentUser.CompanyID;
     let LoginId = currentUser.UserId;
-    return this.httpClient.get<Companydetails[]>(environment.baseUrl + 
+    return this.httpClient.get<Companydetails[]>(environment.baseUrl +
       `CompanyDetail/Search?Search=` + Search + `&CompanyID=` + CompanyID + `&LoginId=` + LoginId)
       .pipe(catchError(this.handleError));
   }
@@ -81,6 +81,11 @@ export class CompanydetailService {
     obj.LoginId = currentUser.UserId;
 
     return this.httpClient.post<Result>(environment.baseUrl + `CompanyDetail/Create`, obj)
+      .pipe(catchError(this.handleError));
+  }
+
+  public validate(obj: Companydetails): Observable<Result> {
+    return this.httpClient.post<Result>(environment.baseUrl + `CompanyDetail/Validate`, obj)
       .pipe(catchError(this.handleError));
   }
 

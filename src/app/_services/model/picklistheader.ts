@@ -86,7 +86,8 @@ export class SalesInvoiceHeader {
     TotalAmount: number;
     TotalAmuntWords: string;
     TotalTaxWords: string;
-    TaxableValueRoundOff: number;
+    TotalAmountRoundtype:string;
+    TotalAmountRoundValue: number;
     TaxAmtRoundOff: number;
     lstDetail: SalesInvoiceDetail[];
     lstHSNCode: SalesInvoiceHSNDetail[];

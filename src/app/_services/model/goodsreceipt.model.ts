@@ -65,6 +65,7 @@ export class PONumber {
     VendorID: number;
     VendorName: string;
     GRNType: string; 
+    InventoryType: string; 
 }
 
 export class Goodsinward {

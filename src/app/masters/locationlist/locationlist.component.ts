@@ -105,6 +105,13 @@ export class LocationlistComponent implements OnInit {
     );
   }
 
+  AddNewLink() {
+    if (this._authorizationGuard.CheckAcess("Locationlist", "ViewEdit")) {
+      return;
+    }
+    this.router.navigate(['/Location/Create',]);
+  }
+
   //#region Paging Sorting and Filtering Start
   public allowUnsort = true;
   public sort: SortDescriptor[] = [{
@@ -144,7 +151,7 @@ export class LocationlistComponent implements OnInit {
   }
   private loadSortItems(): void {
     this.gridView = {
-      data: orderBy(this.items.slice(this.skip, this.skip + this.pageSize), this.sort),
+      data: orderBy(this.items, this.sort).slice(this.skip, this.skip + this.pageSize),
       total: this.items.length
     };
   }

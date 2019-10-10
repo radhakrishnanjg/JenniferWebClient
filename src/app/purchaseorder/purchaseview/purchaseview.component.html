@@ -8,14 +8,14 @@
     <div class="pull-right hidden-xs">
       <ol class="breadcrumb" id="dynamicbreadcrumb">
         <li>
-          <i class="fa fa-shopping-cart"></i> <span> Procurements</span>
+           <span> Procurements</span>
         </li>
         <li>
-          <i class="fa fa-newspaper-o"></i> <span> Purchase Invoices </span>
+           <span> Purchase Invoices </span>
         </li>
         <li class="active">
-          <i class="fa fa-save"></i>
-          Save
+          
+          View
         </li>
       </ol>
     </div>
@@ -25,12 +25,12 @@
   <div class="panel panel-default">
     <div class="panel-heading">
       <div class="row">
-        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+        <div class="col-xs-6 col-md-3 col-lg-3">
           <span class="groupspanheader">
             Purchase Invoice View
           </span>
         </div>
-        <div class="col-sm-6">
+        <div class="col-md-5">
 
         </div>
         <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 ">
@@ -42,78 +42,65 @@
         </div>
       </div>
     </div>
-    <div class="panel-body"><span class="groupspanheader"> PO Information </span>
+    <div class="panel-body">
       <div class="row">
-        <div class="col-md-3 col-xs-12">
-          <div class="form-group">
-            <label class="control-label"> PO No. </label>
-            <div >
-              {{obj?.PONumber}}
-            </div>
-          </div>
-        </div>
-        <div class="col-md-3 col-xs-12">
-          <div class="form-group">
-            <label class="control-label"> Location </label>
-            <div >
-              {{obj?.LocationName}}
-            </div>
+
+        <div class="col-md-6 col-xs-12">
+          <div class="groupspanheader"> Invoice Information </div>
+          <div class="table-responsive">
+            <table class="bgtable table table-bordered">
+              <tr>
+                <th width="180px">
+                  Invoice Number <span class="mandantory">*</span> </th>
+                <td> {{obj?.InvoiceNumber}}</td>
+              </tr>
+              <tr>
+                <th width="180px">
+                  Invoice Date<span class="mandantory">*</span> </th>
+                <td> {{obj?.InvoiceDate | date :"MM-dd-yyyy HH:mm"}}</td>
+              </tr>
+              <tr>
+                <th width="180px">
+                  Vendor Warehouse <span class="mandantory">*</span></th>
+                <td> {{obj?.WarehouseName}} </td>
+              </tr>
+              <tr>
+                <th width="180px"> Remarks <span class="mandantory">*</span> </th>
+                <td> {{obj?.Remarks}} </td>
+              </tr>
+
+            </table>
           </div>
         </div>
 
-        <div class="col-md-3 col-xs-12">
-          <div class="form-group">
-            <label class="control-label">Vendor <span class="mandantory">*</span></label>
-            <div >
-              {{obj?.VendorName}}
-            </div>
+        <div class="col-md-6 col-xs-12">
+          <span class="groupspanheader"> PO Information </span>
+          <div class="table-responsive">
+            <table class="bgtable table table-bordered">
+
+              <tr>
+                <th width="180px"> PO No. </th>
+                <td> {{obj?.PONumber}} </td>
+              </tr>
+              <tr>
+                <th width="180px">
+                  Location </th>
+                <td> {{obj?.LocationName}} </td>
+              </tr>
+              <tr>
+                <th width="180px">
+                  Vendor <span class="mandantory">*</span> </th>
+                <td> {{obj?.VendorName}} </td>
+              </tr>
+
+            </table>
           </div>
         </div>
       </div>
-      <div class="groupspanheader"> Invoice Information </div>
       <div class="row">
-        <div class="col-md-6"></div>
-
-        <div class="col-md-6"></div>
-        <div class="col-md-3 col-xs-12">
-          <div>
-            <label>Invoice Number <span class="mandantory">*</span></label>
-            <div >
-              {{obj?.InvoiceNumber}}
-            </div>
-          </div>
-        </div>
-
-
-        <div class="col-md-3 col-xs-12">
-          <div>
-            <label>Invoice Date<span class="mandantory">*</span></label>
-            <div >
-              {{obj?.InvoiceDate | date :"MM-dd-yyyy HH:mm"}}
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-3 col-xs-12">
-          <div>
-            <label> Vendor Warehouse <span class="mandantory">*</span></label>
-            <div >
-              {{obj?.WarehouseName}}
-            </div>
-          </div>
-        </div>
 
         <div class="col-md-12 col-xs-12">
-          <div>
-            <label>Remarks <span class="mandantory">*</span></label>
-            <div >
-              {{obj?.Remarks}}
-            </div>
-          </div>
-        </div>
- 
-        <div class="col-md-12 col-xs-12">
-          <h3 >Order Items</h3>
+          <span class="groupspanheader"> Order Items</span>
           <table class="table table-bordered table-condensed">
             <thead>
               <tr>
@@ -134,8 +121,8 @@
 
             <tbody>
               <tr *ngFor="let person of  obj?.lstItem; let id = index">
-                <td > {{person.ItemCode}} </td>
-                <td > {{person.VendorItemCode}} </td>
+                <td> {{person.ItemCode}} </td>
+                <td> {{person.VendorItemCode}} </td>
                 <td class="text-right"> {{person.Qty}} </td>
                 <td class="text-right"> {{person.Rate}} </td>
 
@@ -151,17 +138,17 @@
               <tr>
                 <th>Total</th>
                 <th> </th>
-                <th  class="text-right"> {{ TotalQty}}</th>
+                <th class="text-right"> {{ TotalQty}}</th>
                 <th class="text-right"> {{ TotalRate}}</th>
 
 
-                <th  class="text-right"> {{ TotalMRP | currency: 'INR' }} </th>
-                <th  class="text-right"> </th>
+                <th class="text-right"> {{ TotalMRP | currency: 'INR' }} </th>
+                <th class="text-right"> </th>
                 <th> </th>
-                <th  class="text-right"> {{ TotalDirectCost | currency: 'INR'}} </th>
-                <th  class="text-right"> {{ TotalTaxAmount | currency: 'INR'}} </th>
+                <th class="text-right"> {{ TotalDirectCost | currency: 'INR'}} </th>
+                <th class="text-right"> {{ TotalTaxAmount | currency: 'INR'}} </th>
 
-                <th   class="text-right"> {{ TotalTotalAmount | currency: 'INR'}} </th>
+                <th class="text-right"> {{ TotalTotalAmount | currency: 'INR'}} </th>
               </tr>
             </tbody>
           </table>

@@ -81,13 +81,13 @@ export class ReportAmazonMTRComponent implements OnInit {
   //     );
   // }
 
-  public removeHandler(DownloadPath: string): void {
+  public removeHandler(DownloadPath: string, FileName: string): void {
     this._spinner.show();
     this._downloadService.downloadAmazonMTR(DownloadPath)
       .subscribe(data => {
         this.alertService.success('File downloaded successfully.!');
         this._spinner.hide(),
-          saveAs(data, DownloadPath.toString());//+ '.csv'
+          saveAs(data, FileName.toString());//+ '.csv'
       },
         (err) => {
           this._spinner.hide();
@@ -152,7 +152,7 @@ export class ReportAmazonMTRComponent implements OnInit {
   }
   private loadSortItems(): void {
     this.gridView = {
-      data: orderBy(this.items.slice(this.skip, this.skip + this.pageSize), this.sort),
+      data: orderBy(this.items, this.sort).slice(this.skip, this.skip + this.pageSize),
       total: this.items.length
     };
   }

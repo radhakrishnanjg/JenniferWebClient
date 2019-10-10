@@ -49,6 +49,7 @@ import { ReceiptslistComponent } from './receiptslist/receiptslist.component';
 import { SalesorderunsellableComponent } from './salesorderunsellable/salesorderunsellable.component';
 import { SalesorderapprovallistComponent } from './salesorderapprovallist/salesorderapprovallist.component';
 import { SalesorderapprovalComponent } from './salesorderapproval/salesorderapproval.component';
+import { SalesorderviewComponent } from './salesorderview/salesorderview.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -108,7 +109,8 @@ import { SalesorderapprovalComponent } from './salesorderapproval/salesorderappr
     SalesorderunsellableComponent,
     SalesorderapprovallistComponent,
     SalesorderapprovalComponent,
-    PicklistviewComponent
+    PicklistviewComponent,
+    SalesorderviewComponent
   ],
   providers: [
 

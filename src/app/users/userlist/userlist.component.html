@@ -8,13 +8,13 @@
     <div class="pull-right hidden-xs">
       <ol class="breadcrumb" id="dynamicbreadcrumb">
         <li>
-          <i class="fa fa-wrench"></i> <span> Utilities</span>
+           <span> Utilities</span>
         </li>
         <li>
-          <i class="fa fa-users"></i> <span> Users</span>
+           <span> Users</span>
         </li>
         <li class="active">
-          <i class="fa fa-th-list"></i>
+          
           List
         </li>
       </ol>
@@ -57,7 +57,7 @@
         </div>
       </div>
       <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 text-right">
-        <button class="btn btn-primary" routerLink="/User/Create" title="Add New">
+        <button class="btn btn-primary" (click)="AddNewLink()" title="Add New">
 
           Add New
         </button>

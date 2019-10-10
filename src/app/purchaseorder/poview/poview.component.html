@@ -1,264 +1,238 @@
 <div class="row">
-    <div class="col-sm-6 col-lg-6">
-      <h3>
-        Purchase Orders
-      </h3>
-    </div>
-    <div class="col-sm-6 col-lg-6">
-      <div class="pull-right hidden-xs">
-        <ol class="breadcrumb" id="dynamicbreadcrumb">
-          <li>
-            <i class="fa fa-shopping-cart"></i> <span> Procurements</span>
-          </li>
-          <li>
-            <i class="fa fa-list-ul"></i> <span> Purchase Order</span>
-          </li>
-          <li class="active">
-            <i class="fa fa-save"></i>
-            Save
-          </li>
-        </ol>
-      </div>
+  <div class="col-sm-6 col-lg-6">
+    <h3>
+      Purchase Orders
+    </h3>
+  </div>
+  <div class="col-sm-6 col-lg-6">
+    <div class="pull-right hidden-xs">
+      <ol class="breadcrumb" id="dynamicbreadcrumb">
+        <li>
+           <span> Procurements</span>
+        </li>
+        <li>
+           <span> Purchase Order</span>
+        </li>
+        <li class="active">
+          
+          Save
+        </li>
+      </ol>
     </div>
   </div>
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <div class="row">
-        <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-          <span class="spanheader">
-            PO View
-          </span>
-        </div>
-        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 ">
-          <div class="pull-right">
-            <button class="btn btn-primary" routerLinkActive="active" routerLink="/Polist">Back</button>
-          </div>
+</div>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <div class="row">
+      <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+        <span class="groupspanheader">
+          PO View
+        </span>
+      </div>
+      <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 ">
+        <div class="pull-right">
+          <button class="btn btn-primary" routerLinkActive="active" routerLink="/Polist">Back</button>
         </div>
       </div>
-      <div class="clearfix"></div>
     </div>
-  
-    <div class="panel-body">
-      <div class="row">
-        <div class="col-md-12">
-          <div class="table-responsive">
-            <table class="potable table table-bordered">
-              <tbody>
-                <tr>
-                  <td>
-                    <label><strong>Number</strong> <span class="mandantory"> *</span></label>
-                  </td>
-                  <td>
-                    <div class="text-left"> {{obj?.PONumber  }} </div>
-                  </td>
-                  <td>
-                    <label><strong> Event Purchase</strong></label>
-                  </td>
-                  <td>
-                    <div class="text-left">
-                      <div *ngIf="(obj?.IsEventPurchase)"><i class="fa fa-check"></i></div>
-                      <div *ngIf="(!obj?.IsEventPurchase)"><i class="fa fa-times"></i></div>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <label><strong> PO Date</strong> <span class="mandantory"> *</span></label>
-                  </td>
-                  <td>
-                    <div class="text-left">
-                      {{obj?.PODate | date:'MM-dd-yyyy HH:mm'}}
-                    </div>
-                  </td>
-                  <td>
-                    <label><strong> Event Purchase</strong></label>
-                  </td>
-                  <td>
-                    <div class="text-left">
-                      <div *ngIf="(obj?.IsEventPurchase)"><i class="fa fa-check"></i></div>
-                      <div *ngIf="(!obj?.IsEventPurchase)"><i class="fa fa-times"></i></div>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <label><strong> Location</strong><span class="mandantory"> *</span></label>
-                  </td>
-                  <td>
-                    <div class="text-left">
-                      {{obj?.LocationName  }}
-                    </div>
-                  </td>
-                  <td>
-                    <label><strong> Is Shipment Required</strong></label>
-                  </td>
-                  <td>
-                    <div class="text-left">
-                      <div *ngIf="(obj?.IsShipmentRequired)"><i class="fa fa-check"></i></div>
-                      <div *ngIf="(!obj?.IsShipmentRequired)"><i class="fa fa-times"></i></div>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <label><strong> DeliveryDate</strong><span class="mandantory"> *</span></label>
-                  </td>
-                  <td>
-                    <div class="text-left">
-                      {{obj?.PODeliveryDate | date:'MM-dd-yyyy HH:mm'}}
-                    </div>
-                  </td>
-                  <td>
-                    <label><strong> Payment Reference</strong></label>
-                  </td>
-                  <td>
-                    <div class="text-left">
-                      {{obj?.PaymentReference}}
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <label><strong> Other Reference</strong> <span class="mandantory"> *</span></label>
-                  </td>
-                  <td>
-                    <div class="text-left">
-                      {{obj?.OtherReference}}
-                    </div>
-                  </td>
-  
-                  <td>
-                    <label><strong>Against Reference</strong> </label>
-                  </td>
-                  <td>
-                    <div class="text-left">
-                      {{obj?.AgainstReference}}
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <label><strong> Vendor</strong><span class="mandantory"> *</span></label>
-                  </td>
-                  <td>
-                    <div class="text-left">
-                      {{obj?.VendorName}}
-                    </div>
-                  </td>
-                  <td>
-                    <label><strong> Remarks</strong></label>
-                  </td>
-                  <td colspan="">
-                    <div class="text-left">
-                      {{obj?.Remarks}}
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div> 
-  
-      <span class="groupspanheader">Order Items</span>
-      <table class="table table-bordered table-condensed">
-        <thead>
-          <tr>
-            <th class="text-center">ItemCode</th>
-            <th class="text-center">Item Description</th>
-            <th class="text-center">Vendor ItemCode</th>
-            <th class="text-center">Units</th>
-            <th class="text-center">UOM</th>
-  
-            <th class="text-center">Rate</th>
-            <th class="text-center">Tax Rate</th>
-            <th class="text-center">Tax Amount</th>
-            <th class="text-center">Direct Cost</th>
-            <th class="text-center">Total Amount</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let dis of lstItem; let id = index">
-            <td> {{ dis.ItemCode }} </td>
-            <td> {{ dis.ItemName }} </td>
-            <td> {{ dis.VendorItemCode }} </td>
-            <td class="text-right"> {{ dis.CaseSize }} </td>
-            <td class="text-right"> {{ dis.MultiplierValue }} </td>
-  
-            <td class="text-right"> {{ dis.Rate }} </td>
-            <td class="text-right"> {{ dis.TaxRate }} </td>
-            <td class="text-right"> {{ dis.TaxAmount | currency: 'INR'}} </td>
-            <td class="text-right"> {{ dis.DirectCost | currency: 'INR'}} </td>
-            <td class="text-right"> {{ dis.TotalAmount | currency: 'INR'}} </td>
-          </tr>
-          <tr>
-            <th>Total</th>
-            <th> </th>
-            <th> </th>
-            <th class="text-right">{{TotalUnits}}</th>
-            <th class="text-right">{{TotalMultiplierValue}} </th>
-  
-            <th class="text-right">{{TotalRate | currency: 'INR'}}</th>
-            <th class="text-right"> </th>
-            <th class="text-right">{{TotalTaxAmount | currency: 'INR'}}</th>
-            <th class="text-right">{{TotalDirectCost | currency: 'INR'}}</th>
-            <th class="text-right">{{TotalTotalAmount | currency: 'INR'}}</th>
-          </tr>
-        </tbody>
-      </table>
-  
-      <span class="spanheader"> Approval Details</span>
-      <table class="table table-bordered table-condensed " *ngIf="obj?.lstApproval && obj?.lstApproval.length">
-        <thead>
-          <tr>
-            <th>Status</th>
-            <th>Remarks</th>
-            <th>Action By</th>
-  
-            <th>Action Date</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let user of obj?.lstApproval">
-            <td>{{ user.ApprovalStatus  }}</td>
-            <td>{{ user.Remarks  }}</td>
-            <td>{{ user.ActionBy}}</td>
-  
-            <td>{{ user.CreatedDate | date :"MM-dd-yyyy HH:mm"   }}</td>
-          </tr>
-        </tbody>
-      </table>
-  
-      <table class="table table-bordered table-condensed" *ngIf="obj?.lstApproval==null">
-        <thead>
-          <tr>
-            <th>Status</th>
-            <th>Remarks</th>
-            <th>Action By</th>
-  
-            <th>Action Date</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td colspan="4">
-              No Records Found.!
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <div>
-  
-        <div class="panel-footer">
-          <div class="row">
-            <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-            </div>
-            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 ">
-              <div class="pull-right">
-                <button class="btn btn-primary" routerLinkActive="active" routerLink="/Polist">Cancel</button>
-              </div>
-            </div>
-          </div>
-          <div class="clearfix"></div>
+    <div class="clearfix"></div>
+  </div>
+
+  <div class="panel-body">
+
+    <div class="row">
+      <div class="col-md-12">
+        <div class="table-responsive">
+          <table class="table table-bordered bgtable">
+
+            <tr>
+              <th width="15%">
+                Po Number <span class="mandantory"> *</span>
+              </th>
+              <td width="35%">
+                {{obj?.PONumber  }}
+              </td>
+              <th width="15%">
+                Other Reference <span class="mandantory"> *</span>
+              </th>
+              <td width="35%">
+                {{obj?.OtherReference}}
+              </td>
+            </tr>
+            <tr>
+              <th>
+                PO Date <span class="mandantory"> *</span>
+              </th>
+              <td>
+                {{obj?.PODate | date:'MM-dd-yyyy HH:mm'}}
+              </td>
+              <th>
+                Payment Reference
+              </th>
+              <td>
+                {{obj?.PaymentReference}}
+              </td>
+            </tr>
+            <tr>
+              <th>
+                PO Delivery Date <span class="mandantory"> *</span>
+              </th>
+              <td>
+                {{obj?.PODeliveryDate | date:'MM-dd-yyyy HH:mm'}}
+              </td>
+              <th>
+                Against Reference
+              </th>
+              <td>
+                {{obj?.AgainstReference}}
+              </td>
+
+
+            </tr>
+            <tr>
+              <th>
+                Location <span class="mandantory"> *</span>
+              </th>
+              <td>
+                {{obj?.LocationName  }}
+              </td>
+              <th>
+                Event Purchase
+              </th>
+              <td>
+                <div *ngIf="(obj?.IsEventPurchase)"><i class="fa fa-check"></i></div>
+                <div *ngIf="(!obj?.IsEventPurchase)"><i class="fa fa-times"></i></div>
+              </td>
+            </tr>
+
+            <tr>
+              <th>
+                Vendor <span class="mandantory"> *</span>
+              </th>
+              <td>
+                {{obj?.VendorName}}
+              </td>
+
+              <th>
+                Is Shipment Required
+              </th>
+              <td>
+                <div *ngIf="(obj?.IsShipmentRequired)"><i class="fa fa-check"></i></div>
+                <div *ngIf="(!obj?.IsShipmentRequired)"><i class="fa fa-times"></i></div>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                Remarks
+              </th>
+              <td colspan="3">
+                {{obj?.Remarks}}
+              </td>
+            </tr>
+          </table>
         </div>
       </div>
+    </div>
+
+    <span class="groupspanheader">Order Items</span>
+    <table class="table table-bordered table-condensed">
+      <thead>
+        <tr>
+          <th class="text-center">ItemCode</th>
+          <th class="text-center">Item Description</th>
+          <th class="text-center">Vendor ItemCode</th>
+          <th class="text-center">Units</th>
+          <th class="text-center">UOM</th>
+
+          <th class="text-center">Rate</th>
+          <th class="text-center">Tax Rate</th>
+          <th class="text-center">Tax Amount</th>
+          <th class="text-center">Direct Cost</th>
+          <th class="text-center">Total Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let dis of lstItem; let id = index">
+          <td> {{ dis.ItemCode }} </td>
+          <td> {{ dis.ItemName }} </td>
+          <td> {{ dis.VendorItemCode }} </td>
+          <td class="text-right"> {{ dis.CaseSize }} </td>
+          <td class="text-right"> {{ dis.MultiplierValue }} </td>
+
+          <td class="text-right"> {{ dis.Rate }} </td>
+          <td class="text-right"> {{ dis.TaxRate }} </td>
+          <td class="text-right"> {{ dis.TaxAmount | currency: 'INR'}} </td>
+          <td class="text-right"> {{ dis.DirectCost | currency: 'INR'}} </td>
+          <td class="text-right"> {{ dis.TotalAmount | currency: 'INR'}} </td>
+        </tr>
+        <tr>
+          <th>Total</th>
+          <th> </th>
+          <th> </th>
+          <th class="text-right">{{TotalUnits}}</th>
+          <th class="text-right">{{TotalMultiplierValue}} </th>
+
+          <th class="text-right">{{TotalRate | currency: 'INR'}}</th>
+          <th class="text-right"> </th>
+          <th class="text-right">{{TotalTaxAmount | currency: 'INR'}}</th>
+          <th class="text-right">{{TotalDirectCost | currency: 'INR'}}</th>
+          <th class="text-right">{{TotalTotalAmount | currency: 'INR'}}</th>
+        </tr>
+      </tbody>
+    </table>
+
+    <span class="groupspanheader"> Approval Details</span>
+    <table class="table table-bordered table-condensed " *ngIf="obj?.lstApproval && obj?.lstApproval.length">
+      <thead>
+        <tr>
+          <th>Status</th>
+          <th>Remarks</th>
+          <th>Action By</th>
+
+          <th>Action Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of obj?.lstApproval">
+          <td>{{ user.ApprovalStatus  }}</td>
+          <td>{{ user.Remarks  }}</td>
+          <td>{{ user.ActionBy}}</td>
+
+          <td>{{ user.CreatedDate | date :"MM-dd-yyyy HH:mm"   }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <table class="table table-bordered table-condensed" *ngIf="obj?.lstApproval==null">
+      <thead>
+        <tr>
+          <th>Status</th>
+          <th>Remarks</th>
+          <th>Action By</th>
+
+          <th>Action Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td colspan="4">
+            No Records Found.!
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div>
+
+      <div class="panel-footer">
+        <div class="row">
+          <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+          </div>
+          <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 ">
+            <div class="pull-right">
+              <button class="btn btn-primary" routerLinkActive="active" routerLink="/Polist">Cancel</button>
+            </div>
+          </div>
+        </div>
+        <div class="clearfix"></div>
+      </div>
+    </div>

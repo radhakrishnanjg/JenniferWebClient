@@ -26,7 +26,7 @@ export class PrivatelayoutComponent implements OnInit {
   lightTheme: string = 'assets/images/lighttheme.jpg';
   darkTheme: string = 'assets/images/darktheme.jpg'
   themeUrl: string;
-
+  SearchBy: string = '';
   filterUser(user: Userpermission) {
     return !user.ParentId
   }
@@ -304,6 +304,10 @@ export class PrivatelayoutComponent implements OnInit {
     //     this._alertService.error('Invalid Details.!');
     //   }
     // );
+  }
+
+  SearchData() { 
+    this.router.navigate(['/Search', this.SearchBy]);
   }
 
 

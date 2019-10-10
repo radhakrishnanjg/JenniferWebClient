@@ -8,13 +8,13 @@
     <div class="pull-right hidden-xs">
       <ol class="breadcrumb" id="dynamicbreadcrumb">
         <li>
-          <i class="fa fa-shopping-cart"></i> <span> Procurements</span>
+           <span> Procurements</span>
         </li>
         <li>
-          <i class="fa fa fa-truck"></i> <span> PO Approval</span>
+           <span> PO Approval</span>
         </li>
         <li class="active">
-          <i class="fa fa-save"></i>
+          
           Save
         </li>
       </ol>
@@ -40,74 +40,101 @@
   <form autocomplete="off" [formGroup]="poapprovalForm" (ngSubmit)="Update()" class="form-horizontal">
     <div class="panel-body">
       <div class="row">
-        <div class="col-sm-12">
-          <div class="form-group  col-md-4">
-            <label class="control-label">PO Number <span class="mandantory">*</span></label>
-            <div>
-              {{obj?.PONumber}}
-            </div>
+
+        <div class="col-md-12">
+          <div class="table-responsive">
+            <table class="table table-bordered bgtable">
+
+              <tr>
+                <th width="15%">
+                  Po Number <span class="mandantory"> *</span>
+                </th>
+                <td width="35%">
+                  {{obj?.PONumber  }}
+                </td>
+                <th width="15%">
+                  Other Reference <span class="mandantory"> *</span>
+                </th>
+                <td width="35%">
+                  {{obj?.OtherReference}}
+                </td>
+              </tr>
+              <tr>
+                <th>
+                  PO Date <span class="mandantory"> *</span>
+                </th>
+                <td>
+                  {{obj?.PODate | date:'MM-dd-yyyy HH:mm'}}
+                </td>
+                <th>
+                  Payment Reference
+                </th>
+                <td>
+                  {{obj?.PaymentReference}}
+                </td>
+              </tr>
+              <tr>
+                <th>
+                  PO Delivery Date <span class="mandantory"> *</span>
+                </th>
+                <td>
+                  {{obj?.PODeliveryDate | date:'MM-dd-yyyy HH:mm'}}
+                </td>
+                <th>
+                  Against Reference
+                </th>
+                <td>
+                  {{obj?.AgainstReference}}
+                </td>
+
+              </tr>
+              <tr>
+                <th>
+                  Location <span class="mandantory"> *</span>
+                </th>
+                <td>
+                  <div *ngIf=" objResult?.Flag  ">
+                    {{obj?.LocationName}}
+                  </div>
+                  <div *ngIf="!objResult?.Flag ">
+                    ********
+                  </div>
+                </td>
+                <th>
+                  Event Purchase
+                </th>
+                <td>
+                  <div *ngIf="(obj?.IsEventPurchase)"><i class="fa fa-check"></i></div>
+                  <div *ngIf="(!obj?.IsEventPurchase)"><i class="fa fa-times"></i></div>
+                </td>
+              </tr>
+
+              <tr>
+                <th>
+                  Vendor <span class="mandantory"> *</span>
+                </th>
+                <td>
+                  {{obj?.VendorName}}
+                </td>
+
+                <th>
+                  Is Shipment Required
+                </th>
+                <td>
+                  <div *ngIf="(obj?.IsShipmentRequired)"><i class="fa fa-check"></i></div>
+                  <div *ngIf="(!obj?.IsShipmentRequired)"><i class="fa fa-times"></i></div>
+                </td>
+              </tr>
+              <tr>
+                <th>
+                  Remarks
+                </th>
+                <td colspan="3">
+                  {{obj?.Remarks}}
+                </td>
+              </tr>
+            </table>
           </div>
-
-          <div class="form-group col-md-4">
-            <label class="control-label"> Vendor<span class="mandantory">*</span></label>
-            <div>
-              {{obj?.VendorName}}
-            </div>
-          </div>
-
-          <div class="form-group col-md-4">
-            <label class="control-label">PO Date<span class="mandantory">*</span></label>
-            <div>
-              {{obj?.PODate | date :"MM-dd-yyyy"  }}
-            </div>
-          </div>
-
-          <div class="form-group col-md-4">
-            <label class="control-label">PO DeliveryDate <span class="mandantory">*</span></label>
-            <div>
-              {{obj?.PODeliveryDate | date :"MM-dd-yyyy"  }}
-            </div>
-          </div>
-
-
-          <div class="form-group col-md-4">
-            <label class="control-label">Event Purchase <span class="mandantory">*</span></label>
-            <div>
-              {{obj?.IsEventPurchase}}
-            </div>
-          </div>
-
-          <div class="form-group col-md-4">
-            <label class="control-label">Location<span class="mandantory">*</span></label>
-            <div *ngIf=" objResult?.Flag  ">
-              {{obj?.LocationName}}
-            </div>
-            <div *ngIf="!objResult?.Flag ">
-              ********
-            </div>
-          </div>
-
-          <div class="form-group col-md-4">
-            <label class="control-label">Payment Reference<span class="mandantory">*</span></label>
-            <div>
-              {{obj?.PaymentReference}}
-            </div>
-          </div>
-
-          <div class="form-group col-md-4">
-            <label class="control-label">Other Reference<span class="mandantory">*</span></label>
-            <div>
-              {{obj?.OtherReference}}
-            </div>
-          </div>
-
-          <div class="form-group col-md-4">
-            <label class="control-label"> Against Reference<span class="mandantory">*</span></label>
-            <div>
-              {{obj?.AgainstReference}}
-            </div>
-          </div>
-
         </div>
         <div class="col-sm-12">
           <span class="groupspanheader"> Order Items</span>
@@ -223,7 +250,7 @@
                   formControlName="ApprovalStatus" (change)="onchangeApprovalStatus($event.target.value)"
                   (blur)="logValidationErrors()">
                   <option value="" selected="selected">Select</option>
-                  <option value="Approve">Approve</option> 
+                  <option value="Approve">Approve</option>
                   <option value="Reject">Reject</option>
                 </select>
                 <div class="help-block-rk">

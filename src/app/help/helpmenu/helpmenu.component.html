@@ -1,0 +1,141 @@
+<div class="row">
+  <div class="col-sm-6 col-lg-6">
+    <h3>
+      HelpMenu
+    </h3>
+  </div>
+  <div class="col-sm-6 col-lg-6">
+    <div class="pull-right hidden-xs">
+      <ol class="breadcrumb" id="dynamicbreadcrumb">
+        <li>
+          <span> Support</span>
+        </li>
+        <li>
+          <span> HelpMenu</span>
+        </li>
+        <li class="active">
+
+          Save
+        </li>
+      </ol>
+    </div>
+  </div>
+</div>
+<form autocomplete="off" [formGroup]="Helpmenuform" (ngSubmit)="SaveData()" class="form-horizontal">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <div class="row">
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+          <span class="groupspanheader">
+            {{panelTitle}}
+          </span>
+        </div>
+        <div class="col-sm-6">
+          <div class="pull-left">
+            <div class="form-group" *ngIf="!action">
+              <div class="col-sm-12 inputlevelswtch">
+                <label class="col-sm-6" for="IsActive">IsActive </label>
+                <div class="pull-right">
+                  <label class="switch">
+                    <input type="checkbox" formControlName="IsActive" checked>
+                    <span class="slider round"></span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 ">
+          <div class="pull-right">
+            <button class="btn btn-primary" routerLink="/Helpmenulist">Back</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel-body">
+
+      <div class="form-group" [ngClass]="{'has-error': formErrors.MenuType}">
+        <label class="col-sm-4 control-label" for="MenuType">Menu Type<span class="mandantory">*</span></label>
+        <div class="col-sm-2">
+          <select id="MenuType" class="form-control" formControlName="MenuType" (blur)="logValidationErrors()"
+            (change)="onchangeMenuType($event.target.value)">
+            <option value="0" selected="selected">Select</option>
+            <option *ngFor="let dis of lstMenuType" value={{dis.DropdownValue}}>
+              {{dis.DropDownDescription}}
+            </option>
+          </select>
+
+          <div class="help-block-rk"> <span class="help-block" *ngIf="formErrors.MenuType">
+              {{formErrors.MenuType}}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-sm-4 control-label" for="ParentId">Parent Menu</label>
+        <div class="col-sm-2">
+          <select id="ParentId" class="form-control" formControlName="ParentId">
+            <option value="0" selected="selected">Select</option>
+            <option *ngFor="let dis of lst" value={{dis.HelpMenuID}}>
+              {{dis.LinkText}}
+            </option>
+          </select>
+
+          <div class="help-block-rk">
+          </div>
+        </div>
+      </div>
+
+
+      <div class="form-group" [ngClass]="{'has-error': formErrors.LinkText}">
+        <label class="col-sm-4 control-label" for="LinkText">Link Text <span class="mandantory">*</span></label>
+        <div class="col-sm-4">
+          <input id="LinkText" type="text" class="form-control" formControlName="LinkText"
+            (blur)="logValidationErrors()" maxlength="230">
+          <div class="help-block-rk"> <span class="help-block" *ngIf="formErrors.LinkText">
+              {{formErrors.LinkText}}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group" [ngClass]="{'has-error': formErrors.ShortDescription}">
+        <label class="col-sm-4 control-label" for="ShortDescription">Short Description <span
+            class="mandantory">*</span></label>
+        <div class="col-sm-4">
+          <input id="ShortDescription" type="text" class="form-control" formControlName="ShortDescription"
+            (blur)="logValidationErrors()" maxlength="250">
+
+          <div class="help-block-rk">
+            <span class="help-block" *ngIf="formErrors.ShortDescription">
+              {{formErrors.ShortDescription}}
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="form-group ">
+        <div class="pull-left">
+          <label class="col-sm-12 control-label" for="PageContent">Main Content <span
+              class="mandantory">*</span></label>
+        </div>
+        <div class="col-sm-12">
+          <kendo-editor style="height: 350px;" formControlName="PageContent">
+          </kendo-editor>
+          <div class="help-block-rk">
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="panel-footer  ">
+      <div class="pull-right btn-toolbar">
+        <button class="btn btn-primary" routerLink="/Helpmenulist">Cancel</button>
+        <button class="btn btn-success" type="submit" prevent-double-submit [disabled]="Helpmenuform.invalid">
+          Save </button>
+      </div>
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</form>

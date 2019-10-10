@@ -6,6 +6,8 @@ import { SalesShipment, Shipmentoutward } from '../../_services/model';
 import { process, State } from '@progress/kendo-data-query';
 import { GridDataResult, DataStateChangeEvent, PageChangeEvent } from '@progress/kendo-angular-grid';
 import { SortDescriptor, orderBy } from '@progress/kendo-data-query';
+import { Router } from '@angular/router';
+import { AuthorizationGuard } from 'src/app/_guards/Authorizationguard';
 @Component({
   selector: 'app-sales-shipment-list',
   templateUrl: './sales-shipment-list.component.html',
@@ -20,8 +22,10 @@ export class SalesShipmentListComponent implements OnInit {
   dtOptions: DataTables.Settings = {};
   selectedDeleteId: number;
   constructor(
+    private router: Router,
     private _shipmentService: SalesShipmentService,
     private _spinner: NgxSpinnerService,
+    private _authorizationGuard: AuthorizationGuard
   ) { }
 
   ngOnInit() {
@@ -60,6 +64,13 @@ export class SalesShipmentListComponent implements OnInit {
     );
   }
 
+  AddNewLink() {
+    if (this._authorizationGuard.CheckAcess("Salesshipmentlist", "ViewEdit")) {
+      return;
+    }
+    this.router.navigate(['Salesshipment/Create',]);
+  }
+  
   //#region Paging Sorting and Filtering Start
   public allowUnsort = true;
   public sort: SortDescriptor[] = [{
@@ -99,7 +110,7 @@ export class SalesShipmentListComponent implements OnInit {
   }
   private loadSortItems(): void {
     this.gridView = {
-      data: orderBy(this.items.slice(this.skip, this.skip + this.pageSize), this.sort),
+      data: orderBy(this.items, this.sort).slice(this.skip, this.skip + this.pageSize),
       total: this.items.length
     };
   }

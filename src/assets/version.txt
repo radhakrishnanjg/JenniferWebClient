@@ -1,7 +1,7 @@
 
 Version 2.0
     Date
-        Sep 5th th 2019
+        Sep 20 th 2019
     Descriptions
         All common bugs has been fixed
         checkall and uncheck all option added store selection and bulk option mapping in the user screen

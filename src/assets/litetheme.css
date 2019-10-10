@@ -3663,7 +3663,42 @@ select {
     position: relative;
     -webkit-appearance: none;
 }
-/****/
+
+.k-filtercell 
+{
+  display: none !important;
+}
+.k-grid td {
+  padding: 0px 2px !important;
+}
+.k-grid-header .k-grid-filter.k-state-active, 
+.k-grid-header .k-header-column-menu.k-state-active, 
+.k-grid-header .k-hierarchy-cell .k-icon.k-state-active
+{
+    color: #fff !important;
+    background-color: #568178 !important;
+}
+.k-grid-header .k-i-sort-asc-sm, .k-grid-header .k-i-sort-desc-sm, .k-grid-header .k-sort-order {
+    color: #568178 !important;
+}
+  .k-button.k-primary  {
+    border-color: #568178 !important;
+    color: #fff !important;
+    background-color: #568178 !important; 
+    background-image:#568178 !important
+} 
+ .k-checkbox:checked+.k-checkbox-label::before {
+     border-color: #568178 !important; 
+    background-color: #568178 !important;  
+}
+k-pager-numbers .k-link {
+    color: #568178;
+}
+.k-list .k-item.k-state-selected, .k-list-optionlabel.k-state-selected, .k-list-container .k-button:active, .k-list-container .k-button.k-state-active, .k-column-menu .k-menu:not(.k-context-menu) .k-item.k-state-selected, .k-spreadsheet-popup .k-button:active, .k-spreadsheet-popup .k-button.k-state-active, .k-spreadsheet-popup .k-button.k-state-selected, .k-menu-group .k-item.k-state-selected, .k-menu.k-context-menu .k-item.k-state-selected {
+    color: #fff;
+    background-color: #568178;
+}
+/** Kendo Ui override end**/
 /*----------------------------------------
   md-drppicker Styles re-wright here
 ------------------------------------------*/
@@ -3900,10 +3935,85 @@ td.sorting_1 img {
     text-align: center !important;
 }
 
-.k-filtercell 
-{
-  display: none !important;
+.bgtable tr th {
+    background-color:#e4edeb !important;
 }
-.k-grid td {
-  padding: 0px 2px !important;
+.bgtable tr td {
+    background-color:#fff;
 }
+
+/* SVG CSS for left navigation start */
+.masters {  background-image: url(../assets/jicons/masters.svg); }
+.store {background-image: url(../assets/jicons/store.svg);}
+.locations {background-image: url(../assets/jicons/locations.svg);}
+.uoms {background-image: url(../assets/jicons/uom.svg);}
+.brands  {background-image: url(../assets/jicons/brand.svg);}
+.productgroups {background-image: url(../assets/jicons/product-group.svg);}
+.categories {background-image: url(../assets/jicons/category.svg);}
+.subCategories {background-image: url(../assets/jicons/sub-categories.svg);}
+.items  {background-image: url(../assets/jicons/items.svg);}
+.suppliers  {background-image: url(../assets/jicons/supplier.svg);}
+.vendors {background-image: url(../assets/jicons/vendor.svg);}
+.vendorwarehouses  {background-image: url(../assets/jicons/vendorwarehouse.svg);}
+.vendorItems {background-image: url(../assets/jicons/vendoritems.svg);}
+.debtors  {background-image: url(../assets/jicons/debtors.svg);}
+.customers  {background-image: url(../assets/jicons/customer.svg);}
+.customerwarehouses {background-image: url(../assets/jicons/Customerwarehouse.svg);}
+.customeritems  {background-image: url(../assets/jicons/customeritems.svg);}
+.pricing  {background-image: url(../assets/jicons/pricing.svg);}
+.salesrates {background-image: url(../assets/jicons/Salesrate.svg);}
+.discount  {background-image: url(../assets/jicons/Discount.svg);}
+.marketPlacefees {background-image: url(../assets/jicons/marketplacefees.svg);}
+.procurement  {background-image: url(../assets/jicons/procurement.svg);}
+.purchaseorder {background-image: url(../assets/jicons/PurchaseOrder.svg);}
+.pOApproval {background-image: url(../assets/jicons/approval.svg);}
+.shipments {background-image: url(../assets/jicons/Shipment.svg);}
+.purchaseInvoices  {background-image: url(../assets/jicons/Invoices.svg);}
+.BOE  {background-image: url(../assets/jicons/BOE.svg);}
+.GRN  {background-image: url(../assets/jicons/GRN.svg);}
+.GoodsReceipts  {background-image: url(../assets/jicons/receipts.svg);}
+.GoodsInward  {background-image: url(../assets/jicons/goods-inward.svg);}
+.GoodsStorage {background-image: url(../assets/jicons/Goods-Storage.svg);}
+.GoodsDispute {background-image: url(../assets/jicons/goods-dispute.svg);}
+.InventoryDetail {background-image: url(../assets/jicons/Inventory-details.svg);}
+.Journals  {background-image: url(../assets/jicons/Journal.svg);}
+.stockTransfer  {background-image: url(../assets/jicons/stockTrsnsfer.svg);}
+.revenue  {background-image: url(../assets/jicons/revenue.svg);}
+.salesOrders   {background-image: url(../assets/jicons/Salesorder.svg);}
+.salesOrderApproval   {background-image: url(../assets/jicons/SOApproval.svg);}
+.picklist   {background-image: url(../assets/jicons/Pciklist.svg);}
+.salesShipment  {background-image: url(../assets/jicons/salesShipment.svg);}
+.shipmentOutward {background-image: url(../assets/jicons/Outward.svg);}
+.uploads  {background-image: url(../assets/jicons/uploads.svg);}
+.masterdata  {background-image: url(../assets/jicons/masterdata.svg);}
+.utilities {background-image: url(../assets/jicons/utilities.svg);}
+.users {background-image: url(../assets/jicons/users.svg);}
+.contacts {background-image: url(../assets/jicons/contacts.svg);}
+.emailconfiguration {background-image: url(../assets/jicons/emailconfiguration.svg);}
+.receipts {background-image: url(../assets/jicons/receipts.svg);}
+.jenniferAdmin  {background-image: url(../assets/jicons/dashboard.svg);}
+.companies {background-image: url(../assets/jicons/companies.svg);}
+.menus {background-image: url(../assets/jicons/menus.svg);}
+.marketplaces  {background-image: url(../assets/jicons/marketplaces.svg);}
+.dropdowns {background-image: url(../assets/jicons/dropdowns.svg);}
+.reportmaster  {background-image: url(../assets/jicons/reportmaster.svg);}
+.download  {background-image: url(../assets/jicons/download.svg);}
+.D1   {background-image: url(../assets/jicons/d1.svg);}
+.inventory  {background-image: url(../assets/jicons/inventory.svg);}
+.amazon  {background-image: url(../assets/jicons/amazon.svg);}
+.compliance  {background-image: url(../assets/jicons/compliance.svg);}
+.analytics   {background-image: url(../assets/jicons/analytics.svg);}
+.MIS    {background-image: url(../assets/jicons/MIS.svg);}
+.others   {background-image: url(../assets/jicons/others.svg);}
+.amazonMTR    {background-image: url(../assets/jicons/amazonmtr.svg);} 
+
+i.jicon {
+    display: block !important;
+    width: 20px !important;
+    height: 20px !important;
+    background-repeat: no-repeat;
+    background-size: contain;
+    margin: 6px 6px 0px 2px;
+    float: left; 
+} 
+/* SVG CSS for left navigation end */

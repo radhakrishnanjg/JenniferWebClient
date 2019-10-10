@@ -62,6 +62,9 @@ export class PoComponent implements OnInit {
   dtOptions: DataTables.Settings = {};
   panelTitle: string = "Add New PO";
   poDate: { startDate: moment.Moment, endDate: moment.Moment };
+
+  TotalQty: number = 0.00;
+  TotalTotalAmount: number = 0.00;
   //KendoUI Grid
   public gridData: any[];
   public itemFormGroup: FormGroup;
@@ -238,6 +241,8 @@ export class PoComponent implements OnInit {
 
           this.poForm.get('IsShipmentRequired').disable();
           this.gridData = this.poOrder.lstItem;
+          this.TotalQty = this.gridData.reduce((acc, a) => acc + a.Qty, 0);
+          this.TotalTotalAmount = this.gridData.reduce((acc, a) => acc + a.TotalAmount, 0);
           var PODate = moment(data.PODate, 'YYYY-MM-DD[T]HH:mm').format('MM-DD-YYYY HH:mm').toString();
           var PODeliveryDate = moment(data.PODeliveryDate, 'YYYY-MM-DD[T]HH:mm').format('MM-DD-YYYY HH:mm').toString();
           var VendorID = data.VendorID.toString();
@@ -256,9 +261,8 @@ export class PoComponent implements OnInit {
             Remarks: data.Remarks
           });
           this.onVendorChanged(this.poOrder.VendorID);
-          this._spinner.hide();
-
-
+          this.DisbableShipmentCheckbox(data.LocationID);
+          this._spinner.hide(); 
         },
         (err: any) => {
           console.log(err);
@@ -271,6 +275,7 @@ export class PoComponent implements OnInit {
   public onLocationChange(locationID): void {
     this.poOrder.LocationID = locationID;
     if (locationID > 0) {
+      this.DisbableShipmentCheckbox(locationID);
       this._spinner.show();
       this._poService.getPONumber(locationID).subscribe(
         (res) => {
@@ -280,6 +285,21 @@ export class PoComponent implements OnInit {
           this._spinner.hide();
           console.log(err);
         });
+
+    }
+  }
+  //disble shipment checkbox for is 
+  private DisbableShipmentCheckbox(locationID: number) {
+    debugger
+    if (this.locationList.filter(a => a.LocationID == locationID)[0].IsInvoicing) {
+      this.poForm.patchValue(
+        {
+          IsShipmentRequired: false,
+        })
+      this.poForm.get('IsShipmentRequired').disable();
+    }
+    else {
+      this.poForm.get('IsShipmentRequired').enable();
     }
   }
 
@@ -511,29 +531,49 @@ export class PoComponent implements OnInit {
       this._alertService.error("Order Item required");
       return;
     }
-    if (this.poOrder.POID > 0) {
-      if (this.poForm.controls['PODate'].value.startDate._d != undefined) {
-        this.poOrder.PODate = this.poForm.controls['PODate'].value.startDate._d.toLocaleString();
-      } else {
-        this.poOrder.PODate = this.poForm.controls['PODate'].value.startDate.toLocaleString();
-      }
-      if (this.poForm.controls['PODeliveryDate'].value.startDate._d != undefined) {
-        this.poOrder.PODeliveryDate = this.poForm.controls['PODeliveryDate'].value.startDate._d.toLocaleString();
-      } else {
-        this.poOrder.PODeliveryDate = this.poForm.controls['PODeliveryDate'].value.startDate.toLocaleString();
-      }
-      if (this.poOrder.PODate > this.poOrder.PODeliveryDate) {
-        this._alertService.error('The PO Delivery Date must be greater than or equal to the PODate!');
-        return;
-      }
-    } else {
-      this.poOrder.PODate = this.poForm.controls['PODate'].value.startDate;//_d.toLocaleString()
-      this.poOrder.PODeliveryDate = this.poForm.controls['PODeliveryDate'].value.startDate;
+    // if (this.poOrder.POID > 0) {
+    //   if (this.poForm.controls['PODate'].value.startDate._d != undefined) {
+    //     this.poOrder.PODate = this.poForm.controls['PODate'].value.startDate._d.toLocaleString();
+    //   } else {
+    //     this.poOrder.PODate = this.poForm.controls['PODate'].value.startDate.toLocaleString();
+    //   }
+    //   if (this.poForm.controls['PODeliveryDate'].value.startDate._d != undefined) {
+    //     this.poOrder.PODeliveryDate = this.poForm.controls['PODeliveryDate'].value.startDate._d.toLocaleString();
+    //   } else {
+    //     this.poOrder.PODeliveryDate = this.poForm.controls['PODeliveryDate'].value.startDate.toLocaleString();
+    //   }
+    //   let PODate = new Date(moment(new Date(this.poOrder.PODate)).format("MM-DD-YYYY HH:mm"));
+    //   let PODeliveryDate = new Date(moment(new Date(this.poOrder.PODeliveryDate)).format("MM-DD-YYYY HH:mm")); 
+    //   if (PODate > PODeliveryDate) {
+    //     this._alertService.error('The PO Delivery Date must be greater than or equal to the PODate!');
+    //     return;
+    //   }
+    // } else {
+    //   this.poOrder.PODate = this.poForm.controls['PODate'].value.startDate.toLocaleString();
+    //   this.poOrder.PODeliveryDate = this.poForm.controls['PODeliveryDate'].value.startDate.toLocaleString();
+    //   let PODate = new Date(moment(new Date(this.poOrder.PODate)).format("MM-DD-YYYY HH:mm"));
+    //   let PODeliveryDate = new Date(moment(new Date(this.poOrder.PODeliveryDate)).format("MM-DD-YYYY HH:mm")); 
+    //   if (PODate > PODeliveryDate) {
+    //     this._alertService.error('The PO Delivery Date must be greater than or equal to the PODate!');
+    //     return;
+    //   }
+    // }
 
-      if (this.poOrder.PODate > this.poOrder.PODeliveryDate) {
-        this._alertService.error('The PO Delivery Date must be greater than or equal to the PODate!');
-        return;
-      }
+    if (this.poForm.controls['PODate'].value.startDate._d != undefined) {
+      this.poOrder.PODate = this.poForm.controls['PODate'].value.startDate._d.toLocaleString();
+    } else {
+      this.poOrder.PODate = this.poForm.controls['PODate'].value.startDate.toLocaleString();
+    }
+    if (this.poForm.controls['PODeliveryDate'].value.startDate._d != undefined) {
+      this.poOrder.PODeliveryDate = this.poForm.controls['PODeliveryDate'].value.startDate._d.toLocaleString();
+    } else {
+      this.poOrder.PODeliveryDate = this.poForm.controls['PODeliveryDate'].value.startDate.toLocaleString();
+    }
+    let PODate = new Date(moment(new Date(this.poOrder.PODate)).format("MM-DD-YYYY HH:mm"));
+    let PODeliveryDate = new Date(moment(new Date(this.poOrder.PODeliveryDate)).format("MM-DD-YYYY HH:mm"));
+    if (PODate > PODeliveryDate) {
+      this._alertService.error('The PO Delivery Date must be greater than or equal to the PODate!');
+      return;
     }
 
     this.poOrder.LocationID = this.poForm.controls['LocationID'].value;
@@ -647,6 +687,8 @@ export class PoComponent implements OnInit {
     }
     if (this.gridData.length > 0) {
       this.poForm.get('VendorID').disable();
+      this.TotalQty = this.gridData.reduce((acc, a) => acc + a.Qty, 0);
+      this.TotalTotalAmount = this.gridData.reduce((acc, a) => acc + a.TotalAmount, 0);
     }
     this.poOrderItem = new Poorderitem();
     this.totalAmountFieldDisabled = false;
@@ -659,9 +701,13 @@ export class PoComponent implements OnInit {
     this.poOrder.lstItem.splice(index, 1);
     if (this.gridData.length > 0) {
       this.poForm.get('VendorID').disable();
+      this.TotalQty = this.gridData.reduce((acc, a) => acc + a.Qty, 0);
+      this.TotalTotalAmount = this.gridData.reduce((acc, a) => acc + a.TotalAmount, 0);
     }
     else {
       this.poForm.get('VendorID').enable();
+      this.TotalQty = 0;
+      this.TotalTotalAmount = 0;
     }
   }
 
@@ -767,6 +813,9 @@ export class PoComponent implements OnInit {
           this._spinner.hide();
           if (this.gridData.length > 0) {
             this.poForm.get('VendorID').disable();
+
+            this.TotalQty = this.gridData.reduce((acc, a) => acc + a.Qty, 0);
+            this.TotalTotalAmount = this.gridData.reduce((acc, a) => acc + a.TotalAmount, 0);
           }
           if (res.length > 0) {
             this._alertService.success("Validated successfully");
@@ -776,7 +825,7 @@ export class PoComponent implements OnInit {
           }
           else {
             this._alertService.error("Itemcode/UOM ID are not matched with available data.!");
-          } 
+          }
 
           $('#modalpopupbulkupload').modal('hide');
         },

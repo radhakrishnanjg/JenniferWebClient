@@ -8,239 +8,216 @@
     <div class="pull-right hidden-xs">
       <ol class="breadcrumb" id="dynamicbreadcrumb">
         <li>
-          <i class="fa fa-truck"></i> <span> GRN</span>
+           <span> GRN</span>
         </li>
         <li>
-          <i class="fa fa-truck"></i> <span> Goods dispute</span>
+           <span> Goods dispute</span>
         </li>
         <li class="active">
-          <i class="fa fa-save"></i>
+          
           Save
         </li>
       </ol>
     </div>
   </div>
-</div> 
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <div class="row">
-        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-          <span class="groupspanheader">
-            Goods Dispute View
-          </span>
-        </div>
-        <div class="col-sm-6">
-          <div class="pull-left">
+</div>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <div class="row">
+      <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+        <span class="groupspanheader">
+          Goods Dispute View
+        </span>
+      </div>
+      <div class="col-sm-6">
+        <div class="pull-left">
 
-          </div>
         </div>
-        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 ">
-          <div class="pull-right">
-            <button class="btn btn-default" title="DownloadImages" (click)="DownloadButtonClick(obj?.DisputeID)"> 
-              Download Images
-            </button>
-            &nbsp;
-            <button class="btn btn-primary" routerLink="/Goodsdisputelist" title="Back"> 
-              Back
-            </button>
-          </div>
+      </div>
+      <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 ">
+        <div class="pull-right">
+          <button class="btn btn-default" title="DownloadImages" (click)="DownloadButtonClick(obj?.DisputeID)">
+            Download Images
+          </button>
+          &nbsp;
+          <button class="btn btn-primary" routerLink="/Goodsdisputelist" title="Back">
+            Back
+          </button>
         </div>
       </div>
     </div>
-    <div class="panel-body">
-      <span class="groupspanheader"> General Information </span>
-      <div class="row">
-        <div class="col-md-4 col-xs-12">
-          <div>
-            <label class="control-label" for="JenniferItemSerial">Jennifer Item Serial Number
-              <span class="mandantory">*</span>
+  </div>
+  <div class="panel-body">
+    <span class="groupspanheader"> General Information </span>
+    <div class="table-responsive">
+      <table class="bgtable table table-bordered">
 
-            </label>
-            <div >
-              {{obj?.JenniferItemSerial}}
-            </div>
-          </div>
-        </div>
-        <div class="col-md-2 col-xs-12">
-          <div>
-            <label class="control-label" for="GRNInwardID">GRN Number <span class="mandantory">*</span>
-
-            </label>
-            <div >
-              {{ obj?.GRNNumber}}
-            </div>
-          </div>
-        </div>
-        <div class="col-md-2 col-xs-12">
-          <div>
-            <label class="control-label" for="InventoryType">Inventory Type <span class="mandantory">*</span>
-
-            </label>
-            <div >
-              {{ obj?.InventoryType}}
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4 col-xs-12">
-          <div>
-            <label class="control-label" for="ItemName">Item Code-Description <span class="mandantory">*</span>
-
-            </label>
-            <div >
-              {{ obj?.ItemName}}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-md-4 col-xs-12">
-          <div>
-            <label class="control-label" for="DisputeType">Dispute Type<span class="mandantory">*</span></label>
-            <div >
-              {{obj?.DisputeType}}
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4 col-xs-12">
-          <div>
-            <label class="control-label" for="OtherItemID">Other Item Code
-              <span class="mandantory"></span>
-
-            </label>
-            <div >
-              {{obj?.OtherItemID}}
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-4 col-xs-12">
-          <div>
-            <label class="control-label" for="VideoLink">Video link
-              <span class="mandantory">*</span>
-            </label> <br>
-
+        <tr>
+          <th width="15%">
+            Jennifer Item Serial Number
+            <span class="mandantory">*</span>
+          </th>
+          <td width="35%">
+            {{obj?.JenniferItemSerial}}
+          </td>
+          <th width="15%">
+            Dispute Type<span class="mandantory">*</span>
+          </th>
+          <td width="35%">
+            {{obj?.DisputeType}}
+          </td>
+        </tr>
+        <tr>
+          <th>
+            GRN Number <span class="mandantory">*</span>
+          </th>
+          <td>
+            {{ obj?.GRNNumber}}
+          </td>
+          <th>
+            Other Item Code
+            <span class="mandantory"></span>
+          </th>
+          <td>
+            {{obj?.OtherItemID}}
+          </td>
+        </tr>
+        <tr>
+          <th>
+            Inventory Type <span class="mandantory">*</span>
+          </th>
+          <td>
+            {{ obj?.InventoryType}}
+          </td>
+          <th>
+            Video link
+            <span class="mandantory">*</span>
+          </th>
+          <td>
             {{obj?.VideoLink}}
-          </div>
-        </div>
-        <div class="col-md-8 col-xs-12">
-          <div>
+          </td>
+        </tr>
+        <tr>
+          <th>
+            Item Code-Description <span class="mandantory">*</span>
+          </th>
+          <td>
+            {{ obj?.ItemName}}
+          </td>
+          <th>
             <label class="control-label" for="Remarks">Remarks</label>
-            <div >
-              {{obj?.Remarks}}
-            </div>
+          </th>
+          <td>
+            {{obj?.Remarks}}
+          </td>
+        </tr>
+
+      </table>
+    </div> 
+    <span class="groupspanheader">Upload Images</span>
+    <div class="row">
+      <div class="col-sm-3 col-xs-12">
+        <div>
+          <div class=" col-sm-12 inputlevel">
+            <label class="nopading_loct control-label" for="SelectSelect">Image 1
+              <span class="mandantory">*</span>
+            </label>
+            <br>
+            <img [src]="obj?.Image1" width="200" height="200" title="Dispute Image 1" />
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-3 col-xs-12">
+        <div>
+          <div class=" col-sm-12 inputlevel">
+            <label class="nopading_loct control-label" for="SelectSelect">Image 2
+              <span class="mandantory">*</span>
+            </label>
+            <br>
+            <img [src]="obj?.Image2" width="200" height="200" title="Dispute Image 2" />
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-3 col-xs-12">
+        <div>
+          <div class=" col-sm-12 inputlevel">
+            <label class="nopading_loct control-label" for="SelectSelect">Image 3
+              <span class="mandantory">*</span>
+            </label>
+            <br>
+            <img [src]="obj?.Image3" width="200" height="200" title="Dispute Image 3" />
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-3 col-xs-12">
+        <div>
+          <div class=" col-sm-12 inputlevel">
+            <label class="nopading_loct control-label" for="SelectSelect">Image 4
+              <span class="mandantory">*</span>
+            </label>
+            <br>
+            <img [src]="obj?.Image4" width="200" height="200" title="Dispute Image 4" />
           </div>
         </div>
       </div>
     </div>
-  </div> 
-  <div class="panel">
-    <div class="panel-body">
-      <span class="groupspanheader">Upload Images</span>
-      <div class="row">
-        <div class="col-sm-3 col-xs-12">
-          <div>
-            <div class=" col-sm-12 inputlevel">
-              <label class="nopading_loct control-label" for="SelectSelect">Image 1
-                <span class="mandantory">*</span>
-              </label>
-              <br>
-              <img [src]="obj?.Image1" width="200" height="200" title="Dispute Image 1" />
-            </div>
-          </div>
-        </div>
-        <div class="col-sm-3 col-xs-12">
-          <div>
-            <div class=" col-sm-12 inputlevel">
-              <label class="nopading_loct control-label" for="SelectSelect">Image 2
-                <span class="mandantory">*</span>
-              </label>
-              <br>
-              <img [src]="obj?.Image2" width="200" height="200" title="Dispute Image 2" />
-            </div>
-          </div>
-        </div>
-        <div class="col-sm-3 col-xs-12">
-          <div>
-            <div class=" col-sm-12 inputlevel">
-              <label class="nopading_loct control-label" for="SelectSelect">Image 3
-                <span class="mandantory">*</span>
-              </label>
-              <br>
-              <img [src]="obj?.Image3" width="200" height="200" title="Dispute Image 3" />
-            </div>
-          </div>
-        </div>
-        <div class="col-sm-3 col-xs-12">
-          <div>
-            <div class=" col-sm-12 inputlevel">
-              <label class="nopading_loct control-label" for="SelectSelect">Image 4
-                <span class="mandantory">*</span>
-              </label>
-              <br>
-              <img [src]="obj?.Image4" width="200" height="200" title="Dispute Image 4" />
-            </div>
+    <div class="row">
+      <div class="col-sm-3 col-xs-12">
+        <div>
+          <div class=" col-sm-12 inputlevel">
+            <label class="nopading_loct control-label" for="SelectSelect">Image 5</label>
+            <br>
+            <img [src]="obj?.Image5" width="200" height="200" title="Dispute Image 5" />
           </div>
         </div>
       </div>
-      <div class="row">
-        <div class="col-sm-3 col-xs-12">
-          <div>
-            <div class=" col-sm-12 inputlevel">
-              <label class="nopading_loct control-label" for="SelectSelect">Image 5</label>
-              <br>
-              <img [src]="obj?.Image5" width="200" height="200" title="Dispute Image 5" />
-            </div>
-          </div>
-        </div>
-        <div class="col-sm-3 col-xs-12">
-          <div>
-            <div class=" col-sm-12 inputlevel">
-              <label class="nopading_loct control-label" for="SelectSelect">Image 6</label>
-              <br>
-              <img [src]="obj?.Image6" width="200" height="200" title="Dispute Image 6" />
-            </div>
-          </div>
-        </div>
-        <div class="col-sm-3 col-xs-12">
-          <div>
-            <div class=" col-sm-12 inputlevel">
-              <label class="nopading_loct control-label" for="SelectSelect">Image 7</label>
-              <br>
-              <img [src]="obj?.Image7" width="200" height="200" title="Dispute Image 7" />
-            </div>
-          </div>
-        </div>
-        <div class="col-sm-3 col-xs-12">
-          <div>
-            <div class=" col-sm-12 inputlevel">
-              <label class="nopading_loct control-label" for="SelectSelect">Image 8</label>
-              <br>
-              <img [src]="obj?.Image8" width="200" height="200" title="Dispute Image 8" />
-            </div>
+      <div class="col-sm-3 col-xs-12">
+        <div>
+          <div class=" col-sm-12 inputlevel">
+            <label class="nopading_loct control-label" for="SelectSelect">Image 6</label>
+            <br>
+            <img [src]="obj?.Image6" width="200" height="200" title="Dispute Image 6" />
           </div>
         </div>
       </div>
-      <div class="row">
-        <div class="col-sm-3 col-xs-12">
-          <div>
-            <div class=" col-sm-12 inputlevel">
-              <label class="nopading_loct control-label" for="SelectSelect">Image 9</label>
-              <br>
-              <img [src]="obj?.Image9" width="200" height="200" title="Dispute Image 9" />
-            </div>
+      <div class="col-sm-3 col-xs-12">
+        <div>
+          <div class=" col-sm-12 inputlevel">
+            <label class="nopading_loct control-label" for="SelectSelect">Image 7</label>
+            <br>
+            <img [src]="obj?.Image7" width="200" height="200" title="Dispute Image 7" />
           </div>
         </div>
-        <div class="col-sm-3 col-xs-12">
-          <div>
-            <div class=" col-sm-12 inputlevel">
-              <label class="nopading_loct control-label" for="SelectSelect">Image 10</label>
-              <br>
-              <img [src]="obj?.Image10" width="200" height="200" title="Dispute Image 10" />
-            </div>
+      </div>
+      <div class="col-sm-3 col-xs-12">
+        <div>
+          <div class=" col-sm-12 inputlevel">
+            <label class="nopading_loct control-label" for="SelectSelect">Image 8</label>
+            <br>
+            <img [src]="obj?.Image8" width="200" height="200" title="Dispute Image 8" />
           </div>
         </div>
       </div>
     </div>
-  </div> 
+    <div class="row">
+      <div class="col-sm-3 col-xs-12">
+        <div>
+          <div class=" col-sm-12 inputlevel">
+            <label class="nopading_loct control-label" for="SelectSelect">Image 9</label>
+            <br>
+            <img [src]="obj?.Image9" width="200" height="200" title="Dispute Image 9" />
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-3 col-xs-12">
+        <div>
+          <div class=" col-sm-12 inputlevel">
+            <label class="nopading_loct control-label" for="SelectSelect">Image 10</label>
+            <br>
+            <img [src]="obj?.Image10" width="200" height="200" title="Dispute Image 10" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

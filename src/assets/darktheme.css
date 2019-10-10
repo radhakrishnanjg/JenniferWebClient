@@ -3563,3 +3563,129 @@ select {
 
 
 /*****/
+
+
+/**KINDO UI STYLES OVERRIGHT**/
+.k-gantt-toolbar .k-button, .k-gantt>.k-header .k-link, .k-gantt>.k-header li, .k-grid .k-header .k-button, .k-scheduler .k-header .k-button, .k-scheduler .k-header .k-link, .k-scheduler .k-header li, .km-pane-wrapper .k-header .k-button {
+    color:#578278;
+    background-color: #578278;
+    border-color: #578278;
+    box-shadow: none;
+    font-size: 12px;
+}
+.k-header.k-grid-toolbar {
+    border-color: #cadbd7;
+}
+.k-filter-row th, .k-grid-header th.k-header {
+    padding: .526em .6em !important;
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: capitalize;
+}
+.k-pager-numbers .k-state-selected {
+    color: #fff;
+    background-color: #37504a !important;
+} 
+.k-grid-header .k-header, .k-grid-header .k-header .k-link, .k-grid-header .k-link, .k-grid-header .k-link:link, .k-pager-info, .k-scheduler-agendaview .k-scheduler-datecolumn, .k-scheduler-header {
+    color: #000;
+    background-color: #f6f6f6;
+}
+.k-grid th  {  
+    padding:1px 2px 0px 1px !important;
+    FONT-SIZE: 11px;
+    border-color: white;
+    outline: 0;
+    border: 1px solid #efefef !important; 
+    font-weight: inherit;
+    text-align: inherit;
+    /* text-transform: capitalize; */
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.k-grid td {
+    padding: 4px 2px !important;
+    FONT-SIZE: 11px;
+    border-color: white;
+    outline: 0;
+    border: 1px solid #efefef !important;
+    font-weight: inherit;
+    text-align: inherit;
+    /* text-transform: capitalize; */
+    overflow: hidden;
+    line-height: 22px;
+    vertical-align: middle;
+    text-overflow: ellipsis;
+}
+.k-dropdown-operator .k-select {
+    width: calc(8px + 1.4285714286em);
+    height: calc(4px + 1.4285714286em) !important;
+}
+.k-grid-header .k-header {
+    position: relative;
+    vertical-align: top !important;
+    cursor: default;
+}
+.k-textbox, .k-input.k-textbox {
+    height: calc(6px + 1.4285714286em) !important;
+}
+.k-textbox, .k-input.k-textbox, .k-textarea {
+    border-radius: 2px;
+    padding: 2px 2px !important;
+    width: 12.4em;
+    box-sizing: border-box;
+    border-width: 1px;
+    border-style: solid;
+    outline: 0;
+    font: inherit;
+    font-size: 14px;
+    line-height: 1.4285714286;
+    display: inline-flex;
+    vertical-align: middle;
+    position: relative;
+    -webkit-appearance: none;
+}
+
+.k-filtercell 
+{
+  display: none !important;
+}
+.k-grid td {
+  padding: 0px 2px !important;
+}
+.k-grid-header .k-grid-filter.k-state-active, 
+.k-grid-header .k-header-column-menu.k-state-active, 
+.k-grid-header .k-hierarchy-cell .k-icon.k-state-active
+{
+    color: #fff !important;
+    background-color: #5f464e !important;
+}
+.k-grid-header .k-i-sort-asc-sm, .k-grid-header .k-i-sort-desc-sm, .k-grid-header .k-sort-order {
+    color: #5f464e !important;
+}
+  .k-button.k-primary  {
+    border-color: #5f464e !important;
+    color: #fff !important;
+    background-color: #5f464e !important; 
+    background-image:#5f464e !important
+} 
+ .k-checkbox:checked+.k-checkbox-label::before {
+     border-color: #5f464e !important; 
+    background-color: #5f464e !important;  
+}
+k-pager-numbers .k-link {
+    color: #5f464e;
+}
+.k-list .k-item.k-state-selected, .k-list-optionlabel.k-state-selected, .k-list-container .k-button:active, .k-list-container .k-button.k-state-active, .k-column-menu .k-menu:not(.k-context-menu) .k-item.k-state-selected, .k-spreadsheet-popup .k-button:active, .k-spreadsheet-popup .k-button.k-state-active, .k-spreadsheet-popup .k-button.k-state-selected, .k-menu-group .k-item.k-state-selected, .k-menu.k-context-menu .k-item.k-state-selected {
+    color: #fff;
+    background-color: #5f464e;
+}
+/** Kendo Ui override end**/
+.bgtable tr th {
+    background-color:#d6d6d6 !important;
+    padding: 3px 4px !important;
+}
+.bgtable tr td {
+    background-color:#fff;
+    padding: 3px 4px !important;
+}
+

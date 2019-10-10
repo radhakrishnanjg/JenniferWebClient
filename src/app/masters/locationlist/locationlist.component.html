@@ -8,13 +8,13 @@
     <div class="pull-right hidden-xs">
       <ol class="breadcrumb" id="dynamicbreadcrumb">
         <li>
-          <i class="fa fa-asterisk"></i> <span> Master</span>
+           <span> Master</span>
         </li>
         <li>
-          <i class="fa fa-map-marker"></i> <span> Locations</span>
+           <span> Locations</span>
         </li>
         <li class="active">
-          <i class="fa fa-list" aria-hidden="true"></i>
+          
           List
         </li>
       </ol>
@@ -44,8 +44,7 @@
             <select [(ngModel)]="Searchaction" type="select" class="serchcurv form-control btn-group">
               <option value="true">Active</option>
               <option value="false">InActive</option>
-            </select>
-
+            </select> 
           </div>
           <div class="col-md-2 nopading_loct">
             <button class="serchcurv btn btn-default btn-group" (click)="Search()" title="Search">
@@ -58,7 +57,7 @@
         </div>
       </div>
       <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 text-right">
-        <button class="btn btn-primary" routerLink="/Location/Create" title="Add New">
+        <button class="btn btn-primary" (click)="AddNewLink()" title="Add New">
           Add New
         </button>
       </div>

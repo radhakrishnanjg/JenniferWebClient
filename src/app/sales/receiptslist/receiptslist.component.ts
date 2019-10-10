@@ -289,7 +289,7 @@ export class ReceiptslistComponent implements OnInit {
     this._receiptsService.DownloadReceiptFile(Filename)
       .subscribe(data => {
         this._spinner.hide(),
-          saveAs(data, Filename.toString());//+ '.csv'
+          saveAs(data, Filename.toString()+ '.csv');//+ '.csv'
       },
         (err) => {
           this._spinner.hide();
@@ -304,7 +304,7 @@ export class ReceiptslistComponent implements OnInit {
     this._receiptsService.DownloadReceiptFile(Filename)
       .subscribe(data => {
         this._spinner.hide(),
-          saveAs(data, Filename.toString());//+ '.csv'
+          saveAs(data, Filename.toString()+ '.csv');//+ '.csv'
       },
         (err) => {
           this._spinner.hide();

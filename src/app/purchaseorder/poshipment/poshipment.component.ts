@@ -5,11 +5,8 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { PoshipmentService } from '../../_services/service/poshipment.service';
 import { PrivateutilityService } from '../../_services/service/privateutility.service';
-import { AuthorizationGuard } from '../../_guards/Authorizationguard'
-
-
-import { UsernameValidator } from '../../_validators/username';
-import { Apisettings, Poshipment, Poorder, Poorderitem, Location } from '../../_services/model';
+import { AuthorizationGuard } from '../../_guards/Authorizationguard' 
+import { Apisettings, Poshipment,   Poorderitem,   } from '../../_services/model';
 import * as moment from 'moment';
 
 
@@ -23,7 +20,6 @@ export class PoshipmentComponent implements OnInit {
   lstpendingshipments: Poshipment[];
   lstpoorderitem: Poorderitem[];
   lstshipmentqty: Poorderitem[];
-  lstlocation: Location[];
   poshipmentForm: FormGroup;
   uploaddata: Poshipment = {} as any;
   selectedFile: File[];
@@ -95,7 +91,7 @@ export class PoshipmentComponent implements OnInit {
   logValidationErrors(group: FormGroup = this.poshipmentForm): void {
     Object.keys(group.controls).forEach((key: string) => {
       const abstractControl = group.get(key);
-      if (abstractControl && abstractControl.value && abstractControl.value.length > 0 && !abstractControl.value.replace(/\s/g, '').length) {
+      if (abstractControl && abstractControl.value && abstractControl.value.length > 0 && !abstractControl.value.replace(/^\s+|\s+$/gm, '').length) {
         abstractControl.setValue('');
       }
       this.formErrors[key] = '';
@@ -117,31 +113,7 @@ export class PoshipmentComponent implements OnInit {
   ngOnInit() {
     this.MinDate = moment().add(0, 'days');
 
-    this._spinner.show();
-    this._poshipmentService.shipment_Pending()
-      .subscribe(
-        (data: Poshipment[]) => {
-          
-          this.lstpendingshipments = data;
-          this._spinner.hide();
-        },
-        (err) => {
-          this._spinner.hide();
-          console.log(err);
-        }
-      );
 
-    this._spinner.show();
-    this._privateutilityService.getLocations().subscribe(
-      (data) => {
-        this.lstlocation = data;
-        this._spinner.hide();
-      },
-      (err) => {
-        this._spinner.hide();
-        console.log(err);
-      }
-    );
 
     this.aroute.paramMap.subscribe(params => {
       this.identity = +params.get('id');
@@ -153,7 +125,7 @@ export class PoshipmentComponent implements OnInit {
         this._spinner.show();
         this._poshipmentService.searchById(this.POId, this.identity)
           .subscribe(
-            (data: Poshipment) => { 
+            (data: Poshipment) => {
               var Appointment = moment(data.Appointment, 'YYYY-MM-DD[T]HH:mm').format('MM-DD-YYYY HH:mm').toString();
               this.poshipmentForm.patchValue({
                 POID: data.POID,
@@ -178,7 +150,7 @@ export class PoshipmentComponent implements OnInit {
               this.TotalPOQty = this.lstshipmentqty.reduce((acc, a) => acc + a.POQty, 0);
               this.TotalAvailableQty = this.lstshipmentqty.reduce((acc, a) => acc + a.AvailableQty, 0);
               this.TotalShipmentQty = this.lstshipmentqty.reduce((acc, a) => acc + a.ShipmentQty, 0);
-
+              this.ShipmentType=data.ShipmentType;
               this.PONumber = data.PONumber;
               this.AttachedFileNames = data.AttachedFileNames;
               //this.logValidationErrors();
@@ -196,6 +168,19 @@ export class PoshipmentComponent implements OnInit {
       else {
         this.action = true;
         this.panelTitle = "Add New Shipment";
+        this._spinner.show();
+        this._poshipmentService.shipment_Pending()
+          .subscribe(
+            (data: Poshipment[]) => {
+
+              this.lstpendingshipments = data;
+              this._spinner.hide();
+            },
+            (err) => {
+              this._spinner.hide();
+              console.log(err);
+            }
+          );
       }
     });
 
@@ -313,7 +298,7 @@ export class PoshipmentComponent implements OnInit {
 
 
   Insert() {
-    
+
     if (this.poshipmentForm.controls['ShipmentType'].value == 'Manual') {
       if (this.selectedFile == undefined || this.selectedFile == null) {
         this._alertService.error("Please select shipment files to proceed further.! ");
@@ -378,8 +363,8 @@ export class PoshipmentComponent implements OnInit {
     this.uploaddata.ShipmentName = this.poshipmentForm.controls['ShipmentName'].value;
     this.uploaddata.CarpID = this.poshipmentForm.controls['CarpID'].value;
     this.uploaddata.IsMailSent = this.poshipmentForm.controls['IsMailSent'].value;
-    
-    if (this.poshipmentForm.controls['Appointment'].value != '') { 
+
+    if (this.poshipmentForm.controls['Appointment'].value != '') {
       if (this.poshipmentForm.controls['Appointment'].value.startDate._d != undefined) {
         this.uploaddata.AppointmentDate = this.poshipmentForm.controls['Appointment'].value.startDate._d.toLocaleString();
       } else {

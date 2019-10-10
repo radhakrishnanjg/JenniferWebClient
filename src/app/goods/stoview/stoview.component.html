@@ -14,7 +14,7 @@
           <i class="fa fa-arrows-h"></i> <span>Stock Transfer</span>
         </li>
         <li class="active">
-          <i class="fa fa-eye"></i>
+          
           View
         </li>
       </ol>
@@ -24,12 +24,12 @@
 <div class="panel panel-default">
   <div class="panel-heading">
     <div class="row">
-      <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+      <div class="col-xs-6 col-md-3 col-lg-3">
         <span class="groupspanheader">
           Stock Transfer View
         </span>
       </div>
-      <div class="col-sm-6">
+      <div class="col-md-5">
         <div class="pull-left">
 
         </div>
@@ -45,81 +45,60 @@
   </div>
   <div class="panel-body">
     <div class="row">
-      <div class="col-md-4 col-xs-12">
-        <div>
-          <label>STO Number <span class="mandantory">*</span>
-          </label>
-          <div>
-            {{obj?.STONumber}}
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4 col-xs-12">
-        <div>
-          <label> STO Date <span class="mandantory">*</span>
-          </label>
-          <div>
-            {{ obj?.STODate | date:'MM-dd-yyyy HH:mm' }}
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4 col-xs-12">
-        <div>
-          <label>Inventory Type<span class="mandantory">*</span></label>
-          <div>
-            {{obj?.InventoryType}}
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-md-4 col-xs-12">
-        <div>
-          <label>From Location <span class="mandantory">*</span></label>
-          <div>
-            {{obj?.FromLocation}}
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4 col-xs-12">
-        <div>
-          <label>To Location <span class="mandantory">*</span></label>
-          <div>
-            {{obj?.ToLocation}}
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4 col-xs-12">
-        <div>
-          <label>Other Reference<span class="mandantory">*</span></label>
-          <div>
-            {{obj?.OtherReference}}
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-md-2 col-xs-12">
-        <label> Discount Applicable </label> <br />
+      <div class="col-md-12 col-xs-12">
+        <div class="table-responsive">
+          <table class="bgtable table table-bordered">
 
-        <div *ngIf="(obj?.DiscountApplicable)"><i class="fa fa-check"></i></div>
-        <div *ngIf="(!obj?.DiscountApplicable)"><i class="fa fa-times"></i></div>
-      </div>
-      <div class="col-md-2 col-xs-12">
-        <label> Is Shipment Required </label>
+            <tr>
+              <th width="15%"> STO Number <span class="mandantory">*</span> </th>
+              <td width="35%"> {{obj?.STONumber}} </td>
+              <th width="15%"> Other Reference<span class="mandantory">*</span> </th>
+              <td width="35%"> {{obj?.OtherReference}} </td>
+            </tr>
+            <tr>
+              <th> STO Date <span class="mandantory">*</span> </th>
+              <td> {{ obj?.STODate | date:'MM-dd-yyyy HH:mm' }} </td>
+              <th> Discount Applicable </th>
+              <td>
+                <div *ngIf="(obj?.DiscountApplicable)"><i class="fa fa-check"></i></div>
+                <div *ngIf="(!obj?.DiscountApplicable)"><i class="fa fa-times"></i></div>
+              </td>
+            </tr>
+            <tr>
+              <th> From Location <span class="mandantory">*</span> </th>
+              <td> {{obj?.FromLocation}} </td>
 
-        <div *ngIf="(obj?.IsShipmentRequired)"><i class="fa fa-check"></i></div>
-        <div *ngIf="(!obj?.IsShipmentRequired)"><i class="fa fa-times"></i></div>
-      </div>
-      <div class="col-md-8 col-xs-12">
-        <div>
-          <label>Remarks<span class="mandantory">*</span></label>
-          <div>
-            {{obj?.Remarks}}
-          </div>
+              <th>
+                Is Shipment Required
+              </th>
+              <td>
+                <div *ngIf="(obj?.IsShipmentRequired)"><i class="fa fa-check"></i></div>
+                <div *ngIf="(!obj?.IsShipmentRequired)"><i class="fa fa-times"></i></div>
+              </td>
+            </tr>
+            <tr>
+              <th> To Location <span class="mandantory">*</span> </th>
+              <td> {{obj?.ToLocation}} </td>
+
+              <th> Inventory Type<span class="mandantory">*</span> </th>
+              <td> {{obj?.InventoryType}} </td>
+            </tr>
+
+            <tr>
+              <th>
+                Remarks<span class="mandantory">*</span>
+              </th>
+              <td colspan="3">
+                {{obj?.Remarks}}
+              </td>
+            </tr>
+            <tr>
+          </table>
         </div>
       </div>
     </div>
+
+
 
     <div class="groupspanheader"> Order Items</div>
     <div class="table-responsive">
@@ -130,7 +109,7 @@
             <th>Item Description</th>
             <th>Customer Item Code</th>
             <!-- <th>Units</th>
-            <th>UOM</th> -->
+              <th>UOM</th> -->
             <th>Qty</th>
 
             <th>Rate</th>
@@ -149,7 +128,7 @@
             <td>{{item.CustomerItemCode}}</td>
             <td class="text-right">{{item.Qty}}</td>
             <!-- <td class="text-right">{{item.Units}}</td>
-            <td class="text-right">{{item.MultiplierValue}}</td> -->
+              <td class="text-right">{{item.MultiplierValue}}</td> -->
 
             <td class="text-right">{{item.ItemRate | currency: 'INR'}}</td>
             <td class="text-right">{{item.TaxNature }} </td>
@@ -165,7 +144,7 @@
             <td> </td>
             <th class="text-right"> {{TotalQty  }}</th>
             <!-- <th class="text-right">{{TotalUnits}}</th>
-            <th class="text-right">{{TotalMultiplierValue}}</th> -->
+              <th class="text-right">{{TotalMultiplierValue}}</th> -->
 
             <th class="text-right"> {{TotalItemRate  | currency: 'INR'}}</th>
             <td class="text-right"> </td>

@@ -8,13 +8,13 @@
     <div class="pull-right hidden-xs">
       <ol class="breadcrumb" id="dynamicbreadcrumb">
         <li>
-          <i class="fa fa-money"></i> <span> Revenue</span>
+           <span> Revenue</span>
         </li>
         <li>
-          <i class="fa fa-shopping-cart"></i> <span> Sales Orders </span>
+           <span> Sales Orders </span>
         </li>
         <li class="active">
-          <i class="fa fa-list" aria-hidden="true"></i>
+          
           List
         </li>
       </ol>
@@ -66,26 +66,27 @@
     </div>
   </div>
   <div class="panel-body">
-    <kendo-grid [data]="gridView" resizable="true" columnMenu="true" [pageSize]="pageSize" [skip]="skip" [pageable]="true" 
-      (pageChange)="pageChange($event)" [sortable]="{
+    <kendo-grid [data]="gridView" resizable="true" columnMenu="true" [pageSize]="pageSize" [skip]="skip"
+      [pageable]="true" (pageChange)="pageChange($event)" [sortable]="{
           allowUnsort: allowUnsort,
           mode:  'single'
           }" [sort]="sort" (sortChange)="sortChange($event)" [filterable]="true"
-      (dataStateChange)="dataStateChange($event)" [filter]="state.filter" >
+      (dataStateChange)="dataStateChange($event)" [filter]="state.filter">
 
       <kendo-grid-column field="OrderID" title="Order ID" width="160">
       </kendo-grid-column>
-      <kendo-grid-column field="OrderDate" title="Order Date" filter="date" format="{0:d}" [filterable]="false" width="160">
+      <kendo-grid-column field="OrderDate" title="Order Date" filter="date" format="{0:d}" [filterable]="false"
+        width="160">
         <ng-template kendoGridCellTemplate let-dataItem>
           {{ dataItem.OrderDate | date :"MM-dd-yyyy HH:mm" }}
         </ng-template>
       </kendo-grid-column>
       <kendo-grid-column field="CustomerName" title="Customer Name" width="160">
-      </kendo-grid-column> 
-      <kendo-grid-column field="InventoryType" title="Inventory Type"  width="100">
+      </kendo-grid-column>
+      <kendo-grid-column field="InventoryType" title="Inventory Type" width="100">
       </kendo-grid-column>
       <kendo-grid-column field="TransactionType" title="Transaction Type" width="120">
-      </kendo-grid-column> 
+      </kendo-grid-column>
       <kendo-grid-column field="TotalValue" title="Total Value" format="{0:##,#.##}">
       </kendo-grid-column>
       <kendo-grid-column field="OrderStatus" title="Order Status">
@@ -93,17 +94,22 @@
       <kendo-grid-column field="ApprovalStatus" title="Approval Status">
       </kendo-grid-column>
 
-      <kendo-grid-column field="SalesOrderID" title="Action" [class]="{'text-center': true}"  [filterable]="false" [sortable]="false" width="70">
+      <kendo-grid-column field="SalesOrderID" title="Action" [class]="{'text-center': true}" [filterable]="false"
+        [sortable]="false" width="70">
         <ng-template kendoGridCellTemplate let-obj>
-          <i class="fa fa-eye bgblue pointer" (click)="editButtonClick(obj.SalesOrderID)" title="View"></i>
-          &nbsp;
+          <!-- <i class="fa fa-eye bgblue pointer" (click)="editButtonClick(obj.SalesOrderID)" title="Edit"></i>
+          &nbsp; -->
           <i class="fa fa-times bgred pointer"
             *ngIf="( 
-              (obj.InventoryType =='Sellable')  ||   (obj.InventoryType =='Unsellable' && obj.ApprovalStatus == 'Pending Approval'  ) )" title="Cancel"
-            (click)="confirmDeleteid(obj.SalesOrderID,obj.OrderID)"></i> 
+              (obj.InventoryType =='SELLABLE')  ||   (obj.InventoryType =='UNSELLABLE' && obj.ApprovalStatus == 'Pending Approval'  ) )" title="Cancel"
+            (click)="confirmDeleteid(obj.SalesOrderID,obj.OrderID)"></i>
+
+          &nbsp; <i class="fa fa-eye bgblue pointer" [routerLink]="['/Salesorderview', obj.SalesOrderID]"
+            title="View"></i>
+
         </ng-template>
       </kendo-grid-column>
-    </kendo-grid> 
+    </kendo-grid>
   </div>
 </div>
 

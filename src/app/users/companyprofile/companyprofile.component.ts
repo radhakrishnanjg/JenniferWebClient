@@ -1,10 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { UserService } from '../../_services/service/user.service';
-import { ToastrService } from 'ngx-toastr';
 import { CompanyRegister } from '../../_services/model';
-import { AuthorizationGuard } from '../../_guards/Authorizationguard'
 import { AuthenticationService } from 'src/app/_services/service/authentication.service';
 @Component({
   selector: 'app-companyprofile',
@@ -17,13 +14,11 @@ export class CompanyprofileComponent implements OnInit {
   panelTitle: string = '';
 
   usertype: string = '';
-  constructor(private aroute: ActivatedRoute,
-    private alertService: ToastrService,
-    private _router: Router,
+  constructor(
     public _authenticationService: AuthenticationService,
     private _userService: UserService,
     private _spinner: NgxSpinnerService,
-    private _authorizationGuard: AuthorizationGuard) { }
+  ) { }
 
   ngOnInit() {
 
@@ -44,6 +39,7 @@ export class CompanyprofileComponent implements OnInit {
             this._spinner.hide();
           }
         );
+      this.panelTitle = "Company Profile";
     }
     else {
       this.panelTitle = "You don't have permission to view this screen";

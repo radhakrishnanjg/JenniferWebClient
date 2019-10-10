@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA ,} from '@angular/core';
+import { NgModule, NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA, } from '@angular/core';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppComponent } from './app.component';
@@ -15,10 +15,6 @@ import { DataTablesModule } from 'angular-datatables';
 
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { NgxTypeaheadModule } from 'ngx-typeahead';
-import { GridModule } from '@progress/kendo-angular-grid';
-import { PopupModule } from '@progress/kendo-angular-popup';
-import { DropDownListModule } from '@progress/kendo-angular-dropdowns';
-import { PDFExportModule } from '@progress/kendo-angular-pdf-export';
 import * as bootstrap from "bootstrap";
 import * as $ from "jquery";
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -26,9 +22,13 @@ import { PreventDoubleSubmitModule } from 'ngx-prevent-double-submission';
 import { MomentModule } from 'ngx-moment';
 import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 import { DeviceDetectorModule } from 'ngx-device-detector';
+import { GridModule } from '@progress/kendo-angular-grid';
+import { PopupModule } from '@progress/kendo-angular-popup';
+import { DropDownListModule } from '@progress/kendo-angular-dropdowns';
+import { PDFExportModule } from '@progress/kendo-angular-pdf-export';
 import { InputsModule } from '@progress/kendo-angular-inputs';
 import { DateInputsModule } from '@progress/kendo-angular-dateinputs';
-
+import { EditorModule } from '@progress/kendo-angular-editor';
 
 import { JwtInterceptor, HttpErrorInterceptor } from './_helpers';
 import { EncrDecrService } from './_services/service/encr-decr.service';
@@ -50,7 +50,9 @@ import { PurchaseorderModule } from './purchaseorder/purchaseorder.module';
 import { SalesModule } from './sales/sales.module';
 import { GoodsModule } from './goods/goods.module';
 import { DownloadModule } from './download/download.module';
+import { HelpModule } from './help/help.module';
 import { MaintenanceComponent } from './maintenance/maintenance.component';
+import { SearchComponent } from './search/search.component';
 
 
 @NgModule({
@@ -60,7 +62,7 @@ import { MaintenanceComponent } from './maintenance/maintenance.component';
     HttpClientModule,
     AngularFontAwesomeModule,
     DataTablesModule,
-    
+
     NgxSpinnerModule,
     FormsModule,
     // Prevent double submission module
@@ -98,14 +100,17 @@ import { MaintenanceComponent } from './maintenance/maintenance.component';
     SalesModule,
     GoodsModule,
     DownloadModule,
+    HelpModule,
     AppRoutingModule,
     DateInputsModule,
+    EditorModule
   ],
   declarations: [
     AppComponent,
     Dashboard1Component,
     PrivatelayoutComponent,
     MaintenanceComponent,
+    SearchComponent,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

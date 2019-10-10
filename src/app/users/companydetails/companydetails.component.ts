@@ -26,9 +26,9 @@ export class CompanydetailsComponent implements OnInit {
   identity: number = 0;
   BusinessLaunchDate: any;
   public value: Date = new Date(2000, 2, 10, 13, 30, 0);
-
+  validateflag: boolean = false;
   constructor(
-    private alertService: ToastrService, 
+    private alertService: ToastrService,
     private fb: FormBuilder,
     private _router: Router,
     private aroute: ActivatedRoute,
@@ -73,7 +73,7 @@ export class CompanydetailsComponent implements OnInit {
   logValidationErrors(group: FormGroup = this.companyDetailsform): void {
     Object.keys(group.controls).forEach((key: string) => {
       const abstractControl = group.get(key);
-      if (abstractControl && abstractControl.value && abstractControl.value.length > 0 && !abstractControl.value.replace(/\s/g, '').length) {
+      if (abstractControl && abstractControl.value && abstractControl.value.length > 0 && !abstractControl.value.replace(/^\s+|\s+$/gm, '').length) {
         abstractControl.setValue('');
       }
       this.formErrors[key] = '';
@@ -115,6 +115,7 @@ export class CompanydetailsComponent implements OnInit {
         this.panelTitle = "Edit Store";
         this.action = false;
         this._spinner.show();
+        this.validateflag = true;
         this._companydetailService.searchById(this.identity)
           .subscribe(
             (data: Companydetails) => {
@@ -159,10 +160,11 @@ export class CompanydetailsComponent implements OnInit {
     });
   }
 
-  SaveData(): void { 
+
+  SaveData(buttonType): void {
     if (this._authorizationGuard.CheckAcess("Companydetaillist", "ViewEdit")) {
       return;
-    } 
+    }
     // stop here if form is invalid
     if (this.companyDetailsform.invalid) {
       return;
@@ -171,15 +173,42 @@ export class CompanydetailsComponent implements OnInit {
       this.alertService.error('Please change the value for any one control to proceed further!');
       return;
     }
-    this.aroute.paramMap.subscribe(params => {
-      this.identity = +params.get('id');
-    });
-    if (this.identity > 0) {
-      this.Update()
+    if (buttonType === "Validate") {
+      this.obj.MarketPlaceSellerID = this.companyDetailsform.controls['MarketPlaceSellerID'].value;
+      this.obj.MarketPlaceAPIToken = this.companyDetailsform.controls['MarketPlaceAPIToken'].value;
+      this._spinner.show();
+      this._companydetailService.validate(this.obj).subscribe(
+        (data) => {
+          this._spinner.hide();
+          if (data != null && data.Flag == true) {
+            this.alertService.success(data.Msg);
+            this.validateflag = true;
+            this.companyDetailsform.get('MarketPlaceSellerID').disable();
+            this.companyDetailsform.get('MarketPlaceAPIToken').disable();
+          }
+          else {
+            this.alertService.error(data.Msg);
+            this.validateflag = false;
+          }
+        },
+        (error: any) => {
+          this._spinner.hide();
+          console.log(error);
+        }
+      );
     }
-    else {
-      this.Insert();
+    if (buttonType === "Save") {
+      this.aroute.paramMap.subscribe(params => {
+        this.identity = +params.get('id');
+      });
+      if (this.identity > 0) {
+        this.Update()
+      }
+      else {
+        this.Insert();
+      }
     }
+
   }
 
   Insert() {
@@ -222,7 +251,7 @@ export class CompanydetailsComponent implements OnInit {
       this.obj.BusinessLaunchDate = this.companyDetailsform.controls['BusinessLaunchDate'].value.startDate._d.toLocaleString();
     } else {
       this.obj.BusinessLaunchDate = this.companyDetailsform.controls['BusinessLaunchDate'].value.startDate.toLocaleString();
-    } 
+    }
     this.obj.MarketPlaceSellerID = this.companyDetailsform.controls['MarketPlaceSellerID'].value;
     this.obj.MarketPlaceAPIToken = this.companyDetailsform.controls['MarketPlaceAPIToken'].value;
     this.obj.MarketplaceID = this.companyDetailsform.controls['MarketplaceID'].value;

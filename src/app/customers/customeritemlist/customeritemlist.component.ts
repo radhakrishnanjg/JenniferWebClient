@@ -9,6 +9,8 @@ import { AuthorizationGuard } from '../../_guards/Authorizationguard';
 import { process, State } from '@progress/kendo-data-query';
 import { GridDataResult, DataStateChangeEvent, PageChangeEvent } from '@progress/kendo-angular-grid';
 import { SortDescriptor, orderBy } from '@progress/kendo-data-query';
+
+import { UsernameValidator } from '../../_validators/username';
 @Component({
   selector: 'app-customeritemlist',
   templateUrl: './customeritemlist.component.html',
@@ -20,7 +22,7 @@ export class CustomeritemlistComponent implements OnInit {
   lstProductGroup: ProductGroup[];
   lstCategory: Category[];
   lstSubCategory: SubCategory[];
-  lstItem: Item[]; 
+  lstItem: Item[];
   objCustomeritem: Customeritem = {} as any;
   CustomerItemForm: FormGroup;
   panelTitle: string;
@@ -38,6 +40,7 @@ export class CustomeritemlistComponent implements OnInit {
     private _authorizationGuard: AuthorizationGuard,
     private fb: FormBuilder,
     private _PrivateutilityService: PrivateutilityService,
+    private usernameValidator: UsernameValidator,
   ) { }
 
 
@@ -52,6 +55,7 @@ export class CustomeritemlistComponent implements OnInit {
   validationMessages = {
     'CustomerItemCode': {
       'required': 'This Field is required.',
+      'CustomerItemCodeInUse': 'Customer ItemCode is already registered!',
     },
     'CustomerID': {
       'min': 'This Field is required.',
@@ -64,7 +68,7 @@ export class CustomeritemlistComponent implements OnInit {
   logValidationErrors(group: FormGroup = this.CustomerItemForm): void {
     Object.keys(group.controls).forEach((key: string) => {
       const abstractControl = group.get(key);
-      // if (abstractControl && abstractControl.value && !abstractControl.value.replace(/\s/g, '').length) {
+      // if (abstractControl && abstractControl.value && !abstractControl.value.replace(/^\s+|\s+$/gm, '').length) {
       //   abstractControl.setValue('');
       // }
       this.formErrors[key] = '';
@@ -97,7 +101,8 @@ export class CustomeritemlistComponent implements OnInit {
     this.action = true;
     this.identity = 0;
     this.CustomerItemForm = this.fb.group({
-      CustomerItemCode: ['', [Validators.required]],
+      CustomerItemCode: ['', [Validators.required],
+        this.usernameValidator.existCustomerItemCode(this.identity)],
       CustomerID: [0, [Validators.min(1)]],
       ProductGroupID: [0, []],
       CategoryID: [0, []],
@@ -149,7 +154,8 @@ export class CustomeritemlistComponent implements OnInit {
     $('#modalpopupcustomeritemupsert').modal('show');
     this.logValidationErrors();
     this.CustomerItemForm = this.fb.group({
-      CustomerItemCode: ['', [Validators.required, Validators.maxLength(30)]],
+      CustomerItemCode: ['', [Validators.required],
+        this.usernameValidator.existCustomerItemCode(this.identity)],
       CustomerID: [0, [Validators.required, Validators.min(1)]],
       ProductGroupID: [0, []],
       CategoryID: [0, []],
@@ -200,7 +206,8 @@ export class CustomeritemlistComponent implements OnInit {
       );
 
     this.CustomerItemForm = this.fb.group({
-      CustomerItemCode: ['', [Validators.required, Validators.maxLength(30)]],
+      CustomerItemCode: ['', [Validators.required],
+        this.usernameValidator.existCustomerItemCode(this.identity)],
       CustomerID: [0, [Validators.required, Validators.min(1)]],
       ProductGroupID: [0, []],
       CategoryID: [0, []],
@@ -300,7 +307,7 @@ export class CustomeritemlistComponent implements OnInit {
     if (this._authorizationGuard.CheckAcess("Customeritemlist", "ViewEdit")) {
       return;
     }
-    if (this.CustomerItemForm.controls['CustomerItemCode'].value.replace(/\s/g, '').length == 0) {
+    if (this.CustomerItemForm.controls['CustomerItemCode'].value.replace(/^\s+|\s+$/gm, '').length == 0) {
       this.alertService.error('Please enter Customer ItemCode!');
       return;
     }
@@ -437,9 +444,9 @@ export class CustomeritemlistComponent implements OnInit {
     this._spinner.show();
     return this._customeritemService.search(SearchBy, Search, IsActive).subscribe(
       (lst) => {
-        if (lst != null) { 
+        if (lst != null) {
           this.items = lst;
-          this.loadItems(); 
+          this.loadItems();
         }
         this._spinner.hide();
       },
@@ -489,7 +496,7 @@ export class CustomeritemlistComponent implements OnInit {
   }
   private loadSortItems(): void {
     this.gridView = {
-      data: orderBy(this.items.slice(this.skip, this.skip + this.pageSize), this.sort),
+      data: orderBy(this.items, this.sort).slice(this.skip, this.skip + this.pageSize),
       total: this.items.length
     };
   }

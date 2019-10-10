@@ -4,6 +4,9 @@ import { AuthGuard, StoreGuard, MaintenanceGuard } from './_guards';
 // Import the components so they can be referenced in routes
 
 import { PrivatelayoutComponent } from './privatelayout/privatelayout.component';
+import { HelpnavigationComponent } from './help/helpnavigation/helpnavigation.component';
+import { HelpmenulistComponent } from './help/helpmenulist/helpmenulist.component';
+import { HelpmenuComponent } from './help/helpmenu/helpmenu.component';
 import { Dashboard1Component } from './dashboard1/dashboard1.component';
 
 
@@ -64,6 +67,8 @@ import { PoapprovallistComponent } from './purchaseorder/poapprovallist/poapprov
 import { PoapprovalComponent } from './purchaseorder/poapproval/poapproval.component';
 import { PoshipmentlistComponent } from './purchaseorder/poshipmentlist/poshipmentlist.component';
 import { PoshipmentComponent } from './purchaseorder/poshipment/poshipment.component';
+
+import { ShipmentviewComponent } from './purchaseorder/shipmentview/shipmentview.component';
 import { PurchaselistComponent } from './purchaseorder/purchaselist/purchaselist.component';
 import { PurchaseComponent } from './purchaseorder/purchase/purchase.component';
 import { PurchaseviewComponent } from './purchaseorder/purchaseview/purchaseview.component';
@@ -91,6 +96,7 @@ import { StoviewComponent } from './goods/stoview/stoview.component';
 import { SalesratecardlistComponent } from './sales/salesratecardlist/salesratecardlist.component';
 import { SalesorderlistComponent } from './sales/salesorderlist/salesorderlist.component';
 import { SalesorderComponent } from './sales/salesorder/salesorder.component';
+import { SalesorderviewComponent } from './sales/salesorderview/salesorderview.component';
 import { SalesShipmentComponent } from './sales/sales-shipment/sales-shipment.component';
 import { SalesShipmentListComponent } from './sales/sales-shipment-list/sales-shipment-list.component';
 import { ShipmentoutwardlistComponent } from './sales/shipmentoutwardlist/shipmentoutwardlist.component';
@@ -115,8 +121,8 @@ import { ReportsanalyticsComponent } from './download/reportsanalytics/reportsan
 import { ReportsmisComponent } from './download/reportsmis/reportsmis.component';
 import { ReportsothersComponent } from './download/reportsothers/reportsothers.component';
 import { ReportAmazonMTRComponent } from './download/report-amazon-mtr/report-amazon-mtr.component';
-
 import { MaintenanceComponent } from './maintenance/maintenance.component';
+import { SearchComponent } from './search/search.component';
 // The last route is the empty path route. This specifies
 // the route to redirect to if the client side path is empty.
 const appRoutes: Routes = [
@@ -179,6 +185,7 @@ const appRoutes: Routes = [
       { path: 'Poapproval/:id', component: PoapprovalComponent, canActivate: [AuthGuard, StoreGuard] },
       { path: 'Poshipmentlist', component: PoshipmentlistComponent, canActivate: [AuthGuard, StoreGuard] },
       { path: 'Poshipment/:id/:PoId', component: PoshipmentComponent, canActivate: [AuthGuard, StoreGuard] },
+      { path: 'Poshipmentview/:id/:PoId', component: ShipmentviewComponent, canActivate: [AuthGuard, StoreGuard] },
       { path: 'Purchaselist', component: PurchaselistComponent, canActivate: [AuthGuard, StoreGuard] },
       { path: 'Purchase/:id/:PoId', component: PurchaseComponent, canActivate: [AuthGuard, StoreGuard] },
       { path: 'POview/:id', component: PoviewComponent, canActivate: [AuthGuard, StoreGuard] },
@@ -207,6 +214,7 @@ const appRoutes: Routes = [
       // Sales module
       { path: 'Salesorder/:id', component: SalesorderComponent, canActivate: [AuthGuard, StoreGuard] },
       { path: 'Salesorderunsellable/:id', component: SalesorderunsellableComponent, canActivate: [AuthGuard, StoreGuard] },
+      { path: 'Salesorderview/:id', component: SalesorderviewComponent, canActivate: [AuthGuard, StoreGuard] },
       { path: 'Salesorderlist', component: SalesorderlistComponent, canActivate: [AuthGuard, StoreGuard] },
       { path: 'Salesorderapproval/:id', component: SalesorderapprovalComponent, canActivate: [AuthGuard, StoreGuard] },
       { path: 'Salesorderapprovallist', component: SalesorderapprovallistComponent, canActivate: [AuthGuard, StoreGuard] },
@@ -241,6 +249,11 @@ const appRoutes: Routes = [
       { path: 'Reportsothers', component: ReportsothersComponent, canActivate: [AuthGuard, StoreGuard] },
       { path: 'ReportAmazonMTR', component: ReportAmazonMTRComponent, canActivate: [AuthGuard, StoreGuard] },
 
+
+      { path: 'Help', component: HelpnavigationComponent, },
+      { path: 'Helpmenu/:id', component: HelpmenuComponent, canActivate: [AuthGuard] },
+      { path: 'Helpmenulist', component: HelpmenulistComponent, canActivate: [AuthGuard,] },
+      { path: 'Search/:key', component: SearchComponent },
       { path: '', redirectTo: '/Signin', pathMatch: 'full', canActivate: [MaintenanceGuard] },
       // .. routes 
       // {

@@ -1,0 +1,12 @@
+.widget .panel-body { padding:0px; }
+.widget .list-group { margin-bottom: 0; }
+.widget .panel-title { display:inline }
+.widget .label-info { float: right; }
+.widget li.list-group-item {border-radius: 0;border: 0;border-top: 1px solid #ddd;}
+.widget li.list-group-item:hover { background-color: rgba(86,61,124,.1); }
+.widget .mic-info { color: #666666;font-size: 11px; } 
+.widget h1 { font-size: 26px;    margin-top: 0px} 
+ a { cursor: pointer !important;}  
+.widget .comment-text { font-size: 16px;font-weight: 700; }  
+ 
+ 

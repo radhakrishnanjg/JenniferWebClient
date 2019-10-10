@@ -6,6 +6,8 @@ import { saveAs } from 'file-saver';
 import { process, State } from '@progress/kendo-data-query';
 import { GridDataResult, DataStateChangeEvent, PageChangeEvent } from '@progress/kendo-angular-grid';
 import { SortDescriptor, orderBy } from '@progress/kendo-data-query';
+import { Router } from '@angular/router';
+import { AuthorizationGuard } from 'src/app/_guards/Authorizationguard';
 
 @Component({
   selector: 'app-masteruploadlist',
@@ -25,6 +27,8 @@ export class MasteruploadlistComponent implements OnInit {
   constructor(
     private _masteruploadService: MasteruploadService,
     private _spinner: NgxSpinnerService,
+    private router: Router,
+    private _authorizationGuard: AuthorizationGuard,
   ) { }
 
   ngOnInit() {
@@ -90,6 +94,13 @@ export class MasteruploadlistComponent implements OnInit {
     );
   }
 
+  AddNewLink() {
+    if (this._authorizationGuard.CheckAcess("MasterUploadList", "ViewEdit")) {
+      return;
+    }
+    this.router.navigate(['MasterUpload/Create',]);
+  }
+
   //#region Paging Sorting and Filtering Start
   public allowUnsort = true;
   public sort: SortDescriptor[] = [{
@@ -129,7 +140,7 @@ export class MasteruploadlistComponent implements OnInit {
   }
   private loadSortItems(): void {
     this.gridView = {
-      data: orderBy(this.items.slice(this.skip, this.skip + this.pageSize), this.sort),
+      data: orderBy(this.items, this.sort).slice(this.skip, this.skip + this.pageSize),
       total: this.items.length
     };
   }

@@ -128,7 +128,7 @@ export class GoodsReceiptComponent implements OnInit {
   logValidationErrors(group: FormGroup = this.goodsForm): void {
     Object.keys(group.controls).forEach((key: string) => {
       const abstractControl = group.get(key);
-      if (abstractControl && abstractControl.value && abstractControl.value.length > 0 && !abstractControl.value.replace(/\s/g, '').length) {
+      if (abstractControl && abstractControl.value && abstractControl.value.length > 0 && !abstractControl.value.replace(/^\s+|\s+$/gm, '').length) {
         abstractControl.setValue('');
       }
       this.formErrors[key] = '';
@@ -245,10 +245,18 @@ export class GoodsReceiptComponent implements OnInit {
           this.getVendorwarehouses();
         }
         else {
-          
+
           this.TrackingNumber = '';
           this.goodsForm.controls["LocationID"].setValue(poDetail.LocationID);
           this.goodsForm.controls["VendorID"].setValue(poDetail.VendorID);
+        }
+        debugger
+        if (poDetail.InventoryType != '') {
+          this.goodsForm.controls["InventoryType"].setValue(poDetail.InventoryType);
+          this.goodsForm.get('InventoryType').disable();
+        }
+        else {
+          this.goodsForm.get('InventoryType').enable();
         }
         this.GRNMinDate = moment(poDetail.PODate).add(1, 'minutes');//moment().subtract(diff, 'days');
         this._spinner.show();
@@ -569,16 +577,20 @@ export class GoodsReceiptComponent implements OnInit {
         return;
       }
     }
-    let GRN_Date = new Date(moment(new Date(this.goodsForm.controls['GRNDate'].value.startDate)).format("MM-DD-YYYY HH:mm"));
+    this.objGoodsReceipt.InvoiceNumber = this.goodsForm.controls["InvoiceNumber"].value;
+    if (this.goodsForm.controls['GRNDate'].value.startDate._d != undefined) {
+      this.objGoodsReceipt.GRNDate = this.goodsForm.controls['GRNDate'].value.startDate._d.toLocaleString();
+
+    } else {
+      this.objGoodsReceipt.GRNDate = this.goodsForm.controls['GRNDate'].value.startDate.toLocaleString();
+    }
+    let GRN_Date = new Date(moment(new Date(this.objGoodsReceipt.GRNDate)).format("MM-DD-YYYY HH:mm"));
     let currentdate: Date = new Date(moment(new Date()).format("MM-DD-YYYY HH:mm"));
     let PODate: Date = new Date(moment(new Date(this.lstPONumber.filter(x => { return x.PONumber == this.goodsForm.controls['PONumber'].value })[0].PODate)).format("MM-DD-YYYY HH:mm"));
     if (!(GRN_Date > PODate && GRN_Date <= currentdate)) {
       this.alertService.error('The GRN Date must be between PO Date and current datetime.!');
       return;
     }
-    this.objGoodsReceipt.InvoiceNumber = this.goodsForm.controls["InvoiceNumber"].value;
-    let GRNDate: Date = new Date(moment(new Date(this.goodsForm.controls['GRNDate'].value.startDate)).format("MM-DD-YYYY HH:mm"));
-    this.objGoodsReceipt.GRNDate = GRNDate;
     this.objGoodsReceipt.VehicleNumber = this.goodsForm.controls["VehicleNumber"].value;
     this.objGoodsReceipt.EwayBillNumber = this.goodsForm.controls["EwayBillNumber"].value;
     this.objGoodsReceipt.InventoryType = this.goodsForm.controls["InventoryType"].value;

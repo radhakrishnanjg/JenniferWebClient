@@ -10,6 +10,7 @@ import { process, State } from '@progress/kendo-data-query';
 import { GridDataResult, DataStateChangeEvent, PageChangeEvent } from '@progress/kendo-angular-grid';
 import { SortDescriptor, orderBy } from '@progress/kendo-data-query';
 
+import { UsernameValidator } from '../../_validators/username';
 @Component({
   selector: 'app-vendoritemlist',
   templateUrl: './vendoritemlist.component.html',
@@ -21,7 +22,7 @@ export class VendoritemlistComponent implements OnInit {
   lstCategory: Category[];
   lstSubCategory: SubCategory[];
   lstItem: Item[];
-  lstCommercialType: Dropdown[]; 
+  lstCommercialType: Dropdown[];
   objVendoritem: Vendoritem = {} as any;
   vendortemForm: FormGroup;
   panelTitle: string;
@@ -40,6 +41,7 @@ export class VendoritemlistComponent implements OnInit {
     private _authorizationGuard: AuthorizationGuard,
     private fb: FormBuilder,
     private _PrivateutilityService: PrivateutilityService,
+    private usernameValidator: UsernameValidator,
   ) { }
 
 
@@ -55,6 +57,7 @@ export class VendoritemlistComponent implements OnInit {
   validationMessages = {
     'VendorItemCode': {
       'required': 'This Field is required.',
+      'VendorItemCodeInUse': 'Vendor ItemCode is already registered!',
     },
     'VendorID': {
       'min': 'This Field is required.',
@@ -70,7 +73,7 @@ export class VendoritemlistComponent implements OnInit {
   logValidationErrors(group: FormGroup = this.vendortemForm): void {
     Object.keys(group.controls).forEach((key: string) => {
       const abstractControl = group.get(key);
-      // if (abstractControl && abstractControl.value && abstractControl.value.length > 0 && !abstractControl.value.replace(/\s/g, '').length) {
+      // if (abstractControl && abstractControl.value && abstractControl.value.length > 0 && !abstractControl.value.replace(/^\s+|\s+$/gm, '').length) {
       //   abstractControl.setValue('');
       // }
       this.formErrors[key] = '';
@@ -100,7 +103,8 @@ export class VendoritemlistComponent implements OnInit {
     this.action = true;
     this.identity = 0;
     this.vendortemForm = this.fb.group({
-      VendorItemCode: ['', [Validators.required]],
+      VendorItemCode: ['', [Validators.required],
+        this.usernameValidator.existVendorItemCode(this.identity)],
       VendorID: [0, [Validators.min(1)]],
       ProductGroupID: [0, []],
       CategoryID: [0, []],
@@ -166,7 +170,8 @@ export class VendoritemlistComponent implements OnInit {
     $('#modalpopupvendoritemupsert').modal('show');
     this.logValidationErrors();
     this.vendortemForm = this.fb.group({
-      VendorItemCode: ['', [Validators.required, Validators.maxLength(30)]],
+      VendorItemCode: ['', [Validators.required],
+        this.usernameValidator.existVendorItemCode(this.identity)],
       VendorID: [0, [Validators.required, Validators.min(1)]],
       ProductGroupID: [0, []],
       CategoryID: [0, []],
@@ -232,7 +237,8 @@ export class VendoritemlistComponent implements OnInit {
       );
 
     this.vendortemForm = this.fb.group({
-      VendorItemCode: ['', [Validators.required, Validators.maxLength(30)]],
+      VendorItemCode: ['', [Validators.required],
+        this.usernameValidator.existVendorItemCode(this.identity)],
       VendorID: [0, [Validators.required, Validators.min(1)]],
       ProductGroupID: [0, []],
       CategoryID: [0, []],
@@ -344,7 +350,7 @@ export class VendoritemlistComponent implements OnInit {
     if (this._authorizationGuard.CheckAcess("Vendoritemlist", "ViewEdit")) {
       return;
     }
-    if (this.vendortemForm.controls['VendorItemCode'].value.replace(/\s/g, '').length == 0) {
+    if (this.vendortemForm.controls['VendorItemCode'].value.replace(/^\s+|\s+$/gm, '').length == 0) {
       this.alertService.error('Please enter Vendor ItemCode!');
       return;
     }
@@ -483,9 +489,9 @@ export class VendoritemlistComponent implements OnInit {
     this._spinner.show();
     return this._vendoritemService.search(SearchBy, Search, IsActive).subscribe(
       (lst) => {
-        if (lst != null ) { 
+        if (lst != null) {
           this.items = lst;
-          this.loadItems(); 
+          this.loadItems();
         }
 
 
@@ -536,7 +542,7 @@ export class VendoritemlistComponent implements OnInit {
   }
   private loadSortItems(): void {
     this.gridView = {
-      data: orderBy(this.items.slice(this.skip, this.skip + this.pageSize), this.sort),
+      data: orderBy(this.items, this.sort).slice(this.skip, this.skip + this.pageSize),
       total: this.items.length
     };
   }
