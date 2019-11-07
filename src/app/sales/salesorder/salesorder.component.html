@@ -44,7 +44,7 @@
         </div>
         <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 ">
           <div class="pull-right">
-            <button class="btn btn-primary" routerLink="/Salesorderlist" title="Back">
+            <button  type="button" class="btn btn-primary" routerLink="/Salesorderlist" title="Back">
 
               Back
             </button>
@@ -345,7 +345,7 @@
       <span class="groupspanheader">Order Items</span>
     </div>
     <div *ngIf="action">
-      <kendo-grid [data]="gridData" (edit)="editHandler($event)" (cancel)="cancelHandler($event)"
+      <kendo-grid [data]="gridData" resizable="true" (edit)="editHandler($event)" (cancel)="cancelHandler($event)"
         (save)="saveHandler($event)" (remove)="removeHandler($event)" (add)="addHandler($event)" [height]="410">
         <ng-template kendoGridToolbarTemplate>
           <button kendoGridAddCommand>Add Item</button>
@@ -537,7 +537,7 @@
     </div>
     <div class="panel-footer" *ngIf="action">
       <div class="btn-toolbar pull-right">
-        <button type="button" id="cancel" class="btn btn-primary" routerLink="/Salesorderlist">Cancel</button>
+        <button type="button" id="cancel"  type="button" class="btn btn-primary" routerLink="/Salesorderlist">Cancel</button>
         <button prevent-double-submit type="submit" id="save" class="btn btn-success"
           [disabled]="!salesForm.valid">Save</button>
       </div>

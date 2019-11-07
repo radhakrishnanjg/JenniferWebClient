@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { PrivateutilityService } from '../../_services/service/privateutility.service';
 import { PoService } from '../../_services/service/po.service';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
-import { NgxSpinnerService } from 'ngx-spinner';
+
 import { ToastrService } from 'ngx-toastr';
 import { isNumeric } from "rxjs/util/isNumeric"
 import {
@@ -73,7 +73,7 @@ export class PoComponent implements OnInit {
   constructor(
     private _poService: PoService,
     private _PrivateutilityService: PrivateutilityService,
-    private _spinner: NgxSpinnerService,
+    
     public _alertService: ToastrService,
     private activatedroute: ActivatedRoute,
     private _authorizationGuard: AuthorizationGuard,
@@ -207,7 +207,7 @@ export class PoComponent implements OnInit {
   }
 
   private getCurrentServerDateTime() {
-    this._spinner.show();
+    //
     this._PrivateutilityService.getCurrentDate()
       .subscribe(
         (data: Date) => {
@@ -218,12 +218,12 @@ export class PoComponent implements OnInit {
           });
           this.poMinDate = moment(data).add(0, 'days');
           this.poDeliveryMinDate = moment(data).add(0, 'days');
-          this._spinner.hide();
+          //
         },
         (err: any) => {
           console.log(err);
 
-          this._spinner.hide();
+          //
         }
       );
   }
@@ -231,7 +231,7 @@ export class PoComponent implements OnInit {
   private editPO(poID): void {
     this.poOrder.POID = poID;
     this.panelTitle = "Update PO";
-    this._spinner.show();
+    //
     this._poService.searchById(poID)
       .subscribe(
         (data: Poorder) => {
@@ -262,11 +262,11 @@ export class PoComponent implements OnInit {
           });
           this.onVendorChanged(this.poOrder.VendorID);
           this.DisbableShipmentCheckbox(data.LocationID);
-          this._spinner.hide(); 
+          // 
         },
         (err: any) => {
           console.log(err);
-          this._spinner.hide();
+          //
         }
       );
   }
@@ -276,13 +276,13 @@ export class PoComponent implements OnInit {
     this.poOrder.LocationID = locationID;
     if (locationID > 0) {
       this.DisbableShipmentCheckbox(locationID);
-      this._spinner.show();
+      //
       this._poService.getPONumber(locationID).subscribe(
         (res) => {
           this.poOrder.PONumber = res;
-          this._spinner.hide();
+          //
         }, (err) => {
-          this._spinner.hide();
+          //
           console.log(err);
         });
 
@@ -305,14 +305,14 @@ export class PoComponent implements OnInit {
 
   //Get Locations
   public getLocations(): void {
-    this._spinner.show();
+    //
     this._PrivateutilityService.getLocations().subscribe(
       (data) => {
         this.locationList = data;
-        this._spinner.hide();
+        //
       },
       (err) => {
-        this._spinner.hide();
+        //
         console.log(err);
       }
     );
@@ -320,81 +320,81 @@ export class PoComponent implements OnInit {
 
   //Get Vendors
   public getVendors(): void {
-    this._spinner.show();
+    //
     this._PrivateutilityService.getVendors().subscribe(
       (res) => {
         this.vendorList = res;
-        this._spinner.hide();
+        //
       }, (err) => {
-        this._spinner.hide();
+        //
         console.log(err);
       });
   }
 
   //Get Brands
   public getBrands(): void {
-    this._spinner.show();
+    //
     this._poService.getOrderBrands().subscribe(
       (res) => {
         this.brandList = res;
-        this._spinner.hide();
+        //
       }, (err) => {
-        this._spinner.hide();
+        //
         console.log(err);
       });
   }
 
   //Get Product Groups
   public getProductGroups(brandID: number): void {
-    this._spinner.show();
+    //
     this._poService.getOrderProductGroups(brandID).subscribe(
       (res) => {
         this.productGroups = res;
-        this._spinner.hide();
+        //
       }, (err) => {
-        this._spinner.hide();
+        //
         console.log(err);
       });
   }
 
   // Get Category List
   public getCategories(brandID: number, productGroupdID: number): void {
-    this._spinner.show();
+    //
     this._poService.getOrderCategories(brandID, productGroupdID).subscribe(
       (res) => {
         this.categoryList = res;
-        this._spinner.hide();
+        //
       }, (err) => {
-        this._spinner.hide();
+        //
         console.log(err);
       });
   }
 
   // Get SubCategory List
   public getSubCategories(brandID: number, categoryID: number): void {
-    this._spinner.show();
+    //
     this._poService.getOrderSubCategories(brandID, categoryID).subscribe(
       (res) => {
         this.subCategoryList = res;
-        this._spinner.hide();
+        //
       }, (err) => {
-        this._spinner.hide();
+        //
         console.log(err);
       });
   }
   // Get Item List
   public onVendorChanged(vendorID: number): void {
-    this._spinner.show();
+    //
     if (vendorID > 0) {
       this._poService.getVendorItemLevels(vendorID).subscribe(
         (res) => {
           if (res != null) {
             this.itemList = res.filter(e => { return e.Type == "Item" });
           }
-          this._spinner.hide();
+          //
         }, (err) => {
           this.itemList = [];
-          this._spinner.hide();
+          //
           console.log(err);
         });
     }
@@ -423,13 +423,13 @@ export class PoComponent implements OnInit {
 
   // Get Item Description
   public getUOMs(): void {
-    this._spinner.show();
+    //
     this._poService.getOrderUOMs().subscribe(
       (res) => {
         this.uomList = res;
-        this._spinner.hide();
+        //
       }, (err) => {
-        this._spinner.hide();
+        //
         console.log(err);
       });
   }
@@ -585,7 +585,7 @@ export class PoComponent implements OnInit {
     this.poOrder.PaymentReference = this.poForm.controls['PaymentReference'].value;
     this.poOrder.Remarks = this.poForm.controls['Remarks'].value;
 
-    this._spinner.show();
+    //
     this._poService.InsertOrUpdate(this.poOrder).subscribe(
       (res) => {
         if (res.Flag) {
@@ -596,9 +596,9 @@ export class PoComponent implements OnInit {
           this._alertService.error(res.Msg);
           this.router.navigate(['/Polist']);
         }
-        this._spinner.hide();
+        //
       }, (err) => {
-        this._spinner.hide();
+        //
         console.log(err);
       });
     this.poOrder = new Poorder();
@@ -748,14 +748,14 @@ export class PoComponent implements OnInit {
   onDownloadTemplate() {
 
     let filetype = 'POBulk'
-    this._spinner.show();
+    //
     this._masteruploadService.getFileTemplate(filetype)
       .subscribe(data => {
-        this._spinner.hide(),
+        
           saveAs(data, filetype + '.xlsx')
       },
         (err) => {
-          this._spinner.hide();
+          //
           console.log(err);
         }
       );
@@ -810,7 +810,7 @@ export class PoComponent implements OnInit {
         (res: Poorderitem[]) => {
           this.poOrder.lstItem = res;
           this.gridData = this.poOrder.lstItem;
-          this._spinner.hide();
+          //
           if (this.gridData.length > 0) {
             this.poForm.get('VendorID').disable();
 
@@ -830,7 +830,7 @@ export class PoComponent implements OnInit {
           $('#modalpopupbulkupload').modal('hide');
         },
         (err) => {
-          this._spinner.hide();
+          //
           $('#modalpopupbulkupload').modal('hide');
           console.log(err);
         });

@@ -113,7 +113,6 @@ import { SalesorderapprovalComponent } from './sales/salesorderapproval/salesord
 
 import { ReportmasterlistComponent } from './download/reportmasterlist/reportmasterlist.component';
 import { ReportmasterComponent } from './download/reportmaster/reportmaster.component';
-import { D1Component } from './download/d1/d1.component';
 import { ReportsinventoryComponent } from './download/reportsinventory/reportsinventory.component';
 import { ReportsamazonComponent } from './download/reportsamazon/reportsamazon.component';
 import { ReportscomplianceComponent } from './download/reportscompliance/reportscompliance.component';
@@ -123,6 +122,12 @@ import { ReportsothersComponent } from './download/reportsothers/reportsothers.c
 import { ReportAmazonMTRComponent } from './download/report-amazon-mtr/report-amazon-mtr.component';
 import { MaintenanceComponent } from './maintenance/maintenance.component';
 import { SearchComponent } from './search/search.component';
+import {  DynamicformComponent } from './dynamicform/dynamicform.component';
+
+import { StatementlistComponent } from './download/statementlist/statementlist.component';
+import { StatementviewComponent } from './download/statementview/statementview.component';
+ 
+
 // The last route is the empty path route. This specifies
 // the route to redirect to if the client side path is empty.
 const appRoutes: Routes = [
@@ -240,7 +245,6 @@ const appRoutes: Routes = [
       //download section
       { path: 'Reportmaster/:id', component: ReportmasterComponent, canActivate: [AuthGuard] },
       { path: 'Reportmasterlist', component: ReportmasterlistComponent, canActivate: [AuthGuard, StoreGuard] },
-      { path: 'D1', component: D1Component, canActivate: [AuthGuard] },
       { path: 'Reportsinventory', component: ReportsinventoryComponent, canActivate: [AuthGuard, StoreGuard] },
       { path: 'Reportsamazon', component: ReportsamazonComponent, canActivate: [AuthGuard, StoreGuard] },
       { path: 'Reportscompliance', component: ReportscomplianceComponent, canActivate: [AuthGuard, StoreGuard] },
@@ -249,12 +253,18 @@ const appRoutes: Routes = [
       { path: 'Reportsothers', component: ReportsothersComponent, canActivate: [AuthGuard, StoreGuard] },
       { path: 'ReportAmazonMTR', component: ReportAmazonMTRComponent, canActivate: [AuthGuard, StoreGuard] },
 
+      { path: 'Statementview/:id', component: StatementviewComponent, canActivate: [AuthGuard, StoreGuard] },
+      { path: 'Statementlist', component: StatementlistComponent, canActivate: [AuthGuard, StoreGuard] },
 
-      { path: 'Help', component: HelpnavigationComponent, },
-      { path: 'Helpmenu/:id', component: HelpmenuComponent, canActivate: [AuthGuard] },
-      { path: 'Helpmenulist', component: HelpmenulistComponent, canActivate: [AuthGuard,] },
+  
+      { path: '', loadChildren: './cases/cases.module#CasesModule' },
+
+      { path: '', loadChildren: './help/help.module#HelpModule' },
+ 
       { path: 'Search/:key', component: SearchComponent },
+      { path: 'DynamicForm', component: DynamicformComponent },
       { path: '', redirectTo: '/Signin', pathMatch: 'full', canActivate: [MaintenanceGuard] },
+      
       // .. routes 
       // {
       //   path: 'not-found',
@@ -267,6 +277,7 @@ const appRoutes: Routes = [
     ]
   },
   //no layout routes
+  
   { path: '', redirectTo: '/Signin', pathMatch: 'full', canActivate: [MaintenanceGuard] },
   { path: 'Signin', component: SigninComponent, canActivate: [MaintenanceGuard] },//canActivate: [MaintenanceGuard]
   { path: 'ForgotPassword', component: ForgotpasswordComponent },

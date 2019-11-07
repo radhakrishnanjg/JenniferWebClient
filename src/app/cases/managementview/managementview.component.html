@@ -1,0 +1,211 @@
+<div class="row">
+  <div class="col-lg-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <div class="row">
+          <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+            <span class="spanheader">
+              View </span>
+          </div>
+          <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+            TrackingID : <b> {{obj?.TrackingID}}</b>
+            & RemovalOrderID : <b> {{obj?.RemovalOrderID}}</b>
+            & DisputeType : <b> {{obj?.DisputeType}}</b>
+          </div>
+          <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 ">
+            <div class="pull-right btn-toolbar">
+              <input value="Download All RTV Images" type="submit" class="btn btn-default"
+                (click)="DownloadImages(obj?.RemovalOrderID,obj?.TrackingID,obj?.DisputeType)" />
+
+              <button class="btn btn-primary"  routerLink="/Managementlist">Back</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="panel-body">
+
+        <div class="form-group col-sm-12 col-md-12 col-lg-12">
+          <div class="col-md-4 ">
+            <label class="control-label"> Status <span class="mandantory">*</span> </label> <br />
+            {{obj?.CurrentStatus}}
+          </div>
+
+          <div class="col-md-4 ">
+            <label class="control-label"> Amazon CaseId <span class="mandantory">*</span></label> <br />
+            {{obj?.AmazonCaseId}}
+          </div>
+
+          <div class="col-md-4 ">
+            <label class="control-label"> Reim.Value </label> <br />
+            {{obj?.ReimbursementValue }}
+          </div>
+        </div>
+
+        <div class="form-group col-sm-12 col-md-12 col-lg-12">
+          <div class="panel panel-primary">
+            <div class="panel-heading">
+              <div class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapsetemplateinfo"
+                aria-expanded="true">
+                <div class="row">
+                  <div class="col-lg-12">
+                    Template Information
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div id="collapsetemplateinfo" class="panel-body panel-collapse collapse in" aria-expanded="true"
+              style="height: 18px;">
+              <div id="dvfinalhtml">
+                <div [innerHTML]="obj?.FinalHtml| safeHtml"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group col-sm-12 col-md-12 col-lg-12">
+          <div class="panel panel-primary">
+            <div class="panel-heading">
+              <div class="accordion-toggle" data-toggle="collapse" data-parent="#accordion"
+                href="#collapsehistorydetail" aria-expanded="true">
+                <div class="row">
+                  <div class="col-lg-12">
+                    Log Details
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div id="collapsehistorydetail" class="panel-body panel-collapse collapse in" aria-expanded="true">
+              <table class="table table-bordered table-condensed" *ngIf="obj?.lstHistory && obj?.lstHistory.length"
+                style="width:100%">
+                <thead>
+                  <tr>
+
+                    <th class="text-center ">Status</th>
+                    <th class="text-center ">Remarks</th>
+                    <th class="text-center ">Action By</th>
+                    <th class="text-center ">Created On</th>
+
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let ms of obj?.lstHistory; let numberpra = index">
+
+                    <td>{{ ms.Status }}</td>
+                    <td>{{ ms.Remarks }}</td>
+                    <td>{{ ms.ActionBy }}</td>
+                    <td>{{ ms.CreatedDate | date :"MM-dd-yyyy HH:mm" }}</td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <table class="table table-bordered table-condensed" *ngIf="obj?.lstHistory==null">
+                <thead>
+                  <tr>
+                    <th class="text-center ">Status</th>
+                    <th class="text-center ">Remarks</th>
+                    <th class="text-center ">Action By</th>
+                    <th class="text-center ">Created On</th>
+
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td colspan="4">
+                      No Records Found.!
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group col-sm-12 col-md-12 col-lg-12">
+          <div class="panel panel-primary">
+            <div class="panel-heading">
+              <div class="accordion-toggle" data-toggle="collapse" data-parent="#accordion"
+                href="#collapsetransferdetail" aria-expanded="true">
+                <div class="row">
+                  <div class="col-lg-12">
+                    Transfer Details
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div id="collapsetransferdetail" class="panel-body panel-collapse collapse in" aria-expanded="true">
+              <table class="table table-bordered table-condensed" *ngIf="obj?.lstTrans && obj?.lstTrans.length"
+                style="width:100%">
+                <thead>
+                  <tr>
+                    <th class="text-center ">Status</th>
+                    <th class="text-center ">Remarks</th>
+                    <th class="text-center ">Transfer From </th>
+                    <th class="text-center ">Transfer To</th>
+                    <th class="text-center ">Transfer By </th>
+                    <th class="text-center ">Transfer On </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let ms of obj?.lstTrans; let numberpra = index">
+
+                    <td>{{ ms.Status }}</td>
+                    <td>{{ ms.Remarks }}</td>
+                    <td>{{ ms.TransferFromName }}</td>
+                    <td>{{ ms.TransferToName }}</td>
+                    <td>{{ ms.TransferByName }}</td>
+
+                    <td>{{ ms.TransferredDate | date :"MM-dd-yyyy HH:mm"}}</td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <table class="table table-bordered table-condensed" *ngIf="obj?.lstTrans==null">
+                <thead>
+                  <tr>
+                    <th class="text-center ">Status</th>
+                    <th class="text-center ">Remarks </th>
+                    <th class="text-center ">Transfer From </th>
+                    <th class="text-center ">Transfer To</th>
+                    <th class="text-center ">Transfer By </th>
+
+                    <th class="text-center ">Transferred On </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td colspan="6">
+                      No Records Found.!
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group col-sm-12 col-md-12 col-lg-12">
+          <div class="panel panel-primary">
+            <div class="panel-heading">
+              <div class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseimagedetail"
+                aria-expanded="true">
+                <div class="row">
+                  <div class="col-lg-12">
+                    RTV Image Details
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div id="collapseimagedetail" class="panel-body panel-collapse collapse in" aria-expanded="true">
+              <div>
+                <div class="col-lg-3" *ngFor="let ms of obj?.lstImages; let numberpra = index">
+                  <img [src]="addpath(ms.FilePath)" width="200" height="200" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

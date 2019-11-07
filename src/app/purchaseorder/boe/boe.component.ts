@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NgxSpinnerService } from 'ngx-spinner';
+
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UsernameValidator } from '../../_validators/username';
@@ -39,7 +39,7 @@ export class BoeComponent implements OnInit {
     private fb: FormBuilder,
     private _router: Router,
     private aroute: ActivatedRoute,
-    public _spinner: NgxSpinnerService,
+    
     private usernameValidator: UsernameValidator,
     private _BoeService: BoeService,
     private _authorizationGuard: AuthorizationGuard
@@ -103,7 +103,7 @@ export class BoeComponent implements OnInit {
       if (this.identity > 0) {
         this.panelTitle = "Edit BOE";
         this.action = false;
-        this._spinner.show();
+        //
         this._BoeService.searchById(this.PurchaseID, this.identity)
           .subscribe(
             (data: BOEHeader) => {
@@ -113,7 +113,7 @@ export class BoeComponent implements OnInit {
               this.TotalIGSTValue = this.lstItem.reduce((acc, a) => acc + a.IGSTValue, 0);
               this.TotalTotalValue = this.lstItem.reduce((acc, a) => acc + a.TotalValue, 0);
               this.TotalSumTotalValue = this.lstItem.reduce((acc, a) => acc + a.SumTotalValue, 0);
-              this._spinner.hide();
+              //
               this.IsEditable = data.IsEditable;
               this.boeform.get('BOENumber').disable();
               var BOEDate1 = moment(data.BOEDate, 'YYYY-MM-DD[T]HH:mm').
@@ -128,7 +128,7 @@ export class BoeComponent implements OnInit {
               });
             },
             (err: any) => {
-              this._spinner.hide();
+              //
               console.log(err);
             }
           );
@@ -136,7 +136,7 @@ export class BoeComponent implements OnInit {
       else {
         this.action = true;
         this.panelTitle = "Add New BOE";
-        this._spinner.show();
+        //
         this._BoeService.newBOE(this.PurchaseID)
           .subscribe(
             (data: BOEHeader) => {
@@ -146,13 +146,13 @@ export class BoeComponent implements OnInit {
               this.TotalIGSTValue = this.lstItem.reduce((acc, a) => acc + a.IGSTValue, 0);
               this.TotalTotalValue = this.lstItem.reduce((acc, a) => acc + a.TotalValue, 0);
               this.TotalSumTotalValue = this.lstItem.reduce((acc, a) => acc + a.SumTotalValue, 0);
-              this._spinner.hide(); 
+              // 
               var BOEDate1 = moment(data.InvoiceDate, 'YYYY-MM-DD[T]HH:mm').
                 format('MM-DD-YYYY HH:mm').toString();
               this.BOEDate = { startDate: new Date(BOEDate1) };
             },
             (err: any) => {
-              this._spinner.hide();
+              //
               console.log(err);
             }
           );
@@ -307,24 +307,24 @@ export class BoeComponent implements OnInit {
     this.obj.ReferenceDetail = this.boeform.controls['ReferenceDetail'].value;
     this.obj.PurchaseID = this.PurchaseID;
     this.obj.lstDetail = this.lstItem.filter(a => a.DutyAmount > 0);
-    this._spinner.show();
+    //
 
     this._BoeService.upsert(this.obj).subscribe(
       (data) => {
         if (data != null && data.Flag == true) {
-          this._spinner.hide();
+          //
           this.alertService.success(data.Msg);
           this._router.navigate(['/BOElist']);
         }
         else {
-          this._spinner.hide();
+          //
           this.alertService.error(data.Msg);
           this._router.navigate(['/BOElist']);
         }
         this.identity = 0;
       },
       (error: any) => {
-        this._spinner.hide();
+        //
         console.log(error);
       }
     );
@@ -343,23 +343,23 @@ export class BoeComponent implements OnInit {
     this.obj.ReferenceDetail = this.boeform.controls['ReferenceDetail'].value;
     this.obj.PurchaseID = this.PurchaseID;
     this.obj.lstDetail = this.lstItem.filter(a => a.DutyAmount > 0);
-    this._spinner.show();
+    //
     this._BoeService.upsert(this.obj).subscribe(
       (data) => {
         if (data != null && data.Flag == true) {
-          this._spinner.hide();
+          //
           this.alertService.success(data.Msg);
           this._router.navigate(['/BOElist']);
         }
         else {
-          this._spinner.hide();
+          //
           this.alertService.error(data.Msg);
           this._router.navigate(['/BOElist']);
         }
         this.identity = 0;
       },
       (error: any) => {
-        this._spinner.hide();
+        //
         console.log(error);
       }
     );

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NgxSpinnerService } from 'ngx-spinner';
+
 import { ToastrService } from 'ngx-toastr';
 import { DownloadService } from '../../_services/service/download.service';
 import { AmazonMTR } from '../../_services/model';
@@ -34,7 +34,7 @@ export class ReportAmazonMTRComponent implements OnInit {
   constructor(
     private alertService: ToastrService,
     private _downloadService: DownloadService,
-    private _spinner: NgxSpinnerService,
+    
   ) { }
 
   ngOnInit() {
@@ -67,47 +67,47 @@ export class ReportAmazonMTRComponent implements OnInit {
 
   //   let selectedItem = this.items[rowIndex];
   //   const DownloadPath = selectedItem.DownloadPath;
-  //   this._spinner.show();
+  //   //
   //   this._downloadService.downloadAmazonMTR(DownloadPath)
   //     .subscribe(data => {
   //       this.alertService.success('File downloaded successfully.!');
-  //       this._spinner.hide(),
+  //       
   //         saveAs(data, DownloadPath.toString());//+ '.csv'
   //     },
   //       (err) => {
-  //         this._spinner.hide();
+  //         //
   //         console.log(err);
   //       }
   //     );
   // }
 
   public removeHandler(DownloadPath: string, FileName: string): void {
-    this._spinner.show();
+    //
     this._downloadService.downloadAmazonMTR(DownloadPath)
       .subscribe(data => {
         this.alertService.success('File downloaded successfully.!');
-        this._spinner.hide(),
+        
           saveAs(data, FileName.toString());//+ '.csv'
       },
         (err) => {
-          this._spinner.hide();
+          //
           console.log(err);
         }
       );
   }
 
   onLoad(SearchBy: string, Search: string, StartDate: Date, EndDate: Date) {
-    this._spinner.show();
+    //
     return this._downloadService.getAmazonMTR(SearchBy, Search, StartDate, EndDate).subscribe(
       (data) => {
         if (data != null) {
           this.items = data;
           this.loadItems();
         }
-        this._spinner.hide();
+        //
       },
       (err) => {
-        this._spinner.hide();
+        //
         console.log(err);
       }
     );

@@ -1,0 +1,7 @@
+.panel-primary > .panel-heading {
+    color: #000 !important;
+    background-color: #e1e1e1 !important;
+    border-color: transparent !important;
+    border: 1px solid #ddd !important;
+    cursor: pointer; 
+}

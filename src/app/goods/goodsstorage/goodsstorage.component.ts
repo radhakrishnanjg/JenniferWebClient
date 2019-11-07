@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { NgxSpinnerService } from 'ngx-spinner';
+
 import { ToastrService } from 'ngx-toastr';
 import { GoodsstorageService } from '../../_services/service/goodsstorage.service';
 import { UsernameValidator } from '../../_validators/username';
@@ -30,7 +30,7 @@ export class GoodsstorageComponent implements OnInit {
     private _goodsstorageService: GoodsstorageService,
     private _authenticationService: AuthenticationService,
     private fb: FormBuilder,
-    private _spinner: NgxSpinnerService,
+    
     private _authorizationGuard: AuthorizationGuard,
     private usernameValidator: UsernameValidator,
   ) { }
@@ -116,10 +116,10 @@ export class GoodsstorageComponent implements OnInit {
     this.obj.WarehouseLocation = this.goodsstorageform.controls['WarehouseLocation'].value;
     this.obj.WarehouseRack = this.goodsstorageform.controls['WarehouseRack'].value;
     this.obj.WarehouseBin = this.goodsstorageform.controls['WarehouseBin'].value;
-    this._spinner.show();
+    //
     this._goodsstorageService.exist(0, this.goodsstorageform.controls['JenniferItemSerial'].value).subscribe(
       (data) => {
-        this._spinner.hide();
+        //
         if (!data) {
           this.alertService.error('Jennifer Serial Number is invalid or used.!');
         }
@@ -147,7 +147,7 @@ export class GoodsstorageComponent implements OnInit {
         this.identity = 0;
       },
       (error: any) => {
-        this._spinner.hide();
+        //
         console.log(error);
       }
     );
@@ -170,16 +170,16 @@ export class GoodsstorageComponent implements OnInit {
   }
 
   Insert() {
-    this._spinner.show();
+    //
     this._goodsstorageService.add(this.lstGoodsstorage).subscribe(
       (data) => {
         if (data != null && data.Flag == true) {
-          this._spinner.hide();
+          //
           this.alertService.success(data.Msg);
           this._router.navigate(['/Goodsstoragelist']);
         }
         else {
-          this._spinner.hide();
+          //
           this.alertService.error(data.Msg);
           this._router.navigate(['/Goodsstoragelist']);
         }
@@ -187,7 +187,7 @@ export class GoodsstorageComponent implements OnInit {
         this.identity = 0;
       },
       (error: any) => {
-        this._spinner.hide();
+        //
         console.log(error);
       }
     );

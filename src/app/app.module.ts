@@ -1,3 +1,4 @@
+//core npms 
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA, } from '@angular/core';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
@@ -5,23 +6,24 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './/app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+//third party npms 
 import { NgxMaskModule } from 'ngx-mask'
 import { ToastrModule } from 'ngx-toastr';
 import { CookieService } from 'ngx-cookie-service';
-
 import { SelectDropDownModule } from 'ngx-select-dropdown'
 import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import { DataTablesModule } from 'angular-datatables';
-
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { NgxTypeaheadModule } from 'ngx-typeahead';
-import * as bootstrap from "bootstrap";
-import * as $ from "jquery";
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { PreventDoubleSubmitModule } from 'ngx-prevent-double-submission';
 import { MomentModule } from 'ngx-moment';
 import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 import { DeviceDetectorModule } from 'ngx-device-detector';
+import * as bootstrap from "bootstrap";
+import * as $ from "jquery";
+//kendo
 import { GridModule } from '@progress/kendo-angular-grid';
 import { PopupModule } from '@progress/kendo-angular-popup';
 import { DropDownListModule } from '@progress/kendo-angular-dropdowns';
@@ -29,8 +31,9 @@ import { PDFExportModule } from '@progress/kendo-angular-pdf-export';
 import { InputsModule } from '@progress/kendo-angular-inputs';
 import { DateInputsModule } from '@progress/kendo-angular-dateinputs';
 import { EditorModule } from '@progress/kendo-angular-editor';
+import { ChartsModule } from '@progress/kendo-angular-charts';
 
-import { JwtInterceptor, HttpErrorInterceptor } from './_helpers';
+import { JwtInterceptor, HttpErrorInterceptor, LoaderInterceptor } from './_helpers';
 import { EncrDecrService } from './_services/service/encr-decr.service';
 // import { PopupAnchorDirective } from './purchaseorder/po/popup.anchor-target.directive';
 
@@ -55,39 +58,48 @@ import { MaintenanceComponent } from './maintenance/maintenance.component';
 import { SearchComponent } from './search/search.component';
 
 
+import { CasesModule } from './cases/cases.module';
+import 'hammerjs';
+import { DynamicformComponent } from './dynamicform/dynamicform.component';
+
+
 @NgModule({
   imports: [
     BrowserModule,
     ReactiveFormsModule,
     HttpClientModule,
+    BrowserAnimationsModule, 
+    FormsModule, 
+
+
     AngularFontAwesomeModule,
     DataTablesModule,
 
     NgxSpinnerModule,
-    FormsModule,
-    // Prevent double submission module
     PreventDoubleSubmitModule.forRoot(),
     MomentModule,
     NgxDaterangepickerMd.forRoot(),
     DeviceDetectorModule.forRoot(),
-
-    // ModalModule.forRoot()
-    BrowserAnimationsModule, // required animations module
+ 
     ToastrModule.forRoot({
-      timeOut: 5000,
-      //positionClass: 'toast-bottom-right',
+      timeOut: 5000, 
       positionClass: 'toast-top-center',
       preventDuplicates: true,
-    }),
-    InputsModule,// ToastrModule added,
+    }), 
     NgxMaskModule.forRoot(),
     SelectDropDownModule,
     NgxTypeaheadModule,
+    NgbModule,
+
+    //kendo
     GridModule,
     PDFExportModule,
+    InputsModule,
     DropDownListModule,
     PopupModule,
-    NgbModule,
+    DateInputsModule,
+    EditorModule,
+    ChartsModule,
     // user defined modules by rk 
     AccountModule,
     UsersModule,
@@ -100,10 +112,10 @@ import { SearchComponent } from './search/search.component';
     SalesModule,
     GoodsModule,
     DownloadModule,
-    HelpModule,
+   // HelpModule,
+    //CasesModule,
     AppRoutingModule,
-    DateInputsModule,
-    EditorModule
+
   ],
   declarations: [
     AppComponent,
@@ -111,9 +123,11 @@ import { SearchComponent } from './search/search.component';
     PrivatelayoutComponent,
     MaintenanceComponent,
     SearchComponent,
+    DynamicformComponent,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: HttpErrorInterceptor, multi: true },
     CookieService,
 

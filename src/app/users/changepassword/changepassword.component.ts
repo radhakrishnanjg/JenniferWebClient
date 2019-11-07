@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NgxSpinnerService } from 'ngx-spinner';
+
 import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UserService, } from '../../_services/service/user.service';
@@ -17,8 +17,7 @@ export class ChangepasswordComponent implements OnInit {
         private router: Router,
         private fb: FormBuilder,
         public _userService: UserService,
-        public _alertService: ToastrService,
-        public _spinner: NgxSpinnerService
+        public _alertService: ToastrService, 
     ) { }
 
     formErrors = {
@@ -96,10 +95,10 @@ export class ChangepasswordComponent implements OnInit {
             this._alertService.error('New and Confirm password must be same.! ');
             return;
         }
-        this._spinner.show();
+        //
         this._userService.changePassword(this.chgpwd).subscribe(
             (data) => {
-                this._spinner.hide();
+                //
                 if (data != null && data == true) {
                     this._alertService.success('Password changed successful, You can use new password in application now.!');
                     this.router.navigate(['/Dashboard1']);
@@ -111,7 +110,7 @@ export class ChangepasswordComponent implements OnInit {
 
             },
             (error: any) => {
-                this._spinner.hide();
+                //
                 this.Reset();
                 this._alertService.error('Invalid Password.!');
             }

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NgxSpinnerService } from 'ngx-spinner';
+
 import { Salesorder } from '../../_services/model';
 import { SalesorderService } from '../../_services/service/salesorder.service';
 import { Router } from '@angular/router';
@@ -32,7 +32,7 @@ export class SalesorderapprovallistComponent implements OnInit {
   }
   InventoryType: boolean = true;
   constructor(
-    private _spinner: NgxSpinnerService,
+    
     private _salesorderService: SalesorderService,
     private _authorizationGuard: AuthorizationGuard,
     private router: Router,
@@ -73,17 +73,17 @@ export class SalesorderapprovallistComponent implements OnInit {
   onLoad(SearchBy: string, Search: string) {
     let startdate: Date = this.selectedDateRange.startDate._d.toISOString().substring(0, 10);
     let enddate: Date = this.selectedDateRange.endDate._d.toISOString().substring(0, 10);
-    this._spinner.show();
+    //
     this._salesorderService.search(SearchBy, Search, startdate, enddate).subscribe(
       (data) => {
         if (data != null) { 
           this.items = data;
           this.loadItems(); 
         }
-        this._spinner.hide();
+        //
       },
       (error) => {
-        this._spinner.hide();
+        //
         console.log(error);
       }
     )

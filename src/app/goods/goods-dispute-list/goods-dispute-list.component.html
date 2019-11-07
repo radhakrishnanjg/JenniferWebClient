@@ -37,7 +37,7 @@
             </select>
           </div>
           <div class="col-md-3 nopading_loct">
-            <input type="text" [(ngModel)]="SearchKeyword" class="serchcurv form-control btn-group" id="GRN"
+            <input type="text" (keyup.enter)="Search()" [(ngModel)]="SearchKeyword" class="serchcurv form-control btn-group" id="GRN"
               aria-describedby="GRN">
           </div>
           <div class="col-md-2 nopading_loct">

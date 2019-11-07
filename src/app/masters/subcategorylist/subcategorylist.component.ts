@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { NgxSpinnerService } from 'ngx-spinner';
+
 import { ToastrService } from 'ngx-toastr';
 import { SubcategoryService } from '../../_services/service/subcategory.service';
 import { ProductGroup, Category, SubCategory } from '../../_services/model';
@@ -33,7 +33,7 @@ export class SubcategorylistComponent implements OnInit {
   constructor(
     private alertService: ToastrService,
     private _subcategoryService: SubcategoryService,
-    private _spinner: NgxSpinnerService,
+    
     private _authorizationGuard: AuthorizationGuard,
     private fb: FormBuilder,
     private _PrivateutilityService: PrivateutilityService,
@@ -83,32 +83,32 @@ export class SubcategorylistComponent implements OnInit {
   onchangeProductGroupID(selectedValue: string) {
     let id = parseInt(selectedValue);
     if (id > 0) {
-      this._spinner.show();
+      //
       this._PrivateutilityService.getCategories(id)
         .subscribe(
           (data: Category[]) => {
             this.lstCategory = data;
-            this._spinner.hide();
+            //
           },
           (err: any) => {
             console.log(err);
-            this._spinner.hide();
+            //
           }
         );
     }
   }
 
   ngOnInit() {
-    this._spinner.show();
+    //
     this._PrivateutilityService.getProductGroups()
       .subscribe(
         (data: ProductGroup[]) => {
           this.lstProductGroup = data;
-          this._spinner.hide();
+          //
         },
         (err: any) => {
           console.log(err);
-          this._spinner.hide();
+          //
         }
       );
 
@@ -176,7 +176,7 @@ export class SubcategorylistComponent implements OnInit {
     this.panelTitle = "Edit SubCategory";
     this.action = false;
     this.identity = + id;
-    this._spinner.show();
+    //
     this._subcategoryService.searchById(this.identity)
       .subscribe(
         (data: SubCategory) => {
@@ -190,11 +190,11 @@ export class SubcategorylistComponent implements OnInit {
           this.CategoryName = data.CategoryName;
           $("#CategoryID").attr("disabled", "disabled");
           this.logValidationErrors();
-          this._spinner.hide();
+          //
         },
         (err: any) => {
           console.log(err);
-          this._spinner.hide();
+          //
         }
       );
     $('#modalpopupsubcategoryupsert').modal('show');
@@ -237,7 +237,7 @@ export class SubcategorylistComponent implements OnInit {
     this.objSubCategory.CategoryID = this.subcatgoryForm.controls['CategoryID'].value;
     this.objSubCategory.SubCategoryName = this.subcatgoryForm.controls['SubCategoryName'].value;
     this.objSubCategory.IsActive = this.subcatgoryForm.controls['IsActive'].value;
-    this._spinner.show();
+    //
     this._subcategoryService.exist(this.identity,
       this.objSubCategory.SubCategoryName, this.objSubCategory.CategoryID)
       .subscribe(
@@ -246,15 +246,15 @@ export class SubcategorylistComponent implements OnInit {
             this.alertService.error('This SubCategory is already registered');
           }
           else {
-            this._spinner.show();
+            //
             this._subcategoryService.add(this.objSubCategory).subscribe(
               (data) => {
                 if (data != null && data == true) {
-                  this._spinner.hide();
+                  //
                   this.alertService.success('SubCategory data has been added successfully');
                 }
                 else {
-                  this._spinner.hide();
+                  //
                   this.alertService.error('SubCategory creation failed!');
                 }
                 $('#modalpopupsubcategoryupsert').modal('hide');
@@ -262,15 +262,15 @@ export class SubcategorylistComponent implements OnInit {
                 this.identity = 0;
               },
               (error: any) => {
-                this._spinner.hide();
+                //
                 console.log(error);
               }
             );
           }
-          this._spinner.hide();
+          //
         },
         (error: any) => {
-          this._spinner.hide();
+          //
         }
       );
 
@@ -282,7 +282,7 @@ export class SubcategorylistComponent implements OnInit {
     this.objSubCategory.CategoryID = this.subcatgoryForm.controls['CategoryID'].value;
     this.objSubCategory.SubCategoryName = this.subcatgoryForm.controls['SubCategoryName'].value;
     this.objSubCategory.IsActive = this.subcatgoryForm.controls['IsActive'].value;
-    this._spinner.show();
+    //
 
     this._subcategoryService.exist(this.identity, this.objSubCategory.SubCategoryName, this.objSubCategory.CategoryID)
       .subscribe(
@@ -291,15 +291,15 @@ export class SubcategorylistComponent implements OnInit {
             this.alertService.error('This SubCategory is already registered');
           }
           else {
-            this._spinner.show();
+            //
             this._subcategoryService.update(this.objSubCategory).subscribe(
               (data) => {
                 if (data != null && data == true) {
-                  this._spinner.hide();
+                  //
                   this.alertService.success('SubCategory data has been updated successful');
                 }
                 else {
-                  this._spinner.hide();
+                  //
                   this.alertService.error('SubCategory not saved!');
                 }
                 $('#modalpopupsubcategoryupsert').modal('hide');
@@ -307,22 +307,22 @@ export class SubcategorylistComponent implements OnInit {
                 this.identity = 0;
               },
               (error: any) => {
-                this._spinner.hide();
+                //
                 console.log(error);
               }
             );
           }
-          this._spinner.hide();
+          //
         },
         (error: any) => {
-          this._spinner.hide();
+          //
         }
       );
 
   }
 
   delete() {
-    this._spinner.show();
+    //
     this._subcategoryService.delete(this.identity).subscribe(
       (data) => {
         if (data) {
@@ -333,27 +333,27 @@ export class SubcategorylistComponent implements OnInit {
         }
         $('#modaldeleteconfimation').modal('hide');
         this.identity = 0;
-        this._spinner.hide();
+        //
       },
       (error: any) => {
-        this._spinner.hide();
+        //
         console.log(error);
       }
     );
   }
 
   onLoad(SearchBy: string, Search: string, IsActive: Boolean) {
-    this._spinner.show();
+    //
     return this._subcategoryService.search(SearchBy, Search, IsActive).subscribe(
       (lst) => {
         if (lst != null) { 
           this.items = lst;
           this.loadItems(); 
         }
-        this._spinner.hide();
+        //
       },
       (err) => {
-        this._spinner.hide();
+        //
         console.log(err);
       }
     );

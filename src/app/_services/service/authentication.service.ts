@@ -63,20 +63,27 @@ export class AuthenticationService {
         //     .pipe(catchError(this.handleError));
     }
 
-    public getIpAddress() :Observable<string>{
+    public getIpAddress(): Observable<string> {
         // return this.http
         //     .get('http://freegeoip.net/json/?callback')
         //     .map(response => response || {})
         //     .pipe(catchError(this.handleError));
 
-       return this.http.get<string>('https://jsonip.com')
-       .pipe(catchError(this.handleError));
+        return this.http.get<string>('https://jsonip.com')
+            .pipe(catchError(this.handleError));
     }
 
     public adduserLog(userlo: Userlog): Observable<boolean> {
         //rk
         let currentUser = this.currentUserValue;
         userlo.UserId = currentUser.UserId;
+        return this.http.post<boolean>(environment.baseUrl + `UserLog`, userlo)
+            .pipe(catchError(this.handleError));
+    }
+
+    public adduserLogunsuccessful(userlo: Userlog): Observable<boolean> {
+        //rk 
+        userlo.UserId = 0;
         return this.http.post<boolean>(environment.baseUrl + `UserLog`, userlo)
             .pipe(catchError(this.handleError));
     }

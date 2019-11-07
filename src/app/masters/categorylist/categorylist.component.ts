@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { NgxSpinnerService } from 'ngx-spinner';
+
 import { ToastrService } from 'ngx-toastr';
 import { CategoryService } from '../../_services/service/category.service';
 import { Category, ProductGroup } from '../../_services/model';
@@ -36,7 +36,7 @@ export class CategorylistComponent implements OnInit {
   constructor(
     private alertService: ToastrService,
     private _categoryService: CategoryService,
-    private _spinner: NgxSpinnerService,
+    
     private _authorizationGuard: AuthorizationGuard,
     private fb: FormBuilder,
     private _PrivateutilityService: PrivateutilityService,
@@ -153,7 +153,7 @@ export class CategorylistComponent implements OnInit {
     this.panelTitle = "Edit Category";
     this.action = false;
     this.identity = + id;
-    this._spinner.show();
+    //
     this._categoryService.searchById(this.identity)
       .subscribe(
         (data: Category) => {
@@ -165,11 +165,11 @@ export class CategorylistComponent implements OnInit {
           });
           $("#ProductGroupID").attr("disabled", "disabled");
           this.logValidationErrors();
-          this._spinner.hide();
+          //
         },
         (err: any) => {
           console.log(err);
-          this._spinner.hide();
+          //
         }
       );
     $('#modalpopupcategoryupsert').modal('show');
@@ -211,7 +211,7 @@ export class CategorylistComponent implements OnInit {
     this.objCategory.ProductGroupID = this.catgoryForm.controls['ProductGroupID'].value;
     this.objCategory.CategoryName = this.catgoryForm.controls['CategoryName'].value;
     this.objCategory.IsActive = this.catgoryForm.controls['IsActive'].value;
-    this._spinner.show();
+    //
     this._categoryService.exist(this.identity,
       this.objCategory.CategoryName, this.objCategory.ProductGroupID)
       .subscribe(
@@ -220,15 +220,15 @@ export class CategorylistComponent implements OnInit {
             this.alertService.error('This Category is already registered');
           }
           else {
-            this._spinner.show();
+            //
             this._categoryService.add(this.objCategory).subscribe(
               (data) => {
                 if (data != null && data == true) {
-                  this._spinner.hide();
+                  //
                   this.alertService.success('Category data has been added successfully');
                 }
                 else {
-                  this._spinner.hide();
+                  //
                   this.alertService.error('Category creation failed!');
                 }
                 $('#modalpopupcategoryupsert').modal('hide');
@@ -236,15 +236,15 @@ export class CategorylistComponent implements OnInit {
                 this.identity = 0;
               },
               (error: any) => {
-                this._spinner.hide();
+                //
                 console.log(error);
               }
             );
           }
-          this._spinner.hide();
+          //
         },
         (error: any) => {
-          this._spinner.hide();
+          //
         }
       );
 
@@ -256,7 +256,7 @@ export class CategorylistComponent implements OnInit {
     this.objCategory.ProductGroupID = this.catgoryForm.controls['ProductGroupID'].value;
     this.objCategory.CategoryName = this.catgoryForm.controls['CategoryName'].value;
     this.objCategory.IsActive = this.catgoryForm.controls['IsActive'].value;
-    this._spinner.show();
+    //
 
     this._categoryService.exist(this.identity, this.objCategory.CategoryName, this.objCategory.ProductGroupID)
       .subscribe(
@@ -265,15 +265,15 @@ export class CategorylistComponent implements OnInit {
             this.alertService.error('This Category is already registered');
           }
           else {
-            this._spinner.show();
+            //
             this._categoryService.update(this.objCategory).subscribe(
               (data) => {
                 if (data != null && data == true) {
-                  this._spinner.hide();
+                  //
                   this.alertService.success('Category data has been updated successful');
                 }
                 else {
-                  this._spinner.hide();
+                  //
                   this.alertService.error('Category not saved!');
                 }
                 $('#modalpopupcategoryupsert').modal('hide');
@@ -281,22 +281,22 @@ export class CategorylistComponent implements OnInit {
                 this.identity = 0;
               },
               (error: any) => {
-                this._spinner.hide();
+                //
                 console.log(error);
               }
             );
           }
-          this._spinner.hide();
+          //
         },
         (error: any) => {
-          this._spinner.hide();
+          //
         }
       );
 
   }
 
   delete() {
-    this._spinner.show();
+    //
     this._categoryService.delete(this.identity).subscribe(
       (data) => {
         if (data) {
@@ -307,27 +307,27 @@ export class CategorylistComponent implements OnInit {
         }
         $('#modaldeleteconfimation').modal('hide');
         this.identity = 0;
-        this._spinner.hide();
+        //
       },
       (error: any) => {
-        this._spinner.hide();
+        //
         console.log(error);
       }
     );
   }
 
   onLoad(SearchBy: string, Search: string, IsActive: Boolean) {
-    this._spinner.show();
+    //
     return this._categoryService.search(SearchBy, Search, IsActive).subscribe(
       (lst) => {
         if (lst != null) { 
           this.items = lst;
           this.loadItems(); 
         }
-        this._spinner.hide();
+        //
       },
       (err) => {
-        this._spinner.hide();
+        //
         console.log(err);
       }
     );

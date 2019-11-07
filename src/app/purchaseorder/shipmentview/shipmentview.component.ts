@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { NgxSpinnerService } from 'ngx-spinner';
+
 import { ToastrService } from 'ngx-toastr';
 import { PoshipmentService } from '../../_services/service/poshipment.service';
 import { PrivateutilityService } from '../../_services/service/privateutility.service';
@@ -28,7 +28,7 @@ export class ShipmentviewComponent implements OnInit {
     public _poshipmentService: PoshipmentService,
     public _privateutilityService: PrivateutilityService,
     public _alertService: ToastrService,
-    public _spinner: NgxSpinnerService,
+    
     private aroute: ActivatedRoute,
   ) {
   }
@@ -44,7 +44,7 @@ export class ShipmentviewComponent implements OnInit {
         this.panelTitle = "View Shipment";
         this.action = false;
 
-        this._spinner.show();
+        //
         this._poshipmentService.searchById(this.POId, this.identity)
           .subscribe(
             (data: Poshipment) => {
@@ -56,11 +56,11 @@ export class ShipmentviewComponent implements OnInit {
               this.TotalPOQty = this.lstshipmentqty.reduce((acc, a) => acc + a.POQty, 0);
               this.TotalAvailableQty = this.lstshipmentqty.reduce((acc, a) => acc + a.AvailableQty, 0);
               this.TotalShipmentQty = this.lstshipmentqty.reduce((acc, a) => acc + a.ShipmentQty, 0);
-              this._spinner.hide();
+              //
             },
             (err: any) => {
               console.log(err);
-              this._spinner.hide();
+              //
             }
           );
       }

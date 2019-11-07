@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { NgxSpinnerService } from 'ngx-spinner';
+
 import { ToastrService } from 'ngx-toastr';
 import { CompanydetailService } from '../../_services/service/companydetail.service';
 import { Companydetails } from '../../_services/model';
@@ -30,7 +30,7 @@ export class CompanydetaillistComponent implements OnInit {
     private alertService: ToastrService,
     private router: Router,
     private _companydetailService: CompanydetailService,
-    private _spinner: NgxSpinnerService,
+    
     private _authorizationGuard: AuthorizationGuard
   ) { }
 
@@ -57,7 +57,7 @@ export class CompanydetaillistComponent implements OnInit {
   }
 
   delete() {
-    this._spinner.show();
+    //
     this._companydetailService.delete(this.selectedDeleteId).subscribe(
       (data) => {
         if (data) {
@@ -68,27 +68,27 @@ export class CompanydetaillistComponent implements OnInit {
         }
         $('#modaldeleteconfimation').modal('hide');
 
-        this._spinner.hide();
+        //
       },
       (error: any) => {
-        this._spinner.hide();
+        //
         console.log(error);
       }
     );
   }
 
   onLoad() {
-    this._spinner.show();
+    //
     return this._companydetailService.search('').subscribe(
       (lst) => {
         if (lst != null ) {  
           this.items = lst;
           this.loadItems(); 
         }
-        this._spinner.hide();
+        //
       },
       (err) => {
-        this._spinner.hide();
+        //
         console.log(err);
       }
     );

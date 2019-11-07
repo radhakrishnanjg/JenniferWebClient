@@ -1,5 +1,5 @@
 import { Injectable, } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http'; 
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError, } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
@@ -36,7 +36,7 @@ export class PoapprovalService {
     return this.httpClient.get<Poorder>(environment.baseUrl + `Poorder/ApprovalSearchById?POID=` + POID
       + `&CompanyDetailID=` + CompanyDetailID)
       .pipe(catchError(this.handleError));
-  } 
+  }
 
   public getOrderItems(POID: number): Observable<Poorderitem[]> {
     let currentUser = this.authenticationService.currentUserValue;
@@ -59,6 +59,14 @@ export class PoapprovalService {
     obj.CompanyDetailID = currentUser.CompanyDetailID;
     obj.LoginId = currentUser.UserId;
     return this.httpClient.post<Result>(environment.baseUrl + `Poorder/ApprovalUpdate`, obj)
+      .pipe(catchError(this.handleError));
+  }
+
+  public showapprovaldetailbycompany(): Observable<Result> {
+    let currentUser = this.authenticationService.currentUserValue;
+    let CompanyID = currentUser.CompanyID;
+    return this.httpClient.get<Result>(environment.baseUrl +
+      `Poorder/ShowApprovalDetail?CompanyID=` + CompanyID)
       .pipe(catchError(this.handleError));
   }
 

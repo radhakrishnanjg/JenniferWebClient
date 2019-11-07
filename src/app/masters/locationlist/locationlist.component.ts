@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { NgxSpinnerService } from 'ngx-spinner';
+
 import { ToastrService } from 'ngx-toastr';
 import { LocationService } from  '../../_services/service/location.service';
 import { Location } from  '../../_services/model';
@@ -31,7 +31,7 @@ export class LocationlistComponent implements OnInit {
     private alertService: ToastrService,
     private router: Router,
     private _locationService: LocationService,
-    private _spinner: NgxSpinnerService,
+    
     private _authorizationGuard: AuthorizationGuard
   ) { }
 
@@ -68,7 +68,7 @@ export class LocationlistComponent implements OnInit {
   }
 
   delete() {
-    this._spinner.show();
+    //
     this._locationService.delete(this.selectedDeleteId).subscribe(
       (data) => {
         if (data) {
@@ -79,27 +79,27 @@ export class LocationlistComponent implements OnInit {
         }
         $('#modaldeleteconfimation').modal('hide');
         
-        this._spinner.hide();
+        //
       },
       (error: any) => {
-        this._spinner.hide();
+        //
         console.log(error);
       }
     );
   }
 
   onLoad(SearchBy: string, Search: string,IsActive: Boolean) { 
-    this._spinner.show();
+    //
     return this._locationService.search(SearchBy, Search,IsActive).subscribe(
       (lst) => {
         if (lst != null ) { 
           this.items = lst;
           this.loadItems(); 
         }
-        this._spinner.hide();
+        //
       },
       (err) => {
-        this._spinner.hide();
+        //
         console.log(err);
       }
     );

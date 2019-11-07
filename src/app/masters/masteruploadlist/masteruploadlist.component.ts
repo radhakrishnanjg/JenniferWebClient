@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NgxSpinnerService } from 'ngx-spinner';
+
 import { MasteruploadService } from '../../_services/service/masterupload.service';
 import { MasterUpload } from '../../_services/model';
 import { saveAs } from 'file-saver';
@@ -26,7 +26,7 @@ export class MasteruploadlistComponent implements OnInit {
 
   constructor(
     private _masteruploadService: MasteruploadService,
-    private _spinner: NgxSpinnerService,
+    
     private router: Router,
     private _authorizationGuard: AuthorizationGuard,
   ) { }
@@ -49,28 +49,28 @@ export class MasteruploadlistComponent implements OnInit {
 
 
   downloadFile(fileid: number, filename: string) {
-    this._spinner.show();
+    //
     this._masteruploadService.getfile(fileid)
       .subscribe(data => {
-        this._spinner.hide(),
+        
           saveAs(data, filename.toString())
       },
         (err) => {
-          this._spinner.hide();
+          //
           console.log(err);
         }
       );
   }
 
   downloadError(fileid: number) {
-    this._spinner.show();
+    //
     this._masteruploadService.getErrorDetail(fileid)
       .subscribe(data => {
-        this._spinner.hide(),
+        
           saveAs(data, 'Error' + fileid.toString() + '.xlsx')
       },
         (err) => {
-          this._spinner.hide();
+          //
           console.log(err);
         }
       );
@@ -78,17 +78,17 @@ export class MasteruploadlistComponent implements OnInit {
 
   onLoad(SearchBy: string, Search: string) {
 
-    this._spinner.show();
+    //
     return this._masteruploadService.search(SearchBy, Search).subscribe(
       (lst) => {
         if (lst != null) { 
           this.items = lst;
           this.loadItems(); 
         }
-        this._spinner.hide();
+        //
       },
       (err) => {
-        this._spinner.hide();
+        //
         console.log(err);
       }
     );

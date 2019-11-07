@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router';
-import { NgxSpinnerService } from 'ngx-spinner';
+
 import { ToastrService } from 'ngx-toastr';
 import { PicklistService } from '../../_services/service/picklist.service';
 import { AuthorizationGuard } from '../../_guards/Authorizationguard'
@@ -34,7 +34,7 @@ export class PicklistComponent implements OnInit {
     private alertService: ToastrService,
     private router: Router,
     private _picklistService: PicklistService,
-    private _spinner: NgxSpinnerService,
+    
     private _authorizationGuard: AuthorizationGuard,
     private aroute: ActivatedRoute,
   ) { }
@@ -45,7 +45,7 @@ export class PicklistComponent implements OnInit {
     this.aroute.paramMap.subscribe(params => {
       this.identity = +params.get('id');
     });
-    this._spinner.show();
+    //
     return this._picklistService.searchById(this.identity).subscribe(
       (data) => {
         if (data != null) {
@@ -56,7 +56,7 @@ export class PicklistComponent implements OnInit {
           this.PicklistQty = data.PicklistQty;
           this.objPicklistheader = data;
 
-          this._spinner.show();
+          //
           return this._picklistService.processSearchByID(this.objPicklistheader).subscribe(
             (data1) => {
               if (data1 != null) {
@@ -73,18 +73,18 @@ export class PicklistComponent implements OnInit {
                   };
                 }
               }
-              this._spinner.hide();
+              //
             },
             (err) => {
-              this._spinner.hide();
+              //
               console.log(err);
             }
           );
         }
-        this._spinner.hide();
+        //
       },
       (err) => {
-        this._spinner.hide();
+        //
         console.log(err);
       }
     );
@@ -153,7 +153,7 @@ export class PicklistComponent implements OnInit {
     else { 
       this.objPicklistheader.PickListNumber = this.identity;
       this.objPicklistheader.lstSerialNums = this.lstPicklistdetail;
-      this._spinner.show();
+      //
       this._picklistService.process(this.objPicklistheader).subscribe(
         (data1) => {
           if (data1 != null) {
@@ -169,10 +169,10 @@ export class PicklistComponent implements OnInit {
             };
           }
           this.CheckCount();
-          this._spinner.hide();
+          //
         },
         (err) => {
-          this._spinner.hide();
+          //
           console.log(err);
         }
       );
@@ -214,23 +214,23 @@ export class PicklistComponent implements OnInit {
     }
     this.objPicklistheader.PickListNumber = this.identity;
     this.objPicklistheader.lstSerialNums = this.lstPicklistdetail;
-    this._spinner.show();
+    //
     this._picklistService.saveAsDraft(this.objPicklistheader).subscribe(
       (data) => {
         if (data != null && data.Flag == true) {
-          this._spinner.hide();
+          //
           this.alertService.success(data.Msg);
           this.router.navigate(['/Picklistsearch']);
         }
         else {
-          this._spinner.hide();
+          //
           this.alertService.error(data.Msg);
           this.router.navigate(['/Picklistsearch']);
         }
         this.identity = 0;
       },
       (error: any) => {
-        this._spinner.hide();
+        //
         console.log(error);
       }
     );
@@ -239,23 +239,23 @@ export class PicklistComponent implements OnInit {
   SaveAsClose(): void {
     this.objPicklistheader.PickListNumber = this.identity;
     this.objPicklistheader.lstSerialNums = this.lstPicklistdetail;
-    this._spinner.show();
+    //
     this._picklistService.saveAsClose(this.objPicklistheader).subscribe(
       (data) => {
         if (data != null && data.Flag == true) {
-          this._spinner.hide();
+          //
           this.alertService.success(data.Msg);
           this.router.navigate(['/Picklistsearch']);
         }
         else {
-          this._spinner.hide();
+          //
           this.alertService.error(data.Msg);
           this.router.navigate(['/Picklistsearch']);
         }
         this.identity = 0;
       },
       (error: any) => {
-        this._spinner.hide();
+        //
         console.log(error);
       }
     );

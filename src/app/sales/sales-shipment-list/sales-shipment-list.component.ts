@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NgxSpinnerService } from 'ngx-spinner';
+
 import { SalesShipmentService } from '../../_services/service/sales-shipment.service';
 import { SalesShipment, Shipmentoutward } from '../../_services/model';
 
@@ -24,7 +24,7 @@ export class SalesShipmentListComponent implements OnInit {
   constructor(
     private router: Router,
     private _shipmentService: SalesShipmentService,
-    private _spinner: NgxSpinnerService,
+    
     private _authorizationGuard: AuthorizationGuard
   ) { }
 
@@ -48,17 +48,17 @@ export class SalesShipmentListComponent implements OnInit {
 
   onLoad(SearchBy: string, Search: string, ) {
 
-    this._spinner.show();
+    //
     return this._shipmentService.search(SearchBy, Search).subscribe(
       (data) => {
         if (data != null) {  
           this.items = data;
           this.loadItems(); 
         }
-        this._spinner.hide();
+        //
       },
       (err) => {
-        this._spinner.hide();
+        //
         console.log(err);
       }
     );

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { NgxSpinnerService } from 'ngx-spinner';
+
 import { ToastrService } from 'ngx-toastr';
 import { DropdownService } from '../../_services/service/dropdown.service';
 import { Dropdown } from '../../_services/model';
@@ -31,7 +31,7 @@ export class DropdownlistComponent implements OnInit {
   constructor(
     private alertService: ToastrService,
     private _dropdownService: DropdownService,
-    private _spinner: NgxSpinnerService,
+    
     private _authorizationGuard: AuthorizationGuard,
     private fb: FormBuilder,
     private _PrivateutilityService: PrivateutilityService,
@@ -92,16 +92,16 @@ export class DropdownlistComponent implements OnInit {
 
 
   ngOnInit() {
-    this._spinner.show();
+    //
     this._PrivateutilityService.GetMasterDropdowns()
       .subscribe(
         (data: Dropdown[]) => {
           this.lstDropdownMaster = data;
-          this._spinner.hide();
+          //
         },
         (err: any) => {
           console.log(err);
-          this._spinner.hide();
+          //
         }
       );
 
@@ -172,7 +172,7 @@ export class DropdownlistComponent implements OnInit {
     this.panelTitle = "Edit Dropdown";
     this.action = false;
     this.identity = + id;
-    this._spinner.show();
+    //
     this._dropdownService.searchById(this.identity)
       .subscribe(
         (data: Dropdown) => {
@@ -185,11 +185,11 @@ export class DropdownlistComponent implements OnInit {
           });
           $("#DropdownTypeName").attr("disabled", "disabled");
           this.logValidationErrors();
-          this._spinner.hide();
+          //
         },
         (err: any) => {
           console.log(err);
-          this._spinner.hide();
+          //
         }
       );
     $('#modalpopupdropdownupsert').modal('show');
@@ -227,7 +227,7 @@ export class DropdownlistComponent implements OnInit {
     this.objDropdown.DisplayOrder = this.dropdownForm.controls['DisplayOrder'].value;
     this.objDropdown.IsActive = this.dropdownForm.controls['IsActive'].value;
 
-    this._spinner.show();
+    //
     this._dropdownService.exist(this.objDropdown.DropdownID, this.objDropdown.DropdownType, this.objDropdown.DropdownValue)
       .subscribe(
         (data) => {
@@ -235,15 +235,15 @@ export class DropdownlistComponent implements OnInit {
             this.alertService.error('This Dropdown has been registered already!');
           }
           else {
-            this._spinner.show();
+            //
             this._dropdownService.add(this.objDropdown).subscribe(
               (data) => {
                 if (data != null && data == true) {
-                  this._spinner.hide();
+                  //
                   this.alertService.success('Dropdown data has been added successfully');
                 }
                 else {
-                  this._spinner.hide();
+                  //
                   this.alertService.error('Dropdown creation failed!');
                 }
                 $('#modalpopupdropdownupsert').modal('hide');
@@ -251,15 +251,15 @@ export class DropdownlistComponent implements OnInit {
                 this.identity = 0;
               },
               (error: any) => {
-                this._spinner.hide();
+                //
                 console.log(error);
               }
             );
           }
-          this._spinner.hide();
+          //
         },
         (error: any) => {
-          this._spinner.hide();
+          //
         }
       );
 
@@ -273,7 +273,7 @@ export class DropdownlistComponent implements OnInit {
     this.objDropdown.DropDownDescription = this.dropdownForm.controls['DropDownDescription'].value;
     this.objDropdown.DisplayOrder = this.dropdownForm.controls['DisplayOrder'].value;
     this.objDropdown.IsActive = this.dropdownForm.controls['IsActive'].value;
-    this._spinner.show();
+    //
     this._dropdownService.exist(this.objDropdown.DropdownID, this.objDropdown.DropdownType, this.objDropdown.DropdownValue)
       .subscribe(
         (data) => {
@@ -281,15 +281,15 @@ export class DropdownlistComponent implements OnInit {
             this.alertService.error('This Dropdown has been registered already!');
           }
           else {
-            this._spinner.show();
+            //
             this._dropdownService.update(this.objDropdown).subscribe(
               (data) => {
                 if (data != null && data == true) {
-                  this._spinner.hide();
+                  //
                   this.alertService.success('Dropdown data has been updated successful');
                 }
                 else {
-                  this._spinner.hide();
+                  //
                   this.alertService.error('Dropdown not saved!');
                 }
                 $('#modalpopupdropdownupsert').modal('hide');
@@ -297,22 +297,22 @@ export class DropdownlistComponent implements OnInit {
                 this.identity = 0;
               },
               (error: any) => {
-                this._spinner.hide();
+                //
                 console.log(error);
               }
             );
           }
-          this._spinner.hide();
+          //
         },
         (error: any) => {
-          this._spinner.hide();
+          //
         }
       );
 
   }
 
   delete() {
-    this._spinner.show();
+    //
     this._dropdownService.delete(this.identity).subscribe(
       (data) => {
         if (data) {
@@ -323,10 +323,10 @@ export class DropdownlistComponent implements OnInit {
         }
         $('#modaldeleteconfimation').modal('hide');
         this.identity = 0;
-        this._spinner.hide();
+        //
       },
       (error: any) => {
-        this._spinner.hide();
+        //
         console.log(error);
       }
     );
@@ -336,17 +336,17 @@ export class DropdownlistComponent implements OnInit {
 
 
 
-    this._spinner.show();
+    //
     this._dropdownService.search(SearchBy, Search, IsActive).subscribe(
       (data) => {
         if (data != null) { 
           this.items = data;
           this.loadItems(); 
         }
-        this._spinner.hide();
+        //
       },
       (err) => {
-        this._spinner.hide();
+        //
         console.log(err);
       }
     );

@@ -8,13 +8,13 @@
     <div class="pull-right hidden-xs">
       <ol class="breadcrumb" id="dynamicbreadcrumb">
         <li>
-           <span> Revenue</span>
+          <span> Revenue</span>
         </li>
         <li>
-           <span> PickList</span>
+          <span> PickList</span>
         </li>
         <li class="active">
-          
+
           List
         </li>
       </ol>
@@ -37,7 +37,7 @@
       </div>
       <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 ">
         <div class="pull-right">
-          <button class="btn btn-primary" routerLink="/Picklistsearch" title="Back">
+          <button  type="button" class="btn btn-primary" routerLink="/Picklistsearch" title="Back">
 
             Back
           </button>
@@ -57,7 +57,7 @@
                 <thead>
                   <tr>
                     <th>Item Code </th>
-                    <th>Store Name </th>
+                    <th>Store Location </th>
                     <th>Rack Number </th>
                     <th>Bin Number </th>
                     <th>Total Item Level Qty </th>
@@ -84,10 +84,10 @@
                 <thead>
                   <tr>
                     <th>Item Code </th>
-                    <th>Store Name </th>
+                    <th>Store Location </th>
                     <th>Rack Number </th>
                     <th>Bin Number </th>
-                    <th >Total Item Level Qty </th>
+                    <th>Total Item Level Qty </th>
                     <th>Qty </th>
                     <th>Scanned Qty </th>
                   </tr>
@@ -172,7 +172,7 @@
                   <tr *ngFor="let obj1 of lstPicklistdetail; let id = index">
                     <td>{{ id +1 }}</td>
                     <td>{{ obj1.JenniferItemSerial}}</td>
-                    <td> 
+                    <td>
                       <i class="fa fa-trash bgred pointer" title="Remove" (click)="removeRow(id)"
                         *ngIf="obj1.Flag==false"></i>
                     </td>
@@ -227,8 +227,9 @@
   </div>
   <div class="panel-footer">
     <div class="btn-toolbar pull-right">
-      <button type="button" class="btn btn-primary" routerLink="/Picklistsearch" title="Cancel">Cancel</button>
-      <button type="submit" *ngIf="Btnenable" prevent-double-submit class="btn btn-success" (click)="SaveData()" title="Submit">Submit</button>
+      <button type="button"  type="button" class="btn btn-primary" routerLink="/Picklistsearch" title="Cancel">Cancel</button>
+      <button type="submit" *ngIf="Btnenable" prevent-double-submit class="btn btn-success" (click)="SaveData()"
+        title="Submit">Submit</button>
     </div>
     <div class="clearfix"></div>
   </div>

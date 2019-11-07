@@ -1,259 +1,340 @@
-<div class="row">
-
-  <div class="col-xs-4">
-    <h3>
-      Summary Details
-    </h3>
-    <small> Values in Lakhs </small>
-  </div>
-  
-  <div class="col-xs-8">
-    <div class="pull-right">
-      <b>
-        Filter by (Disbursement Date)
-      </b><br />
-      <input type="text" ngxDaterangepickerMd [(ngModel)]="selectedDateRange" class="col-xs-12 pointer" 
-        style="width:500px;border:1px soloid #ccc !important; padding :3px;left:0px"
-        [showCustomRangeLabel]="true" [ranges]="ranges" [showCancel]="true" placeholder="Select please..."
-        (ngModelChange)="onChange($event)"  />
-    </div>
-  </div>
-</div>
-<div class="row">
-  <div class="col-md-2">
-    <div class="panel panel-custom">
-      <div class="panel-heading bed-padding operpnlhead">
-        <div class="row">
-          <div class="col-xs-12 col-sm-2  col-md-2  col-lg-2">
-            <i class="fa fa-money fa-2x"></i>
-          </div>
-          <div class="col-xs-10 text-right">
-            <div>
-              No. of Loans :
-              <span id="h5totalapprovedpo">
-                
-              </span>
-            </div>
-            <div>
-              Value :
-              <i class="fa fa-inr rupe-i"></i>
-              <span id="h5totalpendingpo">
-                 
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="panel-footer">
-        <span class="pull-left">Disbursed Amount</span>
-        <span class="pull-right">
-          <i class="fa fa-arrow-circle-right">
-          </i>
-        </span>
-        <div class="clearfix"></div>
-      </div>
-    </div>
-  </div>
-  <div class="col-md-2">
-    <div class="panel panel-custom">
-      <div class="panel-heading bed-padding operpnlhead">
-        <div class="row">
-          <div class="col-xs-12 col-sm-2  col-md-2  col-lg-2">
-            <i class="fa fa-money fa-2x"></i>
-          </div>
-          <div class="col-xs-10 text-right">
-            <div>
-              No. of Loans :
-              <span id="h5totalshipments">
-                 
-              </span>
-            </div>
-            <div>
-              Value :
-              <i class="fa fa-inr rupe-i"></i>
-              <span id="h5pendingshipments">
-                
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="panel-footer">
-
-        <span class="pull-left">Not Due</span>
-        <span class="pull-right">
-          <i class="fa fa-arrow-circle-right">
-          </i>
-        </span>
-        <div class="clearfix"></div>
-      </div>
-    </div>
-  </div>
-  <div class="col-md-2">
-    <div class="panel panel-custom">
-      <div class="panel-heading bed-padding operpnlhead">
-        <div class="row">
-          <div class="col-xs-12 col-sm-2  col-md-2  col-lg-2">
-            <i class="fa fa-money fa-2x"></i>
-          </div>
-          <div class="col-xs-10 text-right">
-            <div>
-              No. of Loans :
-              <span id="h5mdtsales">
-               
-              </span>
-            </div>
-            <div>
-              Value :
-              <i class="fa fa-inr rupe-i"></i>
-              <span id="h5yesterdaysales">
-               
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="panel-footer">
-        <span class="pull-left">Received on Time</span>
-        <span class="pull-right">
-          <i class="fa fa-arrow-circle-right">
-          </i>
-        </span>
-        <div class="clearfix"></div>
-      </div>
-    </div>
-  </div>
-  <div class="col-md-2">
-    <div class="panel panel-custom">
-      <div class="panel-heading bed-padding operpnlhead">
-        <div class="row">
-          <div class="col-xs-12 col-sm-2  col-md-2  col-lg-2">
-            <i class="fa fa-money fa-2x"></i>
-          </div>
-          <div class="col-xs-10 text-right">
-            <div>
-              No. of Loans :
-              <span id="h5mdtpurchases">
-                
-              </span>
-            </div>
-            <div>
-              Value :
-              <i class="fa fa-inr rupe-i"></i>
-              <span id="h5yesterdaypurchases">
-                 
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="panel-footer">
-
-        <span class="pull-left">Received With Delay</span>
-        <span class="pull-right">
-          <i class="fa fa-arrow-circle-right">
-          </i>
-        </span>
-        <div class="clearfix"></div>
-      </div>
-    </div>
-  </div>
-  <div class="col-md-2">
-    <div >
-      <div class="panel panel-custom">
-        <div class="panel-heading bed-padding operpnlhead">
-          <div class="row">
-            <div class="col-xs-12 col-sm-2  col-md-2  col-lg-2">
-              <i class="fa fa-money fa-2x"></i>
-            </div>
-            <div class="col-xs-10 text-right">
-              <div>
-                No. of Loans :
-                <span id="h5inboundvalue">
-                  
-                </span>
-              </div>
-              <div>
-                Value :
-                <i class="fa fa-inr rupe-i"></i>
-                <span id="h5stockvalue">
-                   
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="panel-footer">
-          <span class="pull-left">Over Due</span>
-          <span class="pull-right">
-            <i class="fa fa-arrow-circle-right">
-            </i>
-          </span>
-          <div class="clearfix"></div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-  <div class="col-md-2">
-    <div >
-      <div class="panel panel-custom">
-        <div class="panel-heading bed-padding operpnlhead">
-          <div class="row">
-            <div class="col-xs-12 col-sm-2  col-md-2  col-lg-2">
-              <i class="fa fa-money fa-2x"></i>
-            </div>
-            <div class="col-xs-10 text-right">
-              <div>
-                No. of Loans :
-                <span id="h5inboundvalue">
-                  
-                </span>
-              </div>
-              <div>
-                Value :
-                <i class="fa fa-inr rupe-i"></i>
-                <span id="h5stockvalue">
-                   
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="panel-footer">
-          <span class="pull-left">Short Receipt</span>
-          <span class="pull-right">
-            <i class="fa fa-arrow-circle-right">
-            </i>
-          </span>
-          <div class="clearfix"></div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</div>
-
-<div class="panel-heading">
-  &nbsp;
-</div>
-
-
-<div class="panel">
-  <div class="panel-body">
-    <div class="col-sm-6">
-      <div echarts [options]="chartOption1" class="demo-chart"></div>
-    </div>
-    <div class="col-sm-6">
-      <div echarts [options]="chartOption2" class="demo-chart"></div>
-    </div>
+<div id="Salesdashboard">
+  <div class="panel panel-default">
     <div class="panel-heading">
-      &nbsp;
+      <div class="row">
+        <div class="col-md-2 ">
+          <label> Dashboards <span class="mandantory">*</span> </label> <br />
+          <select (change)="onchangeMenuID($event.target.value)" [(ngModel)]="MenuID" class="form-control serchcurv">
+            <option value="0" selected="selected">Select </option>
+            <option *ngFor="let dis of lstMenus" value="{{dis.MenuID}}">
+              {{dis.MenuName}}
+            </option>
+          </select>
+        </div>
+        <div class="col-md-4 ">
+          <label> Date Range<span class="mandantory">*</span></label>
+          <input type="text" ngxDaterangepickerMd [(ngModel)]="selectedDateRange"
+            class="form-control   col-xs-12 pointer serchcurv" placeholder="Select please..."
+            (datesUpdated)="selectedDateRangeUpdated($event)" />
+        </div>
+        <div class="col-md-3 marginDPtop25">
+          <button class="btn btn-default serchcurv" (click)="Search()" title="Search">
+            <i class="fa fa-search " aria-hidden="true"></i>
+          </button>
+          <button class="btn btn-default serchcurv" (click)="Reset()" title="Reset">
+            <i class="fa fa-refresh" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
     </div>
-    <div class="col-sm-12">
-      <div echarts [options]="chartOption3" class="demo-chart"></div>
+
+    <div id="122" *ngIf="MenuID==122">
+
+      <div class="panel-body">
+        <div class="valucasebox">
+          <div class="row">
+            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+              <span class="spanheader">
+                Last Updated: {{ LastUpdatedDate | date :"MM-dd-yyyy HH:mm"}} IST
+              </span>
+            </div>
+            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+              <span class="spanheader">
+                Live Sales: {{ TodayDate | date :"MM-dd-yyyy"}}
+              </span>
+            </div>
+            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+              <div class="pull-right">
+                <span class="spanheader"> Values in Lakhs </span>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="box">
+            <h6 class="boldvalues"> Total Ordered Items</h6>
+            <div> {{ TotalOrderItem   }}</div>
+          </div>
+          <div class="box">
+            <h6 class="boldvalues">Ordered Product Sales</h6>
+            <div> {{ OrderedProductSales | currency: 'INR' }}</div>
+          </div>
+          <div class="box">
+            <h6 class="boldvalues"> Total Units Ordered </h6>
+            <div> {{ TotalUnitsOrdered   }}</div>
+          </div>
+          <div class="box">
+            <h6 class="boldvalues"> Average Sales/Order Item</h6>
+            <div> {{ AvgSalesPerorderitem | currency: 'INR' }}</div>
+          </div>
+          <div class="box">
+            <h6 class="boldvalues"> Average Unit/Order Item</h6>
+            <div> {{ AvgunitPerorderitem | currency: 'INR' }}</div>
+          </div>
+          <div class="box">
+            <h6 class="boldvalues"> Total Returns</h6>
+            <div> {{ TotalReturnOrders  }}</div>
+          </div>
+          <div class="box">
+            <h6 class="boldvalues"> Total Returns Value</h6>
+            <div> {{ ReturnsValue | currency: 'INR' }}</div>
+          </div>
+
+
+          <div class="row salescase">
+            <div class="col-md-6 ">
+              <h6> Sales Order By Time </h6>
+              <div>
+                <kendo-chart [seriesColors]="Sales_OrderByTime">
+                  <kendo-chart-tooltip>
+                    <ng-template kendoChartSeriesTooltipTemplate let-category="category">
+                      {{ category }}
+                    </ng-template>
+                  </kendo-chart-tooltip>
+                  <kendo-chart-value-axis>
+                    <kendo-chart-value-axis-item [title]="{ text: 'Sales Value' }">
+                    </kendo-chart-value-axis-item>
+                  </kendo-chart-value-axis>
+                  <kendo-chart-axis-defaults [majorGridLines]="false"></kendo-chart-axis-defaults>
+                  <kendo-chart-category-axis>
+                    <kendo-chart-category-axis-item [categories]="sales_purchaseHours" [title]="{ text: 'Time' }">
+                    </kendo-chart-category-axis-item>
+                  </kendo-chart-category-axis>
+                  <kendo-chart-series>
+                    <kendo-chart-series-item type="line" [data]="sales_Salesorders">
+                    </kendo-chart-series-item>
+                  </kendo-chart-series>
+                </kendo-chart>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <h6>Returns By Time </h6>
+              <div>
+                <kendo-chart [seriesColors]="Sales_ReturnsByTime">
+                  <kendo-chart-tooltip>
+                    <ng-template kendoChartSeriesTooltipTemplate let-category="category">
+                      {{ category }}
+                    </ng-template>
+                  </kendo-chart-tooltip>
+                  <kendo-chart-value-axis>
+                    <kendo-chart-value-axis-item [title]="{ text: 'Returns Value' }">
+                    </kendo-chart-value-axis-item>
+                  </kendo-chart-value-axis>
+                  <kendo-chart-category-axis>
+                    <kendo-chart-category-axis-item [categories]="sales_ReturnsHours" [title]="{text: 'Time'}">
+                    </kendo-chart-category-axis-item>
+                  </kendo-chart-category-axis>
+                  <kendo-chart-axis-defaults [majorGridLines]="false"></kendo-chart-axis-defaults>
+                  <kendo-chart-series>
+                    <kendo-chart-series-item type="line" [data]="sales_ReturnsValues">
+                    </kendo-chart-series-item>
+                  </kendo-chart-series>
+                </kendo-chart>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="salsecase">
+              <h6 class="boldvalues"> Total Sales </h6>
+              <div> {{ TotalSales | currency: 'INR' }}</div>
+            </div>
+            <div class="salsecase">
+              <h6 class="boldvalues">Net Sales </h6>
+              <div> {{ NetSales | currency: 'INR' }}</div>
+            </div>
+            <div class="salsecase">
+              <h6 class="boldvalues"> Total Profit</h6>
+              <div> {{ GrossProfit | currency: 'INR' }}</div>
+            </div>
+            <div class="salsecase">
+              <h6 class="boldvalues"> Profit Margin</h6>
+              <div> {{ GrossProfitPer  }}</div>
+            </div>
+            <div class="PerformCase">
+              <div>
+                <h6 class="boldvalues"> Sales Performance</h6>
+                <kendo-chart [seriesColors]="Sales_Performance">
+                  <kendo-chart-tooltip>
+                    <ng-template kendoChartSeriesTooltipTemplate let-category="category" let-Value="value">
+                      {{ category }} - {{ Value }}
+                    </ng-template>
+                  </kendo-chart-tooltip>
+                  <kendo-chart-value-axis>
+                    <kendo-chart-value-axis-item [title]="{ text: 'Sales Values' }">
+                    </kendo-chart-value-axis-item>
+                  </kendo-chart-value-axis>
+                  <kendo-chart-category-axis>
+                    <kendo-chart-category-axis-item visible="false" [categories]="sales_Performence_PostedDate"
+                      [title]="{text: 'Day'}">
+                    </kendo-chart-category-axis-item>
+                  </kendo-chart-category-axis>
+                  <kendo-chart-axis-defaults [majorGridLines]="false"></kendo-chart-axis-defaults>
+                  <kendo-chart-series>
+                    <kendo-chart-series-item type="area" [data]="sales_Performence_NetSales">
+                    </kendo-chart-series-item>
+                  </kendo-chart-series>
+                </kendo-chart>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6 col-xs-12 pad1">
+            <div class="prodbase">
+              <h6> Top Products in Sales Today</h6>
+              <kendo-chart [seriesColors]="Sales_TopProductainSales">
+                <kendo-chart-tooltip>
+                  <ng-template kendoChartSeriesTooltipTemplate let-category="category">
+                    {{ category }}
+                  </ng-template>
+                </kendo-chart-tooltip>
+                <kendo-chart-legend position="left" orientation="vertical"></kendo-chart-legend>
+                <kendo-chart-series>
+                  <kendo-chart-series-item type="funnel" [data]="sales_TopProductsinSalesToday" field="Salesorder"
+                    categoryField="ASIN" colorField="color">
+                    <kendo-chart-series-item-labels background="none" color="white" format="N0">
+                    </kendo-chart-series-item-labels>
+                  </kendo-chart-series-item>
+                </kendo-chart-series>
+              </kendo-chart>
+            </div>
+          </div>
+          <div class="col-md-6 col-xs-12 sellerscase">
+            <div class="rvnubase">
+              <h6>Top Sellers in Revenue</h6>
+              <kendo-chart [seriesColors]="Sales_TopSellersinRevenueBarChart">
+                <kendo-chart-tooltip>
+                  <ng-template kendoChartSeriesTooltipTemplate let-Value="value">
+                    {{ Value }}
+                  </ng-template>
+                </kendo-chart-tooltip>
+                <kendo-chart-axis-defaults [majorGridLines]="false"></kendo-chart-axis-defaults>
+                <kendo-chart-legend position="left" orientation="vertical"></kendo-chart-legend>
+                <kendo-chart-value-axis>
+                  <kendo-chart-value-axis-item [title]="{ text: 'Returns Values and Sales value' }">
+                  </kendo-chart-value-axis-item>
+                </kendo-chart-value-axis>
+                <kendo-chart-category-axis>
+                  <kendo-chart-category-axis-item [categories]="sales_Brand" [title]="{text: 'Sellers'}">
+                  </kendo-chart-category-axis-item>
+                </kendo-chart-category-axis>
+
+                <kendo-chart-series>
+                  <kendo-chart-series-item type="bar" [data]="sales_Returnsvalue">
+                  </kendo-chart-series-item>
+                  <kendo-chart-series-item type="bar" [data]="sales_SalesValue">
+                  </kendo-chart-series-item>
+                </kendo-chart-series>
+              </kendo-chart>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+
+          <div class="col-md-8 ">
+
+            <div class="PerformCase fixedheight370">
+              <h6 class="salcasehed">Sales Vs Returns</h6>
+              <div class="col-md-6">
+                <h6> Returns and No.of Sales Orders</h6>
+                <kendo-chart [seriesColors]="Sales_ReturnsAndSalesOrders">
+                  <kendo-chart-tooltip>
+                    <ng-template kendoChartSeriesTooltipTemplate let-category="category" let-Value="value">
+                      {{ category }} - {{ Value }}
+                    </ng-template>
+                  </kendo-chart-tooltip>
+                  <kendo-chart-series>
+                    <kendo-chart-legend position="top" orientation="horizontal"></kendo-chart-legend>
+                    <kendo-chart-series-item type="donut" [data]="sales_TotalSalesOrders" categoryField="Name"
+                      field="Value">
+                    </kendo-chart-series-item>
+                  </kendo-chart-series>
+                </kendo-chart>
+              </div>
+              <div class="col-md-6">
+                <h6> Returns Value and Sales Value</h6>
+                <kendo-chart [seriesColors]="Sales_ReturnsValueAndSalesValue">
+                  <kendo-chart-tooltip>
+                    <ng-template kendoChartSeriesTooltipTemplate let-category="category" let-Value="value">
+                      {{ category }} - {{ Value }}
+                    </ng-template>
+                  </kendo-chart-tooltip>
+                  <kendo-chart-series>
+                    <kendo-chart-legend position="top" orientation="horizontal"></kendo-chart-legend>
+                    <kendo-chart-series-item type="donut" [data]="sales_TotalSales" categoryField="Name" field="Value">
+                    </kendo-chart-series-item>
+                  </kendo-chart-series>
+                </kendo-chart>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-4 ">
+
+            <div class="rvnubase fixedheight370">
+              <div class="revnlocgrp">
+                <span class="pointer" (click)="sales_Revenuegraphtable=!sales_Revenuegraphtable">
+                  <i class="fa fa-bar-chart "></i> <span class="hidden-xs">Graph &nbsp;</span>
+                </span>
+                <span class="pointer" (click)="sales_Revenuegraphtable=!sales_Revenuegraphtable">
+                  <i class="fa fa-table"></i> <span class="hidden-xs">Table </span>
+                </span>
+              </div>
+              <div id="sales_Revenuetable" *ngIf="!sales_Revenuegraphtable">
+                <h6>Revenue By Location </h6>
+                <table class="table table-bordered table-condensed "
+                  *ngIf="sales_RevenueByLocation && sales_RevenueByLocation.length">
+                  <thead>
+                    <tr>
+                      <th class="text-center ">Location</th>
+                      <th class="text-center ">No. of Sales Orders </th>
+                      <th class="text-center ">Sales Value</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let ms of sales_RevenueByLocation">
+
+                      <td>{{ ms.City }}</td>
+                      <td>{{ ms.NoOfSalesOrder }}</td>
+                      <td>{{ ms.TotalRevenue | currency: 'INR'}}</td>
+
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div id="sales_Revenuegraph" *ngIf="sales_Revenuegraphtable">
+                <h6>Sales Value By Location and Date</h6>
+                <kendo-chart [seriesColors]="Sales_RevenueByLocation">
+                  <kendo-chart-tooltip>
+                    <ng-template kendoChartSeriesTooltipTemplate let-category="category">
+                      {{ category }}
+                    </ng-template>
+                  </kendo-chart-tooltip>
+                  <kendo-chart-legend position="left" orientation="vertical"></kendo-chart-legend>
+                  <kendo-chart-series>
+                    <kendo-chart-series-item type="funnel" [data]="sales_RevenueByLocation" field="TotalRevenue"
+                      categoryField="City">
+                      <kendo-chart-series-item-labels background="none" color="white" format="N0">
+                      </kendo-chart-series-item-labels>
+                    </kendo-chart-series-item>
+                  </kendo-chart-series>
+                </kendo-chart>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
     </div>
   </div>
-
-
+  <div id="121" *ngIf="MenuID==121">
+    sad sad
+  </div>
 </div>

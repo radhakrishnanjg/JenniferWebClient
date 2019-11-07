@@ -3,7 +3,7 @@ import { PrivateutilityService } from '../../_services/service/privateutility.se
 import { StoService } from '../../_services/service/sto.service';
 import { PoService } from '../../_services/service/po.service';
 import { FormGroup, FormControl, Validators, FormBuilder, } from '@angular/forms';
-import { NgxSpinnerService } from 'ngx-spinner';
+
 import { ToastrService } from 'ngx-toastr';
 import { AuthorizationGuard } from '../../_guards/Authorizationguard';
 import {
@@ -76,7 +76,7 @@ export class StoComponent implements OnInit {
     private _poService: PoService,
     private _privateutilityService: PrivateutilityService,
     private _authorizationGuard: AuthorizationGuard,
-    private _spinner: NgxSpinnerService,
+    
     public _alertService: ToastrService,
     private fb: FormBuilder,
     private router: Router
@@ -137,7 +137,7 @@ export class StoComponent implements OnInit {
   }
 
   BindGSTClaimableDate() {
-    this._spinner.show();
+    //
     this._privateutilityService.GetGSTClimableDate().subscribe(
       (res) => {
         this.STOMinDate = moment(res).add(1, 'minutes');
@@ -146,9 +146,9 @@ export class StoComponent implements OnInit {
           STODate: { startDate: new Date(STODate) },
         });
         this.STODate = new Date();
-        this._spinner.hide();
+        //
       }, (err) => {
-        this._spinner.hide();
+        //
         console.log(err);
       });
   }
@@ -157,40 +157,40 @@ export class StoComponent implements OnInit {
     this.gridData = this.objSto.lstItem;
     this.BindGSTClaimableDate();
     this.maxDate = moment().add(0, 'days');
-    this._spinner.show();
+    //
     this._poService.getOrderUOMs().subscribe(
       (res) => {
         this.uomList = res;
-        this._spinner.hide();
+        //
       }, (err) => {
-        this._spinner.hide();
+        //
         console.log(err);
       });
 
     //this.getAllItems();
-    this._spinner.show();
+    //
     this._privateutilityService.GetValues('InventoryType')
       .subscribe(
         (data: Dropdown[]) => {
           this.lstInventoryType = data;
-          this._spinner.hide();
+          //
         },
         (err: any) => {
-          this._spinner.hide();
+          //
           console.log(err);
         }
       );
 
-    this._spinner.show();
+    //
     this._StoService.generateSTONumber().subscribe(
       (res) => {
         this.STONumber = res;
         this.objSto.lstItem = [];
         this.gridData = this.objSto.lstItem;
-        this._spinner.hide();
+        //
 
       }, (err) => {
-        this._spinner.hide();
+        //
         console.log(err);
       });
 
@@ -222,13 +222,13 @@ export class StoComponent implements OnInit {
       return;
     }
     let STODate = this.stoForm.controls['STODate'].value.startDate._d.toLocaleString();
-    this._spinner.show();
+    //
     this._privateutilityService.getCheckSTODateValidation(STODate).subscribe(
       (res) => {
         this.objResult = res;
-        this._spinner.hide();
+        //
       }, (err) => {
-        this._spinner.hide();
+        //
         console.log(err);
       });
   }
@@ -246,14 +246,14 @@ export class StoComponent implements OnInit {
       }
       this.objSto.FromLocationID = FromLocationID;
       let LocationID = this.fromlocationList.filter(a => a.FromLocationID == FromLocationID)[0].LocationID;
-      this._spinner.show();
+      //
       this._privateutilityService.getSTOToLocations(LocationID, this.stoForm.controls['InventoryType'].value).subscribe(
         (res) => {
           this.tolocationList = res;
           this.objSto.lstItem = [];
-          this._spinner.hide();
+          //
         }, (err) => {
-          this._spinner.hide();
+          //
           console.log(err);
         });
     }
@@ -266,18 +266,18 @@ export class StoComponent implements OnInit {
 
     this.objSto.lstItem = [];
     this.gridData = this.objSto.lstItem;
-    this._spinner.show();
+    //
     this._privateutilityService.getCustomerItemLevels(this.CustomerID).subscribe(
       (data) => {
         if (data != null) {
           this.itemList = data.filter(a => { return a.Type == 'Item' });
         }
-        this._spinner.hide();
+        //
       },
       (err) => {
         this.itemList = [];
         console.log(err);
-        this._spinner.hide();
+        //
       }
     );
 
@@ -305,14 +305,14 @@ export class StoComponent implements OnInit {
     else {
       this.stoForm.get('IsShipmentRequired').enable();
     }
-    this._spinner.show();
+    //
     this._privateutilityService.getSTOFromLocations(InventoryType).subscribe(
       (res) => {
         this.fromlocationList = res;
-        this._spinner.hide();
+        //
 
       }, (err) => {
-        this._spinner.hide();
+        //
         console.log(err);
       });
   }
@@ -369,11 +369,11 @@ export class StoComponent implements OnInit {
     let CustomerID = this.CustomerID;
     let InventoryType = this.stoForm.get("InventoryType").value;
     let TransactionType = "B2B";
-    this._spinner.show();
+    //
     this._privateutilityService.getSellingPriceMRP(itemID, STODate, InventoryType)
       .subscribe(
         (data) => {
-          this._spinner.hide();
+          //
           if (data != null) {
             this.objStoItem.SalesRateCardID = data['SalesRateCardID'];
             this.Rate = data['SellingPrice'];
@@ -383,7 +383,7 @@ export class StoComponent implements OnInit {
             let Qty = Units * MultiplierValue;
             let IsDiscountApplicable = this.stoForm.get("IsDiscountApplicable").value;
             if (IsDiscountApplicable) {
-              this._spinner.show();
+              //
               this._privateutilityService.getDiscountAmount(itemID, STODate, CustomerID, InventoryType, TransactionType)
                 .subscribe(
                   (data11) => {
@@ -399,10 +399,10 @@ export class StoComponent implements OnInit {
                       this.itemFormGroup.controls['TaxAmount'].setValue(TaxAmount);
                       this.itemFormGroup.controls['TotalAmount'].setValue(TaxAmount + (Qty * this.Rate) - DiscountAmount);
                     }
-                    this._spinner.hide();
+                    //
                   },
                   (err) => {
-                    this._spinner.hide();
+                    //
                   }
                 );
             }
@@ -423,7 +423,7 @@ export class StoComponent implements OnInit {
           }
         },
         (err) => {
-          this._spinner.hide();
+          //
         }
       );
   }
@@ -644,7 +644,7 @@ export class StoComponent implements OnInit {
     this.objSto.DiscountApplicable = this.stoForm.controls['IsDiscountApplicable'].value;
     this.objSto.IsShipmentRequired = this.stoForm.controls['IsShipmentRequired'].value;
 
-    this._spinner.show();
+    //
     this._StoService.Insert(this.objSto).subscribe(
       (data) => {
         if (data != null && data.Flag == true) {
@@ -655,9 +655,9 @@ export class StoComponent implements OnInit {
           this._alertService.error(data.Msg);
           this.router.navigate(['/StoList']);
         }
-        this._spinner.hide();
+        //
       }, (err) => {
-        this._spinner.hide();
+        //
         console.log(err);
       });
     this.objSto = new Sto();

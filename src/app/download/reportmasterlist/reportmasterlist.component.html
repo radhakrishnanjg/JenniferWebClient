@@ -35,7 +35,7 @@
             </select>
           </div>
           <div class="col-md-4 nopading_loct" *ngIf="(SearchBy!= 'ByStatus') ">
-            <input [(ngModel)]="SearchKeyword" type="text" class="serchcurv  form-control btn-group">
+            <input (keyup.enter)="Search()" [(ngModel)]="SearchKeyword" type="text" class="serchcurv  form-control btn-group">
           </div>
           <div class="col-md-3 nopading_loct" *ngIf="(SearchBy=='ByStatus')">
 
@@ -92,7 +92,7 @@
           <i class="fa fa-eye bgblue pointer" title="View" [routerLink]="['/Reportmaster', dataItem.Download_Master_ID]"></i>
           &nbsp;
           <i class="fa fa-trash bgred pointer" title="Delete"
-            (click)="confirmDeleteid(obj.Download_Master_ID,obj.Screen_Name)"></i>
+            (click)="confirmDeleteid(dataItem.Download_Master_ID,dataItem.Screen_Name)"></i>
         </ng-template>
       </kendo-grid-column>
     </kendo-grid>

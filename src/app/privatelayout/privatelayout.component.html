@@ -18,7 +18,8 @@
             <div class="topnav">
                 <div class="search-container">
                     <form (ngSubmit)="SearchData()">
-                        <input class='top-search' type="text" [(ngModel)]="SearchBy"
+                        <input (keyup.enter)="SearchData()" onkeypress="return /[a-z0-9/]/i.test(event.key)"
+                            class='top-search' type="text" [(ngModel)]="SearchBy"
                             placeholder="Tell me what you want to do" name="search" maxlength="50">
                         <button type="submit" prevent-double-submit>
                             <i class="fa fa-search pointer"></i>
@@ -33,6 +34,7 @@
                     <ngx-spinner bdOpacity=0.9 size="medium" color="#ce295e" type="ball-fussion" [fullScreen]="true">
                         <p style="color: #000000"> Fetching for you ... </p>
                     </ngx-spinner>
+
                 </li>
                 <li>
                     <select id="CompanyID" class="form-control topdropbx" [(ngModel)]="CompanyID"
@@ -73,19 +75,24 @@
                         </li>
                         <li *ngIf="(usertype=='Admin')">
                             <a routerLinkActive="active" routerLink="/CompanyProfile">
-
+                                <i class="fa fa-institution"></i>
                                 Company Profile
                             </a>
                         </li>
                         <li>
                             <a routerLinkActive="active" (click)="logout()">
                                 <i class="fa fa-fw fa-power-off"></i>
-                                Signout</a>
+                                Sign Out</a>
                         </li>
                         <li>
                             <a type="button" data-toggle="modal" data-target="#myModal">
                                 <i class="fa fa-snowflake-o"></i>
                                 Select Theme</a>
+                        </li>
+                        <li>
+                            <a routerLinkActive="active" routerLink="/DynamicForm">
+                                <i class="fa fa-question-circle"></i> <span> DynamicForm</span>
+                            </a>
                         </li>
                     </ul>
                 </li>
@@ -94,6 +101,8 @@
                     <a routerLinkActive="active" routerLink="/Help">
                         <i class="fa fa-question-circle"></i> <span> Help</span>
                     </a>
+
+
                 </li>
             </ul>
         </div>

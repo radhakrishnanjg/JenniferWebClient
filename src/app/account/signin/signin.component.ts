@@ -4,12 +4,11 @@ import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/fo
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { CookieService } from 'ngx-cookie-service';
-import { NgxSpinnerService } from 'ngx-spinner';
-import { AuthenticationService, } from '../../_services/service/authentication.service';
 
+import { AuthenticationService, } from '../../_services/service/authentication.service';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { Userlog, IUser, } from '../../_services/model/';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { first } from 'rxjs/operators';
 import { switchMap, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
@@ -37,7 +36,7 @@ export class SigninComponent implements OnInit {
     private authenticationService: AuthenticationService,
     private alertService: ToastrService,
     private cookieService: CookieService,
-    public _spinner: NgxSpinnerService,
+    
     private httpClient: HttpClient,
     private deviceService: DeviceDetectorService,
   ) {
@@ -110,32 +109,32 @@ export class SigninComponent implements OnInit {
     if (cookieUsernameExists && cookiePasswordExists) {
       const Username: string = this.cookieService.get('gauuid1');
       const Password: string = this.cookieService.get('gauuid2');
-      this._spinner.show();
+      //
       this.authenticationService.login(Username, Password)
         .pipe(first())
         .subscribe(
           datalogin => {
             if (datalogin == null) {
               this.alertService.error('Invalid credentials');
-              this._spinner.hide();
+              //
               this.loading = false;
             }
             else {
               if (datalogin.IsForceChangePwd) {
-                this.alertService.warning('Login Successful.Please change the password,currently you are using auto generated password.!');
+                this.alertService.warning('Sign in Successful.Please change the password,currently you are using auto generated password.!');
               }
               else {
-                this.alertService.success('Login Successful.!');
+                this.alertService.success('Sign in Successful.!');
               }
               this.router.navigate(['/Dashboard1']);
-              this._spinner.hide();
-              this._spinner.hide();
+              //
+              //
               this.loading = false;
             }
           },
           error => {
             this.alertService.error('Invalid credentials');
-            this._spinner.hide();
+            //
           });
     }
 
@@ -161,18 +160,21 @@ export class SigninComponent implements OnInit {
 
     this.objuserlog.Type = 'SIGNIN';
     this.objuserlog.MACAddress = '';
-    this._spinner.show();
+    //
     this.objuserlog.IPAddress = '';
-    this._spinner.show();
+    //
     this.loading = true;
-
-    // this.httpClient.get<{ ip: string }>('https://jsonip.com')
+    // const headers = new HttpHeaders({
+    //   //'Content-Type': 'application/json',
+    //   "Access-Control-Allow-Origin": "*"
+    // });
+    // this.httpClient.get<{ ip: string }>('https://ipapi.co/json/', { headers: headers })
     //   .pipe(
     //     tap(output => {
     //       this.objuserlog.IPAddress = output.ip;
     //     }),
     //     switchMap(output1 =>
-    //       this.LoginCheck(this.f.Email.value, this.f.password.value);
+    //       this.LoginCheck(this.f.Email.value, this.f.password.value)
     //     ),
     //     tap(output2 => {
     //       console.log(output2);
@@ -184,14 +186,14 @@ export class SigninComponent implements OnInit {
   }
 
   LoginCheck(username: string, password: string) {
-    this._spinner.show();
+    //
     this.authenticationService.login(this.f.Email.value, this.f.password.value)
       .pipe(first())
       .subscribe(
         datalogin => {
           if (datalogin == null) {
             this.alertService.error('Invalid credentials');
-            this._spinner.hide();
+            //
             this.loading = false;
           }
           else {
@@ -202,32 +204,41 @@ export class SigninComponent implements OnInit {
               this.cookieService.set('gauuid2', this.f.password.value);
             }
             this.objuser = datalogin;
-            this._spinner.show();
+            //
             this.authenticationService.adduserLog(this.objuserlog)
               .subscribe(
                 data => {
                   if (data) {
                     if (datalogin.IsForceChangePwd) {
-                      this.alertService.warning('Login Successful.Please change the password,Because currently you are using auto generated password.!');
+                      this.alertService.warning('Sign in Successful.Please change the password,Because currently you are using auto generated password.!');
                     }
                     else {
-                      this.alertService.success('Login Successful.!');
+                      this.alertService.success('Sign Successful.!');
                     }
                     this.router.navigate(['/Dashboard1']);
-                    this._spinner.hide();
+                    //
                   }
                 },
                 error => {
                   this.loading = false;
-                  this._spinner.hide();
+                  //
                 })
-            this._spinner.hide();
+            //
             this.loading = false;
           }
         },
         error => {
+          this.objuserlog.BrowserInfo = 'Username: ' + this.f.Email.value + ' & Password: ' + this.f.password.value + '|' +
+            this.objuserlog.BrowserInfo;
+          this.authenticationService.adduserLogunsuccessful(this.objuserlog)
+            .subscribe(
+              data => {
+
+              },
+              error => {
+              })
           this.alertService.error('Invalid credentials');
-          this._spinner.hide();
+          //
           this.loading = false;
         }
       );

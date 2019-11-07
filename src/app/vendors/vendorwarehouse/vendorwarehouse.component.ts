@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NgxSpinnerService } from 'ngx-spinner';
+
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -30,7 +30,7 @@ export class VendorwarehouseComponent implements OnInit {
     private fb: FormBuilder,
     private _router: Router,
     private aroute: ActivatedRoute,
-    public _spinner: NgxSpinnerService,
+    
     private _vendorwarehouseService: VendorwarehouseService,
     private utilityService: UtilityService,
     private _PrivateutilityService: PrivateutilityService,
@@ -129,28 +129,28 @@ export class VendorwarehouseComponent implements OnInit {
 
   ngOnInit() {
 
-    this._spinner.show();
+    //
     this.utilityService.getCountries()
       .subscribe(
         (data: Country[]) => {
           this.countries = data;
-          this._spinner.hide();
+          //
         },
         (err: any) => {
-          this._spinner.hide();
+          //
           console.log(err);
         }
       );
-    this._spinner.show();
+    //
     this._PrivateutilityService.getVendors()
       .subscribe(
         (data: Vendor[]) => {
           this.lstVendor = data;
-          this._spinner.hide();
+          //
         },
         (err: any) => {
           console.log(err);
-          this._spinner.hide();
+          //
         }
       );
 
@@ -163,28 +163,28 @@ export class VendorwarehouseComponent implements OnInit {
           .subscribe(
             (data: Vendorwarehouse) => {
               var CountryID = data.CountryID.toString();
-              this._spinner.show();
+              //
               this.utilityService.getStates(parseInt(CountryID))
                 .subscribe(
                   (statesa: State[]) => {
                     this.states = statesa;
-                    this._spinner.hide();
+                    //
                   },
                   (err: any) => {
                     console.log(err);
-                    this._spinner.hide();
+                    //
                   }
                 );
-              this._spinner.show();
+              //
               this._PrivateutilityService.getVendors()
                 .subscribe(
                   (data1: Vendor[]) => {
                     this.lstVendor = data1;
-                    this._spinner.hide();
+                    //
                   },
                   (err: any) => {
                     console.log(err);
-                    this._spinner.hide();
+                    //
                   }
                 );
 
@@ -245,15 +245,15 @@ export class VendorwarehouseComponent implements OnInit {
   onchangeCountryID(selectedValue: string) {
     let countrid = parseInt(selectedValue);
     if (countrid > 0) {
-      this._spinner.show();
+      //
       this.utilityService.getStates(countrid)
         .subscribe(
           (data: State[]) => {
             this.states = data;
-            this._spinner.hide();
+            //
           },
           (err: any) => {
-            this._spinner.hide();
+            //
             console.log(err);
           }
         );
@@ -302,7 +302,7 @@ export class VendorwarehouseComponent implements OnInit {
 
     this.obj.IsActive = this.vendorwarehouseform.controls['IsActive'].value;
 
-    this._spinner.show();
+    //
     this._vendorwarehouseService.exist(this.identity, this.obj.WarehouseName, this.obj.VendorID)
       .subscribe(
         (data) => {
@@ -310,31 +310,31 @@ export class VendorwarehouseComponent implements OnInit {
             this.alertService.error('This warehouse is already registered');
           }
           else {
-            this._spinner.show();
+            //
             this._vendorwarehouseService.add(this.obj).subscribe(
               (data) => {
                 if (data != null && data == true) {
-                  this._spinner.hide();
+                  //
                   this.alertService.success('Vendor warehouse data has been added successful');
                   this._router.navigate(['/Vendorwarehouselist']);
                 }
                 else {
-                  this._spinner.hide();
+                  //
                   this.alertService.error('Vendor warehouse data not saved!');
                   this._router.navigate(['/Vendorwarehouselist']);
                 }
                 this.identity = 0;
               },
               (error: any) => {
-                this._spinner.hide();
+                //
                 console.log(error);
               }
             );
           }
-          this._spinner.hide();
+          //
         },
         (error: any) => {
-          this._spinner.hide();
+          //
         }
       );
   }
@@ -358,7 +358,7 @@ export class VendorwarehouseComponent implements OnInit {
 
     this.obj.IsActive = this.vendorwarehouseform.controls['IsActive'].value;
 
-    this._spinner.show();
+    //
     this._vendorwarehouseService.exist(this.identity, this.obj.WarehouseName, this.obj.VendorID)
       .subscribe(
         (data) => {
@@ -366,31 +366,31 @@ export class VendorwarehouseComponent implements OnInit {
             this.alertService.error('This warehouse is already registered');
           }
           else {
-            this._spinner.show();
+            //
             this._vendorwarehouseService.update(this.obj).subscribe(
               (data) => {
                 if (data != null && data == true) {
-                  this._spinner.hide();
+                  //
                   this.alertService.success('Vendor warehouse detail data has been updated successful');
                   this._router.navigate(['/Vendorwarehouselist']);
                 }
                 else {
-                  this._spinner.hide();
+                  //
                   this.alertService.error('Vendor warehouse detail not saved!');
                   this._router.navigate(['/Vendorwarehouselist']);
                 }
                 this.identity = 0;
               },
               (error: any) => {
-                this._spinner.hide();
+                //
                 console.log(error);
               }
             );
           }
-          this._spinner.hide();
+          //
         },
         (error: any) => {
-          this._spinner.hide();
+          //
         }
       );
   }

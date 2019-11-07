@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NgxSpinnerService } from 'ngx-spinner';
+
 import { FormBuilder, } from '@angular/forms';
 import { ActivatedRoute, } from '@angular/router';
 import { BOEHeader, BOEDetail } from '../../_services/model';
@@ -22,7 +22,7 @@ export class BoeviewComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private aroute: ActivatedRoute,
-    public _spinner: NgxSpinnerService,
+    
     private _BoeService: BoeService,
 
   ) { }
@@ -34,7 +34,7 @@ export class BoeviewComponent implements OnInit {
       this.PurchaseID = +params.get('PurchaseId');
       if (this.identity > 0) {
         this.panelTitle = "View BOE";
-        this._spinner.show();
+        //
         this._BoeService.searchById(this.PurchaseID, this.identity)
           .subscribe(
             (data: BOEHeader) => {
@@ -44,10 +44,10 @@ export class BoeviewComponent implements OnInit {
               this.TotalIGSTValue = this.lstItem.reduce((acc, a) => acc + a.IGSTValue, 0);
               this.TotalTotalValue = this.lstItem.reduce((acc, a) => acc + a.TotalValue, 0);
               this.TotalSumTotalValue = this.lstItem.reduce((acc, a) => acc + a.SumTotalValue, 0);
-              this._spinner.hide();
+              //
             },
             (err: any) => {
-              this._spinner.hide();
+              //
               console.log(err);
             }
           );
@@ -70,14 +70,14 @@ export class BoeviewComponent implements OnInit {
   }
 
   Download(PurchaseID: number) {
-    this._spinner.show();
+    //
     this._BoeService.DownloadSKUWiseData(PurchaseID)
       .subscribe(data => {
-        this._spinner.hide(),
+        
           saveAs(data, PurchaseID + '.xlsx')
       },
         (err) => {
-          this._spinner.hide();
+          //
           console.log(err);
         }
       );

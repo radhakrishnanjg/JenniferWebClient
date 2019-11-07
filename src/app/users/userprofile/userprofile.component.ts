@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NgxSpinnerService } from 'ngx-spinner';
+
 import { UserService } from '../../_services/service/user.service';
 import { ToastrService } from 'ngx-toastr';
 
@@ -28,7 +28,7 @@ export class UserprofileComponent implements OnInit {
     private fb: FormBuilder,
     private userService: UserService,
     private alertService: ToastrService,
-    public _spinner: NgxSpinnerService,
+    
     public _authorizationGuard: AuthorizationGuard,
     public _authenticationService: AuthenticationService,
     private EncrDecr: EncrDecrService,
@@ -99,12 +99,12 @@ export class UserprofileComponent implements OnInit {
     this.obj.FirstName = this.profileForm.controls['FirstName'].value;
     this.obj.LastName = this.profileForm.controls['LastName'].value;
     this.obj.IsMailRequired = this.profileForm.controls['IsMailRequired'].value;  
-    this._spinner.show();
+    //
     this.userService.profileUpdate(this.obj).subscribe(
       (data) => {
         if (data != null && data.Flag == true) {
           this.alertService.success(data.Msg.split('|')[0]);
-          this._spinner.hide();
+          //
           let itempath = data.Msg.split('|')[1];
           this.ImagePath = environment.basedomain + itempath;
           this.obj.ImagePath = itempath;
@@ -114,11 +114,11 @@ export class UserprofileComponent implements OnInit {
         }
         else {
           this.alertService.error(data.Msg);
-          this._spinner.hide();
+          //
         }
       },
       (err: any) => {
-        this._spinner.hide();
+        //
         console.log(err);
       }
     );
@@ -149,7 +149,7 @@ export class UserprofileComponent implements OnInit {
       this.alertService.error("File size must be less than or equal to " + Apisettings.IMGFiles_Fileszie + " MB.!");
       return;
     } else {
-      this._spinner.show();
+      //
       this.obj.ImagePathData = this.selectedFile;
       this.obj.FirstName = this.profileForm.controls['FirstName'].value;
       this.obj.LastName = this.profileForm.controls['LastName'].value;
@@ -158,7 +158,7 @@ export class UserprofileComponent implements OnInit {
         (data) => {
           if (data != null && data.Flag == true) {
             this.alertService.success('Your profile image updated');
-            this._spinner.hide();
+            //
             let itempath = data.Msg.split('|')[1];
             this.ImagePath = environment.basedomain + itempath;
             this.obj.ImagePath = itempath; 
@@ -168,11 +168,11 @@ export class UserprofileComponent implements OnInit {
           }
           else {
             this.alertService.error(data.Msg);
-            this._spinner.hide();
+            //
           }
         },
         (err: any) => {
-          this._spinner.hide();
+          //
           console.log(err);
         }
       );

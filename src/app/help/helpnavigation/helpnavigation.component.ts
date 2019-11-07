@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NgxSpinnerService } from 'ngx-spinner';
+
 import { Helpmenu } from '../../_services/model/helpmenu';
 import { HelpmenuService } from '../../_services/service/helpmenu.service';
 
@@ -15,7 +15,7 @@ export class HelpnavigationComponent implements OnInit {
   leftmenus: Helpmenu[] = [] as any;
   SearchKeyword: string = '';
   constructor(
-    private _spinner: NgxSpinnerService,
+    
     private _HelpmenuService: HelpmenuService,
   ) { }
 
@@ -23,7 +23,7 @@ export class HelpnavigationComponent implements OnInit {
   onLoad() {
 
     if (localStorage.getItem("helpmenucontent") == null) {
-      this._spinner.show();
+      //
       return this._HelpmenuService.search('PageContent', '', true).subscribe(
         (lst) => {
           if (lst != null) {
@@ -32,10 +32,10 @@ export class HelpnavigationComponent implements OnInit {
             this.leftmenus = lst;
             localStorage.setItem("helpmenucontent", JSON.stringify(lst));
           }
-          this._spinner.hide();
+          //
         },
         (err) => {
-          this._spinner.hide();
+          //
           console.log(err);
         }
       );

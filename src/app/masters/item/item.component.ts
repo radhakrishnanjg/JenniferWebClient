@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { NgxSpinnerService } from 'ngx-spinner';
+
 import { ToastrService } from 'ngx-toastr';
 import { AuthorizationGuard } from '../../_guards/Authorizationguard';
 import { ItemService } from '../../_services/service/item.service';
@@ -35,7 +35,7 @@ export class ItemComponent implements OnInit {
     private _fb: FormBuilder,
     private _router: Router,
     private aroute: ActivatedRoute,
-    public _spinner: NgxSpinnerService,
+    
     private alertService: ToastrService,
     private _usernameValidator: UsernameValidator,
     private _authorizationGuard: AuthorizationGuard,
@@ -183,40 +183,40 @@ export class ItemComponent implements OnInit {
   }
 
   ngOnInit() {
-    this._spinner.show();
+    //
     this._PrivateutilityService.getBrands()
       .subscribe(
         (data: Brand[]) => {
           this.lstBrand = data
-          this._spinner.hide();
+          //
         },
         (err: any) => {
           console.log(err);
-          this._spinner.hide();
+          //
         }
       );
-    this._spinner.show();
+    //
     this._PrivateutilityService.getProductGroups()
       .subscribe(
         (data: ProductGroup[]) => {
           this.lstProductGroup = data;
-          this._spinner.hide();
+          //
         },
         (err: any) => {
           console.log(err);
-          this._spinner.hide();
+          //
         }
       );
-    this._spinner.show();
+    //
     this._PrivateutilityService.getUOMs()
       .subscribe(
         (data: UOM[]) => {
           this.lstUOM = data;
-          this._spinner.hide();
+          //
         },
         (err: any) => {
           console.log(err);
-          this._spinner.hide();
+          //
         }
       );
 
@@ -225,7 +225,7 @@ export class ItemComponent implements OnInit {
       if (this.identity > 0) {
         this.panelTitle = "Edit Item";
         this.action = false;
-        this._spinner.show();
+        //
         this._itemService.getItem(this.identity)
           .subscribe(
             (data: Item) => {
@@ -234,29 +234,29 @@ export class ItemComponent implements OnInit {
               var UOMID = data.UOMID.toString();
               var CategoryID = data.CategoryID.toString();
               var SubCategoryID = data.SubCategoryID.toString();
-              this._spinner.show();
+              //
               this._PrivateutilityService.getCategories(parseInt(ProductGroupID))
                 .subscribe(
                   (statesa: Category[]) => {
                     this.lstCategory = statesa;
-                    this._spinner.hide();
+                    //
                   },
                   (err: any) => {
                     console.log(err);
-                    this._spinner.hide();
+                    //
                   }
                 );
 
-              this._spinner.show();
+              //
               this._PrivateutilityService.getSubCategories(parseInt(CategoryID))
                 .subscribe(
                   (statesa: SubCategory[]) => {
                     this.lstSubCategory = statesa;
-                    this._spinner.hide();
+                    //
                   },
                   (err: any) => {
                     console.log(err);
-                    this._spinner.hide();
+                    //
                   }
                 );
 
@@ -296,7 +296,7 @@ export class ItemComponent implements OnInit {
 
             },
             (err: any) => {
-              this._spinner.hide();
+              //
               console.log(err);
             }
           );
@@ -339,16 +339,16 @@ export class ItemComponent implements OnInit {
   onchangeProductGroupID(selectedValue: string) {
     let id = parseInt(selectedValue);
     if (id > 0) {
-      this._spinner.show();
+      //
       this._PrivateutilityService.getCategories(id)
         .subscribe(
           (statesa: Category[]) => {
             this.lstCategory = statesa;
-            this._spinner.hide();
+            //
           },
           (err: any) => {
             console.log(err);
-            this._spinner.hide();
+            //
           }
         );
     }
@@ -357,16 +357,16 @@ export class ItemComponent implements OnInit {
   onchangeCategoryID(selectedValue: string) {
     let id = parseInt(selectedValue);
     if (id > 0) {
-      this._spinner.show();
+      //
       this._PrivateutilityService.getSubCategories(id)
         .subscribe(
           (data: SubCategory[]) => {
             this.lstSubCategory = data
-            this._spinner.hide();
+            //
           },
           (err: any) => {
             console.log(err);
-            this._spinner.hide();
+            //
           }
         );
     }
@@ -437,23 +437,23 @@ export class ItemComponent implements OnInit {
 
     this.obj.IsActive = this.itemform.controls['IsActive'].value;
 
-    this._spinner.show();
+    //
     this._itemService.addItem(this.obj).subscribe(
       (data) => {
         if (data != null && data.Flag == true) {
-          this._spinner.hide();
+          //
           this.alertService.success(data.Msg);
           this._router.navigate(['/Itemlist']);
         }
         else {
-          this._spinner.hide();
+          //
           this.alertService.error(data.Msg);
           this._router.navigate(['/Itemlist']);
         }
         this.identity = 0;
       },
       (error: any) => {
-        this._spinner.hide();
+        //
         console.log(error);
       }
     );
@@ -481,23 +481,23 @@ export class ItemComponent implements OnInit {
     this.obj.Margin = this.itemform.controls['Margin'].value;
 
     this.obj.IsActive = this.itemform.controls['IsActive'].value;
-    this._spinner.show();
+    //
     this._itemService.updateItem(this.obj).subscribe(
       (data) => {
         if (data != null && data == true) {
-          this._spinner.hide();
+          //
           this.alertService.success('Item data has been updated successful');
           this._router.navigate(['/Itemlist']);
         }
         else {
-          this._spinner.hide();
+          //
           this.alertService.error('Item not saved!');
           this._router.navigate(['/Itemlist']);
         }
         this.identity = 0;
       },
       (error: any) => {
-        this._spinner.hide();
+        //
         console.log(error);
       }
     );
@@ -534,10 +534,10 @@ export class ItemComponent implements OnInit {
       this.alertService.error("File size must be less than or equal to " + Apisettings.IMGFiles_Fileszie + " MB.!");
       return;
     }
-    this._spinner.show();
+    //
     this._itemService.updateImage(this.selectedFile, this.obj.ItemID).subscribe(
       (data) => {
-        this._spinner.show();
+        //
         if (data == true) {
           this.alertService.success('Item Image data has been updated successful');
           this._router.navigate(['/Itemlist']);
@@ -549,7 +549,7 @@ export class ItemComponent implements OnInit {
       },
       (error: any) => {
         this.alertService.error("Error!:Image not uploaded.");
-        this._spinner.show();
+        //
         this._router.navigate(['/Itemlist']);
       }
     );

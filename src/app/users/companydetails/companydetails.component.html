@@ -21,7 +21,7 @@
     </div>
   </div>
 </div>
-<form autocomplete="off" [formGroup]="companyDetailsform"  class="form-horizontal">
+<form autocomplete="off" [formGroup]="companyDetailsform" class="form-horizontal">
   <div class="panel panel-default">
     <div class="panel-heading">
       <div class="row">
@@ -47,7 +47,7 @@
         </div>
         <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 ">
           <div class="pull-right">
-            <button class="btn btn-primary" routerLink="/Companydetaillist">Back</button>
+            <button  type="button" class="btn btn-primary" routerLink="/Companydetaillist">Back</button>
           </div>
         </div>
       </div>
@@ -56,8 +56,8 @@
       <div class="form-group" [ngClass]="{'has-error': formErrors.MarketplaceID}">
         <label class="col-sm-4 control-label" for="MarketplaceID">Market Place <span class="mandantory">*</span></label>
         <div class="col-sm-2">
-          <select id="MarketplaceID" class="form-control" formControlName="MarketplaceID" (blur)="logValidationErrors()"
-            maxlength="30">
+          <select id="MarketplaceID" class="form-control" formControlName="MarketplaceID"
+            (blur)="logValidationErrors()">
             <option value="0" selected="selected">Select</option>
             <option *ngFor="let dis of marketplaces" value={{dis.MarketplaceID}}>
               {{dis.MarketPlace}}
@@ -134,12 +134,13 @@
     </div>
     <div class="panel-footer  ">
       <div class="pull-right btn-toolbar">
-        <button class="btn btn-primary" routerLink="/Companydetaillist">Cancel</button> 
-        <input *ngIf="!validateflag" class="btn btn-success" type="submit" prevent-double-submit [disabled]="companyDetailsform.invalid"
-          value="Validate"  (click)="SaveData('Validate')" />
+        <button  type="button" class="btn btn-primary" routerLink="/Companydetaillist">Cancel</button>
+        <input *ngIf="!validateflag" class="btn btn-success" type="submit" prevent-double-submit
+          [disabled]="companyDetailsform.invalid" value="Validate" (click)="SaveData('Validate')" />
 
-        <button *ngIf="validateflag" (click)="SaveData('Save')" class="btn btn-success" type="submit" prevent-double-submit [disabled]="companyDetailsform.invalid">
-          Save </button> 
+        <button *ngIf="validateflag" (click)="SaveData('Save')" class="btn btn-success" type="submit"
+          prevent-double-submit [disabled]="companyDetailsform.invalid">
+          Save </button>
       </div>
       <div class="clearfix"></div>
     </div>

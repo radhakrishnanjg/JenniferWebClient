@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { NgxSpinnerService } from 'ngx-spinner';
+
 import { ToastrService } from 'ngx-toastr';
 import { CustomerwarehouseService } from  '../../_services/service/customerwarehouse.service';
 import { Customerwarehouse } from  '../../_services/model';
@@ -31,7 +31,7 @@ export class CustomerwarehouselistComponent implements OnInit {
     private alertService: ToastrService,
     private router: Router,
     private _customerwarehouseService: CustomerwarehouseService,
-    private _spinner: NgxSpinnerService,
+    
     private _authorizationGuard: AuthorizationGuard
   ) { }
 
@@ -68,7 +68,7 @@ export class CustomerwarehouselistComponent implements OnInit {
   }
 
   delete() {
-    this._spinner.show();
+    //
     this._customerwarehouseService.delete(this.selectedDeleteId).subscribe(
       (data) => {
         if (data) {
@@ -79,10 +79,10 @@ export class CustomerwarehouselistComponent implements OnInit {
         }
         $('#modaldeleteconfimation').modal('hide');
         
-        this._spinner.hide();
+        //
       },
       (error: any) => {
-        this._spinner.hide();
+        //
         console.log(error);
       }
     );
@@ -90,17 +90,17 @@ export class CustomerwarehouselistComponent implements OnInit {
 
   onLoad(SearchBy: string, Search: string, IsActive: Boolean) {
 
-    this._spinner.show();
+    //
     return this._customerwarehouseService.search(SearchBy, Search, IsActive).subscribe(
       (lst) => {
         if (lst != null ) { 
           this.items = lst;
           this.loadItems(); 
         }
-        this._spinner.hide();
+        //
       },
       (err) => {
-        this._spinner.hide();
+        //
         console.log(err);
       }
     );

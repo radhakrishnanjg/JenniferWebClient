@@ -3,7 +3,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Apisettings, MasterUpload, Dropdown } from '../../_services/model';
 import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators, } from '@angular/forms';
-import { NgxSpinnerService } from 'ngx-spinner';
+
 import { UserService } from '../../_services/service/user.service';
 import { MasteruploadService } from '../../_services/service/masterupload.service';
 import { AuthorizationGuard } from '../../_guards/Authorizationguard';
@@ -27,7 +27,7 @@ export class MasteruploadComponent implements OnInit {
     private fb: FormBuilder,
     public _masteruploadService: MasteruploadService,
     public _alertService: ToastrService,
-    public _spinner: NgxSpinnerService,
+    
     private _UserService: UserService,
     private _authorizationGuard: AuthorizationGuard
   ) {
@@ -76,15 +76,15 @@ export class MasteruploadComponent implements OnInit {
   }
 
   ngOnInit() {
-    this._spinner.show();
+    //
     this._UserService.getUserMasterUploadScreens()
       .subscribe(
         (data: Dropdown[]) => {
           this.lstmasterscreens = data;
-          this._spinner.hide();
+          //
         },
         (err: any) => {
-          this._spinner.hide();
+          //
           console.log(err)
         }
       );
@@ -105,14 +105,14 @@ export class MasteruploadComponent implements OnInit {
 
     let filetype = this.MasterUploadForm.controls['FileType'].value;
     if (filetype != "") {
-      this._spinner.show();
+      //
       this._masteruploadService.getFileTemplate(filetype)
         .subscribe(data => {
-          this._spinner.hide(),
+          
             saveAs(data, filetype + '.xlsx')
         },
           (err) => {
-            this._spinner.hide();
+            //
             console.log(err);
           }
         );
@@ -141,7 +141,7 @@ export class MasteruploadComponent implements OnInit {
     }
     this.uploaddata.FileType = this.MasterUploadForm.controls['FileType'].value;
     this.uploaddata.Remarks = this.MasterUploadForm.controls['Remarks'].value;
-    this._spinner.show();
+    //
     this._masteruploadService.save(this.selectedFile, this.uploaddata.Remarks, this.uploaddata.FileType).subscribe(
       (data) => {
         if (data.Flag) {
@@ -152,10 +152,10 @@ export class MasteruploadComponent implements OnInit {
           this._alertService.error(data.Msg);
           this.router.navigate(['/MasterUploadList']);
         }
-        this._spinner.hide();
+        //
       },
       (error: any) => {
-        this._spinner.hide();
+        //
       }
     );
 

@@ -1,4 +1,7 @@
 <alert></alert>
+<ngx-spinner bdOpacity=0.9 size="medium" color="#ce295e" type="ball-fussion" [fullScreen]="true">
+  <p style="color: #000000"> Fetching for you ... </p>
+</ngx-spinner>
 <div class="signinsection">
   <div class="centered">
 
@@ -10,12 +13,13 @@
 
             <div class='text-center'>
               <img src="assets\images\logo.png" alt="Logo" height="50" />
+
             </div>
             <div class="actionheading">
               <h2>Sign In</h2>
             </div>
             <div class="form-group" [ngClass]="{'has-error': formErrors.Email}">
-              <div >
+              <div>
                 <input id="Email" type="text" placeholder='Email' class="form-control" formControlName="Email"
                   (blur)="logValidationErrors()">
                 <div class="help-block-rk">
@@ -27,7 +31,7 @@
             </div>
 
             <div class="form-group" [ngClass]="{'has-error': formErrors.password}">
-              <div >
+              <div>
                 <input id="password" type="password" placeholder='Password' class="form-control"
                   formControlName="password" (blur)="logValidationErrors()">
                 <div class="help-block-rk">
@@ -46,15 +50,15 @@
                 src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
             </div>
             <div class="form-group">
-                <div class="pull-left">
-                  <input type="checkbox" id="rememberme" formControlName="rememberme" />
-                  <label class="control-label" for="rememberme"> Keep me signed in this device</label>
-                </div>
-                <div class="pull-right text-right">
-                  <div><a routerLinkActive="active" routerLink="/ForgotPassword">Forgot Password</a></div>
-                  <div><a routerLinkActive="active" routerLink="/Companyregister">Not a Member ? Sign Up Now.</a></div>
-                </div> 
-              </div> 
+              <div class="pull-left">
+                <input type="checkbox" id="rememberme" formControlName="rememberme" />
+                <label class="control-label" for="rememberme"> Keep me signed in this device</label>
+              </div>
+              <div class="pull-right text-right">
+                <div><a routerLinkActive="active" routerLink="/ForgotPassword">Forgot Password</a></div>
+                <div><a routerLinkActive="active" routerLink="/Companyregister">Not a Member ? Sign Up Now.</a></div>
+              </div>
+            </div>
           </div>
         </form>
 

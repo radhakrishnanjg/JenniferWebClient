@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { NgxSpinnerService } from 'ngx-spinner';
+
 import { ToastrService } from 'ngx-toastr';
 import { VendoritemService } from '../../_services/service/vendoritem.service';
 import { Vendoritem, Vendor, Dropdown, ProductGroup, Category, SubCategory, Item } from '../../_services/model';
@@ -37,7 +37,7 @@ export class VendoritemlistComponent implements OnInit {
   constructor(
     private alertService: ToastrService,
     private _vendoritemService: VendoritemService,
-    private _spinner: NgxSpinnerService,
+    
     private _authorizationGuard: AuthorizationGuard,
     private fb: FormBuilder,
     private _PrivateutilityService: PrivateutilityService,
@@ -129,33 +129,33 @@ export class VendoritemlistComponent implements OnInit {
     if (this._authorizationGuard.CheckAcess("Vendoritemlist", "ViewEdit")) {
       return;
     }
-    this._spinner.show();
+    //
     this._PrivateutilityService.getVendors()
       .subscribe(
         (data: Vendor[]) => {
           this.lstCustomer = data;
-          this._spinner.hide();
+          //
         },
         (err: any) => {
           console.log(err);
-          this._spinner.hide();
+          //
         }
       );
 
 
-    this._spinner.show();
+    //
     this._PrivateutilityService.GetValues('Commercial Type')
       .subscribe(
         (data: Dropdown[]) => {
           this.lstCommercialType = data;
-          this._spinner.hide();
+          //
         },
         (err: any) => {
           console.log(err);
-          this._spinner.hide();
+          //
         }
       );
-    this._spinner.show();
+    //
     this._PrivateutilityService.getProductGroups()
       .subscribe(
         (data: ProductGroup[]) => {
@@ -163,7 +163,7 @@ export class VendoritemlistComponent implements OnInit {
         },
         (err: any) => {
           console.log(err);
-          this._spinner.hide();
+          //
         }
       );
 
@@ -197,42 +197,42 @@ export class VendoritemlistComponent implements OnInit {
     if (this._authorizationGuard.CheckAcess("Vendoritemlist", "ViewEdit")) {
       return;
     }
-    this._spinner.show();
+    //
     this._PrivateutilityService.getVendors()
       .subscribe(
         (data: Vendor[]) => {
           this.lstCustomer = data;
-          this._spinner.hide();
+          //
         },
         (err: any) => {
           console.log(err);
-          this._spinner.hide();
+          //
         }
       );
 
 
-    this._spinner.show();
+    //
     this._PrivateutilityService.GetValues('Commercial Type')
       .subscribe(
         (data: Dropdown[]) => {
           this.lstCommercialType = data;
-          this._spinner.hide();
+          //
         },
         (err: any) => {
           console.log(err);
-          this._spinner.hide();
+          //
         }
       );
-    this._spinner.show();
+    //
     this._PrivateutilityService.getProductGroups()
       .subscribe(
         (data: ProductGroup[]) => {
           this.lstProductGroup = data;
-          this._spinner.hide();
+          //
         },
         (err: any) => {
           console.log(err);
-          this._spinner.hide();
+          //
         }
       );
 
@@ -250,7 +250,7 @@ export class VendoritemlistComponent implements OnInit {
     this.panelTitle = "Edit vendor item code";
     this.action = false;
     this.identity = + id;
-    this._spinner.show();
+    //
     this._vendoritemService.searchById(this.identity)
       .subscribe(
         (data: Vendoritem) => {
@@ -269,11 +269,11 @@ export class VendoritemlistComponent implements OnInit {
           $("#VendorItemCode").attr("disabled", "disabled");
           this.logValidationErrors();
 
-          this._spinner.hide();
+          //
         },
         (err: any) => {
           console.log(err);
-          this._spinner.hide();
+          //
         }
       );
     $('#modalpopupvendoritemupsert').modal('show');
@@ -293,16 +293,16 @@ export class VendoritemlistComponent implements OnInit {
   onchangeProductGroupID(selectedValue: string) {
     let id = parseInt(selectedValue);
     if (id > 0) {
-      this._spinner.show();
+      //
       this._PrivateutilityService.getCategories(id)
         .subscribe(
           (statesa: Category[]) => {
             this.lstCategory = statesa;
-            this._spinner.hide();
+            //
           },
           (err: any) => {
             console.log(err);
-            this._spinner.hide();
+            //
           }
         );
     }
@@ -311,16 +311,16 @@ export class VendoritemlistComponent implements OnInit {
   onchangeCategoryID(selectedValue: string) {
     let id = parseInt(selectedValue);
     if (id > 0) {
-      this._spinner.show();
+      //
       this._PrivateutilityService.getSubCategories(id)
         .subscribe(
           (data: SubCategory[]) => {
             this.lstSubCategory = data
-            this._spinner.hide();
+            //
           },
           (err: any) => {
             console.log(err);
-            this._spinner.hide();
+            //
           }
         );
     }
@@ -329,16 +329,16 @@ export class VendoritemlistComponent implements OnInit {
   onchangeSubCategoryID(selectedValue: string) {
     let id = parseInt(selectedValue);
     if (id > 0) {
-      this._spinner.show();
+      //
       this._PrivateutilityService.getItems(id)
         .subscribe(
           (data: Item[]) => {
             this.lstItem = data;
-            this._spinner.hide();
+            //
           },
           (err: any) => {
             console.log(err);
-            this._spinner.hide();
+            //
           }
         );
     }
@@ -377,7 +377,7 @@ export class VendoritemlistComponent implements OnInit {
     this.objVendoritem.CommercialType = this.vendortemForm.controls['CommercialType'].value;
     this.objVendoritem.IsActive = this.vendortemForm.controls['IsActive'].value;
 
-    this._spinner.show();
+    //
     this._vendoritemService.exist(this.objVendoritem.VendorItemID,
       this.objVendoritem.ItemID, this.objVendoritem.VendorID)
       .subscribe(
@@ -386,15 +386,15 @@ export class VendoritemlistComponent implements OnInit {
             this.alertService.error('This Vendor Item Code has been registered already,You can not update again!');
           }
           else {
-            this._spinner.show();
+            //
             this._vendoritemService.add(this.objVendoritem).subscribe(
               (data) => {
                 if (data != null && data == true) {
-                  this._spinner.hide();
+                  //
                   this.alertService.success('Vendor item code  data has been added successfully');
                 }
                 else {
-                  this._spinner.hide();
+                  //
                   this.alertService.error('Vendor item code  creation failed!');
                 }
                 $('#modalpopupvendoritemupsert').modal('hide');
@@ -402,15 +402,15 @@ export class VendoritemlistComponent implements OnInit {
                 this.identity = 0;
               },
               (error: any) => {
-                this._spinner.hide();
+                //
                 console.log(error);
               }
             );
           }
-          this._spinner.hide();
+          //
         },
         (error: any) => {
-          this._spinner.hide();
+          //
         }
       );
 
@@ -424,7 +424,7 @@ export class VendoritemlistComponent implements OnInit {
     this.objVendoritem.ItemID = this.vendortemForm.controls['ItemID'].value;
     this.objVendoritem.CommercialType = this.vendortemForm.controls['CommercialType'].value;
     this.objVendoritem.IsActive = this.vendortemForm.controls['IsActive'].value;
-    this._spinner.show();
+    //
 
     this._vendoritemService.exist(this.objVendoritem.VendorItemID,
       this.objVendoritem.ItemID, this.objVendoritem.VendorID)
@@ -434,15 +434,15 @@ export class VendoritemlistComponent implements OnInit {
             this.alertService.error('This Vendor Item Code has been registered already,You can not update again!');
           }
           else {
-            this._spinner.show();
+            //
             this._vendoritemService.update(this.objVendoritem).subscribe(
               (data) => {
                 if (data != null && data == true) {
-                  this._spinner.hide();
+                  //
                   this.alertService.success('Vendor item code  data has been updated successful');
                 }
                 else {
-                  this._spinner.hide();
+                  //
                   this.alertService.error('Vendor item code  not saved!');
                 }
                 $('#modalpopupvendoritemupsert').modal('hide');
@@ -450,22 +450,22 @@ export class VendoritemlistComponent implements OnInit {
                 this.identity = 0;
               },
               (error: any) => {
-                this._spinner.hide();
+                //
                 console.log(error);
               }
             );
           }
-          this._spinner.hide();
+          //
         },
         (error: any) => {
-          this._spinner.hide();
+          //
         }
       );
 
   }
 
   delete() {
-    this._spinner.show();
+    //
     this._vendoritemService.delete(this.identity).subscribe(
       (data) => {
         if (data) {
@@ -476,17 +476,17 @@ export class VendoritemlistComponent implements OnInit {
         }
         $('#modaldeleteconfimation').modal('hide');
         this.identity = 0;
-        this._spinner.hide();
+        //
       },
       (error: any) => {
-        this._spinner.hide();
+        //
         console.log(error);
       }
     );
   }
 
   onLoad(SearchBy: string, Search: string, IsActive: Boolean) {
-    this._spinner.show();
+    //
     return this._vendoritemService.search(SearchBy, Search, IsActive).subscribe(
       (lst) => {
         if (lst != null) {
@@ -495,10 +495,10 @@ export class VendoritemlistComponent implements OnInit {
         }
 
 
-        this._spinner.hide();
+        //
       },
       (err) => {
-        this._spinner.hide();
+        //
         console.log(err);
       }
     );

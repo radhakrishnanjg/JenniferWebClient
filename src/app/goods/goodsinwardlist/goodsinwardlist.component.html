@@ -39,7 +39,7 @@
             </select>
           </div>
           <div class="col-md-4 nopading_loct">
-            <input [(ngModel)]="SearchKeyword" type="text" class="serchcurv form-control btn-group">
+            <input (keyup.enter)="Search()" [(ngModel)]="SearchKeyword" type="text" class="serchcurv form-control btn-group">
           </div>
           <div class="col-md-2 nopading_loct">
             <button class="serchcurv btn btn-default btn-group" (click)="Search()" title="Search">

@@ -35,12 +35,12 @@
               <option value="Location">Location</option>
               <option value="Vendor">Vendor</option>
               <option value="InventoryType">Inventory Type</option>
-              <option value="GRNStatus">GRNS tatus</option>
+              <option value="GRNStatus">GRN Status</option>
               <option value="GRNDate">GRN Date</option>
             </select>
           </div>
           <div class="col-md-4 nopading_loct" *ngIf="(SearchBy!='GRNDate')">
-            <input [(ngModel)]="SearchKeyword" type="text" class="serchcurv form-control btn-group">
+            <input (keyup.enter)="Search()" [(ngModel)]="SearchKeyword" type="text" class="serchcurv form-control btn-group">
           </div>
           <div class="col-md-4 nopading_loct" *ngIf="(SearchBy=='GRNDate')">
             <input type="text" ngxDaterangepickerMd [(ngModel)]="selectedDateRange"

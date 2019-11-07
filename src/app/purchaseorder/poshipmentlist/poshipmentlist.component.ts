@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { NgxSpinnerService } from 'ngx-spinner';
+
 import { ToastrService } from 'ngx-toastr';
 import { PoshipmentService } from '../../_services/service/poshipment.service';
 import { Poshipment } from '../../_services/model';
@@ -44,7 +44,7 @@ export class PoshipmentlistComponent implements OnInit {
     private alertService: ToastrService,
     private router: Router,
     private _poshipmentService: PoshipmentService,
-    private _spinner: NgxSpinnerService,
+    
     private _authorizationGuard: AuthorizationGuard
   ) { }
 
@@ -87,7 +87,7 @@ export class PoshipmentlistComponent implements OnInit {
   }
 
   delete() {
-    this._spinner.show();
+    //
     this._poshipmentService.delete(this.selectedDeleteId, this.selectedPOID).subscribe(
       (data) => {
         if (data != null && data.Flag == true) {
@@ -98,10 +98,10 @@ export class PoshipmentlistComponent implements OnInit {
         this.onLoad(this.SearchBy, this.SearchKeyword);
         $('#modaldeleteconfimation').modal('hide');
 
-        this._spinner.hide();
+        //
       },
       (error: any) => {
-        this._spinner.hide();
+        //
         console.log(error);
       }
     );
@@ -111,17 +111,17 @@ export class PoshipmentlistComponent implements OnInit {
   onLoad(SearchBy: string, Search: string, ) {
     let startdate: Date = this.selectedDateRange.startDate._d.toISOString().substring(0, 10);
     let enddate: Date = this.selectedDateRange.endDate._d.toISOString().substring(0, 10);
-    this._spinner.show();
+    //
     return this._poshipmentService.search(SearchBy, Search, startdate, enddate).subscribe(
       (lst) => {
         if (lst != null ) { 
           this.items = lst;
           this.loadItems(); 
         }
-        this._spinner.hide();
+        //
       },
       (err) => {
-        this._spinner.hide();
+        //
         console.log(err);
       }
     );

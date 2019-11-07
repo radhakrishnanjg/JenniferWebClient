@@ -1,5 +1,5 @@
 import { Component, OnInit, } from '@angular/core';
-import { NgxSpinnerService } from 'ngx-spinner';
+
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -35,7 +35,7 @@ export class GoodsinwardComponent implements OnInit {
     private alertService: ToastrService,
     private fb: FormBuilder,
     private _router: Router,
-    public _spinner: NgxSpinnerService,
+    
     private _goodsinwardService: GoodsinwardService,
     private _PrivateutilityService: PrivateutilityService,
     private _authorizationGuard: AuthorizationGuard,
@@ -86,15 +86,15 @@ export class GoodsinwardComponent implements OnInit {
   }
 
   ngOnInit() {
-    this._spinner.show();
+    //
     this._PrivateutilityService.GetValues('VendorItemSerialType')
       .subscribe(
         (data: Dropdown[]) => {
           this.lstVendorItemSerialType = data;
-          this._spinner.hide();
+          //
         },
         (err: any) => {
-          this._spinner.hide();
+          //
           console.log(err);
         }
       );
@@ -114,7 +114,7 @@ export class GoodsinwardComponent implements OnInit {
   public getGoodsInwardDisplay(): void {
     let JenniferItemSerial = this.goodsinwardform.controls['JenniferItemSerial'].value;
     if (JenniferItemSerial != "") {
-      this._spinner.show();
+      //
       this._PrivateutilityService.GetGoodsInwardDisplay(JenniferItemSerial).subscribe(
         (data) => {
           if (data != null) {
@@ -127,11 +127,11 @@ export class GoodsinwardComponent implements OnInit {
             this.GRNNumber = '';
             this.InventoryType = '';
           }
-          this._spinner.hide();
+          //
           // console.log(this.lst);
         },
         (err) => {
-          this._spinner.hide();
+          //
           console.log(err);
         }
       );
@@ -148,10 +148,10 @@ export class GoodsinwardComponent implements OnInit {
       this.obj.InventoryType = this.InventoryType;
       this.obj.ItemName = this.ItemName;
 
-      this._spinner.show();
+      //
       this._goodsinwardService.exist(0, this.goodsinwardform.controls['JenniferItemSerial'].value).subscribe(
         (data) => {
-          this._spinner.hide();
+          //
           if (!data) {
             this.alertService.error('Jennifer Serial Number is invalid or used.!');
           }
@@ -177,7 +177,7 @@ export class GoodsinwardComponent implements OnInit {
           } 
         },
         (error: any) => {
-          this._spinner.hide();
+          //
           console.log(error);
         }
       );
@@ -193,10 +193,10 @@ export class GoodsinwardComponent implements OnInit {
       this.obj.GRNNumber = this.GRNNumber;
       this.obj.InventoryType = this.InventoryType;
       this.obj.ItemName = this.ItemName;
-      this._spinner.show();
+      //
       this._goodsinwardService.exist(0, this.goodsinwardform.controls['JenniferItemSerial'].value).subscribe(
         (data) => {
-          this._spinner.hide();
+          //
           if (!data) {
             this.alertService.error('Jennifer Serial Number is invalid or used.!');
           }
@@ -222,7 +222,7 @@ export class GoodsinwardComponent implements OnInit {
           } 
         },
         (error: any) => {
-          this._spinner.hide();
+          //
           console.log(error);
         }
       );
@@ -237,10 +237,10 @@ export class GoodsinwardComponent implements OnInit {
       this.obj.GRNNumber = this.GRNNumber;
       this.obj.InventoryType = this.InventoryType;
       this.obj.ItemName = this.ItemName;
-      this._spinner.show();
+      //
       this._goodsinwardService.exist(0, this.goodsinwardform.controls['JenniferItemSerial'].value).subscribe(
         (data) => { 
-          this._spinner.hide();
+          //
           if (!data) {
             this.alertService.error('Jennifer Serial Number is invalid or used.!');
           }
@@ -266,7 +266,7 @@ export class GoodsinwardComponent implements OnInit {
           }
         },
         (error: any) => {
-          this._spinner.hide();
+          //
           console.log(error);
         }
       );
@@ -291,16 +291,16 @@ export class GoodsinwardComponent implements OnInit {
     if (this._authorizationGuard.CheckAcess("Goodsinwardlist", "ViewEdit")) {
       return;
     }
-    this._spinner.show();
+    //
     this._goodsinwardService.VendorUpdate(this.lstGoodsinward).subscribe(
       (data) => {
         if (data != null && data.Flag == true) {
-          this._spinner.hide();
+          //
           this.alertService.success(data.Msg);
           this._router.navigate(['/Goodsinwardlist']);
         }
         else {
-          this._spinner.hide();
+          //
           this.alertService.error(data.Msg);
           this._router.navigate(['/Goodsinwardlist']);
         }
@@ -308,7 +308,7 @@ export class GoodsinwardComponent implements OnInit {
         this.identity = 0;
       },
       (error: any) => {
-        this._spinner.hide();
+        //
         console.log(error);
       }
     )

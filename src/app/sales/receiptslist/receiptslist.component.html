@@ -104,7 +104,7 @@
             </ng-template>
           </kendo-grid-column>
 
-          <kendo-grid-column field="BankReceiptDate" title="Receipt Date" width="200" [format]="{ date: 'MM-dd-yyyy' }">
+          <kendo-grid-column field="BankReceiptDate" title="Uploaded Date" width="200" [format]="{ date: 'MM-dd-yyyy' }">
             <ng-template kendoGridEditTemplate let-column="column" let-formGroup="itemFormGroup" let-isNew="isNew">
               <kendo-datepicker class=" k-textbox" [formControl]="itemFormGroup.get(column.field)"
                 [format]="'MM-dd-yyyy'">

@@ -87,7 +87,7 @@ export class ForgotpasswordComponent implements OnInit {
 
   }
 
-  SendPassword(userForm: NgForm): void {
+  SendPassword(): void {
 
     let EmailId = this.forgotpasswordForm.controls['EmailId'].value;
     let EmailOTP = this.forgotpasswordForm.controls['EmailOTP'].value;

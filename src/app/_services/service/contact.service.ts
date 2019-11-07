@@ -78,8 +78,7 @@ export class ContactService {
 
   public add(objContact: Contact): Observable<boolean> {
     let currentUser = this.authenticationService.currentUserValue;
-    objContact.CompanyId = currentUser.CompanyID;
-    objContact.CompanyDetailID = currentUser.CompanyDetailID;
+    objContact.CompanyId = currentUser.CompanyID; 
     objContact.LoginId = currentUser.UserId;
     return this.httpClient.post<boolean>(environment.baseUrl + `Contact/Create`, objContact)
       .pipe(catchError(this.handleError));
@@ -87,8 +86,7 @@ export class ContactService {
 
   public update(objContact: Contact): Observable<boolean> {
     let currentUser = this.authenticationService.currentUserValue;
-    objContact.CompanyId = currentUser.CompanyID;
-    objContact.CompanyDetailID = currentUser.CompanyDetailID;
+    objContact.CompanyId = currentUser.CompanyID; 
     objContact.LoginId = currentUser.UserId;
     return this.httpClient.post<boolean>(environment.baseUrl + `Contact/Update`, objContact)
       .pipe(catchError(this.handleError));

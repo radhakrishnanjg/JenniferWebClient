@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NgxSpinnerService } from 'ngx-spinner';
+
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UsernameValidator } from '../../_validators/username';
@@ -31,7 +31,7 @@ export class LocationComponent implements OnInit {
     private fb: FormBuilder,
     private _router: Router,
     private aroute: ActivatedRoute,
-    public _spinner: NgxSpinnerService,
+    
     private usernameValidator: UsernameValidator,
     private _locationService: LocationService,
     private utilityService: UtilityService,
@@ -139,15 +139,15 @@ export class LocationComponent implements OnInit {
 
   ngOnInit() {
 
-    this._spinner.show();
+    //
     this.utilityService.getCountries()
       .subscribe(
         (data: Country[]) => {
           this.countries = data;
-          this._spinner.hide();
+          //
         },
         (err: any) => {
-          this._spinner.hide();
+          //
           console.log(err);
         }
       );
@@ -157,7 +157,7 @@ export class LocationComponent implements OnInit {
       if (this.identity > 0) {
         this.panelTitle = "Edit Location";
         this.action = false;
-        this._spinner.show();
+        //
         this._locationService.searchById(this.identity)
           .subscribe(
             (data: Location) => {
@@ -169,17 +169,17 @@ export class LocationComponent implements OnInit {
                   "search": 'Filter',
                 },
               };
-              this._spinner.hide();
+              //
               var CountryID = data.CountryID.toString();
-              this._spinner.show();
+              //
               this.utilityService.getStates(parseInt(CountryID))
                 .subscribe(
                   (statesa: State[]) => {
                     this.states = statesa;
-                    this._spinner.hide();
+                    //
                   },
                   (err: any) => {
-                    this._spinner.hide();
+                    //
                     console.log(err);
                   }
                 );
@@ -209,7 +209,7 @@ export class LocationComponent implements OnInit {
               this.locationform.get('StateID').disable();
             },
             (err: any) => {
-              this._spinner.hide();
+              //
               console.log(err);
             }
           );
@@ -217,7 +217,7 @@ export class LocationComponent implements OnInit {
       else {
         this.action = true;
         this.panelTitle = "Add New Location";
-        this._spinner.show();
+        //
         this._contactService.searchByType('Internal').subscribe(
           (data) => {
             this.obj.lstContact = data;
@@ -232,10 +232,10 @@ export class LocationComponent implements OnInit {
                 "search": 'Filter',
               },
             };
-            this._spinner.hide();
+            //
           },
           (err) => {
-            this._spinner.hide();
+            //
             console.log(err);
           }
         );
@@ -268,15 +268,15 @@ export class LocationComponent implements OnInit {
   onchangeCountryID(selectedValue: string) {
     let countrid = parseInt(selectedValue);
     if (countrid > 0) {
-      this._spinner.show();
+      //
       this.utilityService.getStates(countrid)
         .subscribe(
           (data: State[]) => {
             this.states = data;
-            this._spinner.hide();
+            //
           },
           (err: any) => {
-            this._spinner.hide();
+            //
             console.log(err);
           }
         );
@@ -328,23 +328,23 @@ export class LocationComponent implements OnInit {
     if (this.obj.lstContact != null && this.obj.lstContact.length > 0) {
       this.obj.lstContact = this.obj.lstContact.filter(a => a.IsActive == true);
     }
-    this._spinner.show();
+    //
     this._locationService.add(this.obj).subscribe(
       (data) => {
         if (data != null && data.Flag == true) {
-          this._spinner.hide();
+          //
           this.alertService.success(data.Msg);
           this._router.navigate(['/Locationlist']);
         }
         else {
-          this._spinner.hide();
+          //
           this.alertService.error(data.Msg);
           this._router.navigate(['/Locationlist']);
         }
         this.identity = 0;
       },
       (error: any) => {
-        this._spinner.hide();
+        //
         console.log(error);
       }
     );
@@ -372,23 +372,23 @@ export class LocationComponent implements OnInit {
     if (this.obj.lstContact != null && this.obj.lstContact.length > 0) {
       this.obj.lstContact = this.obj.lstContact.filter(a => a.IsActive == true);
     }
-    this._spinner.show();
+    //
     this._locationService.update(this.obj).subscribe(
       (data) => {
         if (data != null && data.Flag == true) {
-          this._spinner.hide();
+          //
           this.alertService.success(data.Msg);
           this._router.navigate(['/Locationlist']);
         }
         else {
-          this._spinner.hide();
+          //
           this.alertService.error(data.Msg);
           this._router.navigate(['/Locationlist']);
         }
         this.identity = 0;
       },
       (error: any) => {
-        this._spinner.hide();
+        //
         console.log(error);
       }
     );

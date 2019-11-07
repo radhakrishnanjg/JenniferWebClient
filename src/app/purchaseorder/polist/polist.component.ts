@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { NgxSpinnerService } from 'ngx-spinner';
+
 import { ToastrService } from 'ngx-toastr';
 import { PoService } from '../../_services/service/po.service';
 import { Poorder } from '../../_services/model';
@@ -43,7 +43,7 @@ export class PolistComponent implements OnInit {
     private alertService: ToastrService,
     private router: Router,
     private _poService: PoService,
-    private _spinner: NgxSpinnerService,
+    
     private _authorizationGuard: AuthorizationGuard
   ) { }
 
@@ -106,7 +106,7 @@ export class PolistComponent implements OnInit {
   }
 
   delete() {
-    this._spinner.show();
+    //
     this._poService.delete(this.selectedDeleteId, this.LocationID).subscribe(
       (data) => {
         if (data != null && data.Flag == true) {
@@ -117,10 +117,10 @@ export class PolistComponent implements OnInit {
         }
         $('#modaldeleteconfimation').modal('hide');
 
-        this._spinner.hide();
+        //
       },
       (error: any) => {
-        this._spinner.hide();
+        //
         console.log(error);
       }
     );
@@ -129,17 +129,17 @@ export class PolistComponent implements OnInit {
   onLoad(SearchBy: string, Search: string, ) {
     let startdate: Date = this.selectedDateRange.startDate._d.toISOString().substring(0, 10);
     let enddate: Date = this.selectedDateRange.endDate._d.toISOString().substring(0, 10);
-    this._spinner.show();
+    //
     return this._poService.search(SearchBy, Search, startdate, enddate).subscribe(
       (lst) => {
         if (lst != null ) { 
           this.items = lst;
           this.loadItems(); 
         }
-        this._spinner.hide();
+        //
       },
       (err) => {
-        this._spinner.hide();
+        //
         console.log(err);
       }
     );

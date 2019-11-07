@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NgxSpinnerService } from 'ngx-spinner';
+
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UsernameValidator } from '../../_validators/username';
@@ -47,7 +47,7 @@ export class PurchaseComponent implements OnInit {
     private fb: FormBuilder,
     private _router: Router,
     private aroute: ActivatedRoute,
-    public _spinner: NgxSpinnerService,
+    
     private usernameValidator: UsernameValidator,
     private _invoiceService: InvoiceService,
     private _authorizationGuard: AuthorizationGuard
@@ -109,7 +109,7 @@ export class PurchaseComponent implements OnInit {
     this.aroute.paramMap.subscribe(params => {
       this.identity = +params.get('id');
       this.POID = +params.get('PoId');
-      this._spinner.show();
+      //
       this._invoiceService.GetPoHeaderByPOID(this.POID)
         .subscribe(
           (data: Poorder) => {
@@ -121,23 +121,23 @@ export class PurchaseComponent implements OnInit {
             this.VendorName = data.VendorName;
             this.InvoiceMinDate = moment(this.PODate).add(1, 'minutes');
             this.InvoiceMaxDate = moment().add(0, 'days');
-            this._spinner.hide();
-            this._spinner.show();
+            //
+            //
             this._invoiceService.getVendorWarehouses(this.VendorID)
               .subscribe(
                 (data: Vendorwarehouse[]) => {
                   this.lstVendorwarehouse = data;
-                  this._spinner.hide();
+                  //
                 },
                 (err: any) => {
-                  this._spinner.hide();
+                  //
                   console.log(err);
                 }
               );
             if (this.identity > 0) {
               this.panelTitle = "Edit Invoice";
               this.action = false;
-              this._spinner.show();
+              //
               this._invoiceService.searchById(this.identity, this.POID)
                 .subscribe(
                   (data: Invoice) => {
@@ -149,7 +149,7 @@ export class PurchaseComponent implements OnInit {
                     this.TotalTaxAmount = this.obj.lstItem.reduce((acc, a) => acc + a.TaxAmount, 0);
                     this.TotalDirectCost = this.obj.lstItem.reduce((acc, a) => acc + a.DirectCost, 0);
                     this.TotalTotalAmount = this.obj.lstItem.reduce((acc, a) => acc + a.TotalAmount, 0);
-                    this._spinner.hide();
+                    //
                     var VendorWarehouseID = data.VendorWarehouseID.toString();
                     this.invoiceform.patchValue({
                       InvoiceNumber: data.InvoiceNumber,
@@ -165,7 +165,7 @@ export class PurchaseComponent implements OnInit {
 
                   },
                   (err: any) => {
-                    this._spinner.hide();
+                    //
                     console.log(err);
                   }
                 );
@@ -173,7 +173,7 @@ export class PurchaseComponent implements OnInit {
             else {
               this.action = true;
               this.panelTitle = "Add New Invoice";
-              this._spinner.show();
+              //
               this._invoiceService.getNewInvoice(this.POID)
                 .subscribe(
                   (data: Invoiceitem[]) => {
@@ -186,10 +186,10 @@ export class PurchaseComponent implements OnInit {
                     this.TotalDirectCost = this.obj.lstItem.reduce((acc, a) => acc + a.DirectCost, 0);
                     this.TotalTotalAmount = this.obj.lstItem.reduce((acc, a) => acc + a.TotalAmount, 0);
 
-                    this._spinner.hide();
+                    //
                   },
                   (err: any) => {
-                    this._spinner.hide();
+                    //
                     console.log(err);
                   }
                 );
@@ -197,7 +197,7 @@ export class PurchaseComponent implements OnInit {
 
           },
           (err: any) => {
-            this._spinner.hide();
+            //
             console.log(err);
           }
         );
@@ -244,17 +244,17 @@ export class PurchaseComponent implements OnInit {
     let VendorWarehouseID = parseInt(selectedValue);
     if (VendorWarehouseID > 0) {
       let LocationID = this.LocationID;
-      this._spinner.show();
+      //
       this._invoiceService.getGSTType(VendorWarehouseID, LocationID)
         .subscribe(
           (data) => {
             if (data != null) {
               this.obj.lstItem.map(a => a.TaxNature = data);
             }
-            this._spinner.hide();
+            //
           },
           (err: any) => {
-            this._spinner.hide();
+            //
             console.log(err);
           }
         );
@@ -312,24 +312,24 @@ export class PurchaseComponent implements OnInit {
     this.obj.LocationID = this.LocationID;
     this.obj.POID = this.POID;
     this.obj.lstItem = this.obj.lstItem.filter(a => a.Qty > 0);
-    this._spinner.show();
+    //
 
     this._invoiceService.upsert(this.obj).subscribe(
       (data) => {
         if (data != null && data.Flag == true) {
-          this._spinner.hide();
+          //
           this.alertService.success(data.Msg);
           this._router.navigate(['/Purchaselist']);
         }
         else {
-          this._spinner.hide();
+          //
           this.alertService.error(data.Msg);
           this._router.navigate(['/Purchaselist']);
         }
         this.identity = 0;
       },
       (error: any) => {
-        this._spinner.hide();
+        //
         console.log(error);
       }
     );
@@ -349,24 +349,24 @@ export class PurchaseComponent implements OnInit {
     this.obj.LocationID = this.LocationID;
     this.obj.POID = this.POID;
     this.obj.lstItem = this.obj.lstItem.filter(a => a.Qty > 0);
-    this._spinner.show();
+    //
 
     this._invoiceService.upsert(this.obj).subscribe(
       (data) => {
         if (data != null && data.Flag == true) {
-          this._spinner.hide();
+          //
           this.alertService.success(data.Msg);
           this._router.navigate(['/Purchaselist']);
         }
         else {
-          this._spinner.hide();
+          //
           this.alertService.error(data.Msg);
           this._router.navigate(['/Purchaselist']);
         }
         this.identity = 0;
       },
       (error: any) => {
-        this._spinner.hide();
+        //
         console.log(error);
       }
     );

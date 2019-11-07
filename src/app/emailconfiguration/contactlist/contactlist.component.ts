@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { NgxSpinnerService } from 'ngx-spinner';
+
 import { ToastrService } from 'ngx-toastr';
 import { ContactService } from '../../_services/service/contact.service';
 import { Contact } from '../../_services/model';
@@ -31,7 +31,7 @@ export class ContactlistComponent implements OnInit {
     private alertService: ToastrService,
     private router: Router,
     private _contactService: ContactService,
-    private _spinner: NgxSpinnerService,
+    
     private _authorizationGuard: AuthorizationGuard
   ) { }
 
@@ -69,7 +69,7 @@ export class ContactlistComponent implements OnInit {
   }
 
   delete() {
-    this._spinner.show();
+    //
     this._contactService.delete(this.selectedDeleteId).subscribe(
       (data) => {
         if (data) {
@@ -81,10 +81,10 @@ export class ContactlistComponent implements OnInit {
         }
         $('#modaldeleteconfimation').modal('hide');
         this.confirmDelete = false;
-        this._spinner.hide();
+        //
       },
       (error: any) => {
-        this._spinner.hide();
+        //
         console.log(error);
       }
     )
@@ -92,7 +92,7 @@ export class ContactlistComponent implements OnInit {
 
   onLoad(SearchBy: string, Search: string, IsActive: Boolean) {
 
-    this._spinner.show();
+    //
     return this._contactService.search(SearchBy, Search, IsActive).subscribe(
       (lst) => {
 
@@ -101,11 +101,11 @@ export class ContactlistComponent implements OnInit {
           this.loadItems(); 
         }
 
-        this._spinner.hide();
+        //
       },
 
       (err) => {
-        this._spinner.hide();
+        //
         console.log(err);
       }
 

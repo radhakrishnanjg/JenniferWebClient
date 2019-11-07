@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NgxSpinnerService } from 'ngx-spinner';
+
 import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -60,7 +60,7 @@ export class GoodsReceiptComponent implements OnInit {
   TotalTotalReceivedQty: number = 0;
   constructor(
     private fb: FormBuilder,
-    public _spinner: NgxSpinnerService,
+    
     private _goodsReceiptService: GoodsReceiptService,
     private alertService: ToastrService,
     private _authorizationGuard: AuthorizationGuard,
@@ -182,27 +182,27 @@ export class GoodsReceiptComponent implements OnInit {
   }
 
   public getGRNNumber(): void {
-    this._spinner.show();
+    //
     this._goodsReceiptService.getGRNNumber().subscribe(
       (res) => {
         this.objGoodsReceipt.GRNNumber = res;
-        this._spinner.hide();
+        //
       }, (err) => {
-        this._spinner.hide();
+        //
         console.log(err);
       });
   }
 
   public getPONumbers(): void {
-    this._spinner.show();
+    //
     this._goodsReceiptService.getPONumbers().subscribe(
       (res) => {
         this.poNumbers = res;
         this.lstPONumber = res;
         this.poNumbers.forEach(obj => { this.poNumberList.push(obj.PONumber) });
-        this._spinner.hide();
+        //
       }, (err) => {
-        this._spinner.hide();
+        //
         console.log(err);
       });
   }
@@ -218,13 +218,13 @@ export class GoodsReceiptComponent implements OnInit {
     )
 
   public getInventoryTypes(): void {
-    this._spinner.show();
+    //
     this._goodsReceiptService.getInventoryType().subscribe(
       (res) => {
         this.inventoryTypes = res;
-        this._spinner.hide();
+        //
       }, (err) => {
-        this._spinner.hide();
+        //
         console.log(err);
       });
   }
@@ -259,7 +259,7 @@ export class GoodsReceiptComponent implements OnInit {
           this.goodsForm.get('InventoryType').enable();
         }
         this.GRNMinDate = moment(poDetail.PODate).add(1, 'minutes');//moment().subtract(diff, 'days');
-        this._spinner.show();
+        //
         this._goodsReceiptService.getItems(poDetail.POID, this.GRNType, this.TrackingNumber).subscribe(
           (res) => {
             this.lstGoodsReceiptDetail = res;
@@ -270,9 +270,9 @@ export class GoodsReceiptComponent implements OnInit {
             this.TotalInventoryDamagedQty = this.lstGoodsReceiptDetail.reduce((acc, a) => acc + a.InventoryDamageQty, 0);
             this.TotalInventoryOthersQty = this.lstGoodsReceiptDetail.reduce((acc, a) => acc + a.InventoryOthersQty, 0);
             this.TotalTotalReceivedQty = this.lstGoodsReceiptDetail.reduce((acc, a) => acc + a.TotalReceivedQty, 0);
-            this._spinner.hide();
+            //
           }, (err) => {
-            this._spinner.hide();
+            //
             console.log(err);
           });
       }
@@ -282,14 +282,14 @@ export class GoodsReceiptComponent implements OnInit {
 
   //Get Locations
   public getLocations(): void {
-    this._spinner.show();
+    //
     this._privateutilityService.getSTOGRNLocation().subscribe(
       (data) => {
         this.locationList = data;
-        this._spinner.hide();
+        //
       },
       (err) => {
-        this._spinner.hide();
+        //
         console.log(err);
       }
     );
@@ -297,13 +297,13 @@ export class GoodsReceiptComponent implements OnInit {
 
   //Get Vendors
   public getVendorwarehouses(): void {
-    this._spinner.show();
+    //
     this._privateutilityService.getSTOGRNVendorWarehouse().subscribe(
       (res) => {
         this.Vendorwarehouselist = res;
-        this._spinner.hide();
+        //
       }, (err) => {
-        this._spinner.hide();
+        //
         console.log(err);
       });
   }
@@ -469,13 +469,13 @@ export class GoodsReceiptComponent implements OnInit {
         return;
       }
       let STODate = this.goodsForm.controls['GRNDate'].value.startDate._d.toLocaleString();
-      this._spinner.show();
+      //
       this._privateutilityService.getCheckSTODateValidation(STODate).subscribe(
         (res) => {
           this.objResult = res;
-          this._spinner.hide();
+          //
         }, (err) => {
-          this._spinner.hide();
+          //
           console.log(err);
         });
     }
@@ -602,12 +602,12 @@ export class GoodsReceiptComponent implements OnInit {
 
 
   insert(): void {
-    this._spinner.show();
+    //
     this._goodsReceiptService.Insert(this.objGoodsReceipt).subscribe(
       (data) => {
         $('#modalgrnconfimation').modal('hide');
         if (data != null && data.Flag == true) {
-          this._spinner.show();
+          //
           this._goodsReceiptService.updateImage(
             this.selectedFile1, this.selectedFile2, this.selectedFile3, this.selectedFile4,
             this.objGoodsReceipt.GRNNumber).subscribe(
@@ -618,11 +618,11 @@ export class GoodsReceiptComponent implements OnInit {
                 else {
                   this.alertService.error(data.Msg);
                 }
-                this._spinner.hide();
+                //
                 this._router.navigate(['/Goodsreceiptlist']);
               },
               (error: any) => {
-                this._spinner.hide();
+                //
                 console.log(error);
               }
             )
@@ -631,11 +631,11 @@ export class GoodsReceiptComponent implements OnInit {
           this.alertService.error(data.Msg);
           this._router.navigate(['/Goodsreceiptlist']);
         }
-        this._spinner.hide();
+        //
         this.identity = 0;
       },
       (error: any) => {
-        this._spinner.hide();
+        //
         console.log(error);
       }
     );

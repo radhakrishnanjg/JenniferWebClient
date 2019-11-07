@@ -35,7 +35,7 @@
           </div>
           <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 ">
             <div class="pull-right">
-              <a class="btn btn-primary" routerLink="/Userlist" routerlinkactive="active" title="Back">
+              <a  type="button" class="btn btn-primary" routerLink="/Userlist" routerlinkactive="active" title="Back">
 
                 Back
               </a>
@@ -55,6 +55,10 @@
           <li class="nav-item">
             <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile"
               aria-selected="false">Report Details </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="Dashboard-tab" data-toggle="tab" href="#Dashboard" role="tab" aria-controls="Dashboard"
+              aria-selected="false">Dashboard Details </a>
           </li>
         </ul>
 
@@ -183,11 +187,75 @@
             </div>
 
           </div>
+
+          <div class="tab-pane fade" id="Dashboard" role="tabpanel" aria-labelledby="Dashboard-tab">
+
+
+            <div class="userpermheader">
+              <div class="parcol">
+                <b>Page Name</b>
+              </div>
+              <div class="parcol">
+                <b>None</b>
+              </div>
+              <div class="parcol">
+                <b>View</b>
+              </div>
+              <div class="parcol">
+                <!-- <b>Company Level </b> -->
+              </div>
+            </div>
+            <div *ngFor="let parent of filter(2)" class="userpermodd">
+              <div class="parcol">
+                <div [ngClass]="(parent.AngularRouteName == '#')?'bold':'paddingleft30'">
+                  {{parent.MenuName }}
+                </div>
+              </div>
+
+              <div *ngIf="(parent.AngularRouteName == '#')">
+                <div class="parcol" (click)="fnusercheckall_None(parent.MenuID)">
+                  <button value="Check All" class="btn btn-check btn-sm">
+                    Check All
+                    <i class="fa fa-check" aria-hidden="true"></i>
+                  </button>
+                </div>
+                <div class="parcol" (click)="fnusercheckall_View(parent.MenuID)">
+                  <button value="Check All" class="btn btn-check btn-sm">
+                    Check All
+                    <i class="fa fa-check" aria-hidden="true"></i>
+                  </button>
+                </div>
+                <div class="parcol" >
+                  <!-- <button value="Check All" class="btn btn-check btn-sm" (click)="fnusercheckall_View4(parent.MenuID)">
+                    Check All
+                    <i class="fa fa-check" aria-hidden="true"></i>
+                  </button> -->
+                </div>
+              </div>
+              <div *ngIf="(parent.AngularRouteName != '#')">
+                <div class="parcol">
+                  <input type="radio" name="{{parent.MenuID}}" id="{{parent.MenuID + '_None'}}"
+                    [checked]="parent.IsViewEdit == '0'" (click)="fnusermenu_None(parent.MenuID)">
+                </div>
+
+                <div class="parcol">
+                  <input type="radio" name="{{parent.MenuID}}" id="{{parent.MenuID + '_View3'}}"
+                    [checked]="parent.IsViewEdit == '1'" (click)="fnusermenu_View(parent.MenuID)">
+                </div>
+
+                <div class="parcol">
+                  <!-- <input type="radio" name="{{parent.MenuID}}" id="{{parent.MenuID + '_View4'}}"
+                    [checked]="parent.IsViewEdit == '4'" (click)="fnusermenu_View4(parent.MenuID)"> -->
+                </div>
+              </div>
+            </div>
+
+          </div>
         </div>
 
         <div class="panel-footer">
           <div class="pull-right btn-toolbar">
-            <button class="btn btn-primary" routerLink="/Userlist">Cancel</button>
+            <button  type="button" class="btn btn-primary" routerLink="/Userlist">Cancel</button>
             <button class="btn btn-success" type="submit" (click)="savepermission()" prevent-double-submit>Save</button>
           </div>
           <div class="clearfix"></div>

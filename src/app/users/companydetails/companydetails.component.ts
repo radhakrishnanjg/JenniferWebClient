@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NgxSpinnerService } from 'ngx-spinner';
+
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UsernameValidator } from '../../_validators/username';
@@ -32,7 +32,7 @@ export class CompanydetailsComponent implements OnInit {
     private fb: FormBuilder,
     private _router: Router,
     private aroute: ActivatedRoute,
-    public _spinner: NgxSpinnerService,
+    
     private usernameValidator: UsernameValidator,
     private _companydetailService: CompanydetailService,
     private _PrivateutilityService: PrivateutilityService,
@@ -95,16 +95,16 @@ export class CompanydetailsComponent implements OnInit {
   //#endregion 
 
   ngOnInit() {
-    this._spinner.show();
+    //
     this._PrivateutilityService.getMarketPlaces()
       .subscribe(
         (data: Marketplace[]) => {
           this.marketplaces = data;
-          this._spinner.hide();
+          //
         },
         (err: any) => {
           console.log(err);
-          this._spinner.hide();
+          //
         }
       );
 
@@ -114,7 +114,7 @@ export class CompanydetailsComponent implements OnInit {
       if (this.identity > 0) {
         this.panelTitle = "Edit Store";
         this.action = false;
-        this._spinner.show();
+        //
         this.validateflag = true;
         this._companydetailService.searchById(this.identity)
           .subscribe(
@@ -139,7 +139,7 @@ export class CompanydetailsComponent implements OnInit {
             },
             (err: any) => {
               console.log(err);
-              this._spinner.hide();
+              //
             }
           );
       }
@@ -176,10 +176,10 @@ export class CompanydetailsComponent implements OnInit {
     if (buttonType === "Validate") {
       this.obj.MarketPlaceSellerID = this.companyDetailsform.controls['MarketPlaceSellerID'].value;
       this.obj.MarketPlaceAPIToken = this.companyDetailsform.controls['MarketPlaceAPIToken'].value;
-      this._spinner.show();
+      //
       this._companydetailService.validate(this.obj).subscribe(
         (data) => {
-          this._spinner.hide();
+          //
           if (data != null && data.Flag == true) {
             this.alertService.success(data.Msg);
             this.validateflag = true;
@@ -192,7 +192,7 @@ export class CompanydetailsComponent implements OnInit {
           }
         },
         (error: any) => {
-          this._spinner.hide();
+          //
           console.log(error);
         }
       );
@@ -220,24 +220,24 @@ export class CompanydetailsComponent implements OnInit {
     this.obj.MarketplaceID = this.companyDetailsform.controls['MarketplaceID'].value;
     this.obj.IsActive = this.companyDetailsform.controls['IsActive'].value;
 
-    this._spinner.show();
+    //
     this._companydetailService.add(this.obj).subscribe(
       (data) => {
         if (data != null && data.Flag == true) {
-          this._spinner.hide();
+          //
           this._CompanydetailService.changeMessage(this.obj);
           this.alertService.success(data.Msg);
           this._router.navigate(['/Companydetaillist']);
         }
         else {
-          this._spinner.hide();
+          //
           this.alertService.error(data.Msg);
           this._router.navigate(['/Companydetaillist']);
         }
         this.identity = 0;
       },
       (error: any) => {
-        this._spinner.hide();
+        //
         console.log(error);
       }
     );
@@ -256,23 +256,23 @@ export class CompanydetailsComponent implements OnInit {
     this.obj.MarketPlaceAPIToken = this.companyDetailsform.controls['MarketPlaceAPIToken'].value;
     this.obj.MarketplaceID = this.companyDetailsform.controls['MarketplaceID'].value;
     this.obj.IsActive = this.companyDetailsform.controls['IsActive'].value;
-    this._spinner.show();
+    //
     this._companydetailService.update(this.obj).subscribe(
       (data) => {
         if (data != null && data == true) {
-          this._spinner.hide();
+          //
           this.alertService.success('Store detail data has been updated successful');
           this._router.navigate(['/Companydetaillist']);
         }
         else {
-          this._spinner.hide();
+          //
           this.alertService.error('Store detail not saved!');
           this._router.navigate(['/Companydetaillist']);
         }
         this.identity = 0;
       },
       (error: any) => {
-        this._spinner.hide();
+        //
         console.log(error);
       }
     );

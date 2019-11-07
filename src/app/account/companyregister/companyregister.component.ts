@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NgxSpinnerService } from 'ngx-spinner';
+
 import { AuthenticationService, } from '../../_services/service/authentication.service';
 import { AccountService } from '../../_services/service/account.service';
 import { ToastrService } from 'ngx-toastr';
@@ -186,7 +186,7 @@ export class CompanyregisterComponent implements OnInit {
     private authenticationService: AuthenticationService,
     private accountService: AccountService,
     private alertService: ToastrService,
-    public _spinner: NgxSpinnerService,
+    
     private utilityService: UtilityService,
     private usernameValidator: UsernameValidator
   ) { }
@@ -197,15 +197,15 @@ export class CompanyregisterComponent implements OnInit {
 
   ngOnInit() {
     this.objCompanyRegister.IsPrimarySecondarySame = false;
-    this._spinner.show();
+    //
     this.utilityService.getCountries()
       .subscribe(
         (data: Country[]) => {
           this.countries = data;
-          this._spinner.hide();
+          //
         },
         (err: any) => {
-          this._spinner.hide();
+          //
           console.log(err);
         }
       );
@@ -312,24 +312,24 @@ export class CompanyregisterComponent implements OnInit {
     this.objCompanyRegister.SecondaryAddress2 = this.registerForm.controls['SecondaryAddress2'].value;
     this.objCompanyRegister.SecondaryGST = this.registerForm.controls['SecondaryGST'].value;
 
-    this._spinner.show();
+    //
     this.accountService.RegisterCompany(this.selectedFile, this.objCompanyRegister).subscribe(
       (data) => {
         if (data != null && data.Flag == true) {
           this.alertService.success(data.Msg);
           this.Reset();
           //this._router.navigate(['/Users']);
-          this._spinner.hide();
+          //
         }
         else {
           this.alertService.error(data.Msg);
           //this._router.navigate(['/Users']);
-          this._spinner.hide();
+          //
         }
       },
       (err: any) => {
         console.log(err);
-        this._spinner.hide();
+        //
       }
     );
     this.enableValue(this.secondaryValues);
@@ -340,16 +340,16 @@ export class CompanyregisterComponent implements OnInit {
     let countrid = parseInt(selectedValue);
     this.registerForm.controls['PrimaryCountryID'].setValue(countrid);
     if (countrid > 0) {
-      this._spinner.show();
+      //
       this.utilityService.getStates(countrid)
         .subscribe(
           (data: State[]) => {
             this.states = data;
-            this._spinner.hide();
+            //
           },
           (err: any) => {
             console.log(err);
-            this._spinner.hide();
+            //
           }
         );
     }
@@ -358,16 +358,16 @@ export class CompanyregisterComponent implements OnInit {
 
   onchangeSecondaryCountryID(selectedValue: string) {
     let countrid = parseInt(selectedValue);
-    this._spinner.show();
+    //
     this.utilityService.getStates(countrid)
       .subscribe(
         (data: State[]) => {
           this.secondarystates = data;
-          this._spinner.hide();
+          //
         },
         (err: any) => {
           console.log(err);
-          this._spinner.hide();
+          //
         }
       );
   }
@@ -428,12 +428,12 @@ export class CompanyregisterComponent implements OnInit {
         SecondaryGST: $('#PrimaryGST').val(),
         SecondaryPostalCode: $('#PrimaryPostalCode').val()
       });
-      this._spinner.show();
+      //
       this.utilityService.getStates(countrid)
         .subscribe(
           (data: State[]) => {
             this.secondarystates = data;
-            this._spinner.hide();
+            //
             let PrimaryStateID = parseInt($('#PrimaryStateID').val().toString());
             setTimeout(function sd() {
               this.registerForm.patchValue({
@@ -442,7 +442,7 @@ export class CompanyregisterComponent implements OnInit {
             }, 1000);
           },
           (err: any) => {
-            this._spinner.hide();
+            //
             console.log(err)
           }
         );

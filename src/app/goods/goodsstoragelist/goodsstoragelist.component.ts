@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { NgxSpinnerService } from 'ngx-spinner';
+
 import { ToastrService } from 'ngx-toastr';
 import { GoodsstorageService } from '../../_services/service/goodsstorage.service';
 import { Goodsstorage } from '../../_services/model';
@@ -37,7 +37,7 @@ export class GoodsstoragelistComponent implements OnInit {
     private _router: Router,
     private _goodsstorageService: GoodsstorageService,
     private fb: FormBuilder,
-    private _spinner: NgxSpinnerService,
+    
     private _authorizationGuard: AuthorizationGuard,
   ) { }
 
@@ -141,16 +141,16 @@ export class GoodsstoragelistComponent implements OnInit {
     this.obj.WarehouseRack = this.goodsstorageform.controls['WarehouseRack'].value;
     this.obj.WarehouseBin = this.goodsstorageform.controls['WarehouseBin'].value;
     this.obj.JenniferItemSerial = this.JenniferItemSerial;
-    this._spinner.show();
+    //
     this._goodsstorageService.update(this.obj).subscribe(
       (data) => {
         if (data != null && data == true) {
-          this._spinner.hide();
+          //
           this.alertService.success('Goods storage data has been updated successful');
           this._router.navigate(['/Goodsstoragelist']);
         }
         else {
-          this._spinner.hide();
+          //
           this.alertService.error('Goods storage update failed!');
           this._router.navigate(['/Goodsstoragelist']);
         }
@@ -159,25 +159,25 @@ export class GoodsstoragelistComponent implements OnInit {
         this.identity = 0;
       },
       (error: any) => {
-        this._spinner.hide();
+        //
         console.log(error);
       }
     );
   }
 
   onLoad(SearchBy: string, Search: string) {
-    this._spinner.show();
+    //
     return this._goodsstorageService.search(SearchBy, Search).subscribe(
       (data) => {
         if (data != null) {
           this.items = data;
           this.loadItems();
         }
-        this._spinner.hide();
+        //
       },
 
       (err) => {
-        this._spinner.hide();
+        //
         console.log(err);
       }
 

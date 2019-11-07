@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NgxSpinnerService } from 'ngx-spinner';
+
 import { FormGroup, FormBuilder, Validators, } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -41,7 +41,7 @@ export class GoodsDisputeComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    public _spinner: NgxSpinnerService,
+    
     private _goodsDisputeService: GoodsDisputeService,
     private _privateutilityServiceService: PrivateutilityService,
     private alertService: ToastrService,
@@ -138,14 +138,14 @@ export class GoodsDisputeComponent implements OnInit {
   }
 
   public getDisputeType(): void {
-    this._spinner.show();
+    //
     this._privateutilityServiceService.GetValues('DisputeType').subscribe(
       (res) => {
         this.lstDisputeType = res;
-        this._spinner.hide();
+        //
         console.log(this.lstDisputeType)
       }, (err) => {
-        this._spinner.hide();
+        //
         console.log(err);
       });
   }
@@ -153,7 +153,7 @@ export class GoodsDisputeComponent implements OnInit {
   public getGoodsInwardDisplay(): void {
     let JenniferItemSerial = this.Goodsdisputeform.controls['JenniferItemSerial'].value;
     if (JenniferItemSerial != null && JenniferItemSerial != '') {
-      this._spinner.show();
+      //
       this._privateutilityServiceService.GetGoodsInwardDisplay(JenniferItemSerial).subscribe(
         (data) => {
           if (data != null) {
@@ -168,10 +168,10 @@ export class GoodsDisputeComponent implements OnInit {
             this.GRNNumber = '';
             this.InventoryType = '';
           }
-          this._spinner.hide();
+          //
         },
         (err) => {
-          this._spinner.hide();
+          //
           console.log(err);
         }
       );
@@ -377,7 +377,7 @@ export class GoodsDisputeComponent implements OnInit {
       }
     }
 
-    this._spinner.show();
+    //
     this._goodsDisputeService.Insert(this.obj.GRNInwardID, this.obj.JenniferItemSerial,
       this.obj.DisputeType, this.obj.OtherItemID, this.obj.Remarks, this.obj.VideoLink,
       this.selectedFile1, this.selectedFile2, this.selectedFile3, this.selectedFile4,
@@ -385,19 +385,19 @@ export class GoodsDisputeComponent implements OnInit {
       this.selectedFile9, this.selectedFile10).subscribe(
         (data) => {
           if (data!=null && data == true) {
-            this._spinner.hide();
+            //
             this.alertService.success('Goods dispute data has been added successful');
             this._router.navigate(['/Goodsdisputelist']);
           }
           else {
-            this._spinner.hide();
+            //
             this.alertService.error('Goods dispute creation failed!');
             this._router.navigate(['/Goodsdisputelist']);
           }
           this.identity = 0;
         },
         (error: any) => {
-          this._spinner.hide();
+          //
           console.log(error);
         }
       )

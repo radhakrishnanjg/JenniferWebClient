@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { NgxSpinnerService } from 'ngx-spinner';
+
 import { ToastrService } from 'ngx-toastr';
 import { CustomeritemService } from '../../_services/service/customeritem.service';
 import { Customeritem, Customer, ProductGroup, Category, SubCategory, Item } from '../../_services/model';
@@ -36,7 +36,7 @@ export class CustomeritemlistComponent implements OnInit {
   constructor(
     private alertService: ToastrService,
     private _customeritemService: CustomeritemService,
-    private _spinner: NgxSpinnerService,
+    
     private _authorizationGuard: AuthorizationGuard,
     private fb: FormBuilder,
     private _PrivateutilityService: PrivateutilityService,
@@ -126,28 +126,28 @@ export class CustomeritemlistComponent implements OnInit {
     if (this._authorizationGuard.CheckAcess("Customeritemlist", "ViewEdit")) {
       return;
     }
-    this._spinner.show();
+    //
     this._PrivateutilityService.getCustomers()
       .subscribe(
         (data: Customer[]) => {
           this.lstCustomer = data;
-          this._spinner.hide();
+          //
         },
         (err: any) => {
           console.log(err);
-          this._spinner.hide();
+          //
         }
       );
-    this._spinner.show();
+    //
     this._PrivateutilityService.getProductGroups()
       .subscribe(
         (data: ProductGroup[]) => {
           this.lstProductGroup = data;
-          this._spinner.hide();
+          //
         },
         (err: any) => {
           console.log(err);
-          this._spinner.hide();
+          //
         }
       );
 
@@ -180,28 +180,28 @@ export class CustomeritemlistComponent implements OnInit {
     if (this._authorizationGuard.CheckAcess("Customeritemlist", "ViewEdit")) {
       return;
     }
-    this._spinner.show();
+    //
     this._PrivateutilityService.getCustomers()
       .subscribe(
         (data: Customer[]) => {
           this.lstCustomer = data;
-          this._spinner.hide();
+          //
         },
         (err: any) => {
           console.log(err);
-          this._spinner.hide();
+          //
         }
       );
-    this._spinner.show();
+    //
     this._PrivateutilityService.getProductGroups()
       .subscribe(
         (data: ProductGroup[]) => {
           this.lstProductGroup = data;
-          this._spinner.hide();
+          //
         },
         (err: any) => {
           console.log(err);
-          this._spinner.hide();
+          //
         }
       );
 
@@ -252,16 +252,16 @@ export class CustomeritemlistComponent implements OnInit {
   onchangeProductGroupID(selectedValue: string) {
     let id = parseInt(selectedValue);
     if (id > 0) {
-      this._spinner.show();
+      //
       this._PrivateutilityService.getCategories(id)
         .subscribe(
           (statesa: Category[]) => {
             this.lstCategory = statesa;
-            this._spinner.hide();
+            //
           },
           (err: any) => {
             console.log(err);
-            this._spinner.hide();
+            //
           }
         );
     }
@@ -270,16 +270,16 @@ export class CustomeritemlistComponent implements OnInit {
   onchangeCategoryID(selectedValue: string) {
     let id = parseInt(selectedValue);
     if (id > 0) {
-      this._spinner.show();
+      //
       this._PrivateutilityService.getSubCategories(id)
         .subscribe(
           (data: SubCategory[]) => {
             this.lstSubCategory = data
-            this._spinner.hide();
+            //
           },
           (err: any) => {
             console.log(err);
-            this._spinner.hide();
+            //
           }
         );
     }
@@ -288,16 +288,16 @@ export class CustomeritemlistComponent implements OnInit {
   onchangeSubCategoryID(selectedValue: string) {
     let id = parseInt(selectedValue);
     if (id > 0) {
-      this._spinner.show();
+      //
       this._PrivateutilityService.getItems(id)
         .subscribe(
           (data: Item[]) => {
             this.lstItem = data;
-            this._spinner.hide();
+            //
           },
           (err: any) => {
             console.log(err);
-            this._spinner.hide();
+            //
           }
         );
     }
@@ -333,7 +333,7 @@ export class CustomeritemlistComponent implements OnInit {
     this.objCustomeritem.ItemID = this.CustomerItemForm.controls['ItemID'].value;
     this.objCustomeritem.IsActive = this.CustomerItemForm.controls['IsActive'].value;
 
-    this._spinner.show();
+    //
     this._customeritemService.exist(this.objCustomeritem.CustomerItemID,
       this.objCustomeritem.ItemID, this.objCustomeritem.CustomerID)
       .subscribe(
@@ -342,15 +342,15 @@ export class CustomeritemlistComponent implements OnInit {
             this.alertService.error('This Customer Item Code has been registered already,You can not create again!');
           }
           else {
-            this._spinner.show();
+            //
             this._customeritemService.add(this.objCustomeritem).subscribe(
               (data) => {
                 if (data != null && data == true) {
-                  this._spinner.hide();
+                  //
                   this.alertService.success('Customer item code  data has been added successfully');
                 }
                 else {
-                  this._spinner.hide();
+                  //
                   this.alertService.error('Customer item code  creation failed!');
                 }
                 $('#modalpopupcustomeritemupsert').modal('hide');
@@ -358,15 +358,15 @@ export class CustomeritemlistComponent implements OnInit {
                 this.identity = 0;
               },
               (error: any) => {
-                this._spinner.hide();
+                //
                 console.log(error);
               }
             );
           }
-          this._spinner.hide();
+          //
         },
         (error: any) => {
-          this._spinner.hide();
+          //
         }
       );
 
@@ -379,7 +379,7 @@ export class CustomeritemlistComponent implements OnInit {
     this.objCustomeritem.CustomerID = this.CustomerItemForm.controls['CustomerID'].value;
     this.objCustomeritem.ItemID = this.CustomerItemForm.controls['ItemID'].value;
     this.objCustomeritem.IsActive = this.CustomerItemForm.controls['IsActive'].value;
-    this._spinner.show();
+    //
 
     this._customeritemService.exist(this.objCustomeritem.CustomerItemID,
       this.objCustomeritem.ItemID, this.objCustomeritem.CustomerID)
@@ -389,15 +389,15 @@ export class CustomeritemlistComponent implements OnInit {
             this.alertService.error('This Customer Item Code has been registered already,You can not update again!');
           }
           else {
-            this._spinner.show();
+            //
             this._customeritemService.update(this.objCustomeritem).subscribe(
               (data) => {
                 if (data != null && data == true) {
-                  this._spinner.hide();
+                  //
                   this.alertService.success('Customer item code  data has been updated successful');
                 }
                 else {
-                  this._spinner.hide();
+                  //
                   this.alertService.error('Customer item code  not saved!');
                 }
                 $('#modalpopupcustomeritemupsert').modal('hide');
@@ -405,22 +405,22 @@ export class CustomeritemlistComponent implements OnInit {
                 this.identity = 0;
               },
               (error: any) => {
-                this._spinner.hide();
+                //
                 console.log(error);
               }
             );
           }
-          this._spinner.hide();
+          //
         },
         (error: any) => {
-          this._spinner.hide();
+          //
         }
       );
 
   }
 
   delete() {
-    this._spinner.show();
+    //
     this._customeritemService.delete(this.identity).subscribe(
       (data) => {
         if (data) {
@@ -431,27 +431,27 @@ export class CustomeritemlistComponent implements OnInit {
         }
         $('#modaldeleteconfimation').modal('hide');
         this.identity = 0;
-        this._spinner.hide();
+        //
       },
       (error: any) => {
-        this._spinner.hide();
+        //
         console.log(error);
       }
     );
   }
 
   onLoad(SearchBy: string, Search: string, IsActive: Boolean) {
-    this._spinner.show();
+    //
     return this._customeritemService.search(SearchBy, Search, IsActive).subscribe(
       (lst) => {
         if (lst != null) {
           this.items = lst;
           this.loadItems();
         }
-        this._spinner.hide();
+        //
       },
       (err) => {
-        this._spinner.hide();
+        //
         console.log(err);
       }
     );

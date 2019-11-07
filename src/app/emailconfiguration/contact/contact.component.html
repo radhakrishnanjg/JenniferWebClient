@@ -8,13 +8,13 @@
     <div class="pull-right hidden-xs">
       <ol class="breadcrumb" id="dynamicbreadcrumb">
         <li>
-           <span> Utilities</span>
+          <span> Utilities</span>
         </li>
         <li>
-           <span> Contacts</span>
+          <span> Contacts</span>
         </li>
         <li class="active">
-          
+
           Save
         </li>
       </ol>
@@ -47,7 +47,7 @@
         </div>
         <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 ">
           <div class="pull-right">
-            <button class="btn btn-primary" routerLink="/Contactlist" title="Back">
+            <button  type="button" class="btn btn-primary" routerLink="/Contactlist" title="Back">
 
               Back
             </button>
@@ -58,10 +58,10 @@
     <div class="panel-body">
       <span class="groupspanheader"> Contact Information </span>
       <div class="row">
-        <div class="col-md-8 col-xs-12">
+        <div class="col-md-4 col-xs-12">
           <div class="form-group" [ngClass]="{'has-error': formErrors.ContactName}">
             <label class="control-label" for="ContactName">Contact Name <span class="mandantory">*</span></label>
-            <div >
+            <div>
               <input id="ContactName" type="text" class="form-control" formControlName="ContactName"
                 (blur)="logValidationErrors()" maxlength="50">
               <div class="help-block-rk">
@@ -74,11 +74,12 @@
         </div>
         <div class="col-md-4 col-xs-12">
           <div class="form-group" [ngClass]="{'has-error': formErrors.ContactType}">
-            <div >
+            <div>
               <label for="ContactType" class="nopading_loct control-label">Contact Type <span
                   class="mandantory">*</span></label>
-              <select formControlName="ContactType" id='ContactType' type="select" class="form-control"
-                (blur)="logValidationErrors()">
+              <select formControlName="ContactType" name="ContactType" [(ngModel)]="ContactType" id='ContactType'
+                type="select" class="form-control" (blur)="logValidationErrors()" 
+                (change)="onchangeContactType($event.target.value)" >
                 <option value="" selected="selected">Select</option>
                 <option *ngFor="let dis of lstContactType" value={{dis.DropdownValue}}>
                   {{dis.DropdownValue}}
@@ -92,12 +93,32 @@
             </div>
           </div>
         </div>
+
+        <div class="col-md-4 col-xs-12" *ngIf="ContactType=='MARKETPLACE'">
+          <div class="form-group">
+            <div>
+              <label for="MarketplaceID" class="nopading_loct control-label">Market Place <span
+                  class="mandantory">*</span></label>
+              <select id="MarketplaceID" class="form-control" formControlName="MarketplaceID"
+                (blur)="logValidationErrors()">
+                <option value="0" selected="selected">Select</option>
+                <option *ngFor="let dis of marketplaces" value={{dis.MarketplaceID}}>
+                  {{dis.MarketPlace}}
+                </option>
+              </select>
+              <div class="help-block-rk">
+
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
       <div class="row">
         <div class="col-md-4 col-xs-12">
           <div class="form-group" [ngClass]="{'has-error': formErrors.MobileNumber}">
             <label class="control-label" for="MobileNumber">Mobile Number <span class="mandantory">*</span></label>
-            <div >
+            <div>
               <input id="MobileNumber" type="text" class="form-control" formControlName="MobileNumber"
                 (blur)="logValidationErrors()" maxlength="12" mask="000000000000">
               <div class="help-block-rk">
@@ -111,7 +132,7 @@
         <div class="col-md-4 col-xs-12">
           <div class="form-group" [ngClass]="{'has-error': formErrors.Email}">
             <label class="control-label" for="Email">Email <span class="mandantory">*</span></label>
-            <div >
+            <div>
               <input id="Email" type="email" class="form-control" formControlName="Email" (blur)="logValidationErrors()"
                 maxlength="50">
               <div class="help-block-rk">
@@ -125,7 +146,7 @@
         <div class="col-md-4 col-xs-12">
           <div class="form-group" [ngClass]="{'has-error': formErrors.LandphoneNumber}">
             <label class="control-label" for="LandphoneNumber">Landline Number </label>
-            <div >
+            <div>
               <input id="LandphoneNumber" type="text" class="form-control" formControlName="LandphoneNumber"
                 (blur)="logValidationErrors()" maxlength="12">
               <div class="help-block-rk">
@@ -141,7 +162,7 @@
         <div class="col-sm-4 col-xs-12">
           <div class="form-group" [ngClass]="{'has-error': formErrors.Designation}">
             <label class="control-label" for="Designation">Designation <span class="mandantory">*</span></label>
-            <div >
+            <div>
               <input id="Designation" type="text" class="form-control" formControlName="Designation"
                 (blur)="logValidationErrors()" maxlength="30">
               <div class="help-block-rk">
@@ -155,7 +176,7 @@
         <div class="col-sm-4 col-xs-12">
           <div class="form-group" [ngClass]="{'has-error': formErrors.Department}">
             <label class="control-label" for="Department">Department <span class="mandantory">*</span></label>
-            <div >
+            <div>
               <input id="Department" type="text" class="form-control" formControlName="Department"
                 (blur)="logValidationErrors()" maxlength="30">
               <div class="help-block-rk">
@@ -169,7 +190,7 @@
         <div class="col-sm-4 col-xs-12">
           <div class="form-group" [ngClass]="{'has-error': formErrors.Organization}">
             <label class="control-label" for="Organization">Organization <span class="mandantory">*</span></label>
-            <div >
+            <div>
               <input id="Organization" type="text" class="form-control" formControlName="Organization"
                 (blur)="logValidationErrors()" maxlength="30">
               <div class="help-block-rk">
@@ -192,7 +213,7 @@
         <div class="col-md-6 col-xs-12">
           <div class="form-group" [ngClass]="{'has-error': formErrors.Other1}">
             <label class="control-label" for="Other1">Other 1</label>
-            <div >
+            <div>
               <textarea id="Other1" type="text" class="form-control" formControlName="Other1"
                 (blur)="logValidationErrors()" rows="2" maxlength="50"></textarea>
               <div class="help-block-rk">
@@ -206,7 +227,7 @@
         <div class="col-md-6 col-xs-12">
           <div class="form-group" [ngClass]="{'has-error': formErrors.Other2}">
             <label class="control-label" for="Other2">Other 2 </label>
-            <div >
+            <div>
               <textarea id="Other2" type="text" class="form-control" formControlName="Other2"
                 (blur)="logValidationErrors()" rows="2" maxlength="50"></textarea>
               <div class="help-block-rk">
@@ -221,12 +242,12 @@
     </div>
     <div class="panel-footer">
       <div class="pull-right btn-toolbar">
-        <button class="btn btn-primary" routerLink="/Contatlist" title="Cancel">
-         
+        <button  type="button" class="btn btn-primary" routerLink="/Contatlist" title="Cancel">
+
           Cancel
         </button>
         <button class="btn btn-success" type="submit" prevent-double-submit [disabled]="contactform.invalid">
-          
+
           Save
         </button>
       </div>

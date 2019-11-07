@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../../_services/service/user.service';
 import { ToastrService } from 'ngx-toastr';
 import { Userpermission } from '../../_services/model';
-import { NgxSpinnerService } from 'ngx-spinner';
+
 import { AuthorizationGuard } from '../../_guards/Authorizationguard';
 @Component({
   selector: 'app-userpermission',
@@ -20,7 +20,7 @@ export class UserpermissionComponent implements OnInit {
     private alertService: ToastrService,
     private aroute: ActivatedRoute,
     private _router: Router,
-    private _spinner: NgxSpinnerService,
+    
     private _authorizationGuard: AuthorizationGuard,
   ) { }
 
@@ -32,14 +32,14 @@ export class UserpermissionComponent implements OnInit {
       this.email = params.get('email');
       debugger
       if (this.identity > 0) {
-        this._spinner.show();
+        //
         return this._userService.getUserPermission(this.identity).subscribe(
           (data) => {
             this.lstUserpermission = data;
-            this._spinner.hide();
+            //
           },
           (err) => {
-            this._spinner.hide();
+            //
             console.log(err)
           }
         );
@@ -127,10 +127,10 @@ export class UserpermissionComponent implements OnInit {
       id = +params.get('id');
       if (id) {
         this.lstUserpermission.map(a => a.UserId = id);
-        this._spinner.show();
+        //
         this._userService.updateUserPermission(this.lstUserpermission).subscribe(
           (data) => {
-            this._spinner.hide();
+            //
             if (data != null && data.Flag == true) {
               this.alertService.success(data.Msg);
               this._router.navigate(['/Userlist']);
@@ -141,7 +141,7 @@ export class UserpermissionComponent implements OnInit {
             }
           },
           (error: any) => {
-            this._spinner.hide();
+            //
             console.log(error);
           }
         );
@@ -181,13 +181,17 @@ export class UserpermissionComponent implements OnInit {
   fnusermenu_View4(id: number) {
     this.lstUserpermission.filter(a => a.MenuID == id)[0].IsViewEdit = '4';
   }
+
   filter(type: number): Userpermission[] {
     let result: Userpermission[] = [];
     if (type == 0) {
-      result = this.lstUserpermission.filter(a => a.ParentId != 80 && a.MenuID != 80);
+      result = this.lstUserpermission.filter(a => a.ParentId != 80 && a.MenuID != 80 && a.ParentId != 120 && a.MenuID != 120);
     }
-    else {
+    else if (type == 1){
       result = this.lstUserpermission.filter(a => a.ParentId == 80 || a.MenuID == 80);
+    }
+    else if (type == 2){
+      result = this.lstUserpermission.filter(a => a.ParentId == 120 || a.MenuID == 120);
     }
     return result;
   }

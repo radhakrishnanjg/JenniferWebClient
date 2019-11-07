@@ -5,7 +5,7 @@ import { catchError } from 'rxjs/operators';
 import { BadRequest } from '../../common/bad-request';
 import { NotFoundError } from '../../common/not-found-error';
 import { AppError } from '../../common/app-error';
-
+import {RTVAmazonCaseID, RTVUsers} from '../../_services/model';
 import { AuthenticationService } from './authentication.service';
 import {
   CompanyRegister, Companydetails, Marketplace,
@@ -267,8 +267,8 @@ export class PrivateutilityService {
 
   public GetGSTClimableDate(): Observable<Date> {
     let currentUser = this.authenticationService.currentUserValue;
-    let CompanyID = currentUser.CompanyID; 
-    return this.httpClient.get<Date>(environment.baseUrl + `PrivateUtility/GetGSTClimableDate?CompanyID=` + CompanyID )
+    let CompanyID = currentUser.CompanyID;
+    return this.httpClient.get<Date>(environment.baseUrl + `PrivateUtility/GetGSTClimableDate?CompanyID=` + CompanyID)
       .pipe(catchError(this.handleError));
   }
 
@@ -325,6 +325,42 @@ export class PrivateutilityService {
     return this.httpClient.get<Customer[]>(environment.baseUrl +
       `PrivateUtility/GetAllCustomersBasedType?CompanyID=` + CompanyID
       + `&Type=` + customertype)
+      .pipe(catchError(this.handleError));
+  }
+
+  public GetRTVAmazonClosedCaseID(): Observable<RTVAmazonCaseID[]> {
+    let currentUser = this.authenticationService.currentUserValue;
+    let CompanyDetailID = currentUser.CompanyDetailID;
+    return this.httpClient.get<RTVAmazonCaseID[]>(environment.baseUrl +
+      `PrivateUtility/GetRTVAmazonClosedCaseID?CompanyDetailID=` + CompanyDetailID)
+      .pipe(catchError(this.handleError));
+  }
+
+  public GetRTVAllUsers(): Observable<RTVUsers[]> {
+    let currentUser = this.authenticationService.currentUserValue;
+    let CompanyDetailID = currentUser.CompanyDetailID;
+    return this.httpClient.get<RTVUsers[]>(environment.baseUrl +
+      `PrivateUtility/GetRTVAllUsers?CompanyDetailID=` + CompanyDetailID)
+      .pipe(catchError(this.handleError));
+  }
+
+  public GetRTVUsersExceptLogin(): Observable<RTVUsers[]> {
+    let currentUser = this.authenticationService.currentUserValue;
+    let CompanyDetailID = currentUser.CompanyDetailID;
+    let UserId = currentUser.UserId;
+    return this.httpClient.get<RTVUsers[]>(environment.baseUrl +
+      `PrivateUtility/GetRTVUsersExceptLogin?CompanyDetailID=` + CompanyDetailID +
+      `&UserId=` + UserId)
+      .pipe(catchError(this.handleError));
+  }
+
+  public GetRTVUsersExceptAssignedto(): Observable<RTVUsers[]> {
+    let currentUser = this.authenticationService.currentUserValue;
+    let CompanyDetailID = currentUser.CompanyDetailID;
+    let UserId = currentUser.UserId;
+    return this.httpClient.get<RTVUsers[]>(environment.baseUrl +
+      `PrivateUtility/GetRTVUsersExceptAssignedto?CompanyID=` + CompanyDetailID +
+      `&UserId=` + UserId)
       .pipe(catchError(this.handleError));
   }
 

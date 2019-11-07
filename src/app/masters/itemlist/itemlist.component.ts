@@ -1,7 +1,7 @@
 import { Component, OnInit ,OnDestroy} from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
-import { NgxSpinnerService } from 'ngx-spinner';
+
 import { AuthorizationGuard } from '../../_guards/Authorizationguard'
 import { ItemService } from '../../_services/service/item.service';
 import { ToastrService } from 'ngx-toastr';
@@ -30,7 +30,7 @@ export class ItemlistComponent implements OnInit,OnDestroy {
     private alertService: ToastrService,
     private router: Router,
     private _itemService: ItemService,
-    private _spinner: NgxSpinnerService,
+    
     private _authorizationGuard: AuthorizationGuard
   ) { }
 
@@ -70,7 +70,7 @@ export class ItemlistComponent implements OnInit,OnDestroy {
   }
 
   delete() {
-    this._spinner.show();
+    //
     this._itemService.delete(this.selectedDeleteId).subscribe(
       (data) => {
         if (data) {
@@ -81,10 +81,10 @@ export class ItemlistComponent implements OnInit,OnDestroy {
         }
         $('#modaldeleteconfimation').modal('hide');
 
-        this._spinner.hide();
+        //
       },
       (error: any) => {
-        this._spinner.hide();
+        //
         console.log(error);
       }
     );
@@ -95,17 +95,17 @@ export class ItemlistComponent implements OnInit,OnDestroy {
   }
   onLoad(SearchBy: string, Search: string, IsActive: Boolean) {
 
-    this._spinner.show();
+    //
     return this._itemService.getItems(SearchBy, Search, IsActive).subscribe(
       (lst) => {
         if (lst != null ) { 
           this.items = lst;
           this.loadItems(); 
         }
-        this._spinner.hide();
+        //
       },
       (err) => {
-        this._spinner.hide();
+        //
         console.log(err);
       }
     );

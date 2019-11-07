@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core'; 
-import { NgxSpinnerService } from 'ngx-spinner'; 
-import { InventorydetailService } from  '../../_services/service/inventorydetail.service';
-import { Inventorydetail } from  '../../_services/model'; 
+import { Component, OnInit } from '@angular/core';
+
+import { InventorydetailService } from '../../_services/service/inventorydetail.service';
+import { Inventorydetail } from '../../_services/model/index';
 import { process, State } from '@progress/kendo-data-query';
 import { GridDataResult, DataStateChangeEvent, PageChangeEvent } from '@progress/kendo-angular-grid';
 import { SortDescriptor, orderBy } from '@progress/kendo-data-query';
@@ -12,16 +12,15 @@ import { SortDescriptor, orderBy } from '@progress/kendo-data-query';
   styleUrls: ['./inventorydetaillist.component.css']
 })
 export class InventorydetaillistComponent implements OnInit {
- 
+
   obj: Inventorydetail;
-    
-  dtOptions: DataTables.Settings = {}; 
+
+  dtOptions: DataTables.Settings = {};
   SearchBy: string = '';
-  SearchKeyword: string = '';  
+  SearchKeyword: string = '';
   SearchInventoryType: string = '';
-  constructor( 
+  constructor(
     private _inventoryTypeService: InventorydetailService,
-    private _spinner: NgxSpinnerService
   ) { }
 
   ngOnInit() {
@@ -34,76 +33,76 @@ export class InventorydetaillistComponent implements OnInit {
 
   Refresh(): void {
     this.SearchBy = '';
-    this.SearchKeyword = ''; 
+    this.SearchKeyword = '';
   }
 
   onLoad(SearchBy: string, Search: string) {
- 
-    this._spinner.show();
+
+    //
     return this._inventoryTypeService.search(SearchBy, Search).subscribe(
       (data) => {
-        if (data != null) { 
+        if (data != null) {
           this.items = data;
-          this.loadItems(); 
+          this.loadItems();
         }
-        this._spinner.hide();
+        //
       },
       (err) => {
-        this._spinner.hide();
+        //
         console.log(err);
       }
     );
   }
 
-   //#region Paging Sorting and Filtering Start
-   public allowUnsort = true;
-   public sort: SortDescriptor[] = [{
-     field: 'ItemCode',
-     dir: 'asc'
-   }];
-   public gridView: GridDataResult;
-   public pageSize = 10;
-   public skip = 0;
-   private data: Object[];
-   private items: Inventorydetail[] = [] as any;
-   public state: State = {
-     skip: 0,
-     take: 5,
- 
-     // Initial filter descriptor
-     filter: {
-       logic: 'and',
-       filters: [{ field: 'ItemCode', operator: 'contains', value: '' }]
-     }
-   };
-   public pageChange(event: PageChangeEvent): void {
-     this.skip = event.skip;
-     this.loadItems();
-   }
- 
-   public sortChange(sort: SortDescriptor[]): void {
-     this.sort = sort;
-     this.loadSortItems();
-   }
- 
-   private loadItems(): void {
-     this.gridView = {
-       data: this.items.slice(this.skip, this.skip + this.pageSize),
-       total: this.items.length
-     };
-   }
-   private loadSortItems(): void {
-     this.gridView = {
-       data: orderBy(this.items, this.sort).slice(this.skip, this.skip + this.pageSize),
-       total: this.items.length
-     };
-   }
-   public dataStateChange(state: DataStateChangeEvent): void {
-     this.state = state;
-     this.gridView = process(this.items, this.state);
-   }
- 
- 
-   //#endregion Paging Sorting and Filtering End
- 
+  //#region Paging Sorting and Filtering Start
+  public allowUnsort = true;
+  public sort: SortDescriptor[] = [{
+    field: 'ItemCode',
+    dir: 'asc'
+  }];
+  public gridView: GridDataResult;
+  public pageSize = 10;
+  public skip = 0;
+  private data: Object[];
+  private items: Inventorydetail[] = [] as any;
+  public state: State = {
+    skip: 0,
+    take: 5,
+
+    // Initial filter descriptor
+    filter: {
+      logic: 'and',
+      filters: [{ field: 'ItemCode', operator: 'contains', value: '' }]
+    }
+  };
+  public pageChange(event: PageChangeEvent): void {
+    this.skip = event.skip;
+    this.loadItems();
+  }
+
+  public sortChange(sort: SortDescriptor[]): void {
+    this.sort = sort;
+    this.loadSortItems();
+  }
+
+  private loadItems(): void {
+    this.gridView = {
+      data: this.items.slice(this.skip, this.skip + this.pageSize),
+      total: this.items.length
+    };
+  }
+  private loadSortItems(): void {
+    this.gridView = {
+      data: orderBy(this.items, this.sort).slice(this.skip, this.skip + this.pageSize),
+      total: this.items.length
+    };
+  }
+  public dataStateChange(state: DataStateChangeEvent): void {
+    this.state = state;
+    this.gridView = process(this.items, this.state);
+  }
+
+
+  //#endregion Paging Sorting and Filtering End
+
 }

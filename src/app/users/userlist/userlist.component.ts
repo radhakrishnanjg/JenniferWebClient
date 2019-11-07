@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-import { NgxSpinnerService } from 'ngx-spinner';
+
 
 import { UserService } from '../../_services/service/user.service';
 import { ToastrService } from 'ngx-toastr';
@@ -32,7 +32,7 @@ export class UserlistComponent implements OnInit {
     private alertService: ToastrService,
     private router: Router,
     private _userService: UserService,
-    private _spinner: NgxSpinnerService,
+    
     private _authorizationGuard: AuthorizationGuard
   ) {
   }
@@ -64,7 +64,7 @@ export class UserlistComponent implements OnInit {
 
 
   delete() {
-    this._spinner.show();
+    //
     this._userService.delete(this.selectedDeleteId).subscribe(
       (data) => {
         if (data != null && data.Flag == true) {
@@ -75,10 +75,10 @@ export class UserlistComponent implements OnInit {
         }
         $('#modaldeleteconfimation').modal('hide');
 
-        this._spinner.hide();
+        //
       },
       (error: any) => {
-        this._spinner.hide();
+        //
         console.log(error);
       }
     );
@@ -86,17 +86,17 @@ export class UserlistComponent implements OnInit {
 
 
   onLoad(SearchBy: string, Search: string, IsActive: Boolean) {
-    this._spinner.show();
+    //
     return this._userService.search(SearchBy, Search, IsActive).subscribe(
       (lst) => { 
         if (lst != null) { 
           this.items = lst;
           this.loadItems(); 
         }
-        this._spinner.hide();
+        //
       },
       (err) => {
-        this._spinner.hide();
+        //
         console.log(err);
       }
     );

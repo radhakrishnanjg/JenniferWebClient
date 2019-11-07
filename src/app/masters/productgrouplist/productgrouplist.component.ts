@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms'; 
-import { NgxSpinnerService } from 'ngx-spinner';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+
 import { ToastrService } from 'ngx-toastr';
-import { UsernameValidator } from  '../../_validators/username';
-import { ProductgroupService } from  '../../_services/service/productgroup.service';
-import { ProductGroup } from  '../../_services/model'; 
-import { AuthorizationGuard } from  '../../_guards/Authorizationguard'
+import { UsernameValidator } from '../../_validators/username';
+import { ProductgroupService } from '../../_services/service/productgroup.service';
+import { ProductGroup } from '../../_services/model';
+import { AuthorizationGuard } from '../../_guards/Authorizationguard'
 
 import { process, State } from '@progress/kendo-data-query';
 import { GridDataResult, DataStateChangeEvent, PageChangeEvent } from '@progress/kendo-angular-grid';
@@ -16,7 +16,7 @@ import { SortDescriptor, orderBy } from '@progress/kendo-data-query';
   styleUrls: ['./productgrouplist.component.css']
 })
 export class ProductgrouplistComponent implements OnInit {
-  
+
   objProductGroup: ProductGroup = {} as any;
   ProductGroupForm: FormGroup;
   panelTitle: string;
@@ -28,12 +28,12 @@ export class ProductgrouplistComponent implements OnInit {
   SearchKeyword: string = '';
   Searchaction: boolean = true;
   constructor(
-    private alertService: ToastrService, 
+    private alertService: ToastrService,
     private _usernameValidator: UsernameValidator,
     private _productgroupService: ProductgroupService,
-    private _spinner: NgxSpinnerService,
+    
     private _authorizationGuard: AuthorizationGuard,
-    private fb: FormBuilder, 
+    private fb: FormBuilder,
   ) { }
 
   //#region Validation Start
@@ -44,7 +44,7 @@ export class ProductgrouplistComponent implements OnInit {
   // This object contains all the validation messages for this form
   validationMessages = {
     'ProductGroupName': {
-      'required': 'This Field is required.',  
+      'required': 'This Field is required.',
       'ProductGroupInUse': 'This ProductGroup is already registered!'
     },
   };
@@ -64,7 +64,7 @@ export class ProductgrouplistComponent implements OnInit {
             this.formErrors[key] += messages[errorKey] + ' ';
           }
         }
-      } 
+      }
       if (abstractControl instanceof FormGroup) {
         this.logValidationErrors(abstractControl);
       }
@@ -74,13 +74,13 @@ export class ProductgrouplistComponent implements OnInit {
 
 
   ngOnInit() {
- 
 
-    
+
+
     this.SearchBy = '';
     this.SearchKeyword = '';
     this.onLoad(this.SearchBy, this.SearchKeyword, this.Searchaction);
- 
+
     this.ProductGroupForm = this.fb.group({
       ProductGroupName: ['', [Validators.required]
         , this._usernameValidator.existProductGroup(this.identity)
@@ -121,38 +121,39 @@ export class ProductgrouplistComponent implements OnInit {
     this.ProductGroupForm.patchValue({
       ProductGroupName: '',
       IsActive: '',
-    }); 
+    });
   }
 
-  editButtonClick(id: number) { 
+  editButtonClick(id: number) {
     if (this._authorizationGuard.CheckAcess("Productgrouplist", "ViewEdit")) {
       return;
     }
-    
+
     this.panelTitle = "Edit Product Group";
     this.action = false;
     this.identity = + id;
-    
+
     this.ProductGroupForm = this.fb.group({
       ProductGroupName: ['', [Validators.required, Validators.maxLength(30)]
         , this._usernameValidator.existProductGroup(this.identity)
       ],
       IsActive: [0,],
-    }); 
-    this._spinner.show();
+    });
+    //
     this._productgroupService.searchById(this.identity)
       .subscribe(
         (data: ProductGroup) => {
           this.ProductGroupForm.patchValue({
             ProductGroupName: data.ProductGroupName,
             IsActive: data.IsActive,
-          }); 
+          });
           this.logValidationErrors();
-          this._spinner.hide();
+          //
         },
-        (err: any) =>
-        {  console.log(err);
-          this._spinner.hide();}
+        (err: any) => {
+          console.log(err);
+          //
+        }
       );
     $('#modalpopupbrandupsert').modal('show');
   }
@@ -178,9 +179,10 @@ export class ProductgrouplistComponent implements OnInit {
     if (this.ProductGroupForm.invalid) {
       return;
     }
-    if (this.ProductGroupForm.pristine) {      
-      this.alertService.error('Please change the value for any one control to proceed further!'); 
-      return;     }
+    if (this.ProductGroupForm.pristine) {
+      this.alertService.error('Please change the value for any one control to proceed further!');
+      return;
+    }
     if (this.identity > 0) {
       this.Update();
     }
@@ -193,15 +195,15 @@ export class ProductgrouplistComponent implements OnInit {
     this.objProductGroup.ProductGroupName = this.ProductGroupForm.controls['ProductGroupName'].value;;
     this.objProductGroup.IsActive = this.ProductGroupForm.controls['IsActive'].value;
 
-    this._spinner.show();
+    //
     this._productgroupService.add(this.objProductGroup).subscribe(
       (data) => {
-        if (data !=null && data == true) {
-          this._spinner.hide();
+        if (data != null && data == true) {
+          //
           this.alertService.success('ProductGroup data has been added successfully');
         }
         else {
-          this._spinner.hide();
+          //
           this.alertService.error('ProductGroup creation failed!');
         }
         $('#modalpopupbrandupsert').modal('hide');
@@ -209,7 +211,7 @@ export class ProductgrouplistComponent implements OnInit {
         this.identity = 0;
       },
       (error: any) => {
-        this._spinner.hide();
+        //
         console.log(error);
       }
     );
@@ -222,15 +224,15 @@ export class ProductgrouplistComponent implements OnInit {
     this.objProductGroup.ProductGroupName = this.ProductGroupForm.controls['ProductGroupName'].value;
     this.objProductGroup.IsActive = this.ProductGroupForm.controls['IsActive'].value;
 
-    this._spinner.show();
+    //
     this._productgroupService.update(this.objProductGroup).subscribe(
       (data) => {
-        if (data !=null && data == true) {
-          this._spinner.hide();
+        if (data != null && data == true) {
+          //
           this.alertService.success('ProductGroup data has been updated successful');
         }
         else {
-          this._spinner.hide();
+          //
           this.alertService.error('ProductGroup not saved!');
         }
         $('#modalpopupbrandupsert').modal('hide');
@@ -238,7 +240,7 @@ export class ProductgrouplistComponent implements OnInit {
         this.identity = 0;
       },
       (error: any) => {
-        this._spinner.hide();
+        //
         console.log(error);
       }
     );
@@ -246,7 +248,7 @@ export class ProductgrouplistComponent implements OnInit {
   }
 
   delete() {
-    this._spinner.show();
+    //
     this._productgroupService.delete(this.identity).subscribe(
       (data) => {
         if (data) {
@@ -257,27 +259,27 @@ export class ProductgrouplistComponent implements OnInit {
         }
         $('#modaldeleteconfimation').modal('hide');
         this.identity = 0;
-        this._spinner.hide();
+        //
       },
       (error: any) => {
-        this._spinner.hide();
+        //
         console.log(error);
       }
     );
   }
 
   onLoad(SearchBy: string, Search: string, IsActive: Boolean) {
-    this._spinner.show();
+    //
     return this._productgroupService.search(SearchBy, Search, IsActive).subscribe(
       (lst) => {
-        if (lst != null ) { 
+        if (lst != null) {
           this.items = lst;
-          this.loadItems(); 
+          this.loadItems();
         }
-        this._spinner.hide();
+        //
       },
       (err) => {
-        this._spinner.hide();
+        //
         console.log(err);
       }
     );
@@ -314,11 +316,11 @@ export class ProductgrouplistComponent implements OnInit {
     this.loadSortItems();
   }
 
-  private loadItems(): void { 
-      this.gridView = {
-        data: this.items.slice(this.skip, this.skip + this.pageSize),
-        total: this.items.length
-      }; 
+  private loadItems(): void {
+    this.gridView = {
+      data: this.items.slice(this.skip, this.skip + this.pageSize),
+      total: this.items.length
+    };
   }
   private loadSortItems(): void {
     this.gridView = {

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { NgxSpinnerService } from 'ngx-spinner';
+
 import { ToastrService } from 'ngx-toastr';
 import { UomService } from '../../_services/service/uom.service';
 import { UOM, Dropdown } from '../../_services/model';
@@ -30,7 +30,7 @@ export class UomlistComponent implements OnInit {
   constructor(
     private alertService: ToastrService,
     private _uomService: UomService,
-    private _spinner: NgxSpinnerService,
+    
     private _authorizationGuard: AuthorizationGuard,
     private fb: FormBuilder,
     private _PrivateutilityService: PrivateutilityService,
@@ -87,16 +87,15 @@ export class UomlistComponent implements OnInit {
 
 
   ngOnInit() {
-    this._spinner.show();
+    //
     this._PrivateutilityService.GetValues('UOM')
       .subscribe(
         (data: Dropdown[]) => {
           this.lstUOMMaster = data;
-          this._spinner.hide();
+          //
         },
         (err: any) => {
-          console.log(err);
-          this._spinner.hide()
+          console.log(err); 
         }
       );
 
@@ -185,11 +184,11 @@ export class UomlistComponent implements OnInit {
     this.panelTitle = "Edit UOM";
     this.action = false;
     this.identity = + id;
-    this._spinner.show();
+    //
     this._uomService.getUOM(this.identity)
       .subscribe(
         (data: UOM) => {
-          this._spinner.hide();
+          //
           this.uomForm.patchValue({
             UOM: data.UOM,
             Description: data.Description,
@@ -201,7 +200,7 @@ export class UomlistComponent implements OnInit {
         },
         (err: any) => {
           console.log(err);
-          this._spinner.hide();
+          //
         }
       );
     $('#modalpopupuomupsert').modal('show');
@@ -246,7 +245,7 @@ export class UomlistComponent implements OnInit {
     this.objUOM.MultiplierValue = this.uomForm.controls['MultiplierValue'].value;
     this.objUOM.IsActive = this.uomForm.controls['IsActive'].value;
 
-    this._spinner.show();
+    //
     this._uomService.existUOM(this.objUOM.UOMID, this.objUOM.UOM, this.objUOM.Description)
       .subscribe(
         (data) => {
@@ -254,15 +253,15 @@ export class UomlistComponent implements OnInit {
             this.alertService.error('This UOM is already registered');
           }
           else {
-            this._spinner.show();
+            //
             this._uomService.add(this.objUOM).subscribe(
               (data) => {
                 if (data != null && data == true) {
-                  this._spinner.hide();
+                  //
                   this.alertService.success('UOM data has been added successfully');
                 }
                 else {
-                  this._spinner.hide();
+                  //
                   this.alertService.error('UOM creation failed!');
                 }
                 $('#modalpopupuomupsert').modal('hide');
@@ -270,15 +269,15 @@ export class UomlistComponent implements OnInit {
                 this.identity = 0;
               },
               (error: any) => {
-                this._spinner.hide();
+                //
                 console.log(error);
               }
             );
           }
-          this._spinner.hide();
+          //
         },
         (error: any) => {
-          this._spinner.hide();
+          //
           console.log(error);
         }
       );
@@ -292,7 +291,7 @@ export class UomlistComponent implements OnInit {
     this.objUOM.Description = this.uomForm.controls['Description'].value;
     this.objUOM.MultiplierValue = this.uomForm.controls['MultiplierValue'].value;
     this.objUOM.IsActive = this.uomForm.controls['IsActive'].value;
-    this._spinner.show();
+    //
 
     this._uomService.existUOM(this.objUOM.UOMID, this.objUOM.UOM, this.objUOM.Description)
       .subscribe(
@@ -301,15 +300,15 @@ export class UomlistComponent implements OnInit {
             this.alertService.error('This UOM is already registered');
           }
           else {
-            this._spinner.show();
+            //
             this._uomService.update(this.objUOM).subscribe(
               (data) => {
                 if (data != null && data == true) {
-                  this._spinner.hide();
+                  //
                   this.alertService.success('UOM data has been updated successful');
                 }
                 else {
-                  this._spinner.hide();
+                  //
                   this.alertService.error('UOM not saved!');
                 }
                 $('#modalpopupuomupsert').modal('hide');
@@ -317,22 +316,22 @@ export class UomlistComponent implements OnInit {
                 this.identity = 0;
               },
               (error: any) => {
-                this._spinner.hide();
+                //
                 console.log(error);
               }
             );
           }
-          this._spinner.hide();
+          //
         },
         (error: any) => {
-          this._spinner.hide();
+          //
         }
       );
 
   }
 
   delete() {
-    this._spinner.show();
+    //
     this._uomService.delete(this.identity).subscribe(
       (data) => {
         if (data) {
@@ -343,17 +342,17 @@ export class UomlistComponent implements OnInit {
         }
         $('#modaldeleteconfimation').modal('hide');
         this.identity = 0;
-        this._spinner.hide();
+        //
       },
       (error: any) => {
-        this._spinner.hide();
+        //
         console.log(error);
       }
     );
   }
 
   onLoad(SearchBy: string, Search: string, IsActive: Boolean) {
-    this._spinner.show();
+    //
     return this._uomService.getUOMS(SearchBy, Search, IsActive).subscribe(
       (lst) => {
         
@@ -361,10 +360,10 @@ export class UomlistComponent implements OnInit {
           this.items = lst;
           this.loadItems(); 
         }
-        this._spinner.hide();
+        //
       },
       (err) => {
-        this._spinner.hide();
+        //
         console.log(err);
       }
     );

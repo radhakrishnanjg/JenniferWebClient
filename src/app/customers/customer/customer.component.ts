@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NgxSpinnerService } from 'ngx-spinner';
+
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UsernameValidator } from '../../_validators/username';
@@ -34,7 +34,7 @@ export class CustomerComponent implements OnInit {
     private fb: FormBuilder,
     private _router: Router,
     private aroute: ActivatedRoute,
-    public _spinner: NgxSpinnerService,
+    
     private usernameValidator: UsernameValidator,
     private _customerService: CustomerService,
     private utilityService: UtilityService,
@@ -159,40 +159,40 @@ export class CustomerComponent implements OnInit {
   ngOnInit() {
 
 
-    this._spinner.show();
+    //
     this.utilityService.getCountries()
       .subscribe(
         (data: Country[]) => {
           this.countries = data;
-          this._spinner.hide();
+          //
         },
         (err: any) => {
-          this._spinner.hide();
+          //
           console.log(err);
         }
       );
 
-    this._spinner.show();
+    //
     this._PrivateutilityService.GetValues('BankAccountType')
       .subscribe(
         (data: Dropdown[]) => {
           this.lstAccountType = data;
-          this._spinner.hide();
+          //
         },
         (err: any) => {
-          this._spinner.hide();
+          //
           console.log(err);
         }
       );
-    this._spinner.show();
+    //
     this._PrivateutilityService.GetValues('CustomerType')
       .subscribe(
         (data: Dropdown[]) => {
           this.lstCustomerType = data;
-          this._spinner.hide();
+          //
         },
         (err: any) => {
-          this._spinner.hide();
+          //
           console.log(err);
         }
       );
@@ -202,7 +202,7 @@ export class CustomerComponent implements OnInit {
       if (this.identity > 0) {
         this.panelTitle = "Edit Customer";
         this.action = false;
-        this._spinner.show();
+        //
         this._customerService.searchById(this.identity)
           .subscribe(
             (data: Customer) => {
@@ -215,15 +215,15 @@ export class CustomerComponent implements OnInit {
                 },
               };
               var CountryID = data.CountryID.toString();
-              this._spinner.show();
+              //
               this.utilityService.getStates(parseInt(CountryID))
                 .subscribe(
                   (statesa: State[]) => {
                     this.states = statesa;
-                    this._spinner.hide();
+                    //
                   },
                   (err: any) => {
-                    this._spinner.hide();
+                    //
                     console.log(err);
                   }
                 );
@@ -267,11 +267,11 @@ export class CustomerComponent implements OnInit {
       else {
         this.action = true;
         this.panelTitle = "Add New Customer";
-        this._spinner.show();
+        //
         this._contactService.searchByType('External').subscribe(
           (data) => {
             this.obj.lstContact = data;
-            
+
             if (this.obj.lstContact != null && this.obj.lstContact.length > 0) {
               this.obj.lstContact.map(a => a.IsActive = false);
             }
@@ -282,10 +282,10 @@ export class CustomerComponent implements OnInit {
                 "search": 'Filter',
               },
             };
-            this._spinner.hide();
+            //
           },
           (err) => {
-            this._spinner.hide();
+            //
             console.log(err);
           }
         );
@@ -324,26 +324,27 @@ export class CustomerComponent implements OnInit {
   onchangeCountryID(selectedValue: string) {
     let countrid = parseInt(selectedValue);
     if (countrid > 0) {
-      this._spinner.show();
+      //
       this.utilityService.getStates(countrid)
         .subscribe(
           (data: State[]) => {
             this.states = data;
-            this._spinner.hide();
+            //
           },
           (err: any) => {
-            this._spinner.hide();
+            //
             console.log(err);
           }
         );
     }
   }
 
-  onchangeCustomerType(selectedValue: string) { 
+  onchangeCustomerType(selectedValue: string) {
     if (selectedValue == "B2B") {
       this.customerform.get('GSTNumber').enable();
     } else {
       $('#GSTNumber').val(' ');
+      this.customerform.patchValue({ GSTNumber: ' ' });
       this.customerform.get('GSTNumber').disable();
 
     }
@@ -402,7 +403,7 @@ export class CustomerComponent implements OnInit {
       this.obj.lstContact = this.obj.lstContact.filter(a => a.IsActive == true);
     }
     if (this.obj.CustomerType == "B2B") {
-      this._spinner.show();
+      //
       this._customerService.existGSTNumber(this.obj.CustomerID, this.obj.GSTNumber)
         .subscribe(
           (data) => {
@@ -410,52 +411,52 @@ export class CustomerComponent implements OnInit {
               this.alertService.error('This GSTNumber is already registered');
             }
             else {
-              this._spinner.show();
+              //
               this._customerService.add(this.obj).subscribe(
                 (data) => {
                   if (data != null && data.Flag == true) {
-                    this._spinner.hide();
+                    //
                     this.alertService.success(data.Msg);
                     this._router.navigate(['/Customerlist']);
                   }
                   else {
-                    this._spinner.hide();
+                    //
                     this.alertService.error(data.Msg);
                     this._router.navigate(['/Customerlist']);
                   }
                   this.identity = 0;
                 },
                 (error: any) => {
-                  this._spinner.hide();
+                  //
                   console.log(error);
                 }
               );
             }
-            this._spinner.hide();
+            //
           },
           (error: any) => {
-            this._spinner.hide();
+            //
           }
         );
     }
     else {
-      this._spinner.show();
+      //
       this._customerService.add(this.obj).subscribe(
         (data) => {
           if (data != null && data.Flag == true) {
-            this._spinner.hide();
+            //
             this.alertService.success(data.Msg);
             this._router.navigate(['/Customerlist']);
           }
           else {
-            this._spinner.hide();
+            //
             this.alertService.error(data.Msg);
             this._router.navigate(['/Customerlist']);
           }
           this.identity = 0;
         },
         (error: any) => {
-          this._spinner.hide();
+          //
           console.log(error);
         }
       );
@@ -492,7 +493,7 @@ export class CustomerComponent implements OnInit {
       this.obj.lstContact = this.obj.lstContact.filter(a => a.IsActive == true);
     }
     if (this.obj.CustomerType == "B2B") {
-      this._spinner.show();
+      //
       this._customerService.existGSTNumber(this.obj.CustomerID, this.obj.GSTNumber)
         .subscribe(
           (data) => {
@@ -500,51 +501,51 @@ export class CustomerComponent implements OnInit {
               this.alertService.error('This GSTNumber is already registered');
             }
             else {
-              this._spinner.show();
+              //
               this._customerService.update(this.obj).subscribe(
                 (data) => {
                   if (data != null && data.Flag == true) {
-                    this._spinner.hide();
+                    //
                     this.alertService.success(data.Msg);
                     this._router.navigate(['/Customerlist']);
                   }
                   else {
-                    this._spinner.hide();
+                    //
                     this.alertService.error(data.Msg);
                     this._router.navigate(['/Customerlist']);
                   }
                   this.identity = 0;
                 },
                 (error: any) => {
-                  this._spinner.hide();
+                  //
                   console.log(error);
                 }
               );
             }
-            this._spinner.hide();
+            //
           },
           (error: any) => {
-            this._spinner.hide();
+            //
           }
         );
     } else {
-      this._spinner.show();
+      //
       this._customerService.update(this.obj).subscribe(
         (data) => {
           if (data != null && data.Flag == true) {
-            this._spinner.hide();
+            //
             this.alertService.success(data.Msg);
             this._router.navigate(['/Customerlist']);
           }
           else {
-            this._spinner.hide();
+            //
             this.alertService.error(data.Msg);
             this._router.navigate(['/Customerlist']);
           }
           this.identity = 0;
         },
         (error: any) => {
-          this._spinner.hide();
+          //
           console.log(error);
         }
       );
@@ -555,7 +556,7 @@ export class CustomerComponent implements OnInit {
   ContactIDFieldsChange(values: any) {
     this.obj.lstContact.filter(a => a.ContactID == values.currentTarget.id)[0].IsActive = values.currentTarget.checked;
   }
-  
+
   checkcontacts(value: boolean) {
     for (var i = 0; i < this.obj.lstContact.length; i++) {
       this.obj.lstContact[i].IsActive = value;

@@ -12,6 +12,10 @@ export class DownloadMaster {
     DynamicQuery: string;
     lstDetail: DownloadDetail[];
     MenuID: number;
+    UserId: number;
+    IsActive: boolean;
+    CompanyID:number;
+    CompanyDetailID:number;
 }
 
 export class DownloadDetail {
@@ -30,10 +34,19 @@ export class DownloadDetail {
     // who is doing this task
     LoginId: number;
 }
+
+export class DownloadLog {
+    Screen_Name: string;
+    Startdate: Date;
+    EndDate: Date;
+    RequestedDate: Date;
+    RequestedBy: string;
+}
 export class AmazonMTR {
     ReportId: string;
     DownloadPath: string;
     FileName: string;
     CreatedDate: Date;
+    UploadStatus: string;
 }
 

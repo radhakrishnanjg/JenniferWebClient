@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { NgxSpinnerService } from 'ngx-spinner'; 
+ 
 import { GoodsDisputeService } from '../../_services/service/goods-dispute.service';
 import { Goodsdispute } from '../../_services/model';
 import { AuthorizationGuard } from '../../_guards/Authorizationguard';
@@ -25,7 +25,7 @@ export class GoodsDisputeListComponent implements OnInit {
   constructor( 
     private router: Router,
     private _goodsDisputeService: GoodsDisputeService,
-    private _spinner: NgxSpinnerService,
+    
     private _authorizationGuard: AuthorizationGuard
   ) { }
 
@@ -52,18 +52,18 @@ export class GoodsDisputeListComponent implements OnInit {
 
   onLoad(SearchBy: string, Search: string) {
 
-    this._spinner.show();
+    //
     return this._goodsDisputeService.search(SearchBy, Search).subscribe(
       (data) => {
         if (data != null) { 
           this.items = data;
           this.loadItems(); 
         }
-        this._spinner.hide();
+        //
       },
 
       (err) => {
-        this._spinner.hide();
+        //
         console.log(err);
       }
 

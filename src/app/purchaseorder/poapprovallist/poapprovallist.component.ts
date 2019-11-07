@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { NgxSpinnerService } from 'ngx-spinner';
+
 import { ToastrService } from 'ngx-toastr';
 import { PoapprovalService } from  '../../_services/service/poapproval.service';
 import { Poorder } from  '../../_services/model';
@@ -44,7 +44,7 @@ export class PoapprovallistComponent implements OnInit {
     private alertService: ToastrService,
     private router: Router,
     private _poapprovalService: PoapprovalService,
-    private _spinner: NgxSpinnerService,
+    
     private _authorizationGuard: AuthorizationGuard
   ) { }
 
@@ -76,17 +76,17 @@ export class PoapprovallistComponent implements OnInit {
   onLoad(SearchBy: string, Search: string, ) {
     let startdate: Date = this.selectedDateRange.startDate._d.toISOString().substring(0, 10);
     let enddate: Date = this.selectedDateRange.endDate._d.toISOString().substring(0, 10);
-    this._spinner.show();
+    //
     return this._poapprovalService.search(SearchBy, Search, startdate, enddate).subscribe(
       (lst) => {
         if (lst != null ) { 
           this.items = lst;
           this.loadItems(); 
         }
-        this._spinner.hide();
+        //
       },
       (err) => {
-        this._spinner.hide();
+        //
         console.log(err);
       }
     );

@@ -36,7 +36,7 @@
             </select>
           </div>
           <div class="col-md-3 nopading_loct" *ngIf="(SearchBy!='BySTODate')">
-            <input [(ngModel)]="SearchKeyword" type="text" class="serchcurv form-control btn-group">
+            <input (keyup.enter)="Search()" [(ngModel)]="SearchKeyword" type="text" class="serchcurv form-control btn-group">
           </div>
           <div class="col-md-3 nopading_loct" *ngIf="(SearchBy=='BySTODate')">
             <input type="text" ngxDaterangepickerMd [(ngModel)]="selectedDateRange"
@@ -56,7 +56,7 @@
         </div>
       </div>
       <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 text-right">
-        <button class="btn btn-primary" routerLink="/Sto/Create" title="Add New">
+        <button  type="button" class="btn btn-primary" routerLink="/Sto/Create" title="Add New">
 
           Add New
         </button>

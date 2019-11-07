@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { NgxSpinnerService } from 'ngx-spinner';
+
 import { ToastrService } from 'ngx-toastr';
 import { StoService } from '../../_services/service/sto.service';
 import { Sto, Stodetail } from '../../_services/model';
@@ -28,7 +28,7 @@ export class StoeditComponent implements OnInit {
   constructor(
     public _stoService: StoService,
     public _alertService: ToastrService,
-    public _spinner: NgxSpinnerService,
+    
     private aroute: ActivatedRoute,
     private alertService: ToastrService,
     private _authorizationGuard: AuthorizationGuard,
@@ -39,7 +39,7 @@ export class StoeditComponent implements OnInit {
     this.aroute.paramMap.subscribe(params => {
       this.identity = +params.get('id');
       if (this.identity > 0) {
-        this._spinner.show();
+        //
         this._stoService.searchById(this.identity)
           .subscribe(
             (data: Sto) => {
@@ -47,11 +47,11 @@ export class StoeditComponent implements OnInit {
               this.obj.lstItem.forEach((element, index) => {
                 this.updateList(index, 'ItemRate', element.ItemRate);
               });
-              this._spinner.hide();
+              //
             },
             (err: any) => {
               console.log(err);
-              this._spinner.hide();
+              //
             }
           );
       }
@@ -97,7 +97,7 @@ export class StoeditComponent implements OnInit {
       this.IsDiscountApplicable = false;
     }
     if (this.IsDiscountApplicable == true) {
-      this._spinner.show();
+      //
       this._stoService.getStockDiscountItems(this.identity, this.IsDiscountApplicable)
         .subscribe(
           (data: Stodetail[]) => {
@@ -105,11 +105,11 @@ export class StoeditComponent implements OnInit {
             data.forEach((element) => {
               this.updateListByDiscount(element.ItemID, element.DiscountID, element.DisCountPer);
             });
-            this._spinner.hide();
+            //
           },
           (err: any) => {
             console.log(err);
-            this._spinner.hide();
+            //
           }
         );
     }
@@ -167,7 +167,7 @@ export class StoeditComponent implements OnInit {
     }
     this.obj.DiscountApplicable = this.IsDiscountApplicable;
     this.obj.TaxNature = this.obj.lstItem[0].TaxNature;
-    this._spinner.show();
+    //
     this._stoService.Update(this.obj).subscribe(
       (data) => {
         if (data != null && data.Flag == true) {
@@ -178,9 +178,9 @@ export class StoeditComponent implements OnInit {
           this._alertService.error(data.Msg);
           this.router.navigate(['/StoList']);
         }
-        this._spinner.hide();
+        //
       }, (err) => {
-        this._spinner.hide();
+        //
         console.log(err);
       });
   }

@@ -34,7 +34,8 @@ export class BrandService {
       .pipe(catchError(this.handleError));
   }
 
-  public exist(BrandID: number, BrandName: string) {
+  public exist(BrandID: number, BrandName: string,controlid:string ) {
+    debugger
     BrandID = isNaN(BrandID) ? 0 : BrandID;
     let currentUser = this.authenticationService.currentUserValue;
     let CompanyID = currentUser.CompanyID;

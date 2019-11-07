@@ -31,6 +31,14 @@ import { SalesShipmentService } from '../_services/service/sales-shipment.servic
 import { GoodsDisputeService } from '../_services/service/goods-dispute.service';
 import { BoeService } from '../_services/service/BOE.service';
 import { GoodsReceiptService } from '../_services/service/goods-receipt.service';
+import { ValidatorFn, Validators } from '@angular/forms';
+
+import 'rxjs/add/operator/map';
+function isEmptyInputValue(value: any): boolean {
+  // we don't check for string here so it also works with arrays
+  return value == null || value.length === 0;
+}
+
 @Injectable({ providedIn: 'root' })
 export class UsernameValidator {
 
@@ -93,6 +101,7 @@ export class UsernameValidator {
 
   checkCompanyName(): AsyncValidatorFn {
     return (control: AbstractControl): Observable<{ [key: string]: any } | null> => {
+
       return this._accountService.ExistCompanyName(encodeURIComponent(control.value))
         .pipe(
           map(res => {
@@ -221,9 +230,11 @@ export class UsernameValidator {
   //   };
   // }
 
-  existBrand(identity: number): AsyncValidatorFn {
+  existBrand(identity: number, controlid: string): AsyncValidatorFn {
+
     return (control: AbstractControl): Observable<{ [key: string]: any } | null> => {
-      return this._brandService.exist(identity, encodeURIComponent(control.value))
+      debugger
+      return this._brandService.exist(identity, encodeURIComponent(control.value), controlid)
         .pipe(
           map(res => {
             if (res) {
@@ -233,6 +244,8 @@ export class UsernameValidator {
         );
     };
   }
+
+
 
   existProductGroup(identity: number): AsyncValidatorFn {
     return (control: AbstractControl): Observable<{ [key: string]: any } | null> => {
@@ -310,7 +323,7 @@ export class UsernameValidator {
           })
         );
     };
-  } 
+  }
 
   existShipmentNumber(identity: number): AsyncValidatorFn {
     return (control: AbstractControl): Observable<{ [key: string]: any } | null> => {

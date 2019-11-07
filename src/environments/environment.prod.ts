@@ -7,10 +7,13 @@ export const environment = {
   // aws server 1 
   // baseUrl: 'http://sandbox.jennifer-cn.com/api/',
   // basedomain: 'http://sandbox.jennifer-cn.com/',
+ 
 
-  //aws server 2  
-  // baseUrl: 'http://productionapi.jennifer-cn.com/api/',
-  // basedomain: 'http://productionapi.jennifer-cn.com/',
+   //aws server 3
+   
+  // baseUrl: 'https://api.jennifer-in.com/api/',
+  // basedomain: 'https://api.jennifer-in.com/',
+
 
   defaultImageUrl: 'UploadFiles/Item/default.png'
 };

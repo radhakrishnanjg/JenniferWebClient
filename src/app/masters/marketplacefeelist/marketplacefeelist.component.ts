@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { NgxSpinnerService } from 'ngx-spinner';
+
 import { ToastrService } from 'ngx-toastr';
 import { MarketplacefeeService } from '../../_services/service/marketplacefee.service';
 import { Marketplacefee, ProductGroup, Category, SubCategory, Item } from '../../_services/model';
@@ -53,7 +53,7 @@ export class MarketplacefeelistComponent implements OnInit {
   constructor(
     private alertService: ToastrService,
     private _marketplacefeeService: MarketplacefeeService,
-    private _spinner: NgxSpinnerService,
+    
     private _authorizationGuard: AuthorizationGuard,
     private fb: FormBuilder,
     private _PrivateutilityService: PrivateutilityService,
@@ -169,7 +169,7 @@ export class MarketplacefeelistComponent implements OnInit {
   }
 
   private getCurrentServerDateTime() {
-    this._spinner.show();
+    //
     this._PrivateutilityService.getCurrentDate()
       .subscribe(
         (data: Date) => {
@@ -178,12 +178,12 @@ export class MarketplacefeelistComponent implements OnInit {
           //   StartDate: { startDate: new Date(mcurrentDate) },
           // });
           this.MinDate = moment(data).add(0, 'days');
-          this._spinner.hide();
+          //
         },
         (err: any) => {
           console.log(err);
 
-          this._spinner.hide();
+          //
         }
       );
   }
@@ -194,17 +194,17 @@ export class MarketplacefeelistComponent implements OnInit {
       return;
     }
     this.getCurrentServerDateTime();
-    this._spinner.show();
+    //
     this._PrivateutilityService.getProductGroups()
       .subscribe(
         (data: ProductGroup[]) => {
           this.lstProductGroup = data;
-          this._spinner.hide();
+          //
 
         },
         (err: any) => {
           console.log(err);
-          this._spinner.hide();
+          //
         }
       );
 
@@ -236,23 +236,23 @@ export class MarketplacefeelistComponent implements OnInit {
   //     return;
   //   }
 
-  //   this._spinner.show();
+  //   //
   //   this._PrivateutilityService.getProductGroups()
   //     .subscribe(
   //       (data: ProductGroup[]) => {
   //         this.lstProductGroup = data;
-  //         this._spinner.hide();
+  //         //
   //       },
   //       (err: any) => {
   //         console.log(err);
-  //         this._spinner.hide();
+  //         //
   //       }
   //     );
 
   //   this.panelTitle = "Edit MarketPlace Fee";
   //   this.action = false;
   //   this.identity = + id;
-  //   this._spinner.show();
+  //   //
   //   this._marketplacefeeService.searchById(this.identity)
   //     .subscribe(
   //       (data: Marketplacefee) => {
@@ -282,11 +282,11 @@ export class MarketplacefeelistComponent implements OnInit {
   //         $('#StartDate').val(StartDate);
   //         $('#EndDate').val(EndDate);
   //         //this.logValidationErrors();
-  //         this._spinner.hide();
+  //         //
   //       },
   //       (err: any) => {
   //         console.log(err);
-  //         this._spinner.hide();
+  //         //
   //       }
   //     );
   //   $('#modalpopup_marketplacefee').modal('show');
@@ -297,16 +297,16 @@ export class MarketplacefeelistComponent implements OnInit {
   onchangeProductGroupID(selectedValue: string) {
     let id = parseInt(selectedValue);
     if (id > 0) {
-      this._spinner.show();
+      //
       this._PrivateutilityService.getCategories(id)
         .subscribe(
           (statesa: Category[]) => {
             this.lstCategory = statesa;
-            this._spinner.hide();
+            //
           },
           (err: any) => {
             console.log(err);
-            this._spinner.hide();
+            //
           }
         );
     }
@@ -314,17 +314,17 @@ export class MarketplacefeelistComponent implements OnInit {
 
   onchangeCategoryID(selectedValue: string) {
     let id = parseInt(selectedValue);
-    this._spinner.show();
+    //
     if (id > 0) {
       this._PrivateutilityService.getSubCategories(id)
         .subscribe(
           (data: SubCategory[]) => {
             this.lstSubCategory = data
-            this._spinner.hide();
+            //
           },
           (err: any) => {
             console.log(err);
-            this._spinner.hide();
+            //
           }
         );
     }
@@ -332,16 +332,16 @@ export class MarketplacefeelistComponent implements OnInit {
 
   onchangeSubCategoryID(selectedValue: string) {
     let id = parseInt(selectedValue);
-    this._spinner.show();
+    //
     this._PrivateutilityService.getItems(id)
       .subscribe(
         (data: Item[]) => {
           this.lstItem = data;
-          this._spinner.hide();
+          //
         },
         (err: any) => {
           console.log(err);
-          this._spinner.hide();
+          //
         }
       );
   }
@@ -395,15 +395,15 @@ export class MarketplacefeelistComponent implements OnInit {
     this.objMarketplacefee.StartDate = this.Marketplacefeeform.controls['StartDate'].value.startDate._d.toLocaleString();
     this.objMarketplacefee.EndDate = this.Marketplacefeeform.controls['EndDate'].value.startDate._d.toLocaleString();
      var Itemids = this.Marketplacefeeform.controls['ItemID'].value.map(a => a.ItemID);
-    this._spinner.show();
+    //
     this._marketplacefeeService.upsert(this.objMarketplacefee, Itemids).subscribe(
       (data) => {
         if (data && data.Flag == true) {
-          this._spinner.hide();
+          //
           this.alertService.success('Martket Fee  data has been added successfully');
         }
         else {
-          this._spinner.hide();
+          //
           this.alertService.error(data.Msg);
         }
         $('#modalpopup_marketplacefee').modal('hide');
@@ -413,7 +413,7 @@ export class MarketplacefeelistComponent implements OnInit {
         this.onLoad(this.SearchBy, this.SearchKeyword, this.Searchaction, startdate, enddate); this.identity = 0;
       },
       (error: any) => {
-        this._spinner.hide();
+        //
         console.log(error);
       }
     );
@@ -431,15 +431,15 @@ export class MarketplacefeelistComponent implements OnInit {
      this.objItem.ItemID = this.Marketplacefeeform.controls['ItemID'].value;
     let Itemids: number[] = [] as any;
     Itemids.push(this.Marketplacefeeform.controls['ItemID'].value);
-    this._spinner.show();
+    //
     this._marketplacefeeService.upsert(this.objMarketplacefee, Itemids).subscribe(
       (data) => {
         if (data && data.Flag == true) {
-          this._spinner.hide();
+          //
           this.alertService.success('Martket Fee  data has been updated successful');
         }
         else {
-          this._spinner.hide();
+          //
           this.alertService.error(data.Msg);
         }
         $('#modalpopup_marketplacefee').modal('hide');
@@ -450,7 +450,7 @@ export class MarketplacefeelistComponent implements OnInit {
         this.identity = 0;
       },
       (error: any) => {
-        this._spinner.hide();
+        //
         console.log(error);
       }
     );
@@ -459,17 +459,17 @@ export class MarketplacefeelistComponent implements OnInit {
 
 
   onLoad(SearchBy: string, Search: string, IsActive: Boolean, StartDate: Date, EndDate: Date) {
-    this._spinner.show();
+    //
     return this._marketplacefeeService.search(SearchBy, Search, IsActive, StartDate, EndDate).subscribe(
       (lst) => { 
         if (lst != null) { 
           this.items = lst; 
           this.loadItems(); 
         } 
-        this._spinner.hide();
+        //
       },
       (err) => {
-        this._spinner.hide();
+        //
         console.log(err);
       }
     );

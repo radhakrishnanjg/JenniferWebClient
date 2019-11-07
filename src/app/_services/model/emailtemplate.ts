@@ -18,7 +18,7 @@
 }
 export class Contact {
     ContactID: number;
-    CompanyDetailID: number;
+    MarketplaceID: number;
     ContactType: string;
     ContactName: string;
     MobileNumber: string;

@@ -1,0 +1,124 @@
+<div class="row">
+  <div class="col-sm-6 col-lg-6">
+    <h3>
+      Allotments
+    </h3>
+  </div>
+  <div class="col-sm-6 col-lg-6">
+    <div class="pull-right hidden-xs">
+      <ol class="breadcrumb" id="dynamicbreadcrumb">
+        <li>
+          <span> Case Management</span>
+        </li>
+        <li>
+          <span> Allotments</span>
+        </li>
+        <li class="active">
+          Save
+        </li>
+      </ol>
+    </div>
+  </div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <div class="row">
+      <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+        <span class="spanheader">
+          New Allotments
+        </span>
+      </div>
+      <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 text-right">
+        <button  type="button" class="btn btn-primary" routerLink="/Allotmentlist">Back</button>
+      </div>
+    </div>
+  </div>
+  <div class="panel-body">
+    <div class="row">
+      <div class="col-xs-12 col-sm-10 col-md-10 col-lg-10">
+        <div class="input-group col-sm-8" role="group" aria-label="Basic example">
+          <div class="col-md-4 basc ">
+            <label class="control-label"> Date Range </label> <br />
+            <input type="text" ngxDaterangepickerMd [(ngModel)]="selectedDateRange"
+              class="form-control btn-group col-xs-12 pointer"
+              style="border:1px soloid #ccc !important; padding :3px;left:0px" [showCustomRangeLabel]="true"
+              [ranges]="Searchranges" [showCancel]="true" placeholder="Select please..."
+              (ngModelChange)="onChange($event)" />
+          </div>
+          <div class="col-md-4 basc">
+            <label class="control-label"> Assign To <span class="mandantory">*</span> </label> <br />
+            <select id="AssignTo" [(ngModel)]="AssignTo" class="form-control">
+              <option value="0" selected="selected">Select </option>
+              <option *ngFor="let dis of lstAssignTo" value={{dis.UserId}}>
+                {{dis.FullName}}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <table class="table table-bordered table-condensed" *ngIf="lst && lst.length" style="width:100%">
+      <thead>
+        <tr>
+          <th class="text-center "><input type="checkbox" (change)="checkcontacts($event.currentTarget.checked)"></th>
+          <th class="text-center ">Removal Order ID</th>
+          <th class="text-center ">Tracking Id </th>
+          <th class="text-center ">Dispute Type</th>
+          <th class="text-center ">Qty </th>
+          <th class="text-center ">Selling Value </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let ms of lst; let numberpra = index">
+          <td class="text-center ">
+            <div *ngIf="(ms.IsActive ==true)">
+              <input type="checkbox" [id]="numberpra" checked="checked" (change)="ContactIDFieldsChange($event,ms.RemovalOrderID,
+               ms.TrackingID,ms.DisputeType)">
+            </div>
+            <div *ngIf="(ms.IsActive != true)">
+              <input type="checkbox" [id]="numberpra" (change)="ContactIDFieldsChange($event,ms.RemovalOrderID,
+              ms.TrackingID,ms.DisputeType)">
+            </div>
+          </td>
+          <td>{{ ms.RemovalOrderID }}</td>
+          <td>{{ ms.TrackingID }}</td>
+          <td>{{ ms.DisputeType }}</td>
+          <td>{{ ms.Qty }}</td>
+          <td>{{ ms.SellingValue }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <table class="table table-bordered table-condensed" *ngIf="lst == null || lst.length == 0">
+      <thead>
+        <tr>
+          <th class="text-center ">Removal Order ID</th>
+          <th class="text-center ">Tracking Id </th>
+          <th class="text-center ">Dispute Type</th>
+          <th class="text-center ">Qty </th>
+          <th class="text-center ">Selling Value </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td colspan="5">
+            No Records Found.!
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="panel-footer">
+    <div class="pull-right btn-toolbar">
+      <button  type="button" class="btn btn-primary" routerLink="/Allotmentlist" title="Cancel">
+        Cancel
+      </button>
+      <button class="btn btn-success" type="submit" prevent-double-submit (click)="SaveData()">
+        Save
+      </button>
+    </div>
+    <div class="clearfix"></div>
+  </div>
+</div>

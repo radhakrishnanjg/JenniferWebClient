@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { NgxSpinnerService } from 'ngx-spinner';
+
 import { ToastrService } from 'ngx-toastr';
 import { GoodsinwardService } from '../../_services/service/goodsinward.service';
 import { PrivateutilityService } from '../../_services/service/privateutility.service';
@@ -31,7 +31,7 @@ export class GoodsinwardlistComponent implements OnInit {
     private router: Router,
     private _goodsinwardService: GoodsinwardService,
     private _privateUtilityService: PrivateutilityService,
-    private _spinner: NgxSpinnerService,
+    
     private _authorizationGuard: AuthorizationGuard
   ) { }
 
@@ -57,7 +57,7 @@ export class GoodsinwardlistComponent implements OnInit {
   }
 
   delete() {
-    this._spinner.show();
+    //
     this._goodsinwardService.delete(this.selectedDeleteId).subscribe(
       (data) => {
         if (data!=null && data==true ) {
@@ -68,10 +68,10 @@ export class GoodsinwardlistComponent implements OnInit {
           this.alertService.error('Goods Inward - ' + this.deleteColumn + ' is being used in the application, Can’t be deleted.!');
         }
         $('#modaldeleteconfimation').modal('hide');
-        this._spinner.hide();
+        //
       },
       (error: any) => {
-        this._spinner.hide();
+        //
         console.log(error);
       }
     )
@@ -79,7 +79,7 @@ export class GoodsinwardlistComponent implements OnInit {
 
   onLoad(SearchBy: string, Search: string) {
 
-    this._spinner.show();
+    //
     return this._goodsinwardService.search(SearchBy, Search).subscribe(
       (data) => {
         if (data != null) { 
@@ -87,11 +87,11 @@ export class GoodsinwardlistComponent implements OnInit {
           this.loadItems(); 
 
         }
-        this._spinner.hide();
+        //
       },
 
       (err) => {
-        this._spinner.hide();
+        //
         console.log(err);
       }
 

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NgxSpinnerService } from 'ngx-spinner';
+
 import { AuthorizationGuard } from  '../../_guards/Authorizationguard'
 import { UserService } from  '../../_services/service/user.service';
 import { ToastrService } from 'ngx-toastr';
@@ -18,7 +18,7 @@ export class MenulistComponent implements OnInit {
   constructor(
     private alertService: ToastrService,
     private _userService: UserService,
-    private _spinner: NgxSpinnerService,
+    
     private _authorizationGuard: AuthorizationGuard
   ) { }
 
@@ -38,7 +38,7 @@ export class MenulistComponent implements OnInit {
   }
 
   onLoad() {
-    this._spinner.show();
+    //
     return this._userService.getMenus().subscribe(
       (data) => {
         this.lstmenus = data;
@@ -49,17 +49,17 @@ export class MenulistComponent implements OnInit {
             "search": 'Filter',
           },
         };
-        this._spinner.hide();
+        //
       },
       (err) => {
-        this._spinner.hide();
+        //
         console.log(err);
       }
     );
   }
 
   delete() {
-    this._spinner.show();
+    //
     this._userService.updateMenu(this.selectedDeleteId, !this.IsActive).subscribe(
       (data) => {
         if (data) {
@@ -73,11 +73,11 @@ export class MenulistComponent implements OnInit {
           this.alertService.error('Menu update is failure !');
         }
         $('#modaldeleteconfimation').modal('hide');
-        this._spinner.hide();
+        //
         this.IsActive = false;
       },
       (error: any) => {
-        this._spinner.hide();
+        //
         this.IsActive = false;
         console.log(error);
       }

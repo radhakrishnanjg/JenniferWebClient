@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { NgxSpinnerService } from 'ngx-spinner';
+
 
 import { UserService } from  '../../_services/service/user.service';
 import { ToastrService } from 'ngx-toastr';
@@ -32,7 +32,7 @@ export class CompanylistComponent implements OnInit {
     private alertService: ToastrService,
     private router: Router,
     private _userService: UserService,
-    private _spinner: NgxSpinnerService, 
+     
     private _authorizationGuard: AuthorizationGuard
   ) { }
 
@@ -53,12 +53,12 @@ export class CompanylistComponent implements OnInit {
     if (this._authorizationGuard.CheckAcess("Companylist", "ViewEdit")) {
       return;
     }
-    this._spinner.show();
+    //
     this._userService.companyDelete(this.selectedDeleteId).subscribe(
       (data) => {
         if (data) {
           this.onLoad();
-          this._spinner.hide();
+          //
           this.alertService.success('Company data has been deleted successful' );
           this.router.navigate(['/Companylist']);
         }
@@ -69,14 +69,15 @@ export class CompanylistComponent implements OnInit {
         $('#modaldeleteconfimation').modal('hide');
       },
       (error: any) => { console.log(error); 
-        this._spinner.hide();}
+        //
+      }
     );
     this.onLoad();
   }
 
   onLoad() {
 
-    this._spinner.show();
+    //
     return this._userService.companySearch('').subscribe(
       (data) => {
         if (data != null) { 
@@ -84,11 +85,11 @@ export class CompanylistComponent implements OnInit {
           this.loadItems(); 
 
         }
-        this._spinner.hide();
+        //
       },
       (err) => {
         console.log(err);
-        this._spinner.hide();
+        //
       }
     );
   }

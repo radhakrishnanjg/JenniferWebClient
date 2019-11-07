@@ -37,7 +37,7 @@
           </div>
           <div class="col-md-3 nopading_loct">
             <input type="text" class="serchcurv form-control btn-group" id="GRN" aria-describedby="GRN"
-              [(ngModel)]="SearchKeyword">
+              (keyup.enter)="Search()" [(ngModel)]="SearchKeyword">
           </div>
           <div class="col-md-2 nopading_loct">
             <button class="serchcurv btn btn-default btn-group" (click)="Search()" title="Search">

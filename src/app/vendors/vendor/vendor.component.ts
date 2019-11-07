@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NgxSpinnerService } from 'ngx-spinner';
+
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UsernameValidator } from '../../_validators/username';
@@ -35,7 +35,7 @@ export class VendorComponent implements OnInit {
     private fb: FormBuilder,
     private _router: Router,
     private aroute: ActivatedRoute,
-    public _spinner: NgxSpinnerService,
+    
     private usernameValidator: UsernameValidator,
     private _vendorService: VendorService,
     private utilityService: UtilityService,
@@ -164,7 +164,7 @@ export class VendorComponent implements OnInit {
         //   flatMap(u => this.userService.getPreferences(u.username))
         // ).subscribe(p => this.preferences = p);
 
-        this._spinner.show();
+        //
         this._vendorService.searchById(this.identity).pipe(
           tap(data => {
             this.obj.lstContact = data.lstContact;
@@ -180,10 +180,10 @@ export class VendorComponent implements OnInit {
           flatMap(u => this.utilityService.getStates(u.CountryID))
         ).subscribe(p => {
           this.states = p;
-          this._spinner.hide();
+          //
         }),
           (err) => {
-            this._spinner.hide();
+            //
             console.log(err);
           };
       }
@@ -224,7 +224,7 @@ export class VendorComponent implements OnInit {
   }
 
   private BindNewContacts() {
-    this._spinner.show();
+    //
     this._contactService.searchByType('External').subscribe((data) => {
       this.obj.lstContact = data;
       if (this.obj.lstContact != null && this.obj.lstContact.length > 0) {
@@ -237,36 +237,36 @@ export class VendorComponent implements OnInit {
           "search": 'Filter',
         },
       };
-      this._spinner.hide();
+      //
     }, (err) => {
-      this._spinner.hide();
+      //
       console.log(err);
     });
   }
 
   private BindCountries() {
-    this._spinner.show();
+    //
     this.utilityService.getCountries()
       .subscribe(
         (data: Country[]) => {
           this.countries = data;
-          this._spinner.hide();
+          //
         },
         (err: any) => {
-          this._spinner.hide();
+          //
           console.log(err);
         }
       );
   }
 
   private BindAccountTypes() {
-    this._spinner.show();
+    //
     this._PrivateutilityService.GetValues('BankAccountType')
       .subscribe((data: Dropdown[]) => {
         this.lstAccountType = data;
-        this._spinner.hide();
+        //
       }, (err: any) => {
-        this._spinner.hide();
+        //
         console.log(err);
       });
   }
@@ -301,15 +301,15 @@ export class VendorComponent implements OnInit {
   onchangeCountryID(selectedValue: string) {
     let countrid = parseInt(selectedValue);
     if (countrid > 0) {
-      this._spinner.show();
+      //
       this.utilityService.getStates(countrid)
         .subscribe(
           (data: State[]) => {
             this.states = data;
-            this._spinner.hide();
+            //
           },
           (err: any) => {
-            this._spinner.hide();
+            //
             console.log(err);
           }
         );
@@ -366,7 +366,7 @@ export class VendorComponent implements OnInit {
     if (this.obj.lstContact != null && this.obj.lstContact.length > 0) {
       this.obj.lstContact = this.obj.lstContact.filter(a => a.IsActive == true);
     }
-    this._spinner.show();
+    //
     this._vendorService.existGSTNumber(this.obj.VendorID, this.obj.GSTNumber)
       .subscribe(
         (data) => {
@@ -374,16 +374,16 @@ export class VendorComponent implements OnInit {
             this.alertService.error('This GSTNumber is already registered');
           }
           else {
-            this._spinner.show();
+            //
             this._vendorService.add(this.obj).subscribe(
               (data) => {
                 if (data != null && data.Flag == true) {
-                  this._spinner.hide();
+                  //
                   this.alertService.success(data.Msg);
                   this._router.navigate(['/Vendorlist']);
                 }
                 else {
-                  this._spinner.hide();
+                  //
 
                   this.alertService.error(data.Msg);
                   this._router.navigate(['/Vendorlist']);
@@ -391,15 +391,15 @@ export class VendorComponent implements OnInit {
                 this.identity = 0;
               },
               (error: any) => {
-                this._spinner.hide();
+                //
                 console.log(error);
               }
             );
           }
-          this._spinner.hide();
+          //
         },
         (error: any) => {
-          this._spinner.hide();
+          //
         }
       );
 
@@ -434,7 +434,7 @@ export class VendorComponent implements OnInit {
     if (this.obj.lstContact != null && this.obj.lstContact.length > 0) {
       this.obj.lstContact = this.obj.lstContact.filter(a => a.IsActive == true);
     }
-    this._spinner.show();
+    //
     this._vendorService.existGSTNumber(this.obj.VendorID, this.obj.GSTNumber)
       .subscribe(
         (data) => {
@@ -442,31 +442,31 @@ export class VendorComponent implements OnInit {
             this.alertService.error('This GSTNumber is already registered');
           }
           else {
-            this._spinner.show();
+            //
             this._vendorService.update(this.obj).subscribe(
               (data) => {
                 if (data != null && data.Flag == true) {
-                  this._spinner.hide();
+                  //
                   this.alertService.success(data.Msg);
                   this._router.navigate(['/Vendorlist']);
                 }
                 else {
-                  this._spinner.hide();
+                  //
                   this.alertService.error(data.Msg);
                   this._router.navigate(['/Vendorlist']);
                 }
                 this.identity = 0;
               },
               (error: any) => {
-                this._spinner.hide();
+                //
                 console.log(error);
               }
             );
           }
-          this._spinner.hide();
+          //
         },
         (error: any) => {
-          this._spinner.hide();
+          //
         }
       );
 

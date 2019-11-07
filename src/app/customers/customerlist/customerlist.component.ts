@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { NgxSpinnerService } from 'ngx-spinner';
+
 import { ToastrService } from 'ngx-toastr';
 import { CustomerService } from '../../_services/service/customer.service';
 import { Customer } from '../../_services/model';
@@ -31,7 +31,7 @@ export class CustomerlistComponent implements OnInit {
     private alertService: ToastrService,
     private router: Router,
     private _customerService: CustomerService,
-    private _spinner: NgxSpinnerService,
+    
     private _authorizationGuard: AuthorizationGuard
   ) { }
 
@@ -68,7 +68,7 @@ export class CustomerlistComponent implements OnInit {
   }
 
   delete() {
-    this._spinner.show();
+    //
     this._customerService.delete(this.selectedDeleteId).subscribe(
       (data) => {
         if (data) {
@@ -79,10 +79,10 @@ export class CustomerlistComponent implements OnInit {
         }
         $('#modaldeleteconfimation').modal('hide');
 
-        this._spinner.hide();
+        //
       },
       (error: any) => {
-        this._spinner.hide();
+        //
         console.log(error);
       }
     );
@@ -91,17 +91,17 @@ export class CustomerlistComponent implements OnInit {
 
   onLoad(SearchBy: string, Search: string, IsActive: Boolean) {
 
-    this._spinner.show();
+    //
     return this._customerService.search(SearchBy, Search, IsActive).subscribe(
       (lst) => {
         if (lst != null ) { 
           this.items = lst;
           this.loadItems(); 
         }
-        this._spinner.hide();
+        //
       },
       (err) => {
-        this._spinner.hide();
+        //
         console.log(err);
       }
     );

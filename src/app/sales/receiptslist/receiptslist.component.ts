@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NgxSpinnerService } from 'ngx-spinner';
+
 import { ToastrService } from 'ngx-toastr';
 import { ReceiptsService } from '../../_services/service/receipts.service';
 import { Receipts } from '../../_services/model';
@@ -54,7 +54,7 @@ export class ReceiptslistComponent implements OnInit {
   constructor(
     private alertService: ToastrService,
     private _receiptsService: ReceiptsService,
-    private _spinner: NgxSpinnerService,
+    
     private _authorizationGuard: AuthorizationGuard,
   ) { }
 
@@ -70,7 +70,7 @@ export class ReceiptslistComponent implements OnInit {
   onLoad() {
     let startdate: Date = this.selectedDateRange.startDate._d.toISOString().substring(0, 10);
     let enddate: Date = this.selectedDateRange.endDate._d.toISOString().substring(0, 10);
-    this._spinner.show();
+    //
     return this._receiptsService.search(startdate, enddate).subscribe(
       (data) => {
         this.lst = data;
@@ -86,10 +86,10 @@ export class ReceiptslistComponent implements OnInit {
             return item;
           });
         }
-        this._spinner.hide();
+        //
       },
       (err) => {
-        this._spinner.hide();
+        //
         console.log(err);
       }
     );
@@ -159,7 +159,7 @@ export class ReceiptslistComponent implements OnInit {
         this.gridDataunreconciled.find(({ FileID }) => FileID === selectedItem.FileID),
         this.obj
       );
-      this._spinner.show();
+      //
       this._receiptsService.Update(this.obj).subscribe(
         (data) => {
           if (data && data.Flag == true) {
@@ -178,10 +178,10 @@ export class ReceiptslistComponent implements OnInit {
           else {
             this.alertService.error(data.Msg);
           }
-          this._spinner.hide();
+          //
         },
         (error: any) => {
-          this._spinner.hide();
+          //
           console.log(error);
         }
       );
@@ -222,7 +222,7 @@ export class ReceiptslistComponent implements OnInit {
         this.gridDatareconciled.find(({ FileID }) => FileID === selectedItem.FileID),
         this.obj
       );
-      this._spinner.show();
+      //
       this._receiptsService.Update(this.obj).subscribe(
         (data) => {
           if (data && data.Flag == true) {
@@ -238,10 +238,10 @@ export class ReceiptslistComponent implements OnInit {
           else {
             this.alertService.error(data.Msg);
           }
-          this._spinner.hide();
+          //
         },
         (error: any) => {
-          this._spinner.hide();
+          //
           console.log(error);
         }
       );
@@ -254,14 +254,14 @@ export class ReceiptslistComponent implements OnInit {
 
   //   let selectedItem = this.gridDataunreconciled[rowIndex];
   //   const ReportID = selectedItem.Filename;
-  //   this._spinner.show();
+  //   //
   //   this._receiptsService.DownloadReceiptFile(ReportID)
   //     .subscribe(data => {
-  //       this._spinner.hide(),
+  //       
   //         saveAs(data, ReportID.toString());//+ '.csv'
   //     },
   //       (err) => {
-  //         this._spinner.hide();
+  //         //
   //         console.log(err);
   //       }
   //     );
@@ -271,28 +271,28 @@ export class ReceiptslistComponent implements OnInit {
 
   //   let selectedItem = this.gridDatareconciled[rowIndex];
   //   const ReportID = selectedItem.Filename;
-  //   this._spinner.show();
+  //   //
   //   this._receiptsService.DownloadReceiptFile(ReportID)
   //     .subscribe(data => {
-  //       this._spinner.hide(),
+  //       
   //         saveAs(data, ReportID.toString());//+ '.csv'
   //     },
   //       (err) => {
-  //         this._spinner.hide();
+  //         //
   //         console.log(err);
   //       }
   //     );
   // }
 
   public removeHandler(Filename:string ): void {
-    this._spinner.show();
+    //
     this._receiptsService.DownloadReceiptFile(Filename)
       .subscribe(data => {
-        this._spinner.hide(),
+        
           saveAs(data, Filename.toString()+ '.csv');//+ '.csv'
       },
         (err) => {
-          this._spinner.hide();
+          //
           console.log(err);
         }
       );
@@ -300,14 +300,14 @@ export class ReceiptslistComponent implements OnInit {
 
   public removeHandler2(Filename:string ): void {
 
-    this._spinner.show();
+    //
     this._receiptsService.DownloadReceiptFile(Filename)
       .subscribe(data => {
-        this._spinner.hide(),
+        
           saveAs(data, Filename.toString()+ '.csv');//+ '.csv'
       },
         (err) => {
-          this._spinner.hide();
+          //
           console.log(err);
         }
       );

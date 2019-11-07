@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { NgxSpinnerService } from 'ngx-spinner';
+
 import { ToastrService } from 'ngx-toastr';
 import { DownloadService } from  '../../_services/service/download.service';
 import { DownloadMaster} from  '../../_services/model';
@@ -27,7 +27,7 @@ export class ReportmasterlistComponent implements OnInit {
     private alertService: ToastrService,
     private router: Router,
     private _downloadService: DownloadService,
-    private _spinner: NgxSpinnerService,
+    
     private _authorizationGuard: AuthorizationGuard
   ) { }
 
@@ -60,7 +60,7 @@ export class ReportmasterlistComponent implements OnInit {
   }
 
   delete() {
-    this._spinner.show();
+    //
     this._downloadService.delete(this.selectedDeleteId).subscribe(
       (data) => {
         if (data != null && data.Flag == true) {
@@ -71,10 +71,10 @@ export class ReportmasterlistComponent implements OnInit {
         }
         $('#modaldeleteconfimation').modal('hide');
 
-        this._spinner.hide();
+        //
       },
       (error: any) => {
-        this._spinner.hide();
+        //
         console.log(error);
       }
     );
@@ -82,17 +82,17 @@ export class ReportmasterlistComponent implements OnInit {
  
 
   onLoad(SearchBy: string, Search: string, IsActive: boolean) { 
-    this._spinner.show();
+    //
     return this._downloadService.search(SearchBy, Search, IsActive).subscribe(
       (data) => {
         if (data != null ) {  
           this.items = data;
           this.loadItems(); 
         }
-        this._spinner.hide();
+        //
       },
       (err) => {
-        this._spinner.hide();
+        //
         console.log(err);
       }
     );

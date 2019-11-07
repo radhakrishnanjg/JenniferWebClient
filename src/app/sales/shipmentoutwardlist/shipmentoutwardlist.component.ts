@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { NgxSpinnerService } from 'ngx-spinner';
+
 import { ToastrService } from 'ngx-toastr';
 import { ShipmentoutwardService } from '../../_services/service/shipmentoutward.service';
 import { Shipmentoutward } from '../../_services/model';
@@ -40,7 +40,7 @@ export class ShipmentoutwardlistComponent implements OnInit {
     private alertService: ToastrService,
     private _router: Router,
     private _shipmentoutwardService: ShipmentoutwardService,
-    private _spinner: NgxSpinnerService,
+    
     private fb: FormBuilder,
     private _authorizationGuard: AuthorizationGuard,
     private _PrivateutilityService: PrivateutilityService,
@@ -115,15 +115,15 @@ export class ShipmentoutwardlistComponent implements OnInit {
 
     this.shipmentoutwardform.controls['GSTEwayBillNumber'].setValue('');
     this.shipmentoutwardform.controls['CourierTrackingID'].setValue('');
-    this._spinner.show();
+    //
     this._shipmentoutwardService.generateOutwardID().subscribe(
       (data) => {
         this.OutwardID = data;
-        this._spinner.hide();
+        //
       },
 
       (err) => {
-        this._spinner.hide();
+        //
         console.log(err);
       }
     );
@@ -155,15 +155,15 @@ export class ShipmentoutwardlistComponent implements OnInit {
     this.obj.OutwardID = this.OutwardID;
     this.obj.GSTEwayBillNumber = this.shipmentoutwardform.controls['GSTEwayBillNumber'].value;
     this.obj.CourierTrackingID = this.shipmentoutwardform.controls['CourierTrackingID'].value;
-    this._spinner.show();
+    //
     this._shipmentoutwardService.updateGSTBill(this.obj).subscribe(
       (data) => {
         if (data != null && data.Flag == true) {
-          this._spinner.hide();
+          //
           this.alertService.success(data.Msg); 
         }
         else {
-          this._spinner.hide();
+          //
           this.alertService.error(data.Msg); 
         }
         $('#modalpopup_shipmentoutward').modal('hide');
@@ -171,25 +171,25 @@ export class ShipmentoutwardlistComponent implements OnInit {
         this.identity = 0;
       },
       (error: any) => {
-        this._spinner.hide();
+        //
         console.log(error);
       }
     );
   }
 
   onLoad(SearchBy: string, Search: string) {
-    this._spinner.show();
+    //
     return this._shipmentoutwardService.search(SearchBy, Search).subscribe(
       (data) => {
         if (data != null) {
           this.items = data;
           this.loadItems();
         }
-        this._spinner.hide();
+        //
       },
 
       (err) => {
-        this._spinner.hide();
+        //
         console.log(err);
       }
     );

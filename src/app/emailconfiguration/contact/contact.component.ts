@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NgxSpinnerService } from 'ngx-spinner';
+
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UsernameValidator } from '../../_validators/username';
@@ -10,6 +10,7 @@ import { ContactService } from '../../_services/service/contact.service';
 import { PrivateutilityService } from '../../_services/service/privateutility.service';
 import { UtilityService } from '../../_services/service/utility.service';
 
+import { Marketplace } from '../../_services/model';
 @Component({
   selector: 'app-contact',
   templateUrl: './contact.component.html',
@@ -25,13 +26,14 @@ export class ContactComponent implements OnInit {
   identity: number = 0;
   Searchaction: boolean = true;
   emailPattern = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$";
-
+  marketplaces: Marketplace[];
+  ContactType: string = ''
   constructor(
     private alertService: ToastrService,
     private fb: FormBuilder,
     private _router: Router,
     private aroute: ActivatedRoute,
-    public _spinner: NgxSpinnerService,
+
     private usernameValidator: UsernameValidator,
     private _contactService: ContactService,
     private utilityService: UtilityService,
@@ -119,6 +121,8 @@ export class ContactComponent implements OnInit {
 
   ngOnInit() {
 
+
+
     this._PrivateutilityService.GetValues('ContactType')
       .subscribe(
         (data: Dropdown[]) => {
@@ -135,7 +139,10 @@ export class ContactComponent implements OnInit {
         this._contactService.searchById(this.identity)
           .subscribe(
             (data: Contact) => {
-
+              if (data.ContactType == 'MARKETPLACE') {
+                this.onchangeContactType('MARKETPLACE')
+              };
+              var MarketplaceID = data.MarketplaceID.toString();
               this.contactform.patchValue({
                 ContactType: data.ContactType,
                 ContactName: data.ContactName,
@@ -150,10 +157,13 @@ export class ContactComponent implements OnInit {
                 Other2: data.Other2,
 
                 IsActive: data.IsActive,
+                MarketplaceID: MarketplaceID,
               });
               this.contactform.get('ContactName').disable();
               this.contactform.get('Email').disable();
               this.contactform.get('MobileNumber').disable();
+              this.contactform.get('ContactType').disable();
+              this.contactform.get('MarketplaceID').disable();
             },
             (err: any) =>
               console.log(err)
@@ -183,7 +193,20 @@ export class ContactComponent implements OnInit {
       Organization: ['', [Validators.required]],
 
       IsActive: [0,],
+      MarketplaceID: [0,],
     });
+  }
+
+  onchangeContactType(selectedValue: string) {
+    if (selectedValue == 'MARKETPLACE') {
+      this._PrivateutilityService.getMarketPlaces()
+        .subscribe(
+          (data: Marketplace[]) => {
+            this.marketplaces = data
+          },
+          (err: any) => console.log(err)
+        );
+    }
   }
 
   SaveData(): void {
@@ -197,6 +220,12 @@ export class ContactComponent implements OnInit {
     this.aroute.paramMap.subscribe(params => {
       this.identity = +params.get('id');
     });
+    this.obj.MarketplaceID = this.contactform.controls['MarketplaceID'].value;
+    this.obj.ContactType = this.contactform.controls['ContactType'].value;
+    if (this.obj.ContactType == 'MARKETPLACE' && this.obj.MarketplaceID == 0) {
+      this.alertService.error('Please select Market Place !');
+      return;
+    }
     if (this.identity > 0) {
       this.Update();
     }
@@ -220,24 +249,26 @@ export class ContactComponent implements OnInit {
     this.obj.Other2 = this.contactform.controls['Other2'].value;
 
     this.obj.IsActive = this.contactform.controls['IsActive'].value;
-
-    this._spinner.show();
+    if (this.obj.ContactType == 'MARKETPLACE') {
+      this.obj.MarketplaceID = this.contactform.controls['MarketplaceID'].value;
+    }
+    //
     this._contactService.add(this.obj).subscribe(
       (data) => {
-        if (data!=null && data == true) {
-          this._spinner.hide();
+        if (data != null && data == true) {
+          //
           this.alertService.success('Contact data has been added successful');
           this._router.navigate(['/Contactlist']);
         }
         else {
-          this._spinner.hide();
+          //
           this.alertService.error('Contact creation failed!');
           this._router.navigate(['/Contactlist']);
         }
         this.identity = 0;
       },
       (error: any) => {
-        this._spinner.hide();
+        //
         console.log(error);
       }
     );
@@ -259,24 +290,26 @@ export class ContactComponent implements OnInit {
     this.obj.Other2 = this.contactform.controls['Other2'].value;
 
     this.obj.IsActive = this.contactform.controls['IsActive'].value;
-
-    this._spinner.show();
+    if (this.obj.ContactType == 'MARKETPLACE') {
+      this.obj.MarketplaceID = this.contactform.controls['MarketplaceID'].value;
+    }
+    //
     this._contactService.update(this.obj).subscribe(
       (data) => {
-        if (data!=null && data == true) {
-          this._spinner.hide();
+        if (data != null && data == true) {
+          //
           this.alertService.success('Contact detail data has been updated successful');
           this._router.navigate(['/Contactlist']);
         }
         else {
-          this._spinner.hide();
+          //
           this.alertService.error('Contact detail not saved!');
           this._router.navigate(['/Contactlist']);
         }
         this.identity = 0;
       },
       (error: any) => {
-        this._spinner.hide();
+        //
         console.log(error);
       }
     );

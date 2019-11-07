@@ -1,7 +1,7 @@
 import { Component,OnInit } from '@angular/core';
 import { ActivatedRoute, } from '@angular/router';
 import { PicklistService } from '../../_services/service/picklist.service';
-import { NgxSpinnerService } from 'ngx-spinner';
+
 import { SalesInvoiceHeader, } from '../../_services/model';
 
 @Component({
@@ -28,13 +28,13 @@ export class SalesinvoiceComponent implements OnInit {
   constructor(
     private aroute: ActivatedRoute,
     private _PicklistService: PicklistService,
-    private _spinner: NgxSpinnerService,
+    
   ) { }
 
   ngOnInit() {
     this.aroute.paramMap.subscribe(params => {
       let PickListNumber = +params.get('id');
-      this._spinner.show();
+      //
       this._PicklistService.InvoiceDownload(PickListNumber)
         .subscribe(data => {
           this.objSalesInvoiceHeader = data;
@@ -45,10 +45,10 @@ export class SalesinvoiceComponent implements OnInit {
           this.TotalCGSTTaxAmount = data.lstHSNCode.reduce((acc, a) => acc + a.CGSTTaxAmount, 0);
           this.TotalSGSTTaxAmount = data.lstHSNCode.reduce((acc, a) => acc + a.SGSTTaxAmount, 0);
           this.TotalTaxAmount = data.lstHSNCode.reduce((acc, a) => acc + a.TaxAmount, 0);
-          this._spinner.hide();
+          //
         },
           (err) => {
-            this._spinner.hide();
+            //
             console.log(err);
           });
     });

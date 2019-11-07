@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { NgxSpinnerService } from 'ngx-spinner';
+
 import { ToastrService } from 'ngx-toastr';
 import { AuthorizationGuard } from '../../_guards/Authorizationguard'
 import * as moment from 'moment';
@@ -15,7 +15,7 @@ import { SortDescriptor, orderBy } from '@progress/kendo-data-query';
   templateUrl: './goods-receipt-list.component.html',
   styleUrls: ['./goods-receipt-list.component.css']
 })
-export class GoodsReceiptListComponent implements OnInit { 
+export class GoodsReceiptListComponent implements OnInit {
   obj: GoodsReceipt;
   identity: number = 0;
   deleteColumn: string;
@@ -38,7 +38,7 @@ export class GoodsReceiptListComponent implements OnInit {
     private alertService: ToastrService,
     private router: Router,
     private _goodsReceiptService: GoodsReceiptService,
-    private _spinner: NgxSpinnerService,
+    
     private _authorizationGuard: AuthorizationGuard
   ) { }
 
@@ -93,7 +93,7 @@ export class GoodsReceiptListComponent implements OnInit {
   }
 
   delete() {
-    this._spinner.show();
+    //
     this._goodsReceiptService.Delete(this.identity).subscribe(
       (data) => {
         if (data != null && data.Flag == true) {
@@ -104,10 +104,10 @@ export class GoodsReceiptListComponent implements OnInit {
         }
         $('#modaldeleteconfimation').modal('hide');
         this.identity = 0;
-        this._spinner.hide();
+        //
       },
       (error: any) => {
-        this._spinner.hide();
+        //
         console.log(error);
       }
     );
@@ -115,15 +115,15 @@ export class GoodsReceiptListComponent implements OnInit {
 
   DownloadButtonClick(GRNNumber: string) {
     if (GRNNumber != "") {
-      this._spinner.show();
+      //
       this._goodsReceiptService.DownloadLabels(GRNNumber)
         .subscribe(data => {
           this.alertService.success("File downloaded succesfully.!");
-          this._spinner.hide(),
+          
             saveAs(data, GRNNumber + '.zip')
         },
           (err) => {
-            this._spinner.hide();
+            //
             console.log(err);
           }
         );
@@ -134,17 +134,17 @@ export class GoodsReceiptListComponent implements OnInit {
   onLoad(SearchBy: string, Search: string) {
     let startdate: Date = this.selectedDateRange.startDate._d.toISOString().substring(0, 10);
     let enddate: Date = this.selectedDateRange.endDate._d.toISOString().substring(0, 10);
-    this._spinner.show();
+    ////
     this._goodsReceiptService.search(SearchBy, Search, startdate, enddate).subscribe(
       (data) => {
-        if (data != null) { 
+        if (data != null) {
           this.items = data;
           this.loadItems(); 
         }
-        this._spinner.hide();
+        ////
       },
       (err) => {
-        this._spinner.hide();
+        ////
         console.log(err);
       }
     );
@@ -157,55 +157,55 @@ export class GoodsReceiptListComponent implements OnInit {
     this.router.navigate(['/Goodsreceipt/Create',]);
   }
 
-   //#region Paging Sorting and Filtering Start
-   public allowUnsort = true;
-   public sort: SortDescriptor[] = [{
-     field: 'GRNNumber',
-     dir: 'asc'
-   }];
-   public gridView: GridDataResult;
-   public pageSize = 10;
-   public skip = 0;
-   private data: Object[];
-   private items: GoodsReceipt[] = [] as any;
-   public state: State = {
-     skip: 0,
-     take: 5,
- 
-     // Initial filter descriptor
-     filter: {
-       logic: 'and',
-       filters: [{ field: 'GRNNumber', operator: 'contains', value: '' }]
-     }
-   };
-   public pageChange(event: PageChangeEvent): void {
-     this.skip = event.skip;
-     this.loadItems();
-   }
- 
-   public sortChange(sort: SortDescriptor[]): void {
-     this.sort = sort;
-     this.loadSortItems();
-   }
- 
-   private loadItems(): void {
-     this.gridView = {
-       data: this.items.slice(this.skip, this.skip + this.pageSize),
-       total: this.items.length
-     };
-   }
-   private loadSortItems(): void {
-     this.gridView = {
-       data: orderBy(this.items, this.sort).slice(this.skip, this.skip + this.pageSize),
-       total: this.items.length
-     };
-   }
-   public dataStateChange(state: DataStateChangeEvent): void {
-     this.state = state;
-     this.gridView = process(this.items, this.state);
-   }
- 
- 
-   //#endregion Paging Sorting and Filtering End
- 
+  //#region Paging Sorting and Filtering Start
+  public allowUnsort = true;
+  public sort: SortDescriptor[] = [{
+    field: 'GRNNumber',
+    dir: 'asc'
+  }];
+  public gridView: GridDataResult;
+  public pageSize = 10;
+  public skip = 0;
+  private data: Object[];
+  private items: GoodsReceipt[] = [] as any;
+  public state: State = {
+    skip: 0,
+    take: 5,
+
+    // Initial filter descriptor
+    filter: {
+      logic: 'and',
+      filters: [{ field: 'GRNNumber', operator: 'contains', value: '' }]
+    }
+  };
+  public pageChange(event: PageChangeEvent): void {
+    this.skip = event.skip;
+    this.loadItems();
+  }
+
+  public sortChange(sort: SortDescriptor[]): void {
+    this.sort = sort;
+    this.loadSortItems();
+  }
+
+  private loadItems(): void {
+    this.gridView = {
+      data: this.items.slice(this.skip, this.skip + this.pageSize),
+      total: this.items.length
+    };
+  }
+  private loadSortItems(): void {
+    this.gridView = {
+      data: orderBy(this.items, this.sort).slice(this.skip, this.skip + this.pageSize),
+      total: this.items.length
+    };
+  }
+  public dataStateChange(state: DataStateChangeEvent): void {
+    this.state = state;
+    this.gridView = process(this.items, this.state);
+  }
+
+
+  //#endregion Paging Sorting and Filtering End
+
 }

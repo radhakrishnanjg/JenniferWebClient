@@ -7,7 +7,7 @@ import { ToastrService } from 'ngx-toastr';
 import { PrivateutilityService } from '../../_services/service/privateutility.service';
 import { IUser, Companydetails, Dropdown, Item } from '../../_services/model';
 
-import { NgxSpinnerService } from 'ngx-spinner';
+
 import { AuthorizationGuard } from '../../_guards/Authorizationguard'
 @Component({
   selector: 'app-user',
@@ -34,7 +34,7 @@ export class UserComponent implements OnInit {
     private usernameValidator: UsernameValidator,
     private _PrivateutilityService: PrivateutilityService,
     private _authorizationGuard: AuthorizationGuard,
-    public _spinner: NgxSpinnerService,
+    
   ) { }
 
 
@@ -93,36 +93,36 @@ export class UserComponent implements OnInit {
 
         this.panelTitle = "Edit user";
         this.action = false;
-        this._spinner.show();
+        //
         this._PrivateutilityService.getEditUserStores(this.identity)
           .subscribe(
             (data: Companydetails[]) => {
               this.obj.lstUserStores = data;
-              this._spinner.hide();
+              //
             },
             (err: any) => {
               console.log(err);
-              this._spinner.hide();
+              //
             }
           );
-        this._spinner.show();
+        //
         this._userService.getUserMasterUploadScreensEdit(this.identity)
           .subscribe(
             (data: Dropdown[]) => {
               this.obj.lstmasterscreens = data;
               this.obj.lstmasterscreens.map(a => a.UserId = this.identity);
-              this._spinner.hide();
+              //
             },
             (err: any) => {
               console.log(err);
-              this._spinner.hide();
+              //
             }
           );
-        this._spinner.show();
+        //
         this._userService.getUser(this.identity)
           .subscribe(
             (employee: IUser) => {
-              this._spinner.hide();
+              //
               this.userForm.patchValue({
                 FirstName: employee[0].FirstName,
                 LastName: employee[0].LastName,
@@ -132,24 +132,24 @@ export class UserComponent implements OnInit {
             },
             (err: any) => {
               console.log(err);
-              this._spinner.hide();
+              //
             }
           );
       }
       else {
-        this._spinner.show();
+        //
         this._PrivateutilityService.getComanyDetails()
           .subscribe(
             (data: Companydetails[]) => {
               this.obj.lstUserStores = data;
-              this._spinner.hide();
+              //
             },
             (err: any) => {
               console.log(err);
-              this._spinner.hide();
+              //
             }
           );
-        this._spinner.show();
+        //
         // this._PrivateutilityService.GetValues('MasterUpload')
         this._userService.getUserMasterUploadScreensEdit(0)
           .subscribe(
@@ -157,11 +157,11 @@ export class UserComponent implements OnInit {
               this.obj.lstmasterscreens = data;
               this.uncheckallmasterupload();
               //this.obj.lstmasterscreens.map(a => a.UserId = this.identity);
-              this._spinner.hide();
+              //
             },
             (err: any) => {
               console.log(err);
-              this._spinner.hide();
+              //
             }
           );
         this.action = true;
@@ -184,7 +184,7 @@ export class UserComponent implements OnInit {
 
   onchangeEmail() {
     let email = this.userForm.controls['Email'].value;
-    this._spinner.show();
+    //
     this._userService.getFullName(email).subscribe(
       (data) => {
         if (data != null) {
@@ -195,30 +195,30 @@ export class UserComponent implements OnInit {
           });
           this.identity = data.UserId;
 
-          this._spinner.show();
+          //
           this._PrivateutilityService.getEditUserStores(this.identity)
             .subscribe(
               (data: Companydetails[]) => {
                 this.obj.lstUserStores = data;
-                this._spinner.hide();
+                //
               },
               (err: any) => {
                 console.log(err);
-                this._spinner.hide();
+                //
               }
             );
 
-          this._spinner.show();
+          //
           this._userService.getUserMasterUploadScreensEdit(this.identity)
             .subscribe(
               (data: Dropdown[]) => {
                 this.obj.lstmasterscreens = data;
                 this.obj.lstmasterscreens.map(a => a.UserId = this.identity);
-                this._spinner.hide();
+                //
               },
               (err: any) => {
                 console.log(err);
-                this._spinner.hide();
+                //
               }
             );
 
@@ -226,10 +226,10 @@ export class UserComponent implements OnInit {
           this.userForm.get('LastName').disable();
           this.UserTypeErrorMessage = 'This email already registered.';
         }
-        this._spinner.hide();
+        //
       },
       (error: any) => {
-        this._spinner.hide();
+        //
         console.log(error);
       }
     );
@@ -292,23 +292,23 @@ export class UserComponent implements OnInit {
       this.obj.lstUserStores = this.obj.lstUserStores;
       this.obj.lstmasterscreens = this.obj.lstmasterscreens;
 
-      this._spinner.show();
+      //
       this._userService.update(this.obj).subscribe(
         (data) => {
           if (data != null && data.Flag == true) {
-            this._spinner.hide();
+            //
             this.alertService.success(data.Msg);
             this._router.navigate(['/Userlist']);
           }
           else {
-            this._spinner.hide();
+            //
             this.alertService.error(data.Msg);
             this._router.navigate(['/Userlist']);
           }
           this.identity = 0;
         },
         (error: any) => {
-          this._spinner.hide();
+          //
           console.log(error);
         }
       );
@@ -318,23 +318,23 @@ export class UserComponent implements OnInit {
       this.obj.lstUserStores = this.obj.lstUserStores.filter(a => a.IsActive == true);
       this.obj.lstmasterscreens = this.obj.lstmasterscreens.filter(a => a.IsActive == true);
 
-      this._spinner.show();
+      //
       this._userService.add(this.obj).subscribe(
         (data) => {
           if (data != null && data.Flag == true) {
-            this._spinner.hide();
+            //
             this.alertService.success(data.Msg);
             this._router.navigate(['/Userlist']);
           }
           else {
-            this._spinner.hide();
+            //
             this.alertService.error(data.Msg);
             this._router.navigate(['/Userlist']);
           }
           this.identity = 0;
         },
         (error: any) => {
-          this._spinner.hide();
+          //
           console.log(error);
         }
       );

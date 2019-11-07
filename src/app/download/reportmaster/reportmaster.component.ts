@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NgxSpinnerService } from 'ngx-spinner';
+
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -33,7 +33,7 @@ export class ReportmasterComponent implements OnInit {
     private alertService: ToastrService,
     private fb: FormBuilder,
     private aroute: ActivatedRoute,
-    public _spinner: NgxSpinnerService,
+    
     private _PrivateutilityService: PrivateutilityService,
     private _authorizationGuard: AuthorizationGuard, 
   ) { }
@@ -129,26 +129,26 @@ export class ReportmasterComponent implements OnInit {
   }
 
   ngOnInit() {
-    this._spinner.show();
+    //
     this._PrivateutilityService.GetValues('ReportType').subscribe(
       (data: Dropdown[]) => {
         this.lstReport_Type = data;
-        this._spinner.hide();
+        //
       },
       (error: any) => {
-        this._spinner.hide();
+        //
         console.log(error);
       }
     )
 
-    this._spinner.show();
+    //
     this._PrivateutilityService.GetValues('InputType').subscribe(
       (data: Dropdown[]) => {
         this.lstText_Type = data;
-        this._spinner.hide();
+        //
       },
       (error: any) => {
-        this._spinner.hide();
+        //
         console.log(error);
       }
     )
@@ -158,14 +158,14 @@ export class ReportmasterComponent implements OnInit {
       if (this.identity > 0) {
         this.panelTitle = "View Report";
         this.action = false;
-        this._spinner.show();
+        //
         this._downloadService.searchById(this.identity).subscribe(
           (data: DownloadMaster) => {
             this.objDownloadMaster = data; 
             
           },
           (err : any) => {
-            this._spinner.hide();
+            //
             console.log(err);
           }
         );
@@ -234,25 +234,25 @@ export class ReportmasterComponent implements OnInit {
     this.objDownloadMaster.SP_Name  = this.reportmasterform.controls['SP_Name'].value;
     this.objDownloadMaster.P_Count  = this.reportmasterform.controls['P_Count'].value;
     this.objDownloadMaster.lstDetail  = this.lstDownloadDetail;
-    this._spinner.show();
+    //
     
     if (this.objDownloadMaster.P_Count == this.lstDownloadDetail.length) {
       this._downloadService.add(this.objDownloadMaster).subscribe(
         (data) => {
           if (data && data.Flag) {
-            this._spinner.hide();
+            //
             this.alertService.success(data.Msg);
             this._router.navigate(['/Reportmasterlist']);
           }
           else {
-            this._spinner.hide();
+            //
             this.alertService.error(data.Msg);
             this._router.navigate(['/Reportmasterlist']);
           }
-          this._spinner.hide(); 
+          // 
         },
         (error: any) => {
-          this._spinner.hide();
+          //
           console.log(error);
         }
       );
@@ -260,7 +260,7 @@ export class ReportmasterComponent implements OnInit {
     else {
       this.alertService.error('Total Parameters is not matching with parameters count, please correct it.!');
     }
-    this._spinner.hide();
+    //
     
   }
 

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { NgxSpinnerService } from 'ngx-spinner';
+
 import { ToastrService } from 'ngx-toastr';
 import { SalesratecardService } from '../../_services/service/salesratecard.service';
 
@@ -60,7 +60,7 @@ export class SalesratecardlistComponent implements OnInit {
   constructor(
     private alertService: ToastrService,
     private _salesratecardService: SalesratecardService,
-    private _spinner: NgxSpinnerService,
+    
     private _authorizationGuard: AuthorizationGuard,
     private fb: FormBuilder,
     private _PrivateutilityService: PrivateutilityService,
@@ -175,7 +175,7 @@ export class SalesratecardlistComponent implements OnInit {
 
 
   private getCurrentServerDateTime() {
-    this._spinner.show();
+    //
     this._PrivateutilityService.getCurrentDate()
       .subscribe(
         (data: Date) => {
@@ -184,12 +184,12 @@ export class SalesratecardlistComponent implements OnInit {
           //   StartDate: { startDate: new Date(mcurrentDate) },
           // }); 
           this.MinDate = moment(data).add(0, 'days');
-          this._spinner.hide();
+          //
         },
         (err: any) => {
           console.log(err);
 
-          this._spinner.hide();
+          //
         }
       );
   }
@@ -200,32 +200,32 @@ export class SalesratecardlistComponent implements OnInit {
     }
     this.getCurrentServerDateTime();
     
-    this._spinner.show();
+    //
     this._PrivateutilityService.GetValues('InventoryType')
       .subscribe(
         (data: Dropdown[]) => {
           this.lstInventoryType = data;
 
-          this._spinner.hide();
+          //
         },
         (err: any) => {
           console.log(err);
 
-          this._spinner.hide();
+          //
         }
       );
 
-    this._spinner.show();
+    //
     this._PrivateutilityService.getItemLevels()
       .subscribe(
         (data: Item[]) => {
 
           this.lstItem = data.filter(a => a.Type == 'Item');
-          this._spinner.hide();
+          //
         },
         (err: any) => {
           console.log(err);
-          this._spinner.hide();
+          //
         }
       );
 
@@ -251,29 +251,29 @@ export class SalesratecardlistComponent implements OnInit {
   //   if (this._authorizationGuard.CheckAcess("Salesratecardlist", "ViewEdit")) {
   //     return;
   //   }
-  //   this._spinner.show();
+  //   //
   //   this._PrivateutilityService.GetValues('InventoryType')
   //     .subscribe(
   //       (data: Dropdown[]) => {
   //         this.lstInventoryType = data;
-  //         this._spinner.hide();
+  //         //
   //       },
   //       (err: any) => {
   //         console.log(err);
-  //         this._spinner.hide();
+  //         //
   //       }
   //     );
-  //   this._spinner.show();
+  //   //
   //   this._PrivateutilityService.getItemLevels()
   //     .subscribe(
   //       (data: Item[]) => {
 
   //         this.lstItem = data;
-  //         this._spinner.hide();
+  //         //
   //       },
   //       (err: any) => {
   //         console.log(err);
-  //         this._spinner.hide();
+  //         //
   //       }
   //     );
   // }
@@ -325,15 +325,15 @@ export class SalesratecardlistComponent implements OnInit {
     this.objSalesratecard.StartDate = this.salesratecardForm.controls['StartDate'].value.startDate._d.toLocaleString();
     this.objSalesratecard.EndDate = this.salesratecardForm.controls['EndDate'].value.startDate._d.toLocaleString();
     var Itemids = this.salesratecardForm.controls['ItemID'].value.map(a => a.ItemID);
-    this._spinner.show();
+    //
     this._salesratecardService.upsert(this.objSalesratecard, Itemids).subscribe(
       (data) => {
         if (data != null && data.Flag == true) {
-          this._spinner.hide();
+          //
           this.alertService.success(data.Msg);
         }
         else {
-          this._spinner.hide();
+          //
           this.alertService.error(data.Msg);
         }
         $('#modalpopup_salesratecard').modal('hide');
@@ -342,7 +342,7 @@ export class SalesratecardlistComponent implements OnInit {
         this.onLoad(this.SearchBy, this.SearchKeyword, startdate, enddate, this.Searchaction); this.identity = 0;
       },
       (error: any) => {
-        this._spinner.hide();
+        //
         console.log(error);
       }
     );
@@ -351,17 +351,17 @@ export class SalesratecardlistComponent implements OnInit {
   }
 
   onLoad(SearchBy: string, Search: string, StartDate: Date, EndDate: Date, IsActive: boolean) {
-    this._spinner.show();
+    //
     return this._salesratecardService.search(SearchBy, Search, StartDate, EndDate, IsActive).subscribe(
       (lst) => {
         if (lst != null) { 
           this.items = lst;
           this.loadItems(); 
         }
-        this._spinner.hide();
+        //
       },
       (err) => {
-        this._spinner.hide();
+        //
         console.log(err);
       }
     );

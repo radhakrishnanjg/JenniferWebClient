@@ -47,7 +47,7 @@
         </div>
         <div class="col-sm-4">
           <div class="pull-right">
-            <button class="btn btn-primary" routerLink="/Customerlist" title="Back">
+            <button  type="button" class="btn btn-primary" routerLink="/Customerlist" title="Back">
 
               Back
             </button>
@@ -397,10 +397,10 @@
         <table datatable [dtOptions]="dtOptions" class="table table-bordered table-condensed " *ngIf="obj?.lstContact && obj?.lstContact.length">
           <thead>
             <tr>
-              <th class="text-center "><input type="checkbox" (change)="checkcontacts($event.currentTarget.checked)"></th>
+              <th class="text-center "><input type="checkbox" 
+                (change)="checkcontacts($event.currentTarget.checked)"></th>
               <th class="text-center ">Contact Name</th>
-              <th class="text-center ">Mobile Number </th>
-              <th class="text-center ">LandPhone Number</th>
+              <th class="text-center ">Mobile Number </th> 
               <th class="text-center ">Email </th>
               <th class="text-center ">Designation </th>
 
@@ -420,8 +420,7 @@
                 </div>
               </td>
               <td>{{ ms.ContactName }}</td>
-              <td>{{ ms.MobileNumber }}</td>
-              <td>{{ ms.LandphoneNumber }}</td>
+              <td>{{ ms.MobileNumber }}</td> 
               <td>{{ ms.Email }}</td>
               <td>{{ ms.Designation }}</td>
 
@@ -436,8 +435,7 @@
             <tr>
               <th class="text-center ">Check</th>
               <th class="text-center ">Contact Name</th>
-              <th class="text-center ">Mobile Number </th>
-              <th class="text-center ">LandPhone Number</th>
+              <th class="text-center ">Mobile Number </th> 
               <th class="text-center ">Email </th>
 
               <th class="text-center ">Designation </th>
@@ -446,7 +444,7 @@
           </thead>
           <tbody>
             <tr>
-              <td colspan="7">
+              <td colspan="6">
                 No Records Found.!
               </td>
             </tr>
@@ -455,7 +453,7 @@
       </div>
       <div class="panel-footer">
         <div class="pull-right btn-toolbar">
-          <button type="button" class="btn btn-primary" routerLink="/Customerlist" title="Cancel">Cancel</button>
+          <button type="button"  type="button" class="btn btn-primary" routerLink="/Customerlist" title="Cancel">Cancel</button>
           <button class="btn btn-success" prevent-double-submit type="submit" title="save"
             [disabled]="customerform.invalid">Save</button>
         </div>

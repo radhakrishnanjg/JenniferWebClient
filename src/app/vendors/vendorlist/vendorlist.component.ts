@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { NgxSpinnerService } from 'ngx-spinner';
+
 import { ToastrService } from 'ngx-toastr';
 import { VendorService } from '../../_services/service/vendor.service';
 import { Vendor } from '../../_services/model';
@@ -30,7 +30,7 @@ export class VendorlistComponent implements OnInit {
     private alertService: ToastrService,
     private router: Router,
     private _vendorService: VendorService,
-    private _spinner: NgxSpinnerService,
+    
     private _authorizationGuard: AuthorizationGuard
   ) { }
 
@@ -60,7 +60,7 @@ export class VendorlistComponent implements OnInit {
   }
 
   delete() {
-    this._spinner.show();
+    ////
     this._vendorService.delete(this.selectedDeleteId).subscribe(
       (data) => {
         if (data) {
@@ -71,10 +71,10 @@ export class VendorlistComponent implements OnInit {
         }
         $('#modaldeleteconfimation').modal('hide');
 
-        this._spinner.hide();
+        ////
       },
       (error: any) => {
-        this._spinner.hide();
+        ////
         console.log(error);
       }
     );
@@ -83,17 +83,17 @@ export class VendorlistComponent implements OnInit {
 
   onLoad(SearchBy: string, Search: string, IsActive: Boolean) {
 
-    this._spinner.show();
+    ////
     return this._vendorService.search(SearchBy, Search, IsActive).subscribe(
       (lst) => {
         if (lst != null ) { 
           this.items = lst;
           this.loadItems(); 
         }
-        this._spinner.hide();
+        ////
       },
       (err) => {
-        this._spinner.hide();
+        ////
         console.log(err);
       }
     );

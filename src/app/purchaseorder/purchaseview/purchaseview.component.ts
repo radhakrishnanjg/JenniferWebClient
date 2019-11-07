@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NgxSpinnerService } from 'ngx-spinner';
+
 import { ToastrService } from 'ngx-toastr';
 import { InvoiceService } from '../../_services/service/invoice.service';
 import { PrivateutilityService } from '../../_services/service/privateutility.service';
@@ -27,7 +27,7 @@ export class PurchaseviewComponent implements OnInit {
     public _invoiceService: InvoiceService,
     public _privateutilityService: PrivateutilityService,
     public _alertService: ToastrService,
-    public _spinner: NgxSpinnerService,
+    
     private aroute: ActivatedRoute
   ) { }
 
@@ -36,7 +36,7 @@ export class PurchaseviewComponent implements OnInit {
       this.identity = +params.get('id');
       this.POID = +params.get('PoId');
       if (this.identity > 0) {
-        this._spinner.show();
+        //
         this._invoiceService.searchById(this.identity, this.POID)
           .subscribe(
             (data: Invoice) => {
@@ -47,11 +47,11 @@ export class PurchaseviewComponent implements OnInit {
               this.TotalTaxAmount = this.obj.lstItem.reduce((acc, a) => acc + a.TaxAmount, 0);
               this.TotalDirectCost = this.obj.lstItem.reduce((acc, a) => acc + a.DirectCost, 0);
               this.TotalTotalAmount = this.obj.lstItem.reduce((acc, a) => acc + a.TotalAmount, 0);
-              this._spinner.hide();
+              //
             },
             (err: any) => {
               console.log(err);
-              this._spinner.hide();
+              //
             }
           );
       }

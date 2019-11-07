@@ -37,7 +37,7 @@
             </select>
           </div>
           <div class="col-md-5 nopading_loct" *ngIf="(SearchBy!='ByStatus')">
-            <input [(ngModel)]="SearchKeyword" type="text" class="form-control btn-group serchcurv">
+            <input (keyup.enter)="Search()" [(ngModel)]="SearchKeyword" type="text" class="form-control btn-group serchcurv">
           </div>
           <div class="col-md-3 nopading_loct" *ngIf="(SearchBy=='ByStatus')">
             <select [(ngModel)]="Searchaction" type="select" class="serchcurv form-control btn-group">

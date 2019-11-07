@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, } from '@angular/router';
-import { NgxSpinnerService } from 'ngx-spinner';
+
 import { PicklistService } from '../../_services/service/picklist.service';
 import { Picklistview } from '../../_services/model';
 
@@ -14,7 +14,7 @@ export class PicklistviewComponent implements OnInit {
   identity: number = 0;
   constructor(
     private _picklistService: PicklistService,
-    private _spinner: NgxSpinnerService,
+    
     private aroute: ActivatedRoute,
   ) { }
 
@@ -23,17 +23,17 @@ export class PicklistviewComponent implements OnInit {
     this.aroute.paramMap.subscribe(params => {
       this.identity = +params.get('id');
     });
-    this._spinner.show();
+    //
     return this._picklistService.PicklistView(this.identity).subscribe(
       (data) => {
         if (data != null) {
           this.objPicklistview = data;
-          this._spinner.show();
+          //
         }
-        this._spinner.hide();
+        //
       },
       (err) => {
-        this._spinner.hide();
+        //
         console.log(err);
       }
     );

@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core'; 
-import { NgxSpinnerService } from 'ngx-spinner';
+
 import { ToastrService } from 'ngx-toastr';
-import { DownloadMaster, DownloadDetail } from '../../_services/model'; 
+import { DownloadMaster, DownloadDetail ,DownloadLog} from '../../_services/model'; 
 import { DownloadService } from '../../_services/service/download.service';
-import { AuthorizationGuard } from '../../_guards/Authorizationguard'
+import { AuthorizationGuard } from '../../_guards/Authorizationguard';
+import ReportDescription from '../../../assets/reportdescription';
 @Component({
   selector: 'app-reportscompliance',
   templateUrl: './reportscompliance.component.html',
@@ -13,6 +14,7 @@ export class ReportscomplianceComponent implements OnInit {
 
   lstDownloadMaster: DownloadMaster[];
   lstDownloadDetail: DownloadDetail[];
+  lstDownloadLog: DownloadLog[];
   Download_Master_ID: number = 0;
   Column1: string = '';
   Column2: string = '';
@@ -25,25 +27,27 @@ export class ReportscomplianceComponent implements OnInit {
   txtColumn4: string = '';
   txtColumn5: string = '';
 
+  lstReportDescription: any = ReportDescription;
+  Description: string = '';
   constructor(
     private alertService: ToastrService,
-    private _spinner: NgxSpinnerService,
+    
     private _authorizationGuard: AuthorizationGuard, 
     private _DownloadService: DownloadService,
   ) { }
 
   ngOnInit() {
     this.Download_Master_ID = 0;
-    this._spinner.show();
+    //
     this._DownloadService.getDownloadScreens('Compliance')
       .subscribe(
         (data: DownloadMaster[]) => {
           this.lstDownloadMaster = data;
-          this._spinner.hide();
+          //
         },
         (err: any) => {
           console.log(err);
-          this._spinner.hide();
+          //
         }
       );
   }
@@ -58,12 +62,12 @@ export class ReportscomplianceComponent implements OnInit {
       return;
     }
     if (this.lstDownloadDetail.length > 0) {
-      $(".dvhide").hide();
-      $("#txtColumn1").val('');
-      $("#txtColumn2").val('');
-      $("#txtColumn3").val('');
-      $("#txtColumn4").val('');
-      $("#txtColumn5").val('');
+      // $(".dvhide").hide();
+      // $("#txtColumn1").val('');
+      // $("#txtColumn2").val('');
+      // $("#txtColumn3").val('');
+      // $("#txtColumn4").val('');
+      // $("#txtColumn5").val('');
       let dyamicspstring = ' ';
       var SP_Name = this.lstDownloadDetail[0].SP_Name;
       var Screen_Name = this.lstDownloadDetail[0].Screen_Name;
@@ -93,30 +97,28 @@ export class ReportscomplianceComponent implements OnInit {
     // 90	-Analytics
     // 91	-MIS
     // 92	-Others 
-      const MenuId = 89; //87|88|89|90|91|92; 
-      this._spinner.show(),
-        this._DownloadService.downloadExcel(MenuId, Screen_Name, dyamicspstring)
+      const MenuId = 89; //87|88|89|90|91|92;  
+        this._DownloadService.downloadExcel(SP_Name,MenuId, Screen_Name, dyamicspstring)
           .subscribe(data => {
-            if (data != null) {
-              this._spinner.show(),
+            if (data != null) { 
                 this._DownloadService.Download(Screen_Name,MenuId)
                   .subscribe(data1 => {
-                    this._spinner.hide();
+                    //
                     saveAs(data1, Screen_Name + '.xls');//+ '.xls'
                     this.alertService.success("File downloaded succesfully.!");
                   },
                     (err) => {
-                      this._spinner.hide();
+                      //
                       console.log(err);
                     }
                   );
             } else {
               this.alertService.error(data.Msg);
             }
-            this._spinner.hide();
+            //
           },
             (err) => {
-              this._spinner.hide();
+              //
               console.log(err);
             }
           );
@@ -133,11 +135,12 @@ export class ReportscomplianceComponent implements OnInit {
   onScreenNameChange(selectedValue: string) {
     let id = parseInt(selectedValue);
     if (id > 0) {
-      this._spinner.show();
+      //
       this._DownloadService.getDownloadParameters(id)
         .subscribe(
           (data: DownloadDetail[]) => {
             this.lstDownloadDetail = data;
+            this.Description = this.lstReportDescription.filter(a => a.Download_Master_ID == id)[0].Description;
             if (data != null && this.lstDownloadDetail.length > 0) {
               $(".dvhide").hide();
               this.lstDownloadDetail.forEach((element) => {
@@ -200,11 +203,19 @@ export class ReportscomplianceComponent implements OnInit {
             else {
               $(".dvhide").hide();
             }
-            this._spinner.hide();
+            const MenuId = 89;
+            this._DownloadService.getDownloadLog(MenuId)
+              .subscribe(data => {
+                this.lstDownloadLog = data;
+              },
+                (err) => {
+                  console.log(err);
+                }
+              );
           },
           (err: any) => {
             console.log(err);
-            this._spinner.hide();
+            //
           }
         );
     }

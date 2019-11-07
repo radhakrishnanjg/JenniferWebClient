@@ -37,7 +37,7 @@
             </select>
           </div>
           <div class="col-md-4 nopading_loct" *ngIf="(SearchBy!='ByPurchaseDate')">
-            <input [(ngModel)]="SearchKeyword" type="text" class="serchcurv form-control btn-group" id="Location"
+            <input (keyup.enter)="Search()" [(ngModel)]="SearchKeyword" type="text" class="serchcurv form-control btn-group" id="Location"
               aria-describedby="Location">
           </div>
           <div class="col-md-4 nopading_loct" *ngIf="(SearchBy=='ByPurchaseDate')">

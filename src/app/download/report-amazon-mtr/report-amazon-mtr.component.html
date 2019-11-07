@@ -35,7 +35,7 @@
             </select>
           </div>
           <div class="col-md-4 nopading_loct" *ngIf="(SearchBy!= 'ByDate')">
-            <input [(ngModel)]="SearchKeyword" type="text" class="serchcurv form-control btn-group">
+            <input (keyup.enter)="Search()" [(ngModel)]="SearchKeyword" type="text" class="serchcurv form-control btn-group">
           </div>
           <div class="col-md-4 nopading_loct" *ngIf="(SearchBy=='ByDate')">
             <input type="text" ngxDaterangepickerMd [(ngModel)]="selectedDateRange"
@@ -75,6 +75,8 @@
         <ng-template kendoGridCellTemplate let-dataItem>
           {{ dataItem.CreatedDate | date :"MM-dd-yyyy HH:mm" }}
         </ng-template>
+      </kendo-grid-column>
+      <kendo-grid-column field="UploadStatus" title="Upload Status">
       </kendo-grid-column>
       <kendo-grid-command-column title="Download" [class]="{'text-center': true}" width="80">
         <ng-template kendoGridCellTemplate let-isNew="isNew" let-obj>

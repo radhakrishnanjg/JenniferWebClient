@@ -6,7 +6,7 @@ import { BadRequest } from './../../common/bad-request';
 import { NotFoundError } from './../../common/not-found-error';
 import { AppError } from './../../common/app-error';
 import { AuthenticationService } from './authentication.service';
-import { DownloadMaster, DownloadDetail, AmazonMTR, Result } from '../model/index';
+import { DownloadMaster, DownloadDetail, AmazonMTR, DownloadLog, Result } from '../model/index';
 import { environment } from '../../../environments/environment';
 
 @Injectable({
@@ -43,6 +43,16 @@ export class DownloadService {
       .pipe(catchError(this.handleError));
   }
 
+  public getDownloadLog(MenuId: number): Observable<DownloadLog[]> {
+    let currentUser = this.authenticationService.currentUserValue;
+    let CompanyID = currentUser.CompanyID;
+    let CompanyDetailID = currentUser.CompanyDetailID;
+    return this.httpClient.get<DownloadLog[]>(environment.baseUrl +
+      `Download/GetDownloadLog?CompanyID=` + CompanyID + `&CompanyDetailID=` + CompanyDetailID
+      + `&MenuId=` + MenuId)
+      .pipe(catchError(this.handleError));
+  }
+
   public add(objDownloadMaster: DownloadMaster): Observable<Result> {
     return this.httpClient.post<Result>(environment.baseUrl + `Download/Insert`, objDownloadMaster)
       .pipe(catchError(this.handleError));
@@ -57,10 +67,14 @@ export class DownloadService {
   }
 
 
-  public downloadExcel(MenuId: number, Filename: string, DynamicQuery: string): Observable<Result> {
-    this.objDownloadMaster.Filename = Filename;
-    this.objDownloadMaster.MenuID = MenuId;
+  public downloadExcel(SP_Name:string, MenuId: number,Filename: string, DynamicQuery: string): Observable<Result> {
     let currentUser = this.authenticationService.currentUserValue;
+    this.objDownloadMaster.Filename = Filename;
+    this.objDownloadMaster.SP_Name = SP_Name;
+    this.objDownloadMaster.UserId = currentUser.UserId;
+    this.objDownloadMaster.CompanyID = currentUser.CompanyID;
+    this.objDownloadMaster.CompanyDetailID = currentUser.CompanyDetailID;
+    this.objDownloadMaster.MenuID = MenuId;
     DynamicQuery += " @CompanyID=" + currentUser.CompanyID + ",";
     DynamicQuery += "@CompanyDetailID=" + currentUser.CompanyDetailID + ",";
     DynamicQuery += "@UserId=" + currentUser.UserId + ",";

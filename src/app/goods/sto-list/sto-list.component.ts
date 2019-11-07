@@ -1,5 +1,5 @@
 import { Component, OnInit,OnDestroy  } from '@angular/core';
-import { NgxSpinnerService } from 'ngx-spinner';
+
 import { Router } from '@angular/router';
 import { Sto } from '../../_services/model';
 import { StoService } from '../../_services/service/sto.service';
@@ -30,7 +30,7 @@ export class StoListComponent implements OnInit, OnDestroy {
     'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
   }
   constructor(
-    private _spinner: NgxSpinnerService,
+    
     private _stoService: StoService,
     private router: Router,
     private _authorizationGuard: AuthorizationGuard) { }
@@ -64,17 +64,17 @@ export class StoListComponent implements OnInit, OnDestroy {
   onLoad(SearchBy: string, Search: string) {
     let startdate: Date = this.selectedDateRange.startDate._d.toISOString().substring(0, 10);
     let endDate: Date = this.selectedDateRange.endDate._d.toISOString().substring(0, 10);
-    this._spinner.show();
+    //
     return this._stoService.search(SearchBy, Search, startdate, endDate).subscribe(
       (data) => {
         if (data != null) {
           this.items = data;
           this.loadItems();
         }
-        this._spinner.hide();
+        //
       },
       (error) => {
-        this._spinner.hide();
+        //
         console.log(error);
       }
     )

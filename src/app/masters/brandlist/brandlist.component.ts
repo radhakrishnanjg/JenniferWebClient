@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { NgxSpinnerService } from 'ngx-spinner';
+
 import { ToastrService } from 'ngx-toastr';
 import { UsernameValidator } from '../../_validators/username';
 import { BrandService } from '../../_services/service/brand.service';
@@ -30,7 +30,7 @@ export class BrandlistComponent implements OnInit {
     private alertService: ToastrService,
     private _usernameValidator: UsernameValidator,
     private _uomService: BrandService,
-    private _spinner: NgxSpinnerService,
+    
     private _authorizationGuard: AuthorizationGuard,
     private fb: FormBuilder,
   ) { }
@@ -82,7 +82,7 @@ export class BrandlistComponent implements OnInit {
 
     this.brandForm = this.fb.group({
       BrandName: ['', [Validators.required, Validators.maxLength(30)]
-        , this._usernameValidator.existBrand(this.identity)
+        , this._usernameValidator.existBrand(this.identity,"AA")
       ],
       IsActive: [0,],
     });
@@ -113,7 +113,7 @@ export class BrandlistComponent implements OnInit {
 
     this.brandForm = this.fb.group({
       BrandName: ['', [Validators.required, Validators.maxLength(30)]
-        , this._usernameValidator.existBrand(this.identity)
+        , this._usernameValidator.existBrand(this.identity,"AA")
       ],
       IsActive: [0,],
     });
@@ -134,11 +134,11 @@ export class BrandlistComponent implements OnInit {
 
     this.brandForm = this.fb.group({
       BrandName: ['', [Validators.required]
-        , this._usernameValidator.existBrand(this.identity)
+        , this._usernameValidator.existBrand(this.identity,"AA")
       ],
       IsActive: [0,],
     });
-    this._spinner.show();
+    //
     this._uomService.searchById(this.identity)
       .subscribe(
         (data: Brand) => {
@@ -147,10 +147,10 @@ export class BrandlistComponent implements OnInit {
             IsActive: data.IsActive,
           });
           this.logValidationErrors();
-          this._spinner.hide();
+          //
         },
         (err: any) => {
-          this._spinner.hide();
+          //
           console.log(err)
         }
       );
@@ -189,15 +189,15 @@ export class BrandlistComponent implements OnInit {
     this.objBrand.BrandName = this.brandForm.controls['BrandName'].value;;
     this.objBrand.IsActive = this.brandForm.controls['IsActive'].value;
 
-    this._spinner.show();
+    //
     this._uomService.add(this.objBrand).subscribe(
       (data) => {
         if (data != null && data == true) {
-          this._spinner.hide();
+          //
           this.alertService.success('Brand data has been added successfully');
         }
         else {
-          this._spinner.hide();
+          //
           this.alertService.error('Brand creation failed!');
         }
         $('#modalpopupbrandupsert').modal('hide');
@@ -205,7 +205,7 @@ export class BrandlistComponent implements OnInit {
         this.identity = 0;
       },
       (error: any) => {
-        this._spinner.hide();
+        //
         console.log(error);
       }
     );
@@ -218,15 +218,15 @@ export class BrandlistComponent implements OnInit {
     this.objBrand.BrandName = this.brandForm.controls['BrandName'].value;
     this.objBrand.IsActive = this.brandForm.controls['IsActive'].value;
 
-    this._spinner.show();
+    //
     this._uomService.update(this.objBrand).subscribe(
       (data) => {
         if (data != null && data == true) {
-          this._spinner.hide();
+          //
           this.alertService.success('Brand data has been updated successful');
         }
         else {
-          this._spinner.hide();
+          //
           this.alertService.error('Brand not saved!');
         }
         $('#modalpopupbrandupsert').modal('hide');
@@ -234,7 +234,7 @@ export class BrandlistComponent implements OnInit {
         this.identity = 0;
       },
       (error: any) => {
-        this._spinner.hide();
+        //
         console.log(error);
       }
     );
@@ -250,7 +250,7 @@ export class BrandlistComponent implements OnInit {
     $('#modaldeleteconfimation').modal('show');
   }
   delete() {
-    this._spinner.show();
+    //
     this._uomService.delete(this.identity).subscribe(
       (data) => {
         if (data) {
@@ -261,27 +261,27 @@ export class BrandlistComponent implements OnInit {
         }
         $('#modaldeleteconfimation').modal('hide');
         this.identity = 0;
-        this._spinner.hide();
+        //
       },
       (error: any) => {
-        this._spinner.hide();
+        //
         console.log(error);
       }
     );
   }
 
   onLoad(SearchBy: string, Search: string, IsActive: Boolean) {
-    this._spinner.show();
+    //
     return this._uomService.search(SearchBy, Search, IsActive).subscribe(
       (lst) => {
         if (lst != null) { 
           this.items = lst;
           this.loadItems(); 
         }
-        this._spinner.hide();
+        //
       },
       (err) => {
-        this._spinner.hide();
+        //
         console.log(err);
       }
     );

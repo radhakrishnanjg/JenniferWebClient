@@ -3,7 +3,7 @@ import { PrivateutilityService } from '../../_services/service/privateutility.se
 import { SalesorderService } from '../../_services/service/salesorder.service';
 import { PoService } from '../../_services/service/po.service';
 import { FormGroup, Validators, FormBuilder, } from '@angular/forms';
-import { NgxSpinnerService } from 'ngx-spinner';
+
 import { ToastrService } from 'ngx-toastr';
 import { AuthorizationGuard } from '../../_guards/Authorizationguard';
 import {
@@ -81,7 +81,7 @@ export class SalesorderunsellableComponent implements OnInit {
     private _poService: PoService,
     private _PrivateutilityService: PrivateutilityService,
     private _authorizationGuard: AuthorizationGuard,
-    private _spinner: NgxSpinnerService,
+    
     public _alertService: ToastrService,
     private fb: FormBuilder,
     private router: Router,
@@ -176,48 +176,48 @@ export class SalesorderunsellableComponent implements OnInit {
     this.action = true;
     this.objSalesOrder.lstItem = [];
     this.gridData = this.objSalesOrder.lstItem;
-    this._spinner.show();
+    //
     this._PrivateutilityService.getCustomersSales().subscribe(
       (data) => {
         if (data != null) {
           this.customerList = data;
         }
-        this._spinner.hide();
+        //
       },
       (err) => {
-        this._spinner.hide();
+        //
         console.log(err);
       }
     );
-    this._spinner.show();
+    //
     this._poService.getOrderUOMs().subscribe(
       (res) => {
         this.uomList = res;
-        this._spinner.hide();
+        //
       }, (err) => {
-        this._spinner.hide();
+        //
         console.log(err);
       });
-    this._spinner.show();
+    //
     this._PrivateutilityService.GetValues('Courier')
       .subscribe(
         (data: Dropdown[]) => {
           this.lstDispatchThrough = data;
-          this._spinner.hide();
+          //
         },
         (err: any) => {
-          this._spinner.hide();
+          //
           console.log(err);
         }
       );
-    this._spinner.show();
+    //
     this._PrivateutilityService.getPaymentTerms().subscribe(
       (data: PaymentTermType[]) => {
         this.lstPaymentTermsID = data;
-        this._spinner.hide();
+        //
       },
       (err: any) => {
-        this._spinner.hide();
+        //
         console.log(err);
       }
     );
@@ -260,7 +260,7 @@ export class SalesorderunsellableComponent implements OnInit {
   }
 
   private getCurrentServerDateTime() {
-    this._spinner.show();
+    //
     this._PrivateutilityService.getCurrentDate()
       .subscribe(
         (data: Date) => {
@@ -270,12 +270,12 @@ export class SalesorderunsellableComponent implements OnInit {
           });
           this.orderMinDate = moment(data).add(0, 'days');
           this.OrderDate = new Date(mcurrentDate);
-          this._spinner.hide();
+          //
         },
         (err: any) => {
           console.log(err);
 
-          this._spinner.hide();
+          //
         }
       );
   }
@@ -283,47 +283,47 @@ export class SalesorderunsellableComponent implements OnInit {
   public onCustomerChange(customerID: number): void {
     console.log("customerID=" + customerID);
     this.objSalesOrder.CustomerID = customerID;
-    this._spinner.show();
+    //
     this._salesService.getOrderID(customerID).subscribe(
       (res) => {
         this.OrderID = res;
         this.objSalesOrder.lstItem = [];
         this.gridData = this.objSalesOrder.lstItem;
-        this._spinner.hide();
+        //
       }, (err) => {
-        this._spinner.hide();
+        //
         console.log(err);
       });
     this.getCustomerAddress(customerID);
     this.getCustomerWarehouse(customerID);
-    this._spinner.show();
+    //
     this._PrivateutilityService.getCustomerItemLevels(customerID).subscribe(
       (data) => {
         if (data != null) {
           this.itemList = data.filter(a => { return a.Type == 'Item' });
         }
-        this._spinner.hide();
+        //
       },
       (err) => {
         this.itemList = [];
         console.log(err);
-        this._spinner.hide();
+        //
       }
     );
   }
 
   public getCustomerAddress(customerID: number): void {
     if (customerID != 0) {
-      this._spinner.show();
+      //
       this._PrivateutilityService.getCustomerAddress(customerID).subscribe(
         (data) => {
           if (data != null) {
             this.BilledTo = data['Address1'];
           }
-          this._spinner.hide();
+          //
         },
         (err) => {
-          this._spinner.hide();
+          //
           console.log(err);
         }
       );
@@ -332,16 +332,16 @@ export class SalesorderunsellableComponent implements OnInit {
 
   public getCustomerWarehouse(customerID: number): void {
     if (customerID != 0) {
-      this._spinner.show();
+      //
       this._PrivateutilityService.getCustomerWarehouse(customerID).subscribe(
         (data) => {
           if (data != null) {
             this.customerWarehouseList = data;
           }
-          this._spinner.hide();
+          //
         },
         (err) => {
-          this._spinner.hide();
+          //
           console.log(err);
         }
       );
@@ -350,16 +350,16 @@ export class SalesorderunsellableComponent implements OnInit {
 
   public onCustomerWarehouseIDChange(customerWarehouseID: number): void {
     if (customerWarehouseID != 0) {
-      this._spinner.show();
+      //
       this._PrivateutilityService.getCustomerWarehouseAddress(customerWarehouseID).subscribe(
         (data) => {
           if (data != null) {
             this.ShipTo = data['Address1'];
           }
           this.onchangeIsBillTo_SameAs_ShipTo1();
-          this._spinner.hide();
+          //
         }, (err) => {
-          this._spinner.hide();
+          //
           console.log(err);
         });
     }
@@ -408,7 +408,7 @@ export class SalesorderunsellableComponent implements OnInit {
       //let OrderDate = OrderDate1;
       let CustomerID = this.salesForm.get("CustomerID").value;
       let TransactionType = this.customerList.filter(x => { return x.CustomerID == this.salesForm.controls['CustomerID'].value })[0].CustomerType;
-      this._spinner.show();
+      //
       this._salesService.getUnsellableQty(CustomerID, TransactionType, OrderDate).subscribe(
         (data) => {
           if (data != null) {
@@ -426,9 +426,9 @@ export class SalesorderunsellableComponent implements OnInit {
               },
             };
           }
-          this._spinner.hide();
+          //
         }, (err) => {
-          this._spinner.hide();
+          //
           console.log(err);
         });
     } else {
@@ -601,7 +601,7 @@ export class SalesorderunsellableComponent implements OnInit {
       return;
     }
     this.objSalesOrder.lstItemUnsellable = this.objunsell.lstunsellqty.filter(a => a.Qty > 0);
-    this.objSalesOrder.OrderID = this.OrderID; 
+    this.objSalesOrder.OrderID = this.OrderID;
     if (this.salesForm.controls['OrderDate'].value.startDate._d != undefined) {
       this.objSalesOrder.OrderDate = this.salesForm.controls['OrderDate'].value.startDate._d.toLocaleString();
     } else {
@@ -610,7 +610,6 @@ export class SalesorderunsellableComponent implements OnInit {
     this.objSalesOrder.CustomerID = this.salesForm.controls['CustomerID'].value;
     this.objSalesOrder.CustomerWarehouseID = this.salesForm.controls['CustomerWarehouseID'].value;
     this.objSalesOrder.ShipTo = this.ShipTo;
-
 
     this.objSalesOrder.BilledTo = this.BilledTo;
     this.objSalesOrder.InventoryType = this.salesForm.controls['InventoryType'].value;
@@ -622,10 +621,10 @@ export class SalesorderunsellableComponent implements OnInit {
     this.objSalesOrder.Remarks = this.salesForm.controls['Remarks'].value;
     this.objSalesOrder.IsBillTo_SameAs_ShipTo = this.salesForm.controls['IsBillTo_SameAs_ShipTo'].value;
 
-    this._spinner.show();
+    //
     this._salesService.Insert(this.objSalesOrder).subscribe(
       (data) => {
-        this._spinner.hide();
+        //
         if (data != null && data.Flag == true) {
           this._alertService.success(data.Msg);
           this.router.navigate(['/Salesorderlist']);
@@ -636,7 +635,7 @@ export class SalesorderunsellableComponent implements OnInit {
         }
         localStorage.removeItem("Unsellableqty");
       }, (err) => {
-        this._spinner.hide();
+        //
         console.log(err);
       });
     this.objSalesOrder = new Salesorder();

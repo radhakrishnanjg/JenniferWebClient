@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core'; 
 import { SalesorderService } from '../../_services/service/salesorder.service';
 import { FormGroup, } from '@angular/forms';
-import { NgxSpinnerService } from 'ngx-spinner';
+
 import { ToastrService } from 'ngx-toastr';
 import { AuthorizationGuard } from '../../_guards/Authorizationguard';
 import {
@@ -35,7 +35,7 @@ export class SalesorderapprovalComponent implements OnInit {
   constructor(
     private _salesService: SalesorderService, 
     private _authorizationGuard: AuthorizationGuard,
-    private _spinner: NgxSpinnerService,
+    
     public _alertService: ToastrService, 
     private router: Router,
     private aroute: ActivatedRoute,
@@ -50,11 +50,11 @@ export class SalesorderapprovalComponent implements OnInit {
       if (this.identity > 0) {
         this.panelTitle = "Sales Order Approval";
         this.action = false;
-        this._spinner.show();
+        //
         this._salesService.searchById(this.identity)
           .subscribe(
             (data: Salesorder) => {
-              this._spinner.hide();
+              //
               this.objSalesOrder = data;
               this.TotalCaseSize = data.lstItem.reduce((acc, a) => acc + a.Units, 0);
               this.TotalMultiplierValue = data.lstItem.reduce((acc, a) => acc + a.MultiplierValue, 0);
@@ -67,7 +67,7 @@ export class SalesorderapprovalComponent implements OnInit {
               this.TotalTotalAmount = data.lstItem.reduce((acc, a) => acc + a.TotalValue, 0);
             },
             (err) => {
-              this._spinner.hide();
+              //
               console.log(err);
             }
           );
@@ -84,7 +84,7 @@ export class SalesorderapprovalComponent implements OnInit {
       this.identity = +params.get('id');
     });
     let ApprovalStatus = buttonType == "Approve" ? 'Approved' : 'Rejected';
-    this._spinner.show();
+    //
     this._salesService.approval(this.identity, ApprovalStatus).subscribe(
       (data) => {
         if (data != null && data.Flag == true) {
@@ -93,10 +93,10 @@ export class SalesorderapprovalComponent implements OnInit {
           this._alertService.error(data.Msg);
         }
         this.router.navigate(['/Salesorderapprovallist']);
-        this._spinner.hide();
+        //
       },
       (error: any) => {
-        this._spinner.hide();
+        //
         console.log(error);
       }
     ); 

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { NgxSpinnerService } from 'ngx-spinner';
+
 import { ToastrService } from 'ngx-toastr';
 import { AuthorizationGuard } from '../../_guards/Authorizationguard';
 
@@ -27,7 +27,7 @@ export class HelpmenulistComponent implements OnInit {
   constructor(
     private alertService: ToastrService,
     private router: Router,
-    private _spinner: NgxSpinnerService,
+    
     private _HelpmenuService: HelpmenuService,
     private _authorizationGuard: AuthorizationGuard
 
@@ -57,17 +57,17 @@ export class HelpmenulistComponent implements OnInit {
   }
 
   onLoad(SearchBy: string, Search: string, IsActive: Boolean) {
-    this._spinner.show();
+    //
     return this._HelpmenuService.search(SearchBy, Search, IsActive).subscribe(
       (lst) => {
         if (lst != null) {
           this.items = lst;
           this.loadItems();
         }
-        this._spinner.hide();
+        //
       },
       (err) => {
-        this._spinner.hide();
+        //
         console.log(err);
       }
     );

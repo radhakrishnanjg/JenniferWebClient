@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { PrivateutilityService } from '../../_services/service/privateutility.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { NgxSpinnerService } from 'ngx-spinner';
+
 import { ToastrService } from 'ngx-toastr';
 import { SalesShipmentService } from '../../_services/service/sales-shipment.service';
 import { PoService } from '../../_services/service/po.service';
@@ -44,7 +44,7 @@ export class SalesShipmentComponent implements OnInit {
     private _salesShipmentService: SalesShipmentService,
     private _authenticationService: AuthenticationService,
     private fb: FormBuilder,
-    private _spinner: NgxSpinnerService,
+    
     private _authorizationGuard: AuthorizationGuard,
     private usernameValidator: UsernameValidator,
     private aroute: ActivatedRoute,
@@ -124,16 +124,16 @@ export class SalesShipmentComponent implements OnInit {
     this.getSalesShipmentID();
     this.getUOMs();
     this.getInvoiceNumbers();
-    this._spinner.show();
+    //
     this.PrivateutilityService.GetValues('Courier')
       .subscribe(
         (data: Dropdown[]) => {
           this.lstCourier = data;
-          this._spinner.hide();
+          //
         },
         (err: any) => {
           console.log(err)
-          this._spinner.hide();
+          //
         }
       );
 
@@ -153,43 +153,43 @@ export class SalesShipmentComponent implements OnInit {
   }
 
   public getSalesShipmentID(): void {
-    this._spinner.show();
+    //
     this._salesShipmentService.generateSalesShipment().subscribe(
       (res) => {
         this.obj.SalesShipmentID = res;
         this.salesShipmentForm.controls['SalesShipmentID'].setValue(res);
-        this._spinner.hide();
+        //
         console.log(this.obj.SalesShipmentID)
       }, (err) => {
-        this._spinner.hide();
+        //
         console.log(err);
       });
   }
 
   public getInvoiceNumbers(): void {
-    this._spinner.show();
+    //
     this.PrivateutilityService.getInvoiceNumbers().subscribe(
       (res) => {
         this.invoiceNumbers = res;
         this.lstInvoiceNumber = res;
         this.invoiceNumbers.forEach(obj => { this.invoiceNumberList.push(obj.InvoiceNumber) });
-        this._spinner.hide();
+        //
         console.log(this.invoiceNumbers)
       }, (err) => {
-        this._spinner.hide();
+        //
         console.log(err);
       });
   }
 
   public getUOMs(): void {
-    this._spinner.show();
+    //
     this._poService.getOrderUOMs().subscribe(
       (res) => {
         this.lstUOM = res;
-        this._spinner.hide();
+        //
         //console.log(this.uomList)
       }, (err) => {
-        this._spinner.hide();
+        //
         console.log(err);
       });
   }
@@ -221,22 +221,22 @@ export class SalesShipmentComponent implements OnInit {
     this.obj.Weight = this.salesShipmentForm.controls['Weight'].value;
     this.obj.UOMID = this.salesShipmentForm.controls['UOMID'].value;
 
-    this._spinner.show();
+    //
     this._salesShipmentService.add(this.obj).subscribe(
       (data) => {
         if (data != null && data.Flag == true) {
-          this._spinner.hide();
+          //
           this.alertService.success(data.Msg);
           this._router.navigate(['/Salesshipmentlist']);
         }
         else {
-          this._spinner.hide();
+          //
           this.alertService.error(data.Msg);
           this._router.navigate(['/Salesshipmentlist']);
         }
       },
       (error: any) => {
-        this._spinner.hide();
+        //
         console.log(error);
       }
     );

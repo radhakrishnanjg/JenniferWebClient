@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { NgxSpinnerService } from 'ngx-spinner';
+
 import { ToastrService } from 'ngx-toastr';
 import { UsernameValidator } from '../../_validators/username';
 import { MarketplaceService } from '../../_services/service/marketplace.service';
@@ -30,7 +30,7 @@ export class MarketplacelistComponent implements OnInit {
     private alertService: ToastrService,
     private _usernameValidator: UsernameValidator,
     private _marketplaceService: MarketplaceService,
-    private _spinner: NgxSpinnerService,
+    
     private _authorizationGuard: AuthorizationGuard,
     private fb: FormBuilder,
   ) { }
@@ -188,15 +188,15 @@ export class MarketplacelistComponent implements OnInit {
     this.objMarketplace.MarketPlace = this.marketplaceForm.controls['MarketPlace'].value;;
     this.objMarketplace.IsActive = this.marketplaceForm.controls['IsActive'].value;
 
-    this._spinner.show();
+    //
     this._marketplaceService.add(this.objMarketplace).subscribe(
       (data) => {
         if (data != null && data == true) {
-          this._spinner.hide();
+          //
           this.alertService.success('Marketplace data has been added successfully');
         }
         else {
-          this._spinner.hide();
+          //
           this.alertService.error('Marketplace creation failed!');
         }
         $('#modalpopupbrandupsert').modal('hide');
@@ -204,7 +204,7 @@ export class MarketplacelistComponent implements OnInit {
         this.identity = 0;
       },
       (error: any) => {
-        this._spinner.hide();
+        //
         console.log(error);
       }
     );
@@ -217,15 +217,15 @@ export class MarketplacelistComponent implements OnInit {
     this.objMarketplace.MarketPlace = this.marketplaceForm.controls['MarketPlace'].value;
     this.objMarketplace.IsActive = this.marketplaceForm.controls['IsActive'].value;
 
-    this._spinner.show();
+    //
     this._marketplaceService.update(this.objMarketplace).subscribe(
       (data) => {
         if (data != null && data == true) {
-          this._spinner.hide();
+          //
           this.alertService.success('Marketplace data has been updated successful');
         }
         else {
-          this._spinner.hide();
+          //
           this.alertService.error('Marketplace not saved!');
         }
         $('#modalpopupbrandupsert').modal('hide');
@@ -233,7 +233,7 @@ export class MarketplacelistComponent implements OnInit {
         this.identity = 0;
       },
       (error: any) => {
-        this._spinner.hide();
+        //
         console.log(error);
       }
     );
@@ -241,7 +241,7 @@ export class MarketplacelistComponent implements OnInit {
   }
 
   delete() {
-    this._spinner.show();
+    //
     this._marketplaceService.delete(this.identity).subscribe(
       (data) => {
         if (data) {
@@ -252,27 +252,27 @@ export class MarketplacelistComponent implements OnInit {
         }
         $('#modaldeleteconfimation').modal('hide');
         this.identity = 0;
-        this._spinner.hide();
+        //
       },
       (error: any) => {
-        this._spinner.hide();
+        //
         console.log(error);
       }
     );
   }
 
   onLoad(SearchBy: string, Search: string, IsActive: Boolean) {
-    this._spinner.show();
+    //
     return this._marketplaceService.search(SearchBy, Search, IsActive).subscribe(
       (data) => {
         if (data != null) { 
           this.items = data;
           this.loadItems(); 
         }
-        this._spinner.hide();
+        //
       },
       (err) => {
-        this._spinner.hide();
+        //
         console.log(err);
       }
     );

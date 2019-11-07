@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NgxSpinnerService } from 'ngx-spinner';
+
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -32,7 +32,7 @@ export class CustomerwarehouseComponent implements OnInit {
     private fb: FormBuilder,
     private _router: Router,
     private aroute: ActivatedRoute,
-    public _spinner: NgxSpinnerService,
+    
     private _customerwarehouseService: CustomerwarehouseService,
     private utilityService: UtilityService,
     private _PrivateutilityService: PrivateutilityService,
@@ -132,29 +132,29 @@ export class CustomerwarehouseComponent implements OnInit {
   }
 
   ngOnInit() {
-    this._spinner.show();
+    //
     this.utilityService.getCountries()
       .subscribe(
         (data: Country[]) => {
           this.countries = data;
-          this._spinner.hide();
+          //
         },
         (err: any) => {
           console.log(err)
-          this._spinner.hide();
+          //
         }
       );
 
-    this._spinner.show();
+    //
     this._PrivateutilityService.getCustomers()
       .subscribe(
         (data: Customer[]) => {
           this.lstCustomer = data;
-          this._spinner.hide();
+          //
         },
         (err: any) => {
           console.log(err)
-          this._spinner.hide();
+          //
         }
       );
 
@@ -164,33 +164,33 @@ export class CustomerwarehouseComponent implements OnInit {
       if (this.identity > 0) {
         this.panelTitle = "Edit Customer Warehouse";
         this.action = false;
-        this._spinner.show();
+        //
         this._customerwarehouseService.searchById(this.identity)
           .subscribe(
             (data: Customerwarehouse) => {
               var CountryID = data.CountryID.toString();
-              this._spinner.show();
+              //
               this.utilityService.getStates(parseInt(CountryID))
                 .subscribe(
                   (statesa: State[]) => {
                     this.states = statesa;
-                    this._spinner.hide();
+                    //
                   },
                   (err: any) => {
                     console.log(err)
-                    this._spinner.hide();
+                    //
                   }
                 );
-              this._spinner.show();
+              //
               this._PrivateutilityService.getCustomers()
                 .subscribe(
                   (data1: Customer[]) => {
                     this.lstCustomer = data1;
-                    this._spinner.hide();
+                    //
                   },
                   (err: any) => {
                     console.log(err)
-                    this._spinner.hide();
+                    //
                   }
                 );
 
@@ -255,6 +255,7 @@ export class CustomerwarehouseComponent implements OnInit {
         this.customerwarehouseform.get('GSTNumber').enable();
       } else {
         $('#GSTNumber').val(' ');
+        this.customerwarehouseform.patchValue({ GSTNumber: ' ' });
         this.customerwarehouseform.get('GSTNumber').disable(); 
       }
     }
@@ -263,15 +264,15 @@ export class CustomerwarehouseComponent implements OnInit {
   onchangeCountryID(selectedValue: string) {
     let countrid = parseInt(selectedValue);
     if (countrid > 0) {
-      this._spinner.show();
+      //
       this.utilityService.getStates(countrid)
         .subscribe(
           (data: State[]) => {
             this.states = data;
-            this._spinner.hide();
+            //
           },
           (err: any) => {
-            this._spinner.hide();
+            //
             console.log(err);
           }
         );
@@ -319,7 +320,7 @@ export class CustomerwarehouseComponent implements OnInit {
 
     this.obj.IsActive = this.customerwarehouseform.controls['IsActive'].value;
 
-    this._spinner.show();
+    //
     this._customerwarehouseService.exist(this.identity, this.obj.WarehouseName, this.obj.CustomerID)
       .subscribe(
         (data) => {
@@ -327,31 +328,31 @@ export class CustomerwarehouseComponent implements OnInit {
             this.alertService.error('This warehouse is already registered');
           }
           else {
-            this._spinner.show();
+            //
             this._customerwarehouseService.add(this.obj).subscribe(
               (data) => {
                 if (data != null && data == true) {
-                  this._spinner.hide();
+                  //
                   this.alertService.success('Customer warehouse data has been added successful');
                   this._router.navigate(['/Customerwarehouselist']);
                 }
                 else {
-                  this._spinner.hide();
+                  //
                   this.alertService.error('Customer warehouse data not saved!');
                   this._router.navigate(['/Customerwarehouselist']);
                 }
                 this.identity = 0;
               },
               (error: any) => {
-                this._spinner.hide();
+                //
                 console.log(error);
               }
             );
           }
-          this._spinner.hide();
+          //
         },
         (error: any) => {
-          this._spinner.hide();
+          //
         }
       );
   }
@@ -375,7 +376,7 @@ export class CustomerwarehouseComponent implements OnInit {
 
     this.obj.IsActive = this.customerwarehouseform.controls['IsActive'].value;
 
-    this._spinner.show();
+    //
     this._customerwarehouseService.exist(this.identity, this.obj.WarehouseName, this.obj.CustomerID)
       .subscribe(
         (data) => {
@@ -383,31 +384,31 @@ export class CustomerwarehouseComponent implements OnInit {
             this.alertService.error('This warehouse is already registered');
           }
           else {
-            this._spinner.show();
+            //
             this._customerwarehouseService.update(this.obj).subscribe(
               (data) => {
                 if (data != null && data == true) {
-                  this._spinner.hide();
+                  //
                   this.alertService.success('Customer warehouse detail data has been updated successful');
                   this._router.navigate(['/Customerwarehouselist']);
                 }
                 else {
-                  this._spinner.hide();
+                  //
                   this.alertService.error('Customer warehouse detail not saved!');
                   this._router.navigate(['/Customerwarehouselist']);
                 }
                 this.identity = 0;
               },
               (error: any) => {
-                this._spinner.hide();
+                //
                 console.log(error);
               }
             );
           }
-          this._spinner.hide();
+          //
         },
         (error: any) => {
-          this._spinner.hide();
+          //
         }
       );
   }

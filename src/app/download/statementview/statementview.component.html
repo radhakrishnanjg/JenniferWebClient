@@ -1,0 +1,414 @@
+<div class="row">
+  <div class="col-sm-6 col-lg-6">
+    <h3>
+      Statements
+    </h3>
+  </div>
+  <div class="col-sm-6 col-lg-6">
+    <div class="pull-right hidden-xs">
+      <ol class="breadcrumb" id="dynamicbreadcrumb">
+        <li>
+          <span> Payments</span>
+        </li>
+        <li>
+          <span> Statements</span>
+        </li>
+        <li class="active">
+          View
+        </li>
+      </ol>
+    </div>
+  </div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <div class="row">
+      <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
+        <button type="button" class="btn btn-success" (click)="pdf.saveAs(obj?.StatementNumber+ '.pdf')">
+          Save As PDF
+        </button>
+      </div>
+      <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 ">
+        <div class="pull-right">
+          <button  type="button" class="btn btn-primary" routerLink="/Statementlist" title="Back">
+            Back
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel-body">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="table-responsive">
+          <kendo-pdf-export #pdf paperSize="A4" margin="1cm" landscape="true">
+            <table class="table table-bordered table-condensed  table-striped" width="3508px" style=" font-family: Verdana, Geneva, Tahoma, sans-serif;
+              font-size:9px;background-color: #fff;color:#000;">
+              <tr>
+                <td colspan="6" class="text-right">
+                  <b>Payment Statement</b> <br>
+                  <small>All amounts in INR</small>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="6">
+                  <b>Summaries -</b> Includes only Fulfilment by Amazon (FBA)
+                  transactions with Valuecart India Private
+                  Limited
+                </td>
+              </tr>
+              <tr>
+                <th colspan="2" class="text-center">
+                  <i>Merchant Details</i>
+                </th>
+                <th colspan="2" class="text-center">
+                  <i> References</i>
+                </th>
+                <th colspan="2" class="text-center">
+                  <i>Quota Status</i>
+                </th>
+              </tr>
+              <tr>
+                <td colspan="2" class="grey">
+                  <b>Merchant Name:</b> {{obj?.SellerName}}
+                </td>
+                <td colspan="2" class="grey">
+                  <b>FBA Shipment ID:</b> {{obj?.ShipmentID}}
+                </td>
+                <td colspan="2" class="grey">
+                  <b>Available Quota:</b> {{obj?.Remaining_Perc}}%
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2" class="grey">
+                  <b>Merchant ID:</b> {{obj?.AmazonID}}
+                </td>
+                <td colspan="2">
+                  <b>Shipment Value:</b> {{obj?.PurchaseCost | currency: 'INR'}}
+                </td>
+                <td colspan="2">
+                  <b>Balance Payable:</b> {{obj?.PurchaseBalance | currency: 'INR'}}
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2" class="grey">
+
+                </td>
+                <td colspan="2" class="grey">
+                  <b>Investment Recovered:</b> {{obj?.Recover_Perc}}%
+                </td>
+                <td colspan="2" class="grey">
+                  <b>Amount Payable:</b> {{obj?.PaidAmt | currency: 'INR'}}
+                </td>
+              </tr>
+              <tr>
+                <td colspan="6" class="text-center">
+                  <b><u>Statement Summary</u></b>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="6">
+                  <div class="pull-left">
+                    Statement Number: <i>{{obj?.StatementNumber}}</i> <br>
+                    Statement Date: {{obj?.StatementDate | date:'MM-dd-yyyy'}}
+                  </div>
+                  <div class="pull-right">
+                    Credits from Amazon.in of INR <b>{{obj?.AmazonCredits | currency: 'INR'}}</b> on
+                    {{obj?.CreditDate | date:'MM-dd-yyyy'}}
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class="text-left" style="width:35%">
+                  <b>Opening Balance of Previous Statement</b>
+                </td>
+                <td style="width:7%">
+
+                </td>
+                <td class="text-right" style="width:8%" [ngClass]="obj?.Stateopbalance < 0?'red':'green'">
+                  <b>{{obj?.Stateopbalance | currency: 'INR'}} </b>
+                </td>
+                <td class="text-left" style="width:35%">
+                  <b>IOR Investments </b>
+                </td>
+                <td style="width:7%">
+
+                </td>
+                <td class="text-right" style="width:8%" [ngClass]="obj?.Investments < 0?'red':'green'">
+                  <b>{{obj?.Investments | currency: 'INR'}} </b>
+                </td>
+
+              </tr>
+              <tr>
+                <td>
+
+                </td>
+                <td>
+
+                </td>
+                <td>
+
+                </td>
+                <td class="text-left">
+                  Investment in Customs Duty
+                </td>
+                <td class="text-right" [ngClass]="obj?.Investments < 0?'red':'green'">
+                  {{obj?.Investments | currency: 'INR'}}
+                </td>
+                <td class="text-right">
+
+                </td>
+
+              </tr>
+              <tr>
+                <td class="text-left">
+                  <b>Marketplace Credits </b>
+                </td>
+                <td>
+
+                </td>
+                <td class="text-right" [ngClass]="obj?.MPCredits < 0?'red':'green'">
+                  <b>{{obj?.MPCredits | currency: 'INR'}} </b>
+                </td>
+                <td class="text-left">
+                  Others (if any)
+                </td>
+                <td class="text-right green">
+                  0
+                </td>
+                <td class="text-right">
+
+                </td>
+
+              </tr>
+              <tr>
+                <td class="text-left">
+                  Previous Credits Balance
+                </td>
+                <td class="text-right" [ngClass]="obj?.OpeningBalance < 0?'red':'green'">
+                  {{obj?.OpeningBalance | currency: 'INR'}}
+                </td>
+                <td class="text-right">
+
+                </td>
+                <td class="text-left">
+
+                </td>
+                <td>
+
+                </td>
+                <td class="text-right">
+
+                </td>
+
+              </tr>
+              <tr>
+                <td class="text-left">
+                  Credits from Amazon.in
+                </td>
+                <td class="text-right" [ngClass]="obj?.AmazonCredits < 0?'red':'green'">
+                  {{obj?.AmazonCredits | currency: 'INR'}}
+                </td>
+                <td class="text-right">
+
+                </td>
+                <td class="text-left">
+                  <b>Taxes </b>
+                </td>
+                <td>
+
+                </td>
+                <td class="text-right" [ngClass]="obj?.GSTOutFlow < 0?'red':'green'">
+                  <b>{{obj?.GSTOutFlow | currency: 'INR'}} </b>
+                </td>
+
+              </tr>
+              <tr>
+                <td class="text-left">
+
+                </td>
+                <td>
+
+                </td>
+                <td class="text-right">
+
+                </td>
+                <td class="text-left">
+                  GST Outflow on Sales
+                </td>
+                <td class="text-right" [ngClass]="obj?.GSTOutFlow < 0?'red':'green'">
+                  {{obj?.GSTOutFlow | currency: 'INR'}}
+                </td>
+                <td class="text-right">
+
+                </td>
+
+              </tr>
+              <tr>
+                <td class="text-left">
+                  <b> Net Revenue </b>
+                </td>
+                <td>
+
+                </td>
+                <td class="text-right" [ngClass]="obj?.SalesAfterExp < 0?'red':'green'">
+                  <b>{{obj?.SalesAfterExp | currency: 'INR'}} </b>
+                </td>
+                <td class="text-left">
+
+                </td>
+                <td>
+
+                </td>
+                <td class="text-right">
+
+                </td>
+
+              </tr>
+              <tr>
+                <td class="text-left">
+                  Net Sales in Amazon.in
+                </td>
+                <td class="text-right" [ngClass]="obj?.TotalSales < 0?'red':'green'">
+                  {{obj?.TotalSales | currency: 'INR'}}
+                </td>
+                <td class="text-right">
+
+                </td>
+                <td class="text-left">
+                  <b>Commissions </b>
+                </td>
+                <td>
+
+                </td>
+                <td class="text-right" [ngClass]="obj?.IORMargin < 0?'red':'green'">
+                  <b>{{obj?.IORMargin | currency: 'INR'}} </b>
+                </td>
+
+              </tr>
+              <tr>
+                <td class="text-left">
+                  Expenses on net Sales
+                </td>
+                <td class="text-right" [ngClass]="obj?.TotalAmazonExpenses < 0?'red':'green'">
+                  {{obj?.TotalAmazonExpenses | currency: 'INR'}}
+                </td>
+                <td class="text-right">
+
+                </td>
+                <td class="text-left">
+                  IOR Margin @3.5%
+                </td>
+                <td class="text-right" [ngClass]="obj?.IORMargin < 0?'red':'green'">
+                  {{obj?.IORMargin | currency: 'INR'}}
+                </td>
+                <td class="text-right">
+
+                </td>
+
+              </tr>
+              <tr>
+                <td class="text-left">
+
+                </td>
+                <td>
+
+                </td>
+                <td class="text-right">
+
+                </td>
+                <td class="text-left">
+                  Software Charges
+                </td>
+                <td class="text-right green">
+                  0
+                </td>
+                <td class="text-right">
+
+                </td>
+
+              </tr>
+              <tr>
+                <td class="text-left">
+                  <b> Adjustments(+/-) </b>
+                </td>
+                <td>
+
+                </td>
+                <td class="text-right" [ngClass]="obj?.ClosingBalance < 0?'red':'green'">
+                  <b>{{obj?.ClosingBalance | currency: 'INR'}} </b>
+                </td>
+                <td class="text-left">
+
+                </td>
+                <td>
+
+                </td>
+                <td class="text-right">
+
+                </td>
+
+              </tr>
+              <tr>
+                <td class="text-left">
+                  Others(Unreconciled Credits)
+                </td>
+                <td class="text-right" [ngClass]="obj?.ClosingBalance < 0?'red':'green'">
+                  {{obj?.ClosingBalance | currency: 'INR'}}
+                </td>
+                <td class="text-right">
+
+                </td>
+                <td class="text-left">
+
+                </td>
+                <td>
+
+                </td>
+                <td class="text-right">
+
+                </td>
+
+              </tr>
+              <tr>
+                <td class="text-left">
+                  <b>Payable to {{obj?.SellerName}}</b>
+                </td>
+                <td>
+
+                </td>
+                <td class="text-right" [ngClass]="obj?.PayabletoMerchant < 0?'red':'green'">
+                  <b>{{obj?.PayabletoMerchant | currency: 'INR'}}</b>
+                </td>
+                <td class="text-left">
+                  <b>Total Deductions </b>
+                </td>
+                <td>
+
+                </td>
+                <td class="text-right" [ngClass]="obj?.Deductions < 0?'red':'green'">
+                  <b>{{obj?.Deductions | currency: 'INR'}} </b>
+                </td>
+
+              </tr>
+              <tr>
+                <td colspan="6" class="text-right">
+                  <b> Closing Balance Amount {{obj?.StatementOPBal | currency: 'INR'}}</b>
+                </td>
+              </tr>
+            </table>
+          </kendo-pdf-export>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel-footer">
+    <div class="btn-toolbar pull-right">
+      <button type="button" title="Cancel"  type="button" class="btn btn-primary" routerLink="/Statementlist">Cancel</button>
+    </div>
+    <div class="clearfix"></div>
+  </div>
+</div>

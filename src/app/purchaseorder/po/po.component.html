@@ -227,7 +227,7 @@
         </div>
       </div>
     </div>
-    <kendo-grid [data]="gridData" (edit)="editHandler($event)" (cancel)="cancelHandler($event)"
+    <kendo-grid [data]="gridData" resizable="true" (edit)="editHandler($event)" (cancel)="cancelHandler($event)"
       (save)="saveHandler($event)" (remove)="removeHandler($event)" (add)="addHandler($event)" [height]="410">
       <ng-template kendoGridToolbarTemplate>
         <button kendoGridAddCommand>Add Item</button>

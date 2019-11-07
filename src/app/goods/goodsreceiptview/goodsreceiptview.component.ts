@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core'; 
 import { ActivatedRoute,   } from '@angular/router';
-import { NgxSpinnerService } from 'ngx-spinner';
+
 import { ToastrService } from 'ngx-toastr';
 import { GoodsReceiptService } from '../../_services/service/goods-receipt.service';
 import { PrivateutilityService } from '../../_services/service/privateutility.service'; 
@@ -27,14 +27,14 @@ export class GoodsreceiptviewComponent implements OnInit {
     public _goodsreceiptService: GoodsReceiptService,
     public _privateutilityService: PrivateutilityService,
     public _alertService: ToastrService,
-    public _spinner: NgxSpinnerService,
+    
     private aroute: ActivatedRoute) { }
 
   ngOnInit() {
     this.aroute.paramMap.subscribe(params => {
       this.identity = +params.get('id');
       if (this.identity > 0) {
-        this._spinner.show();
+        //
         this._goodsreceiptService.searchById(this.identity)
           .subscribe(
             (data: GoodsReceipt) => {
@@ -61,11 +61,11 @@ export class GoodsreceiptviewComponent implements OnInit {
               this.InventoryOthers = data.ItemDetails.reduce((acc, a) => acc + a.InventoryOthersQty, 0);
               this.TotalReceived = data.ItemDetails.reduce((acc, a) => acc + a.TotalReceivedQty, 0);
 
-              this._spinner.hide();
+              //
             },
             (err: any) => {
               console.log(err);
-              this._spinner.hide();
+              //
             }
           );
       }

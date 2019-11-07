@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { NgxSpinnerService } from 'ngx-spinner';
+
 import { ToastrService } from 'ngx-toastr';
 import { DiscountService } from '../../_services/service/discount.service';
 import { Discount, Customer, Dropdown, ProductGroup, Category, SubCategory, Item } from '../../_services/model';
@@ -67,7 +67,7 @@ export class DiscountlistComponent implements OnInit {
   constructor(
     private alertService: ToastrService,
     private _discountService: DiscountService,
-    private _spinner: NgxSpinnerService,
+    
     private _authorizationGuard: AuthorizationGuard,
     private fb: FormBuilder,
     private _PrivateutilityService: PrivateutilityService,
@@ -215,17 +215,17 @@ export class DiscountlistComponent implements OnInit {
   }
 
   private getCurrentServerDateTime() {
-    this._spinner.show();
+    //
     this._PrivateutilityService.getCurrentDate()
       .subscribe(
         (data: Date) => {
           this.MinDate = moment(data).add(0, 'days');
-          this._spinner.hide();
+          //
         },
         (err: any) => {
           console.log(err);
 
-          this._spinner.hide();
+          //
         }
       );
   }
@@ -236,38 +236,38 @@ export class DiscountlistComponent implements OnInit {
       return;
     }
     this.getCurrentServerDateTime();
-    this._spinner.show();
+    //
     this._PrivateutilityService.GetValues('TransactionType')
       .subscribe(
         (data: Dropdown[]) => {
           this.lstTransactionType = data;
-          this._spinner.hide();
+          //
         },
         (err: any) => {
           console.log(err);
         }
       );
-    this._spinner.show();
+    //
     this._PrivateutilityService.GetValues('InventoryType')
       .subscribe(
         (data: Dropdown[]) => {
           this.lstInventoryType = data;
-          this._spinner.hide();
+          //
         },
         (err: any) => {
-          console.log(err); this._spinner.hide();
+          console.log(err); //
         }
       );
-    this._spinner.show();
+    //
     this._PrivateutilityService.getProductGroups()
       .subscribe(
         (data: ProductGroup[]) => {
           this.lstProductGroup = data;
-          this._spinner.hide();
+          //
         },
         (err: any) => {
           console.log(err);
-          this._spinner.hide();
+          //
         }
       );
 
@@ -300,47 +300,47 @@ export class DiscountlistComponent implements OnInit {
   //   if (this._authorizationGuard.CheckAcess("Discountlist", "ViewEdit")) {
   //     return;
   //   } 
-  //   this._spinner.show();
+  //   //
   //   this._PrivateutilityService.GetValues('TransactionType')
   //     .subscribe(
   //       (data: Dropdown[]) => {
   //         this.lstTransactionType = data;
-  //         this._spinner.hide();
+  //         //
   //       },
   //       (err: any) => {
   //         console.log(err);
-  //         this._spinner.hide();
+  //         //
   //       }
   //     );
-  //   this._spinner.show();
+  //   //
   //   this._PrivateutilityService.GetValues('InventoryType')
   //     .subscribe(
   //       (data: Dropdown[]) => {
   //         this.lstInventoryType = data;
-  //         this._spinner.hide();
+  //         //
   //       },
   //       (err: any) => {
   //         console.log(err);
-  //         this._spinner.hide();
+  //         //
   //       }
   //     );
-  //   this._spinner.show();
+  //   //
   //   this._PrivateutilityService.getProductGroups()
   //     .subscribe(
   //       (data: ProductGroup[]) => {
   //         this.lstProductGroup = data;
-  //         this._spinner.hide();
+  //         //
   //       },
   //       (err: any) => {
   //         console.log(err);
-  //         this._spinner.hide();
+  //         //
   //       }
   //     );
 
   //   this.panelTitle = "Edit Discount";
   //   this.action = false;
   //   this.identity = + id;
-  //   this._spinner.show();
+  //   //
   //   this._discountService.searchById(this.identity)
   //     .subscribe(
   //       (data: Discount) => {
@@ -382,11 +382,11 @@ export class DiscountlistComponent implements OnInit {
   //         //this.logValidationErrors();
   //         this.onchangeContribution();
   //         //this.onchangeSubCategoryID("-1");
-  //         this._spinner.hide();
+  //         //
   //       },
   //       (err: any) => {
   //         console.log(err);
-  //         this._spinner.hide();
+  //         //
   //       }
   //     );
   //   $('#modalpopup_discount').modal('show');
@@ -394,16 +394,16 @@ export class DiscountlistComponent implements OnInit {
 
   onchangeTransactionType(selectedValue: string) {
     if (selectedValue != "") {
-      this._spinner.show();
+      //
       this._PrivateutilityService.getAllCustomersBasedType(selectedValue)
         .subscribe(
           (data: Customer[]) => {
             this.lstCustomer = data
-            this._spinner.hide();
+            //
           },
           (err: any) => {
             console.log(err);
-            this._spinner.hide();
+            //
           }
         );
     }
@@ -412,16 +412,16 @@ export class DiscountlistComponent implements OnInit {
   onchangeProductGroupID(selectedValue: string) {
     let id = parseInt(selectedValue);
     if (id > 0) {
-      this._spinner.show();
+      //
       this._PrivateutilityService.getCategories(id)
         .subscribe(
           (statesa: Category[]) => {
             this.lstCategory = statesa;
-            this._spinner.hide();
+            //
           },
           (err: any) => {
             console.log(err);
-            this._spinner.hide();
+            //
           }
         );
     }
@@ -430,16 +430,16 @@ export class DiscountlistComponent implements OnInit {
   onchangeCategoryID(selectedValue: string) {
     let id = parseInt(selectedValue);
     if (id > 0) {
-      this._spinner.show();
+      //
       this._PrivateutilityService.getSubCategories(id)
         .subscribe(
           (data: SubCategory[]) => {
             this.lstSubCategory = data
-            this._spinner.hide();
+            //
           },
           (err: any) => {
             console.log(err);
-            this._spinner.hide();
+            //
           }
         );
     }
@@ -448,7 +448,7 @@ export class DiscountlistComponent implements OnInit {
   onchangeSubCategoryID(selectedValue: string) {
     let id = parseInt(selectedValue);
     if (id > 0) {
-      this._spinner.show();
+      //
       this._PrivateutilityService.getItems(id)
         .subscribe(
           (data: Item[]) => {
@@ -457,11 +457,11 @@ export class DiscountlistComponent implements OnInit {
             this.objItem.ItemCode = 'Select';
             this.lstItemSelected = [] as any;
             this.lstItemSelected.push(this.objItem);
-            this._spinner.hide();
+            //
           },
           (err: any) => {
             console.log(err);
-            this._spinner.hide();
+            //
           }
         );
     }
@@ -526,15 +526,15 @@ export class DiscountlistComponent implements OnInit {
     this.objDiscount.StartDate = this.discountForm.controls['StartDate'].value.startDate._d.toLocaleString();
     this.objDiscount.EndDate = this.discountForm.controls['EndDate'].value.startDate._d.toLocaleString();
     var Itemids = this.discountForm.controls['ItemID'].value.map(a => a.ItemID);
-    this._spinner.show();
+    //
     this._discountService.upsert(this.objDiscount, Itemids).subscribe(
       (data) => {
         if (data && data.Flag == true) {
-          this._spinner.hide();
+          //
           this.alertService.success('Discount  data has been added successfully');
         }
         else {
-          this._spinner.hide();
+          //
           this.alertService.error(data.Msg);
         }
         $('#modalpopup_discount').modal('hide');
@@ -543,7 +543,7 @@ export class DiscountlistComponent implements OnInit {
         this.onLoad(this.SearchBy, this.SearchKeyword, this.Searchaction, startdate, enddate); this.identity = 0;
       },
       (error: any) => {
-        this._spinner.hide();
+        //
         console.log(error);
       }
     );
@@ -570,15 +570,15 @@ export class DiscountlistComponent implements OnInit {
     this.objItem.ItemID = this.discountForm.controls['ItemID'].value;
     let Itemids: number[] = [] as any;
     Itemids.push(this.discountForm.controls['ItemID'].value);
-    this._spinner.show();
+    //
     this._discountService.upsert(this.objDiscount, Itemids).subscribe(
       (data) => {
         if (data && data.Flag == true) {
-          this._spinner.hide();
+          //
           this.alertService.success('Discount  data has been updated successful');
         }
         else {
-          this._spinner.hide();
+          //
           this.alertService.error(data.Msg);
         }
         $('#modalpopup_discount').modal('hide');
@@ -589,24 +589,24 @@ export class DiscountlistComponent implements OnInit {
         this.identity = 0;
       },
       (error: any) => {
-        this._spinner.hide();
+        //
         console.log(error);
       }
     );
   }
 
   onLoad(SearchBy: string, Search: string, IsActive: Boolean, StartDate: Date, EndDate: Date) {
-    this._spinner.show();
+    //
     return this._discountService.search(SearchBy, Search, IsActive, StartDate, EndDate).subscribe(
       (lst) => {
         if (lst != null) {
           this.items = lst;
           this.loadItems();
         }
-        this._spinner.hide();
+        //
       },
       (err) => {
-        this._spinner.hide();
+        //
         console.log(err);
       }
     );

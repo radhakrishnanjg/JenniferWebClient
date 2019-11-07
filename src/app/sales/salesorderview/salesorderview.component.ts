@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SalesorderService } from '../../_services/service/salesorder.service';
-import { NgxSpinnerService } from 'ngx-spinner';
+
 import { ToastrService } from 'ngx-toastr';
 import {  Salesorder,} from '../../_services/model';
 import { ActivatedRoute } from '@angular/router';
@@ -28,7 +28,7 @@ export class SalesorderviewComponent implements OnInit {
   panelTitle: string = "Add New SalesOrder";
   constructor(
     private _salesService: SalesorderService,
-    private _spinner: NgxSpinnerService,
+    
     public _alertService: ToastrService,
     private aroute: ActivatedRoute,
   ) {
@@ -40,11 +40,11 @@ export class SalesorderviewComponent implements OnInit {
       this.identity = +params.get('id');
       if (this.identity > 0) {
         this.panelTitle = "View Sales Order";
-        this._spinner.show();
+        //
         this._salesService.searchById(this.identity)
           .subscribe(
             (data: Salesorder) => {
-              this._spinner.hide();
+              //
               this.objSalesOrder = data;
 
               this.TotalCaseSize = data.lstItem.reduce((acc, a) => acc + a.Units, 0);
@@ -58,7 +58,7 @@ export class SalesorderviewComponent implements OnInit {
               this.TotalTotalAmount = data.lstItem.reduce((acc, a) => acc + a.TotalValue, 0);
             },
             (err) => {
-              this._spinner.hide();
+              //
               console.log(err);
             }
           );

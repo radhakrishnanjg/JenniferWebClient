@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { NgxSpinnerService } from 'ngx-spinner';
+
 import { ToastrService } from 'ngx-toastr';
 import { ContactService } from '../../_services/service/contact.service';
 import { Emailtemplate, Contact } from '../../_services/model';
@@ -30,7 +30,7 @@ export class EmailconfigComponent implements OnInit {
     private alertService: ToastrService,
     private _router: Router,
     private _contactService: ContactService,
-    private _spinner: NgxSpinnerService,
+    
     private _authorizationGuard: AuthorizationGuard,
     private _PrivateutilityService: PrivateutilityService,
     private fb: FormBuilder,
@@ -71,16 +71,16 @@ export class EmailconfigComponent implements OnInit {
     });
   }
   ngOnInit() {
-    this._spinner.show();
+    //
     this._PrivateutilityService.getEmailTemplates()
       .subscribe(
         (data: Emailtemplate[]) => {
           this.lstemailtemplates = data;
-          this._spinner.hide();
+          //
         },
         (err: any) => {
           console.log(err);
-          this._spinner.hide();
+          //
         }
       );
     this.emailtemplateform = this.fb.group({
@@ -117,7 +117,7 @@ export class EmailconfigComponent implements OnInit {
   onchangeEmailTemplateID(selectedValue: string) {
     let EmailTemplateID = parseInt(selectedValue);
     if (EmailTemplateID != 0) {
-      this._spinner.show();
+      //
       this._contactService.searchByTemplateID(EmailTemplateID)
         .subscribe(
           (data: Contact[]) => {
@@ -130,10 +130,10 @@ export class EmailconfigComponent implements OnInit {
               
               this.MailTo = this.lstContact.filter(a => a.IsActive == true).map(a => a.Email).toString();
             }
-            this._spinner.hide();
+            //
           },
           (err: any) => {
-            this._spinner.hide();
+            //
             console.log(err);
           }
         );
@@ -170,22 +170,22 @@ export class EmailconfigComponent implements OnInit {
       return;
     }
     contactids = this.lstContact.filter(a => a.IsActive == true).map(a => a.ContactID);
-    this._spinner.show();
+    //
     this._contactService.emailTemplateUpsert(this.obj, contactids).subscribe(
       (data) => {
         if (data != null && data.Flag == true) {
-          this._spinner.hide();
+          //
           this.alertService.success(data.Msg);
           this.onchangeEmailTemplateID(this.obj.EmailTemplateID.toString());
         }
         else {
-          this._spinner.hide();
+          //
           this.alertService.error(data.Msg);
           this._router.navigate(['/Emailconfig']);
         }
       },
       (error: any) => {
-        this._spinner.hide();
+        //
         console.log(error);
       }
     );

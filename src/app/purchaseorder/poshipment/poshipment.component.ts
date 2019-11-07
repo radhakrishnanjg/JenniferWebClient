@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NgxSpinnerService } from 'ngx-spinner';
+
 import { ToastrService } from 'ngx-toastr';
 import { PoshipmentService } from '../../_services/service/poshipment.service';
 import { PrivateutilityService } from '../../_services/service/privateutility.service';
@@ -41,7 +41,7 @@ export class PoshipmentComponent implements OnInit {
     public _poshipmentService: PoshipmentService,
     public _privateutilityService: PrivateutilityService,
     public _alertService: ToastrService,
-    public _spinner: NgxSpinnerService,
+    
     private _authorizationGuard: AuthorizationGuard,
     private aroute: ActivatedRoute,
   ) {
@@ -122,7 +122,7 @@ export class PoshipmentComponent implements OnInit {
         this.panelTitle = "Edit Shipment";
         this.action = false;
 
-        this._spinner.show();
+        //
         this._poshipmentService.searchById(this.POId, this.identity)
           .subscribe(
             (data: Poshipment) => {
@@ -155,12 +155,12 @@ export class PoshipmentComponent implements OnInit {
               this.AttachedFileNames = data.AttachedFileNames;
               //this.logValidationErrors();
               //this.AppointmentUpdated();
-              this._spinner.hide();
+              //
               $('#Appointment').val(Appointment);
             },
             (err: any) => {
               console.log(err);
-              this._spinner.hide();
+              //
             }
           );
         //this.logValidationErrors();
@@ -168,16 +168,16 @@ export class PoshipmentComponent implements OnInit {
       else {
         this.action = true;
         this.panelTitle = "Add New Shipment";
-        this._spinner.show();
+        //
         this._poshipmentService.shipment_Pending()
           .subscribe(
             (data: Poshipment[]) => {
 
               this.lstpendingshipments = data;
-              this._spinner.hide();
+              //
             },
             (err) => {
-              this._spinner.hide();
+              //
               console.log(err);
             }
           );
@@ -216,7 +216,7 @@ export class PoshipmentComponent implements OnInit {
 
   onchangePOID(selectedValue: number) {
     if (selectedValue != 0) {
-      this._spinner.show();
+      //
       return this._poshipmentService.getShipmentAvailableQty(selectedValue).subscribe(
         (data) => {
           this.lstpoorderitem = data;
@@ -227,10 +227,10 @@ export class PoshipmentComponent implements OnInit {
           this.poshipmentForm.patchValue({
             ShipmentName: ShipmentName,
           });
-          this._spinner.hide();
+          //
         },
         (err) => {
-          this._spinner.hide();
+          //
           console.log(err);
         }
       );
@@ -333,22 +333,22 @@ export class PoshipmentComponent implements OnInit {
       this.uploaddata.Remarks = this.poshipmentForm.controls['Remarks'].value;
       this.uploaddata.IsMailSent = this.poshipmentForm.controls['IsMailSent'].value;
       this.uploaddata.lstItem = this.lstpoorderitem.filter(a => a.ShipmentQty > 0);
-      this._spinner.show();
+      //
       this._poshipmentService.add(this.uploaddata, this.selectedFile).subscribe(
         (data) => {
           if (data.Flag == true) {
-            this._spinner.hide();
+            //
             this._alertService.success(data.Msg);
             this.router.navigate(['/Poshipmentlist']);
           }
           else {
-            this._spinner.hide();
+            //
             this._alertService.error(data.Msg);
             this.router.navigate(['/Poshipmentlist']);
           }
         },
         (error: any) => {
-          this._spinner.hide();
+          //
           this._alertService.error("Error!:Poshipment not uploaded.");
           this.router.navigate(['/Poshipmentlist']);
         }
@@ -374,23 +374,23 @@ export class PoshipmentComponent implements OnInit {
     this.uploaddata.Remarks = this.poshipmentForm.controls['Remarks'].value;
     this.uploaddata.IsMailSent = this.poshipmentForm.controls['IsMailSent'].value;
 
-    this._spinner.show();
+    //
     this._poshipmentService.update(this.uploaddata).subscribe(
       (data) => {
         if (data != null && data == true) {
-          this._spinner.hide();
+          //
           this._alertService.success(' Poshipment data has been updated successful');
           this.router.navigate(['/Poshipmentlist']);
         }
         else {
-          this._spinner.hide();
+          //
           this._alertService.error('Poshipment detail not saved!');
           this.router.navigate(['/Poshipmentlist']);
         }
         this.identity = 0;
       },
       (error: any) => {
-        this._spinner.hide();
+        //
         console.log(error);
       }
     );

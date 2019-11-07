@@ -2,12 +2,13 @@ import { Component, OnInit, } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
-import { NgxSpinnerService } from 'ngx-spinner';
+
 import { AuthenticationService } from '../_services/service/authentication.service';
 import { Userpermission, Companydetails, CompanyRegister } from '../_services/model';
 import { PrivateutilityService } from '../_services/service/privateutility.service';
 import { EncrDecrService } from '../_services/service/encr-decr.service';
 import { CompanydetailService } from "../_services/service/companydetail.service";
+import { ConnectionService } from 'ng-connection-service'
 @Component({
   selector: 'app-privatelayout',
   templateUrl: './privatelayout.component.html',
@@ -27,6 +28,36 @@ export class PrivatelayoutComponent implements OnInit {
   darkTheme: string = 'assets/images/darktheme.jpg'
   themeUrl: string;
   SearchBy: string = '';
+  // check internet connection
+
+  status = 'ONLINE'; //initializing as online by default
+  isConnected = true;
+  constructor(
+    private router: Router,
+    private _alertService: ToastrService,
+    private cookieService: CookieService,
+    private authenticationService: AuthenticationService,
+    
+    private _PrivateutilityService: PrivateutilityService,
+    private EncrDecr: EncrDecrService,
+    private _CompanydetailService: CompanydetailService,
+    private connectionService: ConnectionService
+  ) {
+    this.objCompanydetails = new Companydetails();
+    this.connectionService.monitor().subscribe(isConnected => {
+      this.isConnected = isConnected;
+      if (this.isConnected) {
+        // this.status = "ONLINE";
+        // this.openSnackBar("Back to Online"); 
+      } else {
+        // this.status = "OFFLINE"
+        this._alertService.info("Connection Lost. Please check your internet connection");
+      }
+
+    });
+
+  }
+
   filterUser(user: Userpermission) {
     return !user.ParentId
   }
@@ -35,19 +66,6 @@ export class PrivatelayoutComponent implements OnInit {
     let result: Userpermission[] = [];
     result = this.Userpermissions.filter(a => a.ParentId == MenuID && a.MenuType == 'SubMenu');
     return result;
-  }
-  constructor(
-    private router: Router,
-    private _alertService: ToastrService,
-    private cookieService: CookieService,
-    private authenticationService: AuthenticationService,
-    public _spinner: NgxSpinnerService,
-    private _PrivateutilityService: PrivateutilityService,
-    private EncrDecr: EncrDecrService,
-    private _CompanydetailService: CompanydetailService
-  ) {
-    this.objCompanydetails = new Companydetails();
-
   }
   fnusermenu_ViewEdit(id: number) {
     var parent = $('#' + id).parent().parent();
@@ -69,17 +87,17 @@ export class PrivatelayoutComponent implements OnInit {
     this._CompanydetailService.currentMessage.subscribe(message => {
       let currentUser = this.authenticationService.currentUserValue;
       if (message != null) {
-        this._spinner.show();
+        //
         this._PrivateutilityService.getTopUserStores(currentUser.CompanyID)
           .subscribe(
             (data: Companydetails[]) => {
               this.lstCompanydetails = data;
-              this._spinner.hide();
+              //
             },
             (err: any) => {
               console.log(err);
               //
-              this._spinner.hide();
+              //
             }
           );
       }
@@ -117,9 +135,9 @@ export class PrivatelayoutComponent implements OnInit {
     this.fullName = currentUser.FirstName + ' ' + currentUser.LastName;
     this.usertype = currentUser.UserType;
 
-    this.Userpermissions = currentUser.lstUserPermission;
+    this.Userpermissions = currentUser.lstUserPermission.filter(a => a.ParentId != 120 && a.MenuID != 120);
     if (localStorage.getItem("Isloaded") == null) {
-      this._spinner.show();
+      //
       this._PrivateutilityService.getTopCompanies()
         .subscribe(
           (data: CompanyRegister[]) => {
@@ -129,25 +147,25 @@ export class PrivatelayoutComponent implements OnInit {
               this.onchangeCompanyID(this.CompanyID.toString());
               localStorage.setItem("Isloaded", "1");
             }
-            this._spinner.hide();
+            //
           },
           (err: any) => {
             console.log(err);
-            this._spinner.hide();
+            //
           }
         );
     }
     else {
       localStorage.setItem("Isloaded", "1");
       let currentUser = this.authenticationService.currentUserValue;
-      this._spinner.show();
+      //
       this._PrivateutilityService.getTopCompanies()
         .subscribe(
           (data: CompanyRegister[]) => {
             this.lstCompanies = data;
             if (this.lstCompanies != null && this.lstCompanies.length > 0) {
               this.CompanyID = currentUser.CompanyID;
-              this._spinner.show();
+              //
               this._PrivateutilityService.getTopUserStores(this.CompanyID)
                 .subscribe(
                   (data: Companydetails[]) => {
@@ -155,19 +173,19 @@ export class PrivatelayoutComponent implements OnInit {
                     if (this.lstCompanydetails != null && this.lstCompanydetails.length > 0) {
                       this.CompanyDetailID = currentUser.CompanyDetailID;
                     }
-                    this._spinner.hide();
+                    //
                   },
                   (err: any) => {
                     console.log(err);
-                    this._spinner.hide();
+                    //
                   }
                 );
             }
-            this._spinner.hide();
+            //
           },
           (err: any) => {
             console.log(err);
-            this._spinner.hide();
+            //
           }
         );
     }
@@ -204,7 +222,7 @@ export class PrivatelayoutComponent implements OnInit {
     let id = parseInt(selectedValue);
     let currentUser = this.authenticationService.currentUserValue;
     currentUser.CompanyID = id;
-    this._spinner.show();
+    //
     this._PrivateutilityService.getTopUserStores(id)
       .subscribe(
         (data: Companydetails[]) => {
@@ -216,11 +234,11 @@ export class PrivatelayoutComponent implements OnInit {
           var encrypted = this.EncrDecr.set('Radha@123!()', JSON.stringify(currentUser));
           localStorage.setItem('currentJennifer1', encrypted);
           this.router.navigate(['/Dashboard1']);
-          this._spinner.hide();
+          //
         },
         (err: any) => {
           console.log(err);
-          this._spinner.hide();
+          //
         }
       );
   }
@@ -284,10 +302,10 @@ export class PrivatelayoutComponent implements OnInit {
     this._alertService.success('You are logged out successfully');
     this.router.navigate(['/Signin']);
 
-    // this._spinner.show();
+    // //
     // this.authenticationService.logout().subscribe(
     //   (data) => {
-    //     this._spinner.hide();
+    //     //
     //     localStorage.clear();
     //     if (data != null && data == true) {
     //       this._alertService.success('You are logged out successfully');
@@ -300,14 +318,16 @@ export class PrivatelayoutComponent implements OnInit {
 
     //   },
     //   (error: any) => {
-    //     this._spinner.hide();
+    //     //
     //     this._alertService.error('Invalid Details.!');
     //   }
     // );
   }
 
-  SearchData() { 
-    this.router.navigate(['/Search', this.SearchBy]);
+  SearchData() {
+    if (this.SearchBy != '') {
+      this.router.navigate(['/Search', this.SearchBy]);
+    }
   }
 
 

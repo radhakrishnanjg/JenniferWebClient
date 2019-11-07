@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NgxSpinnerService } from 'ngx-spinner';
+
 import { PicklistService } from '../../_services/service/picklist.service';
 import { PrivateutilityService } from '../../_services/service/privateutility.service';
 import { Picklistheader, Location, } from '../../_services/model';
@@ -25,22 +25,22 @@ export class PicklistsearchComponent implements OnInit {
   constructor(
     private _picklistService: PicklistService,
     private _privateutilityService: PrivateutilityService,
-    private _spinner: NgxSpinnerService,
+    
   ) { }
 
   ngOnInit() {
     this.SearchBy = '';
     this.SearchKeyword = '';
     this.LocationID = 0;
-    this._spinner.show();
+    //
     this._privateutilityService.getLocations()
       .subscribe(
         (data: Location[]) => {
           this.locations = data;
-          this._spinner.hide();
+          //
         },
         (err: any) => {
-          this._spinner.hide();
+          //
           console.log(err);
         }
       );
@@ -58,17 +58,17 @@ export class PicklistsearchComponent implements OnInit {
   }
 
   onLoad(SearchBy: string, Search: string, LocationID: number) {
-    this._spinner.show();
+    //
     return this._picklistService.search(SearchBy, Search, LocationID).subscribe(
       (data) => {
         if (data != null) { 
           this.items = data;
           this.loadItems(); 
         }
-        this._spinner.hide();
+        //
       },
       (err) => {
-        this._spinner.hide();
+        //
         console.log(err);
       }
     );

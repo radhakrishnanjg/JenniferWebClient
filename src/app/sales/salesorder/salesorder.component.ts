@@ -3,7 +3,7 @@ import { PrivateutilityService } from '../../_services/service/privateutility.se
 import { SalesorderService } from '../../_services/service/salesorder.service';
 import { PoService } from '../../_services/service/po.service';
 import { FormGroup, FormControl, Validators, FormBuilder, } from '@angular/forms';
-import { NgxSpinnerService } from 'ngx-spinner';
+
 import { ToastrService } from 'ngx-toastr';
 import { AuthorizationGuard } from '../../_guards/Authorizationguard';
 import {
@@ -94,7 +94,7 @@ export class SalesorderComponent implements OnInit {
     private _poService: PoService,
     private _PrivateutilityService: PrivateutilityService,
     private _authorizationGuard: AuthorizationGuard,
-    private _spinner: NgxSpinnerService,
+    
     public _alertService: ToastrService,
     private fb: FormBuilder,
     private router: Router,
@@ -190,11 +190,11 @@ export class SalesorderComponent implements OnInit {
       if (this.identity > 0) {
         this.panelTitle = "View Sales Order";
         this.action = false;
-        this._spinner.show();
+        //
         this._salesService.searchById(this.identity)
           .subscribe(
             (data: Salesorder) => {
-              this._spinner.hide();
+              //
               this.OrderID = data.OrderID
               this.objSalesOrder = data;
               this.BilledTo = this.objSalesOrder.BilledTo;
@@ -211,7 +211,7 @@ export class SalesorderComponent implements OnInit {
               this.TotalTotalAmount = data.lstItem.reduce((acc, a) => acc + a.TotalValue, 0);
             },
             (err) => {
-              this._spinner.hide();
+              //
               console.log(err);
             }
           );
@@ -219,48 +219,48 @@ export class SalesorderComponent implements OnInit {
         this.action = true;
         this.objSalesOrder.lstItem = [];
         this.gridData = this.objSalesOrder.lstItem;
-        this._spinner.show();
+        //
         this._PrivateutilityService.getCustomersSales().subscribe(
           (data) => {
             if (data != null) {
               this.customerList = data;
             }
-            this._spinner.hide();
+            //
           },
           (err) => {
-            this._spinner.hide();
+            //
             console.log(err);
           }
         );
-        this._spinner.show();
+        //
         this._poService.getOrderUOMs().subscribe(
           (res) => {
             this.uomList = res;
-            this._spinner.hide();
+            //
           }, (err) => {
-            this._spinner.hide();
+            //
             console.log(err);
           });
-        this._spinner.show();
+        //
         this._PrivateutilityService.GetValues('Courier')
           .subscribe(
             (data: Dropdown[]) => {
               this.lstDispatchThrough = data;
-              this._spinner.hide();
+              //
             },
             (err: any) => {
-              this._spinner.hide();
+              //
               console.log(err);
             }
           );
-        this._spinner.show();
+        //
         this._PrivateutilityService.getPaymentTerms().subscribe(
           (data: PaymentTermType[]) => {
             this.lstPaymentTermsID = data;
-            this._spinner.hide();
+            //
           },
           (err: any) => {
-            this._spinner.hide();
+            //
             console.log(err);
           }
         );
@@ -299,7 +299,7 @@ export class SalesorderComponent implements OnInit {
 
 
   private getCurrentServerDateTime() {
-    this._spinner.show();
+    //
     this._PrivateutilityService.getCurrentDate()
       .subscribe(
         (data: Date) => {
@@ -309,59 +309,59 @@ export class SalesorderComponent implements OnInit {
           });
           this.orderMinDate = moment(data).add(0, 'days');
           this.OrderDate = new Date(mcurrentDate);
-          this._spinner.hide();
+          //
         },
         (err: any) => {
           console.log(err);
 
-          this._spinner.hide();
+          //
         }
       );
   }
   public onCustomerChange(customerID: number): void {
     console.log("customerID=" + customerID);
     this.objSalesOrder.CustomerID = customerID;
-    this._spinner.show();
+    //
     this._salesService.getOrderID(customerID).subscribe(
       (res) => {
         this.OrderID = res;
         this.objSalesOrder.lstItem = [];
         this.gridData = this.objSalesOrder.lstItem;
-        this._spinner.hide();
+        //
       }, (err) => {
-        this._spinner.hide();
+        //
         console.log(err);
       });
     this.getCustomerAddress(customerID);
     this.getCustomerWarehouse(customerID);
-    this._spinner.show();
+    //
     this._PrivateutilityService.getCustomerItemLevels(customerID).subscribe(
       (data) => {
         if (data != null) {
           this.itemList = data.filter(a => { return a.Type == 'Item' });
         }
-        this._spinner.hide();
+        //
       },
       (err) => {
         this.itemList = [];
         console.log(err);
-        this._spinner.hide();
+        //
       }
     );
   }
 
   public getCustomerAddress(customerID: number): void {
     if (customerID != 0) {
-      this._spinner.show();
+      //
       this._PrivateutilityService.getCustomerAddress(customerID).subscribe(
         (data) => {
           if (data != null) {
             this.BilledTo = data['Address1'];
           }
-          this._spinner.hide();
+          //
         },
         (err) => {
-          this._spinner.hide();
+          //
           console.log(err);
         }
       );
@@ -370,16 +370,16 @@ export class SalesorderComponent implements OnInit {
 
   public getCustomerWarehouse(customerID: number): void {
     if (customerID != 0) {
-      this._spinner.show();
+      //
       this._PrivateutilityService.getCustomerWarehouse(customerID).subscribe(
         (data) => {
           if (data != null) {
             this.customerWarehouseList = data;
           }
-          this._spinner.hide();
+          //
         },
         (err) => {
-          this._spinner.hide();
+          //
           console.log(err);
         }
       );
@@ -388,16 +388,16 @@ export class SalesorderComponent implements OnInit {
 
   public onCustomerWarehouseIDChange(customerWarehouseID: number): void {
     if (customerWarehouseID != 0) {
-      this._spinner.show();
+      //
       this._PrivateutilityService.getCustomerWarehouseAddress(customerWarehouseID).subscribe(
         (data) => {
           if (data != null) {
             this.ShipTo = data['Address1'];
           }
           this.onchangeIsBillTo_SameAs_ShipTo1();
-          this._spinner.hide();
+          //
         }, (err) => {
-          this._spinner.hide();
+          //
           console.log(err);
         });
     }
@@ -473,11 +473,11 @@ export class SalesorderComponent implements OnInit {
     let CustomerID = this.salesForm.get("CustomerID").value;
     let InventoryType = this.salesForm.get("InventoryType").value;
     let TransactionType = this.customerList.filter(x => { return x.CustomerID == this.salesForm.controls['CustomerID'].value })[0].CustomerType;
-    this._spinner.show();
+    //
     this._PrivateutilityService.getSellingPriceMRP(itemID, OrderDate, InventoryType)
       .subscribe(
         (data) => {
-          this._spinner.hide();
+          //
           if (data != null) {
             this.ItemRate = data['SellingPrice'];
             this.itemFormGroup.controls['ItemRate'].setValue(this.ItemRate);
@@ -486,9 +486,9 @@ export class SalesorderComponent implements OnInit {
             let MultiplierValue = this.objSalesOrder.MultiplierValue;
             let Qty = Units * MultiplierValue;
             let ShippingCharges = this.itemFormGroup.get("ShippingCharges").value;
-            let IsDiscountApplicable = this.salesForm.get("IsDiscountApplicable").value; 
+            let IsDiscountApplicable = this.salesForm.get("IsDiscountApplicable").value;
             if (IsDiscountApplicable) {
-              this._spinner.show();
+              //
               this._PrivateutilityService.getDiscountAmount(itemID, OrderDate, CustomerID, InventoryType, TransactionType)
                 .subscribe(
                   (data11) => {
@@ -504,16 +504,16 @@ export class SalesorderComponent implements OnInit {
                       this.itemFormGroup.controls['TotalValue'].setValue((Qty * this.ItemRate) -
                         DiscountAmount + this.itemFormGroup.get("TaxAmount").value + ShippingCharges);
                     }
-                    this._spinner.hide();
+                    //
                   },
                   (err) => {
-                    this._spinner.hide();
+                    //
                   }
                 );
             }
             else {
               this.itemFormGroup.controls['Discountamt'].setValue(0);
-              this.DisCountPer =0;
+              this.DisCountPer = 0;
               this.itemFormGroup.controls['TaxAmount'].setValue(Qty * this.ItemRate *
                 this.itemFormGroup.get("TaxRate").value / 100);
               this.itemFormGroup.controls['TotalValue'].setValue((Qty * this.ItemRate) +
@@ -526,7 +526,7 @@ export class SalesorderComponent implements OnInit {
           }
         },
         (err) => {
-          this._spinner.hide();
+          //
         }
       );
   }
@@ -565,8 +565,8 @@ export class SalesorderComponent implements OnInit {
       let ItemRatenew = this.ItemRate * Units * this.objSalesOrder.MultiplierValue;
       let TaxAmountnew = (this.ItemRate * this.itemFormGroup.get("TaxRate").value / 100 * Units * this.objSalesOrder.MultiplierValue);
       let Discountamt = (this.ItemRate * this.DisCountPer / 100 * Units * this.objSalesOrder.MultiplierValue)
-      + (TaxAmountnew * this.DisCountPer / 100);
-     let TotalValueNew = ItemRatenew - Discountamt + TaxAmountnew + ShippingCharges;
+        + (TaxAmountnew * this.DisCountPer / 100);
+      let TotalValueNew = ItemRatenew - Discountamt + TaxAmountnew + ShippingCharges;
       this.itemFormGroup.patchValue(
         {
           Discountamt: Discountamt,
@@ -588,7 +588,7 @@ export class SalesorderComponent implements OnInit {
       let ItemRatenew = this.ItemRate * Units * this.objSalesOrder.MultiplierValue;
       let TaxAmountnew = (this.ItemRate * this.itemFormGroup.get("TaxRate").value / 100 * Units * this.objSalesOrder.MultiplierValue);
       let Discountamt = (this.ItemRate * this.DisCountPer / 100 * Units * this.objSalesOrder.MultiplierValue)
-      + (TaxAmountnew * this.DisCountPer / 100);
+        + (TaxAmountnew * this.DisCountPer / 100);
       let TotalValueNew = ItemRatenew - Discountamt + TaxAmountnew + ShippingCharges;
       this.itemFormGroup.patchValue(
         {
@@ -730,6 +730,10 @@ export class SalesorderComponent implements OnInit {
     if (this._authorizationGuard.CheckAcess("Salesorderlist", "ViewEdit")) {
       return;
     }
+    if (this.objSalesOrder.lstItem == null || this.objSalesOrder.lstItem.length == 0) {
+      this._alertService.error("Order Item required");
+      return;
+    }
     this.objSalesOrder.OrderID = this.OrderID;
     this.objSalesOrder.OrderDate = this.salesForm.controls['OrderDate'].value.startDate.toLocaleString();
     this.objSalesOrder.CustomerID = this.salesForm.controls['CustomerID'].value;
@@ -749,10 +753,10 @@ export class SalesorderComponent implements OnInit {
     this.objSalesOrder.Remarks = this.salesForm.controls['Remarks'].value;
     this.objSalesOrder.IsBillTo_SameAs_ShipTo = this.salesForm.controls['IsBillTo_SameAs_ShipTo'].value;
 
-    this._spinner.show();
+    //
     this._salesService.Insert(this.objSalesOrder).subscribe(
       (data) => {
-        this._spinner.hide();
+        //
         if (data != null && data.Flag == true) {
           this._alertService.success(data.Msg);
           this.router.navigate(['/Salesorderlist']);
@@ -762,7 +766,7 @@ export class SalesorderComponent implements OnInit {
           this.router.navigate(['/Salesorderlist']);
         }
       }, (err) => {
-        this._spinner.hide();
+        //
         console.log(err);
       });
     this.objSalesOrder = new Salesorder();

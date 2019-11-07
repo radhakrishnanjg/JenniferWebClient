@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NgxSpinnerService } from 'ngx-spinner';
+
 import { ToastrService } from 'ngx-toastr';
 import { PoapprovalService } from '../../_services/service/poapproval.service';
 import { PrivateutilityService } from '../../_services/service/privateutility.service';
@@ -31,7 +31,7 @@ export class PoapprovalComponent implements OnInit {
     public _poapprovalService: PoapprovalService,
     public _privateutilityService: PrivateutilityService,
     public _alertService: ToastrService,
-    public _spinner: NgxSpinnerService,
+    
     private _authorizationGuard: AuthorizationGuard,
     private aroute: ActivatedRoute) { }
 
@@ -80,16 +80,31 @@ export class PoapprovalComponent implements OnInit {
       }
     });
   }
+
+  showapprovaldetailbycompany()
+  {
+    //
+    this._poapprovalService.showapprovaldetailbycompany().subscribe(
+      (data) => {
+        this.objResult.Flag = true;
+        //
+      },
+      (err) => {
+        //
+        console.log(err);
+      }
+    );
+  }
   ngOnInit() {
 
-    this._spinner.show();
+    //
     this._privateutilityService.getLocations().subscribe(
       (data) => {
         this.lstlocation = data;
-        this._spinner.hide();
+        //
       },
       (err) => {
-        this._spinner.hide();
+        //
         console.log(err);
       }
     );
@@ -98,7 +113,7 @@ export class PoapprovalComponent implements OnInit {
       this.identity = +params.get('id');
       if (this.identity > 0) {
         this.panelTitle = "Update PO Approval";
-        this._spinner.show();
+        //
         this._poapprovalService.searchById(this.identity)
           .subscribe(
             (data: Poorder) => {
@@ -112,11 +127,11 @@ export class PoapprovalComponent implements OnInit {
               if (data.ApprovalStatus == 'Approved') {
                 this.objResult.Flag = true;
               }
-              this._spinner.hide();
+              //
             },
             (err: any) => {
               console.log(err);
-              this._spinner.hide();
+              //
             }
           );
       }
@@ -135,14 +150,14 @@ export class PoapprovalComponent implements OnInit {
 
     if (VerifyLocationId != 0 && !isNaN(VerifyTotalAmount) && VerifyTotalAmount != 0) {
 
-      this._spinner.show();
+      //
       this._poapprovalService.VerifyPOApproval((VerifyTotalAmount), VerifyLocationId, this.identity).subscribe(
         (data) => {
           this.objResult = data;
-          this._spinner.hide();
+          //
         },
         (err) => {
-          this._spinner.hide();
+          //
           console.log(err);
         }
       );
@@ -188,7 +203,7 @@ export class PoapprovalComponent implements OnInit {
       this.obj.ApprovalStatus = "Rejected";
     }
     this.obj.Remarks = this.poapprovalForm.controls['Remarks'].value; 
-    this._spinner.show();
+    //
     this._poapprovalService.update(this.obj).subscribe(
       (data) => {
 
@@ -200,11 +215,11 @@ export class PoapprovalComponent implements OnInit {
           this._alertService.error(data.Msg);
           this.router.navigate(['/Poapprovallist']);
         }
-        this._spinner.hide();
+        //
         this.identity = 0;
       },
       (error: any) => {
-        this._spinner.hide();
+        //
         console.log(error);
       }
     );

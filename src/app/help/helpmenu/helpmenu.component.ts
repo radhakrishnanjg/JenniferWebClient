@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NgxSpinnerService } from 'ngx-spinner';
+
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -27,7 +27,7 @@ export class HelpmenuComponent implements OnInit {
     private fb: FormBuilder,
     private _router: Router,
     private aroute: ActivatedRoute,
-    public _spinner: NgxSpinnerService,
+    
     private _helpmenuService: HelpmenuService,
     private _authorizationGuard: AuthorizationGuard,
     private _PrivateutilityService: PrivateutilityService,
@@ -95,7 +95,7 @@ export class HelpmenuComponent implements OnInit {
     if (this.identity > 0) {
       this.action = false;
       this.panelTitle = 'Edit Help Content';
-      this._spinner.show();
+      //
       this._helpmenuService.searchById(this.identity)
         .subscribe(
           (data: Helpmenu) => {
@@ -109,12 +109,12 @@ export class HelpmenuComponent implements OnInit {
               MenuType: data.MenuType,
               ParentId: ParentId,
             });
-            this._spinner.hide();
+            //
             this.Helpmenuform.get('MenuType').disable();
             this.Helpmenuform.get('ParentId').disable();
           },
           (err: any) => {
-            this._spinner.hide();
+            //
             console.log(err)
           }
         );
@@ -138,15 +138,15 @@ export class HelpmenuComponent implements OnInit {
 
 
   BindMenuTypes() {
-    this._spinner.show();
+    //
     this._PrivateutilityService.GetValues('HelpMenuType')
       .subscribe(
         (data: Dropdown[]) => {
           this.lstMenuType = data;
-          this._spinner.hide();
+          //
         },
         (err: any) => {
-          this._spinner.hide();
+          //
           console.log(err);
         }
       );
@@ -154,16 +154,16 @@ export class HelpmenuComponent implements OnInit {
 
   onchangeMenuType(selectedValue: string) {
     if (selectedValue == 'S' || selectedValue == 'C') {
-      this._spinner.show();
+      //
       this._helpmenuService.getMenus(selectedValue)
         .subscribe(
           (data: Helpmenu[]) => {
             debugger
             this.lst = data;
-            this._spinner.hide();
+            //
           },
           (err: any) => {
-            this._spinner.hide();
+            //
             console.log(err);
           }
         );
@@ -210,23 +210,23 @@ export class HelpmenuComponent implements OnInit {
 
 
 
-    this._spinner.show();
+    //
     this._helpmenuService.Insert(this.obj).subscribe(
       (data) => {
         if (data != null && data.Flag == true) {
-          this._spinner.hide();
+          //
           this.alertService.success(data.Msg);
           this._router.navigate(['/Helpmenulist']);
         }
         else {
-          this._spinner.hide();
+          //
           this.alertService.error(data.Msg);
           this._router.navigate(['/Helpmenulist']);
         }
         this.identity = 0;
       },
       (error: any) => {
-        this._spinner.hide();
+        //
         console.log(error);
       }
     );
@@ -241,23 +241,23 @@ export class HelpmenuComponent implements OnInit {
     this.obj.PageContent = this.Helpmenuform.controls['PageContent'].value;
     this.obj.IsActive = this.Helpmenuform.controls['IsActive'].value;
 
-    this._spinner.show();
+    //
     this._helpmenuService.Update(this.obj).subscribe(
       (data) => {
         if (data != null && data.Flag == true) {
-          this._spinner.hide();
+          //
           this.alertService.success(data.Msg);
           this._router.navigate(['/Helpmenulist']);
         }
         else {
-          this._spinner.hide();
+          //
           this.alertService.error(data.Msg);
           this._router.navigate(['/Helpmenulist']);
         }
         this.identity = 0;
       },
       (error: any) => {
-        this._spinner.hide();
+        //
         console.log(error);
       }
     );

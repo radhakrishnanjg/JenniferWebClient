@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { NgxSpinnerService } from 'ngx-spinner';
+
 import { ToastrService } from 'ngx-toastr';
 import { Poorder, Poorderitem } from '../../_services/model/poorder';
 import { PoService } from '../../_services/service/po.service';
@@ -26,7 +26,7 @@ export class PoviewComponent implements OnInit {
   TotalTotalAmount: number = 0.00;
 
   constructor(
-    private _spinner: NgxSpinnerService,
+    
     private _poService: PoService,
     private aroute: ActivatedRoute,
     private _authorizationGuard: AuthorizationGuard,
@@ -38,12 +38,12 @@ export class PoviewComponent implements OnInit {
     this.aroute.paramMap.subscribe(params => {
       this.identity = +params.get('id');
       if (this.identity > 0) {
-        this._spinner.show();
+        //
         this._poService.searchById(this.identity).subscribe(
           (data: Poorder) => {
             this.obj = data;
 
-            this._spinner.show();
+            //
             this._poService.getItems(this.identity).subscribe(
               (data: Poorderitem[]) => {
                 this.lstItem = data;
@@ -53,16 +53,16 @@ export class PoviewComponent implements OnInit {
                 this.TotalDirectCost = this.lstItem.reduce((acc, a) => acc + a.DirectCost, 0);
                 this.TotalTaxAmount = this.lstItem.reduce((acc, a) => acc + a.TaxAmount, 0);
                 this.TotalTotalAmount = this.lstItem.reduce((acc, a) => acc + a.TotalAmount, 0);
-                this._spinner.hide();
+                //
               },
               (err: any) => {
-                this._spinner.hide();
+                //
                 console.log(err);
               }
             );
           },
           (err: any) => {
-            this._spinner.hide();
+            //
             console.log(err);
           }
         );

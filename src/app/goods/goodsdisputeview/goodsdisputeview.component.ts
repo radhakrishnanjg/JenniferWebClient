@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup,   } from '@angular/forms';
 import { ActivatedRoute,   } from '@angular/router';
-import { NgxSpinnerService } from 'ngx-spinner';
+
 import { ToastrService } from 'ngx-toastr';
 import { GoodsDisputeService } from '../../_services/service/goods-dispute.service';
 import { PrivateutilityService } from '../../_services/service/privateutility.service'; 
@@ -21,7 +21,7 @@ export class GoodsdisputeviewComponent implements OnInit {
     public _goodsdisputeService: GoodsDisputeService,
     public _privateutilityService: PrivateutilityService,
     public _alertService: ToastrService,
-    public _spinner: NgxSpinnerService,
+    
     private aroute: ActivatedRoute
   ) { }
 
@@ -29,7 +29,7 @@ export class GoodsdisputeviewComponent implements OnInit {
     this.aroute.paramMap.subscribe(params => {
       this.identity = +params.get('id');
       if (this.identity > 0) {
-        this._spinner.show();
+        //
         this._goodsdisputeService.searchById(this.identity)
           .subscribe(
             (data: Goodsdispute) => {
@@ -75,11 +75,11 @@ export class GoodsdisputeviewComponent implements OnInit {
               else {
                 this.obj.Image10 = environment.basedomain + environment.defaultImageUrl;
               }
-              this._spinner.hide();
+              //
             },
             (err: any) => {
               console.log(err);
-              this._spinner.hide();
+              //
             }
           );
       }
@@ -88,15 +88,15 @@ export class GoodsdisputeviewComponent implements OnInit {
 
   DownloadButtonClick(DisputeID: number) {
     if (DisputeID != 0) {
-      this._spinner.show();
+      //
       this._goodsdisputeService.DownloadImages(DisputeID)
         .subscribe(data => {
           this._alertService.success("File downloaded succesfully.!");
-          this._spinner.hide(),
+          
             saveAs(data, DisputeID + '.zip')
         },
           (err) => {
-            this._spinner.hide();
+            //
             console.log(err);
           }
         );

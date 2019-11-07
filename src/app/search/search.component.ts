@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
-import { NgxSpinnerService } from 'ngx-spinner';
+
 import { SearchService } from '../_services/service/search.service';
 import { Search } from '../_services/model';
 import { AuthorizationGuard } from '../_guards/Authorizationguard'
@@ -18,7 +18,7 @@ export class SearchComponent implements OnInit {
   constructor(
     private _router: Router,
     private _searchService: SearchService,
-    private _spinner: NgxSpinnerService,
+    
     private _authorizationGuard: AuthorizationGuard,
     private aroute: ActivatedRoute,
   ) { }
@@ -30,16 +30,16 @@ export class SearchComponent implements OnInit {
   onLoad() {
     this.aroute.paramMap.subscribe(params => {
       this.SearchBy = params.get('key');
-      this._spinner.show();
+      //
       return this._searchService.search(this.SearchBy).subscribe(
         (data) => {
           this.lst = data;
           this.totalrows = this.lst.length;
-          this._spinner.hide();
+          //
         },
 
         (err) => {
-          this._spinner.hide();
+          //
           console.log(err);
         }
       );
