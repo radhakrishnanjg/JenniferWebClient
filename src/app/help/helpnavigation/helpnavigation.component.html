@@ -16,7 +16,7 @@
 </div>
 
 <div class="col-md-3">
-  <div class="">
+  <div class="scroolingdivc">
     <ul class="tree" *ngIf="leftmenus && leftmenus.length">
       <li *ngFor="let parent of leftmenus">
         <a *ngIf="(parent.MenuType=='ParentMenu' )" (click)="scroll1(parent.HelpMenuID)">
@@ -67,3 +67,5 @@
     </div>
   </div>
 </div>
+
+<div id='toTop'> <img src='assets\images\go-top-icon.png' alt="Top" height="30px"> </div>

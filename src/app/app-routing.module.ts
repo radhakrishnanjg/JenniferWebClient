@@ -4,9 +4,8 @@ import { AuthGuard, StoreGuard, MaintenanceGuard } from './_guards';
 // Import the components so they can be referenced in routes
 
 import { PrivatelayoutComponent } from './privatelayout/privatelayout.component';
-import { HelpnavigationComponent } from './help/helpnavigation/helpnavigation.component';
-import { HelpmenulistComponent } from './help/helpmenulist/helpmenulist.component';
-import { HelpmenuComponent } from './help/helpmenu/helpmenu.component';
+import { TermsofuseComponent } from './termsofuse/termsofuse.component';
+import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
 import { Dashboard1Component } from './dashboard1/dashboard1.component';
 
 
@@ -122,15 +121,19 @@ import { ReportsothersComponent } from './download/reportsothers/reportsothers.c
 import { ReportAmazonMTRComponent } from './download/report-amazon-mtr/report-amazon-mtr.component';
 import { MaintenanceComponent } from './maintenance/maintenance.component';
 import { SearchComponent } from './search/search.component';
-import {  DynamicformComponent } from './dynamicform/dynamicform.component';
+import { IndexComponent } from './index/index.component';
+
+import { DynamicformComponent } from './dynamicform/dynamicform.component';
 
 import { StatementlistComponent } from './download/statementlist/statementlist.component';
 import { StatementviewComponent } from './download/statementview/statementview.component';
- 
+
 
 // The last route is the empty path route. This specifies
 // the route to redirect to if the client side path is empty.
 const appRoutes: Routes = [
+
+  { path: '', redirectTo: '/Index', pathMatch: 'full' },
   //Site routes goes here 
 
   // App routes goes here here
@@ -256,15 +259,16 @@ const appRoutes: Routes = [
       { path: 'Statementview/:id', component: StatementviewComponent, canActivate: [AuthGuard, StoreGuard] },
       { path: 'Statementlist', component: StatementlistComponent, canActivate: [AuthGuard, StoreGuard] },
 
-  
+
       { path: '', loadChildren: './cases/cases.module#CasesModule' },
 
       { path: '', loadChildren: './help/help.module#HelpModule' },
- 
+
+      { path: '', loadChildren: './gst/gst.module#GstModule' },
+
       { path: 'Search/:key', component: SearchComponent },
       { path: 'DynamicForm', component: DynamicformComponent },
-      { path: '', redirectTo: '/Signin', pathMatch: 'full', canActivate: [MaintenanceGuard] },
-      
+
       // .. routes 
       // {
       //   path: 'not-found',
@@ -277,13 +281,14 @@ const appRoutes: Routes = [
     ]
   },
   //no layout routes
-  
-  { path: '', redirectTo: '/Signin', pathMatch: 'full', canActivate: [MaintenanceGuard] },
+  { path: '', redirectTo: '/Index', pathMatch: 'full' },
+  { path: 'Index', component: IndexComponent },
   { path: 'Signin', component: SigninComponent, canActivate: [MaintenanceGuard] },//canActivate: [MaintenanceGuard]
   { path: 'ForgotPassword', component: ForgotpasswordComponent },
   { path: 'Companyregister', component: CompanyregisterComponent },
   { path: 'Maintenance', component: MaintenanceComponent },
-  // { path: 'Requestform', component: RequestformComponent, },
+  { path: 'Termsofuse', component: TermsofuseComponent },
+  { path: 'PrivacyPolicy', component: PrivacyPolicyComponent },
 
 ];
 

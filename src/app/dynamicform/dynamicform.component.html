@@ -19,7 +19,7 @@
         </div>
         <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 ">
           <div class="pull-right">
-            <button  type="button" class="btn btn-primary" routerLink="/Contactlist" title="Back">
+            <button type="button" class="btn btn-primary" routerLink="/Contactlist" title="Back">
               Back
             </button>
           </div>
@@ -69,19 +69,34 @@
                       <select [ngClass]="form_elem.ControlSize" formControlName="{{form_elem.ControlId}}"
                         class="form-control" (blur)="logValidationErrors()">
                         <option value="" selected="selected">---Select---</option>
-                        <option *ngFor="let opt of form_elem.Options">
+                        <option *ngFor="let opt of getDropDownOptions(form_elem.ControlId)">
                           {{opt.name}}
                         </option>
                       </select>
                     </div>
                     <div *ngIf="form_elem.DropDownType=='Dynamic'">
-                      <select [ngClass]="form_elem.ControlSize" formControlName="{{form_elem.ControlId}}"
-                        class="form-control" (blur)="logValidationErrors()">
-                        <option value="0" selected="selected">---Select---</option>
-                        <option *ngFor="let opt of form_elem.Options" value={{opt.value}}>
-                          {{opt.name}}
-                        </option>
-                      </select>
+
+                      <div *ngIf="form_elem.HasChild==true">
+                        <select [ngClass]="form_elem.ControlSize" formControlName="{{form_elem.ControlId}}"
+                          class="form-control" (blur)="logValidationErrors()"
+                          (change)="onchangeDependent(form_elem.ChildControlId,$event.target.value)">
+                          <option value="0" selected="selected">---Select---</option>
+                          <option *ngFor="let opt of getDropDownOptions(form_elem.ControlId)" value={{opt.value}}>
+                            {{opt.name}}
+                          </option>
+                        </select>
+                      </div>
+
+                      <div *ngIf="form_elem.HasChild==false">
+                        <select [ngClass]="form_elem.ControlSize" formControlName="{{form_elem.ControlId}}"
+                          class="form-control" (blur)="logValidationErrors()">
+                          <option value="0" selected="selected">---Select---</option>
+                          <option *ngFor="let opt of getDropDownOptions(form_elem.ControlId)" value={{opt.value}}>
+                            {{opt.name}}
+                          </option>
+                        </select>
+                      </div>
+                     
                     </div>
                   </div>
 
@@ -254,6 +269,67 @@
           </div>
         </div>
       </div>
+
+      <!-- <div *ngIf="formDesignType=='Grid1'">
+
+        <div *ngFor="let form_elem of formTemplate">
+          <div [ngSwitch]="form_elem.ControlType">
+            <div class="col-xs-12">
+              <div class="form-group">
+                <label class="col-xs-4 control-label" for="{{form_elem.ControlId}}">
+                  {{form_elem.Caption}}
+                  <span class="mandantory" *ngIf="form_elem.IsMandantory">*</span>
+                </label>
+                <div class="col-xs-8">
+                  <div *ngSwitchCase="'TextBox'">
+                    {{ getDataByCaption(form_elem.ControlId)}}
+                  </div>
+                  <div *ngSwitchCase="'Number'">
+                    {{ getDataByCaption(form_elem.ControlId)}}
+                  </div>
+                  <div *ngSwitchCase="'TextArea'">
+                    {{ getDataByCaption(form_elem.ControlId)}}
+                  </div>
+
+                  <div *ngSwitchCase="'DropDown'">
+                    <div *ngIf="form_elem.DropDownType=='Static'">
+                      {{ getDataByCaption(form_elem.ControlId)}}
+                    </div>
+                    <div *ngIf="form_elem.DropDownType=='Dynamic'">
+
+                      <div *ngIf="form_elem.HasChild==true">
+                        {{ getDataByCaption(form_elem.ControlId)}}
+                      </div>
+
+                      <div *ngIf="form_elem.HasChild==false">
+                        {{ getDataByCaption(form_elem.ControlId)}}
+                      </div>
+
+                    </div>
+                  </div>
+
+                  <div *ngSwitchCase="'CheckBox'">
+                    <div *ngIf="getDataByCaption(form_elem.ControlId)==true">
+                      Yes
+                    </div>
+                    <div *ngIf="getDataByCaption(form_elem.ControlId)==false">
+                      No
+                    </div>
+                  </div>
+
+                  <div class="help-block-rk">
+                    <span class="help-block">
+
+                    </span>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
       <div class="col-xs-12">
         <span class="groupspanheader">Reference Details</span>
         <table class="table table-bordered table-condensed " *ngIf="formTemplate && formTemplate.length">
@@ -275,12 +351,12 @@
             </tr>
           </tbody>
         </table>
-      </div>
+      </div> -->
     </div>
     <!-- dynami controld end -->
     <div class="panel-footer">
       <div class="pull-right btn-toolbar">
-        <button  type="button" class="btn btn-primary" routerLink="/Contatlist" title="Cancel">
+        <button type="button" class="btn btn-primary" routerLink="/Contatlist" title="Cancel">
           Cancel
         </button>
         <input type="submit" value="Save" class="btn btn-success" prevent-double-submit

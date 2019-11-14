@@ -1,0 +1,159 @@
+<div class="row">
+  <div class="col-sm-6 col-lg-6">
+    <h3>
+      Upload
+    </h3>
+  </div>
+  <div class="col-sm-6 col-lg-6">
+    <div class="pull-right hidden-xs">
+      <ol class="breadcrumb" id="dynamicbreadcrumb">
+        <li>
+          <span>GST</span>
+        </li>
+        <li>
+          <span> Upload</span>
+        </li>
+        <li class="active">
+          Save
+        </li>
+      </ol>
+    </div>
+  </div>
+</div>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <div class="row">
+      <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+        <span class="groupspanheader">
+          Upload
+        </span>
+      </div>
+      <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 ">
+        <div class="pull-right">
+          <button type="button" class="btn btn-primary" routerLinkActive="active" routerLink="/Gstlist">Back</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <form autocomplete="off" [formGroup]="GstUploadForm" (ngSubmit)="uploadFiles()" class="form-horizontal">
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-sm-6">
+          <b>General Instructions :</b><br />
+          <ul class="list-group">
+            <li class="list-group-item">Change the Sheet name as "Sheet1"</li>
+            <li class="list-group-item">Don't add any extra columns to the RAW file.</li>
+            <li class="list-group-item">Convert the format of all the Numeric values to Number with two decimal
+              values and then again change the format as TEXT, &nbsp; remove commas in between.</li>
+            <li class="list-group-item">Delete any extra blank columns if any till end.</li>
+            <li class="list-group-item">Delete any extra Blank Rows if any till end.</li>
+            <li class="list-group-item">Remove any characters (like -) in numeric columns, Make it blank or ZERO.</li>
+          </ul>
+        </div>
+
+        <div class="col-sm-6">
+          <div class="form-group" [ngClass]="{'has-error': formErrors.FileType}">
+            <label class="col-sm-3  control-label" for="FileType">File Type <span class="mandantory">*</span></label>
+            <div class="col-md-5">
+              <div class="input-group">
+                <select id="FileType" class="form-control" formControlName="FileType" (blur)="logValidationErrors()">
+                  <option value="" selected="selected">Select</option>
+                  <option *ngFor="let c1 of lstgstupload" value={{c1.DropdownValue}}>
+                    {{c1.DropDownDescription}}
+                  </option>
+                </select>
+                <span class="input-group-addon" style="cursor: pointer" (click)="onDownloadTemplate()">
+                  <span class="fa fa-download"></span>
+                </span>
+              </div>
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrors.FileType">
+                  {{formErrors.FileType}}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group" [ngClass]="{'has-error': formErrors.Year}">
+            <label class="col-sm-3 control-label" for="Year">Year<span class="mandantory">*</span></label>
+            <div class="col-md-3">
+              <!-- <div class='input-group date'>
+                <input id=calendar-input type="text" ngxDaterangepickerMd [autoApply]="true" [singleDatePicker]="true"
+                  class="form-control" id="Year" formControlName="Year" (change)="logValidationErrors()"
+                  [locale]="{format: 'YYYY'}" (datesUpdated)="logValidationErrors()" />
+                <label class="fa fa-calendar"></label>
+              </div> -->
+              <select id="Year" class="form-control" formControlName="Year" (blur)="logValidationErrors()">
+                <option value="" selected="selected">Select</option>
+                <option *ngFor="let c1 of lstGSTYears" value={{c1.DropdownValue}}>
+                  {{c1.DropDownDescription}}
+                </option>
+              </select>
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrors.Year">
+                  {{formErrors.Year}}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group" [ngClass]="{'has-error': formErrors.Month}">
+            <label class="col-sm-3 control-label" for="Month">Month<span class="mandantory">*</span></label>
+            <div class="col-md-4">
+              <!-- <div class='input-group date'>
+                <input id=calendar-input type="text" ngxDaterangepickerMd [autoApply]="true" [singleDatePicker]="true"
+                  class="form-control" id="Month" formControlName="Month" (change)="logValidationErrors()"
+                  [locale]="{format: 'MMMM'}" (datesUpdated)="logValidationErrors()" />
+                <label class="fa fa-calendar"></label>
+              </div> -->
+              <select id="Month" class="form-control" formControlName="Month" (blur)="logValidationErrors()">
+                <option value="" selected="selected">Select</option>
+                <option *ngFor="let c1 of lstMonths" value={{c1.DropdownValue}}>
+                  {{c1.DropDownDescription}}
+                </option>
+              </select>
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrors.Month">
+                  {{formErrors.Month}}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group" [ngClass]="{'has-error': formErrors.File}">
+            <label class="col-sm-3 control-label" for="SelectSelect">File <span class="mandantory">*</span> </label>
+            <div class="col-md-9">
+              <input type="file" id="File" (change)="onFileChanged($event)"
+                accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" formControlName="File">
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrors.File">
+                  {{formErrors.File}}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group" [ngClass]="{'has-error': formErrors.Remarks}">
+            <label class="col-sm-3 control-label" for="Remarks">Remarks <span class="mandantory">*</span></label>
+            <div class="col-sm-9">
+              <input id="Remarks" type="text" class="form-control" formControlName="Remarks"
+                (blur)="logValidationErrors()" maxlength="500">
+              <span class="help-block" *ngIf="formErrors.Remarks">
+                {{formErrors.Remarks}}
+              </span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <div class="panel-footer">
+      <div class="pull-right btn-toolbar">
+        <button type="button" class="btn btn-primary" routerLinkActive="active" routerLink="/Gstlist">Cancel</button>
+        <button type="submit" prevent-double-submit [disabled]="GstUploadForm.invalid"
+          class="btn btn-success">Upload</button>
+      </div>
+      <div class="clearfix"></div>
+    </div>
+  </form>
+</div>

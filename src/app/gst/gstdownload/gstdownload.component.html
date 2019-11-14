@@ -1,0 +1,80 @@
+<div class="row">
+  <div class="col-sm-6 col-lg-6">
+    <h3>
+      Download
+    </h3>
+  </div>
+  <div class="col-sm-6 col-lg-6">
+    <div class="pull-right hidden-xs">
+      <ol class="breadcrumb" id="dynamicbreadcrumb">
+        <li>
+          <span> GST </span>
+        </li>
+        <li>
+          <span> Download</span>
+        </li>
+        <li class="active">
+          Download
+        </li>
+      </ol>
+    </div>
+  </div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <div class="row">
+      <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
+        <div class="input-group col-sm-10" role="group" aria-label="Basic example">
+          <div class="col-md-4">
+            <label class="control-label"> State <span class="mandantory">*</span> </label> <br />
+            <select [(ngModel)]="State" class="serchcurv form-control btn-group">
+              <option value="" selected="select">Select</option>
+              <option *ngFor="let c1 of States" value={{c1.State}}>
+                {{c1.State}}
+              </option>
+            </select>
+          </div>
+
+          <div class="col-md-2 ">
+            <label class="control-label"> Year <span class="mandantory">*</span> </label> <br />
+            <select id="Year" class="serchcurv form-control" [(ngModel)]="Year">
+              <option value="0" selected="selected">Select</option>
+              <option *ngFor="let c1 of lstGSTYears" value={{c1.DropdownValue}}>
+                {{c1.DropDownDescription}}
+              </option>
+            </select>
+          </div>
+
+          <div class="col-md-2">
+            <label class="control-label"> Month <span class="mandantory">*</span> </label> <br />
+            <select id="Month" class=" serchcurv form-control" [(ngModel)]="Month">
+              <option value="0" selected="selected">Select</option>
+              <option *ngFor="let c1 of lstMonths" value={{c1.DropdownValue}}>
+                {{c1.DropDownDescription}}
+              </option>
+            </select>
+          </div>
+
+          <div class="col-md-4 nopading_loc">
+            <button class=" btn btn-primary" (click)="DownloadGSTReturn()" title="Search">
+              Download
+            </button>
+            &nbsp;
+            <button class=" btn btn-success" (click)=" Refresh()" title="Reset">
+              Reset
+            </button>
+          </div>
+        </div>
+
+      </div>
+      <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 ">
+        <div class="pull-right nopading_loc">
+          <button class="btn btn-warning" prevent-double-submit type="submit" title="Add New" (click)="ProcessGst()">
+            Process GST For Last Month </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

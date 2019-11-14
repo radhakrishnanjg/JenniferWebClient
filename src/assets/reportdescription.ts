@@ -2,7 +2,7 @@ const ReportDescription = [
     {
         Download_Master_ID: 1,
         Screen_Name: "Amazon Inventory Report",
-        Description: "<p>Amazon inventory report gives segregated information of the inventory as unsellablequantities, sellable quantities, warehouse quantity and its total value,inbound-working-quantity, inbound-shipped-quantity, inbound-receiving-quantity.</p>"
+        Description: "<p>Amazon inventory report gives segregated information of the inventory as unsellable quantities, sellable quantities, warehouse quantity and its total value,inbound-working-quantity, inbound-shipped-quantity, inbound-receiving-quantity.</p>"
     },
     {
         Download_Master_ID: 2,

@@ -1,0 +1,182 @@
+<div class="row">
+  <div class="col-sm-6 col-lg-6">
+    <h3>
+      GST File Approval
+    </h3>
+  </div>
+  <div class="col-sm-6 col-lg-6">
+    <div class="pull-right hidden-xs">
+      <ol class="breadcrumb" id="dynamicbreadcrumb">
+        <li>
+          <span>GST</span>
+        </li>
+        <li>
+          <span> Approval</span>
+        </li>
+        <li class="active">
+          Approval
+        </li>
+      </ol>
+    </div>
+  </div>
+</div>
+
+<form autocomplete="off" class="form-horizontal">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <div class="row">
+        <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+          <span class="groupspanheader">
+            Details
+          </span>
+        </div>
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 ">
+          <div class="pull-right">
+            <button type="button" class="btn btn-primary" routerLinkActive="active" routerLink="/Gstlist">Back</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="form-group">
+            <label class="col-sm-3  control-label" for="FileType">File Type </label>
+            <div class="col-md-9">
+              <div>
+                {{obj?.FileType}}
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-sm-3 control-label" for="Year">Year</label>
+            <div class="col-md-9">
+              <div>
+                {{obj?.Year}}
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-sm-3 control-label" for="Month">Month</label>
+            <div class="col-md-9">
+              <div>
+                {{obj?.MonthName}}
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group"
+            *ngIf="obj?.ApprovalStatus=='PENDING L1 APPROVAL' || obj?.ApprovalStatus=='L1 APPROVED' ">
+            <label class="col-sm-3 control-label" for="Remarks">
+              Remarks
+              <span class="mandantory">* </span>
+            </label>
+            <div class="col-md-9">
+              <div>
+                <input id="Remarks" type="text" class="form-control" [(ngModel)]="Remarks" name="Remarks"
+                  maxlength="500">
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+
+      </div>
+
+      <span class="groupspanheader">
+        File Details
+      </span>
+      <div class="table-responsive">
+        <table class="table table-bordered custtable-bordered">
+          <thead>
+            <tr>
+              <th class="col-md-8">File Name</th>
+              <th class="col-md-4">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+
+              <td>{{ obj?.FileName }}</td>
+              <td><i (click)="downloadActualFile(obj?.FilePath,obj?.FileName )" class="fa fa-download pointer"
+                  aria-hidden="true"></i></td>
+            </tr>
+          </tbody>
+        </table>
+
+      </div>
+
+      <span class="groupspanheader">
+        Approval Details
+      </span>
+      <div class="table-responsive">
+        <table class="table table-bordered custtable-bordered" *ngIf="obj?.lstApprovalStatusViewModel 
+        && obj?.lstApprovalStatusViewModel.length">
+          <thead>
+            <tr>
+              <th>Status</th>
+              <th>Remarks</th>
+              <th>Action By</th>
+              <th>Created On</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let c of obj?.lstApprovalStatusViewModel">
+
+              <td>{{ c.Status }}</td>
+              <td>{{ c.Remarks }}</td>
+              <td>{{ c.ActionByName }}</td>
+              <td>{{ c.CreatedDate | date :"MM-dd-yyyy HH:mm"}}</td>
+
+            </tr>
+          </tbody>
+        </table>
+        <table class="table table-bordered table-condensed" *ngIf="obj?.lstApprovalStatusViewModel==null">
+          <thead>
+            <tr>
+              <th>Status</th>
+              <th>Remarks</th>
+              <th>Action By</th>
+              <th>Created On</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td colspan="4">
+                No Records Found.!
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+
+    <div class="panel-footer">
+      <div class="pull-right btn-toolbar" *ngIf="obj?.ApprovalStatus=='PENDING L1 APPROVAL'">
+
+        <button class="btn btn-danger" prevent-double-submit type="submit" title="Reject"
+          (click)="Save('L1 REJECTED')">Reject</button>
+        &nbsp;
+        <button class="btn btn-success" prevent-double-submit type="submit" title="Approve"
+          (click)="Save('L1 APPROVED')">
+          Approve </button>
+      </div>
+
+      <div class="pull-right btn-toolbar" *ngIf=" obj?.ApprovalStatus=='L1 APPROVED'">
+
+        <button class="btn btn-danger" prevent-double-submit type="submit" title="Reject"
+          (click)="Save('L2 REJECTED')">Reject</button>
+        &nbsp;
+        <button class="btn btn-success" prevent-double-submit type="submit" title="Approve"
+          (click)="Save('L2 APPROVED')">
+          Approve </button>
+      </div>
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</form>

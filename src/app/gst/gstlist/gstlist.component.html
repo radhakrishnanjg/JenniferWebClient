@@ -1,0 +1,144 @@
+<div class="row">
+  <div class="col-sm-6 col-lg-6">
+    <h3>
+      Upload
+    </h3>
+  </div>
+  <div class="col-sm-6 col-lg-6">
+    <div class="pull-right hidden-xs">
+      <ol class="breadcrumb" id="dynamicbreadcrumb">
+        <li>
+          <span> GST </span>
+        </li>
+        <li>
+          <span> Upload</span>
+        </li>
+        <li class="active">
+          List
+        </li>
+      </ol>
+    </div>
+  </div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <div class="row">
+      <div class="col-xs-12 col-sm-10 col-md-10 col-lg-10">
+        <div class="input-group" role="group" aria-label="Basic example">
+          <div class="col-md-3 nopading_loct">
+            <select [(ngModel)]="ApprovalStatus" class="serchcurv form-control btn-group">
+              <option value="" selected="select">Approval</option>
+              <option *ngFor="let c1 of lstgstapproval" value={{c1.DropdownValue}}>
+                {{c1.DropDownDescription}}
+              </option>
+            </select>
+          </div>
+
+          <div class="col-md-3 nopading_loct">
+            <select [(ngModel)]="FileType" class="serchcurv form-control btn-group">
+              <option value="" selected="select">File Type</option>
+              <option *ngFor="let c1 of lstgstupload" value={{c1.DropdownValue}}>
+                {{c1.DropDownDescription}}
+              </option>
+            </select>
+          </div>
+
+          <div class="col-md-4 nopading_loct">
+            <input [(ngModel)]="FileName" type="text" class="serchcurv form-control btn-group" placeholder="File Name">
+          </div>
+
+          <!-- <div class="col-md-4 nopading_loct" *ngIf="(SearchBy=='FileNmae')">
+            <input type="text" ngxDaterangepickerMd [(ngModel)]="FileNmae"
+              class="serchcurv form-control btn-group col-xs-12 pointer"
+              style="border:1px soloid #ccc !important; padding :3px;left:0px" [showCustomRangeLabel]="true"
+              [ranges]="Searchranges" [showCancel]="true" (ngModelChange)="onChange($event)" />
+          </div> -->
+
+          <div class="col-md-2 nopading_loct">
+            <button type="button" class="serchcurv btn btn-default btn-group" (click)="Search()" title="Search">
+              <i class="fa fa-search " aria-hidden="true"></i>
+            </button>
+            <button type="button" class="serchcurv btn btn-default btn-group" (click)="Refresh()" title="Reset">
+              <i class="fa fa-refresh" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 text-right">
+        <div class="nopading_loct">
+          <button type="button" class="btn btn-primary" routerLink="/Gst/Create">New Upload</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="panel-body">
+    <kendo-grid [data]="gridView" resizable="true" columnMenu="true" [pageSize]="pageSize" [skip]="skip"
+      [pageable]="true" (pageChange)="pageChange($event)" [sortable]="{
+          allowUnsort: allowUnsort,
+          mode:  'single'
+          }" [sort]="sort" (sortChange)="sortChange($event)" [filterable]="true"
+      (dataStateChange)="dataStateChange($event)" [filter]="state.filter">
+
+      <kendo-grid-column field="FileType" title="File Type">
+      </kendo-grid-column>
+      <kendo-grid-column field="Year" title="Year">
+      </kendo-grid-column>
+      <kendo-grid-column field="MonthName" title="Month">
+      </kendo-grid-column>
+      <kendo-grid-column field="FileName" title="File Name">
+      </kendo-grid-column>
+      <kendo-grid-column field="ApprovalStatus" title="Status">
+      </kendo-grid-column>
+      <kendo-grid-column field="GSTStatus" title="GST Status">
+      </kendo-grid-column>
+      <kendo-grid-column field="GSTRemarks" title="GST Remarks ">
+      </kendo-grid-column>
+      <kendo-grid-column field="FileID" title="Action" [class]="{'text-center': true}" [filterable]="false"
+        [sortable]="false" width="70">
+        <ng-template kendoGridCellTemplate let-obj>
+          <i class="fa fa-edit bgblue pointer" title="Approval" title="Edit"
+            [routerLink]="['/Gstapproval', obj.FileID]"></i>
+          &nbsp;
+          <i (click)="downloadActualFile(obj.FilePath,obj.FileName )" class="fa fa-download bgblue pointer"
+            title="Download"></i>
+          &nbsp;
+          <i (click)="confirmDeleteid(obj.FileID,obj.Year +' ' + obj.MonthName )" class="fa fa-trash bgred pointer"
+            title="Delete"></i>
+        </ng-template>
+      </kendo-grid-column>
+    </kendo-grid>
+
+  </div>
+  <div id="modaldeleteconfimation" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="modaldeleteconfimation" aria-hidden="true">
+    <div class="modal-dialog ">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+              aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="modaldeleteconfimation">Confirmation</h4>
+        </div>
+        <div class="modal-body alert-warning">
+          <div class="row">
+            <div class="col-xs-2">
+              <i class="fa fa-warning fa-3x "></i>
+            </div>
+            <div class="col-xs-10">
+              <div>
+                <h5>
+                  Are you sure you want to delete this value <span> {{deleteColumn}}</span>?
+                </h5>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-danger btn-sm" (click)="delete()">Yes</button>
+          &nbsp;
+          <button class="btn btn-default btn-sm" data-dismiss="modal">No</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

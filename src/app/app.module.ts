@@ -21,6 +21,7 @@ import { PreventDoubleSubmitModule } from 'ngx-prevent-double-submission';
 import { MomentModule } from 'ngx-moment';
 import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 import { DeviceDetectorModule } from 'ngx-device-detector';
+import { RecaptchaModule } from 'ng-recaptcha';
 import * as bootstrap from "bootstrap";
 import * as $ from "jquery";
 //kendo
@@ -39,6 +40,8 @@ import { EncrDecrService } from './_services/service/encr-decr.service';
 
 // Import your library
 import { PrivatelayoutComponent } from './privatelayout/privatelayout.component';
+import { TermsofuseComponent } from './termsofuse/termsofuse.component';
+import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
 import { Dashboard1Component } from './dashboard1/dashboard1.component';
 
 // Import your Module
@@ -56,6 +59,7 @@ import { DownloadModule } from './download/download.module';
 import { HelpModule } from './help/help.module';
 import { MaintenanceComponent } from './maintenance/maintenance.component';
 import { SearchComponent } from './search/search.component';
+import { IndexComponent } from './index/index.component';
 
 
 import { CasesModule } from './cases/cases.module';
@@ -68,9 +72,9 @@ import { DynamicformComponent } from './dynamicform/dynamicform.component';
     BrowserModule,
     ReactiveFormsModule,
     HttpClientModule,
-    BrowserAnimationsModule, 
-    FormsModule, 
-
+    RecaptchaModule.forRoot(),
+    BrowserAnimationsModule,
+    FormsModule,
 
     AngularFontAwesomeModule,
     DataTablesModule,
@@ -80,12 +84,12 @@ import { DynamicformComponent } from './dynamicform/dynamicform.component';
     MomentModule,
     NgxDaterangepickerMd.forRoot(),
     DeviceDetectorModule.forRoot(),
- 
+
     ToastrModule.forRoot({
-      timeOut: 5000, 
+      timeOut: 5000,
       positionClass: 'toast-top-center',
       preventDuplicates: true,
-    }), 
+    }),
     NgxMaskModule.forRoot(),
     SelectDropDownModule,
     NgxTypeaheadModule,
@@ -112,7 +116,7 @@ import { DynamicformComponent } from './dynamicform/dynamicform.component';
     SalesModule,
     GoodsModule,
     DownloadModule,
-   // HelpModule,
+    // HelpModule,
     //CasesModule,
     AppRoutingModule,
 
@@ -124,6 +128,9 @@ import { DynamicformComponent } from './dynamicform/dynamicform.component';
     MaintenanceComponent,
     SearchComponent,
     DynamicformComponent,
+    TermsofuseComponent,
+    PrivacyPolicyComponent,
+    IndexComponent,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

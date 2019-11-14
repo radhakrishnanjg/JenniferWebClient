@@ -66,7 +66,18 @@ export class HelpnavigationComponent implements OnInit {
   ngOnInit() {
     localStorage.removeItem("helpmenucontent");
     this.onLoad();
-
+    
+    $(window).scroll(function() {
+      if ($(this).scrollTop()) {
+        $('#toTop').fadeIn();
+      } else {
+        $('#toTop').fadeOut();
+      }
+    });
+    
+     $("#toTop").click(function () { 
+        $("html, body").animate({scrollTop: 0}, 1000);
+    });
 
     //collapseing side bar
     var topbar = $(".page-topbar");
@@ -77,6 +88,8 @@ export class HelpnavigationComponent implements OnInit {
     mainarea.addClass("sidebar_shift");
     $('.logo-area').hide();
 
+
+   
   }
   scroll(el: HTMLElement) {
     el.scrollIntoView();

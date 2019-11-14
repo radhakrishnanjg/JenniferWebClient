@@ -1,0 +1,6 @@
+ul.termslist {
+    margin:0px; padding: 0px;
+}
+.termslist li {
+   list-style: none;
+} 

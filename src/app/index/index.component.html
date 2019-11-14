@@ -1,0 +1,463 @@
+<header>
+  <div class="sticky">
+    <div class="">
+      <div class="logo-brand">
+        <a href="#">
+          <div class="logo-font">
+            <img src='/assets/images/logo.png' />
+            <!--Jennifer-->
+          </div>
+        </a>
+      </div>
+      <nav class="navbar">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <!-- <a class="navbar-brand" href="#">WebSiteName</a> -->
+          </div>
+          <div class="collapse navbar-collapse" id="myNavbar">
+            <ul class="nav navbar-nav">
+              <li class="active"><a>Home</a></li>
+              <li><a (click)="element.scrollIntoView({ behavior: 'smooth', block: 'center' })">About</a></li>
+              <li><a (click)="element1.scrollIntoView({ behavior: 'smooth', block: 'center' })"> Cross Border</a></li>
+              <li><a (click)="element2.scrollIntoView({ behavior: 'smooth', block: 'center' })"> Contact Us</a></li>
+              <!-- <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" >Language<span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a >English</a></li>
+              <li><a >Chinees</a></li> 
+            </ul>
+          </li> -->
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+              <li><a routerLinkActive="active" routerLink="/Signin">
+                  <span class="glyphicon glyphicon-user"></span> Login</a></li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </div>
+</header>
+<!--SLIDER-->
+<section class="slidersec">
+  <div class="slide_box">
+    <div id="slideshow">
+      <div>
+        <img src="assets\jimages\slider1.jpg">
+      </div>
+      <div>
+        <img src="assets\jimages\slider2.jpg">
+      </div>
+      <div>
+        <img src="assets\jimages\slider3.jpg">
+      </div>
+    </div>
+    <!-- <ul class="slide_pic"> 
+          <li><img src="assets\jimages\slider1.jpg"></li>
+          <li><img src="assets\jimages\slider2.jpg"></li>
+          <li><img src="assets\jimages\slider3.jpg"></li> 
+      </ul>
+      <ul class="slide_tab"></ul>
+      <a href="javascript:" class="slide_nav slide_prev">&lt;</a>
+      <a href="javascript:" class="slide_nav slide_next">&gt;</a> -->
+  </div>
+</section>
+<!--ABOUT SECTION-->
+<div class="about-area text-center" id="about" #element>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6 hidden-xs"></div>
+      <div class="col-md-6 col-xs-12">
+        <div class="about-container section-padding">
+          <div class="section-title">
+            <div class="title-border">
+              <h1>About <span>Jennifer</span></h1>
+            </div>
+          </div>
+          <p class="text-center">
+            Trusted by top sellers on Amazon, Jennifer is an ERP solution that integrates seamlessly with your
+            e-commerce store. Automate everything from order fulfillment to purchasing.
+          </p>
+          <p class="text-block black center quote">
+            “Jennifer does 100% automation of accounting and compliance.
+            All reconciliations are now a click Away!”
+          </p>
+          <p>Managing Partner</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!---->
+<div class="service-area section-padding text-center">
+  <div class="container">
+    <div class="row">
+      <div class='sectionum col-md-4 col-xs-12'>
+        <img src="assets/jimages/reconcile.png" class="primary-img" alt="">
+        <div class='numscroller-info-top'>GMV Processed</div>
+        <div class='numscroller numscroller-big-bottom' data-slno='1' data-min='0' data-max='1822' data-delay='10'
+          data-increment="9">15000 Crs</div>
+      </div>
+      <div class='sectionum col-md-4 col-xs-12'>
+        <img src="assets/jimages/manage.png" class="primary-img" alt="">
+        <div class='numscroller-info-top'>No. Of Orders Reconciled</div>
+        <div class='numscroller numscroller-big-bottom' data-slno='1' data-min='0' data-max='1991' data-delay='10'
+          data-increment="9">7500000</div>
+      </div>
+      <div class='sectionum col-md-4 col-xs-12'>
+        <img src="assets/jimages/procure.png" class="primary-img" alt="">
+        <div class='numscroller-info-top'>Total Claims Received</div>
+        <div class='numscroller numscroller-big-bottom' data-slno='1' data-min='0' data-max='1185' data-delay='10'
+          data-increment="9">600 Crs</div>
+      </div>
+      <div class='clear'></div>
+    </div>
+  </div>
+</div>
+<!---->
+<div class="testimonial-section">
+  <div class="bg"></div>
+  <div class="bg bg2"></div>
+  <div class="bg bg3"></div>
+  <div class="inner-width">
+    <h1>SALIENT FEATURES</h1>
+    <span class="text-block-4">What makes Jennifer awesome?</span>
+    <div id="nav-tab" class="testimonial-pics">
+      <img src="assets/icons/workperformans.svg" id="0" title="Enhanced Work Performance" alt="img-1" class="active">
+      <img src="assets/icons/costreduce.svg" id="1" title="Reduced Inventory Cost" alt="img-2">
+      <img src="assets/icons/customersatisfie.svg" id="2" title="Better Customer Satisfaction Rate" alt="img-3">
+    </div>
+
+    <div class="testimonial-contents">
+      <div class="testimonial active">
+        <p>E-commerce orders when integrated to the ERP system in real-time streamlines multiple business processes,
+          reduce human resource involvement and data redundancy.</p>
+
+      </div>
+
+      <div class="testimonial">
+        <p>Inventory management is the most crucial aspect of e-commerce. Our robust ERP system can be fully integrated
+          with your online store and efficiently manage your inventory. </p>
+      </div>
+
+      <div class="testimonial">
+        <p>Jennifer reduces operational hassles for your seller account which leads to higher customer satisfaction.</p>
+      </div>
+    </div>
+  </div>
+</div>
+<!---->
+<section class="scrolingtabsbase">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-2 col-xs-12">
+        <nav class="navigation" id="mainNav">
+          <a class="navigation__link" (click)="element011.scrollIntoView({ behavior: 'smooth', block: 'center' })">
+            <img class="lft_navicons" src="assets/jimages/i_procure.png">Procure </a>
+          <a class="navigation__link" (click)="element012.scrollIntoView({ behavior: 'smooth', block: 'center' })">
+            <img class="lft_navicons" src="assets/jimages/i_manage.png">Manage</a>
+          <a class="navigation__link" (click)="element013.scrollIntoView({ behavior: 'smooth', block: 'center' })">
+            <img class="lft_navicons" src="assets/jimages/i_reconcile.png">Reconcile</a>
+          <a class="navigation__link" (click)="element014.scrollIntoView({ behavior: 'smooth', block: 'center' })">
+            <img class="lft_navicons" src="assets/jimages/i_comply.png">Comply</a>
+        </nav>
+      </div>
+      <div class="col-md-10 col-xs-12">
+        <div class="page-section hero pgs1" id="procure" #element011>
+          <h1>Powerful procurement and Inventory Management under one roof</h1>
+          <p>
+            Success in e-commerce requires robust inventory management practices. Jennifer let’s you automate,
+            streamline and centralize stock operations to provide your business the control and insight needed for
+            scaling growth and profitability.
+          </p>
+          <div class="row rowno-padding">
+            <div class="col-xs-12 col-md-6 sec3prt1 hover-effect">
+              <div class="sec3prtbg2 box14">
+                <img src="assets/jimages/mainpage-icons-2211.png" class="image-8">
+                <h3> Process transactions with minimal effort </h3>
+                <div class="box-content">
+                  Speed up your post sale processes with minimal effort. Automated emails, purchase orders, sale
+                  invoices, customer payments, and all other activities can be done swiftly under one roof.
+                </div>
+              </div>
+            </div>
+            <div class="col-xs-12 col-md-6 sec3prt2 hover-effect">
+              <div class="sec3prtbg2 box14">
+                <img src="assets/jimages/mainpage-icons-2222.png" class="image-8">
+                <h3> Stock transfer </h3>
+                <div class="box-content">
+                  Automatically pass the Sales and Purchases entries to the respective locations in different states by
+                  enabling inter unit transfer under the new GST regime.
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row rowno-padding">
+            <div class="col-xs-12 col-md-6 sec3prt3 hover-effect">
+              <div class="sec3prtbg2 box14">
+                <img src="assets/jimages/mainpage-icons-2233.png" class="image-8">
+                <h3> Automatic Replenishment triggers </h3>
+                <div class="box-content">
+                  Determine how much stock needs to be reordered effortlessly. Preset minimum, maximum, and reorder
+                  points for each item that you want to be replenished using historical data. Create purchase orders
+                  when inventory levels for those items approach their reorder levels.
+                </div>
+              </div>
+            </div>
+            <div class="col-xs-12 col-md-6 sec3prt4 hover-effect">
+              <div class="sec3prtbg2 box14">
+                <img src="assets/jimages/mainpage-icons-2244.png" class="image-8">
+                <h3> Inwarding Automation </h3>
+                <div class="box-content">
+                  Manage end to end procurement and shipment of inventory to Amazon. Keep a track of the inventory
+                  purchased and real time stock levels across different SKUs.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="page-section pgs2" id="manage" #element012>
+          <h1>Inventory warehouse management made ridiculously easy</h1>
+          <p>
+            No more losing of customers due to disorganized order management. Track and synchronize data of all stock
+            transfers from across sources so you never have to run the risk of disappointing your costumes with a "Sold
+            Out" Message.
+          </p>
+          <div class="row rowno-padding">
+            <div class="col-xs-12 col-md-6 sec3prt1 hover-effect">
+              <div class="sec3prtbg2 box14">
+                <img src="assets/jimages/mainpage-icons-3311.png" class="image-8">
+                <h3> Reduce Pilferage </h3>
+                <div class="box-content">
+                  Track inventory on a real time basis to check what gets lost in transit during delivery. If Amazon
+                  processes a ‘refund’ to the customer and the inventory doesn’t get returned, Jennifer will provide
+                  full data to raise a claim to Amazon.
+                </div>
+              </div>
+            </div>
+            <div class="col-xs-12 col-md-6 sec3prt2 hover-effect">
+              <div class="sec3prtbg2 box14">
+                <img src="assets/jimages/mainpage-icons-3322.png" class="image-8">
+                <h3>Boost profitability </h3>
+                <div class="box-content">
+                  Manage unfulfillable inventory by categorizing them into different grades in order to sell the best
+                  stock at a higher price and the dead ones at a lower price.
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row rowno-padding">
+            <div class="col-xs-12 col-md-6 sec3prt3 hover-effect">
+              <div class="sec3prtbg2 box14">
+                <img src="assets/jimages/mainpage-icons-3333.png" class="image-8">
+                <h3> Direct sync with Tally </h3>
+                <div class="box-content">
+                  Automatically synchronize your invoices, purchase orders and bill to liquidators between Jennifer and
+                  Tally.
+                </div>
+              </div>
+            </div>
+            <div class="col-xs-12 col-md-6 sec3prt4 hover-effect">
+              <div class="sec3prtbg2 box14">
+                <img src="assets/jimages/mainpage-icons-3344.png" class="image-8">
+                <h3> Multi user level access</h3>
+                <div class="box-content">
+                  Give access to your team members within your organisation with different roles and module permissions.
+                  Delegate work without losing control.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="page-section pgs3" id="reconcile" #element013>
+          <h1>Real-time end to end reconciliation </h1>
+          <p>
+            Jennifer automates reconciliation process in real-time for amazon charges, stock refunds, unsaleable, lost
+            or damaged inventory.
+          </p>
+          <div class="row rowno-padding">
+            <div class="col-xs-12 col-md-12 sec3prt5 hover-effect">
+              <div class="sec3prtbg3 box14">
+                <h3><img src="assets/jimages/mainpage-icons-3311.png" class="image-8">Keep a tab on Amazon charges </h3>
+                <div class="box-content3">
+                  Automatically analyze millions of shipments and check if Amazon is charging you as per the terms for
+                  storage and delivery of shipments.
+                </div>
+              </div>
+              <div class="sec3prtbg3 box14">
+
+                <h3><img src="assets/jimages/mainpage-icons-3322.png" class="image-8">Automatic classification of
+                  inventory </h3>
+                <div class="box-content3">
+                  Monitor changes in inventory levels when orders are fulfilled by Amazon and automatically classify
+                  them into different categories such as returned, damaged or lost in transit.
+                </div>
+              </div>
+              <h2>Track inventory returns and amazon refunds in a snapshot</h2>
+              <ul class="unordered-list">
+                <li class="feature-description large">Get a summary of unsaleable receivables from Amazon</li>
+                <li class="feature-description large">Monitor inventory returns or refunds and file claims in time in
+                  case of any errors</li>
+                <li class="feature-description large">Avoid heavy losses by getting a complete overview of inventory
+                </li>
+              </ul>
+            </div>
+          </div>
+
+        </div>
+        <div class="page-section pgs4 hover-effect" id="comply" #element014>
+          <h1>Simplify the process for GST returns filings across all states of operations on Amazon.</h1>
+          <ul class="unordered-list">
+            <li class="feature-description large">Record all GST inputs such as purchases, expenses of Amazon charges
+              and outputs such as sales and promotional activities</li>
+            <li class="feature-description large">Get complete GST filings in formats as prescribed by the government
+              (3, 3A, 3B) </li>
+            <li class="feature-description large">Download returns and upload directly on GST portal </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!--CROSSBORDER SECTION-->
+<section class="crossborderBase" id="crossborder" #element1>
+  <div class="container">
+    <h1 class="title-line-g"><strong>Jennifer </strong>complete Import, Export & <strong> ERP</strong> Solutions</h1>
+    <div class="row">
+      <div class="col-xs-12 col-md-6">
+        <h3> Services we offer </h3>
+        <ul class="crossborderlist">
+          <li><img src="assets/icons/china.svg" class="crossvg">China Exporter Service</li>
+          <li><img src="assets/icons/india.svg" class="crossvg">Indian Importer Service</li>
+          <li><img src="assets/icons/interonal_domestic.svg" class="crossvg">International & Domestic Shipping</li>
+          <li><img src="assets/icons/customClearance.svg" class="crossvg">Custom Clearance Service </li>
+          <li><img src="assets/icons/dutyfunding.svg" class="crossvg">Customs duty funding service</li>
+          <li><img src="assets/icons/marketplaceSeller.svg" class="crossvg">Indian Marketplace Seller Service </li>
+          <li><img src="assets/icons/warehouse.svg" class="crossvg">Warehousing & Labelling Service for Re/Unsellable
+            Goods</li>
+        </ul>
+      </div>
+      <div class="col-xs-12 col-md-6">
+        <h3> ERP Technology Features </h3>
+        <ul class="crossborderlist">
+          <li><img src="assets/icons/chinaManagement.svg" class="crossvg">China Supplier Account Management</li>
+          <li><img src="assets/icons/cataloguemanagement.svg" class="crossvg">Catalogue Management</li>
+          <li><img src="assets/icons/inventorymanagement.svg" class="crossvg">Inventory Management</li>
+          <li><img src="assets/icons/thirdpartylogistics.svg" class="crossvg">3rd Party Logistics Integration</li>
+          <li><img src="assets/icons/reconciliation.svg" class="crossvg">Finance Reconciliation Order-ID level in T+0
+            timeline</li>
+          <li><img src="assets/icons/chinasupplier.svg" class="crossvg">Payment to China supplier in RMB in T+3 timeline
+          </li>
+
+        </ul>
+      </div>
+    </div>
+    <div class="row">
+      <h1><strong>S</strong>elling in <strong>India</strong></h1>
+      <div class="col-md-12 col-xs-12">
+
+      </div>
+    </div>
+  </div>
+</section>
+<!--CONTACT SECTION-->
+<section class="sec-contact" id="contact" #element2>
+  <h1 class="title-line-g"><strong>C</strong>ONTACT</h1>
+  <div class="map">
+    <iframe height="400" id="gmap_canvas"
+      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3887.944723685334!2d77.57636511373451!3d12.97538731830855!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bae3d97cea66535%3A0xf3800177961d026a!2sRK+Group!5e0!3m2!1sen!2sin!4v1560936832046!5m2!1sen!2sin"></iframe>
+  </div>
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-6">
+        <h4>CONTACT</h4>
+        <p>
+          For any enquiries, questions or recommendations, please fill out the following form and will get back to you.
+        </p>
+        <form autocomplete="off" [formGroup]="captchaForm" (ngSubmit)="SaveData()">
+          <div class="row rownopadding">
+            <div class="form-group col-md-6" [ngClass]="{'has-error': formErrors.Name}">
+              <label for="inputEmail4">Name</label>
+              <input type="name" class="form-control" id="inputName" formControlName="Name"
+                (blur)="logValidationErrors()" placeholder="Name" required>
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrors.Name">
+                  {{formErrors.Name}}
+                </span>
+              </div>
+            </div>
+            <div class="form-group col-md-6" [ngClass]="{'has-error': formErrors.PhoneNumber}">
+              <label for="inputphone">Phone Number</label>
+              <input type="number" class="form-control" id="inputphone" placeholder="9513 917 830"
+                formControlName="PhoneNumber" (blur)="logValidationErrors()" required>
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrors.PhoneNumber">
+                  {{formErrors.PhoneNumber}}
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="form-group" [ngClass]="{'has-error': formErrors.Email}">
+            <label for="inputEmail">Email</label>
+            <input type="email" class="form-control" id="inputEmail" placeholder="support@jennifer-in.com"
+              formControlName="Email" (blur)="logValidationErrors()" required>
+            <div class="help-block-rk">
+              <span class="help-block" *ngIf="formErrors.Email">
+                {{formErrors.Email}}
+              </span>
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-md-6 col-xs-12">
+              <re-captcha (resolved)="resolved($event)" siteKey="6LfYesEUAAAAAG4BBbHbx5gkj0chyYVTv5n2J_dL">
+              </re-captcha>
+            </div>
+            <div class="col-md-6 col-xs-12"></div>
+          </div>
+          <div class="form-group">
+            <button [disabled]="captchaForm.invalid || captchaLength == 0" type="submit"
+              class="btn btn-primary btn-block">Submit</button>
+          </div>
+        </form>
+      </div>
+      <div class="col-12 col-md-6">
+        <h4>Head Office</h4>
+        <p>
+          RK Group, Vinayak Tower, 1st Cross Rd, Gandhi Nagar, Bengaluru, Karnataka 560009, India
+        </p>
+        <div class="row">
+          <div class="col-12 col-sm-4">
+            <div class="sociallogos">
+              <img src="assets/icons/skype.png">
+              <h3>Support</h3>
+              support@jennifer-in.com
+            </div>
+          </div>
+          <div class="col-12 col-sm-4">
+            <div class="sociallogos">
+              <img src="assets/icons/wechat.jpg">
+              <h3>WeChat</h3>
+              ID: RKJennifer2017
+            </div>
+          </div>
+          <div class="col-12 col-sm-4">
+            <div class="sociallogos">
+              <img src="assets/icons/watsup.png">
+              <h3>Whatsapp</h3>
+              +91 9513 917 830
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id='toTop'> <img src="assets/jimages/go-top-icon.png"> </div>
+</section>
+<div class="bottom_footer">
+  <p>© <span> {{Year}} </span> Jennifer. All Rights Reserved.</p>
+</div>

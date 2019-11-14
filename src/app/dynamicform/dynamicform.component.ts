@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import form_template from './form_template';
+import form_templatedropdown from './form_templatedropdown';
 import form_template_error from './form_template_error';
-import form_template_errordescription from './form_template_errordescription';
+import form_template_data from './form_template_data';
+import dropdownresult from './dropdownresult';
 @Component({
   selector: 'app-dynamicform',
   templateUrl: './dynamicform.component.html',
@@ -12,22 +14,41 @@ export class DynamicformComponent implements OnInit {
 
   myFormGroup: FormGroup;
   formTemplate: any = form_template;
+  form_templatedropdown: any = form_templatedropdown;
   form_template_error: any = form_template_error;
-  form_template_errordescription: any = form_template_errordescription;
+  form_template_data: any = form_template_data;
+  dropdownresult: any = dropdownresult;
   formDesignType: string = 'Grid1';
   constructor() { }
   ngOnInit() {
     let group = {}
     form_template.forEach(input_template => {
-      if (input_template.ControlType == 'TextBox' ||
+      //unique constraint needs to implement here for that textbox
+      if (input_template.ControlType == 'TextBox') {
+        if (input_template.IsMandantory) {
+          group[input_template.ControlId] = new FormControl('', [Validators.required]);
+        }
+        else {
+          group[input_template.ControlId] = new FormControl('');
+        }
+      }
+      else if (
         input_template.ControlType == 'Number' ||
-        input_template.ControlType == 'CheckBox' ||
         input_template.ControlType == 'TextArea') {
         if (input_template.IsMandantory) {
           group[input_template.ControlId] = new FormControl('', [Validators.required]);
         }
         else {
           group[input_template.ControlId] = new FormControl('');
+        }
+      }
+      else if (
+        input_template.ControlType == 'CheckBox') {
+        if (input_template.IsMandantory) {
+          group[input_template.ControlId] = new FormControl(false, [Validators.requiredTrue]);
+        }
+        else {
+          group[input_template.ControlId] = new FormControl(false);
         }
       }
       else if (input_template.ControlType == 'DropDown') {
@@ -70,7 +91,7 @@ export class DynamicformComponent implements OnInit {
           //   if (errorKey) {
           //     this.form_template_error[key] += messages[errorKey] + ' ';
           //   }
-          // }
+          // } 
           let messages = this.formTemplate.filter(a => a.ControlId == key)[0].MandantoryErrorMessage;
           for (const errorKey in abstractControl.errors) {
             if (errorKey) {
@@ -88,11 +109,43 @@ export class DynamicformComponent implements OnInit {
     return this.form_template_error[key];
   }
 
+  getDropDownOptions(ControlId: string) {
+    return this.form_templatedropdown.filter(a => a.ControlId == ControlId)[0].Options;
+  }
+
   getCheckboxlistSelected(ControlId: string, Value: string) {
     let SelectedValues = this.formTemplate.filter(a => a.ControlId == ControlId)[0].options.includes(Value) ? Value : '';
     this.myFormGroup.patchValue({
       PrimaryStateID: SelectedValues,
     });
+  }
+  onchangeDependent(ControlId: string, Id: number) {
+    if (Id > 0) {
+      // this code will change based on web api call
+      this.formTemplate.filter(a => a.Caption == ControlId)[0].Options =
+        this.form_templatedropdown.filter(a => a.ControlId == ControlId)[0].Options;
+      //
+      // this.utilityService.getStates(countrid)
+      //   .subscribe(
+      //     (data: State[]) => {
+      //       this.states = data;
+      //       //
+      //     },
+      //     (err: any) => {
+      //       //
+      //       console.log(err);
+      //     }
+      //   );
+    } else {
+      this.formTemplate.filter(a => a.Caption == ControlId)[0].Options = [];
+    }
+    console.log('Value:' + Id);
+    console.log('ControlId:' + ControlId);
+  }
+
+  getDataByCaption(Caption: string) {
+    let a = form_template_data[Caption];
+    return a;
   }
 
   onSubmit() {

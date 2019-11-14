@@ -4,8 +4,8 @@ export * from './IUser';
 // export * from './userpermission';
 // export * from './userlog';
 
-export * from './masterupload'; 
-export * from './apisettings.model';  
+export * from './masterupload';
+export * from './apisettings.model';
 
 export * from './company-register';
 // export * from './Companydetails';
@@ -43,7 +43,7 @@ export * from './poorder';
 
 export * from './invoice';
 // export * from './invoiceitem';
-export * from './Result'; 
+export * from './Result';
 
 export * from './emailtemplate';
 // export * from './contact';
@@ -54,21 +54,24 @@ export * from './goodsreceipt.model';
 // export * from './Goodsdispute'; 
 
 // export * from './Goodsdispute'; 
- 
+
 
 export * from './Salesorder';
 // export * from './Salesratecard';
 // export * from './salesShipment';
 // export * from './shipmentoutward'; 
-export * from './Picklistheader'; 
-export * from './sto';  
-export * from './receipts'; 
+export * from './Picklistheader';
+export * from './sto';
+export * from './receipts';
 
 
-export * from './download'; 
-export * from './helpmenu'; 
-export * from './Search'; 
-export * from './Statement'; 
+export * from './download';
+export * from './helpmenu';
+export * from './Search';
+export * from './Statement';
 
 
 export * from './rtvcases';
+export * from './gstfinancefileupload' 
+
+export * from './dynamicformmodal'
