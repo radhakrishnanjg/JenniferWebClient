@@ -1,0 +1,167 @@
+<div class="row">
+    <div class="col-sm-6 col-lg-6">
+        <h3>
+            Reports
+        </h3>
+    </div>
+    <div class="col-sm-6 col-lg-6">
+        <div class="pull-right hidden-xs">
+            <ol class="breadcrumb" id="dynamicbreadcrumb">
+                <li>
+                    <span> DataEntry</span>
+                </li>
+                <li>
+                    <span> Reports</span>
+                </li>
+                <li class="active">
+                    Download
+                </li>
+            </ol>
+        </div>
+    </div>
+</div>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <div class="row">
+            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                <span class="groupspanheader">
+                    {{FormName}}
+                </span>
+            </div>
+            <div class="col-sm-4">
+
+            </div>
+            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 ">
+                <div class="pull-right btn-toolbar">
+                    <a class="btn btn-primary" [routerLink]="['/Dataentry',RequestFormID,'NA']" title="New Form">
+                        New Form
+                    </a>
+                    <a class="btn btn-primary" routerLink="/Dataentryformlist" title="Back">
+                        Back
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="form-group ">
+                <div class="col-sm-1">
+                    <label class="control-label">Report By <span class="mandantory">*</span></label>
+                </div>
+                <div class="col-sm-3">
+                    <select name="SearchBy" id="SearchBy" class="form-control" [(ngModel)]="SearchBy"
+                    (change)="onchangeSearchBy()"  >
+                        <option value="" selected="selected">Select</option>
+                        <option>FORMID</option> 
+                        <option>DATE</option>
+                    </select>
+                </div>
+
+            </div>
+        </div>
+        <div class="row" *ngIf="SearchBy=='FORMID'">
+            <div class="form-group paddingtop10">
+                <div class="col-sm-1">
+                    <label for="Country">Form Id <span class="mandantory">*</span></label>
+                </div>
+                <div class="col-sm-3">
+                    <input type="text" [(ngModel)]="SearchKeyword" name="FormId" id="FormId" maxlength="30"
+                        class="form-control">
+                </div>
+                <div class=" col-sm-4" *ngIf="SearchBy!='' ">
+                    <div class=" pull-left btn-toolbar">
+                        <button class="btn btn-success" type="button" (click)="Search()">Search</button>
+                        <button class="btn btn-default" type="button" (click)="Reset()" title="Reset">Reset</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" *ngIf="SearchBy=='DATE'">
+            <div class="form-group paddingtop10">
+                <div class=" col-sm-4">
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <label for="Country">Start Date <span class="mandantory">*</span></label>
+                        </div>
+                        <div class="col-sm-9">
+                            <input type="date" [(ngModel)]="StartDate" name="StartDate" id="StartDate"
+                                data-date-format="DD-MM-YYYY" class="form-control">
+                            <!-- {{StartDate}} -->
+                        </div>
+                    </div>
+                </div>
+                <div class=" col-sm-4">
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <label for="Country">End Date <span class="mandantory">*</span> </label>
+                        </div>
+                        <div class="col-sm-9">
+                            <input type="date" [(ngModel)]="EndDate" name="EndDate" id="EndDate" class="form-control">
+                        </div>
+                    </div>
+                </div>
+                <div class=" col-sm-4" *ngIf="SearchBy!=''">
+                    <div class=" pull-left btn-toolbar">
+                        <button class="btn btn-success" type="button" (click)="Search()">Search</button>
+                        <button class="btn btn-primary" type="button" (click)="Reset()" title="Reset">Reset</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-12 table-responsive" #TABLE #table>
+            <div class="row">
+                <div style="padding-bottom: 10px;padding-top: 10px;">
+                    <div *ngIf="JSONdata && JSONdata.length>0">
+                        <button (click)="ExportTOExcel()" class="btn btn-success">ExportTOExcel</button>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <table class="table table-bordered" *ngIf="JSONdata && JSONdata.length>0">
+                    <thead>
+                        <tr>
+                            <th *ngFor="let key of captions">{{key}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of JSONdata">
+                            <td *ngFor="let key of keys">
+                                <div [ngSwitch]="key">
+                                    <div *ngSwitchCase="'Form ID'">
+                                        <a [routerLink]="['/Dataentry',RequestFormID,item[key]]">
+                                            {{item[key]}} </a>
+                                    </div>
+                                    <div *ngSwitchCase="'Created Date'">
+                                        {{item[key] |date :"MM-dd-yyyy HH:mm" }}
+                                    </div>
+                                    <div *ngSwitchDefault>
+                                        <div [ngSwitch]="item[key]">
+                                            <div *ngSwitchCase="true">
+                                                Yes
+                                            </div>
+                                            <div *ngSwitchCase="false">
+                                                No
+                                            </div>
+                                            <div *ngSwitchDefault>
+                                                {{item[key]}}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div *ngIf="JSONdata.length==0">
+            No Records Found.!
+        </div>
+    </div>
+
+
+</div>

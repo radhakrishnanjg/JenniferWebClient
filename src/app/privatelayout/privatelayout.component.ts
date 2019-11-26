@@ -37,7 +37,7 @@ export class PrivatelayoutComponent implements OnInit {
     private _alertService: ToastrService,
     private cookieService: CookieService,
     private authenticationService: AuthenticationService,
-    
+
     private _PrivateutilityService: PrivateutilityService,
     private EncrDecr: EncrDecrService,
     private _CompanydetailService: CompanydetailService,
@@ -51,7 +51,15 @@ export class PrivatelayoutComponent implements OnInit {
         // this.openSnackBar("Back to Online"); 
       } else {
         // this.status = "OFFLINE"
-        this._alertService.info("Connection Lost. Please check your internet connection");
+        this._alertService.info("Connection Lost. Please check your internet connection", 'Important!',
+          {
+            timeOut: 100000,
+            positionClass: 'toast-bottom-center',
+            progressBar: true,
+            closeButton: true,
+            tapToDismiss: false
+          });
+
       }
 
     });

@@ -60,12 +60,7 @@ import { HelpModule } from './help/help.module';
 import { MaintenanceComponent } from './maintenance/maintenance.component';
 import { SearchComponent } from './search/search.component';
 import { IndexComponent } from './index/index.component';
-
-
-import { CasesModule } from './cases/cases.module';
-import 'hammerjs';
-import { DynamicformComponent } from './dynamicform/dynamicform.component';
-
+ 
 
 @NgModule({
   imports: [
@@ -89,6 +84,7 @@ import { DynamicformComponent } from './dynamicform/dynamicform.component';
       timeOut: 5000,
       positionClass: 'toast-top-center',
       preventDuplicates: true,
+      closeButton:true,
     }),
     NgxMaskModule.forRoot(),
     SelectDropDownModule,
@@ -116,8 +112,7 @@ import { DynamicformComponent } from './dynamicform/dynamicform.component';
     SalesModule,
     GoodsModule,
     DownloadModule,
-    // HelpModule,
-    //CasesModule,
+    // HelpModule, 
     AppRoutingModule,
 
   ],
@@ -126,8 +121,7 @@ import { DynamicformComponent } from './dynamicform/dynamicform.component';
     Dashboard1Component,
     PrivatelayoutComponent,
     MaintenanceComponent,
-    SearchComponent,
-    DynamicformComponent,
+    SearchComponent, 
     TermsofuseComponent,
     PrivacyPolicyComponent,
     IndexComponent,

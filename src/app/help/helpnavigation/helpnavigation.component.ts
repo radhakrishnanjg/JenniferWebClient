@@ -96,6 +96,7 @@ export class HelpnavigationComponent implements OnInit {
   }
 
   scroll1(el: number) {
+    //$('#div' + el).addClass('paddingtop40');
     this.SearchKeyword = '';
     let helpmenucontent = JSON.parse(localStorage.getItem("helpmenucontent"));
     this.items = helpmenucontent;

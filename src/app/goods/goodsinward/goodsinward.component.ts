@@ -35,7 +35,7 @@ export class GoodsinwardComponent implements OnInit {
     private alertService: ToastrService,
     private fb: FormBuilder,
     private _router: Router,
-    
+
     private _goodsinwardService: GoodsinwardService,
     private _PrivateutilityService: PrivateutilityService,
     private _authorizationGuard: AuthorizationGuard,
@@ -174,10 +174,10 @@ export class GoodsinwardComponent implements OnInit {
               this.alertService.error('Jennifer Item Serial Number is already exist in the list.!');
               return;
             }
-          } 
+          }
         },
         (error: any) => {
-          //
+
           console.log(error);
         }
       );
@@ -219,10 +219,10 @@ export class GoodsinwardComponent implements OnInit {
               this.alertService.error('Jennifer Item Serial Number is already exist in the list.!');
               return;
             }
-          } 
+          }
         },
         (error: any) => {
-          //
+
           console.log(error);
         }
       );
@@ -239,7 +239,7 @@ export class GoodsinwardComponent implements OnInit {
       this.obj.ItemName = this.ItemName;
       //
       this._goodsinwardService.exist(0, this.goodsinwardform.controls['JenniferItemSerial'].value).subscribe(
-        (data) => { 
+        (data) => {
           //
           if (!data) {
             this.alertService.error('Jennifer Serial Number is invalid or used.!');
@@ -266,7 +266,7 @@ export class GoodsinwardComponent implements OnInit {
           }
         },
         (error: any) => {
-          //
+
           console.log(error);
         }
       );
@@ -294,8 +294,8 @@ export class GoodsinwardComponent implements OnInit {
     //
     this._goodsinwardService.VendorUpdate(this.lstGoodsinward).subscribe(
       (data) => {
+        $('#modalgrninwardconfimation').modal('hide');
         if (data != null && data.Flag == true) {
-          //
           this.alertService.success(data.Msg);
           this._router.navigate(['/Goodsinwardlist']);
         }
@@ -313,4 +313,13 @@ export class GoodsinwardComponent implements OnInit {
       }
     )
   }
+
+  JenniferItemSerialChangeFocus() {
+    $('#VendorItemSerialNumber').focus();
+  }
+
+  VendorItemSerialNumberonChangeFocus() {
+    $('#JenniferItemSerial').focus();
+  }
+
 }

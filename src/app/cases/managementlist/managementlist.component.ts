@@ -90,7 +90,7 @@ export class ManagementlistComponent implements OnInit {
     );
   }
 
-  public allowUnsort = true;
+  public allowUnsort = false;
   public sort: SortDescriptor[] = [{
     field: 'RemovalOrderID',
     dir: 'asc'
@@ -122,13 +122,13 @@ export class ManagementlistComponent implements OnInit {
 
   private loadItems(): void {
     this.gridView = {
-      data: this.items.slice(this.skip, this.skip + this.pageSize),
+      data: orderBy(this.items, this.sort).slice(this.skip, this.skip + this.pageSize),
       total: this.items.length
     };
   }
   private loadSortItems(): void {
     this.gridView = {
-      data: orderBy(this.items.slice(this.skip, this.skip + this.pageSize), this.sort),
+      data: orderBy(this.items, this.sort).slice(this.skip, this.skip + this.pageSize),
       total: this.items.length
     };
   }

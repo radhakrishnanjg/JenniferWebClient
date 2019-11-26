@@ -8,13 +8,13 @@
     <div class="pull-right hidden-xs">
       <ol class="breadcrumb" id="dynamicbreadcrumb">
         <li>
-           <span> Procurements</span>
+          <span> Procurements</span>
         </li>
         <li>
-           <span> Purchase Order</span>
+          <span> Purchase Order</span>
         </li>
         <li class="active">
-          
+
           List
         </li>
       </ol>
@@ -38,7 +38,8 @@
             </select>
           </div>
           <div class="col-md-4 nopading_loct" *ngIf="(SearchBy!='ByPODate')">
-            <input (keyup.enter)="Search()" [(ngModel)]="SearchKeyword" type="text" class="serchcurv form-control btn-group">
+            <input (keyup.enter)="Search()" [(ngModel)]="SearchKeyword" type="text"
+              class="serchcurv form-control btn-group">
           </div>
           <div class="col-md-4 nopading_loct" *ngIf="(SearchBy=='ByPODate')">
             <input type="text" ngxDaterangepickerMd [(ngModel)]="selectedDateRange"
@@ -67,7 +68,7 @@
     </div>
   </div>
   <div class="panel-body">
-    <kendo-grid [data]="gridView" resizable="true" columnMenu="true"  [pageSize]="pageSize" [skip]="skip"
+    <kendo-grid [data]="gridView" resizable="true" columnMenu="true" [pageSize]="pageSize" [skip]="skip"
       [pageable]="true" (pageChange)="pageChange($event)" [sortable]="{
           allowUnsort: allowUnsort,
           mode:  'single'
@@ -94,10 +95,13 @@
           <i class="fa fa-edit bgblue pointer" [routerLink]="['/PO', obj.POID]" title="Edit"
             *ngIf="!(obj.ApprovalStatus == 'Approved')"></i>
           &nbsp;
-          <i class="fa fa-eye bgblue pointer" (click)="viewButtonClick(obj.POID)" title="View"></i> 
+          <i class="fa fa-eye bgblue pointer" (click)="viewButtonClick(obj.POID)" title="View"></i>
+          &nbsp;
+          <i class="fa fa-print" (click)="printButtonClick(obj.POID)" title="Print"></i>
           &nbsp;
           <i class="fa fa-trash bgred pointer" *ngIf="!(obj.ApprovalStatus == 'Approved')" title="Delete"
             (click)="confirmDeleteid(obj.POID,obj.LocationID,obj.PONumber)"></i>
+
           &nbsp;
           <i class="fa fa-plus bgblue pointer" *ngIf="(obj.ApprovalStatus == 'Approved' && obj.IsPOClosed==false)"
             (click)="AddNewPurchaseButtonClick(obj.POID)" title="Add New Purchase"></i>

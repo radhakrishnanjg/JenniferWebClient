@@ -1,0 +1,22 @@
+kendo-pdf-export {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 12px;
+  }
+  .table-bordered>tbody>tr>td, .table-bordered>tbody>tr>th, .table-bordered>tfoot>tr>td, .table-bordered>tfoot>tr>th, .table-bordered>thead>tr>td, .table-bordered>thead>tr>th {
+    border: .25px solid #3a3e3d;
+}
+.table {
+  /* width: 100%;
+  max-width: 100%; */
+  margin-bottom: 1px;
+  margin-top: 1px;
+} 
+.grey {
+  background-color: #e4e9e8;
+}
+td {
+  font-size: 10px;
+}
+th {
+  font-size: 10px;
+} 

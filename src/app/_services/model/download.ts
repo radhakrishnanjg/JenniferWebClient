@@ -16,6 +16,7 @@ export class DownloadMaster {
     IsActive: boolean;
     CompanyID:number;
     CompanyDetailID:number;
+    ReportDecription:string;
 }
 
 export class DownloadDetail {
@@ -33,6 +34,7 @@ export class DownloadDetail {
     Status: Boolean;
     // who is doing this task
     LoginId: number;
+    ReportDecription:string;
 }
 
 export class DownloadLog {

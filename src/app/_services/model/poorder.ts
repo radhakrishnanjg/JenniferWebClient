@@ -55,6 +55,9 @@ export class Poorderitem {
     AvailableQty: number;
     ShipmentQty: number;
 
+    SlNo: number;
+    VendorItem: string;
+    Total: number;
 }
 
 export class Poshipment {
@@ -92,4 +95,64 @@ export class Poapprovaldetail {
     Remarks: string;
     ActionBy: string;
     CreatedDate: Date;
+}
+
+
+export class Poprint {
+    lstItem: Poorderitem[];
+
+    ShipToName: string;
+    ShipToAddress: string;
+    ShipToCity: string;
+    ShipToState: string;
+    ShipToPostalCode: string;
+
+    ShipToCountry: string;
+    ShipToContactNumber: string;
+    ShipToGSTNumber: string;
+    BilledToName: string;
+    BilledToAddress: string;
+
+    BilledToCity: string;
+    BilledToState: string;
+    BilledToPostalCode: string;
+    BilledToCountry: string;
+    BilledToContactNumber: string;
+
+    BilledToGSTNumber: string;
+    VendorName: string;
+    PODate: Date | string;
+    OtherRefNum: string;
+    CustomerWHCode1: string;
+
+    CustomerWHCode2: string;
+    PONumber: string;
+    CustomerShipmentID: string;
+    CustomerType: string;
+    AmountInWords: string;
+
+    TermsOfCondition1: string;
+    TermsOfCondition2: string;
+    TermsOfCondition3: string;
+    TermsOfCondition4: string;
+    TermsOfCondition5: string;
+
+    TermsOfCondition6: string;
+}
+
+export class PoMFI
+{
+    POnumber: string;
+    PODate: Date | string;
+    ShipmentDate: Date | string;
+    ShipmentNumber: string;
+    ItemCode: string;
+
+    ItemName: number;
+    ShippedQty: number;
+    ReceivedQty: number;
+    DiffQty: number;
+    DiffValue: number;
+
+    Ageing: number;
 }

@@ -1,0 +1,102 @@
+<div class="row">
+  <div class="col-sm-6 col-lg-6">
+    <h3>
+      Configurations
+    </h3>
+  </div>
+  <div class="col-sm-6 col-lg-6">
+    <div class="pull-right hidden-xs">
+      <ol class="breadcrumb" id="dynamicbreadcrumb">
+        <li>
+          <span> Amazon Auto RTV</span>
+        </li>
+        <li>
+          <span> Configuration</span>
+        </li>
+        <li class="active">
+          List
+        </li>
+      </ol>
+    </div>
+  </div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <div class="row">
+      <div class="col-xs-12 col-sm-10 col-md-10 col-lg-10">
+        <div class="input-group col-sm-12" role="group" aria-label="Basic example">
+          <div class="col-md-3 nopading_loct">
+            <select [(ngModel)]="SearchBy" class="serchcurv form-control btn-group">
+              <option value="" selected="select">Search By</option>
+              <option value="ByLocation">Location</option>
+              <option value="ByInventoryType"> Inventory Type</option>
+              <option value="ByDateRange"> Date</option>
+            </select>
+          </div>
+          <div class="col-md-4 nopading_loct" *ngIf="(SearchBy!='ByDateRange')">
+            <input [(ngModel)]="SearchKeyword" type="text" class="serchcurv form-control btn-group">
+          </div>
+          <div class="col-md-4 nopading_loct" *ngIf="(SearchBy=='ByDateRange')">
+            <input type="text" ngxDaterangepickerMd [(ngModel)]="selectedDateRange"
+              class="serchcurv form-control btn-group col-xs-12 pointer"
+              style="border:1px soloid #ccc !important; padding :3px;left:0px" [showCustomRangeLabel]="true"
+              [ranges]="Searchranges" [showCancel]="true" placeholder="Select please..."
+              (ngModelChange)="onChange($event)" />
+          </div>
+          <div class="col-md-2 nopading_loct">
+            <button class="serchcurv btn btn-default btn-group" (click)="Search()" title="Search">
+              <i class="fa fa-search " aria-hidden="true"></i>
+            </button>
+            <button class="serchcurv btn btn-default btn-group" (click)="Refresh()" title="Reset">
+              <i class="fa fa-refresh" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 text-right">
+        <button class="btn btn-primary" routerLink="/Configuration/Create">Add New</button>
+      </div>
+    </div>
+  </div>
+  <div class="panel-body">
+    <kendo-grid [data]="gridView" resizable="true" columnMenu="true" [pageSize]="pageSize" [skip]="skip"
+      [pageable]="true" (pageChange)="pageChange($event)" [sortable]="{
+          allowUnsort: allowUnsort,
+          mode:  'single'
+          }" [sort]="sort" (sortChange)="sortChange($event)" [filterable]="true"
+      (dataStateChange)="dataStateChange($event)" [filter]="state.filter">
+      <kendo-grid-column field="RTVLocationName" title="Location Details">
+        <ng-template kendoGridCellTemplate let-obj>
+          {{obj.RTVLocationName}}
+          <span> to </span>
+          {{obj.RTVReceivingLocationName}}
+        </ng-template>
+      </kendo-grid-column>
+      <kendo-grid-column field="InventoryType" title="Inventory Type">
+      </kendo-grid-column>
+      <kendo-grid-column field="FrequencyType" title="Frequency Type">
+      </kendo-grid-column>
+      <kendo-grid-column field="IsActive" title="IsActive" [class]="{'text-center': true}" filter="boolean" width="80">
+        <ng-template kendoGridCellTemplate let-dataItem>
+          <i [class]="dataItem.IsActive ? 'fa fa-check': 'fa fa-times'" aria-hidden="true"></i>
+        </ng-template>
+      </kendo-grid-column>
+      <kendo-grid-column field="Lastmodifieddate" title="Creation Date" filter="date" format="{0:d}"
+        [filterable]="false" width="160">
+        <ng-template kendoGridCellTemplate let-dataItem>
+          {{ dataItem.Lastmodifieddate | date :"MM-dd-yyyy HH:mm" }}
+        </ng-template>
+      </kendo-grid-column>
+      <kendo-grid-column field="LastModifiedByName" title="Created By">
+      </kendo-grid-column>
+      <kendo-grid-column field="ConfigID" title="Action" [class]="{'text-center': true}" [filterable]="false"
+        [sortable]="false" width="70">
+        <ng-template kendoGridCellTemplate let-obj>
+          <i class="fa fa-edit bgblue pointer" title="Edit" [routerLink]="['/Configuration', obj.ConfigID]"></i>
+        </ng-template>
+      </kendo-grid-column>
+    </kendo-grid>
+
+  </div>
+</div>

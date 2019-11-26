@@ -135,7 +135,6 @@ export class GoodsstorageComponent implements OnInit {
               this.lstGoodsstorage.push(this.obj);
               this.goodsstorageform.controls['JenniferItemSerial'].setValue('');
               $('#JenniferItemSerial').focus();
-              this.goodsstorageform.controls['JenniferItemSerial'].value.fu
             }
           }
           else {
@@ -173,6 +172,7 @@ export class GoodsstorageComponent implements OnInit {
     //
     this._goodsstorageService.add(this.lstGoodsstorage).subscribe(
       (data) => {
+        $('#modalgrnstorageconfimation').modal('hide');
         if (data != null && data.Flag == true) {
           //
           this.alertService.success(data.Msg);
@@ -191,6 +191,10 @@ export class GoodsstorageComponent implements OnInit {
         console.log(error);
       }
     );
+  }
+
+  JenniferItemSerialChangeFocus() {
+    $('#JenniferItemSerial').focus();
   }
 
 }

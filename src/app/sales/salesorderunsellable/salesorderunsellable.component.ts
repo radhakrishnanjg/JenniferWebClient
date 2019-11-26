@@ -81,7 +81,7 @@ export class SalesorderunsellableComponent implements OnInit {
     private _poService: PoService,
     private _PrivateutilityService: PrivateutilityService,
     private _authorizationGuard: AuthorizationGuard,
-    
+
     public _alertService: ToastrService,
     private fb: FormBuilder,
     private router: Router,
@@ -516,8 +516,12 @@ export class SalesorderunsellableComponent implements OnInit {
         let wa: number = 0;
         //let DiscountAmount: number = 0;
         lstunsellqty.filter(a => a.ItemID == element).forEach((w, index) => {
-          wa += lstunsellqty.filter(a => a.ItemID == w.ItemID)[index].LiquidationRate *
+          // wa += lstunsellqty.filter(a => a.ItemID == w.ItemID)[index].  LiquidationRate*
+          // lstunsellqty.filter(a => a.ItemID == w.ItemID)[index].Qty;
+          wa += lstunsellqty.filter(a => a.ItemID == w.ItemID)[index].SellingPrice *
             lstunsellqty.filter(a => a.ItemID == w.ItemID)[index].Qty;
+
+          //  LiquidationRate
           // DiscountAmount += (
           //   ( (lstunsellqty.filter(a => a.ItemID == w.ItemID)[index].SellingPrice
           //     * lstunsellqty.filter(a => a.ItemID == w.ItemID)[index].Qty)) + 
@@ -533,19 +537,22 @@ export class SalesorderunsellableComponent implements OnInit {
         this.objSalesorderItem.Qty = lstunsellqty.filter(a => a.ItemID == element).reduce((acc, a) => acc + a.Qty, 0);
         this.objSalesorderItem.DiscountID = lstunsellqty.filter(a => a.ItemID == element)[0].DiscountID;
         this.objSalesorderItem.TaxRate = lstunsellqty.filter(a => a.ItemID == element)[0].TaxRate;
-        this.objSalesorderItem.TaxAmount =
-          this.objSalesorderItem.ItemRate * this.objSalesorderItem.Qty * this.objSalesorderItem.TaxRate / 100;
+
         let LiquidationPercent = lstunsellqty.filter(a => a.ItemID == element)[0].LiquidationPercent;
         if (this.objSalesorderItem.DiscountID > 0) {
-          this.objSalesorderItem.Discountamt = ((this.objSalesorderItem.ItemRate * this.objSalesorderItem.Qty) +
-            this.objSalesorderItem.TaxAmount) *
+          this.objSalesorderItem.Discountamt =
+            ((this.objSalesorderItem.ItemRate * this.objSalesorderItem.Qty)) *
             ((100 - LiquidationPercent) / 100);
         } else {
           this.objSalesorderItem.Discountamt = 0;
         }
+        this.objSalesorderItem.TaxAmount =
+          ((((this.objSalesorderItem.ItemRate * this.objSalesorderItem.Qty) - this.objSalesorderItem.Discountamt) /
+            ((100 + this.objSalesorderItem.TaxRate) / 100)) * this.objSalesorderItem.TaxRate) / 100
 
-        this.objSalesorderItem.TotalValue = (this.objSalesorderItem.Qty * this.objSalesorderItem.ItemRate) + this.objSalesorderItem.TaxAmount -
-          this.objSalesorderItem.Discountamt;
+        this.objSalesorderItem.TotalValue =
+          ((this.objSalesorderItem.ItemRate * this.objSalesorderItem.Qty) - this.objSalesorderItem.Discountamt);
+
         this.objSalesOrder.lstItem.push(this.objSalesorderItem);
         this.TotalQty = this.objSalesOrder.lstItem.reduce((acc, a) => acc + a.Qty, 0);
         this.TotalSellingPrice = this.objSalesOrder.lstItem.reduce((acc, a) => acc + a.ItemRate, 0);

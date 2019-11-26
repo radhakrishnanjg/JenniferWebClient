@@ -27,7 +27,7 @@ import { MomentModule } from 'ngx-moment';
 import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 import { DeviceDetectorModule } from 'ngx-device-detector';
 import { InputsModule } from '@progress/kendo-angular-inputs';
-
+import { PDFExportModule } from '@progress/kendo-angular-pdf-export';
 
 import { EncrDecrService } from '../_services/service/encr-decr.service';
 import { PopupAnchorDirective } from './po/popup.anchor-target.directive';
@@ -46,6 +46,10 @@ import { BoeComponent } from './boe/boe.component';
 import { BoelistComponent } from './boelist/boelist.component';
 import { BoeviewComponent } from './boeview/boeview.component';
 import { ShipmentviewComponent } from './shipmentview/shipmentview.component';
+import { PoprintComponent } from './poprint/poprint.component';
+
+import { PomfilistComponent } from './pomfilist/pomfilist.component';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -81,6 +85,7 @@ import { ShipmentviewComponent } from './shipmentview/shipmentview.component';
     DropDownListModule,
     PopupModule,
     NgbModule,
+    PDFExportModule
   ],
 
   declarations: [
@@ -99,6 +104,8 @@ import { ShipmentviewComponent } from './shipmentview/shipmentview.component';
     BoelistComponent,
     BoeviewComponent,
     ShipmentviewComponent,
+    PoprintComponent,
+    PomfilistComponent
   ],
   providers: [
     

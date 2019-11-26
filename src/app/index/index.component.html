@@ -99,21 +99,21 @@
     <div class="row">
       <div class='sectionum col-md-4 col-xs-12'>
         <img src="assets/jimages/reconcile.png" class="primary-img" alt="">
-        <div class='numscroller-info-top'>GMV Processed</div>
+        <div class='numscroller-info-top'>Shipment Created</div>
         <div class='numscroller numscroller-big-bottom' data-slno='1' data-min='0' data-max='1822' data-delay='10'
-          data-increment="9">15000 Crs</div>
+          data-increment="9">0</div>
       </div>
       <div class='sectionum col-md-4 col-xs-12'>
         <img src="assets/jimages/manage.png" class="primary-img" alt="">
-        <div class='numscroller-info-top'>No. Of Orders Reconciled</div>
+        <div class='numscroller-info-top'>orders Reconciled</div>
         <div class='numscroller numscroller-big-bottom' data-slno='1' data-min='0' data-max='1991' data-delay='10'
-          data-increment="9">7500000</div>
+          data-increment="9">0</div>
       </div>
       <div class='sectionum col-md-4 col-xs-12'>
         <img src="assets/jimages/procure.png" class="primary-img" alt="">
-        <div class='numscroller-info-top'>Total Claims Received</div>
+        <div class='numscroller-info-top'>Claims Received</div>
         <div class='numscroller numscroller-big-bottom' data-slno='1' data-min='0' data-max='1185' data-delay='10'
-          data-increment="9">600 Crs</div>
+          data-increment="9">0</div>
       </div>
       <div class='clear'></div>
     </div>
@@ -360,7 +360,59 @@
     <div class="row">
       <h1><strong>S</strong>elling in <strong>India</strong></h1>
       <div class="col-md-12 col-xs-12">
-
+		 <ul class="nav nav-tabs">
+			<li class="active"><a data-toggle="tab" href="#home">
+				<img src="assets/jimages/jennifericn.png" title="jennifer">
+			</a></li>
+			<li><a data-toggle="tab" href="#menu1">
+				<img src="assets/jimages/valuecart.png" title="Value Cart">
+			</a></li>
+			<li><a data-toggle="tab" href="#menu2">
+				<img src="assets/jimages/amazon.png" title="amazon">
+				</a>
+			</li>
+			<li><a data-toggle="tab" href="#menu3">
+				<img src="assets/jimages/pingpong.png" title="pingpong">
+			</a>
+			</li>
+        </ul> 
+        <div class="tab-content">
+			<div id="home" class="tab-pane fade in active">
+				<h3>Jennifer</h3>
+				<ul class="crossborderTablist">
+					<li>ERP software service</li>
+					<li>Order-ID level payment reconciliation</li>
+					<li>Track & trace of goods from China to India FBA warehouse</li>
+					<li>Track & trace of cash flow from Amazon to China seller Bank account</li>
+					<li>MIS & Business Intelligence reports</li>
+					<li>Sponsored Ad services</li>
+				</ul>
+			</div>
+			<div id="menu1" class="tab-pane fade">
+				<h3>Value Cart</h3>
+				<ul class="crossborderTablist">
+					<li>Takes end-to-end responsibility of imports in India</li>
+					<li>Investing in Customs duty</li>
+					<li>Takes care of Customs compliance & Taxes</li>
+					<li>Registering seller account in Marketplaces and giving access to China Sellers </li>
+				</ul>
+			</div>
+			<div id="menu2" class="tab-pane fade">
+				<h3>Amazon</h3>
+				<ul class="crossborderTablist">
+					<li>Marketplace </li>
+					<li>Fulfilment by Amazon  </li>
+				</ul>
+			</div>
+			<div id="menu3" class="tab-pane fade">
+				<h3>Pingpong</h3>
+				<ul class="crossborderTablist">
+					<li>Gives payment guarantee to China sellers</li>
+					<li>Engaging & co-working in problem solving from China, for China sellers</li>
+					<li>Remittance of sales proceeds in RMB</li> 
+				</ul>
+			</div>
+		</div>
       </div>
     </div>
   </div>
@@ -435,7 +487,7 @@
             <div class="sociallogos">
               <img src="assets/icons/skype.png">
               <h3>Support</h3>
-              support@jennifer-in.com
+              support@jennifer-in.con
             </div>
           </div>
           <div class="col-12 col-sm-4">
@@ -449,7 +501,7 @@
             <div class="sociallogos">
               <img src="assets/icons/watsup.png">
               <h3>Whatsapp</h3>
-              +91 9513 917 830
+              +91 9513 917 830  
             </div>
           </div>
         </div>
@@ -459,5 +511,5 @@
   <div id='toTop'> <img src="assets/jimages/go-top-icon.png"> </div>
 </section>
 <div class="bottom_footer">
-  <p>© <span> {{Year}} </span> Jennifer. All Rights Reserved.</p>
+  <p>© <span [(ngModel)]="Year"> </span> Jennifer. All Rights Reserved.</p>
 </div>

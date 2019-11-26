@@ -1,4 +1,4 @@
-const ReportDescription = [
+﻿const ReportDescription = [
     {
         Download_Master_ID: 1,
         Screen_Name: "Amazon Inventory Report",
@@ -62,9 +62,19 @@ const ReportDescription = [
 
     },
     {
-        Download_Master_ID: -1,
+        Download_Master_ID: 12,
         Screen_Name: "Replenishment Report",
         Description: "<p>The Replenishment Status Report helps the monitoring of replenishment activities in the warehouse</p> <p>The report provides information about the replenishment status and highlightsshortages or overages of replenishment quantities.</p> <p>Based on the entered days of covers you can view the Run Rate, Days on Hand, Replenishment Quantity & Replenishment Value for the respective inventory.</p>"
+    },
+    {
+        Download_Master_ID: 13,
+        Screen_Name: "Missing From Inbound Report",
+        Description: "<p>Missing from Inbound report provides you if any mismatch between total number of physical units sent and total units received in Amazon FC.</p>"
+    },
+    {
+        Download_Master_ID: 14,
+        Screen_Name: "RTV InTransit Report",
+        Description: "<p>This report provides shipment details for removal orders including carrier and tracking ID informations which is still not received in seller warehouse.</p>"
     },
     {
         Download_Master_ID: -1,

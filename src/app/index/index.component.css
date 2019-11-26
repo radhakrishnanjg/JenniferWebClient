@@ -564,8 +564,7 @@ cursor:pointer;
 -ms-transform: rotateZ(-30deg);
 transform: rotateZ(-30deg);
 border: 3px solid #FFF;
-background: #cf275f;
-
+background: #cf275f; 
 }
 .form-control {
 display: block;
@@ -1005,4 +1004,12 @@ color: #FFF;
 }
 #toTop img {
     width: 33px; height: 33px;
+}
+/**TABS**/
+.nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover {
+    color: #fff !important;
+    cursor: default;
+    background-color: #ffffff !important;
+    border: 1px solid #b1e5fd;
+    border-bottom-color: transparent;
 }

@@ -364,6 +364,13 @@ export class PrivateutilityService {
       .pipe(catchError(this.handleError));
   }
 
+  public GetRTVLocations(): Observable<Location[]> {
+    let currentUser = this.authenticationService.currentUserValue;
+    let CompanyID = currentUser.CompanyID;
+    return this.httpClient.get<Location[]>(environment.baseUrl + `PrivateUtility/GetRTVLocations?CompanyID=` + CompanyID)
+      .pipe(catchError(this.handleError));
+  }
+
   private handleError(error: HttpErrorResponse) {
 
     if (error.status === 404)

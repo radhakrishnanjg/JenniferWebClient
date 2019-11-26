@@ -87,6 +87,13 @@ export class PolistComponent implements OnInit {
     this.router.navigate(['/POview', id]);
   }
 
+  printButtonClick(id: number) {
+    if (this._authorizationGuard.CheckAcess("Polist", "ViewEdit")) {
+      return;
+    }
+    this.router.navigate(['/POprint', id]);
+	}
+
   AddNewPurchaseButtonClick(id: number) {
     if (this._authorizationGuard.CheckAcess("Polist", "ViewEdit")) {
       return;
@@ -153,7 +160,7 @@ export class PolistComponent implements OnInit {
   }
 
   //#region Paging Sorting and Filtering Start
-  public allowUnsort = true;
+  public allowUnsort = false;
   public sort: SortDescriptor[] = [{
     field: 'PONumber',
     dir: 'asc'
@@ -185,7 +192,7 @@ export class PolistComponent implements OnInit {
 
   private loadItems(): void {
     this.gridView = {
-      data: this.items.slice(this.skip, this.skip + this.pageSize),
+      data: orderBy(this.items, this.sort).slice(this.skip, this.skip + this.pageSize),
       total: this.items.length
     };
   }

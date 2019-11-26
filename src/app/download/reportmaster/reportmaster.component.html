@@ -11,10 +11,10 @@
           <span> Jennifer Admin</span>
         </li>
         <li>
-           <span> Report Master</span>
+          <span> Report Master</span>
         </li>
         <li class="active">
-          
+
           Save
         </li>
       </ol>
@@ -37,7 +37,7 @@
         </div>
         <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 ">
           <div class="pull-right">
-            <button  type="button" class="btn btn-primary" routerLink="/Reportmasterlist" title="Back">
+            <button type="button" class="btn btn-primary" routerLink="/Reportmasterlist" title="Back">
               Back
             </button>
           </div>
@@ -113,6 +113,26 @@
         </div>
         <div class="col-sm-3" *ngIf="!action">
           {{objDownloadMaster?.P_Count}}
+          <div class="help-block-rk">
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group" [ngClass]="{'has-error': formErrors.ReportDecription}">
+        <label class="col-sm-5 control-label" for="ReportDecription">Report Decription<span
+            class="mandantory">*</span></label>
+        <div class="col-sm-5" *ngIf="action">
+          <textarea id="ReportDecription" type="text" class="form-control" formControlName="ReportDecription"
+            (blur)="logValidationErrors()" maxlength="5000" rows="20" cols="50" style="height: 200px;">
+            </textarea>
+          <div class="help-block-rk">
+            <span class="help-block" *ngIf="formErrors.ReportDecription">
+              {{formErrors.ReportDecription}}
+            </span>
+          </div>
+        </div>
+        <div class="col-sm-3" *ngIf="!action">
+          {{objDownloadMaster?.ReportDecription}}
           <div class="help-block-rk">
           </div>
         </div>
@@ -249,7 +269,7 @@
 
     <div class="panel-footer">
       <div class="pull-right btn-toolbar">
-        <button  type="button" class="btn btn-primary" routerLink="/Reportmasterlist" title="Cancel">
+        <button type="button" class="btn btn-primary" routerLink="/Reportmasterlist" title="Cancel">
           Cancel
         </button>
         <button prevent-double-submit type="submit" id="save" class="btn btn-success"

@@ -140,6 +140,10 @@ export class ShipmentoutwardlistComponent implements OnInit {
     this.OutwardID = obj.OutwardID;
   }
 
+  CourierTrackingIDChangeFocus() {
+    $('#GSTEwayBillNumber').focus();
+  }
+
   SaveData(): void {
     if (this._authorizationGuard.CheckAcess("Shipmentoutwardlist", "ViewEdit")) {
       return;
@@ -196,7 +200,7 @@ export class ShipmentoutwardlistComponent implements OnInit {
   }
 
   //#region Paging Sorting and Filtering Start
-  public allowUnsort = true;
+  public allowUnsort = false;
   public sort: SortDescriptor[] = [{
     field: 'OutwardID',
     dir: 'asc'
@@ -228,7 +232,7 @@ export class ShipmentoutwardlistComponent implements OnInit {
 
   private loadItems(): void {
     this.gridView = {
-      data: this.items.slice(this.skip, this.skip + this.pageSize),
+      data: orderBy(this.items, this.sort).slice(this.skip, this.skip + this.pageSize),
       total: this.items.length
     };
   }

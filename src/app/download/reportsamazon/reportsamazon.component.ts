@@ -141,7 +141,8 @@ export class ReportsamazonComponent implements OnInit {
         .subscribe(
           (data: DownloadDetail[]) => {
             this.lstDownloadDetail = data;
-            this.Description = this.lstReportDescription.filter(a => a.Download_Master_ID == id)[0].Description;
+             this.Description = this.lstDownloadDetail[0].ReportDecription;
+            this.Description = this.lstDownloadDetail[0].ReportDecription;
             if (data != null && this.lstDownloadDetail.length > 0) {
               $(".dvhide").hide();
               this.lstDownloadDetail.forEach((element) => {

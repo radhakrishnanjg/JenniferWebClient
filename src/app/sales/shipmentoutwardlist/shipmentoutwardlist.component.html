@@ -8,13 +8,13 @@
     <div class="pull-right hidden-xs">
       <ol class="breadcrumb" id="dynamicbreadcrumb">
         <li>
-           <span> Revenue</span>
+          <span> Revenue</span>
         </li>
         <li>
-           <span> Shipment Outward</span>
+          <span> Shipment Outward</span>
         </li>
         <li class="active">
-          
+
           List
         </li>
       </ol>
@@ -37,7 +37,8 @@
             </select>
           </div>
           <div class="col-md-5 nopading_loct">
-            <input (keyup.enter)="Search()" [(ngModel)]="SearchKeyword" type="text" class="form-control btn-group serchcurv">
+            <input (keyup.enter)="Search()" [(ngModel)]="SearchKeyword" type="text"
+              class="form-control btn-group serchcurv">
           </div>
           <div class="col-md-3 nopading_loct">
             <button class="btn btn-default btn-group serchcurv" (click)="Search()" title="Search">
@@ -57,8 +58,8 @@
     </div>
   </div>
   <div class="panel-body">
-    <kendo-grid [data]="gridView" resizable="true" columnMenu="true" [pageSize]="pageSize" [skip]="skip" [pageable]="true"
-      (pageChange)="pageChange($event)" [sortable]="{
+    <kendo-grid [data]="gridView" resizable="true" columnMenu="true" [pageSize]="pageSize" [skip]="skip"
+      [pageable]="true" (pageChange)="pageChange($event)" [sortable]="{
       allowUnsort: allowUnsort,
       mode:  'single'
       }" [sort]="sort" (sortChange)="sortChange($event)" [filterable]="true"
@@ -72,14 +73,15 @@
       </kendo-grid-column>
     </kendo-grid>
 
-    
+
   </div>
 
 
   <div id="modalpopup_shipmentoutward" class="modal fade " tabindex="-1" role="dialog"
     aria-labelledby="modalpopup_shipmentoutward" aria-hidden="true">
 
-    <form autocomplete="off" [formGroup]="shipmentoutwardform" (ngSubmit)="SaveData()">
+    <form autocomplete="off" (keydown.enter)="$event.preventDefault()" [formGroup]="shipmentoutwardform"
+      (ngSubmit)="SaveData()">
       <div class="modal-dialog ">
         <div class="modal-content">
           <div class="modal-header">
@@ -110,7 +112,7 @@
               </div>
               <div class="col-sm-6">
                 <input id="CourierTrackingID" type="text" class="form-control" formControlName="CourierTrackingID"
-                  (blur)="logValidationErrors()" maxlength="30">
+                  (blur)="logValidationErrors()" maxlength="30" (keydown.enter)="CourierTrackingIDChangeFocus()">
                 <div class="help-block-rk">
                   <span class="help-block" *ngIf="formErrors.CourierTrackingID">
                     {{formErrors.CourierTrackingID}}

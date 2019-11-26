@@ -1,0 +1,176 @@
+<div class="row">
+  <div class="col-sm-6 col-lg-6">
+    <h3>
+      PO Print
+    </h3>
+  </div>
+  <div class="col-sm-6 col-lg-6">
+    <div class="pull-right hidden-xs">
+      <ol class="breadcrumb" id="dynamicbreadcrumb">
+        <li>
+          <span> Procurement</span>
+        </li>
+        <li>
+          <span> PO Print</span>
+        </li>
+        <li class="active">
+          View
+        </li>
+      </ol>
+    </div>
+  </div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <div class="row">
+      <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
+        <button type="button" class="btn btn-success" (click)="pdf.saveAs(obj?.PONumber+ '.pdf')">
+          Save As PDF
+        </button>
+      </div>
+      <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 ">
+        <div class="pull-right">
+          <button class="btn btn-primary" routerLink="/Polist" title="Back">
+            Back
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel-body">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="table-responsive">
+          <kendo-pdf-export #pdf paperSize="A4" margin="1cm" landscape="true" repeatHeaders="true">
+            <h4 class="text-center"><b>Purchase Order</b></h4>
+            <table class="table table-bordered table-condensed  table-striped" width="3508px" style=" font-family: Verdana, Geneva, Tahoma, sans-serif;
+              font-size:9px;background-color: #fff;color:#000;"> 
+              <tr>
+                <td colspan="3">
+                  <h6><u><b>Ship to Address</b></u></h6>
+                  {{obj?.ShipToAddress}} <br>
+                  <b>Phone:</b> {{obj?.ShipToContactNumber}} <br>
+                  <b>GST:</b> {{obj?.ShipToGSTNumber}}
+                </td>
+                <td colspan="3">
+                  <h6><u><b>Bill to Address</b></u></h6>
+                  {{obj?.BilledToAddress}} <br>
+                  <b>Phone:</b> {{obj?.BilledToContactNumber}} <br>
+                  <b>GST:</b> {{obj?.BilledToGSTNumber}}
+                </td>
+              </tr> 
+              <tr>
+                <td colspan="3">
+                  <b>Vendor:</b> {{obj?.VendorName}} <br>
+                  <b>Date:</b> {{obj?.PODate | date:'MM-dd-yyyy'}} <br>
+                  <b>Other Reference #:</b> {{obj?.OtherRefNum}} <br>
+                  <b>Customer WH Code2:</b> {{obj?.CustomerWHCode1}}
+                </td>
+                <td colspan="3">
+                  <b>Customer WH Code1:</b> {{obj?.CustomerWHCode1}} <br>
+                  <b>PO NO:</b> {{obj?.PONumber}} <br>
+                  <b>Customer Shipment ID:</b> {{obj?.CustomerShipmentID}} <br>
+                  <b>Customer Type:</b> {{obj?.CustomerType}}
+                </td>
+              </tr>
+            </table>
+            <br>
+            <table class="table table-bordered table-condensed  table-striped" width="3508px" style=" font-family: Verdana, Geneva, Tahoma, sans-serif;
+              font-size:9px;background-color: #fff;color:#000;">
+              <thead>
+                <tr>
+                  <th class="text-center grey">
+                    #
+                  </th>
+                  <th class="text-center grey">
+                    Item Name
+                  </th>
+                  <th class="text-center grey">
+                    Vendor Item
+                  </th>
+                  <th class="text-center grey">
+                    Qty
+                  </th>
+                  <th class="text-center grey">
+                    Rate<small>(Inc tax)</small>
+                  </th>
+                  <th class="text-center grey">
+                    Total<small>(Inc of Tax)</small>
+                  </th>
+                </tr>
+              </thead>
+              <tr *ngFor="let data of lst">
+                <td class="text-center">
+                  {{data.SlNo}}
+                </td>
+                <td class="text-left">
+                  {{data.ItemName}}
+                </td>
+                <td class="text-left">
+                  {{data.VendorItem}}
+                </td>
+                <td class="text-right">
+                  {{data.Qty}}
+                </td>
+                <td class="text-right">
+                  {{data.Rate}}
+                </td>
+                <td class="text-right">
+                  {{data.Total}}
+                </td>
+              </tr>
+              <tr>
+                <td class="text-center" colspan="3">
+                  <b>Total</b>
+                </td>
+                <td class="text-right">
+                  <b>{{Qty}}</b>
+                </td>
+                <td class="text-right">
+
+                </td>
+                <td class="text-right">
+                  <b>{{Total}}</b>
+                </td>
+              </tr>
+              <!-- <tr *ngIf="lst == null">
+                <td class="text-center" colspan="6">
+                  No Records Found.!
+                </td> 
+              </tr>  -->
+              <tr>
+                <td colspan="6" class="text-left">
+                  <b> Amount in Words: </b> {{obj?.AmountInWords}}
+                </td>
+              </tr>
+            </table>
+            <br>
+            <table class="table table-bordered table-condensed  table-striped" width="3508px" style=" font-family: Verdana, Geneva, Tahoma, sans-serif;
+              font-size:9px;background-color: #fff;color:#000;">
+              <tr>
+                <td colspan="6" class="text-left">
+                  <h5><b><u>TERMS & CONDITIONS</u>:</b></h5>
+                  {{obj?.TermsOfCondition1}} <br>
+                  {{obj?.TermsOfCondition2}} <br>
+                  {{obj?.TermsOfCondition3}} <br>
+                  {{obj?.TermsOfCondition4}} <br>
+                  {{obj?.TermsOfCondition5}} <br>
+                  {{obj?.TermsOfCondition6}}
+                </td>
+              </tr>
+            </table>
+          </kendo-pdf-export>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel-footer">
+    <div class="btn-toolbar pull-right">
+      <button type="button" title="Cancel" class="btn btn-primary" routerLink="/Polist">Cancel</button>
+    </div>
+    <div class="clearfix"></div>
+  </div>
+</div>

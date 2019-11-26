@@ -96,8 +96,8 @@
           <i class="fa fa-eye bgblue pointer" *ngIf="(obj.Status == 'Confirmed')"
             [routerLink]="['/PickListView', obj.PickListNumber]" title="View"></i>
           &nbsp;
-          <i class="fa fa-download bgblue pointer" *ngIf="(obj.Status == 'Confirmed')"
-            [routerLink]="['/SalesInvoice', obj.PickListNumber]" title="View"></i>
+          <i class="fa fa-print bgblue pointer" *ngIf="(obj.Status == 'Confirmed')"
+            [routerLink]="['/SalesInvoice', obj.PickListNumber]" title="Print"></i>
         </ng-template>
       </kendo-grid-column>
     </kendo-grid>

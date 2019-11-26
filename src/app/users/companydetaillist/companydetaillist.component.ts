@@ -18,19 +18,19 @@ import { SortDescriptor, orderBy } from '@progress/kendo-data-query';
 export class CompanydetaillistComponent implements OnInit {
 
   //#region variable declartion
- 
+
   obj: Companydetails;
 
   selectedDeleteId: number;
   dtOptions: DataTables.Settings = {};
   deleteColumn: string;
- 
+
   //#endregion
   constructor(
     private alertService: ToastrService,
     private router: Router,
     private _companydetailService: CompanydetailService,
-    
+
     private _authorizationGuard: AuthorizationGuard
   ) { }
 
@@ -81,9 +81,9 @@ export class CompanydetaillistComponent implements OnInit {
     //
     return this._companydetailService.search('').subscribe(
       (lst) => {
-        if (lst != null ) {  
+        if (lst != null) {
           this.items = lst;
-          this.loadItems(); 
+          this.loadItems();
         }
         //
       },
@@ -102,7 +102,7 @@ export class CompanydetaillistComponent implements OnInit {
   }
 
   //#region Paging Sorting and Filtering Start
-  public allowUnsort = true;
+  public allowUnsort = false;
   public sort: SortDescriptor[] = [{
     field: 'StoreName',
     dir: 'asc'
@@ -134,7 +134,7 @@ export class CompanydetaillistComponent implements OnInit {
 
   private loadItems(): void {
     this.gridView = {
-      data: this.items.slice(this.skip, this.skip + this.pageSize),
+      data: orderBy(this.items, this.sort).slice(this.skip, this.skip + this.pageSize),
       total: this.items.length
     };
   }

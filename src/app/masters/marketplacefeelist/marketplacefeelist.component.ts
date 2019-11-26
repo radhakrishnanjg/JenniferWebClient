@@ -476,7 +476,7 @@ export class MarketplacefeelistComponent implements OnInit {
   }
 
   //#region Paging Sorting and Filtering Start
-  public allowUnsort = true;
+  public allowUnsort = false;
   public sort: SortDescriptor[] = [{
     field: 'MarketPlace',
     dir: 'asc'
@@ -508,7 +508,7 @@ export class MarketplacefeelistComponent implements OnInit {
 
   private loadItems(): void {
     this.gridView = {
-      data: this.items.slice(this.skip, this.skip + this.pageSize),
+      data: orderBy(this.items, this.sort).slice(this.skip, this.skip + this.pageSize),
       total: this.items.length
     };
   }

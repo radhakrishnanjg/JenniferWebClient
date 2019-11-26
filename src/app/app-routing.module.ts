@@ -75,6 +75,8 @@ import { PoviewComponent } from './purchaseorder/poview/poview.component';
 import { BoeComponent } from './purchaseorder/boe/boe.component';
 import { BoelistComponent } from './purchaseorder/boelist/boelist.component';
 import { BoeviewComponent } from './purchaseorder/boeview/boeview.component';
+import { PoprintComponent } from './purchaseorder/poprint/poprint.component';
+import { PomfilistComponent } from './purchaseorder/pomfilist/pomfilist.component';
 
 import { GoodsinwardComponent } from './goods/goodsinward/goodsinward.component';
 import { GoodsinwardlistComponent } from './goods/goodsinwardlist/goodsinwardlist.component';
@@ -123,20 +125,23 @@ import { MaintenanceComponent } from './maintenance/maintenance.component';
 import { SearchComponent } from './search/search.component';
 import { IndexComponent } from './index/index.component';
 
-import { DynamicformComponent } from './dynamicform/dynamicform.component';
 
 import { StatementlistComponent } from './download/statementlist/statementlist.component';
 import { StatementviewComponent } from './download/statementview/statementview.component';
 
 
+// import { ConfigurationComponent } from './amazonrtv/configuration/configuration.component';
+// import { ConfigurationlistComponent } from './amazonrtv/configurationlist/configurationlist.component';
+// import { OrderlistComponent } from './amazonrtv/orderlist/orderlist.component';
+// import { RtvtransitlistComponent } from './amazonrtv/rtvtransitlist/rtvtransitlist.component';
+
+
 // The last route is the empty path route. This specifies
 // the route to redirect to if the client side path is empty.
 const appRoutes: Routes = [
-
-  { path: '', redirectTo: '/Index', pathMatch: 'full' },
-  //Site routes goes here 
-
-  // App routes goes here here
+  //Landing page
+  { path: '', component: IndexComponent },
+  //Site routes goes here  
   {
     path: '',
     component: PrivatelayoutComponent,
@@ -201,7 +206,8 @@ const appRoutes: Routes = [
       { path: 'BOElist', component: BoelistComponent, canActivate: [AuthGuard, StoreGuard] },
       { path: 'BOE/:id/:PurchaseId', component: BoeComponent, canActivate: [AuthGuard, StoreGuard] },
       { path: 'BOEview/:id/:PurchaseId', component: BoeviewComponent, canActivate: [AuthGuard, StoreGuard] },
-
+      { path: 'POprint/:id', component: PoprintComponent, canActivate: [AuthGuard, StoreGuard] },
+      { path: 'PoMFIlist', component: PomfilistComponent, canActivate: [AuthGuard, StoreGuard] },
 
       //Goods Receipt
       { path: 'Goodsreceipt/:id', component: GoodsReceiptComponent, canActivate: [AuthGuard, StoreGuard] },
@@ -266,30 +272,43 @@ const appRoutes: Routes = [
 
       { path: '', loadChildren: './gst/gst.module#GstModule' },
 
-      { path: 'Search/:key', component: SearchComponent },
-      { path: 'DynamicForm', component: DynamicformComponent },
+      { path: '', loadChildren: './dynamicpage/dynamicpage.module#DynamicpageModule' },
 
-      // .. routes 
-      // {
-      //   path: 'not-found',
-      //   loadChildren: './not-found/not-found.module#NotFoundModule'
-      // },
-      // {
-      //   path: '**',
-      //   redirectTo: 'not-found'
-      // },
+      { path: '', loadChildren: './admin/admin.module#AdminModule' },
+
+      { path: '', loadChildren: './amazonrtv/amazonrtv.module#AmazonrtvModule' },
+
+
+      // { path: 'Configuration/:id', component: ConfigurationComponent, canActivate: [AuthGuard, StoreGuard] },
+      // { path: 'Configurationlist', component: ConfigurationlistComponent, canActivate: [AuthGuard, StoreGuard] },
+      // { path: 'Orderlist', component: OrderlistComponent, canActivate: [AuthGuard, StoreGuard] },
+      // { path: 'Transitlist', component: RtvtransitlistComponent, canActivate: [AuthGuard, StoreGuard] },
+
+
+
+      { path: 'Search/:key', component: SearchComponent },
+
+
     ]
   },
-  //no layout routes
-  { path: '', redirectTo: '/Index', pathMatch: 'full' },
-  { path: 'Index', component: IndexComponent },
+  //no layout routes 
   { path: 'Signin', component: SigninComponent, canActivate: [MaintenanceGuard] },//canActivate: [MaintenanceGuard]
   { path: 'ForgotPassword', component: ForgotpasswordComponent },
   { path: 'Companyregister', component: CompanyregisterComponent },
   { path: 'Maintenance', component: MaintenanceComponent },
   { path: 'Termsofuse', component: TermsofuseComponent },
   { path: 'PrivacyPolicy', component: PrivacyPolicyComponent },
-
+  // otherwise redirect to home
+  //{ path: '**', redirectTo: '' }
+  // NotFoundModule
+  {
+    path: 'not-found',
+    loadChildren: './not-found/not-found.module#NotFoundModule'
+  },
+  {
+    path: '**',
+    redirectTo: 'not-found'
+  },
 ];
 
 // Pass the configured routes to the forRoot() method

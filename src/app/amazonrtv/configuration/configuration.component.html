@@ -1,0 +1,148 @@
+<div class="row">
+  <div class="col-sm-6 col-lg-6">
+    <h3>
+      Configuration
+    </h3>
+  </div>
+  <div class="col-sm-6 col-lg-6">
+    <div class="pull-right hidden-xs">
+      <ol class="breadcrumb" id="dynamicbreadcrumb">
+        <li>
+          <span> Amazon Auto RTV</span>
+        </li>
+        <li>
+          <span> Configuration</span>
+        </li>
+        <li class="active">
+
+          Save
+        </li>
+      </ol>
+    </div>
+  </div>
+</div>
+<form autocomplete="off" [formGroup]="Configurationform" (ngSubmit)="SaveData()" class="form-horizontal">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <div class="row">
+        <div class="col-sm-4">
+          <span class="groupspanheader">
+            {{panelTitle}}
+          </span>
+        </div>
+        <div class="col-sm-4">
+          <div class="pull-left">
+            <div class="form-group" *ngIf="!action">
+              <div class="col-sm-12 swtch">
+                <label class="col-sm-6" for=" IsActive">IsActive </label>
+                <div class="pull-right">
+                  <label class="switch">
+                    <input type="checkbox" formControlName="IsActive" checked>
+                    <span class="slider round"></span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-4">
+          <div class="pull-right">
+            <button class="btn btn-primary" routerLink="/Configurationlist">Back</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="panel-body">
+      <div class="form-group" [ngClass]="{'has-error': formErrors.FromLocationID}">
+        <label class="col-sm-4 control-label" for="FromLocationID">From Location <span
+            class="mandantory">*</span></label>
+        <div class="col-sm-4" *ngIf="action">
+          <select id="FromLocationID" class="form-control" formControlName="FromLocationID"
+            (blur)="logValidationErrors()">
+            <option value="0" selected="selected">Select</option>
+            <option *ngFor="let dis of Fromlocations" value={{dis.LocationID}}>
+              {{dis.LocationName}}
+            </option>
+          </select>
+
+          <div class="help-block-rk"> <span class="help-block" *ngIf="formErrors.FromLocationID">
+              {{formErrors.FromLocationID}}
+            </span>
+          </div>
+        </div>
+
+        <div class="col-sm-4" *ngIf="!action">
+          {{FromLocationName}}
+        </div>
+
+      </div>
+
+      <div class="form-group" [ngClass]="{'has-error': formErrors.ToLocationID}">
+        <label class="col-sm-4 control-label" for="ToLocationID">To Location <span class="mandantory">*</span></label>
+        <div class="col-sm-4" *ngIf="action">
+          <select id="ToLocationID" class="form-control" formControlName="ToLocationID" (blur)="logValidationErrors()">
+            <option value="0" selected="selected">Select</option>
+            <option *ngFor="let dis of Tolocations" value={{dis.LocationID}}>
+              {{dis.LocationName}}
+            </option>
+          </select>
+          <div class="help-block-rk"> <span class="help-block" *ngIf="formErrors.ToLocationID">
+              {{formErrors.ToLocationID}}
+            </span>
+          </div>
+        </div>
+        <div class="col-sm-4" *ngIf="!action">
+          {{ToLocationName}}
+        </div>
+      </div>
+
+      <div class="form-group" [ngClass]="{'has-error': formErrors.InventoryType}">
+        <label class="col-sm-4 control-label" for="InventoryType">Inventory Type <span
+            class="mandantory">*</span></label>
+        <div class="col-sm-4" *ngIf="action">
+          <select id="InventoryType" class="form-control" formControlName="InventoryType"
+            (blur)="logValidationErrors()">
+            <option value="0" selected="selected">Select</option>
+            <option *ngFor="let dis of lstInventorytype" value={{dis.DropdownValue}}>
+              {{dis.DropdownValue}}
+            </option>
+          </select>
+          <div class="help-block-rk"> <span class="help-block" *ngIf="formErrors.InventoryType">
+              {{formErrors.InventoryType}}
+            </span>
+          </div>
+        </div>
+        <div class="col-sm-4" *ngIf="!action">
+          {{InventoryType}}
+        </div>
+      </div>
+
+      <div class="form-group" [ngClass]="{'has-error': formErrors.FrequencyType}">
+        <label class="col-sm-4 control-label" for="FrequencyType">Frequency Type <span
+            class="mandantory">*</span></label>
+        <div class="col-sm-4">
+          <select id="FrequencyType" (change)="onchangeFrequencyType($event.target.value)" class="form-control" formControlName="FrequencyType"
+            (blur)="logValidationErrors()">
+            <option value="0" selected="selected">Select</option>
+            <option *ngFor="let dis of lstFrequencytype"  value={{dis.DropdownValue}}>
+              {{dis.DropdownValue}}
+            </option>
+          </select>
+        <small>  {{DropDownDescription}} </small> 
+          <div class="help-block-rk"> <span class="help-block" *ngIf="formErrors.FrequencyType">
+              {{formErrors.FrequencyType}}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="panel-footer">
+      <div class="pull-right btn-toolbar">
+        <button type="button" class="btn btn-primary" routerLink="/Configurationlist" title="Cancel">Cancel</button>
+        <button class="btn btn-success" prevent-double-submit type="submit" title="save"
+          [disabled]="Configurationform.invalid">Save</button>
+      </div>
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</form>

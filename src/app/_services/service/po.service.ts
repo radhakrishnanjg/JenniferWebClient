@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http'; 
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError, } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
@@ -8,8 +8,11 @@ import { NotFoundError } from '../../common/not-found-error';
 import { AppError } from '../../common/app-error';
 
 import { AuthenticationService } from './authentication.service';
-import { Poorder, Poorderitem, Result, Brand, ProductGroup, Category, SubCategory, UOM, Item } from '../model/index';
-import { environment } from '../../../environments/environment'; 
+import {
+  Poorder, Poorderitem, Result, Brand, ProductGroup, Category, SubCategory, UOM, Item, Poprint
+  , PoMFI
+} from '../model/index';
+import { environment } from '../../../environments/environment';
 @Injectable({
   providedIn: 'root'
 })
@@ -154,6 +157,23 @@ export class PoService {
     obj.CompanyDetailID = currentUser.CompanyDetailID;
     obj.CompanyID = currentUser.CompanyID;
     return this.httpClient.post<Poorderitem[]>(environment.baseUrl + `POOrder/BulkUpsert`, obj)
+      .pipe(catchError(this.handleError));
+  }
+
+  public poPrint(POID: number): Observable<Poprint> {
+    let currentUser = this.authenticationService.currentUserValue;
+    let CompanyDetailID = currentUser.CompanyDetailID;
+    return this.httpClient.get<Poprint>(environment.baseUrl + `POOrder/POPrint?POID=` + POID
+      + `&CompanyDetailID=` + CompanyDetailID)
+      .pipe(catchError(this.handleError));
+  }
+
+  public MFISearch(): Observable<PoMFI[]> {
+    let currentUser = this.authenticationService.currentUserValue;
+    let CompanyDetailID = currentUser.CompanyDetailID;
+    return this.httpClient.get<PoMFI[]>(environment.baseUrl + `POOrder/MFISearch?CompanyDetailID=` +
+      CompanyDetailID
+    )
       .pipe(catchError(this.handleError));
   }
 

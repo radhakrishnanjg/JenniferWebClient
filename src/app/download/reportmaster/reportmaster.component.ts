@@ -22,7 +22,7 @@ export class ReportmasterComponent implements OnInit {
   lstReport_Type: Dropdown[];
   objDownloadMaster: DownloadMaster = {} as any;
   lstDownloadDetail: DownloadDetail[] = [] as any;
-  objDownloadDetail: DownloadDetail = {} as any;  
+  objDownloadDetail: DownloadDetail = {} as any;
   panelTitle: string;
   action: boolean;
   identity: number = 0;
@@ -33,16 +33,17 @@ export class ReportmasterComponent implements OnInit {
     private alertService: ToastrService,
     private fb: FormBuilder,
     private aroute: ActivatedRoute,
-    
+
     private _PrivateutilityService: PrivateutilityService,
-    private _authorizationGuard: AuthorizationGuard, 
+    private _authorizationGuard: AuthorizationGuard,
   ) { }
 
   formErrors = {
     'Report_Type': '',
     'Screen_Name': '',
     'SP_Name': '',
-    'P_Count': ''
+    'P_Count': '',
+    'ReportDecription': ''
   }
 
   formErrors1 = {
@@ -64,12 +65,16 @@ export class ReportmasterComponent implements OnInit {
     },
     'SP_Name': {
       'required': 'This field is required',
-      'pattern' : 'No special characters other than underscore and dot(_/.)'
+      'pattern': 'No special characters other than underscore and dot(_/.)'
     },
     'P_Count': {
       'required': 'This field is required',
       'max': 'You can enter 5 parameters only'
-    }
+    },
+    'ReportDecription': {
+      'required': 'This field is required',
+      'pattern': 'No special characters other than underscore and dot(_/.)'
+    },
   }
 
   validationMessages1 = {
@@ -153,7 +158,7 @@ export class ReportmasterComponent implements OnInit {
       }
     )
 
-    this.aroute.paramMap.subscribe(params => { 
+    this.aroute.paramMap.subscribe(params => {
       this.identity = +params.get('id');
       if (this.identity > 0) {
         this.panelTitle = "View Report";
@@ -161,10 +166,10 @@ export class ReportmasterComponent implements OnInit {
         //
         this._downloadService.searchById(this.identity).subscribe(
           (data: DownloadMaster) => {
-            this.objDownloadMaster = data; 
-            
+            this.objDownloadMaster = data;
+
           },
-          (err : any) => {
+          (err: any) => {
             //
             console.log(err);
           }
@@ -174,13 +179,15 @@ export class ReportmasterComponent implements OnInit {
         this.action = true;
         this.panelTitle = "Add New Report";
       }
-    }); 
+    });
 
     this.reportmasterform = this.fb.group({
       Report_Type: [0, [Validators.min(1)]],
       Screen_Name: ['', [Validators.required, Validators.pattern("^([a-zA-Z ]+)$")]],
       SP_Name: ['', [Validators.required, Validators.pattern("^([a-zA-Z0-9_.]+)$")]],
       P_Count: ['', [Validators.required, Validators.max(5)]],
+      ReportDecription: ['', [Validators.required,]],
+
     });
 
     this.reportdetailform = this.fb.group({
@@ -224,18 +231,19 @@ export class ReportmasterComponent implements OnInit {
   SaveData(): void {
     if (this._authorizationGuard.CheckAcess("Reportmasterlist", "ViewEdit")) {
       return;
-    } 
-    this.Insert();  
+    }
+    this.Insert();
   }
 
   Insert() {
-    this.objDownloadMaster.Report_Type  = this.reportmasterform.controls['Report_Type'].value;
-    this.objDownloadMaster.Screen_Name  = this.reportmasterform.controls['Screen_Name'].value;
-    this.objDownloadMaster.SP_Name  = this.reportmasterform.controls['SP_Name'].value;
-    this.objDownloadMaster.P_Count  = this.reportmasterform.controls['P_Count'].value;
-    this.objDownloadMaster.lstDetail  = this.lstDownloadDetail;
+    this.objDownloadMaster.Report_Type = this.reportmasterform.controls['Report_Type'].value;
+    this.objDownloadMaster.Screen_Name = this.reportmasterform.controls['Screen_Name'].value;
+    this.objDownloadMaster.SP_Name = this.reportmasterform.controls['SP_Name'].value;
+    this.objDownloadMaster.P_Count = this.reportmasterform.controls['P_Count'].value;    
+    this.objDownloadMaster.ReportDecription = this.reportmasterform.controls['ReportDecription'].value;
+    this.objDownloadMaster.lstDetail = this.lstDownloadDetail;
     //
-    
+
     if (this.objDownloadMaster.P_Count == this.lstDownloadDetail.length) {
       this._downloadService.add(this.objDownloadMaster).subscribe(
         (data) => {
@@ -261,7 +269,7 @@ export class ReportmasterComponent implements OnInit {
       this.alertService.error('Total Parameters is not matching with parameters count, please correct it.!');
     }
     //
-    
+
   }
 
 }

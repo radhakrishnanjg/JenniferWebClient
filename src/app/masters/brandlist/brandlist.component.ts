@@ -155,11 +155,7 @@ export class BrandlistComponent implements OnInit {
         }
       );
     $('#modalpopupbrandupsert').modal('show');
-  }
-
-
-
-
+  } 
 
   SaveData(): void {
     if (this._authorizationGuard.CheckAcess("Brandlist", "ViewEdit")) {
@@ -249,6 +245,7 @@ export class BrandlistComponent implements OnInit {
     this.deleteColumn = DeleteColumnvalue;
     $('#modaldeleteconfimation').modal('show');
   }
+
   delete() {
     //
     this._uomService.delete(this.identity).subscribe(
@@ -288,7 +285,7 @@ export class BrandlistComponent implements OnInit {
   }
 
   //#region Paging Sorting and Filtering Start
-  public allowUnsort = true;
+  public allowUnsort = false;
   public sort: SortDescriptor[] = [{
     field: 'BrandName',
     dir: 'asc'
@@ -320,7 +317,7 @@ export class BrandlistComponent implements OnInit {
 
   private loadItems(): void {
     this.gridView = {
-      data: this.items.slice(this.skip, this.skip + this.pageSize),
+      data: orderBy(this.items, this.sort).slice(this.skip, this.skip + this.pageSize),
       total: this.items.length
     };
   }
@@ -335,4 +332,5 @@ export class BrandlistComponent implements OnInit {
     this.gridView = process(this.items, this.state);
   }
   //#endregion Paging Sorting and Filtering End
+
 }

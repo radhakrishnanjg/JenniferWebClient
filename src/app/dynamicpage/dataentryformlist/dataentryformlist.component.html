@@ -1,0 +1,93 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="text-center">
+                DataEntry Form List
+            </h2>
+        </div>
+    </div>
+
+    <!-- <h1>Grouped elements </h1>
+   <div class="tools-category" *ngFor="let tool of tools | groupBy:'cat' | pairs ">
+        <h3>{{tool[0]}}</h3>
+        <div class="tools-by-cat">
+            <div *ngFor="let val of tool[1]" class="tool-item">
+                <h2>{{val.title}}</h2>
+                <p>{{val.desc}}</p>
+            </div>
+        </div>
+    </div> -->
+
+    <div class="row" *ngFor="let tool of lst | groupBy:'DepartmentName'| pairs ">
+        <h3>{{tool[0]}}</h3>
+        <div class="col-md-4">
+            <h4 class="text-center">EMS Forms</h4>
+            <div *ngFor="let val of tool[1] | filterBy: ['SystemType']: 'EMS'" class="tool-item">
+                <div class="panel panel-info">
+                    <div class="panel-heading" role="tab">
+                        <h4 class="panel-title">
+                            <a class="collapsed" data-toggle="collapse" [href]="'#collapse'+val.RequestFormID"
+                                aria-expanded="true" [aria-controls]="'#collapse'+val.RequestFormID">
+                                {{val.FormName}}
+                            </a>
+                        </h4>
+                    </div>
+                    <div [id]="'collapse'+val.RequestFormID" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <ol>
+                                <li><a  [routerLink]="['/Dataentry', val.RequestFormID,'NA']"> New Form </a></li>
+                                <li><a [routerLink]="['/Dataentryreport', val.RequestFormID]"> Reports </a></li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <h4 class="text-center">QMS Forms</h4>
+            <div *ngFor="let val of tool[1] | filterBy: ['SystemType']: 'QMS'" class="tool-item">
+                <div class="panel panel-info">
+                    <div class="panel-heading" role="tab">
+                        <h4 class="panel-title">
+                            <a class="collapsed" data-toggle="collapse" [href]="'#collapse'+val.RequestFormID"
+                                aria-expanded="true" [aria-controls]="'#collapse'+val.RequestFormID">
+                                {{val.FormName}}
+                            </a>
+                        </h4>
+                    </div>
+                    <div [id]="'collapse'+val.RequestFormID" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <ol>
+                                <li><a  [routerLink]="['/Dataentry', val.RequestFormID,'NA']"> New Form </a></li>
+                                <li><a [routerLink]="['/Dataentryreport', val.RequestFormID]"> Reports </a></li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <h4 class="text-center">ALL Other Forms</h4>
+            <div *ngFor="let val of tool[1] | filterBy: ['SystemType']: 'ALL'" class="tool-item">
+                <div class="panel panel-info">
+                    <div class="panel-heading" role="tab">
+                        <h4 class="panel-title">
+                            <a class="collapsed" data-toggle="collapse" [href]="'#collapse'+val.RequestFormID"
+                                aria-expanded="true" [aria-controls]="'#collapse'+val.RequestFormID">
+                                {{val.FormName}}
+                            </a>
+                        </h4>
+                    </div>
+                    <div [id]="'collapse'+val.RequestFormID" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <ol>
+                                <li><a  [routerLink]="['/Dataentry', val.RequestFormID,'NA']"> New Form </a></li>
+                                <li><a [routerLink]="['/Dataentryreport', val.RequestFormID]"> Reports </a></li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
