@@ -24,7 +24,7 @@
   <div class="col-lg-12">
     <div class="panel panel-default">
       <kendo-grid [data]="gridView" resizable="true" columnMenu="true" [pageSize]="pageSize" [skip]="skip"
-        [pageable]="true" (pageChange)="pageChange($event)" [sortable]="{
+        [pageable]="{pageSizes: [10, 25, 50, 100]}" (pageChange)="pageChange($event)" [sortable]="{
             allowUnsort: allowUnsort,
             mode:  'single'
             }" [sort]="sort" (sortChange)="sortChange($event)" [filterable]="true"

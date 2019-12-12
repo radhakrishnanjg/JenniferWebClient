@@ -37,7 +37,7 @@
         </div>
         <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 ">
           <div class="pull-right">
-            <button  type="button" class="btn btn-primary" routerLink="/Goodsreceiptlist" title="Back">
+            <button type="button" class="btn btn-primary" routerLink="/Goodsreceiptlist" title="Back">
               Back
             </button>
           </div>
@@ -315,17 +315,18 @@
         <table class="table table-bordered table-condensed table-striped">
           <thead>
             <tr>
+              <th>Image</th>
               <th>Vendor Item Code</th>
               <th>Item Description</th>
               <th>ItemCode</th>
               <th>PO Qty</th>
-              <th>Available Qty</th>
+              <th>Pending Qty</th>
 
-              <th>Inventory Sellable Qty</th>
-              <th>Inventory Shortage Qty</th>
-              <th>Inventory Damaged Qty</th>
-              <th>Inventory Others Qty </th>
-              <th>Total Received Qty <span class="mandantory">*</span> </th>
+              <th> Sellable Qty</th>
+              <th> Shortage Qty</th>
+              <th> Damaged Qty</th>
+              <th> Others Qty </th>
+              <th>Total Qty <span class="mandantory">*</span> </th>
 
               <th>Shortage Remarks </th>
               <th>Damage Remarks</th>
@@ -334,6 +335,10 @@
           </thead>
           <tbody>
             <tr *ngFor="let item of lstGoodsReceiptDetail; let i = index;">
+              <td [ngClass]="(item.ItemID==0)?'bgred':''">
+                <img [src]="item.ImagePath" width="60" height="60" title="SKU Image"
+                  class="img-responsive img-thumbnail " />
+              </td>
               <td [ngClass]="(item.ItemID==0)?'bgred':''">{{item.VendorItemCode}}</td>
               <td [ngClass]="(item.ItemID==0)?'bgred':''">{{item.ItemDescription}}</td>
               <td [ngClass]="(item.ItemID==0)?'bgred':''">{{item.ItemCode}}</td>
@@ -372,9 +377,7 @@
             </tr>
 
             <tr *ngIf="lstGoodsReceiptDetail.length>0">
-              <th>Total</th>
-              <th> </th>
-              <th> </th>
+              <th colspan="4"> Total </th>
               <th>{{ TotalPOQty}}</th>
               <th>{{ TotalAvailableQty}}</th>
 
@@ -394,7 +397,7 @@
     </div>
     <div class="panel-footer">
       <div class="pull-right btn-toolbar">
-        <button  type="button" class="btn btn-primary" routerLink="/Goodsreceiptlist" title="Cancel">
+        <button type="button" class="btn btn-primary" routerLink="/Goodsreceiptlist" title="Cancel">
           Cancel
         </button>
         <button class="btn btn-warning" type="button" data-toggle="modal" data-target="#modalgrnconfimation"

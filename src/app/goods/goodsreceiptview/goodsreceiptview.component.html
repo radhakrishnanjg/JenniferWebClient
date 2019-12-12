@@ -8,13 +8,13 @@
     <div class="pull-right hidden-xs">
       <ol class="breadcrumb" id="dynamicbreadcrumb">
         <li>
-           <span> GRN</span>
+          <span> GRN</span>
         </li>
         <li>
-           <span> Goods Receipts</span>
+          <span> Goods Receipts</span>
         </li>
         <li class="active">
-          
+
           View
         </li>
       </ol>
@@ -36,7 +36,7 @@
       </div>
       <div class="col-xs-4 col-sm-4 col-md-4 ">
         <div class="pull-right">
-          <button  type="button" class="btn btn-primary" routerLink="/Goodsreceiptlist" title="Back">
+          <button type="button" class="btn btn-primary" routerLink="/Goodsreceiptlist" title="Back">
 
             Back
           </button>
@@ -149,6 +149,7 @@
       <table class="table table-bordered table-condensed table-striped">
         <thead>
           <tr>
+            <th>Image</th>
             <th>Vendor Item Code</th>
             <th>Item Description</th>
             <th>Item code</th>
@@ -167,6 +168,10 @@
         </thead>
         <tbody>
           <tr *ngFor="let item of obj?.ItemDetails; let i = index;">
+            <td>
+              <img [src]="item.ImagePath" width="60" height="60" title="SKU Image"
+                class="img-responsive img-thumbnail " />
+            </td>
             <td>{{item.VendorItemCode}}</td>
             <td>{{item.ItemDescription}}</td>
             <td>{{item.ItemCode}}</td>
@@ -185,9 +190,7 @@
             </td>
           </tr>
           <tr>
-            <th> Total </th>
-            <td> </td>
-            <td> </td>
+            <th colspan="4"> Total </th>
             <th class="text-right">{{InventorySellable }}</th>
             <th class="text-right">{{InventoryShortage }} </th>
             <th class="text-right">{{InventoryDamage }} </th>
@@ -227,7 +230,7 @@
     <div class="row">
       <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
         <div class="pull-right">
-          <button  type="button" class="btn btn-primary" routerLink="/Goodsreceiptlist" title="Cancel">
+          <button type="button" class="btn btn-primary" routerLink="/Goodsreceiptlist" title="Cancel">
             Cancel
           </button>
         </div>

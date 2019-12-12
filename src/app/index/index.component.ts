@@ -66,51 +66,51 @@ export class IndexComponent implements OnInit {
     this.captchaForm = this.fb.group({
       Name: ['', [Validators.required]],
       PhoneNumber: ['', [Validators.required]],
-      Email: ['', [Validators.required]],
+      Email: ['', [Validators.required]], 
     });
 
-    $("#slideshow > div:gt(0)").hide();
+    // $("#slideshow > div:gt(0)").hide();
 
-    setInterval(function () {
-      $('#slideshow > div:first')
-        .fadeOut(1000)
-        .next()
-        .fadeIn(1000)
-        .end()
-        .appendTo('#slideshow');
-    }, 3000);
+    // setInterval(function () {
+    //   $('#slideshow > div:first')
+    //     .fadeOut(1000)
+    //     .next()
+    //     .fadeIn(1000)
+    //     .end()
+    //     .appendTo('#slideshow');
+    // }, 3000);
 
-    $(window).scroll(function () {
-      if ($(this).scrollTop()) {
-        $('#toTop').fadeIn();
-      } else {
-        $('#toTop').fadeOut();
-      }
-    });
+    // $(window).scroll(function () {
+    //   if ($(this).scrollTop()) {
+    //     $('#toTop').fadeIn();
+    //   } else {
+    //     $('#toTop').fadeOut();
+    //   }
+    // });
 
-    $("#toTop").click(function () {
-      $("html, body").animate({ scrollTop: 0 }, 1000);
-    });
-    // 
-    function myFunction() {
-      var x = document.getElementById("myTopnav");
-      if (x.className === "topnav") {
-        x.className += " responsive";
-      } else {
-        x.className = "topnav";
-      }
-    }
-    // 
-    $(window).scroll(function () {
-      var sticky = $('.sticky'),
-        scroll = $(window).scrollTop();
+    // $("#toTop").click(function () {
+    //   $("html, body").animate({ scrollTop: 0 }, 1000);
+    // });
+    // // 
+    // function myFunction() {
+    //   var x = document.getElementById("myTopnav");
+    //   if (x.className === "topnav") {
+    //     x.className += " responsive";
+    //   } else {
+    //     x.className = "topnav";
+    //   }
+    // }
+    // // 
+    // $(window).scroll(function () {
+    //   var sticky = $('.sticky'),
+    //     scroll = $(window).scrollTop();
 
-      if (scroll >= 100) sticky.addClass('fixed');
-      else sticky.removeClass('fixed');
-    });
+    //   if (scroll >= 100) sticky.addClass('fixed');
+    //   else sticky.removeClass('fixed');
+    // });
  
 
-    this.scroll();
+    // this.scroll();
 
   } 
   scroll() {

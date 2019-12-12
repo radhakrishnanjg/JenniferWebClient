@@ -8,7 +8,8 @@ import { Userpermission, Companydetails, CompanyRegister } from '../_services/mo
 import { PrivateutilityService } from '../_services/service/privateutility.service';
 import { EncrDecrService } from '../_services/service/encr-decr.service';
 import { CompanydetailService } from "../_services/service/companydetail.service";
-import { ConnectionService } from 'ng-connection-service'
+import { ConnectionService } from 'ng-connection-service';
+ 
 @Component({
   selector: 'app-privatelayout',
   templateUrl: './privatelayout.component.html',
@@ -63,6 +64,7 @@ export class PrivatelayoutComponent implements OnInit {
       }
 
     });
+
 
   }
 

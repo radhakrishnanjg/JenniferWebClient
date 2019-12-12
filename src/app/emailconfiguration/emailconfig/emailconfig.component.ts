@@ -6,7 +6,7 @@ import { ContactService } from '../../_services/service/contact.service';
 import { Emailtemplate, Contact } from '../../_services/model';
 import { AuthorizationGuard } from '../../_guards/Authorizationguard'
 import { PrivateutilityService } from '../../_services/service/privateutility.service';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms'; 
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 @Component({
   selector: 'app-emailconfig',
   templateUrl: './emailconfig.component.html',
@@ -30,7 +30,7 @@ export class EmailconfigComponent implements OnInit {
     private alertService: ToastrService,
     private _router: Router,
     private _contactService: ContactService,
-    
+
     private _authorizationGuard: AuthorizationGuard,
     private _PrivateutilityService: PrivateutilityService,
     private fb: FormBuilder,
@@ -88,11 +88,21 @@ export class EmailconfigComponent implements OnInit {
     });
   }
 
+  dtOptions1: DataTables.Settings = {};
+  dtOptions2: DataTables.Settings = {};
+  dtOptions3: DataTables.Settings = {};
   filterInternal(ContactType: string): Contact[] {
     let result: Contact[] = [];
     if (this.lstContact != null && this.lstContact.length > 0) {
       result = this.lstContact.filter(a => a.ContactType == ContactType);
       this.Internalflag = result.length > 0 ? true : false;
+      this.dtOptions1 = {
+        paging: false,
+        scrollY: '200px',
+        "language": {
+          "search": 'Filter',
+        },
+      };
     }
     return result;
   }
@@ -101,6 +111,13 @@ export class EmailconfigComponent implements OnInit {
     if (this.lstContact != null && this.lstContact.length > 0) {
       result = this.lstContact.filter(a => a.ContactType == ContactType);
       this.Externalflag = result.length > 0 ? true : false;
+      this.dtOptions2 = {
+        paging: false,
+        scrollY: '200px',
+        "language": {
+          "search": 'Filter',
+        },
+      };
     }
     return result;
   }
@@ -109,6 +126,13 @@ export class EmailconfigComponent implements OnInit {
     if (this.lstContact != null && this.lstContact.length > 0) {
       result = this.lstContact.filter(a => a.ContactType == ContactType);
       this.MarketPlaceflag = result.length > 0 ? true : false;
+      this.dtOptions3 = {
+        paging: false,
+        scrollY: '200px',
+        "language": {
+          "search": 'Filter',
+        },
+      };
     }
     return result;
   }
@@ -127,7 +151,7 @@ export class EmailconfigComponent implements OnInit {
               this.filterExternal('EXTERNAL');
               this.filterMarketPlace('MARKETPLACE');
               this.HtmlContent = this.lstemailtemplates.filter(a => a.EmailTemplateID == EmailTemplateID)[0].TemplateBody;
-              
+
               this.MailTo = this.lstContact.filter(a => a.IsActive == true).map(a => a.Email).toString();
             }
             //

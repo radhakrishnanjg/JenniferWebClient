@@ -1,37 +1,27 @@
-import { BrowserModule } from '@angular/platform-browser';
+//core
 import { RouterModule } from '@angular/router';
 import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { PopupAnchorDirective } from './sto/popup.anchor-target.directive';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { HttpClientModule} from '@angular/common/http';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NgxMaskModule } from 'ngx-mask'
-import { ToastrModule } from 'ngx-toastr';
-import { CookieService } from 'ngx-cookie-service';
 
-
-import { SelectDropDownModule } from 'ngx-select-dropdown'
-import { AngularFontAwesomeModule } from 'angular-font-awesome';
-import { DataTablesModule } from 'angular-datatables';
-
-import { NgxSpinnerModule } from 'ngx-spinner';
-import { NgxTypeaheadModule } from 'ngx-typeahead';
+//kendo
 import { GridModule } from '@progress/kendo-angular-grid';
 import { PopupModule } from '@progress/kendo-angular-popup';
-import { DropDownListModule } from '@progress/kendo-angular-dropdowns';
-import * as bootstrap from "bootstrap";
-import * as $ from "jquery";
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { PreventDoubleSubmitModule } from 'ngx-prevent-double-submission';
-import { MomentModule } from 'ngx-moment';
-import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
-import { DeviceDetectorModule } from 'ngx-device-detector';
+import { DropDownListModule } from '@progress/kendo-angular-dropdowns'; 
 import { InputsModule } from '@progress/kendo-angular-inputs';
 
-
+import { PreventDoubleSubmitModule } from 'ngx-prevent-double-submission';
 import { EncrDecrService } from '../_services/service/encr-decr.service';
-import { PopupAnchorDirective } from './sto/popup.anchor-target.directive';
+import { CookieService } from 'ngx-cookie-service';
+import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
+import { NgxMaskModule } from 'ngx-mask';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { MomentModule } from 'ngx-moment';
+import { ToastrModule } from 'ngx-toastr';
+import { NgxTypeaheadModule } from 'ngx-typeahead';
 
+//Component
 
 import { GoodsinwardComponent } from './goodsinward/goodsinward.component';
 import { GoodsinwardlistComponent } from './goodsinwardlist/goodsinwardlist.component';
@@ -49,41 +39,32 @@ import { GoodsreceiptviewComponent } from './goodsreceiptview/goodsreceiptview.c
 import { StoviewComponent } from './stoview/stoview.component';
 import { StoeditComponent } from './stoedit/stoedit.component';
 
+//routing module
+
+import { GoodsRoutingModule } from './goods.routing.module';
+
 @NgModule({
   imports: [
     CommonModule,
-    FormsModule,
     RouterModule,
-    BrowserModule,
-    ReactiveFormsModule,
-    HttpClientModule,
-    AngularFontAwesomeModule,
-    DataTablesModule,
-    
-    NgxSpinnerModule,
+    GridModule,
     FormsModule,
-    // Prevent double submission module
+    ReactiveFormsModule,
+    PopupModule,
+    DropDownListModule,
+    InputsModule,
     PreventDoubleSubmitModule.forRoot(),
-    MomentModule,
-    NgxDaterangepickerMd.forRoot(),
-    DeviceDetectorModule.forRoot(),
-    
-    // ModalModule.forRoot()
-    BrowserAnimationsModule, // required animations module
     ToastrModule.forRoot({
       timeOut: 5000,
-      //positionClass: 'toast-bottom-right',
       positionClass: 'toast-top-center',
       preventDuplicates: true,
     }),
-    InputsModule,// ToastrModule added,
+    MomentModule,
+    NgxDaterangepickerMd.forRoot(),
     NgxMaskModule.forRoot(),
-    SelectDropDownModule,
-    NgxTypeaheadModule,
-    GridModule,
-    DropDownListModule,
-    PopupModule,
     NgbModule,
+    NgxTypeaheadModule,
+    GoodsRoutingModule,
   ],
 
   declarations: [
@@ -98,18 +79,17 @@ import { StoeditComponent } from './stoedit/stoedit.component';
     GoodsDisputeListComponent,
     StoListComponent,
     StoComponent,
-    InventorydetaillistComponent, 
+    InventorydetaillistComponent,
     GoodsdisputeviewComponent,
     GoodsreceiptviewComponent,
     StoviewComponent,
-    StoeditComponent
+    StoeditComponent,
   ],
   providers: [
-    
     CookieService,
-    
     EncrDecrService
   ],
+
   schemas: [
     NO_ERRORS_SCHEMA,
   ]

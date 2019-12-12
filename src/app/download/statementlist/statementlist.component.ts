@@ -122,8 +122,9 @@ export class StatementlistComponent implements OnInit {
       filters: [{ field: 'StatementNumber', operator: 'contains', value: '' }]
     }
   };
-  public pageChange(event: PageChangeEvent): void {
-    this.skip = event.skip;
+  public pageChange({ skip, take }: PageChangeEvent): void {
+    this.skip = skip;
+    this.pageSize = take;
     this.loadItems();
   }
 

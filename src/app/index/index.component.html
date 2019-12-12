@@ -33,10 +33,13 @@
             </ul>
           </li> -->
             </ul>
-            <ul class="nav navbar-nav navbar-right">
-              <li><a routerLinkActive="active" routerLink="/Signin">
-                  <span class="glyphicon glyphicon-user"></span> Login</a></li>
-            </ul>
+            <a routerLinkActive="active" routerLink="/Signin" class="nav navbar-nav navbar-right">
+              <li>
+                <a>
+                  <span class="glyphicon glyphicon-user"></span> Login
+                </a> 
+              </li>
+            </a>
           </div>
         </div>
       </nav>
@@ -360,59 +363,59 @@
     <div class="row">
       <h1><strong>S</strong>elling in <strong>India</strong></h1>
       <div class="col-md-12 col-xs-12">
-		 <ul class="nav nav-tabs">
-			<li class="active"><a data-toggle="tab" href="#home">
-				<img src="assets/jimages/jennifericn.png" title="jennifer">
-			</a></li>
-			<li><a data-toggle="tab" href="#menu1">
-				<img src="assets/jimages/valuecart.png" title="Value Cart">
-			</a></li>
-			<li><a data-toggle="tab" href="#menu2">
-				<img src="assets/jimages/amazon.png" title="amazon">
-				</a>
-			</li>
-			<li><a data-toggle="tab" href="#menu3">
-				<img src="assets/jimages/pingpong.png" title="pingpong">
-			</a>
-			</li>
-        </ul> 
+        <ul class="nav nav-tabs">
+          <li class="active"><a data-toggle="tab" href="#home">
+              <img src="assets/jimages/jennifericn.png" title="jennifer">
+            </a></li>
+          <li><a data-toggle="tab" href="#menu1">
+              <img src="assets/jimages/valuecart.png" title="Value Cart">
+            </a></li>
+          <li><a data-toggle="tab" href="#menu2">
+              <img src="assets/jimages/amazon.png" title="amazon">
+            </a>
+          </li>
+          <li><a data-toggle="tab" href="#menu3">
+              <img src="assets/jimages/pingpong.png" title="pingpong">
+            </a>
+          </li>
+        </ul>
         <div class="tab-content">
-			<div id="home" class="tab-pane fade in active">
-				<h3>Jennifer</h3>
-				<ul class="crossborderTablist">
-					<li>ERP software service</li>
-					<li>Order-ID level payment reconciliation</li>
-					<li>Track & trace of goods from China to India FBA warehouse</li>
-					<li>Track & trace of cash flow from Amazon to China seller Bank account</li>
-					<li>MIS & Business Intelligence reports</li>
-					<li>Sponsored Ad services</li>
-				</ul>
-			</div>
-			<div id="menu1" class="tab-pane fade">
-				<h3>Value Cart</h3>
-				<ul class="crossborderTablist">
-					<li>Takes end-to-end responsibility of imports in India</li>
-					<li>Investing in Customs duty</li>
-					<li>Takes care of Customs compliance & Taxes</li>
-					<li>Registering seller account in Marketplaces and giving access to China Sellers </li>
-				</ul>
-			</div>
-			<div id="menu2" class="tab-pane fade">
-				<h3>Amazon</h3>
-				<ul class="crossborderTablist">
-					<li>Marketplace </li>
-					<li>Fulfilment by Amazon  </li>
-				</ul>
-			</div>
-			<div id="menu3" class="tab-pane fade">
-				<h3>Pingpong</h3>
-				<ul class="crossborderTablist">
-					<li>Gives payment guarantee to China sellers</li>
-					<li>Engaging & co-working in problem solving from China, for China sellers</li>
-					<li>Remittance of sales proceeds in RMB</li> 
-				</ul>
-			</div>
-		</div>
+          <div id="home" class="tab-pane fade in active">
+            <h3>Jennifer</h3>
+            <ul class="crossborderTablist">
+              <li>ERP software service</li>
+              <li>Order-ID level payment reconciliation</li>
+              <li>Track & trace of goods from China to India FBA warehouse</li>
+              <li>Track & trace of cash flow from Amazon to China seller Bank account</li>
+              <li>MIS & Business Intelligence reports</li>
+              <li>Sponsored Ad services</li>
+            </ul>
+          </div>
+          <div id="menu1" class="tab-pane fade">
+            <h3>Value Cart</h3>
+            <ul class="crossborderTablist">
+              <li>Takes end-to-end responsibility of imports in India</li>
+              <li>Investing in Customs duty</li>
+              <li>Takes care of Customs compliance & Taxes</li>
+              <li>Registering seller account in Marketplaces and giving access to China Sellers </li>
+            </ul>
+          </div>
+          <div id="menu2" class="tab-pane fade">
+            <h3>Amazon</h3>
+            <ul class="crossborderTablist">
+              <li>Marketplace </li>
+              <li>Fulfilment by Amazon </li>
+            </ul>
+          </div>
+          <div id="menu3" class="tab-pane fade">
+            <h3>Pingpong</h3>
+            <ul class="crossborderTablist">
+              <li>Gives payment guarantee to China sellers</li>
+              <li>Engaging & co-working in problem solving from China, for China sellers</li>
+              <li>Remittance of sales proceeds in RMB</li>
+            </ul>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -434,7 +437,7 @@
         <form autocomplete="off" [formGroup]="captchaForm" (ngSubmit)="SaveData()">
           <div class="row rownopadding">
             <div class="form-group col-md-6" [ngClass]="{'has-error': formErrors.Name}">
-              <label for="inputEmail4">Name</label>
+              <label>Name</label>
               <input type="name" class="form-control" id="inputName" formControlName="Name"
                 (blur)="logValidationErrors()" placeholder="Name" required>
               <div class="help-block-rk">
@@ -444,9 +447,9 @@
               </div>
             </div>
             <div class="form-group col-md-6" [ngClass]="{'has-error': formErrors.PhoneNumber}">
-              <label for="inputphone">Phone Number</label>
-              <input type="number" class="form-control" id="inputphone" placeholder="9513 917 830"
-                formControlName="PhoneNumber" (blur)="logValidationErrors()" required>
+              <label>Phone Number</label>
+              <input type="number" class="form-control" placeholder="9513 917 830" formControlName="PhoneNumber"
+                (blur)="logValidationErrors()" required>
               <div class="help-block-rk">
                 <span class="help-block" *ngIf="formErrors.PhoneNumber">
                   {{formErrors.PhoneNumber}}
@@ -455,9 +458,9 @@
             </div>
           </div>
           <div class="form-group" [ngClass]="{'has-error': formErrors.Email}">
-            <label for="inputEmail">Email</label>
-            <input type="email" class="form-control" id="inputEmail" placeholder="support@jennifer-in.com"
-              formControlName="Email" (blur)="logValidationErrors()" required>
+            <label>Email</label>
+            <input type="text" class="form-control" placeholder="support@jennifer-in.com" formControlName="Email"
+              (blur)="logValidationErrors()" required>
             <div class="help-block-rk">
               <span class="help-block" *ngIf="formErrors.Email">
                 {{formErrors.Email}}
@@ -487,7 +490,7 @@
             <div class="sociallogos">
               <img src="assets/icons/skype.png">
               <h3>Support</h3>
-              support@jennifer-in.con
+              support@jennifer-in.com
             </div>
           </div>
           <div class="col-12 col-sm-4">
@@ -501,7 +504,7 @@
             <div class="sociallogos">
               <img src="assets/icons/watsup.png">
               <h3>Whatsapp</h3>
-              +91 9513 917 830  
+              +91 9513 917 830
             </div>
           </div>
         </div>

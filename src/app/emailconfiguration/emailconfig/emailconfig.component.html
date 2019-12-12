@@ -66,184 +66,205 @@
           </div>
         </div>
       </div>
-      <span class="groupspanheader"> Internal </span>
-      <div class="table-responsive">
-        <table class="table table-bordered table-condensed "
-          *ngIf="lstContact && lstContact.length>0 && Internalflag==true">
-          <thead>
-            <tr>
-              <th class="text-center ">Check</th>
-              <th class="text-center ">Contact Name</th>
-              <th class="text-center ">Mobile Number </th>
-              <th class="text-center ">Email </th>
-              <th class="text-center ">Designation </th>
 
-              <th class="text-center ">Department </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let ms of filterInternal('INTERNAL')">
 
-              <td class="text-center ">
-                <div *ngIf="(ms.IsActive ==true)">
-                  <input type="checkbox" name="{{ms.ContactID}}" id="{{ms.ContactID }}" checked="checked"
-                    (change)="ContactIDFieldsChange($event)">
-                </div>
-                <div *ngIf="(ms.IsActive != true)">
-                  <input type="checkbox" name="{{ms.ContactID}}" id="{{ms.ContactID }}"
-                    (change)="ContactIDFieldsChange($event)">
-                </div>
-              </td>
-              <td>{{ ms.ContactName }}</td>
-              <td>{{ ms.MobileNumber }}</td>
-              <td>{{ ms.Email }}</td>
-              <td>{{ ms.Designation }}</td>
-
-              <td>{{ ms.Department }}</td>
-
-            </tr>
-          </tbody>
-        </table>
-
-        <table class="table table-bordered table-condensed " *ngIf="Internalflag==false">
-          <thead>
-            <tr>
-              <th class=" text-center ">Check</th>
-              <th class=" text-center ">Contact Name</th>
-              <th class=" text-center ">Mobile Number </th>
-              <th class=" text-center ">Email </th>
-              <th class=" text-center ">Designation </th>
-
-              <th class=" text-center ">Department </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td colspan="6">
-                No Records Found
-              </td>
-            </tr>
-          </tbody>
-        </table>
+      <div>
+        <a data-toggle="collapse" href="#collapse1">
+          <span class="groupspanheader"> Internal </span> </a>
       </div>
-      <span class="groupspanheader"> External </span>
-      <div class="table-responsive">
-        <table class="table table-bordered table-condensed "
-          *ngIf="lstContact && lstContact.length >0 && Externalflag==true">
-          <thead>
-            <tr>
-              <th class=" text-center ">Check</th>
-              <th class=" text-center ">Contact Name</th>
-              <th class=" text-center ">Mobile Number </th>
-              <th class=" text-center ">Email </th>
-              <th class=" text-center ">Designation </th>
+      <div id="collapse1" class="panel-collapse in">
+        <div class="table-responsive">
+          <table datatable [dtOptions]="dtOptions1" class="table table-bordered table-condensed "
+            *ngIf="lstContact && lstContact.length>0 && Internalflag==true">
+            <thead>
+              <tr>
+                <th class="text-center ">Check</th>
+                <th class="text-center ">Contact Name</th>
+                <th class="text-center ">Mobile Number </th>
+                <th class="text-center ">Email </th>
+                <th class="text-center ">Designation </th>
 
-              <th class=" text-center ">Department </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor=" let ms of filterExternal('EXTERNAL')">
-              <td class="text-center ">
-                <div *ngIf="(ms.IsActive ==true)">
-                  <input type="checkbox" name="{{ms.ContactID}}" id="{{ms.ContactID }}" checked="checked"
-                    (change)="ContactIDFieldsChange($event)">
-                </div>
-                <div *ngIf="(ms.IsActive != true)">
-                  <input type="checkbox" name="{{ms.ContactID}}" id="{{ms.ContactID }}"
-                    (change)="ContactIDFieldsChange($event)">
-                </div>
-              </td>
-              <td>{{ ms.ContactName }}</td>
-              <td>{{ ms.MobileNumber }}</td>
-              <td>{{ ms.Email }}</td>
-              <td>{{ ms.Designation }}</td>
+                <th class="text-center ">Department </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let ms of filterInternal('INTERNAL')">
 
-              <td>{{ ms.Department }}</td>
+                <td class="text-center ">
+                  <div *ngIf="(ms.IsActive ==true)">
+                    <input type="checkbox" name="{{ms.ContactID}}" id="{{ms.ContactID }}" checked="checked"
+                      (change)="ContactIDFieldsChange($event)">
+                  </div>
+                  <div *ngIf="(ms.IsActive != true)">
+                    <input type="checkbox" name="{{ms.ContactID}}" id="{{ms.ContactID }}"
+                      (change)="ContactIDFieldsChange($event)">
+                  </div>
+                </td>
+                <td>{{ ms.ContactName }}</td>
+                <td>{{ ms.MobileNumber }}</td>
+                <td>{{ ms.Email }}</td>
+                <td>{{ ms.Designation }}</td>
 
-            </tr>
-          </tbody>
-        </table>
-        <table class="table table-bordered table-condensed " *ngIf="Externalflag==false">
-          <thead>
-            <tr>
-              <th class=" text-center ">Check</th>
-              <th class=" text-center ">Contact Name</th>
-              <th class=" text-center ">Mobile Number </th> 
-              <th class=" text-center ">Email </th>
-              <th class=" text-center ">Designation </th>
+                <td>{{ ms.Department }}</td>
 
-              <th class=" text-center ">Department </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td colspan="6">
-                No Records Found
-              </td>
-            </tr>
-          </tbody>
-        </table>
+              </tr>
+            </tbody>
+          </table>
+
+          <table class="table table-bordered table-condensed " *ngIf="Internalflag==false">
+            <thead>
+              <tr>
+                <th class=" text-center ">Check</th>
+                <th class=" text-center ">Contact Name</th>
+                <th class=" text-center ">Mobile Number </th>
+                <th class=" text-center ">Email </th>
+                <th class=" text-center ">Designation </th>
+
+                <th class=" text-center ">Department </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td colspan="6">
+                  No Records Found
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
-      <span class="groupspanheader"> Market Place </span>
-      <div class="table-responsive">
-        <table class="table table-bordered table-condensed "
-          *ngIf="lstContact && lstContact.length >0 && MarketPlaceflag==true">
-          <thead>
-            <tr>
-              <th class=" text-center ">Check</th>
-              <th class=" text-center ">Contact Name</th>
-              <th class=" text-center ">Mobile Number </th>
-              <th class=" text-center ">Email </th>
-              <th class=" text-center ">Designation </th>
 
-              <th class=" text-center ">Department </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor=" let ms of filterMarketPlace('MARKETPLACE')">
-              <td class="text-center ">
-                <div *ngIf="(ms.IsActive ==true)">
-                  <input type="checkbox" name="{{ms.ContactID}}" id="{{ms.ContactID }}" checked="checked"
-                    (change)="ContactIDFieldsChange($event)">
-                </div>
-                <div *ngIf="(ms.IsActive != true)">
-                  <input type="checkbox" name="{{ms.ContactID}}" id="{{ms.ContactID }}"
-                    (change)="ContactIDFieldsChange($event)">
-                </div>
-              </td>
-              <td>{{ ms.ContactName }}</td>
-              <td>{{ ms.MobileNumber }}</td>
-              <td>{{ ms.Email }}</td>
-              <td>{{ ms.Designation }}</td>
-
-              <td>{{ ms.Department }}</td>
-
-            </tr>
-          </tbody>
-        </table>
-
-        <table class="table table-bordered table-condensed " *ngIf="MarketPlaceflag==false">
-          <thead>
-            <tr>
-              <th class=" text-center ">Check</th>
-              <th class=" text-center ">Contact Name</th>
-              <th class=" text-center ">Mobile Number </th>
-              <th class=" text-center ">Email </th>
-              <th class=" text-center ">Designation </th>
-
-              <th class=" text-center ">Department </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td colspan="6">
-                No Records Found
-              </td>
-            </tr>
-          </tbody>
-        </table>
-
+      <div>
+        <a data-toggle="collapse" href="#collapse2">
+          <span class="groupspanheader"> External </span> </a>
       </div>
+      <div id="collapse2" class="panel-collapse in">
+        <div class="table-responsive">
+          <table datatable [dtOptions]="dtOptions2" class="table table-bordered table-condensed "
+            *ngIf="lstContact && lstContact.length >0 && Externalflag==true">
+            <thead>
+              <tr>
+                <th class=" text-center ">Check</th>
+                <th class=" text-center ">Contact Name</th>
+                <th class=" text-center ">Mobile Number </th>
+                <th class=" text-center ">Email </th>
+                <th class=" text-center ">Designation </th>
+
+                <th class=" text-center ">Department </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor=" let ms of filterExternal('EXTERNAL')">
+                <td class="text-center ">
+                  <div *ngIf="(ms.IsActive ==true)">
+                    <input type="checkbox" name="{{ms.ContactID}}" id="{{ms.ContactID }}" checked="checked"
+                      (change)="ContactIDFieldsChange($event)">
+                  </div>
+                  <div *ngIf="(ms.IsActive != true)">
+                    <input type="checkbox" name="{{ms.ContactID}}" id="{{ms.ContactID }}"
+                      (change)="ContactIDFieldsChange($event)">
+                  </div>
+                </td>
+                <td>{{ ms.ContactName }}</td>
+                <td>{{ ms.MobileNumber }}</td>
+                <td>{{ ms.Email }}</td>
+                <td>{{ ms.Designation }}</td>
+
+                <td>{{ ms.Department }}</td>
+
+              </tr>
+            </tbody>
+          </table>
+          <table class="table table-bordered table-condensed " *ngIf="Externalflag==false">
+            <thead>
+              <tr>
+                <th class=" text-center ">Check</th>
+                <th class=" text-center ">Contact Name</th>
+                <th class=" text-center ">Mobile Number </th>
+                <th class=" text-center ">Email </th>
+                <th class=" text-center ">Designation </th>
+
+                <th class=" text-center ">Department </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td colspan="6">
+                  No Records Found
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div>
+        <a data-toggle="collapse" href="#collapse3">
+          <span class="groupspanheader"> Market Place </span> </a>
+      </div>
+      <div id="collapse3" class="panel-collapse in">
+        <div class="table-responsive">
+          <table datatable [dtOptions]="dtOptions3" class="table table-bordered table-condensed "
+            *ngIf="lstContact && lstContact.length >0 && MarketPlaceflag==true">
+            <thead>
+              <tr>
+                <th class=" text-center ">Check</th>
+                <th class=" text-center ">Contact Name</th>
+                <th class=" text-center ">Mobile Number </th>
+                <th class=" text-center ">Email </th>
+                <th class=" text-center ">Designation </th>
+
+                <th class=" text-center ">Department </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor=" let ms of filterMarketPlace('MARKETPLACE')">
+                <td class="text-center ">
+                  <div *ngIf="(ms.IsActive ==true)">
+                    <input type="checkbox" name="{{ms.ContactID}}" id="{{ms.ContactID }}" checked="checked"
+                      (change)="ContactIDFieldsChange($event)">
+                  </div>
+                  <div *ngIf="(ms.IsActive != true)">
+                    <input type="checkbox" name="{{ms.ContactID}}" id="{{ms.ContactID }}"
+                      (change)="ContactIDFieldsChange($event)">
+                  </div>
+                </td>
+                <td>{{ ms.ContactName }}</td>
+                <td>{{ ms.MobileNumber }}</td>
+                <td>{{ ms.Email }}</td>
+                <td>{{ ms.Designation }}</td>
+
+                <td>{{ ms.Department }}</td>
+
+              </tr>
+            </tbody>
+          </table>
+
+          <table class="table table-bordered table-condensed " *ngIf="MarketPlaceflag==false">
+            <thead>
+              <tr>
+                <th class=" text-center ">Check</th>
+                <th class=" text-center ">Contact Name</th>
+                <th class=" text-center ">Mobile Number </th>
+                <th class=" text-center ">Email </th>
+                <th class=" text-center ">Designation </th>
+
+                <th class=" text-center ">Department </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td colspan="6">
+                  No Records Found
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+        </div>
+      </div>
+
+
     </div>
     <div class=" panel-footer">
       <div class="pull-right btn-toolbar">

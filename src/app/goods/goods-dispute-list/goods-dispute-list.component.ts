@@ -98,10 +98,11 @@ export class GoodsDisputeListComponent implements OnInit {
        filters: [{ field: 'GRNNumber', operator: 'contains', value: '' }]
      }
    };
-   public pageChange(event: PageChangeEvent): void {
-     this.skip = event.skip;
-     this.loadItems();
-   }
+   public pageChange({ skip, take }: PageChangeEvent): void {
+    this.skip = skip;
+    this.pageSize = take;
+    this.loadItems();
+  } 
  
    public sortChange(sort: SortDescriptor[]): void {
      this.sort = sort;

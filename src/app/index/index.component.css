@@ -611,8 +611,9 @@ font-size: 18px;
 font-weight: 600;
 margin: 25px 0px;
 }
-ul.crossborderlist { 
-list-style-image: url(/assets/jimages/list.png);
+ul.crossborderlist {  
+list-style: none;
+/* list-style-image: url(/assets/jimages/list.png); */
 }
 .crossborderlist li {
 background-color: #FFFFFF;

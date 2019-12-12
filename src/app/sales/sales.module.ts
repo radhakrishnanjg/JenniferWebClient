@@ -1,37 +1,24 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { RouterModule } from '@angular/router';
-import { NgModule, NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+//core npms  
+import { NgModule, NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA,   } from '@angular/core';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms'; 
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NgxMaskModule } from 'ngx-mask'
-import { ToastrModule } from 'ngx-toastr';
-import { CookieService } from 'ngx-cookie-service';
+import { RouterModule } from '@angular/router';
 
-
-import { SelectDropDownModule } from 'ngx-select-dropdown'
-import { AngularFontAwesomeModule } from 'angular-font-awesome';
-import { DataTablesModule } from 'angular-datatables';
-
-import { NgxSpinnerModule } from 'ngx-spinner';
-import { NgxTypeaheadModule } from 'ngx-typeahead';
+//kendo
 import { GridModule } from '@progress/kendo-angular-grid';
 import { PopupModule } from '@progress/kendo-angular-popup';
-import { DropDownListModule } from '@progress/kendo-angular-dropdowns';
+import { DropDownListModule } from '@progress/kendo-angular-dropdowns'; 
+import { DateInputsModule } from '@progress/kendo-angular-dateinputs';
+import { InputsModule } from '@progress/kendo-angular-inputs';
 import { PDFExportModule } from '@progress/kendo-angular-pdf-export';
 import { IntlModule } from '@progress/kendo-angular-intl';
-import * as bootstrap from "bootstrap";
-import * as $ from "jquery";
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
 import { PreventDoubleSubmitModule } from 'ngx-prevent-double-submission';
 import { MomentModule } from 'ngx-moment';
 import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
-import { DeviceDetectorModule } from 'ngx-device-detector';
-import { InputsModule } from '@progress/kendo-angular-inputs';
-import { DateInputsModule } from '@progress/kendo-angular-dateinputs';
-
+import { SelectDropDownModule } from 'ngx-select-dropdown'
 import { EncrDecrService } from '../_services/service/encr-decr.service';
+import { CookieService } from 'ngx-cookie-service';
 import { PopupAnchorDirective } from './salesorder/popup.anchor-target.directive';
 
 import { SalesratecardlistComponent } from './salesratecardlist/salesratecardlist.component';
@@ -50,48 +37,28 @@ import { SalesorderunsellableComponent } from './salesorderunsellable/salesorder
 import { SalesorderapprovallistComponent } from './salesorderapprovallist/salesorderapprovallist.component';
 import { SalesorderapprovalComponent } from './salesorderapproval/salesorderapproval.component';
 import { SalesorderviewComponent } from './salesorderview/salesorderview.component';
+import { SalesRoutingModule } from './sales.routing.module';
 @NgModule({
   imports: [
     CommonModule,
     // ReactiveFormsModule,
     FormsModule,
     // UserRoutingModule
-
-    BrowserModule,
+ 
     RouterModule,
-    ReactiveFormsModule,
-    HttpClientModule,
-    AngularFontAwesomeModule,
-    DataTablesModule,
-
-    NgxSpinnerModule,
-    FormsModule,
-    // Prevent double submission module
+    ReactiveFormsModule, 
     PreventDoubleSubmitModule.forRoot(),
     MomentModule,
-    NgxDaterangepickerMd.forRoot(),
-    DeviceDetectorModule.forRoot(),
-
-    // ModalModule.forRoot()
-    BrowserAnimationsModule, // required animations module
-    ToastrModule.forRoot({
-      timeOut: 5000,
-      //positionClass: 'toast-bottom-right',
-      positionClass: 'toast-top-center',
-      preventDuplicates: true,
-    }),
-    InputsModule,// ToastrModule added,
-    NgxMaskModule.forRoot(),
+    NgxDaterangepickerMd.forRoot(), 
     SelectDropDownModule,
-    NgxTypeaheadModule,
+    InputsModule, 
     GridModule,
     DropDownListModule,
-    PopupModule,
-    NgbModule,
-    DateInputsModule,
-
+    PopupModule,  
     IntlModule,
+    DateInputsModule,
     PDFExportModule,
+    SalesRoutingModule
   ],
 
   declarations: [

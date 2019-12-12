@@ -50,23 +50,25 @@ export class UsernameValidator {
     private _companydetailService: CompanydetailService,
     private _locationService: LocationService,
     private _itemService: ItemService,
-    private _uomService: UomService,
 
+    private _uomService: UomService,
     private _brandService: BrandService,
     private _productgroupService: ProductgroupService,
     private _marketplaceService: MarketplaceService,
     private _customerService: CustomerService,
+
     private _customeritemService: CustomeritemService,
     private _vendorService: VendorService,
     private _vendoritemService: VendoritemService,
     private _poshipmentService: PoshipmentService,
-
     private _invoiceService: InvoiceService,
+
     private _contactService: ContactService,
     private _goodsinwardService: GoodsinwardService,
     private _goodsstorageService: GoodsstorageService,
     private _goodsDisputeService: GoodsDisputeService,
     private _salesShipmentService: SalesShipmentService,
+    
     private _BoeService: BoeService,
     private _goodsReceiptService: GoodsReceiptService,
   ) {

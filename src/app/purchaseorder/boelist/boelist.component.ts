@@ -159,8 +159,9 @@ export class BoelistComponent implements OnInit {
       filters: [{ field: 'PONumber', operator: 'contains', value: '' }]
     }
   };
-  public pageChange(event: PageChangeEvent): void {
-    this.skip = event.skip;
+  public pageChange({ skip, take }: PageChangeEvent): void {
+    this.skip = skip;
+    this.pageSize = take;
     this.loadItems();
   }
 

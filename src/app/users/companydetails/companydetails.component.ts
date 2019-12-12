@@ -174,6 +174,7 @@ export class CompanydetailsComponent implements OnInit {
       return;
     }
     if (buttonType === "Validate") {
+      this.obj.MarketplaceID = this.companyDetailsform.controls['MarketplaceID'].value;
       this.obj.MarketPlaceSellerID = this.companyDetailsform.controls['MarketPlaceSellerID'].value;
       this.obj.MarketPlaceAPIToken = this.companyDetailsform.controls['MarketPlaceAPIToken'].value;
       //

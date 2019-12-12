@@ -8,10 +8,10 @@
     <div class="pull-right hidden-xs">
       <ol class="breadcrumb" id="dynamicbreadcrumb">
         <li>
-           <span> Master</span>
+          <span> Master</span>
         </li>
         <li>
-           <span> Items</span>
+          <span> Items</span>
         </li>
         <li class="active">
           <i class="fa fa-list-alt" aria-hidden="true"></i>
@@ -37,7 +37,8 @@
             </select>
           </div>
           <div class="col-md-4 nopading_loct" *ngIf="(SearchBy!= 'ByStatus') ">
-            <input (keyup.enter)="Search()" [(ngModel)]="SearchKeyword" type="text" class="serchcurv  form-control btn-group">
+            <input (keyup.enter)="Search()" [(ngModel)]="SearchKeyword" type="text"
+              class="serchcurv  form-control btn-group">
           </div>
           <div class="col-md-3 nopading_loct" *ngIf="(SearchBy=='ByStatus')">
 
@@ -67,8 +68,8 @@
     </div>
   </div>
   <div class="panel-body">
-    <kendo-grid [data]="gridView" resizable="true" columnMenu="true" [pageSize]="pageSize" [skip]="skip" [pageable]="true"
-      (pageChange)="pageChange($event)" [sortable]="{
+    <kendo-grid [data]="gridView" resizable="true" columnMenu="true" [pageSize]="pageSize" [skip]="skip"
+      [pageable]="{pageSizes: [10, 25, 50, 100]}" (pageChange)="pageChange($event)" [sortable]="{
           allowUnsort: allowUnsort,
           mode:  'single'
           }" [sort]="sort" (sortChange)="sortChange($event)" [filterable]="true"
@@ -77,8 +78,10 @@
       <kendo-grid-column field="ImagePath" title="Image" [filterable]="false" width="80"
         [class]="{'text-center': true}">
         <ng-template kendoGridCellTemplate let-obj>
-          <img [src]="addpath(obj.ImagePath)" width="60" height="60" title="SKU Image"
-            class="img-responsive img-thumbnail " />
+          <!-- <img [src]="addpath(obj.ImagePath)" width="60" height="60" title="SKU Image"
+            class="img-responsive img-thumbnail " /> -->
+          <img [src]="obj.ImagePath" width="60" height="60" title="SKU Image" class="img-responsive img-thumbnail " />
+
         </ng-template>
       </kendo-grid-column>
       <kendo-grid-column field="CategoryName" title="Category Name">

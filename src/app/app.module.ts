@@ -45,22 +45,11 @@ import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.componen
 import { Dashboard1Component } from './dashboard1/dashboard1.component';
 
 // Import your Module
-import { AccountModule } from './account/account.module';
-import { UsersModule } from './users/users.module';
-import { CustomersModule } from './customers/customers.module';
-import { VendorsModule } from './vendors/vendors.module';
-import { EmailconfigurationModule } from './emailconfiguration/emailconfiguration.module';
-import { PremasterModule } from './premaster/premaster.module';
-import { MastersModule } from './masters/masters.module';
-import { PurchaseorderModule } from './purchaseorder/purchaseorder.module';
-import { SalesModule } from './sales/sales.module';
-import { GoodsModule } from './goods/goods.module';
-import { DownloadModule } from './download/download.module';
-import { HelpModule } from './help/help.module';
+import { AccountModule } from './account/account.module'; 
 import { MaintenanceComponent } from './maintenance/maintenance.component';
 import { SearchComponent } from './search/search.component';
-import { IndexComponent } from './index/index.component';
- 
+import { IndexComponent } from './index/index.component'; 
+
 
 @NgModule({
   imports: [
@@ -84,7 +73,7 @@ import { IndexComponent } from './index/index.component';
       timeOut: 5000,
       positionClass: 'toast-top-center',
       preventDuplicates: true,
-      closeButton:true,
+      closeButton: true,
     }),
     NgxMaskModule.forRoot(),
     SelectDropDownModule,
@@ -102,17 +91,6 @@ import { IndexComponent } from './index/index.component';
     ChartsModule,
     // user defined modules by rk 
     AccountModule,
-    UsersModule,
-    CustomersModule,
-    VendorsModule,
-    EmailconfigurationModule,
-    PremasterModule,
-    MastersModule,
-    PurchaseorderModule,
-    SalesModule,
-    GoodsModule,
-    DownloadModule,
-    // HelpModule, 
     AppRoutingModule,
 
   ],
@@ -121,7 +99,7 @@ import { IndexComponent } from './index/index.component';
     Dashboard1Component,
     PrivatelayoutComponent,
     MaintenanceComponent,
-    SearchComponent, 
+    SearchComponent,
     TermsofuseComponent,
     PrivacyPolicyComponent,
     IndexComponent,

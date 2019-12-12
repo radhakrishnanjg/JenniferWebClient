@@ -111,7 +111,7 @@ export class Dashboard1Component implements OnInit {
   }
   BindDropdown() {
     this.lstMenus = this._authenticationService.currentUserValue.lstUserPermission.filter(a => a.ParentId == 120);
-
+    this.MenuID = 122;
   }
 
   LastUpdatedDate: Date;

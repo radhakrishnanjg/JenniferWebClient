@@ -770,6 +770,7 @@ export class PoComponent implements OnInit {
   }
 
   BulkString: string;
+  
   public onClickValidate() {
     this.poOrder.BulkString = this.BulkString;
     const csvSeparator = '|';

@@ -39,10 +39,10 @@ export class GoodsReceiptService {
       .pipe(catchError(this.handleError));
   }
 
-  public getItems(POID: number,GRNType:string ,TrackingNumber:string): Observable<GoodsReceiptDetail[]> {
+  public getItems(POID: number, GRNType: string, TrackingNumber: string): Observable<GoodsReceiptDetail[]> {
     let currentUser = this.authenticationService.currentUserValue;
     let CompanyDetailID = currentUser.CompanyDetailID;
-    
+
     return this.httpClient.get<GoodsReceiptDetail[]>(environment.baseUrl + `GoodsReceipt/GetItemDetails?POID=` + POID +
       `&CompanyDetailID=` + CompanyDetailID +
       `&GRNType=` + GRNType +
@@ -74,7 +74,7 @@ export class GoodsReceiptService {
     let currentUser = this.authenticationService.currentUserValue;
     let CompanyDetailID = currentUser.CompanyDetailID;
     return this.httpClient.get<Boolean>(environment.baseUrl +
-      `GoodsReceipt/Exist?CompanyDetailID=` + CompanyDetailID + 
+      `GoodsReceipt/Exist?CompanyDetailID=` + CompanyDetailID +
       `&InvoiceNumber=` + encodeURIComponent(InvoiceNumber) + `&GRNID=` + GRNID)
       .pipe(map(users => {
         if (users)
@@ -93,7 +93,7 @@ export class GoodsReceiptService {
       .pipe(catchError(this.handleError));
   }
 
-  public Delete(GRNID: number): Observable<Result> { 
+  public Delete(GRNID: number): Observable<Result> {
     let currentUser = this.authenticationService.currentUserValue;
     this.objGoodsReceipt.GRNID = GRNID;
     this.objGoodsReceipt.CompanyDetailID = currentUser.CompanyDetailID;
@@ -105,13 +105,15 @@ export class GoodsReceiptService {
   public DownloadLabels(GRNNumber: string) {
     let currentUser = this.authenticationService.currentUserValue;
     let CompanyDetailID = currentUser.CompanyDetailID;
+    let LoginId = currentUser.UserId;
     return this.httpClient.get(environment.baseUrl + `GoodsReceipt/Download?CompanyDetailID=` + CompanyDetailID +
-      `&GRNNumber=` + GRNNumber,
+      `&GRNNumber=` + GRNNumber +
+      `&LoginId=` + LoginId,
       { responseType: 'blob' })
       .pipe(catchError(this.handleError));
   }
 
-  public updateImage(Filedata1: File,Filedata2: File,Filedata3: File,Filedata4: File, GRNNumber: string): Observable<boolean> {
+  public updateImage(Filedata1: File, Filedata2: File, Filedata3: File, Filedata4: File, GRNNumber: string): Observable<boolean> {
     let currentUser = this.authenticationService.currentUserValue;
     let frmData = new FormData();
     frmData.append("CompanyDetailID", currentUser.CompanyDetailID.toString());

@@ -34,7 +34,7 @@ export class CustomerComponent implements OnInit {
     private fb: FormBuilder,
     private _router: Router,
     private aroute: ActivatedRoute,
-    
+
     private usernameValidator: UsernameValidator,
     private _customerService: CustomerService,
     private utilityService: UtilityService,
@@ -294,8 +294,9 @@ export class CustomerComponent implements OnInit {
 
     this.customerform = this.fb.group({
       CustomerType: [0, [Validators.min(1)]],
-      CustomerName: ['', [Validators.required],
-        this.usernameValidator.existCustomerName(this.identity)],
+      CustomerName: ['', [Validators.required]
+        //,this.usernameValidator.existCustomerName(this.identity)
+      ],
       CustomerAliasName: ['', [Validators.required]],
       GSTNumber: ['', [Validators.required, Validators.pattern("^([a-zA-Z0-9]+)$")]],
 
