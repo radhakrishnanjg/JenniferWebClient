@@ -149,6 +149,48 @@ export class MasteruploadlistComponent implements OnInit {
     this.state = state;
     this.gridView = process(this.items, this.state);
   }
+
+  public onFilter(inputValue: string): void {
+    this.gridView = process(this.items.slice(this.skip, this.skip + this.pageSize), {
+      skip: this.skip,
+      take: this.skip + this.pageSize,
+      filter: {
+        logic: "or",
+        filters: [
+          {
+            field: 'FileType',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'FileName',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'UploadedByName',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'UploadedDate',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'FileUploadStatus',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'Remarks',
+            operator: 'contains',
+            value: inputValue
+          }, 
+        ],
+      }
+    });
+  }
   //#endregion Paging Sorting and Filtering End
 
 

@@ -34,6 +34,8 @@ import { GoodsReceiptService } from '../_services/service/goods-receipt.service'
 import { ValidatorFn, Validators } from '@angular/forms';
 
 import 'rxjs/add/operator/map';
+import { VoucherService } from '../_services/service/voucher.service';
+import { LedgerService } from '../_services/service/ledger.service';
 function isEmptyInputValue(value: any): boolean {
   // we don't check for string here so it also works with arrays
   return value == null || value.length === 0;
@@ -71,6 +73,8 @@ export class UsernameValidator {
     
     private _BoeService: BoeService,
     private _goodsReceiptService: GoodsReceiptService,
+    private _voucherService: VoucherService,
+    private _ledgerService: LedgerService,
   ) {
   }
 
@@ -468,6 +472,30 @@ export class UsernameValidator {
     };
   }
 
+  existVoucherText(identity: number): AsyncValidatorFn {
+    return (control: AbstractControl): Observable<{ [key: string]: any } | null> => {
+      return this._voucherService.Exist(identity, encodeURIComponent(control.value))
+        .pipe(
+          map(res => {
+            if (res) {
+              return { 'VoucherTextInUse': true };
+            }
+          })
+        );
+    };
+  }
 
+  existLedgerText(identity: number): AsyncValidatorFn {
+    return (control: AbstractControl): Observable<{ [key: string]: any } | null> => {
+      return this._ledgerService.Exist(identity, encodeURIComponent(control.value))
+        .pipe(
+          map(res => {
+            if (res) {
+              return { 'LedgerTextInUse': true };
+            }
+          })
+        );
+    };
+  } 
 
 }

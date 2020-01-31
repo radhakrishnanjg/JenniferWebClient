@@ -1,14 +1,14 @@
 //core npms  
-import { NgModule, NO_ERRORS_SCHEMA,   } from '@angular/core';
-import { ReactiveFormsModule, FormsModule } from '@angular/forms'; 
+import { NgModule, NO_ERRORS_SCHEMA, } from '@angular/core';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router'; 
- 
+import { RouterModule } from '@angular/router';
+
 //kendo
-import { GridModule } from '@progress/kendo-angular-grid'; 
+import { GridModule, PDFModule, ExcelModule } from '@progress/kendo-angular-grid';
 
 import { NgxMaskModule } from 'ngx-mask';
-import { DataTablesModule } from 'angular-datatables'; 
+import { DataTablesModule } from 'angular-datatables';
 import { PreventDoubleSubmitModule } from 'ngx-prevent-double-submission';
 import { EncrDecrService } from '../_services/service/encr-decr.service';
 import { CookieService } from 'ngx-cookie-service';
@@ -18,19 +18,23 @@ import { MarketplacelistComponent } from './marketplacelist/marketplacelist.comp
 import { MenulistComponent } from './menulist/menulist.component';
 import { CompanylistComponent } from './companylist/companylist.component';
 import { CompanyComponent } from './company/company.component';
+import { ReportmasterlistComponent } from './reportmasterlist/reportmasterlist.component';
+import { ReportmasterComponent } from './reportmaster/reportmaster.component';
 import { PremasterRoutingModule } from './premaster.routing.module';
 
 @NgModule({
   imports: [
-    CommonModule, 
-    FormsModule, 
-    RouterModule, 
-    ReactiveFormsModule, 
+    CommonModule,
+    FormsModule,
+    RouterModule,
+    ReactiveFormsModule,
     PreventDoubleSubmitModule.forRoot(),
-    FormsModule, 
+    FormsModule,
     NgxMaskModule,
-    DataTablesModule, 
-    GridModule, 
+    DataTablesModule,
+    GridModule,
+    PDFModule,
+    ExcelModule,
     PremasterRoutingModule
   ],
   declarations: [
@@ -38,12 +42,15 @@ import { PremasterRoutingModule } from './premaster.routing.module';
     MarketplacelistComponent,
     MenulistComponent,
     CompanylistComponent,
-    CompanyComponent,]
+    CompanyComponent,
+    ReportmasterlistComponent,
+    ReportmasterComponent
+  ]
   ,
   providers: [
-    
+
     CookieService,
-    
+
     EncrDecrService
   ],
   schemas: [

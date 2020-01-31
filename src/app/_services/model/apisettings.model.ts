@@ -9,6 +9,9 @@ export class Apisettings {
         public static PDFFiles_Ext: string[] = ["pdf", "PDF"];
         public static PDFFiles_Fileszie: number = 2; // mb
 
+        public static CommonFiles_Ext: string[] = ["JPEG", "PNG", "JPG","DOC","DOCX","PDF", "XLS", "XLSX","jpeg", "png", "jpg","doc","docx","pdf", "xls", "xlsx"];
+        public static CommonFiles_Fileszie: number = 3; // mb
+
         //Regular expression 
         public static Regex_Numeric: "/^([0-9]+)$/";
         public static Regex_AlphaNumeric: "/^([a-zA-Z0-9 ]+)$/";

@@ -30,7 +30,7 @@
         </span>
       </div>
       <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 text-right">
-        <button  type="button" class="btn btn-primary" routerLink="/Transferlist">Back</button>
+        <button type="button" class="btn btn-primary" routerLink="/Transferlist">Back</button>
       </div>
     </div>
   </div>
@@ -38,7 +38,7 @@
     <div class="row">
       <div class="col-xs-12 col-sm-10 col-md-10 col-lg-10">
         <div class="input-group col-sm-12" role="group" aria-label="Basic example">
-          <div class="col-md-3 basc">
+          <div class="col-md-3 col-xs-12 basc">
             <label class="control-label"> Transfer To <span class="mandantory">*</span> </label> <br />
             <select id="TransferTo" [(ngModel)]="TransferTo" class="form-control"
               (change)="onchangeTransferTo($event.target.value)">
@@ -48,7 +48,7 @@
               </option>
             </select>
           </div>
-          <div class="col-md-9 basc">
+          <div class="col-md-9 col-xs-12 basc">
             <label class="control-label"> Remarks <span class="mandantory">*</span></label> <br />
             <input type="text" [(ngModel)]="Remarks" class="form-control col-xs-12" />
           </div>
@@ -56,65 +56,66 @@
       </div>
     </div>
     <!-- datatable [dtOptions]="dtOptions"  -->
-    <table class="table table-bordered table-condensed" *ngIf="lst && lst.length"
-      style="width:100%">
-      <thead>
-        <tr>
-          <th class="text-center "><input type="checkbox" (change)="checkcontacts($event.currentTarget.checked)"></th>
-          <th class="text-center ">Transfer From</th>
-          <th class="text-center ">Removal Order ID</th>
-          <th class="text-center ">Tracking Id </th>
-          <th class="text-center ">Dispute Type</th>
-          <th class="text-center ">Qty </th>
-          <th class="text-center ">Selling Value </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let ms of lst; let numberpra = index">
-          <td class="text-center ">
-            <div *ngIf="(ms.IsActive ==true)">
-              <input type="checkbox" [id]="numberpra" checked="checked"
-                (change)="ContactIDFieldsChange($event,ms.RTVID)">
-            </div>
-            <div *ngIf="(ms.IsActive != true)">
-              <input type="checkbox" [id]="numberpra" (change)="ContactIDFieldsChange($event,ms.RTVID)">
-            </div>
-          </td>
-          <td>{{ ms.TransferFromName }}</td>
-          <td>{{ ms.RemovalOrderID }}</td>
-          <td>{{ ms.TrackingID }}</td>
-          <td>{{ ms.DisputeType }}</td>
-          <td>{{ ms.Qty }}</td>
+    <div class="table-responsive">
+      <table class="table table-bordered table-condensed" *ngIf="lst && lst.length" style="width:100%">
+        <thead>
+          <tr>
+            <th class="text-center "><input type="checkbox" (change)="checkcontacts($event.currentTarget.checked)"></th>
+            <th class="text-center ">Transfer From</th>
+            <th class="text-center ">Removal Order ID</th>
+            <th class="text-center ">Tracking Id </th>
+            <th class="text-center ">Dispute Type</th>
+            <th class="text-center ">Qty </th>
+            <th class="text-center ">Selling Value </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let ms of lst; let numberpra = index">
+            <td class="text-center ">
+              <div *ngIf="(ms.IsActive ==true)">
+                <input type="checkbox" [id]="numberpra" checked="checked"
+                  (change)="ContactIDFieldsChange($event,ms.RTVID)">
+              </div>
+              <div *ngIf="(ms.IsActive != true)">
+                <input type="checkbox" [id]="numberpra" (change)="ContactIDFieldsChange($event,ms.RTVID)">
+              </div>
+            </td>
+            <td>{{ ms.TransferFromName }}</td>
+            <td>{{ ms.RemovalOrderID }}</td>
+            <td>{{ ms.TrackingID }}</td>
+            <td>{{ ms.DisputeType }}</td>
+            <td>{{ ms.Qty }}</td>
 
-          <td>{{ ms.SellingValue }}</td>
-        </tr>
-      </tbody>
-    </table>
+            <td>{{ ms.SellingValue }}</td>
+          </tr>
+        </tbody>
+      </table>
 
-    <table class="table table-bordered table-condensed" *ngIf="lst==null || lst.length==0">
-      <thead>
-        <tr>
-          <th class="text-center ">Transfer From</th>
-          <th class="text-center ">Removal Order ID</th>
-          <th class="text-center ">Tracking Id </th>
-          <th class="text-center ">Dispute Type</th>
-          <th class="text-center ">Qty </th>
+      <table class="table table-bordered table-condensed" *ngIf="lst==null || lst.length==0">
+        <thead>
+          <tr>
+            <th class="text-center ">Transfer From</th>
+            <th class="text-center ">Removal Order ID</th>
+            <th class="text-center ">Tracking Id </th>
+            <th class="text-center ">Dispute Type</th>
+            <th class="text-center ">Qty </th>
 
-          <th class="text-center ">Selling Value </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td colspan="6">
-            No Records Found.!
-          </td>
-        </tr>
-      </tbody>
-    </table>
+            <th class="text-center ">Selling Value </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td colspan="6">
+              No Records Found.!
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
   <div class="panel-footer">
     <div class="pull-right btn-toolbar">
-      <button  type="button" class="btn btn-primary" routerLink="/Transferlist" title="Cancel">
+      <button type="button" class="btn btn-primary" routerLink="/Transferlist" title="Cancel">
         Cancel
       </button>
       <button class="btn btn-success" type="submit" prevent-double-submit (click)="SaveData()">

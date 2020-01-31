@@ -1,19 +1,19 @@
 //core npms  
-import { NgModule, NO_ERRORS_SCHEMA,   } from '@angular/core';
-import { ReactiveFormsModule, FormsModule } from '@angular/forms'; 
+import { NgModule, NO_ERRORS_SCHEMA, } from '@angular/core';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router'; 
+import { RouterModule } from '@angular/router';
 
 //kendo
-import { GridModule } from '@progress/kendo-angular-grid';   
- 
+import { GridModule, PDFModule, ExcelModule } from '@progress/kendo-angular-grid';
+
 import { PreventDoubleSubmitModule } from 'ngx-prevent-double-submission';
 import { MomentModule } from 'ngx-moment';
 import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 import { NgxMaskModule } from 'ngx-mask';
 import { SelectDropDownModule } from 'ngx-select-dropdown';
-import { EncrDecrService } from '../_services/service/encr-decr.service'; 
-import { CookieService } from 'ngx-cookie-service'; 
+import { EncrDecrService } from '../_services/service/encr-decr.service';
+import { CookieService } from 'ngx-cookie-service';
 import { DataTablesModule } from 'angular-datatables';
 
 import { LocationComponent } from './location/location.component';
@@ -24,25 +24,28 @@ import { ProductgrouplistComponent } from './productgrouplist/productgrouplist.c
 import { BrandlistComponent } from './brandlist/brandlist.component';
 import { CategorylistComponent } from './categorylist/categorylist.component';
 import { SubcategorylistComponent } from './subcategorylist/subcategorylist.component';
-import { DiscountlistComponent } from './discountlist/discountlist.component';
-import { MarketplacefeelistComponent } from './marketplacefeelist/marketplacefeelist.component';
 import { UomlistComponent } from './uomlist/uomlist.component';
 import { MasteruploadlistComponent } from './masteruploadlist/masteruploadlist.component';
 import { MasteruploadComponent } from './masterupload/masterupload.component';
+import { VoucherlistComponent } from './voucherlist/voucherlist.component';
+import { LedgerlistComponent } from './ledgerlist/ledgerlist.component';
+
 import { MastersRoutingModule } from './masters.routing.module';
 @NgModule({
   imports: [
-    CommonModule, 
-    FormsModule, 
-    RouterModule, 
-    ReactiveFormsModule, 
+    CommonModule,
+    FormsModule,
+    RouterModule,
+    ReactiveFormsModule,
     PreventDoubleSubmitModule.forRoot(),
     MomentModule,
-    NgxDaterangepickerMd.forRoot(), 
+    NgxDaterangepickerMd.forRoot(),
     NgxMaskModule.forRoot(),
     SelectDropDownModule,
-    FormsModule, 
-    GridModule,  
+    FormsModule,
+    GridModule,
+    PDFModule,
+    ExcelModule,
     DataTablesModule,
     MastersRoutingModule
   ],
@@ -57,15 +60,15 @@ import { MastersRoutingModule } from './masters.routing.module';
     CategorylistComponent,
     SubcategorylistComponent,
     ProductgrouplistComponent,
-    DiscountlistComponent,
-    MarketplacefeelistComponent,
     MasteruploadlistComponent,
     MasteruploadComponent, 
+    VoucherlistComponent,
+    LedgerlistComponent, 
   ],
-  providers: [ 
-    CookieService, 
+  providers: [
+    CookieService,
     EncrDecrService
-  ], 
+  ],
   schemas: [
     NO_ERRORS_SCHEMA,
   ]

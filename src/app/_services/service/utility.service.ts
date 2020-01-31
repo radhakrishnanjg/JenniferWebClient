@@ -6,7 +6,7 @@ import { BadRequest } from '../../common/bad-request';
 import { NotFoundError } from '../../common/not-found-error';
 import { AppError } from '../../common/app-error';
 
-import { Country, State } from '../../_services/model';
+import { Country, State, State1 } from '../../_services/model';
 import { environment } from '../../../environments/environment';
 @Injectable({ providedIn: 'root' })
 
@@ -28,6 +28,12 @@ export class UtilityService {
     }
   }
 
+  public getStates1(CountryId: number): Observable<State1[]> {
+    if (CountryId != 0) {
+      return this.httpClient.get<State1[]>(environment.baseUrl + `Utility/GetStates?CountryId=` + CountryId)
+        .pipe(catchError(this.handleError));
+    }
+  }
   private handleError(error: HttpErrorResponse) {
 
     if (error.status === 404)

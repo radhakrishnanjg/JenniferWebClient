@@ -104,11 +104,11 @@ export class SigninComponent implements OnInit {
     );
 
     // added remember functions
-    const cookieUsernameExists: boolean = this.cookieService.check('gauuid1');
-    const cookiePasswordExists: boolean = this.cookieService.check('gauuid2');
+    const cookieUsernameExists: boolean = this.cookieService.check('jennifergauuid1');
+    const cookiePasswordExists: boolean = this.cookieService.check('jennifergauuid2');
     if (cookieUsernameExists && cookiePasswordExists) {
-      const Username: string = this.cookieService.get('gauuid1');
-      const Password: string = this.cookieService.get('gauuid2');
+      const Username: string = this.cookieService.get('jennifergauuid1');
+      const Password: string = this.cookieService.get('jennifergauuid2');
       //
       this.authenticationService.login(Username, Password)
         .pipe(first())
@@ -200,8 +200,8 @@ export class SigninComponent implements OnInit {
             if (this.f.rememberme.value) {
               this.expiredDate = new Date();
               this.expiredDate.setDate(this.expiredDate.getDate() + 15);
-              this.cookieService.set('gauuid1', this.f.Email.value);
-              this.cookieService.set('gauuid2', this.f.password.value);
+              this.cookieService.set('jennifergauuid1', this.f.Email.value);
+              this.cookieService.set('jennifergauuid2', this.f.password.value);
             }
             this.objuser = datalogin;
             //

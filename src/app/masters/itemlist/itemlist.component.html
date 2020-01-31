@@ -24,9 +24,9 @@
 <div class="panel panel-default">
   <div class="panel-heading">
     <div class="row">
-      <div class="col-xs-12 col-sm-10 col-md-10 col-lg-10">
-        <div class="input-group col-sm-12" role="group" aria-label="Basic example">
-          <div class="col-md-3 nopading_loct">
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="input-group col-xs-12 col-sm-12" role="group" aria-label="Basic example">
+          <div class="col-md-3 col-sm-3 col-xs-12 nopading_loct">
             <select [(ngModel)]="SearchBy" type="select" class="form-control serchcurv  btn-group">
               <option value="" selected="select">Search By</option>
               <option value="ByItemName">Item Name</option>
@@ -36,11 +36,11 @@
               <option value="ByStatus">Status</option>
             </select>
           </div>
-          <div class="col-md-4 nopading_loct" *ngIf="(SearchBy!= 'ByStatus') ">
+          <div class="col-md-4 col-sm-3 nopading_loct" *ngIf="(SearchBy!= 'ByStatus') ">
             <input (keyup.enter)="Search()" [(ngModel)]="SearchKeyword" type="text"
               class="serchcurv  form-control btn-group">
           </div>
-          <div class="col-md-3 nopading_loct" *ngIf="(SearchBy=='ByStatus')">
+          <div class="col-md-3 col-sm-3 nopading_loct" *ngIf="(SearchBy=='ByStatus')">
 
             <select [(ngModel)]="Searchaction" type="select" class="serchcurv form-control btn-group">
 
@@ -49,7 +49,7 @@
             </select>
 
           </div>
-          <div class="col-md-2 nopading_loct">
+          <div class="col-md-3 col-sm-3 col-xs-6  nopading_loct">
             <button class="btn serchcurv btn-default btn-group" (click)="Search()" title="Search">
               <i class="fa fa-search " aria-hidden="true"></i>
             </button>
@@ -57,63 +57,84 @@
               <i class="fa fa-refresh" aria-hidden="true"></i>
             </button>
           </div>
-        </div>
-      </div>
-      <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 text-right">
-        <button class="btn btn-primary" (click)="AddNewLink()" title="Add New">
+          <div class="col-xs-6 col-sm-3 col-md-2 text-right nopadding">
+            <button type="button" class="btn btn-xs btn-sm btn-primary" (click)="AddNewLink()" title="Add New">
 
-          Add New
-        </button>
+              Add New
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
   <div class="panel-body">
-    <kendo-grid [data]="gridView" resizable="true" columnMenu="true" [pageSize]="pageSize" [skip]="skip"
-      [pageable]="{pageSizes: [10, 25, 50, 100]}" (pageChange)="pageChange($event)" [sortable]="{
+    <div class="table-responsive">
+      <table class="table">
+        <kendo-grid [data]="gridView" resizable="true" columnMenu="true" [pageSize]="pageSize" [skip]="skip"
+          [pageable]="{pageSizes: [10, 25, 50, 100, 250, 500]}" (pageChange)="pageChange($event)" [sortable]="{
           allowUnsort: allowUnsort,
           mode:  'single'
           }" [sort]="sort" (sortChange)="sortChange($event)" [filterable]="true"
-      (dataStateChange)="dataStateChange($event)" [filter]="state.filter">
+          (dataStateChange)="dataStateChange($event)" [filter]="state.filter">
+          <ng-template kendoGridToolbarTemplate>
+            <input placeholder="Search in all columns..." style="float:right;" kendoTextBox
+              (input)="onFilter($event.target.value)" />
+            <button kendoGridExcelCommand type="button" icon="file-excel"> </button>
+            <button kendoGridPDFCommand icon="file-pdf"> </button>
+            <kendo-grid-pdf fileName="ItemList.pdf" [repeatHeaders]="true"></kendo-grid-pdf>
+            <kendo-grid-excel fileName="ItemList.xlsx"></kendo-grid-excel>
+          </ng-template>
+          <kendo-grid-column field="ImagePath" title="Image" [filterable]="false" width="80"
+            [class]="{'text-center': true}">
+            <ng-template kendoGridCellTemplate let-obj>
+              <a class="pointer" href="{{ 'https://www.amazon.in/dp/' + obj.ItemCode}}" target="_blank">
+                <img [src]="obj.ImagePath" width="60" height="60" title="Click To View"
+                  class="img-responsive img-thumbnail " />
+              </a>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="CategoryName" title="Category Name">
+          </kendo-grid-column>
+          <kendo-grid-column field="BrandName" title="Brand">
+          </kendo-grid-column>
+          <kendo-grid-column field="ItemCode" title="ItemCode">
+          </kendo-grid-column>
+          <!-- <kendo-grid-column field="ItemCode" title="ItemCode">
+            <ng-template kendoGridCellTemplate let-dataItem>
+              <a class="pointer" title="Click To View"
+                href="{{ 'https://www.amazon.in/dp/' + dataItem.ItemCode}}"
+                target="_blank">
+                {{ dataItem.ItemCode  }}
+              </a>   
+            </ng-template>
+          </kendo-grid-column> -->
+          <kendo-grid-column field="ItemName" title="Item Name">
+          </kendo-grid-column>
+          <kendo-grid-column field="ItemColor" title="Color">
+          </kendo-grid-column>
+          <kendo-grid-column field="MRP" title="MRP" format="{0:##,#.##}">
+          </kendo-grid-column>
+          <kendo-grid-column field="TaxRate" title="Tax Rate">
+          </kendo-grid-column>
 
-      <kendo-grid-column field="ImagePath" title="Image" [filterable]="false" width="80"
-        [class]="{'text-center': true}">
-        <ng-template kendoGridCellTemplate let-obj>
-          <!-- <img [src]="addpath(obj.ImagePath)" width="60" height="60" title="SKU Image"
-            class="img-responsive img-thumbnail " /> -->
-          <img [src]="obj.ImagePath" width="60" height="60" title="SKU Image" class="img-responsive img-thumbnail " />
-
-        </ng-template>
-      </kendo-grid-column>
-      <kendo-grid-column field="CategoryName" title="Category Name">
-      </kendo-grid-column>
-      <kendo-grid-column field="BrandName" title="Brand">
-      </kendo-grid-column>
-      <kendo-grid-column field="ItemCode" title="ItemCode">
-      </kendo-grid-column>
-      <kendo-grid-column field="ItemName" title="Item Name">
-      </kendo-grid-column>
-      <kendo-grid-column field="ItemColor" title="Color">
-      </kendo-grid-column>
-      <kendo-grid-column field="MRP" title="MRP" format="{0:##,#.##}">
-      </kendo-grid-column>
-      <kendo-grid-column field="TaxRate" title="Tax Rate">
-      </kendo-grid-column>
-
-      <kendo-grid-column field="IsActive" title="IsActive" [class]="{'text-center': true}" filter="boolean" width="80">
-        <ng-template kendoGridCellTemplate let-dataItem>
-          <i [class]="dataItem.IsActive ? 'fa fa-check': 'fa fa-times'" aria-hidden="true"></i>
-        </ng-template>
-      </kendo-grid-column>
-      <kendo-grid-column field="ItemID" title="Action" [class]="{'text-center': true}" [filterable]="false"
-        [sortable]="false" width="70">
-        <ng-template kendoGridCellTemplate let-obj>
-          <i class="fa fa-edit bgblue pointer" title="Edit" [routerLink]="['/Item', obj.ItemID]"></i>
-          &nbsp;
-          <i class="fa fa-trash bgred pointer" title="Delete" (click)="confirmDeleteid(obj.ItemID,obj.ItemCode)"></i>
-        </ng-template>
-      </kendo-grid-column>
-    </kendo-grid>
-
+          <kendo-grid-column field="IsActive" title="IsActive" [class]="{'text-center': true}" filter="boolean"
+            width="80">
+            <ng-template kendoGridCellTemplate let-dataItem>
+              <i [class]="dataItem.IsActive ? 'fa fa-check': 'fa fa-times'" aria-hidden="true"></i>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column title="Action" [class]="{'text-center': true}" [filterable]="false" [sortable]="false"
+            width="70">
+            <ng-template kendoGridCellTemplate let-obj>
+              <i class="fa fa-edit bgblue pointer" title="Edit" [routerLink]="['/Item', obj.ItemID]"></i>
+              &nbsp;
+              <i class="fa fa-trash bgred pointer" title="Delete"
+                (click)="confirmDeleteid(obj.ItemID,obj.ItemCode)"></i>
+            </ng-template>
+          </kendo-grid-column>
+        </kendo-grid>
+      </table>
+    </div>
   </div>
   <div id="modaldeleteconfimation" class="modal fade" tabindex="-1" role="dialog"
     aria-labelledby="modaldeleteconfimation" aria-hidden="true">

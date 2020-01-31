@@ -24,7 +24,7 @@
 <div class="panel panel-default">
   <div class="panel-heading">
     <div class="row">
-      <div class="col-xs-6 col-md-3 ">
+      <div class="col-xs-6 col-md-3">
         <span class="groupspanheader">
           Goods Receipt View
         </span>
@@ -34,10 +34,9 @@
 
         </div>
       </div>
-      <div class="col-xs-4 col-sm-4 col-md-4 ">
+      <div class="col-xs-4 col-sm-4 col-md-4">
         <div class="pull-right">
-          <button type="button" class="btn btn-primary" routerLink="/Goodsreceiptlist" title="Back">
-
+          <button type="button" class="btn btn-primary" routerLink="/Goodsreceiptlist" title="Back"> 
             Back
           </button>
         </div>
@@ -169,8 +168,10 @@
         <tbody>
           <tr *ngFor="let item of obj?.ItemDetails; let i = index;">
             <td>
-              <img [src]="item.ImagePath" width="60" height="60" title="SKU Image"
-                class="img-responsive img-thumbnail " />
+              <a class="pointer" href="{{ 'https://www.amazon.in/dp/' + item.ItemCode}}" target="_blank">
+                <img [src]="item.ImagePath" width="60" height="60" title="Click To View"
+                  class="img-responsive img-thumbnail " />
+              </a> 
             </td>
             <td>{{item.VendorItemCode}}</td>
             <td>{{item.ItemDescription}}</td>

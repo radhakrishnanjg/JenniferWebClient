@@ -24,9 +24,9 @@
 <div class="panel panel-default">
   <div class="panel-heading">
     <div class="row">
-      <div class="col-xs-12 col-sm-10 col-md-10 col-lg-10">
-        <div class="input-group" role="group" aria-label="Basic example">
-          <div class="col-md-3 nopading_loct">
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="input-group col-xs-12 col-sm-12" role="group" aria-label="Basic example">
+          <div class="col-md-3 col-sm-3 col-xs-12 nopading_loct nopading_loct">
             <select [(ngModel)]="ApprovalStatus" class="serchcurv form-control btn-group">
               <option value="" selected="select">Approval</option>
               <option *ngFor="let c1 of lstgstapproval" value={{c1.DropdownValue}}>
@@ -35,7 +35,7 @@
             </select>
           </div>
 
-          <div class="col-md-3 nopading_loct">
+          <div class="col-md-2 col-sm-2 nopading_loct">
             <select [(ngModel)]="FileType" class="serchcurv form-control btn-group">
               <option value="" selected="select">File Type</option>
               <option *ngFor="let c1 of lstgstupload" value={{c1.DropdownValue}}>
@@ -44,7 +44,7 @@
             </select>
           </div>
 
-          <div class="col-md-4 nopading_loct">
+          <div class="col-md-3 col-sm-3 nopading_loct">
             <input [(ngModel)]="FileName" type="text" class="serchcurv form-control btn-group" placeholder="File Name">
           </div>
 
@@ -55,7 +55,7 @@
               [ranges]="Searchranges" [showCancel]="true" (ngModelChange)="onChange($event)" />
           </div> -->
 
-          <div class="col-md-2 nopading_loct">
+          <div class="col-md-2 col-sm-2 col-xs-6 nopading_loct">
             <button type="button" class="serchcurv btn btn-default btn-group" (click)="Search()" title="Search">
               <i class="fa fa-search " aria-hidden="true"></i>
             </button>
@@ -63,52 +63,64 @@
               <i class="fa fa-refresh" aria-hidden="true"></i>
             </button>
           </div>
-        </div>
-      </div>
-      <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 text-right">
-        <div class="nopading_loct">
-          <button type="button" class="btn btn-primary" routerLink="/Gst/Create">New Upload</button>
+          <div class="col-xs-6 col-sm-2 col-md-2 col-lg-2 text-right nopadding">
+            <div class="nopading_loct">
+              <button type="button" class="btn btn-xs btn-sm btn-primary" routerLink="/Gst/Create">New Upload</button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
   <div class="panel-body">
-    <kendo-grid [data]="gridView" resizable="true" columnMenu="true" [pageSize]="pageSize" [skip]="skip"
-      [pageable]="{pageSizes: [10, 25, 50, 100]}" (pageChange)="pageChange($event)" [sortable]="{
+    <div class="table-responsive">
+      <table class="table">
+        <kendo-grid [data]="gridView" resizable="true" columnMenu="true" [pageSize]="pageSize" [skip]="skip"
+          [pageable]="{pageSizes: [10, 25, 50, 100, 250, 500]}" (pageChange)="pageChange($event)" [sortable]="{
           allowUnsort: allowUnsort,
           mode:  'single'
           }" [sort]="sort" (sortChange)="sortChange($event)" [filterable]="true"
-      (dataStateChange)="dataStateChange($event)" [filter]="state.filter">
+          (dataStateChange)="dataStateChange($event)" [filter]="state.filter">
 
-      <kendo-grid-column field="FileType" title="File Type">
-      </kendo-grid-column>
-      <kendo-grid-column field="Year" title="Year">
-      </kendo-grid-column>
-      <kendo-grid-column field="MonthName" title="Month">
-      </kendo-grid-column>
-      <kendo-grid-column field="FileName" title="File Name">
-      </kendo-grid-column>
-      <kendo-grid-column field="ApprovalStatus" title="Status">
-      </kendo-grid-column>
-      <kendo-grid-column field="GSTStatus" title="GST Status">
-      </kendo-grid-column>
-      <kendo-grid-column field="GSTRemarks" title="GST Remarks ">
-      </kendo-grid-column>
-      <kendo-grid-column field="FileID" title="Action" [class]="{'text-center': true}" [filterable]="false"
-        [sortable]="false" width="70">
-        <ng-template kendoGridCellTemplate let-obj>
-          <i class="fa fa-edit bgblue pointer" title="Approval" title="Edit"
-            [routerLink]="['/Gstapproval', obj.FileID]"></i>
-          &nbsp;
-          <i (click)="downloadActualFile(obj.FilePath,obj.FileName )" class="fa fa-download bgblue pointer"
-            title="Download"></i>
-          &nbsp;
-          <i (click)="confirmDeleteid(obj.FileID,obj.Year +' ' + obj.MonthName )" class="fa fa-trash bgred pointer"
-            title="Delete"></i>
-        </ng-template>
-      </kendo-grid-column>
-    </kendo-grid>
+          <ng-template kendoGridToolbarTemplate>
+            <input placeholder="Search in all columns..." style="float:right;" kendoTextBox
+              (input)="onFilter($event.target.value)" />
+            <button kendoGridExcelCommand type="button" icon="file-excel"> </button>
+            <button kendoGridPDFCommand icon="file-pdf"> </button>
+            <kendo-grid-pdf fileName="GstList.pdf" [repeatHeaders]="true"></kendo-grid-pdf>
+            <kendo-grid-excel fileName="GstList.xlsx"></kendo-grid-excel>
+          </ng-template>
 
+          <kendo-grid-column field="FileType" title="File Type">
+          </kendo-grid-column>
+          <kendo-grid-column field="Year" title="Year">
+          </kendo-grid-column>
+          <kendo-grid-column field="MonthName" title="Month">
+          </kendo-grid-column>
+          <kendo-grid-column field="FileName" title="File Name">
+          </kendo-grid-column>
+          <kendo-grid-column field="ApprovalStatus" title="Status">
+          </kendo-grid-column>
+          <kendo-grid-column field="GSTStatus" title="GST Status">
+          </kendo-grid-column>
+          <kendo-grid-column field="GSTRemarks" title="GST Remarks ">
+          </kendo-grid-column>
+          <kendo-grid-column title="Action" [class]="{'text-center': true}" [filterable]="false" [sortable]="false"
+            width="70">
+            <ng-template kendoGridCellTemplate let-obj>
+              <i class="fa fa-edit bgblue pointer" title="Approval" title="Edit"
+                [routerLink]="['/Gstapproval', obj.FileID]"></i>
+              &nbsp;
+              <i (click)="downloadActualFile(obj.FilePath,obj.FileName )" class="fa fa-download bgblue pointer"
+                title="Download"></i>
+              &nbsp;
+              <i (click)="confirmDeleteid(obj.FileID,obj.Year +' ' + obj.MonthName )" class="fa fa-trash bgred pointer"
+                title="Delete"></i>
+            </ng-template>
+          </kendo-grid-column>
+        </kendo-grid>
+      </table>
+    </div>
   </div>
   <div id="modaldeleteconfimation" class="modal fade" tabindex="-1" role="dialog"
     aria-labelledby="modaldeleteconfimation" aria-hidden="true">

@@ -1,3 +1,5 @@
+<!-- Insert -->
+
 <div class="row">
   <div class="col-sm-6 col-lg-6">
     <h3>
@@ -8,47 +10,35 @@
     <div class="pull-right hidden-xs">
       <ol class="breadcrumb" id="dynamicbreadcrumb">
         <li>
-           <span> Master</span>
+          <span> Master</span>
         </li>
         <li>
-           <span> Items </span>
+          <span> Items </span>
         </li>
         <li class="active">
-          
+
           Save
         </li>
       </ol>
     </div>
   </div>
 </div>
-<form autocomplete="off" [formGroup]="itemform" (ngSubmit)="SaveData()" class="form-group">
+<form autocomplete="off" [formGroup]="itemform" (ngSubmit)="SaveData()" class="form-group" *ngIf="action">
   <div class="panel panel-default">
     <div class="panel-heading">
       <div class="row">
-        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+        <div class="col-md-3 col-sm-3 col-xs-4">
           <span class="groupspanheader">
             {{panelTitle}}
           </span>
         </div>
-        <div class="col-sm-6">
+        <div class="col-md-4 col-sm-4 col-xs-6">
           <div class="pull-left">
-            <div class="form-group" *ngIf="!action">
-              <div class="col-sm-12 inputlevelswtch">
-                <label class="col-sm-6" for=" IsActive">IsActive </label>
-                <div class="pull-right">
-                  <label class="switch">
-                    <input type="checkbox" formControlName="IsActive" checked>
-                    <span class="slider round"></span>
-                  </label>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
-        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 ">
+        <div class="col-md-5 col-sm-5 col-xs-2 ">
           <div class="pull-right">
-            <button  type="button" class="btn btn-primary" routerLink="/Itemlist" title="Back">
-
+            <button type="button" class="btn btn-primary" routerLink="/Itemlist" title="Back">
               Back
             </button>
           </div>
@@ -63,7 +53,7 @@
           <div class="form-group" [ngClass]="{'has-error': formErrors.ItemName}">
             <label class="control-label" for="ItemName"> Name<span class="mandantory">*</span>
             </label>
-            <div >
+            <div>
               <input id="ItemName" type="text" class="form-control" formControlName="ItemName"
                 (blur)="logValidationErrors()" maxlength="250">
               <div class="help-block-rk">
@@ -77,7 +67,7 @@
         <div class="col-md-3 col-xs-12">
           <div class="form-group" [ngClass]="{'has-error': formErrors.ItemCode}">
             <label class="control-label" for="ItemCode"> Code <span class="mandantory">*</span></label>
-            <div >
+            <div>
               <input id="ItemCode" type="text" class="form-control" formControlName="ItemCode"
                 (blur)="logValidationErrors()" maxlength="50">
               <div class="help-block-rk">
@@ -91,7 +81,7 @@
         <div class="col-md-3 col-xs-12">
           <div class="form-group" [ngClass]="{'has-error': formErrors.BrandID}">
             <label class="control-label" for="BrandID">Brand <span class="mandantory">*</span></label>
-            <div >
+            <div>
               <select id="BrandID" class="form-control" formControlName="BrandID" (blur)="logValidationErrors()">
                 <option value="0" selected="selected">Select</option>
                 <option *ngFor="let c1 of lstBrand" value={{c1.BrandID}}>
@@ -112,7 +102,7 @@
           <div class="form-group" [ngClass]="{'has-error': formErrors.ProductGroupID}">
             <label class="control-label" for="ProductGroupID">Product Group <span class="mandantory">*</span>
             </label>
-            <div >
+            <div>
               <select id="ProductGroupID" class="form-control" formControlName="ProductGroupID"
                 (blur)="logValidationErrors()" (change)="onchangeProductGroupID($event.target.value)">
                 <option value="0" selected="selected">Select</option>
@@ -131,7 +121,7 @@
         <div class="col-md-3 col-xs-12">
           <div class="form-group" [ngClass]="{'has-error': formErrors.CategoryID}">
             <label class="control-label" for="CategoryID">Category <span class="mandantory">*</span></label>
-            <div >
+            <div>
               <select formControlName="CategoryID" id='CategoryID' type="select" class="form-control"
                 (blur)="logValidationErrors()" (change)="onchangeCategoryID($event.target.value)">
 
@@ -170,14 +160,14 @@
         <div class="col-md-3 col-xs-12">
           <div class="form-group" [ngClass]="{'has-error': formErrors.UOMID}">
             <label class="control-label" for="UOMID">UOM <span class="mandantory">*</span></label>
-            <div >
+            <div>
               <select id="UOMID" class="form-control" formControlName="UOMID" (blur)="logValidationErrors()"
                 (change)="onchangeUOMID($event.target.value)">
                 <option value="0" selected="selected">Select</option>
                 <option *ngFor="let c1 of lstUOM" value={{c1.UOMID}}>
                   {{c1.UOM}}
                 </option>
-              </select> 
+              </select>
               <div class="help-block-rk">
                 <span class="help-block" *ngIf="formErrors.UOMID">
                   {{formErrors.UOMID}}
@@ -192,7 +182,7 @@
           <div class="form-group" [ngClass]="{'has-error': formErrors.ItemColor}">
             <label class="control-label" for="ItemColor"> Color
             </label>
-            <div >
+            <div>
               <input id="ItemColor" type="text" class="form-control" formControlName="ItemColor"
                 (blur)="logValidationErrors()" maxlength="20">
               <div class="help-block-rk">
@@ -207,7 +197,7 @@
           <div class="form-group" [ngClass]="{'has-error': formErrors.ItemModel_Style}">
             <label class="control-label" for="ItemModel_Style"> Model/Style
             </label>
-            <div >
+            <div>
               <input id="ItemModel_Style" type="text" class="form-control" formControlName="ItemModel_Style"
                 (blur)="logValidationErrors()" maxlength="20">
               <div class="help-block-rk">
@@ -234,40 +224,14 @@
           </div>
         </div>
       </div>
-    </div>
-  </div>
-  <div class="panel panel-default">
-    <div class="panel-body">
       <span class="groupspanheader">General Information</span>
       <div class="row">
         <div class="col-md-2 col-xs-12">
-          <label class="control-label custom-control-label chkbx" for="IsTaxExempted"> Is Tax Exempted</label>
-          <div >
-            <input type="checkbox" formControlName="IsTaxExempted" value="" id="IsTaxExempted"
-              (change)="onchangeIsTaxExempted($event)">
-          </div>
-        </div>
-        <div class="col-md-2 col-xs-12">
-          <div class="form-group" [ngClass]="{'has-error': formErrors.TaxRate}">
-            <label class="control-label" for="TaxRate">Tax Rate <span class="mandantory">*</span></label>
-            <div >
-              <input id="TaxRate" type="text" class="form-control" formControlName="TaxRate"
-                (blur)="logValidationErrors()" maxlength="5">
-
-              <div class="help-block-rk">
-                <span class="help-block" *ngIf="formErrors.TaxRate">
-                  {{formErrors.TaxRate}}
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-2 col-xs-12">
           <div class="form-group" [ngClass]="{'has-error': formErrors.Margin}">
             <label class=" control-label" for="Margin">Margin </label>
-            <div >
+            <div>
               <input id="Margin" type="text" class="form-control" formControlName="Margin"
-                (blur)="logValidationErrors()" maxlength="5"> 
+                (blur)="logValidationErrors()" maxlength="5">
               <div class="help-block-rk">
                 <span class="help-block" *ngIf="formErrors.Margin">
                   {{formErrors.Margin}}
@@ -280,8 +244,8 @@
           <div class="form-group" [ngClass]="{'has-error': formErrors.MRP}">
             <label class=" control-label" for="MRP">MRP <span class="mandantory">*</span></label>
             <div class=" ">
-              <input id="MRP" type="text" class="form-control" formControlName="MRP" 
-              (blur)="logValidationErrors()" maxlength="15">
+              <input id="MRP" type="text" class="form-control" formControlName="MRP" (blur)="logValidationErrors()"
+                maxlength="15">
               <div class="help-block-rk">
                 <span class="help-block" *ngIf="formErrors.MRP">
                   {{formErrors.MRP}}
@@ -290,28 +254,11 @@
             </div>
           </div>
         </div>
-
-        <div class="col-md-2 col-xs-12">
-          <div class="form-group" [ngClass]="{'has-error': formErrors.HSNCode}">
-            <label class="control-label" for="HSNCode">HSN Code
-              <span class="mandantory">*</span></label>
-            <div >
-              <input id="HSNCode" type="text" class="form-control" formControlName="HSNCode"  
-                (blur)="logValidationErrors()" mask="0000000000" maxlength="10">
-              <div class="help-block-rk">
-                <span class="help-block" *ngIf="formErrors.HSNCode">
-                  {{formErrors.HSNCode}}
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-
         <div class="col-md-2 col-xs-12">
           <div class="form-group" [ngClass]="{'has-error': formErrors.EAN_UPCCode}">
             <label class="control-label" for="EAN_UPCCode">EAN/UPC Code
             </label>
-            <div >
+            <div>
               <input id="EAN_UPCCode" type="text" class="form-control" formControlName="EAN_UPCCode"
                 (blur)="logValidationErrors()" maxlength="50">
               <div class="help-block-rk">
@@ -324,14 +271,119 @@
         </div>
       </div>
     </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <span class="groupspanheader">Tax Information</span>
+      <div class="row">
+        <div class="col-md-2 col-xs-12">
+          <label class="control-label custom-control-label chkbx" for="IsTaxExempted"> Is Tax Exempted</label>
+          <div>
+            <input type="checkbox" formControlName="IsTaxExempted" value="" id="IsTaxExempted"
+              (change)="onchangeIsTaxExempted($event)">
+          </div>
+        </div>
+        <div class="col-md-2 col-xs-12">
+          <div class="form-group" [ngClass]="{'has-error': formErrors.TaxRate}">
+            <label class="control-label" for="TaxRate">Tax Rate <span class="mandantory">*</span></label>
+            <div>
+              <input id="TaxRate" type="text" class="form-control" formControlName="TaxRate"
+                (blur)="logValidationErrors()" maxlength="5">
+
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrors.TaxRate">
+                  {{formErrors.TaxRate}}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-2 col-xs-12">
+          <div class="form-group" [ngClass]="{'has-error': formErrors.TaxStartDate}">
+            <label class="control-label" for="TaxStartDate">Start Date <span class="mandantory">*</span></label>
+            <div> 
+              <div class='input-group date'> 
+                <input type="text" ngxDaterangepickerMd [minDate]="MinDate" 
+                  [singleDatePicker]="true" class="form-control" id="TaxStartDate" [locale]="{format: 'MM-DD-YYYY'}"
+                    maxlength="16" [autoApply]="true" (change)="logValidationErrors()"
+                  formControlName="TaxStartDate" /> 
+                <label class="fa fa-calendar"></label>
+              </div>
+              <div class="help-block-rk">
+              </div><span class="help-block" *ngIf="formErrors.TaxStartDate">
+                {{formErrors.TaxStartDate}}
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-2 col-xs-12">
+          <div class="form-group">
+            <label class="control-label" for="TaxEndDate">End Date <span class="mandantory">*</span></label>
+            <div>
+              {{endDate}}
+              <div class="help-block-rk">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <span class="groupspanheader">HSN Information</span>
+      <div class="row">
+        <div class="col-md-2 col-xs-12">
+          <div class="form-group" [ngClass]="{'has-error': formErrors.HSNCode}">
+            <label class="control-label" for="HSNCode">HSN Code
+              <span class="mandantory">*</span></label>
+            <div>
+              <input id="HSNCode" type="text" class="form-control" formControlName="HSNCode"
+                (blur)="logValidationErrors()" mask="0000000000" maxlength="10">
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrors.HSNCode">
+                  {{formErrors.HSNCode}}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-2 col-xs-12">
+          <div class="form-group" [ngClass]="{'has-error': formErrors.HSNStartDate}">
+            <label class="control-label" for="HSNStartDate">Start Date <span class="mandantory">*</span></label>
+            <div> 
+              <div class='input-group date'> 
+                <input type="text" ngxDaterangepickerMd [minDate]="MinDate" 
+                  [singleDatePicker]="true" class="form-control" id="HSNStartDate" [locale]="{format: 'MM-DD-YYYY'}"
+                    maxlength="16" [autoApply]="true" (change)="logValidationErrors()"
+                  formControlName="HSNStartDate" /> 
+                <label class="fa fa-calendar"></label>
+              </div>
+              <div class="help-block-rk">
+              </div><span class="help-block" *ngIf="formErrors.HSNStartDate">
+                {{formErrors.HSNStartDate}}
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-2 col-xs-12">
+          <div class="form-group">
+            <label class="control-label" for="TaxEndDate">End Date <span class="mandantory">*</span></label>
+            <div>
+              {{endDate}}
+              <div class="help-block-rk">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="panel-footer">
       <div class="pull-right btn-toolbar">
-        <button  type="button" class="btn btn-primary" routerLink="/Itemlist" title="Cancel">
-         
+        <button type="button" class="btn btn-primary" routerLink="/Itemlist" title="Cancel">
           Cancel
         </button>
         <button class="btn btn-success" type="submit" prevent-double-submit [disabled]="itemform.invalid">
-          
           Save
         </button>
       </div>
@@ -377,3 +429,491 @@
     <div class="clearfix"></div>
   </div>
 </form> -->
+
+
+
+
+<!-- Update -->
+
+
+<form autocomplete="off" [formGroup]="itemformupdate" (ngSubmit)="SaveDataItem()" class="form-group" *ngIf="!action">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <div class="row">
+        <div class="col-md-3 col-sm-3 col-xs-4">
+          <span class="groupspanheader">
+            {{panelTitle}}
+          </span>
+        </div>
+        <div class="col-md-4 col-sm-4 col-xs-6">
+          <div class="pull-left">
+            <div class="form-group">
+              <div class="col-sm-12 inputlevelswtch">
+                <label class="col-sm-4 col-xs-5 nopading_loct" for=" IsActive">IsActive </label>
+                <div class="pull-right">
+                  <label class="switch">
+                    <input type="checkbox" formControlName="IsActive" checked>
+                    <span class="slider round"></span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-5 col-sm-5 col-xs-2 ">
+          <div class="pull-right">
+            <button type="button" class="btn btn-primary" routerLink="/Itemlist" title="Back">
+              Back
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel-body">
+      <span class="groupspanheader">Item Information</span>
+      <div class="row">
+        <div class="col-md-6 col-xs-12">
+          <div class="form-group" [ngClass]="{'has-error': formErrorsItem.ItemName}">
+            <label class="control-label" for="ItemName"> Name<span class="mandantory">*</span>
+            </label>
+            <div>
+              <input id="ItemName" type="text" class="form-control" formControlName="ItemName"
+                (blur)="logValidationErrorsItem()" maxlength="250">
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrorsItem.ItemName">
+                  {{formErrorsItem.ItemName}}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 col-xs-12">
+          <div class="form-group" [ngClass]="{'has-error': formErrorsItem.ItemCode}">
+            <label class="control-label" for="ItemCode"> Code <span class="mandantory">*</span></label>
+            <div>
+              <input id="ItemCode" type="text" class="form-control" formControlName="ItemCode"
+                (blur)="logValidationErrorsItem()" maxlength="50">
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrorsItem.ItemCode">
+                  {{formErrorsItem.ItemCode}}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 col-xs-12">
+          <div class="form-group" [ngClass]="{'has-error': formErrorsItem.BrandID}">
+            <label class="control-label" for="BrandID">Brand <span class="mandantory">*</span></label>
+            <div>
+              <select id="BrandID" class="form-control" formControlName="BrandID" (blur)="logValidationErrorsItem()">
+                <option value="0" selected="selected">Select</option>
+                <option *ngFor="let c1 of lstBrand" value={{c1.BrandID}}>
+                  {{c1.BrandName}}
+                </option>
+              </select>
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrorsItem.BrandID">
+                  {{formErrorsItem.BrandID}}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-3 col-xs-12">
+          <div class="form-group" [ngClass]="{'has-error': formErrorsItem.ProductGroupID}">
+            <label class="control-label" for="ProductGroupID">Product Group <span class="mandantory">*</span>
+            </label>
+            <div>
+              <select id="ProductGroupID" class="form-control" formControlName="ProductGroupID"
+                (blur)="logValidationErrorsItem()" (change)="onchangeProductGroupID($event.target.value)">
+                <option value="0" selected="selected">Select</option>
+                <option *ngFor="let c1 of lstProductGroup" value={{c1.ProductGroupID}}>
+                  {{c1.ProductGroupName}}
+                </option>
+              </select>
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrorsItem.ProductGroupID">
+                  {{formErrorsItem.ProductGroupID}}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 col-xs-12">
+          <div class="form-group" [ngClass]="{'has-error': formErrorsItem.CategoryID}">
+            <label class="control-label" for="CategoryID">Category <span class="mandantory">*</span></label>
+            <div>
+              <select formControlName="CategoryID" id='CategoryID' type="select" class="form-control"
+                (blur)="logValidationErrorsItem()" (change)="onchangeCategoryID($event.target.value)">
+
+                <option value="0" selected="selected">Select</option>
+                <option *ngFor="let c1 of lstCategory" value={{c1.CategoryID}}>
+                  {{c1.CategoryName}}
+                </option>
+              </select>
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrorsItem.CategoryID">
+                  {{formErrorsItem.CategoryID}}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 col-xs-12">
+          <div class="form-group" [ngClass]="{'has-error': formErrorsItem.SubCategoryID}">
+            <label class=" control-label " for="SubCategoryID">Sub Category <span class="mandantory">*</span></label>
+            <div class=" ">
+              <select formControlName="SubCategoryID" id='SubCategoryID' type="select" class="form-control"
+                (blur)="logValidationErrorsItem()">
+                <option value="0" selected="selected">Select</option>
+                <option *ngFor="let c1 of lstSubCategory" value={{c1.SubCategoryID}}>
+                  {{c1.SubCategoryName}}
+                </option>
+              </select>
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrorsItem.SubCategoryID">
+                  {{formErrorsItem.SubCategoryID}}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 col-xs-12">
+          <div class="form-group" [ngClass]="{'has-error': formErrorsItem.UOMID}">
+            <label class="control-label" for="UOMID">UOM <span class="mandantory">*</span></label>
+            <div>
+              <select id="UOMID" class="form-control" formControlName="UOMID" (blur)="logValidationErrorsItem()"
+                (change)="onchangeUOMID($event.target.value)">
+                <option value="0" selected="selected">Select</option>
+                <option *ngFor="let c1 of lstUOM" value={{c1.UOMID}}>
+                  {{c1.UOM}}
+                </option>
+              </select>
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrorsItem.UOMID">
+                  {{formErrorsItem.UOMID}}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-3 col-xs-12">
+          <div class="form-group" [ngClass]="{'has-error': formErrorsItem.ItemColor}">
+            <label class="control-label" for="ItemColor"> Color
+            </label>
+            <div>
+              <input id="ItemColor" type="text" class="form-control" formControlName="ItemColor"
+                (blur)="logValidationErrorsItem()" maxlength="20">
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrorsItem.ItemColor">
+                  {{formErrorsItem.ItemColor}}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 col-xs-12">
+          <div class="form-group" [ngClass]="{'has-error': formErrorsItem.ItemModel_Style}">
+            <label class="control-label" for="ItemModel_Style"> Model/Style
+            </label>
+            <div>
+              <input id="ItemModel_Style" type="text" class="form-control" formControlName="ItemModel_Style"
+                (blur)="logValidationErrorsItem()" maxlength="20">
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrorsItem.ItemModel_Style">
+                  {{formErrorsItem.ItemModel_Style}}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 col-xs-12">
+          <div class="form-group" [ngClass]="{'has-error': formErrorsItem.ItemSize_Storage}">
+            <label class=" control-label" for="ItemSize_Storage"> Item Size/Storage
+            </label>
+            <div class=" ">
+              <input id="ItemSize_Storage" type="text" class="form-control" formControlName="ItemSize_Storage"
+                (blur)="logValidationErrorsItem()" maxlength="20">
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrorsItem.ItemSize_Storage">
+                  {{formErrorsItem.ItemSize_Storage}}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <span class="groupspanheader">General Information</span>
+      <div class="row">
+        <div class="col-md-2 col-xs-12">
+          <div class="form-group" [ngClass]="{'has-error': formErrorsItem.Margin}">
+            <label class=" control-label" for="Margin">Margin </label>
+            <div>
+              <input id="Margin" type="text" class="form-control" formControlName="Margin"
+                (blur)="logValidationErrorsItem()" maxlength="5">
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrorsItem.Margin">
+                  {{formErrorsItem.Margin}}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-2 col-xs-12">
+          <div class="form-group" [ngClass]="{'has-error': formErrorsItem.MRP}">
+            <label class=" control-label" for="MRP">MRP <span class="mandantory">*</span></label>
+            <div class=" ">
+              <input id="MRP" type="text" class="form-control" formControlName="MRP" (blur)="logValidationErrorsItem()"
+                maxlength="15">
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrorsItem.MRP">
+                  {{formErrorsItem.MRP}}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-2 col-xs-12">
+          <div class="form-group" [ngClass]="{'has-error': formErrorsItem.EAN_UPCCode}">
+            <label class="control-label" for="EAN_UPCCode">EAN/UPC Code
+            </label>
+            <div>
+              <input id="EAN_UPCCode" type="text" class="form-control" formControlName="EAN_UPCCode"
+                (blur)="logValidationErrorsItem()" maxlength="50">
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrorsItem.EAN_UPCCode">
+                  {{formErrorsItem.EAN_UPCCode}}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="panel-footer">
+      <div class="pull-right btn-toolbar">
+        <button class="btn btn-success" type="submit" prevent-double-submit [disabled]="itemformupdate.invalid">
+          Save
+        </button>
+      </div>
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</form>
+<form autocomplete="off" [formGroup]="taxform" (ngSubmit)="SaveDataTax()" class="form-group" *ngIf="!action">
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <span class="groupspanheader">Tax Information</span>
+      <div class="row">
+        <div class="col-md-2 col-xs-12">
+          <label class="control-label custom-control-label chkbx" for="IsTaxExempted"> Is Tax Exempted</label>
+          <div>
+            <input type="checkbox" formControlName="IsTaxExempted" value="" id="IsTaxExempted"
+              (change)="onchangeIsTaxExemptedTax($event)">
+          </div>
+        </div>
+        <div class="col-md-2 col-xs-12">
+          <div class="form-group" [ngClass]="{'has-error': formErrorsTax.TaxRate}">
+            <label class="control-label" for="TaxRate">Tax Rate <span class="mandantory">*</span></label>
+            <div>
+              <input id="TaxRate" type="text" class="form-control" formControlName="TaxRate"
+                (blur)="logValidationErrorsTax()" maxlength="5">
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrorsTax.TaxRate">
+                  {{formErrorsTax.TaxRate}}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-2 col-xs-12">
+          <div class="form-group" [ngClass]="{'has-error': formErrorsTax.TaxStartDate}">
+            <label class="control-label" for="TaxStartDate">Start Date <span class="mandantory">*</span></label>
+            <div> 
+              <div class='input-group date'> 
+                <input type="text" ngxDaterangepickerMd [minDate]="MinDate" 
+                  [singleDatePicker]="true" class="form-control" id="TaxStartDate" [locale]="{format: 'MM-DD-YYYY'}"
+                    maxlength="16" [autoApply]="true" (change)="logValidationErrorsTax()"
+                  formControlName="TaxStartDate" /> 
+                <label class="fa fa-calendar"></label>
+              </div>
+              <div class="help-block-rk">
+              </div><span class="help-block" *ngIf="formErrorsTax.TaxStartDate">
+                {{formErrorsTax.TaxStartDate}}
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-2 col-xs-12">
+          <div class="form-group">
+            <label class="control-label" for="TaxStartDate">End Date <span class="mandantory">*</span></label>
+            <div>
+              {{endDate}}
+              <div class="help-block-rk">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="table-responsive">
+            <table class="table table-bordered table-condensed "
+              *ngIf="obj?.lstItemTaxDetail && obj?.lstItemTaxDetail.length">
+              <thead>
+                <tr>
+                  <th>Is Tax Exempted</th>
+                  <th>Tax Rate</th>
+                  <th>Start Date</th>
+                  <th>End Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let user of obj?.lstItemTaxDetail">
+                  <td class="text-center"><i [class]="user.IsTaxExempted ? 'fa fa-check': 'fa fa-times'" aria-hidden="true"></i></td>
+                  <td>{{ user.TaxRate  }}</td>
+                  <td>{{ user.StartDate | date :"MM-dd-yyyy" }}</td>
+                  <td>{{ user.EndDate | date :"MM-dd-yyyy" }}</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <table class="table table-bordered table-condensed" *ngIf="obj?.lstItemTaxDetail==null">
+              <thead>
+                <tr>
+                  <th>Is Tax Exempted</th>
+                  <th>Tax Rate</th>
+                  <th>Start Date</th>
+                  <th>End Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td colspan="4">
+                    No Records Found.!
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="panel-footer">
+      <div class="pull-right btn-toolbar">
+        <button class="btn btn-success" type="submit" prevent-double-submit [disabled]="taxform.invalid">
+          Save
+        </button>
+      </div>
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</form>
+<form autocomplete="off" [formGroup]="hsnform" (ngSubmit)="SaveDataHSN()" class="form-group" *ngIf="!action">
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <span class="groupspanheader">HSN Information</span>
+      <div class="row">
+        <div class="col-md-2 col-xs-12">
+          <div class="form-group" [ngClass]="{'has-error': formErrorsHSN.HSNCode}">
+            <label class="control-label" for="HSNCode">HSN Code
+              <span class="mandantory">*</span></label>
+            <div>
+              <input id="HSNCode" type="text" class="form-control" formControlName="HSNCode"
+                (blur)="logValidationErrorsHSN()" mask="0000000000" maxlength="10">
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrorsHSN.HSNCode">
+                  {{formErrorsHSN.HSNCode}}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-2 col-xs-12">
+          <div class="form-group" [ngClass]="{'has-error': formErrorsHSN.HSNStartDate}">
+            <label class="control-label" for="HSNStartDate">Start Date <span class="mandantory">*</span></label>
+            <div> 
+              <div class='input-group date'> 
+                <input type="text" ngxDaterangepickerMd [minDate]="MinDate" 
+                  [singleDatePicker]="true" class="form-control" id="HSNStartDate" [locale]="{format: 'MM-DD-YYYY'}"
+                    maxlength="16" [autoApply]="true" (change)="logValidationErrorsHSN()"
+                  formControlName="HSNStartDate" /> 
+                <label class="fa fa-calendar"></label>
+              </div>
+              <div class="help-block-rk">
+              </div><span class="help-block" *ngIf="formErrorsHSN.HSNStartDate">
+                {{formErrorsHSN.HSNStartDate}}
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-2 col-xs-12">
+          <div class="form-group">
+            <label class="control-label" for="TaxStartDate">End Date <span class="mandantory">*</span></label>
+            <div>
+              {{endDate}}
+              <div class="help-block-rk">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="table-responsive">
+            <table class="table table-bordered table-condensed "
+              *ngIf="obj?.lstItemHSNDetail && obj?.lstItemHSNDetail.length">
+              <thead>
+                <tr>
+                  <th>HSN Code</th>
+                  <th>Start Date</th>
+                  <th>End Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let user of obj?.lstItemHSNDetail">
+                  <td>{{ user.HSNCode  }}</td>
+                  <td>{{ user.StartDate | date :"MM-dd-yyyy" }}</td>
+                  <td>{{ user.EndDate | date :"MM-dd-yyyy" }}</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <table class="table table-bordered table-condensed" *ngIf="obj?.lstItemHSNDetail==null">
+              <thead>
+                <tr>
+                  <th>HSN Code</th>
+                  <th>Start Date</th>
+                  <th>End Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td colspan="4">
+                    No Records Found.!
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="panel-footer">
+      <div class="pull-right btn-toolbar">
+        <button type="button" class="btn btn-primary" routerLink="/Itemlist" title="Cancel">
+          Cancel
+        </button>
+        <button class="btn btn-success" type="submit" prevent-double-submit [disabled]="hsnform.invalid">
+          Save
+        </button>
+      </div>
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</form>

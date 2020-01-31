@@ -35,6 +35,7 @@ export class DownloadDetail {
     // who is doing this task
     LoginId: number;
     ReportDecription:string;
+    IsMandatory:boolean;
 }
 
 export class DownloadLog {

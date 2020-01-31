@@ -125,3 +125,68 @@ text-transform: none !important;
   margin: 5px !important; 
 }
 .terms p { margin-top:2px; text-align:left;text-transform:inherit; font-size:10px;}
+
+/**07012020 SHIVA**/
+/*MEDIA QUEARY FOR MOBILE BELOW 4.5*/
+@media screen and (max-width:480px) { 
+  .centered {
+      position: fixed;
+      top: 22%;
+      right: 0%;
+      z-index: 100;
+      transform: translate(-0%, -10%);
+      -webkit-transform:translate(-0%, -10%);
+      -moz-transform: translate(-0%, -10%);
+      -o-transform:translate(-0%, -10%);
+      -ms-transform:translate(-0%, -10%);
+  }
+  .card {
+      box-shadow: none; 
+      width: 360px;
+      word-wrap: break-word;
+      background-color: #ffffffb8; 
+      border: transparent;
+  }
+  .signinsection { 
+      background-size: contain;
+      background-position: bottom;
+      background-repeat: no-repeat;
+  }
+  .landscren {
+      margin-top: 0.5rem;
+  }
+}
+
+@media screen and (max-width:768px) { 
+    .signinsection {
+      width: 100%;
+      height: 100vh;
+      margin: 0 auto; 
+      padding: 0; 
+      background-size: contain;
+      background-position: bottom;
+      background-repeat: no-repeat;
+     }
+     .centered[_ngcontent-c2] {
+      position: fixed;
+      top: 40%;
+      right: 24%;
+      transform: translate(-0%, -50%);
+      -webkit-transform: translate(-0%, -50%);
+      -moz-transform: translate(-0%, -50%);
+      -o-transform: translate(-0%, -50%);
+      -ms-transform: translate(-0%, -50%);
+      z-index: 100;
+  }
+}
+@media screen and (max-width:1024px) { 
+  .signinsection {
+    width: 100%;
+    height: 100vh;
+    margin: 0 auto; 
+    padding: 0; 
+    background-size: contain;
+    background-position: bottom;
+    background-repeat: no-repeat;
+   } 
+}

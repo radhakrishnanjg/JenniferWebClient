@@ -8,13 +8,13 @@
     <div class="pull-right hidden-xs">
       <ol class="breadcrumb" id="dynamicbreadcrumb">
         <li>
-           <span> Master</span>
+          <span> Master</span>
         </li>
         <li>
-           <span> Stores</span>
+          <span> Stores</span>
         </li>
         <li class="active">
-          
+
           List
         </li>
       </ol>
@@ -24,52 +24,69 @@
 <div class="panel panel-default">
   <div class="panel-heading">
     <div class="row">
-      <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-        
+      <div class="col-xs-6 col-sm-8 col-md-8 col-lg-8">
       </div>
-      <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 ">
-        <div class="pull-right">
-          <button class="btn btn-primary" (click)="AddNewLink()">Add New</button>
-        </div>
+      <div class="col-xs-6 col-sm-4 col-md-4 col-lg-4 text-right">
+        <button class="btn btn-xs btn-sm btn-primary" (click)="AddNewLink()">Add New</button>
       </div>
     </div>
   </div>
   <div class="panel-body">
-    <kendo-grid [data]="gridView" resizable="true" columnMenu="true" [pageSize]="pageSize" [skip]="skip" [pageable]="{pageSizes: [10, 25, 50, 100]}"
-      (pageChange)="pageChange($event)" [sortable]="{
+    <div class="table-responsive">
+      <table class="table">
+        <kendo-grid [data]="gridView" resizable="true" columnMenu="true" [pageSize]="pageSize" [skip]="skip"
+          [pageable]="{pageSizes: [10, 25, 50, 100, 250, 500]}" (pageChange)="pageChange($event)" [sortable]="{
         allowUnsort: allowUnsort,
         mode:  'single'
-        }" [sort]="sort" (sortChange)="sortChange($event)" [filterable]="true"
-      (dataStateChange)="dataStateChange($event)" [filter]="state.filter">
+        }" [sort]="sort" (sortChange)="sortChange($event)" [filterable]="false"
+          (dataStateChange)="dataStateChange($event)" [filter]="state.filter">
+          <ng-template kendoGridToolbarTemplate>
+            <input placeholder="Search in all columns..." style="float:right;" kendoTextBox
+              (input)="onFilter($event.target.value)" />
+            <button kendoGridExcelCommand type="button" icon="file-excel"> </button>
+            <button kendoGridPDFCommand icon="file-pdf"> </button>
+            <kendo-grid-pdf fileName="StoreList.pdf" [repeatHeaders]="true"></kendo-grid-pdf>
+            <kendo-grid-excel fileName="StoreList.xlsx"></kendo-grid-excel>
+          </ng-template>
+          <kendo-grid-column field="StoreName" title="Store Name">
+          </kendo-grid-column>
+          <kendo-grid-column field="BusinessLaunchDate" title="Business Launch Date" filter="date" format="{0:d}"
+            [filterable]="false">
+            <ng-template kendoGridCellTemplate let-dataItem>
+              {{ dataItem.BusinessLaunchDate | date :"MM-dd-yyyy" }}
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="MarketPlaceSellerID" title="Market Place Seller ID">
+            <ng-template kendoGridCellTemplate let-dataItem>
+              <a class="pointer" title="Click To View Seller Products"
+                href="{{ 'https://www.amazon.in/s?me='+dataItem.MarketPlaceSellerID+'&marketplaceID=A21TJRUUN4KGV'}}"
+                target="_blank">
+                {{ dataItem.MarketPlaceSellerID  }}
+              </a>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="MarketPlace" title="Market Place">
+          </kendo-grid-column>
 
-      <kendo-grid-column field="StoreName" title="Store Name">
-      </kendo-grid-column>
-      <kendo-grid-column field="BusinessLaunchDate" title="Business Launch Date" filter="date" format="{0:d}"
-        [filterable]="false">
-        <ng-template kendoGridCellTemplate let-dataItem>
-          {{ dataItem.BusinessLaunchDate | date :"MM-dd-yyyy" }}
-        </ng-template>
-      </kendo-grid-column>
-      <kendo-grid-column field="MarketPlaceSellerID" title="Market Place Seller ID">
-      </kendo-grid-column>
-      <kendo-grid-column field="MarketPlace" title="Market Place">
-      </kendo-grid-column>
-
-      <kendo-grid-column field="IsActive"  title="IsActive" [class]="{'text-center': true}"  filter="boolean" width="80">
-        <ng-template kendoGridCellTemplate let-dataItem>
-          <i [class]="dataItem.IsActive ? 'fa fa-check': 'fa fa-times'" aria-hidden="true"></i>
-        </ng-template>
-      </kendo-grid-column>
-      <kendo-grid-column field="CompanyDetailID" title="Action" [class]="{'text-center': true}"  [filterable]="false" [sortable]="false" width="70" >
-        <ng-template kendoGridCellTemplate let-obj>
-          <i class="fa fa-edit bgblue pointer" title="Edit" 
-          [routerLink]="['/Companydetails', obj.CompanyDetailID]"></i>
-          &nbsp;
-          <i class="fa fa-trash bgred pointer" title="Delete"
-            (click)="confirmDeleteid(obj.CompanyDetailID,obj.StoreName)"></i>
-        </ng-template>
-      </kendo-grid-column>
-    </kendo-grid> 
+          <kendo-grid-column field="IsActive" title="IsActive" [class]="{'text-center': true}" filter="boolean"
+            width="80">
+            <ng-template kendoGridCellTemplate let-dataItem>
+              <i [class]="dataItem.IsActive ? 'fa fa-check': 'fa fa-times'" aria-hidden="true"></i>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column title="Action" [class]="{'text-center': true}" [filterable]="false" [sortable]="false"
+            width="70">
+            <ng-template kendoGridCellTemplate let-obj>
+              <i class="fa fa-edit bgblue pointer" title="Edit"
+                [routerLink]="['/Companydetails', obj.CompanyDetailID]"></i>
+              &nbsp;
+              <i class="fa fa-trash bgred pointer" title="Delete"
+                (click)="confirmDeleteid(obj.CompanyDetailID,obj.StoreName)"></i>
+            </ng-template>
+          </kendo-grid-column>
+        </kendo-grid>
+      </table>
+    </div>
   </div>
   <div id="modaldeleteconfimation" class="modal fade" tabindex="-1" role="dialog"
     aria-labelledby="modaldeleteconfimation" aria-hidden="true">

@@ -162,4 +162,36 @@ export class ReportAmazonMTRComponent implements OnInit {
     this.gridView = process(this.items, this.state);
   }
 
+  public onFilter(inputValue: string): void {
+    this.gridView = process(this.items.slice(this.skip, this.skip + this.pageSize), {
+      skip: this.skip,
+      take: this.skip + this.pageSize,
+      filter: {
+        logic: "or",
+        filters: [
+          {
+            field: 'ReportId',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'FileName',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'CreatedDate',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'UploadStatus',
+            operator: 'contains',
+            value: inputValue
+          }, 
+        ],
+      }
+    });
+  }
+
 }

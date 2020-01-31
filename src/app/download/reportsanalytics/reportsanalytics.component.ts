@@ -90,6 +90,30 @@ export class ReportsanalyticsComponent implements OnInit {
           dyamicspstring += ' ' + P_Name + '="' + this.txtColumn5 + '",';
         }
       });
+      let bflag: boolean = true;
+      this.lstDownloadDetail.forEach((element) => {
+        var Column_Name = element.Column_Name;
+        if (Column_Name == "Column1" && element.IsMandatory == true && this.txtColumn1 == "") {
+          this.alertService.error("Please enter " + this.Column1 + ".!");
+          return bflag = false;
+        }
+        else if (Column_Name == "Column2" && element.IsMandatory == true && this.txtColumn2 == "") {
+          this.alertService.error("Please enter " + this.Column2 + ".!");
+          return bflag = false;
+        }
+        else if (Column_Name == "Column3" && element.IsMandatory == true && this.txtColumn3 == "") {
+          this.alertService.error("Please enter " + this.Column3 + ".!");
+          return bflag = false;
+        }
+        else if (Column_Name == "Column4" && element.IsMandatory == true && this.txtColumn4 == "") {
+          this.alertService.error("Please enter " + this.Column4 + ".!");
+          return bflag = false;
+        }
+        else if (Column_Name == "Column5" && element.IsMandatory == true && this.txtColumn5 == "") {
+          this.alertService.error("Please enter " + this.Column5 + ".!");
+          return bflag = false;
+        }
+      });
       //var newStr = dyamicspstring.substring(0, dyamicspstring.length - 1);
       // 87	-Inventory
       // 88	-Amazon
@@ -98,6 +122,7 @@ export class ReportsanalyticsComponent implements OnInit {
       // 91	-MIS
       // 92	-Others 
       const MenuId = 90; //87|88|89|90|91|92;  
+      if (bflag || this.lstDownloadDetail.length == 0) {
       this._DownloadService.downloadExcel(SP_Name,MenuId, Screen_Name, dyamicspstring)
         .subscribe(data => {
           if (data != null) {
@@ -122,7 +147,7 @@ export class ReportsanalyticsComponent implements OnInit {
             console.log(err);
           }
         );
-
+        }
       //this.alertService.success('Your Dynamic Query:' + newStr);
     }
   }

@@ -13,4 +13,5 @@ export class Receipts {
 
     IsEditable: boolean; 
     LoginId: number; 
+    UploadStatus:string;
 }

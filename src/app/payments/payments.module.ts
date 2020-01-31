@@ -1,0 +1,72 @@
+//core
+import { RouterModule } from '@angular/router';
+import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
+import { CommonModule } from '@angular/common'; 
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+
+//kendo
+import { GridModule, PDFModule, ExcelModule } from '@progress/kendo-angular-grid';
+import { PopupModule } from '@progress/kendo-angular-popup';
+import { DropDownListModule } from '@progress/kendo-angular-dropdowns'; 
+import { InputsModule } from '@progress/kendo-angular-inputs';
+import { PDFExportModule } from '@progress/kendo-angular-pdf-export';
+
+
+import { PreventDoubleSubmitModule } from 'ngx-prevent-double-submission'; 
+import { EncrDecrService } from '../_services/service/encr-decr.service';
+import { CookieService } from 'ngx-cookie-service';
+import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
+import { ToastrModule } from 'ngx-toastr';
+import { MomentModule } from 'ngx-moment';
+
+import { StatementlistComponent } from './statementlist/statementlist.component';
+import { StatementviewComponent } from './statementview/statementview.component';
+
+import { VendorpaymentComponent } from './vendorpayment/vendorpayment.component';
+import { VendorpaymentlistComponent } from './vendorpaymentlist/vendorpaymentlist.component';
+import { VendorpaymentviewComponent } from './vendorpaymentview/vendorpaymentview.component';
+
+import { PaymentsRoutingModule } from './payments.routing.module';
+
+@NgModule({
+  imports: [
+    CommonModule,
+    RouterModule, 
+    FormsModule, 
+    ReactiveFormsModule, 
+    PreventDoubleSubmitModule.forRoot(),
+    ToastrModule.forRoot({
+      timeOut: 5000,
+      positionClass: 'toast-top-center',
+      preventDuplicates: true,
+    }),
+    MomentModule,
+    NgxDaterangepickerMd.forRoot(), 
+ 
+    InputsModule, 
+    GridModule,
+    PDFModule, 
+    ExcelModule,
+    DropDownListModule,
+    PopupModule, 
+    PDFExportModule,
+    PaymentsRoutingModule
+  ],
+  declarations: [
+    StatementlistComponent, 
+    StatementviewComponent,
+     VendorpaymentComponent,
+    VendorpaymentlistComponent,
+    VendorpaymentviewComponent
+  ],
+
+  providers: [
+    CookieService,
+    EncrDecrService
+  ],
+
+  schemas: [
+    NO_ERRORS_SCHEMA,
+  ]
+})
+export class PaymentsModule { }

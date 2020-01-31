@@ -1,4 +1,32 @@
 
+Version 3.0
+    Date
+        30 Jan 2020
+     Descriptions
+        Vendor Payments
+        Debit Note
+        Voucher
+        Ledgers
+        Item Screen Changes 
+         - Tax Rate and HSN Details added in create and update screen
+         - https://www.amazon.in/dp/B07XBYV764 link added in item lst screen
+        GST Number Validation with State
+            GST Number should be start with state code. This logic implemented in customers,customer warehouses,locations,vendors and vendor warehouses
+        PO Changes -  Files upload added in PO create and download zip option given in po approval screen
+        PI Changes - USD Value Field adeed in PI Create/ Edit with non mandatory
+        Store Changes 
+            - Amazon seller products link added in store list screen 
+            - Eg Amazon Store Link ----- https://www.amazon.in/s?me=A5JPIMX7DVAMJ&marketplaceID=A21TJRUUN4KGV
+
+        Seller Statment Changes
+            - Offline chat option added in Statment view screen
+            - Agreeing / Dis Agreeing option added in Statment view screen
+        Help Screen Changes
+            - Ticket List navation added in Help screen
+            - New Ticket popup otion added in Help screen
+
+
+
 Version 2.0
     Date
         Sep 20 th 2019
@@ -91,7 +119,4 @@ Version 1
         vendors
         pricing
     Date
-        July 18 th 2019
-
-        
-
+        July 18 th 2019 

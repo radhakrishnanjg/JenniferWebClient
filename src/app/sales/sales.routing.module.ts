@@ -2,8 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard, StoreGuard } from '../_guards';
 
-// Sales module 
-import { SalesratecardlistComponent } from '../sales/salesratecardlist/salesratecardlist.component';
+// Sales module  
 import { SalesorderlistComponent } from '../sales/salesorderlist/salesorderlist.component';
 import { SalesorderComponent } from '../sales/salesorder/salesorder.component';
 import { SalesorderviewComponent } from '../sales/salesorderview/salesorderview.component';
@@ -29,8 +28,7 @@ const appRoutes: Routes = [
       { path: 'Salesorderapprovallist', component: SalesorderapprovallistComponent, canActivate: [AuthGuard, StoreGuard] },
       { path: 'Salesshipment/:id', component: SalesShipmentComponent, canActivate: [AuthGuard, StoreGuard] },
       { path: 'Salesshipmentlist', component: SalesShipmentListComponent, canActivate: [AuthGuard, StoreGuard] },
-      { path: 'Shipmentoutwardlist', component: ShipmentoutwardlistComponent, canActivate: [AuthGuard] },
-      { path: 'Salesratecardlist', component: SalesratecardlistComponent, canActivate: [AuthGuard, StoreGuard] },
+      { path: 'Shipmentoutwardlist', component: ShipmentoutwardlistComponent, canActivate: [AuthGuard] }, 
 
       { path: 'Picklist/:id', component: PicklistComponent, canActivate: [AuthGuard, StoreGuard] },
       { path: 'PickListView/:id', component: PicklistviewComponent, canActivate: [AuthGuard, StoreGuard] },

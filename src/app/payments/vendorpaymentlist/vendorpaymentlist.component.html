@@ -1,0 +1,160 @@
+<div class="row">
+  <div class="col-sm-6 col-lg-6">
+    <h3>
+      Vendor Payment
+    </h3>
+  </div>
+  <div class="col-sm-6 col-lg-6">
+    <div class="pull-right hidden-xs">
+      <ol class="breadcrumb" id="dynamicbreadcrumb">
+        <li>
+          <span> Payments</span>
+        </li>
+        <li>
+          <span> Vendor Payment</span>
+        </li>
+        <li class="active">
+
+          List
+        </li>
+      </ol>
+    </div>
+  </div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="input-group col-xs-12 col-sm-12" role="group" aria-label="Basic example">
+          <div class="col-md-3 col-sm-3 col-xs-12 nopading_loct">
+            <select class="form-control serchcurv btn-group" [(ngModel)]="SearchBy">
+              <option value="" selected="select">Search By</option>
+              <option value="ByBillNumber">Bill No.</option>
+              <option value="ByPaidDate">Bill Date</option>
+              <option value="ByVendorName">Vendor Name</option>
+              <option value="ByInvoiceNumber">Purchase Invoice No.</option>
+            </select>
+          </div>
+          <div class="col-md-3 col-sm-3 nopading_loct" *ngIf="(SearchBy!='ByPaidDate')">
+            <input (keyup.enter)="Search()" [(ngModel)]="SearchKeyword" type="text"
+              class="serchcurv form-control btn-group">
+          </div>
+          <div class="col-md-3 col-sm-3 nopading_loct" *ngIf="(SearchBy=='ByPaidDate')">
+            <input type="text" ngxDaterangepickerMd [(ngModel)]="selectedDateRange"
+              class="serchcurv form-control btn-group col-xs-12 pointer"
+              style="border:1px soloid #ccc !important; padding :3px;left:0px" [showCustomRangeLabel]="true"
+              [ranges]="Searchranges" [showCancel]="true" placeholder="Select please..."
+              (ngModelChange)="onChange($event)" />
+          </div>
+          <div class="col-md-3 col-sm-3 col-xs-6 nopading_loct">
+            <button class="serchcurv btn btn-default btn-group" (click)="Search()" title="Search">
+              <i class="fa fa-search " aria-hidden="true"></i>
+            </button>
+            <button class="serchcurv btn btn-default btn-group" (click)="Refresh()" title="Reset">
+              <i class="fa fa-refresh" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="col-xs-6 col-sm-3 col-md-3 text-right nopadding">
+            <button type="button" class="btn btn-xs btn-sm btn-primary" (click)="AddNewLink()" title="Add Payment Bill">
+              Add Payment Bill
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel-body">
+    <div class="table-responsive">
+      <table class="table">
+        <kendo-grid [data]="gridView" resizable="true" columnMenu="true" [pageSize]="pageSize" [skip]="skip"
+          [pageable]="{pageSizes: [10, 25, 50, 100, 250, 500]}" (pageChange)="pageChange($event)" [sortable]="{
+          allowUnsort: allowUnsort,
+          mode:  'single'
+          }" [sort]="sort" (sortChange)="sortChange($event)" [filterable]="true"
+          (dataStateChange)="dataStateChange($event)" [filter]="state.filter">
+          <ng-template kendoGridToolbarTemplate>
+            <input placeholder="Search in all columns..." style="float:right;" kendoTextBox
+              (input)="onFilter($event.target.value)" />
+            <button kendoGridExcelCommand type="button" icon="file-excel"> </button>
+            <button kendoGridPDFCommand icon="file-pdf"> </button>
+            <kendo-grid-pdf fileName="VendorPaymentList.pdf" [repeatHeaders]="true"></kendo-grid-pdf>
+            <kendo-grid-excel fileName="VendorPaymentList.xlsx"></kendo-grid-excel>
+          </ng-template>
+          <kendo-grid-column field="BillNumber" title="Bill No.">
+          </kendo-grid-column>
+          <kendo-grid-column field="PaidDate" title="Bill Date" filter="date" format="{0:d}" [filterable]="false">
+            <ng-template kendoGridCellTemplate let-dataItem>
+              {{ dataItem.PaidDate | date :"MM-dd-yyyy HH:mm" }}
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="VendorName" title="Vendor Name" width="130">
+          </kendo-grid-column>
+          <kendo-grid-column field="InvoiceNumber" title="Purchase Invoice No." width="160">
+          </kendo-grid-column>
+          <kendo-grid-column field="TotalPaidAmount" title="Paid Amount"  width="130" format="{0:##,#.##}">
+          </kendo-grid-column>
+          <kendo-grid-column field="PaymentMode" title="Payment Mode" width="130">
+          </kendo-grid-column>
+          <kendo-grid-column field="TransactionNumber" title="UTR No.">
+          </kendo-grid-column>
+
+          <kendo-grid-column field="PaymentDate" title="Payment Date"  width="130" filter="date" format="{0:d}" [filterable]="false">
+            <ng-template kendoGridCellTemplate let-dataItem>
+              {{ dataItem.PaymentDate | date :"MM-dd-yyyy HH:mm" }}
+            </ng-template>
+          </kendo-grid-column>
+
+          <kendo-grid-column field="Remarks" title="Remarks">
+          </kendo-grid-column>
+
+          <kendo-grid-column title="Action" [class]="{'text-center': true}" [filterable]="false" [sortable]="false"
+            width="80">
+            <ng-template kendoGridCellTemplate let-obj>
+              <i class="fa fa-repeat pointer" title="Reverse" *ngIf="obj.ReverseId==0"
+                (click)="confirmRefreshid(obj.PaymentID)"></i>
+              &nbsp;
+              <i class="fa fa-eye bgblue pointer" [routerLink]="['/Vendorpaymentview', obj.PaymentID]" title="View">
+              </i> 
+            </ng-template>
+          </kendo-grid-column>
+          
+        </kendo-grid>
+      </table>
+    </div>
+  </div>
+
+  <div id="modaldeleteconfimation" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="modaldeleteconfimation" aria-hidden="true">
+    <div class="modal-dialog ">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+              aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="modaldeleteconfimation">Confirmation</h4>
+        </div>
+        <div class="modal-body alert-warning">
+          <div class="row">
+            <div class="col-xs-2">
+              <i class="fa fa-warning fa-3x "></i>
+            </div>
+            <div class="col-xs-10">
+              <div>
+                <h5>
+                  Are you sure you want to reverse the bill <span> {{deleteColumn}}</span>?
+                </h5>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-danger btn-sm" (click)="delete()">Yes</button>
+          &nbsp;
+          <button class="btn btn-default btn-sm" data-dismiss="modal">No</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

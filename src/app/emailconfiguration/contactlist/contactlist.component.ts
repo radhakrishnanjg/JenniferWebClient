@@ -167,6 +167,45 @@ export class ContactlistComponent implements OnInit {
     this.state = state;
     this.gridView = process(this.items, this.state);
   }
+  public onFilter(inputValue: string): void {
+    this.gridView = process(this.items, {
+      filter: {
+        logic: "or",
+        filters: [
+          {
+            field: 'ContactType',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'ContactName',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'MobileNumber',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'Email',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'Designation',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'Organization',
+            operator: 'contains',
+            value: inputValue
+          },
+        ],
+      }
+    });
+  }
   //#endregion Paging Sorting and Filtering End
 
 }

@@ -8,13 +8,13 @@
     <div class="pull-right hidden-xs">
       <ol class="breadcrumb" id="dynamicbreadcrumb">
         <li>
-           <span> Master</span>
+          <span> Master</span>
         </li>
         <li>
-           <span> Brands</span>
+          <span> Brands</span>
         </li>
         <li class="active">
-          
+
           List
         </li>
       </ol>
@@ -26,28 +26,28 @@
   <div class="panel-heading">
 
     <div class="row">
-      <div class="col-xs-12 col-sm-10 col-md-10 col-lg-10">
-        <div class="input-group col-sm-12" role="group" aria-label="Basic example">
-          <div class="col-md-3 nopading_loct">
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="input-group col-sm-12 col-xs-12" role="group" aria-label="Basic example">
+          <div class="col-md-3 col-sm-3 col-xs-12 nopading_loct">
             <select [(ngModel)]="SearchBy" class="serchcurv form-control btn-group">
               <option value="" selected="select">Search By</option>
               <option value="ByBrandName">Brand</option>
               <option value="ByStatus">Status</option>
             </select>
           </div>
-          <div class="col-md-4 nopading_loct" *ngIf="(SearchBy!='ByStatus')">
-            <input (keyup.enter)="Search()" [(ngModel)]="SearchKeyword" type="text" class="serchcurv form-control btn-group">
+          <div class="col-md-4 col-sm-3 nopading_loct" *ngIf="(SearchBy!='ByStatus')">
+            <input (keyup.enter)="Search()" [(ngModel)]="SearchKeyword" type="text"
+              class="serchcurv form-control btn-group">
           </div>
-          <div class="col-md-3 nopading_loct" *ngIf="(SearchBy=='ByStatus')">
+          <div class="col-md-3 col-sm-3 nopading_loct" *ngIf="(SearchBy=='ByStatus')">
 
             <select [(ngModel)]="Searchaction" type="select" class="serchcurv form-control btn-group">
-
               <option value="true">Active</option>
               <option value="false">InActive</option>
             </select>
 
           </div>
-          <div class="col-md-2 nopading_loct">
+          <div class="col-md-3 col-sm-3 col-xs-6 nopading_loct">
             <button class="serchcurv btn btn-default btn-group" (click)="Search()" title="Search">
               <i class="fa fa-search " aria-hidden="true"></i>
             </button>
@@ -55,41 +55,53 @@
               <i class="fa fa-refresh" aria-hidden="true"></i>
             </button>
           </div>
+
+          <div class="col-xs-6 col-sm-3 col-md-2 text-right nopadding">
+            <button class="btn btn-xs btn-sm btn-primary" (click)="newButtonClick()" title="Add New">
+              Add New
+            </button>
+          </div>
         </div>
-      </div>
-      <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 text-right">
-        <button class="btn btn-primary" (click)="newButtonClick()" title="Add New">
-          Add New
-        </button>
       </div>
     </div>
   </div>
   <div class="panel-body">
-
-    <kendo-grid [data]="gridView" resizable="true" columnMenu="true" [pageSize]="pageSize" [skip]="skip" [pageable]="{pageSizes: [10, 25, 50, 100]}"
-      (pageChange)="pageChange($event)" [sortable]="{
+    <div class="table-responsive">
+      <table class="table">
+        <kendo-grid [data]="gridView" resizable="true" columnMenu="true" [pageSize]="pageSize" [skip]="skip"
+          [pageable]="{pageSizes: [10, 25, 50, 100, 250, 500]}" (pageChange)="pageChange($event)" [sortable]="{
         allowUnsort: allowUnsort,
         mode:  'single'
         }" [sort]="sort" (sortChange)="sortChange($event)" [filterable]="true"
-      (dataStateChange)="dataStateChange($event)" [filter]="state.filter">
-
-      <kendo-grid-column field="BrandName" title="Brand Name">
-      </kendo-grid-column>
-      <kendo-grid-column field="IsActive"  title="IsActive" [class]="{'text-center': true}"  filter="boolean" width="80">
-        <ng-template kendoGridCellTemplate let-dataItem>
-          <i [class]="dataItem.IsActive ? 'fa fa-check': 'fa fa-times'" aria-hidden="true"></i>
-        </ng-template>
-      </kendo-grid-column>
-      <kendo-grid-column field="BrandID" title="Action" [class]="{'text-center': true}"  [filterable]="false" [sortable]="false" width="70">
-        <ng-template kendoGridCellTemplate let-dataItem>
-          <i (click)="editButtonClick(dataItem.BrandID)" title="Edit" class="fa fa-edit bgblue pointer"></i>
-          &nbsp;
-          <i class="fa fa-trash bgred pointer" (click)="confirmDeleteid(dataItem.BrandID,dataItem.BrandName)"
-            title="Delete"></i>
-        </ng-template>
-      </kendo-grid-column>
-    </kendo-grid>
- 
+          (dataStateChange)="dataStateChange($event)" [filter]="state.filter">
+          <ng-template kendoGridToolbarTemplate>
+            <input placeholder="Search in all columns..." style="float:right;" kendoTextBox
+              (input)="onFilter($event.target.value)" />
+            <button kendoGridExcelCommand type="button" icon="file-excel"> </button>
+            <button kendoGridPDFCommand icon="file-pdf"> </button>
+            <kendo-grid-pdf fileName="BrandList.pdf" [repeatHeaders]="true"></kendo-grid-pdf>
+            <kendo-grid-excel fileName="BrandList.xlsx"></kendo-grid-excel>
+          </ng-template>
+          <kendo-grid-column field="BrandName" title="Brand Name">
+          </kendo-grid-column>
+          <kendo-grid-column field="IsActive" title="IsActive" [class]="{'text-center': true}" filter="boolean"
+            width="80">
+            <ng-template kendoGridCellTemplate let-dataItem>
+              <i [class]="dataItem.IsActive ? 'fa fa-check': 'fa fa-times'" aria-hidden="true"></i>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column title="Action" [class]="{'text-center': true}" [filterable]="false" [sortable]="false"
+            width="70">
+            <ng-template kendoGridCellTemplate let-dataItem>
+              <i (click)="editButtonClick(dataItem.BrandID)" title="Edit" class="fa fa-edit bgblue pointer"></i>
+              &nbsp;
+              <i class="fa fa-trash bgred pointer" (click)="confirmDeleteid(dataItem.BrandID,dataItem.BrandName)"
+                title="Delete"></i>
+            </ng-template>
+          </kendo-grid-column>
+        </kendo-grid>
+      </table>
+    </div>
   </div>
 
 
@@ -152,8 +164,8 @@
             </div>
 
             <div class="form-group" *ngIf="!action">
-              <label class="col-sm-3 control-label custom-control-label " for="customSwitches">IsActive </label>
-              <div class="col-sm-9 nopading_loct">
+              <label class="col-sm-3 col-xs-2 control-label custom-control-label " for="customSwitches">IsActive </label>
+              <div class="col-sm-9 col-xs-9  nopading_loct">
                 <label class="switch">
                   <input type="checkbox" checked formControlName="IsActive" id="IsActive">
                   <span class="slider round"></span>

@@ -1,12 +1,11 @@
 //core
 import { RouterModule } from '@angular/router';
 import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { PopupAnchorDirective } from './sto/popup.anchor-target.directive';
+import { CommonModule } from '@angular/common'; 
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 //kendo
-import { GridModule } from '@progress/kendo-angular-grid';
+import { GridModule, PDFModule, ExcelModule } from '@progress/kendo-angular-grid';
 import { PopupModule } from '@progress/kendo-angular-popup';
 import { DropDownListModule } from '@progress/kendo-angular-dropdowns'; 
 import { InputsModule } from '@progress/kendo-angular-inputs';
@@ -30,14 +29,10 @@ import { GoodsstoragelistComponent } from './goodsstoragelist/goodsstoragelist.c
 import { GoodsReceiptListComponent } from './goods-receipt-list/goods-receipt-list.component';
 import { GoodsReceiptComponent } from './goods-receipt/goods-receipt.component';
 import { GoodsDisputeComponent } from './goods-dispute/goods-dispute.component';
-import { GoodsDisputeListComponent } from './goods-dispute-list/goods-dispute-list.component';
-import { StoListComponent } from './sto-list/sto-list.component';
-import { StoComponent } from './sto/sto.component';
+import { GoodsDisputeListComponent } from './goods-dispute-list/goods-dispute-list.component'; 
 import { InventorydetaillistComponent } from './inventorydetaillist/inventorydetaillist.component';
 import { GoodsdisputeviewComponent } from './goodsdisputeview/goodsdisputeview.component';
-import { GoodsreceiptviewComponent } from './goodsreceiptview/goodsreceiptview.component';
-import { StoviewComponent } from './stoview/stoview.component';
-import { StoeditComponent } from './stoedit/stoedit.component';
+import { GoodsreceiptviewComponent } from './goodsreceiptview/goodsreceiptview.component'; 
 
 //routing module
 
@@ -48,6 +43,8 @@ import { GoodsRoutingModule } from './goods.routing.module';
     CommonModule,
     RouterModule,
     GridModule,
+    PDFModule, 
+    ExcelModule,
     FormsModule,
     ReactiveFormsModule,
     PopupModule,
@@ -67,8 +64,7 @@ import { GoodsRoutingModule } from './goods.routing.module';
     GoodsRoutingModule,
   ],
 
-  declarations: [
-    PopupAnchorDirective,
+  declarations: [ 
     GoodsinwardComponent,
     GoodsstorageComponent,
     GoodsstoragelistComponent,
@@ -76,14 +72,10 @@ import { GoodsRoutingModule } from './goods.routing.module';
     GoodsReceiptListComponent,
     GoodsReceiptComponent,
     GoodsDisputeComponent,
-    GoodsDisputeListComponent,
-    StoListComponent,
-    StoComponent,
+    GoodsDisputeListComponent, 
     InventorydetaillistComponent,
     GoodsdisputeviewComponent,
-    GoodsreceiptviewComponent,
-    StoviewComponent,
-    StoeditComponent,
+    GoodsreceiptviewComponent, 
   ],
   providers: [
     CookieService,

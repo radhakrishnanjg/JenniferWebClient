@@ -9,7 +9,7 @@ import { PrivateutilityService } from '../_services/service/privateutility.servi
 import { EncrDecrService } from '../_services/service/encr-decr.service';
 import { CompanydetailService } from "../_services/service/companydetail.service";
 import { ConnectionService } from 'ng-connection-service';
- 
+
 @Component({
   selector: 'app-privatelayout',
   templateUrl: './privatelayout.component.html',
@@ -211,12 +211,16 @@ export class PrivatelayoutComponent implements OnInit {
         menuarea.addClass("expandit").removeClass("collapseit");
         topbar.removeClass("sidebar_shift");
         mainarea.removeClass("sidebar_shift");
-        $('.logo-area').show();
+        $('.logo').show();
+        $('.logotogl').hide();
+        $('.navbar-header').css("width", "218px");
       } else {
         menuarea.addClass("collapseit").removeClass("expandit");
         topbar.addClass("sidebar_shift");
         mainarea.addClass("sidebar_shift");
-        $('.logo-area').hide();
+        $('.logo').hide();
+        $('.navbar-header').css("width", "36px");
+        $('.logotogl').show();
       }
     });
 

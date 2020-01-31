@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
 //kendo
-import { GridModule } from '@progress/kendo-angular-grid';
+import { GridModule, PDFModule, ExcelModule } from '@progress/kendo-angular-grid';
 import { PopupModule } from '@progress/kendo-angular-popup';
 import { DropDownListModule } from '@progress/kendo-angular-dropdowns'; 
 import { DateInputsModule } from '@progress/kendo-angular-dateinputs';
@@ -21,7 +21,6 @@ import { EncrDecrService } from '../_services/service/encr-decr.service';
 import { CookieService } from 'ngx-cookie-service';
 import { PopupAnchorDirective } from './salesorder/popup.anchor-target.directive';
 
-import { SalesratecardlistComponent } from './salesratecardlist/salesratecardlist.component';
 import { SalesorderlistComponent } from './salesorderlist/salesorderlist.component';
 import { SalesorderComponent } from './salesorder/salesorder.component';
 import { SalesShipmentComponent } from './sales-shipment/sales-shipment.component';
@@ -53,6 +52,8 @@ import { SalesRoutingModule } from './sales.routing.module';
     SelectDropDownModule,
     InputsModule, 
     GridModule,
+    PDFModule, 
+    ExcelModule,
     DropDownListModule,
     PopupModule,  
     IntlModule,
@@ -62,8 +63,7 @@ import { SalesRoutingModule } from './sales.routing.module';
   ],
 
   declarations: [
-    PopupAnchorDirective,
-    SalesratecardlistComponent,
+    PopupAnchorDirective, 
     SalesorderlistComponent,
     SalesorderComponent,
     SalesShipmentComponent,

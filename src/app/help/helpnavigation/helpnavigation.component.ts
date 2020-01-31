@@ -1,7 +1,14 @@
 import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { AuthorizationGuard } from '../../_guards/Authorizationguard';
 
 import { Helpmenu } from '../../_services/model/helpmenu';
 import { HelpmenuService } from '../../_services/service/helpmenu.service';
+import { TicketService } from '../../_services/service/ticket.service'
+import { Dropdown, Ticket } from 'src/app/_services/model';
+import { PrivateutilityService } from '../../_services/service/privateutility.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-helpnavigation',
@@ -11,31 +18,88 @@ import { HelpmenuService } from '../../_services/service/helpmenu.service';
 
 export class HelpnavigationComponent implements OnInit {
 
+  // objLedger: TimerHandler = {} as any;
+  SupportQueryForm: FormGroup;
+  objTicket: Ticket = {} as any;
+
   items: Helpmenu[] = [] as any;
   leftmenus: Helpmenu[] = [] as any;
   SearchKeyword: string = '';
+  panelTitle: string;
   constructor(
-    
     private _HelpmenuService: HelpmenuService,
+    private _PrivateutilityService: PrivateutilityService,
+    private fb: FormBuilder,
+    private _router: Router,
+    private _authorizationGuard: AuthorizationGuard,
+    private _ticketService:TicketService,
+    private alertService: ToastrService,
   ) { }
+
+  formErrors = {
+
+    'ModuleType': '',
+    'Subject': '',
+    'ReferenceNumber': '',
+    'Query': '',
+
+  };
+
+  validationMessages = {
+
+    'ModuleType': {
+      'required': 'This field is required.',
+
+    },
+    'Subject': {
+      'required': 'This field is required.',
+    },
+
+    'ReferenceNumber': {
+      'required': 'This field is required.',
+    },
+
+    'Query': {
+      'required': 'This field is required.',
+    },
+
+  };
+
+  logValidationErrors(group: FormGroup = this.SupportQueryForm): void {
+    Object.keys(group.controls).forEach((key: string) => {
+      const abstractControl = group.get(key);
+      if (abstractControl && abstractControl.value && abstractControl.value.length > 0 && !abstractControl.value.replace(/^\s+|\s+$/gm, '').length) {
+        abstractControl.setValue('');
+      }
+      this.formErrors[key] = '';
+      if (abstractControl && !abstractControl.valid &&
+        (abstractControl.touched || abstractControl.dirty)) {
+        const messages = this.validationMessages[key];
+        for (const errorKey in abstractControl.errors) {
+          if (errorKey) {
+            this.formErrors[key] += messages[errorKey] + ' ';
+          }
+        }
+      }
+      if (abstractControl instanceof FormGroup) {
+        this.logValidationErrors(abstractControl);
+      }
+    });
+  }
 
 
   onLoad() {
 
     if (localStorage.getItem("helpmenucontent") == null) {
-      //
       return this._HelpmenuService.search('PageContent', '', true).subscribe(
         (lst) => {
           if (lst != null) {
             this.items = lst;
-            debugger
             this.leftmenus = lst;
             localStorage.setItem("helpmenucontent", JSON.stringify(lst));
           }
-          //
         },
         (err) => {
-          //
           console.log(err);
         }
       );
@@ -64,19 +128,28 @@ export class HelpnavigationComponent implements OnInit {
   // }
 
   ngOnInit() {
+
+    this.SupportQueryForm = this.fb.group({
+      ModuleType: ['', [Validators.required]],
+      Subject: ['', [Validators.required]],
+      ReferenceNumber: ['', [Validators.required],],
+      Query: ['', [Validators.required],],
+
+    });
+
     localStorage.removeItem("helpmenucontent");
     this.onLoad();
-    
-    $(window).scroll(function() {
+
+    $(window).scroll(function () {
       if ($(this).scrollTop()) {
         $('#toTop').fadeIn();
       } else {
         $('#toTop').fadeOut();
       }
     });
-    
-     $("#toTop").click(function () { 
-        $("html, body").animate({scrollTop: 0}, 1000);
+
+    $("#toTop").click(function () {
+      $("html, body").animate({ scrollTop: 0 }, 1000);
     });
 
     //collapseing side bar
@@ -88,9 +161,23 @@ export class HelpnavigationComponent implements OnInit {
     mainarea.addClass("sidebar_shift");
     $('.logo-area').hide();
 
+    this.GetModuleType();
 
-   
   }
+
+  lstModuleType: Dropdown[];
+  GetModuleType() {
+    this._PrivateutilityService.GetValues('ModuleType')
+      .subscribe(
+        (data: Dropdown[]) => {
+          this.lstModuleType = data;
+        },
+        (err: any) => {
+          console.log(err);
+        }
+      );
+  }
+
   scroll(el: HTMLElement) {
     el.scrollIntoView();
   }
@@ -102,6 +189,31 @@ export class HelpnavigationComponent implements OnInit {
     this.items = helpmenucontent;
     document.querySelector('#div' + el).scrollIntoView();
   }
+
+  identity: string;
+  SaveData() {
+    this.objTicket.Query = this.SupportQueryForm.controls['Query'].value;;
+    this.objTicket.ModuleType = this.SupportQueryForm.controls['ModuleType'].value;;
+    this.objTicket.Subject = this.SupportQueryForm.controls['Subject'].value;;
+    this.objTicket.ReferenceNumber = this.SupportQueryForm.controls['ReferenceNumber'].value;;
+    this.objTicket.SupportQueryID = 0;
+
+    this._ticketService.insert(this.objTicket).subscribe(
+      (data) => {
+        if (data != null && data.Flag == true) {
+          this._router.navigate(['/Supporthistory']);
+          this.alertService.success(data.Msg); 
+        } else {
+          this._router.navigate(['/Supporthistory']);
+          this.alertService.error(data.Msg);
+        }
+        $('#modalstatusconfimation').modal('hide'); 
+      },
+      (error: any) => {
+        console.log(error);
+      }
+    );
+  } 
 
 }
 

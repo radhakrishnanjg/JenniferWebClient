@@ -69,13 +69,20 @@ export class GstdownloadComponent implements OnInit {
       this.alertService.error("Please select the State.!");
       return;
     }
+    if (this.Year == 0) {
+      this.alertService.error("Please select the Year.!");
+      return;
+    }
+    if (this.Month == 0) {
+      this.alertService.error("Please select the Month.!");
+      return;
+    }
     this._gstfinancefileuploadService.DownloadGSTReturn(this.Year, this.Month, this.State)
       .subscribe(data => {
         this.alertService.success('File Downloaded successfully');
-        //saveAs(data, fileName + '.xlsx')
+        saveAs(data, this.State + '_' + this.Year + '_' + this.Month)
       },
         (err) => {
-          //
           console.log(err);
         }
       );
@@ -85,13 +92,14 @@ export class GstdownloadComponent implements OnInit {
     if (this._authorizationGuard.CheckAcess("GstDownload", "ViewEdit")) {
       return;
     }
+
     this._gstfinancefileuploadService.GSTReturnProcesses()
       .subscribe(data => {
         if (data.Flag) {
           this.alertService.success(data.Msg);
         }
         else {
-          this.alertService.success(data.Msg);
+          this.alertService.error(data.Msg);
         }
       },
         (err) => {

@@ -24,9 +24,9 @@
 <div class="panel panel-default">
   <div class="panel-heading">
     <div class="row">
-      <div class="col-xs-12 col-sm-10 col-md-10 col-lg-10">
-        <div class="input-group col-sm-12" role="group" aria-label="Basic example">
-          <div class="col-md-3 nopading_loct">
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="input-group col-xs-12 col-sm-12" role="group" aria-label="Basic example">
+          <div class="col-md-3 col-sm-3 col-xs-12 nopading_loct">
             <select [(ngModel)]="SearchBy" class="serchcurv form-control btn-group">
               <option value="" selected="select">Search By</option>
               <option value="TaskOwner"> Task Owner</option>
@@ -34,17 +34,17 @@
 
             </select>
           </div>
-          <div class="col-md-4 nopading_loct" *ngIf="(SearchBy!='Date')">
+          <div class="col-md-4 col-sm-3 nopading_loct" *ngIf="(SearchBy!='Date')">
             <input [(ngModel)]="SearchKeyword" type="text" class="serchcurv form-control btn-group">
           </div>
-          <div class="col-md-4 nopading_loct" *ngIf="(SearchBy=='Date')">
+          <div class="col-md-3 col-sm-3 nopading_loct" *ngIf="(SearchBy=='Date')">
             <input type="text" ngxDaterangepickerMd [(ngModel)]="selectedDateRange"
               class="serchcurv form-control btn-group col-xs-12 pointer"
               style="border:1px soloid #ccc !important; padding :3px;left:0px" [showCustomRangeLabel]="true"
               [ranges]="Searchranges" [showCancel]="true" placeholder="Select please..."
               (ngModelChange)="onChange($event)" />
           </div>
-          <div class="col-md-2 nopading_loct">
+          <div class="col-md-3 col-sm-3 col-xs-6 nopading_loct">
             <button class="serchcurv btn btn-default btn-group" (click)="Search()" title="Search">
               <i class="fa fa-search " aria-hidden="true"></i>
             </button>
@@ -52,44 +52,54 @@
               <i class="fa fa-refresh" aria-hidden="true"></i>
             </button>
           </div>
+          <div class="col-xs-6 col-sm-3 col-md-2 text-right nopadding">
+            <button type="button" class="btn btn-xs btn-sm btn-primary" routerLink="/Allotment/Create">Assign</button>
+          </div>
         </div>
-      </div>
-      <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 text-right">
-        <button  type="button" class="btn btn-primary" routerLink="/Allotment/Create">Assign</button>
       </div>
     </div>
   </div>
   <div class="panel-body">
-    <kendo-grid [data]="gridView" resizable="true" columnMenu="true" [pageSize]="pageSize" [skip]="skip"
-      [pageable]="{pageSizes: [10, 25, 50, 100]}" (pageChange)="pageChange($event)" [sortable]="{
+    <div class="table-responsive">
+      <table class="table">
+        <kendo-grid [data]="gridView" resizable="true" columnMenu="true" [pageSize]="pageSize" [skip]="skip"
+          [pageable]="{pageSizes: [10, 25, 50, 100, 250, 500]}" (pageChange)="pageChange($event)" [sortable]="{
           allowUnsort: allowUnsort,
           mode:  'single'
           }" [sort]="sort" (sortChange)="sortChange($event)" [filterable]="true"
-      (dataStateChange)="dataStateChange($event)" [filter]="state.filter">
-
-      <kendo-grid-column field="RemovalOrderID" title="Removal Order ID">
-      </kendo-grid-column>
-      <kendo-grid-column field="TrackingID" title="Tracking Id">
-      </kendo-grid-column>
-      <kendo-grid-column field="DisputeType" title="Dispute Type">
-      </kendo-grid-column>
-      <kendo-grid-column field="Qty" title="Qty">
-      </kendo-grid-column>
-      <kendo-grid-column field="SellingValue" title="Selling Value">
-      </kendo-grid-column>
-      <kendo-grid-column field="AssignToName" title="Task Owner">
-      </kendo-grid-column>
-      <kendo-grid-column field="AssignedByName" title="Assign By">
-      </kendo-grid-column> 
-      <kendo-grid-column field="AssignedDate" title="Assigned Date" filter="date" format="{0:d}" [filterable]="false"
-        width="160">
-        <ng-template kendoGridCellTemplate let-dataItem>
-          {{ dataItem.AssignedDate | date :"MM-dd-yyyy HH:mm" }}
-        </ng-template>
-      </kendo-grid-column>
-      <kendo-grid-column field="CurrentStatus" title="Status">
-      </kendo-grid-column>
-    </kendo-grid>
-
+          (dataStateChange)="dataStateChange($event)" [filter]="state.filter">
+          <ng-template kendoGridToolbarTemplate>
+            <input placeholder="Search in all columns..." style="float:right;" kendoTextBox
+              (input)="onFilter($event.target.value)" />
+            <button kendoGridExcelCommand type="button" icon="file-excel"> </button>
+            <button kendoGridPDFCommand icon="file-pdf"> </button>
+            <kendo-grid-pdf fileName="AllotmentList.pdf" [repeatHeaders]="true"></kendo-grid-pdf>
+            <kendo-grid-excel fileName="AllotmentList.xlsx"></kendo-grid-excel>
+          </ng-template>
+          <kendo-grid-column field="RemovalOrderID" title="Removal Order ID">
+          </kendo-grid-column>
+          <kendo-grid-column field="TrackingID" title="Tracking Id">
+          </kendo-grid-column>
+          <kendo-grid-column field="DisputeType" title="Dispute Type">
+          </kendo-grid-column>
+          <kendo-grid-column field="Qty" title="Qty">
+          </kendo-grid-column>
+          <kendo-grid-column field="SellingValue" title="Selling Value">
+          </kendo-grid-column>
+          <kendo-grid-column field="AssignToName" title="Task Owner">
+          </kendo-grid-column>
+          <kendo-grid-column field="AssignedByName" title="Assign By">
+          </kendo-grid-column>
+          <kendo-grid-column field="AssignedDate" title="Assigned Date" filter="date" format="{0:d}"
+            [filterable]="false" width="160">
+            <ng-template kendoGridCellTemplate let-dataItem>
+              {{ dataItem.AssignedDate | date :"MM-dd-yyyy HH:mm" }}
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="CurrentStatus" title="Status">
+          </kendo-grid-column>
+        </kendo-grid>
+      </table>
+    </div>
   </div>
 </div>

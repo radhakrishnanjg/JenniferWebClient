@@ -7,7 +7,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { DomSanitizer } from "@angular/platform-browser";
 
 //kendo
-import { GridModule } from '@progress/kendo-angular-grid';
+import { GridModule, PDFModule, ExcelModule } from '@progress/kendo-angular-grid';
 //other module
 import { DataTablesModule } from 'angular-datatables';
 import { PreventDoubleSubmitModule } from 'ngx-prevent-double-submission';
@@ -45,7 +45,9 @@ export class SafeHtmlPipe implements PipeTransform {
     ReactiveFormsModule,
     GridModule,
 
-    GridModule,
+    GridModule,  
+    PDFModule,
+    ExcelModule,
     DataTablesModule,
     PreventDoubleSubmitModule.forRoot(),
     NgxMaskModule.forRoot(),

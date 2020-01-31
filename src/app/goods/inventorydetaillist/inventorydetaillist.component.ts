@@ -103,6 +103,62 @@ export class InventorydetaillistComponent implements OnInit {
     this.gridView = process(this.items, this.state);
   }
 
+  public onFilter(inputValue: string): void {
+    this.gridView = process(this.items, {
+      skip: this.skip,
+      take: this.skip + this.pageSize,
+      filter: {
+        logic: "or",
+        filters: [
+          {
+            field: 'LocationName',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'BrandName',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'ItemCode',
+            operator: 'contains',
+            value: inputValue
+          }, 
+          {
+            field: 'ItemName',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'EventDate',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'SellableCurrentStock',
+            operator: 'contains',
+            value: inputValue
+          }, 
+          {
+            field: 'UnsellableCurrentStock',
+            operator: 'contains',
+            value: inputValue
+          }, 
+          {
+            field: 'SellableWarehouseQty',
+            operator: 'contains',
+            value: inputValue
+          }, 
+          {
+            field: 'UnSellableWarehouseQty',
+            operator: 'contains',
+            value: inputValue
+          }, 
+        ],
+      }
+    })  ;  
+  }
 
   //#endregion Paging Sorting and Filtering End
 

@@ -263,7 +263,7 @@
                 <td class="text-right">{{ user.POQty  }}</td>
                 <td class="text-right">{{ user.AvailableQty  }}</td>
                 <td>
-                  <input type="number" min="0" step="1" class="form-control" max="100000"
+                <input type="text" id="{{user.ItemID}}" name="{{user.ItemID}}" class="form-control" maxlength="13" onkeypress="return /[0-9]/i.test(event.key)"
                     (input)="updateList(id,'ShipmentQty',$event.target.value)" value="{{user.ShipmentQty}}">
                 </td>
 

@@ -24,26 +24,26 @@
 <div class="panel panel-default">
   <div class="panel-heading">
     <div class="row">
-      <div class="col-xs-12 col-sm-10 col-md-10 col-lg-10">
-        <div class="input-group col-sm-12" role="group" aria-label="Basic example">
-          <div class="col-md-3 nopading_loct">
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="input-group col-xs-12 col-sm-12" role="group" aria-label="Basic example">
+          <div class="col-md-3 col-sm-3 col-xs-12 nopading_loct">
             <select [(ngModel)]="SearchBy" class="serchcurv form-control btn-group">
               <option value="" selected="select">Search By</option>
               <option value="ByMerchantRemovalOrderID">RTV Number</option>
               <option value="ByDate">Date</option>
             </select>
           </div>
-          <div class="col-md-4 nopading_loct" *ngIf="(SearchBy!='ByDate')">
+          <div class="col-md-4 col-sm-3 nopading_loct" *ngIf="(SearchBy!='ByDate')">
             <input [(ngModel)]="SearchKeyword" type="text" class="serchcurv form-control btn-group">
           </div>
-          <div class="col-md-4 nopading_loct" *ngIf="(SearchBy=='ByDate')">
+          <div class="col-md-3 col-sm-3 nopading_loct" *ngIf="(SearchBy=='ByDate')">
             <input type="text" ngxDaterangepickerMd [(ngModel)]="selectedDateRange"
               class="serchcurv form-control btn-group col-xs-12 pointer"
               style="border:1px soloid #ccc !important; padding :3px;left:0px" [showCustomRangeLabel]="true"
               [ranges]="Searchranges" [showCancel]="true" placeholder="Select please..."
               (ngModelChange)="onChange($event)" />
           </div>
-          <div class="col-md-2 nopading_loct">
+          <div class="col-md-3 col-sm-3 col-xs-6 nopading_loct nopading_loct">
             <button class="serchcurv btn btn-default btn-group" (click)="Search()" title="Search">
               <i class="fa fa-search " aria-hidden="true"></i>
             </button>
@@ -56,43 +56,53 @@
     </div>
   </div>
   <div class="panel-body">
-    <kendo-grid [data]="gridView" resizable="true" columnMenu="true" [pageSize]="pageSize" [skip]="skip"
-      [pageable]="{pageSizes: [10, 25, 50, 100]}" (pageChange)="pageChange($event)" [sortable]="{
+    <div class="table-responsive">
+      <table class="table">
+        <kendo-grid [data]="gridView" resizable="true" columnMenu="true" [pageSize]="pageSize" [skip]="skip"
+          [pageable]="{pageSizes: [10, 25, 50, 100, 250, 500]}" (pageChange)="pageChange($event)" [sortable]="{
           allowUnsort: allowUnsort,
           mode:  'single'
           }" [sort]="sort" (sortChange)="sortChange($event)" [filterable]="true"
-      (dataStateChange)="dataStateChange($event)" [filter]="state.filter">
-
-      <kendo-grid-column field="MerchantRemovalOrderID" title="RTV Number">
-      </kendo-grid-column>
-      <kendo-grid-column field="Location" title="Location">
-      </kendo-grid-column>
-      <kendo-grid-column field="RequestedQuantity" title="Requested Quantity">
-      </kendo-grid-column>
-      <kendo-grid-column field="ShippedQuantity" title="Shipped Quantity">
-      </kendo-grid-column>
-      <kendo-grid-column field="RecordUploadStatus" title="API Status">
-      </kendo-grid-column>
-      <kendo-grid-column field="RTVStatus" title="RTV Status">
-      </kendo-grid-column>
-      <kendo-grid-column field="TrackingID" title="Tracking ID">
-      </kendo-grid-column>
-      <kendo-grid-column field="CreationDate" title="Creation Date" filter="date" format="{0:d}" [filterable]="false"
-        width="160">
-        <ng-template kendoGridCellTemplate let-dataItem>
-          {{ dataItem.CreationDate | date :"MM-dd-yyyy HH:mm" }}
-        </ng-template>
-      </kendo-grid-column>
-      <kendo-grid-column field="RTVID" title="Action" [class]="{'text-center': true}" [filterable]="false"
-        [sortable]="false" width="70">
-        <ng-template kendoGridCellTemplate let-obj>
-          <i class="fa fa-download bgblue" (click)="downloadFile(obj.RTVID)"></i>
-          &nbsp;
-          <i class="fa fa-download bgred" *ngIf="obj.RecordUploadStatus =='REJECTED'"
-            (click)="downloadError(obj.RTVID)"></i>
-        </ng-template>
-      </kendo-grid-column>
-    </kendo-grid>
-
+          (dataStateChange)="dataStateChange($event)" [filter]="state.filter">
+          <ng-template kendoGridToolbarTemplate>
+            <input placeholder="Search in all columns..." style="float:right;" kendoTextBox
+              (input)="onFilter($event.target.value)" />
+            <button kendoGridExcelCommand type="button" icon="file-excel"> </button>
+            <button kendoGridPDFCommand icon="file-pdf"> </button>
+            <kendo-grid-pdf fileName="OrderList.pdf" [repeatHeaders]="true"></kendo-grid-pdf>
+            <kendo-grid-excel fileName="OrderList.xlsx"></kendo-grid-excel>
+          </ng-template>
+          <kendo-grid-column field="MerchantRemovalOrderID" title="RTV Number">
+          </kendo-grid-column>
+          <kendo-grid-column field="Location" title="Location">
+          </kendo-grid-column>
+          <kendo-grid-column field="RequestedQuantity" title="Requested Quantity">
+          </kendo-grid-column>
+          <kendo-grid-column field="ShippedQuantity" title="Shipped Quantity">
+          </kendo-grid-column>
+          <kendo-grid-column field="RecordUploadStatus" title="API Status">
+          </kendo-grid-column>
+          <kendo-grid-column field="RTVStatus" title="RTV Status">
+          </kendo-grid-column>
+          <kendo-grid-column field="TrackingID" title="Tracking ID">
+          </kendo-grid-column>
+          <kendo-grid-column field="CreationDate" title="Creation Date" filter="date" format="{0:d}"
+            [filterable]="false" width="160">
+            <ng-template kendoGridCellTemplate let-dataItem>
+              {{ dataItem.CreationDate | date :"MM-dd-yyyy HH:mm" }}
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column title="Action" [class]="{'text-center': true}" [filterable]="false" [sortable]="false"
+            width="70">
+            <ng-template kendoGridCellTemplate let-obj>
+              <i class="fa fa-download bgblue" (click)="downloadFile(obj.RTVID)"></i>
+              &nbsp;
+              <i class="fa fa-download bgred" *ngIf="obj.RecordUploadStatus =='REJECTED'"
+                (click)="downloadError(obj.RTVID)"></i>
+            </ng-template>
+          </kendo-grid-column>
+        </kendo-grid>
+      </table>
+    </div>
   </div>
 </div>

@@ -121,7 +121,7 @@ export class ItemlistComponent implements OnInit,OnDestroy {
   //#region Paging Sorting and Filtering Start
   public allowUnsort = false;
   public sort: SortDescriptor[] = [{
-    field: 'CategoryName',
+    field: 'ImagePath',
     dir: 'asc'
   }];
   public gridView: GridDataResult;
@@ -136,7 +136,7 @@ export class ItemlistComponent implements OnInit,OnDestroy {
     // Initial filter descriptor
     filter: {
       logic: 'and',
-      filters: [{ field: 'CategoryName', operator: 'contains', value: '' }]
+      filters: [{ field: 'ImagePath', operator: 'contains', value: '' }]
     }
   };
   public pageChange({ skip, take }: PageChangeEvent): void {
@@ -167,7 +167,52 @@ export class ItemlistComponent implements OnInit,OnDestroy {
     this.gridView = process(this.items, this.state);
   }
 
-
+  public onFilter(inputValue: string): void {
+    this.gridView = process(this.items.slice(this.skip, this.skip + this.pageSize), {
+      skip: this.skip,
+      take: this.skip + this.pageSize,
+      filter: {
+        logic: "or",
+        filters: [
+          {
+            field: 'ImagePath',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'CategoryName',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'BrandName',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'ItemCode',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'ItemName',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'MRP',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'TaxRate',
+            operator: 'contains',
+            value: inputValue
+          }, 
+        ],
+      }
+    });
+  }
   //#endregion Paging Sorting and Filtering End
 
 

@@ -26,9 +26,9 @@
   <div class="panel-heading">
 
     <div class="row">
-      <div class="col-xs-12 col-sm-7 col-md-7 col-lg-7">
-        <div class="input-group col-sm-12" role="group" aria-label="Basic example">
-          <div class="col-md-3 nopading_loct">
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="input-group col-xs-12 col-sm-12" role="group" aria-label="Basic example">
+          <div class="col-md-3 col-sm-3 col-xs-12 nopading_loct">
             <select [(ngModel)]="SearchBy" class="form-control serchcurv btn-group">
               <option value="" selected="select">Search By</option>
               <option value="OutwardID">Outward ID</option>
@@ -36,11 +36,11 @@
               <option value="GSTEwayBillNumber">E-Way Bill Number</option>
             </select>
           </div>
-          <div class="col-md-5 nopading_loct">
+          <div class="col-md-3 col-sm-3 nopading_loct">
             <input (keyup.enter)="Search()" [(ngModel)]="SearchKeyword" type="text"
               class="form-control btn-group serchcurv">
           </div>
-          <div class="col-md-3 nopading_loct">
+          <div class="col-md-3 col-sm-3 col-xs-5 nopading_loct">
             <button class="btn btn-default btn-group serchcurv" (click)="Search()" title="Search">
               <i class="fa fa-search " aria-hidden="true"></i>
             </button>
@@ -48,32 +48,41 @@
               <i class="fa fa-refresh" aria-hidden="true"></i>
             </button>
           </div>
+          <div class="col-xs-7 col-sm-3 col-md-3 text-right nopadding">
+            <button class="btn btn-primary" (click)="newButtonClick()" title="Update E-Way Bill Number">
+              Update E-Way Bill Number
+            </button>
+          </div>
         </div>
-      </div>
-      <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5 text-right">
-        <button class="btn btn-primary" (click)="newButtonClick()" title="Update E-Way Bill Number">
-          Update E-Way Bill Number
-        </button>
       </div>
     </div>
   </div>
   <div class="panel-body">
+    <div class="table-responsive">
+      <table class="table">
     <kendo-grid [data]="gridView" resizable="true" columnMenu="true" [pageSize]="pageSize" [skip]="skip"
-      [pageable]="{pageSizes: [10, 25, 50, 100]}" (pageChange)="pageChange($event)" [sortable]="{
+      [pageable]="{pageSizes: [10, 25, 50, 100, 250, 500]}" (pageChange)="pageChange($event)" [sortable]="{
       allowUnsort: allowUnsort,
       mode:  'single'
       }" [sort]="sort" (sortChange)="sortChange($event)" [filterable]="true"
-      (dataStateChange)="dataStateChange($event)" [filter]="state.filter">
-
+      (dataStateChange)="dataStateChange($event)" [filter]="state.filter"> 
+      <ng-template kendoGridToolbarTemplate>
+        <input placeholder="Search in all columns..." style="float:right;" kendoTextBox
+          (input)="onFilter($event.target.value)" />
+        <button kendoGridExcelCommand type="button" icon="file-excel"> </button>
+        <button kendoGridPDFCommand icon="file-pdf"> </button>
+        <kendo-grid-pdf fileName="ShipmentOutwardList.pdf" [repeatHeaders]="true"></kendo-grid-pdf>
+        <kendo-grid-excel fileName="ShipmentOutwardList.xlsx"></kendo-grid-excel>
+      </ng-template>
       <kendo-grid-column field="OutwardID" title="Outward No.">
       </kendo-grid-column>
       <kendo-grid-column field="CourierTrackingID" title="Courier Tracking No.">
       </kendo-grid-column>
       <kendo-grid-column field="GSTEwayBillNumber" title="GST E-Way Bill No.">
       </kendo-grid-column>
-    </kendo-grid>
-
-
+    </kendo-grid> 
+  </table>
+</div>
   </div>
 
 

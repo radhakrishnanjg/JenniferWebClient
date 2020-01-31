@@ -123,6 +123,57 @@ export class PicklistsearchComponent implements OnInit {
     this.gridView = process(this.items, this.state);
   }
 
+  public onFilter(inputValue: string): void {
+    this.gridView = process(this.items, {
+      skip: this.skip,
+      take: this.skip + this.pageSize,
+      filter: {
+        logic: "or",
+        filters: [
+          {
+            field: 'OrderID',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'InvoiceNumber',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'InventoryType',
+            operator: 'contains',
+            value: inputValue
+          }, 
+          {
+            field: 'LocationName',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'PicklistQty',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'PickedQty',
+            operator: 'contains',
+            value: inputValue
+          }, 
+          {
+            field: 'TransferQty',
+            operator: 'contains',
+            value: inputValue
+          }, 
+          {
+            field: 'Status',
+            operator: 'contains',
+            value: inputValue
+          }, 
+        ],
+      }
+    })  ;  
+  }
 
   //#endregion Paging Sorting and Filtering End
 

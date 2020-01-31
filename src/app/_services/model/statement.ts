@@ -40,4 +40,5 @@ export class Statement {
     Recovered: number;
     CreditDate: Date;
     NetRevenue: number;
+    Status: string; 
 }

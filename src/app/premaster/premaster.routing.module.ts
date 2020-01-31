@@ -8,14 +8,18 @@ import { MarketplacelistComponent } from '../premaster/marketplacelist/marketpla
 import { CompanylistComponent } from '../premaster/companylist/companylist.component';
 import { CompanyComponent } from '../premaster/company/company.component';
 import { MenulistComponent } from '../premaster/menulist/menulist.component';
+import { ReportmasterlistComponent } from './reportmasterlist/reportmasterlist.component';
+import { ReportmasterComponent } from './reportmaster/reportmaster.component';
 
-const appRoutes: Routes = [ 
-      // Pre master module  
-      { path: 'Companylist', component: CompanylistComponent, canActivate: [AuthGuard] },
-      { path: 'Company/:id', component: CompanyComponent, canActivate: [AuthGuard] },
-      { path: 'Menulist', component: MenulistComponent, canActivate: [AuthGuard] },
-      { path: 'Dropdownlist', component: DropdownlistComponent, canActivate: [AuthGuard] },
-      { path: 'Marketplacelist', component: MarketplacelistComponent, canActivate: [AuthGuard] },
+const appRoutes: Routes = [
+    // Pre master module  
+    { path: 'Companylist', component: CompanylistComponent, canActivate: [AuthGuard] },
+    { path: 'Company/:id', component: CompanyComponent, canActivate: [AuthGuard] },
+    { path: 'Menulist', component: MenulistComponent, canActivate: [AuthGuard] },
+    { path: 'Dropdownlist', component: DropdownlistComponent, canActivate: [AuthGuard] },
+    { path: 'Marketplacelist', component: MarketplacelistComponent, canActivate: [AuthGuard] },
+    { path: 'Reportmaster/:id', component: ReportmasterComponent, canActivate: [AuthGuard] },
+    { path: 'Reportmasterlist', component: ReportmasterlistComponent, canActivate: [AuthGuard, StoreGuard] },
 ];
 
 @NgModule({

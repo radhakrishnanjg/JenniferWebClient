@@ -1,0 +1,131 @@
+<div class="row">
+  <div class="col-sm-6 col-lg-6">
+    <h3>
+      Report Master
+    </h3>
+  </div>
+  <div class="col-sm-6 col-lg-6">
+    <div class="pull-right hidden-xs">
+      <ol class="breadcrumb" id="dynamicbreadcrumb">
+        <li>
+          <span> Jennifer Admin</span>
+        </li>
+        <li>
+           <span> Report Master</span>
+        </li>
+        <li class="active">
+          <i class="fa fa-list-alt" aria-hidden="true"></i>
+          List
+        </li>
+      </ol>
+    </div>
+  </div>
+</div>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <div class="row">
+      <div class="col-xs-12 col-sm-10 col-md-10 col-lg-10">
+        <div class="input-group col-sm-12" role="group" aria-label="Basic example">
+          <div class="col-md-3 nopading_loct">
+            <select [(ngModel)]="SearchBy" type="select" class="form-control serchcurv  btn-group">
+              <option value="" selected="select">Search By</option>
+              <option value="ByScreen"> Screen</option>
+              <option value="ByReportType"> ReportType</option>
+              <option value="ByStatus"> Status</option>
+            </select>
+          </div>
+          <div class="col-md-4 nopading_loct" *ngIf="(SearchBy!= 'ByStatus') ">
+            <input (keyup.enter)="Search()" [(ngModel)]="SearchKeyword" type="text" class="serchcurv  form-control btn-group">
+          </div>
+          <div class="col-md-3 nopading_loct" *ngIf="(SearchBy=='ByStatus')">
+
+            <select [(ngModel)]="Searchaction" type="select" class="serchcurv form-control btn-group">
+
+              <option value="true">Active</option>
+              <option value="false">InActive</option>
+            </select>
+
+          </div>
+          <div class="col-md-2 nopading_loct">
+            <button class="btn serchcurv btn-default btn-group" (click)="Search()" title="Search">
+              <i class="fa fa-search " aria-hidden="true"></i>
+            </button>
+            <button class="btn serchcurv btn-default btn-group" (click)="Refresh()" title="Reset">
+              <i class="fa fa-refresh" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 text-right">
+        <button class="btn btn-primary" (click)="AddNewLink()" title="Add New">
+
+          Add New
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="panel-body">
+
+    <kendo-grid [data]="gridView" resizable="true" columnMenu="true" [pageSize]="pageSize" [skip]="skip" [pageable]="{pageSizes: [10, 25, 50, 100, 250, 500]}"
+      (pageChange)="pageChange($event)" [sortable]="{
+          allowUnsort: allowUnsort,
+          mode:  'single'
+          }" [sort]="sort" (sortChange)="sortChange($event)" [filterable]="true"
+      (dataStateChange)="dataStateChange($event)" [filter]="state.filter">
+
+      <kendo-grid-column field="Report_Type" title="Report Type">
+      </kendo-grid-column>
+      <kendo-grid-column field="Screen_Name" title="Screen Name">
+      </kendo-grid-column>
+      <kendo-grid-column field="SP_Name" title="Stor Proc Name">
+      </kendo-grid-column>
+      <kendo-grid-column field="P_Count" title="Total Parameters">
+      </kendo-grid-column>
+
+      <kendo-grid-column field="IsActive"  title="IsActive" [class]="{'text-center': true}"  filter="boolean" width="120">
+        <ng-template kendoGridCellTemplate let-dataItem>
+          <i [class]="dataItem.IsActive ? 'fa fa-check': 'fa fa-times'" aria-hidden="true"></i>
+        </ng-template>
+      </kendo-grid-column>
+      <kendo-grid-column field="Download_Master_ID" title="Action" [class]="{'text-center': true}"  [filterable]="false" [sortable]="false" width="120">
+        <ng-template kendoGridCellTemplate let-dataItem>
+          <i class="fa fa-eye bgblue pointer" title="View" [routerLink]="['/Reportmaster', dataItem.Download_Master_ID]"></i>
+          &nbsp;
+          <i class="fa fa-trash bgred pointer" title="Delete"
+            (click)="confirmDeleteid(dataItem.Download_Master_ID,dataItem.Screen_Name)"></i>
+        </ng-template>
+      </kendo-grid-column>
+    </kendo-grid>
+
+  </div>
+  <div id="modaldeleteconfimation" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="modaldeleteconfimation" aria-hidden="true">
+    <div class="modal-dialog ">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+              aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="modaldeleteconfimation">Confirmation</h4>
+        </div>
+        <div class="modal-body alert-warning">
+          <div class="row">
+            <div class="col-xs-2">
+              <i class="fa fa-warning fa-3x "></i>
+            </div>
+            <div class="col-xs-10">
+              <div>
+                <h5>
+                  Are you sure you want to delete this value <span> {{deleteColumn}}</span>?
+                </h5>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-danger btn-sm" (click)="delete()">Yes</button>
+          &nbsp;
+          <button class="btn btn-default btn-sm" data-dismiss="modal">No</button>
+        </div>
+      </div>
+    </div>
+  </div>

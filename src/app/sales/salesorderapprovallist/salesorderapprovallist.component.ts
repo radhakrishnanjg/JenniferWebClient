@@ -138,6 +138,57 @@ export class SalesorderapprovallistComponent implements OnInit {
      this.gridView = process(this.items, this.state);
    }
  
+   public onFilter(inputValue: string): void {
+    this.gridView = process(this.items, {
+      skip: this.skip,
+      take: this.skip + this.pageSize,
+      filter: {
+        logic: "or",
+        filters: [
+          {
+            field: 'OrderID',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'OrderDate',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'CustomerName',
+            operator: 'contains',
+            value: inputValue
+          }, 
+          {
+            field: 'InventoryType',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'TransactionType',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'TotalValue',
+            operator: 'contains',
+            value: inputValue
+          }, 
+          {
+            field: 'OrderStatus',
+            operator: 'contains',
+            value: inputValue
+          }, 
+          {
+            field: 'ApprovalStatus',
+            operator: 'contains',
+            value: inputValue
+          }, 
+        ],
+      }
+    })  ;  
+  }
  
    //#endregion Paging Sorting and Filtering End
  

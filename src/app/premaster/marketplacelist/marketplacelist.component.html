@@ -63,7 +63,7 @@
     </div>
   </div>
   <div class="panel-body">
-    <kendo-grid [data]="gridView" resizable="true" columnMenu="true" [pageSize]="pageSize" [skip]="skip" [pageable]="{pageSizes: [10, 25, 50, 100]}" 
+    <kendo-grid [data]="gridView" resizable="true" columnMenu="true" [pageSize]="pageSize" [skip]="skip" [pageable]="{pageSizes: [10, 25, 50, 100, 250, 500]}" 
       (pageChange)="pageChange($event)" [sortable]="{
         allowUnsort: allowUnsort,
         mode:  'single'

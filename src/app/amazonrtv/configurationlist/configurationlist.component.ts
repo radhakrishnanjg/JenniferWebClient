@@ -134,4 +134,40 @@ export class ConfigurationlistComponent implements OnInit {
   }
 
 
+  public onFilter(inputValue: string): void {
+    this.gridView = process(this.items.slice(this.skip, this.skip + this.pageSize), {
+      skip: this.skip,
+      take: this.skip + this.pageSize,
+      filter: {
+        logic: "or",
+        filters: [
+          {
+            field: 'RTVLocationName',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'InventoryType',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'FrequencyType',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'Lastmodifieddate',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'LastModifiedByName',
+            operator: 'contains',
+            value: inputValue
+          },
+        ],
+      }
+    });
+  }
 }

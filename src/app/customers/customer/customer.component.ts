@@ -404,7 +404,12 @@ export class CustomerComponent implements OnInit {
       this.obj.lstContact = this.obj.lstContact.filter(a => a.IsActive == true);
     }
     if (this.obj.CustomerType == "B2B") {
-      //
+      let GSTStateCode = this.states.filter(a => a.StateID == this.customerform.controls['StateID'].value)[0].GSTStateCode;
+      let State = this.states.filter(a => a.StateID == this.customerform.controls['StateID'].value)[0].State;
+      if (GSTStateCode != this.customerform.controls['GSTNumber'].value.slice(0, 2)) {
+        this.alertService.error('GST Number must start with ' + GSTStateCode + ' for ' + State + ' state.!');
+        return;
+      }
       this._customerService.existGSTNumber(this.obj.CustomerID, this.obj.GSTNumber)
         .subscribe(
           (data) => {
@@ -494,7 +499,12 @@ export class CustomerComponent implements OnInit {
       this.obj.lstContact = this.obj.lstContact.filter(a => a.IsActive == true);
     }
     if (this.obj.CustomerType == "B2B") {
-      //
+      let GSTStateCode = this.states.filter(a => a.StateID == this.customerform.controls['StateID'].value)[0].GSTStateCode;
+      let State = this.states.filter(a => a.StateID == this.customerform.controls['StateID'].value)[0].State;
+      if (GSTStateCode != this.customerform.controls['GSTNumber'].value.slice(0, 2)) {
+        this.alertService.error('GST Number must start with ' + GSTStateCode + ' for ' + State + ' state.!');
+        return;
+      }
       this._customerService.existGSTNumber(this.obj.CustomerID, this.obj.GSTNumber)
         .subscribe(
           (data) => {

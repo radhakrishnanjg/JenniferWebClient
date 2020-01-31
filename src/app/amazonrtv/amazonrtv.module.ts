@@ -11,7 +11,7 @@ import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 import { EncrDecrService } from '../_services/service/encr-decr.service';
 
 //kendo
-import { GridModule } from '@progress/kendo-angular-grid';
+import { GridModule, PDFModule, ExcelModule } from '@progress/kendo-angular-grid';
 
 import { PreventDoubleSubmitModule } from 'ngx-prevent-double-submission';
 import { MomentModule } from 'ngx-moment';
@@ -38,6 +38,8 @@ import { AmazonrtvRoutingModule } from '../amazonrtv/amazonrtv.routing.module';
 
     NgxMaskModule.forRoot(),
     GridModule,
+    PDFModule, 
+    ExcelModule,
     AmazonrtvRoutingModule
   ],
   declarations: [

@@ -8,13 +8,13 @@
     <div class="pull-right hidden-xs">
       <ol class="breadcrumb" id="dynamicbreadcrumb">
         <li>
-           <span> Procurements</span>
+          <span> Procurements</span>
         </li>
         <li>
-           <span> Purchase Invoices </span>
+          <span> Purchase Invoices </span>
         </li>
         <li class="active">
-          
+
           Save
         </li>
       </ol>
@@ -34,7 +34,7 @@
         </div>
         <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 ">
           <div class="pull-right">
-            <button  type="button" class="btn btn-primary" routerLink="/Purchaselist" title="Back">
+            <button type="button" class="btn btn-primary" routerLink="/Purchaselist" title="Back">
               Back
             </button>
           </div>
@@ -44,9 +44,6 @@
     <div class="panel-body">
       <div class="groupspanheader"> Invoice Information </div>
       <div class="row">
-        <div class="col-md-6"></div>
-
-        <div class="col-md-6"></div>
         <div class="col-md-3 col-xs-12">
           <div class="form-group" [ngClass]="{'has-error': formErrors.InvoiceNumber}">
             <label class="control-label" for="InvoiceNumber">Invoice Number <span class="mandantory">*</span></label>
@@ -105,6 +102,16 @@
           </div>
         </div>
 
+        <div class="col-md-3 col-xs-3">
+          <div class="form-group">
+            <label class="control-label" for="USDValue">USD Value </label>
+            <div>
+              <input id="USDValue" type="text" class="form-control" formControlName="USDValue"
+                (blur)="logValidationErrors()" maxlength="10" onkeypress="return /[0-9.]/i.test(event.key)">
+            </div>
+          </div>
+        </div>
+
         <div class="col-md-12 col-xs-12">
           <div class="form-group" [ngClass]="{'has-error': formErrors.Remarks}">
             <label class="control-label" for="Remarks">Remarks <span class="mandantory">*</span></label>
@@ -151,9 +158,9 @@
                 <span>{{person.AvailableQty}}</span>
               </td>
               <td class="text-right">
-
-                <input type="number" min="0" step="1" class="form-control" max="100000"
-                  (input)="updateList(id,'Qty',$event.target.value)" value="{{person.Qty}}">
+                <input type="text" id="{{person.ItemID}}" name="{{person.ItemID}}" class="form-control" maxlength="13"
+                  onkeypress="return /[0-9]/i.test(event.key)" (input)="updateList(id,'Qty',$event.target.value)"
+                  value="{{person.Qty}}">
               </td>
               <td class="text-right">
                 <span>{{person.Rate}}</span>
@@ -248,7 +255,7 @@
     </div>
     <div class="panel-footer" *ngIf="IsEditable">
       <div class="pull-right btn-toolbar">
-        <button  type="button" class="btn btn-primary" routerLink="/Purchaselist" title="Cancel">
+        <button type="button" class="btn btn-primary" routerLink="/Purchaselist" title="Cancel">
 
           Cancel
         </button>

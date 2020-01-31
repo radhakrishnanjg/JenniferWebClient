@@ -25,7 +25,7 @@ import { RecaptchaModule } from 'ng-recaptcha';
 import * as bootstrap from "bootstrap";
 import * as $ from "jquery";
 //kendo
-import { GridModule } from '@progress/kendo-angular-grid';
+import { GridModule, PDFModule, ExcelModule } from '@progress/kendo-angular-grid';
 import { PopupModule } from '@progress/kendo-angular-popup';
 import { DropDownListModule } from '@progress/kendo-angular-dropdowns';
 import { PDFExportModule } from '@progress/kendo-angular-pdf-export';
@@ -40,15 +40,19 @@ import { EncrDecrService } from './_services/service/encr-decr.service';
 
 // Import your library
 import { PrivatelayoutComponent } from './privatelayout/privatelayout.component';
+import { ParentComponent } from './parent/parent.component';
 import { TermsofuseComponent } from './termsofuse/termsofuse.component';
 import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
 import { Dashboard1Component } from './dashboard1/dashboard1.component';
 
 // Import your Module
-import { AccountModule } from './account/account.module'; 
+import { AccountModule } from './account/account.module';
 import { MaintenanceComponent } from './maintenance/maintenance.component';
 import { SearchComponent } from './search/search.component';
-import { IndexComponent } from './index/index.component'; 
+import { IndexComponent } from './index/index.component';
+import { Dashboard2Component } from './dashboard2/dashboard2.component';
+import { Submenu1Component } from './submenu1/submenu1.component';
+import { Submenu2Component } from './submenu2/submenu2.component';
 
 
 @NgModule({
@@ -98,11 +102,15 @@ import { IndexComponent } from './index/index.component';
     AppComponent,
     Dashboard1Component,
     PrivatelayoutComponent,
+    ParentComponent,
     MaintenanceComponent,
     SearchComponent,
     TermsofuseComponent,
     PrivacyPolicyComponent,
     IndexComponent,
+    Dashboard2Component,
+    Submenu1Component,
+    Submenu2Component,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

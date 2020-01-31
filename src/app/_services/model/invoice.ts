@@ -22,7 +22,7 @@ export class Invoice {
     lstItem: Invoiceitem[];
     IsEditable: boolean;
     ISBOE:boolean;
-
+    USDValue: number; 
     // who is doing this task
     LoginId: number;
 

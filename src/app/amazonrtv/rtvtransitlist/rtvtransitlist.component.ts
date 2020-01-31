@@ -93,7 +93,77 @@ export class RtvtransitlistComponent implements OnInit {
     this.gridView = process(this.items, this.state);
   }
 
-
+  public onFilter(inputValue: string): void {
+    this.gridView = process(this.items.slice(this.skip, this.skip + this.pageSize), {
+      skip: this.skip,
+      take: this.skip + this.pageSize,
+      filter: {
+        logic: "or",
+        filters: [
+          {
+            field: 'RemovalOrderID',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'RemovalDate',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'TrackingNumber',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'ShipmentDate',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'Carrier',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'ItemCode',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'ItemCode2',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'InventoryType',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'Qty',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'InTransitValue',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'ShipmentStatus',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'Ageing_on_Shipment',
+            operator: 'contains',
+            value: inputValue
+          },
+        ],
+      }
+    });
+  }
   //#endregion Paging Sorting and Filtering End
 
 }

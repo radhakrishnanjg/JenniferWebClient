@@ -112,7 +112,7 @@ export class OrderlistComponent implements OnInit {
 
   public allowUnsort = false;
   public sort: SortDescriptor[] = [{
-    field: 'RTVID',
+    field: 'MerchantRemovalOrderID',
     dir: 'asc'
   }];
   public gridView: GridDataResult;
@@ -127,7 +127,7 @@ export class OrderlistComponent implements OnInit {
     // Initial filter descriptor
     filter: {
       logic: 'and',
-      filters: [{ field: 'RTVID', operator: 'contains', value: '' }]
+      filters: [{ field: 'MerchantRemovalOrderID', operator: 'contains', value: '' }]
     }
   };
   public pageChange({ skip, take }: PageChangeEvent): void {
@@ -157,6 +157,57 @@ export class OrderlistComponent implements OnInit {
     this.state = state;
     this.gridView = process(this.items, this.state);
   }
-
+  public onFilter(inputValue: string): void {
+    this.gridView = process(this.items.slice(this.skip, this.skip + this.pageSize), {
+      skip: this.skip,
+      take: this.skip + this.pageSize,
+      filter: {
+        logic: "or",
+        filters: [
+          {
+            field: 'MerchantRemovalOrderID',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'Location',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'RequestedQuantity',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'ShippedQuantity',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'RecordUploadStatus',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'RTVStatus',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'TrackingID',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'CreationDate',
+            operator: 'contains',
+            value: inputValue
+          },
+           
+        ],
+      }
+    });
+  }
 
 }

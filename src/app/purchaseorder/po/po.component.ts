@@ -7,7 +7,7 @@ import { ToastrService } from 'ngx-toastr';
 import { isNumeric } from "rxjs/util/isNumeric"
 import {
   Poorder, Location, Vendor, Brand, ProductGroup, Category, SubCategory,
-  Item, UOM, Poorderitem
+  Item, UOM, Poorderitem, Apisettings
 } from '../../_services/model';
 import * as moment from 'moment';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -73,7 +73,7 @@ export class PoComponent implements OnInit {
   constructor(
     private _poService: PoService,
     private _PrivateutilityService: PrivateutilityService,
-    
+
     public _alertService: ToastrService,
     private activatedroute: ActivatedRoute,
     private _authorizationGuard: AuthorizationGuard,
@@ -289,8 +289,7 @@ export class PoComponent implements OnInit {
     }
   }
   //disble shipment checkbox for is 
-  private DisbableShipmentCheckbox(locationID: number) {
-    debugger
+  private DisbableShipmentCheckbox(locationID: number) { 
     if (this.locationList.filter(a => a.LocationID == locationID)[0].IsInvoicing) {
       this.poForm.patchValue(
         {
@@ -399,8 +398,6 @@ export class PoComponent implements OnInit {
         });
     }
   }
-
-
 
   // Get Item Description
   public getItemDescription(itemID): void {
@@ -531,34 +528,6 @@ export class PoComponent implements OnInit {
       this._alertService.error("Order Item required");
       return;
     }
-    // if (this.poOrder.POID > 0) {
-    //   if (this.poForm.controls['PODate'].value.startDate._d != undefined) {
-    //     this.poOrder.PODate = this.poForm.controls['PODate'].value.startDate._d.toLocaleString();
-    //   } else {
-    //     this.poOrder.PODate = this.poForm.controls['PODate'].value.startDate.toLocaleString();
-    //   }
-    //   if (this.poForm.controls['PODeliveryDate'].value.startDate._d != undefined) {
-    //     this.poOrder.PODeliveryDate = this.poForm.controls['PODeliveryDate'].value.startDate._d.toLocaleString();
-    //   } else {
-    //     this.poOrder.PODeliveryDate = this.poForm.controls['PODeliveryDate'].value.startDate.toLocaleString();
-    //   }
-    //   let PODate = new Date(moment(new Date(this.poOrder.PODate)).format("MM-DD-YYYY HH:mm"));
-    //   let PODeliveryDate = new Date(moment(new Date(this.poOrder.PODeliveryDate)).format("MM-DD-YYYY HH:mm")); 
-    //   if (PODate > PODeliveryDate) {
-    //     this._alertService.error('The PO Delivery Date must be greater than or equal to the PODate!');
-    //     return;
-    //   }
-    // } else {
-    //   this.poOrder.PODate = this.poForm.controls['PODate'].value.startDate.toLocaleString();
-    //   this.poOrder.PODeliveryDate = this.poForm.controls['PODeliveryDate'].value.startDate.toLocaleString();
-    //   let PODate = new Date(moment(new Date(this.poOrder.PODate)).format("MM-DD-YYYY HH:mm"));
-    //   let PODeliveryDate = new Date(moment(new Date(this.poOrder.PODeliveryDate)).format("MM-DD-YYYY HH:mm")); 
-    //   if (PODate > PODeliveryDate) {
-    //     this._alertService.error('The PO Delivery Date must be greater than or equal to the PODate!');
-    //     return;
-    //   }
-    // }
-
     if (this.poForm.controls['PODate'].value.startDate._d != undefined) {
       this.poOrder.PODate = this.poForm.controls['PODate'].value.startDate._d.toLocaleString();
     } else {
@@ -585,7 +554,44 @@ export class PoComponent implements OnInit {
     this.poOrder.PaymentReference = this.poForm.controls['PaymentReference'].value;
     this.poOrder.Remarks = this.poForm.controls['Remarks'].value;
 
-    //
+    if (this.poOrder.POID > 0) {
+      this.Update();
+
+    } else {
+      this.Insert();
+    }
+  }
+
+  Insert() {
+    this._poService.InsertOrUpdate(this.poOrder).subscribe(
+      (res) => {
+        if (res.Flag) {
+          this._poService.UpdateFile(
+            this.SelectedFiles, this.poOrder.PONumber).subscribe(
+              (data1) => {
+                this.poOrder = new Poorder();
+                this.itemDetail = new Item();
+                this.uom = new UOM();
+                this.poOrder.lstItem = [];
+                this.gridData = this.poOrder.lstItem;
+              },
+              (error: any) => {
+                console.log(error);
+              }
+            )
+          this._alertService.success(res.Msg);
+          this.router.navigate(['/Polist']);
+        }
+        else {
+          this._alertService.error(res.Msg);
+          this.router.navigate(['/Polist']);
+        }
+      }, (err) => {
+        console.log(err);
+      });
+  }
+
+  Update() {
     this._poService.InsertOrUpdate(this.poOrder).subscribe(
       (res) => {
         if (res.Flag) {
@@ -596,18 +602,16 @@ export class PoComponent implements OnInit {
           this._alertService.error(res.Msg);
           this.router.navigate(['/Polist']);
         }
-        //
+
+        this.poOrder = new Poorder();
+        this.itemDetail = new Item();
+        this.uom = new UOM();
+        this.poOrder.lstItem = [];
+        this.gridData = this.poOrder.lstItem;
       }, (err) => {
-        //
         console.log(err);
       });
-    this.poOrder = new Poorder();
-    this.itemDetail = new Item();
-    this.uom = new UOM();
-    this.poOrder.lstItem = [];
-    this.gridData = this.poOrder.lstItem;
   }
-
   PODateUpdated(range) {
     let PODate: Date = new Date(moment(new Date(range.startDate._d)).format("MM-DD-YYYY HH:mm"));
     this.poOrder.PODate = PODate;
@@ -751,8 +755,8 @@ export class PoComponent implements OnInit {
     //
     this._masteruploadService.getFileTemplate(filetype)
       .subscribe(data => {
-        
-          saveAs(data, filetype + '.xlsx')
+
+        saveAs(data, filetype + '.xlsx')
       },
         (err) => {
           //
@@ -770,7 +774,7 @@ export class PoComponent implements OnInit {
   }
 
   BulkString: string;
-  
+
   public onClickValidate() {
     this.poOrder.BulkString = this.BulkString;
     const csvSeparator = '|';
@@ -838,6 +842,33 @@ export class PoComponent implements OnInit {
     }
     // console.log(this.parsedCsv);
   }
-
-
+  FileFlag: boolean = false;
+  SelectedFiles: File[] = [] as any;
+  onFileChanged1(e: any) {
+    this.SelectedFiles = e.target.files;
+    if (this.SelectedFiles != null) { 
+      let i = 0;
+      this.FileFlag = false;
+      for (i = 0; i < this.SelectedFiles.length; i++) {
+        let singlefile = this.SelectedFiles[i];
+        var filesizeMB1 = Math.round(singlefile.size / 1024 / 1024);
+        var fileexte1 = singlefile.name.split('.').pop();
+        if (!this.isInArray(Apisettings.CommonFiles_Ext, fileexte1)) {
+          this._alertService.error("Selected File  must be extension with " + Apisettings.CommonFiles_Ext);
+          this.FileFlag = true;
+          return;
+        }
+        else if (filesizeMB1 > parseInt(Apisettings.CommonFiles_Fileszie.toString().toString())) {
+          this._alertService.error("Selected File size must be less than or equal to " +
+            parseInt(Apisettings.CommonFiles_Fileszie.toString()) + " MB.!");
+          this.FileFlag = true;
+          return;
+        }
+      }
+    }
+  }
+  isInArray(array, word) {
+    return array.indexOf(word.toLowerCase()) > -1;
+  }
+ 
 }

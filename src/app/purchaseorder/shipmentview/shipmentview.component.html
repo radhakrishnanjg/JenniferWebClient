@@ -160,40 +160,41 @@
 
       <div class="col-sm-12">
         <span class="groupspanheader"> Order Items</span>
-        <table class="table table-bordered table-condensed " *ngIf="lstshipmentqty && lstshipmentqty.length">
-          <thead>
-            <tr>
-              <th>ItemCode</th>
-              <th>PO Qty</th>
-              <th>Available Qty</th>
-              <th>Shipment Qty</th>
-              <th>Location </th>
-              <th>PO Date</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let user of lstshipmentqty ">
-              <td>{{ user.ItemCode  }}</td>
-              <td class="text-right">{{ user.POQty  }}</td>
-              <td class="text-right">{{ user.AvailableQty  }}</td>
-              <td class="text-right"> {{user.ShipmentQty}}
-              </td>
-              <td>{{ user.LocationName}}</td>
-              <td>{{ user.PODate | date :"MM-dd-yyyy HH:mm"   }}</td>
-            </tr>
-            <tr>
-              <th>Total</th>
-              <th class="text-right"> {{ TotalPOQty}} </th>
-              <th class="text-right"> {{TotalAvailableQty}} </th>
-              <th class="text-right"> {{ TotalShipmentQty}}</th>
-              <th>
-              </th>
-              <th>
-              </th>
-            </tr>
-          </tbody>
-        </table>
-
+        <div class="table-responsive">
+          <table class="table table-bordered table-condensed " *ngIf="lstshipmentqty && lstshipmentqty.length">
+            <thead>
+              <tr>
+                <th>ItemCode</th>
+                <th>PO Qty</th>
+                <th>Available Qty</th>
+                <th>Shipment Qty</th>
+                <th>Location </th>
+                <th>PO Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let user of lstshipmentqty ">
+                <td>{{ user.ItemCode  }}</td>
+                <td class="text-right">{{ user.POQty  }}</td>
+                <td class="text-right">{{ user.AvailableQty  }}</td>
+                <td class="text-right"> {{user.ShipmentQty}}
+                </td>
+                <td>{{ user.LocationName}}</td>
+                <td>{{ user.PODate | date :"MM-dd-yyyy HH:mm"   }}</td>
+              </tr>
+              <tr>
+                <th>Total</th>
+                <th class="text-right"> {{ TotalPOQty}} </th>
+                <th class="text-right"> {{TotalAvailableQty}} </th>
+                <th class="text-right"> {{ TotalShipmentQty}}</th>
+                <th>
+                </th>
+                <th>
+                </th>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>

@@ -47,7 +47,7 @@ export class PomfilistComponent implements OnInit {
 
   public allowUnsort = false;
   public sort: SortDescriptor[] = [{
-    field: 'RemovalOrderID',
+    field: 'POnumber',
     dir: 'asc'
   }];
   public gridView: GridDataResult;
@@ -62,7 +62,7 @@ export class PomfilistComponent implements OnInit {
     // Initial filter descriptor
     filter: {
       logic: 'and',
-      filters: [{ field: 'RemovalOrderID', operator: 'contains', value: '' }]
+      filters: [{ field: 'POnumber', operator: 'contains', value: '' }]
     }
   };
   public pageChange({ skip, take }: PageChangeEvent): void {
@@ -91,6 +91,73 @@ export class PomfilistComponent implements OnInit {
   public dataStateChange(state: DataStateChangeEvent): void {
     this.state = state;
     this.gridView = process(this.items, this.state);
+  }
+
+  public onFilter(inputValue: string): void {
+    this.gridView = process(this.items, {
+      skip: this.skip,
+      take: this.skip + this.pageSize,
+      filter: {
+        logic: "or",
+        filters: [
+          {
+            field: 'POnumber',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'PODate',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'ShipmentDate',
+            operator: 'contains',
+            value: inputValue
+          }, 
+          {
+            field: 'ShipmentNumber',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'ItemCode',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'ItemName',
+            operator: 'contains',
+            value: inputValue
+          }, 
+          {
+            field: 'ShippedQty',
+            operator: 'contains',
+            value: inputValue
+          }, 
+          {
+            field: 'ReceivedQty',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'DiffQty',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'DiffValue',
+            operator: 'contains',
+            value: inputValue
+          }, 
+          {
+            field: 'Ageing',
+            operator: 'contains',
+            value: inputValue
+          }, 
+        ],
+      }
+    })  ;  
   }
 
 }

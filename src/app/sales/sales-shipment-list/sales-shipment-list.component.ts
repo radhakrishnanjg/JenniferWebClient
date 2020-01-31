@@ -120,6 +120,42 @@ export class SalesShipmentListComponent implements OnInit {
     this.gridView = process(this.items, this.state);
   }
 
+  public onFilter(inputValue: string): void {
+    this.gridView = process(this.items, {
+      skip: this.skip,
+      take: this.skip + this.pageSize,
+      filter: {
+        logic: "or",
+        filters: [
+          {
+            field: 'SalesShipmentID',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'InvoiceNumber',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'CourierName',
+            operator: 'contains',
+            value: inputValue
+          }, 
+          {
+            field: 'CourierTrackingID',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'AirwayBillNumber',
+            operator: 'contains',
+            value: inputValue
+          }, 
+        ],
+      }
+    })  ;  
+  }
 
   //#endregion Paging Sorting and Filtering End
 

@@ -194,6 +194,42 @@ export class PurchaselistComponent implements OnInit {
     this.gridView = process(this.items, this.state);
   }
 
+  public onFilter(inputValue: string): void {
+    this.gridView = process(this.items, {
+      skip: this.skip,
+      take: this.skip + this.pageSize,
+      filter: {
+        logic: "or",
+        filters: [
+          {
+            field: 'PONumber',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'InvoiceNumber',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'InvoiceDate',
+            operator: 'contains',
+            value: inputValue
+          }, 
+          {
+            field: 'WarehouseName',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'LocationName',
+            operator: 'contains',
+            value: inputValue
+          }, 
+        ],
+      }
+    })  ;  
+  }
 
   //#endregion Paging Sorting and Filtering End
 

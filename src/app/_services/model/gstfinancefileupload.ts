@@ -10,7 +10,7 @@ export class Gstfinancefileupload {
     MonthName: string;
 
 
-    CompanyDetailID: number;
+    CompanyID: number;
     FileName: string;
     FilePath: string;
     UploadedBy: number;

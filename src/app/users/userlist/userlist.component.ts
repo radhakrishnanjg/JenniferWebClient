@@ -19,7 +19,7 @@ import { SortDescriptor, orderBy } from '@progress/kendo-data-query';
 
 
 export class UserlistComponent implements OnInit {
-    user: IUser;
+  user: IUser;
   userForm: FormGroup;
 
   selectedDeleteId: number;
@@ -32,14 +32,14 @@ export class UserlistComponent implements OnInit {
     private alertService: ToastrService,
     private router: Router,
     private _userService: UserService,
-    
+
     private _authorizationGuard: AuthorizationGuard
   ) {
   }
 
   ngOnInit() {
     this.onLoad(this.SearchBy, this.SearchKeyword, true);
-  }  
+  }
 
   confirmDeleteid(id: number, DeleteColumnvalue: string) {
     if (this._authorizationGuard.CheckAcess("Userlist", "ViewEdit")) {
@@ -88,10 +88,10 @@ export class UserlistComponent implements OnInit {
   onLoad(SearchBy: string, Search: string, IsActive: Boolean) {
     //
     return this._userService.search(SearchBy, Search, IsActive).subscribe(
-      (lst) => { 
-        if (lst != null) { 
+      (lst) => {
+        if (lst != null) {
           this.items = lst;
-          this.loadItems(); 
+          this.loadItems();
         }
         //
       },
@@ -130,7 +130,7 @@ export class UserlistComponent implements OnInit {
       filters: [{ field: 'FirstName', operator: 'contains', value: '' }]
     }
   };
-  
+
   public pageChange({ skip, take }: PageChangeEvent): void {
     this.skip = skip;
     this.pageSize = take;
@@ -157,6 +157,31 @@ export class UserlistComponent implements OnInit {
   public dataStateChange(state: DataStateChangeEvent): void {
     this.state = state;
     this.gridView = process(this.items, this.state);
+  }
+
+  public onFilter(inputValue: string): void {
+    this.gridView = process(this.items, {
+      filter: {
+        logic: "or",
+        filters: [
+          {
+            field: 'FirstName',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'Email',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'UserType',
+            operator: 'contains',
+            value: inputValue
+          },
+        ],
+      }
+    });
   }
   //#endregion Paging Sorting and Filtering End
 

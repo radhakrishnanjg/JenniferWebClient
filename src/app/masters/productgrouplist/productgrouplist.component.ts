@@ -334,7 +334,22 @@ export class ProductgrouplistComponent implements OnInit {
     this.gridView = process(this.items, this.state);
   }
 
-
+  public onFilter(inputValue: string): void {
+    this.gridView = process(this.items.slice(this.skip, this.skip + this.pageSize), {
+      skip: this.skip,
+      take: this.skip + this.pageSize,
+      filter: {
+        logic: "or",
+        filters: [
+          {
+            field: 'ProductGroupName',
+            operator: 'contains',
+            value: inputValue
+          }, 
+        ],
+      }
+    });
+  }
   //#endregion Paging Sorting and Filtering End
 
 }

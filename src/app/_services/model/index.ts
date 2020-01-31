@@ -76,3 +76,8 @@ export * from './gstfinancefileupload'
  
 
 export * from './amazonautortv';
+export * from './vendorpayment';
+export * from './debitnote';
+export * from './jsonmodel';
+export * from './voucher';
+export * from './ticket';

@@ -18,7 +18,7 @@ import { SortDescriptor, orderBy } from '@progress/kendo-data-query';
 export class DropdownlistComponent implements OnInit {
 
   lstDropdownMaster: Dropdown[];
-   objDropdown: Dropdown = {} as any;
+  objDropdown: Dropdown = {} as any;
   dropdownForm: FormGroup;
   panelTitle: string;
   action: boolean;
@@ -31,7 +31,7 @@ export class DropdownlistComponent implements OnInit {
   constructor(
     private alertService: ToastrService,
     private _dropdownService: DropdownService,
-    
+
     private _authorizationGuard: AuthorizationGuard,
     private fb: FormBuilder,
     private _PrivateutilityService: PrivateutilityService,
@@ -339,9 +339,9 @@ export class DropdownlistComponent implements OnInit {
     //
     this._dropdownService.search(SearchBy, Search, IsActive).subscribe(
       (data) => {
-        if (data != null) { 
+        if (data != null) {
           this.items = data;
-          this.loadItems(); 
+          this.loadItems();
         }
         //
       },
@@ -354,56 +354,86 @@ export class DropdownlistComponent implements OnInit {
 
   }
 
-   //#region Paging Sorting and Filtering Start
-   public allowUnsort = false;
-   public sort: SortDescriptor[] = [{
-     field: 'DropdownType',
-     dir: 'asc'
-   }];
-   public gridView: GridDataResult;
-   public pageSize = 10;
-   public skip = 0;
-   private data: Object[];
-   private items: Dropdown[] = [] as any;
-   public state: State = {
-     skip: 0,
-     take: 5,
- 
-     // Initial filter descriptor
-     filter: {
-       logic: 'and',
-       filters: [{ field: 'DropdownType', operator: 'contains', value: '' }]
-     }
-   };
-   public pageChange({ skip, take }: PageChangeEvent): void {
+  //#region Paging Sorting and Filtering Start
+  public allowUnsort = false;
+  public sort: SortDescriptor[] = [{
+    field: 'DropdownType',
+    dir: 'asc'
+  }];
+  public gridView: GridDataResult;
+  public pageSize = 10;
+  public skip = 0;
+  private data: Object[];
+  private items: Dropdown[] = [] as any;
+  public state: State = {
+    skip: 0,
+    take: 5,
+
+    // Initial filter descriptor
+    filter: {
+      logic: 'and',
+      filters: [{ field: 'DropdownType', operator: 'contains', value: '' }]
+    }
+  };
+  public pageChange({ skip, take }: PageChangeEvent): void {
     this.skip = skip;
     this.pageSize = take;
     this.loadItems();
-  } 
- 
-   public sortChange(sort: SortDescriptor[]): void {
-     this.sort = sort;
-     this.loadSortItems();
-   }
- 
-   private loadItems(): void {
-     this.gridView = {
-       data: orderBy(this.items, this.sort).slice(this.skip, this.skip + this.pageSize),
-       total: this.items.length
-     };
-   }
-   private loadSortItems(): void {
-     this.gridView = {
-       data: orderBy(this.items, this.sort).slice(this.skip, this.skip + this.pageSize),
-       total: this.items.length
-     };
-   }
-   public dataStateChange(state: DataStateChangeEvent): void {
-     this.state = state;
-     this.gridView = process(this.items, this.state);
-   }
- 
- 
-   //#endregion Paging Sorting and Filtering End
- 
+  }
+
+  public sortChange(sort: SortDescriptor[]): void {
+    this.sort = sort;
+    this.loadSortItems();
+  }
+
+  private loadItems(): void {
+    this.gridView = {
+      data: orderBy(this.items, this.sort).slice(this.skip, this.skip + this.pageSize),
+      total: this.items.length
+    };
+  }
+  private loadSortItems(): void {
+    this.gridView = {
+      data: orderBy(this.items, this.sort).slice(this.skip, this.skip + this.pageSize),
+      total: this.items.length
+    };
+  }
+  public dataStateChange(state: DataStateChangeEvent): void {
+    this.state = state;
+    this.gridView = process(this.items, this.state);
+  }
+
+  public onFilter(inputValue: string): void {
+    this.gridView = process(this.items.slice(this.skip, this.skip + this.pageSize), {
+      skip: this.skip,
+      take: this.skip + this.pageSize,
+      filter: {
+        logic: "or",
+        filters: [
+          {
+            field: 'DropdownType',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'DropdownValue',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'DropDownDescription',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'DisplayOrder',
+            operator: 'contains',
+            value: inputValue
+          },
+        ],
+      }
+    });
+  }
+  //#endregion Paging Sorting and Filtering End
+
 }

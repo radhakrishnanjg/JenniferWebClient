@@ -260,12 +260,16 @@ export class PoshipmentComponent implements OnInit {
   updateList(id: number, property: string, value: number) {
     const editField = parseInt(value.toString());
     const AvailableQty = parseInt(this.lstpoorderitem[id]['AvailableQty'].toString());
+    const ShipmentQty1 = parseInt(this.lstpoorderitem[id]['ShipmentQty'].toString());
+    const ItemID= this.lstpoorderitem[id]['ItemID'].toString();
     if (editField < 0) {
       this._alertService.error('Entered Qty must be greater than or equal to zero.!');
+      $('#' + ItemID).val(ShipmentQty1);
       return;
     }
     else if (editField > AvailableQty) {
       this._alertService.error('Entered Qty must be less than or equal to Available Qty.!');
+      $('#' + ItemID).val(ShipmentQty1);
       return;
     }
     else {

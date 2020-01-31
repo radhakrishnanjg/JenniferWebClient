@@ -17,7 +17,7 @@ import { SortDescriptor, orderBy } from '@progress/kendo-data-query';
 export class SubcategorylistComponent implements OnInit {
   lstProductGroup: ProductGroup[];
   lstCategory: Category[];
-   objSubCategory: SubCategory = {} as any;
+  objSubCategory: SubCategory = {} as any;
   subcatgoryForm: FormGroup;
   panelTitle: string;
   action: boolean;
@@ -33,7 +33,7 @@ export class SubcategorylistComponent implements OnInit {
   constructor(
     private alertService: ToastrService,
     private _subcategoryService: SubcategoryService,
-    
+
     private _authorizationGuard: AuthorizationGuard,
     private fb: FormBuilder,
     private _PrivateutilityService: PrivateutilityService,
@@ -346,9 +346,9 @@ export class SubcategorylistComponent implements OnInit {
     //
     return this._subcategoryService.search(SearchBy, Search, IsActive).subscribe(
       (lst) => {
-        if (lst != null) { 
+        if (lst != null) {
           this.items = lst;
-          this.loadItems(); 
+          this.loadItems();
         }
         //
       },
@@ -408,7 +408,33 @@ export class SubcategorylistComponent implements OnInit {
     this.gridView = process(this.items, this.state);
   }
 
-
+  public onFilter(inputValue: string): void {
+    this.gridView = process(this.items.slice(this.skip, this.skip + this.pageSize), {
+      skip: this.skip,
+      take: this.skip + this.pageSize,
+      filter: {
+        logic: "or",
+        filters: [
+          {
+            field: 'ProductGroupName',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'CategoryName',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'SubCategoryName',
+            operator: 'contains',
+            value: inputValue
+          },
+           
+        ],
+      }
+    });
+  }
   //#endregion Paging Sorting and Filtering End
 
 }

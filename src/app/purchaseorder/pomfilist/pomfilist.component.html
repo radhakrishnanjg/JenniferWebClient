@@ -23,44 +23,55 @@
 
 <div class="panel panel-default">
   <div class="panel-body">
-    <kendo-grid [data]="gridView" resizable="true" columnMenu="true" [pageSize]="pageSize" [skip]="skip"
-      [pageable]="{pageSizes: [10, 25, 50, 100]}" (pageChange)="pageChange($event)" [sortable]="{
+    <div class="table-responsive">
+      <table class="table">
+        <kendo-grid [data]="gridView" resizable="true" columnMenu="true" [pageSize]="pageSize" [skip]="skip"
+          [pageable]="{pageSizes: [10, 25, 50, 100, 250, 500]}" (pageChange)="pageChange($event)" [sortable]="{
           allowUnsort: allowUnsort,
           mode:  'single'
           }" [sort]="sort" (sortChange)="sortChange($event)" [filterable]="true"
-      (dataStateChange)="dataStateChange($event)" [filter]="state.filter">
+          (dataStateChange)="dataStateChange($event)" [filter]="state.filter">
 
-      <kendo-grid-column field="POnumber" title="PO Number">
-      </kendo-grid-column>
-      <kendo-grid-column field="PODate" title="PO Date" filter="date" format="{0:d}" [filterable]="false">
-        <ng-template kendoGridCellTemplate let-dataItem>
-          {{ dataItem.PODate | date :"MM-dd-yyyy HH:mm" }}
-        </ng-template>
-      </kendo-grid-column>
-      <kendo-grid-column field="ShipmentDate" title="Shipment Date" filter="date" format="{0:d}" [filterable]="false">
-        <ng-template kendoGridCellTemplate let-dataItem>
-          {{ dataItem.ShipmentDate | date :"MM-dd-yyyy HH:mm" }}
-        </ng-template>
-      </kendo-grid-column>
-      <kendo-grid-column field="ShipmentNumber" title="Shipment Number">
-      </kendo-grid-column>
-      <kendo-grid-column field="ItemCode" title="Item Code">
-      </kendo-grid-column>
-      <kendo-grid-column field="ItemName" title="Item Name">
-      </kendo-grid-column>
-      <kendo-grid-column field="ShippedQty" title="Shipped Qty">
-      </kendo-grid-column>
-      <kendo-grid-column field="ReceivedQty" title="Received Qty">
-      </kendo-grid-column>
-      <kendo-grid-column field="DiffQty" title="Diff Qty">
-      </kendo-grid-column>
-      <kendo-grid-column field="DiffValue" title="DiffValue">
-      </kendo-grid-column>
-      <kendo-grid-column field="Ageing" title="Ageing">
-      </kendo-grid-column>
+          <ng-template kendoGridToolbarTemplate>
+            <input placeholder="Search in all columns..." style="float:right;" kendoTextBox
+              (input)="onFilter($event.target.value)" />
+            <button kendoGridExcelCommand type="button" icon="file-excel"> </button>
+            <button kendoGridPDFCommand icon="file-pdf"> </button>
+            <kendo-grid-pdf fileName="PoMFIList.pdf" [repeatHeaders]="true"></kendo-grid-pdf>
+            <kendo-grid-excel fileName="PoMFIlList.xlsx"></kendo-grid-excel>
+          </ng-template>
+          <kendo-grid-column field="POnumber" title="PO Number">
+          </kendo-grid-column>
+          <kendo-grid-column field="PODate" title="PO Date" filter="date" format="{0:d}" [filterable]="false">
+            <ng-template kendoGridCellTemplate let-dataItem>
+              {{ dataItem.PODate | date :"MM-dd-yyyy HH:mm" }}
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="ShipmentDate" title="Shipment Date" filter="date" format="{0:d}"
+            [filterable]="false">
+            <ng-template kendoGridCellTemplate let-dataItem>
+              {{ dataItem.ShipmentDate | date :"MM-dd-yyyy HH:mm" }}
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="ShipmentNumber" title="Shipment Number">
+          </kendo-grid-column>
+          <kendo-grid-column field="ItemCode" title="Item Code">
+          </kendo-grid-column>
+          <kendo-grid-column field="ItemName" title="Item Name">
+          </kendo-grid-column>
+          <kendo-grid-column field="ShippedQty" title="Shipped Qty">
+          </kendo-grid-column>
+          <kendo-grid-column field="ReceivedQty" title="Received Qty">
+          </kendo-grid-column>
+          <kendo-grid-column field="DiffQty" title="Diff Qty">
+          </kendo-grid-column>
+          <kendo-grid-column field="DiffValue" title="DiffValue">
+          </kendo-grid-column>
+          <kendo-grid-column field="Ageing" title="Ageing">
+          </kendo-grid-column>
 
-    </kendo-grid>
-
-  </div>
-
+        </kendo-grid>
+      </table>
+    </div>
+  </div> 
 </div>

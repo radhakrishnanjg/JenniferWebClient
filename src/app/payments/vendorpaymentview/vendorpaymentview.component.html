@@ -1,0 +1,165 @@
+<div class="row">
+  <div class="col-sm-6 col-lg-6">
+    <h3>
+      Vendor Payment
+    </h3>
+  </div>
+  <div class="col-sm-6 col-lg-6">
+    <div class="pull-right hidden-xs">
+      <ol class="breadcrumb" id="dynamicbreadcrumb">
+        <li>
+          <span> Payments</span>
+        </li>
+        <li>
+          <span> Vendor Payment</span>
+        </li>
+        <li class="active">
+
+          View
+        </li>
+      </ol>
+    </div>
+  </div>
+</div>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <div class="row">
+      <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+        <span class="groupspanheader">
+          Vendor Payment View
+        </span>
+      </div>
+      <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 ">
+        <div class="pull-right">
+          <button type="button" class="btn btn-primary" routerLinkActive="active" routerLink="/Vendorpaymentlist">Back</button>
+        </div>
+      </div>
+    </div>
+    <div class="clearfix"></div>
+  </div>
+
+  <div class="panel-body">
+
+    <div class="row">
+      <div class="col-md-12">
+        <div class="table-responsive">
+          <table class="table table-bordered bgtable">
+
+            <tr>
+              <th width="15%">
+                Bill Number <span class="mandantory"> *</span>
+              </th>
+              <td width="35%">
+                {{obj?.BillNumber  }}
+              </td>
+              <th width="15%">
+                Bill Date <span class="mandantory"> *</span>
+              </th>
+              <td width="35%">
+                {{obj?.PaidDate | date :"MM-dd-yyyy HH:mm" }}
+              </td>
+            </tr>
+            <tr>
+              <th>
+                Vendor Name <span class="mandantory"> *</span>
+              </th>
+              <td>
+                {{obj?.VendorName}}
+              </td>
+              <th>
+                Payment Mode
+              </th>
+              <td>
+                {{obj?.PaymentMode}}
+              </td>
+            </tr>
+            <tr>
+              <th>
+                Payment UTR No.
+              </th>
+              <td>
+                {{obj?.TransactionNumber}}
+              </td>
+              <th>
+                Payment Date
+              </th>
+              <td>
+                {{obj?.PaymentDate | date :"MM-dd-yyyy HH:mm" }}
+              </td>
+
+
+            </tr>
+            <tr>
+              <th>
+                Paid Amount
+              </th>
+              <td>
+                {{obj?.TotalPaidAmount | currency: 'INR' }}
+              </td>
+            </tr>
+
+            <tr>
+              <th>
+                Remarks
+              </th>
+              <td colspan="3">
+                {{obj?.Remarks}}
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <span class="groupspanheader">Details</span>
+    <div class="table-responsive">
+      <table class="table table-bordered table-condensed">
+        <thead>
+          <tr>
+            <th class="text-center">Aging Days</th>
+            <th class="text-center">Purchase Invoice Date</th>
+            <th class="text-center">Purchase Invoice No.</th>
+            <th class="text-center">Payable Amount</th>
+            <!-- <th class="text-center">Pending Amt</th> -->
+
+            <th class="text-center">Paid Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let dis of obj?.lstVendorPaymentDetail">
+            <td> {{ dis.AgingDays }} </td>
+            <td> {{ dis.InvoiceDate | date :"MM-dd-yyyy HH:mm"  }} </td>
+            <td> {{ dis.InvoiceNumber }} </td>
+            <td class="text-right"> {{ dis.PayableAmt | currency: 'INR'}} </td>
+            <!-- <td class="text-right"> {{ dis.PendingAmt | currency: 'INR'}} </td> -->
+            <td class="text-right"> {{ dis.PaidAmt | currency: 'INR'}} </td>
+          </tr>
+          <tr>
+            <th></th>
+            <th> </th>
+            <th> </th>
+            <th>Total</th>
+            <!-- <th> </th> -->
+            <th class="text-right">{{TotalPaidAmt | currency: 'INR'}}</th>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+
+  <div class="panel-footer">
+    <div class="row">
+      <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+      </div>
+      <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 ">
+        <div class="pull-right">
+          <button type="button" class="btn btn-primary" routerLinkActive="active" routerLink="/Vendorpaymentlist">Cancel</button>
+        </div>
+      </div>
+    </div>
+    <div class="clearfix"></div>
+  </div>
+
+
+</div>

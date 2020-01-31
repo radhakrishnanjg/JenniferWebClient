@@ -28,6 +28,7 @@ export class Vendor {
     lstContact: Contact[];
     // who is doing this task
     LoginId: number;
+    TotalAmount: number;
 }
 export class Vendorwarehouse {
     VendorWarehouseID: number;

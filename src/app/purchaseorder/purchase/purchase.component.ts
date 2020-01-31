@@ -47,7 +47,7 @@ export class PurchaseComponent implements OnInit {
     private fb: FormBuilder,
     private _router: Router,
     private aroute: ActivatedRoute,
-    
+
     private usernameValidator: UsernameValidator,
     private _invoiceService: InvoiceService,
     private _authorizationGuard: AuthorizationGuard
@@ -109,7 +109,6 @@ export class PurchaseComponent implements OnInit {
     this.aroute.paramMap.subscribe(params => {
       this.identity = +params.get('id');
       this.POID = +params.get('PoId');
-      //
       this._invoiceService.GetPoHeaderByPOID(this.POID)
         .subscribe(
           (data: Poorder) => {
@@ -121,8 +120,6 @@ export class PurchaseComponent implements OnInit {
             this.VendorName = data.VendorName;
             this.InvoiceMinDate = moment(this.PODate).add(1, 'minutes');
             this.InvoiceMaxDate = moment().add(0, 'days');
-            //
-            //
             this._invoiceService.getVendorWarehouses(this.VendorID)
               .subscribe(
                 (data: Vendorwarehouse[]) => {
@@ -148,14 +145,14 @@ export class PurchaseComponent implements OnInit {
                     this.TotalTaxRate = this.obj.lstItem.reduce((acc, a) => acc + a.TaxRate, 0);
                     this.TotalTaxAmount = this.obj.lstItem.reduce((acc, a) => acc + a.TaxAmount, 0);
                     this.TotalDirectCost = this.obj.lstItem.reduce((acc, a) => acc + a.DirectCost, 0);
-                    this.TotalTotalAmount = this.obj.lstItem.reduce((acc, a) => acc + a.TotalAmount, 0);
-                    //
+                    this.TotalTotalAmount = this.obj.lstItem.reduce((acc, a) => acc + a.TotalAmount, 0); 
                     var VendorWarehouseID = data.VendorWarehouseID.toString();
                     this.invoiceform.patchValue({
                       InvoiceNumber: data.InvoiceNumber,
                       //InvoiceDate: data.InvoiceDate,
                       VendorWarehouseID: VendorWarehouseID,
                       Remarks: data.Remarks,
+                      USDValue: data.USDValue,
                     });
                     this.IsEditable = data.IsEditable;
                     this.invoiceform.get('InvoiceNumber').disable();
@@ -205,23 +202,29 @@ export class PurchaseComponent implements OnInit {
     });
 
     this.invoiceform = this.fb.group({
+
       InvoiceNumber: ['', [Validators.required, Validators.maxLength(30),],
         this.usernameValidator.existInvoiceNumber(this.identity)],
       InvoiceDate: ['', [Validators.required,]],
       VendorWarehouseID: [0, [Validators.min(1),]],
       Remarks: ['', [Validators.required, Validators.maxLength(250)]],
+      USDValue: ['', []],
     });
   }
 
   updateList(id: number, property: string, value: number) {
     const editField = parseInt(value.toString());
     const AvailableQty = parseInt(this.obj.lstItem[id]['AvailableQty'].toString());
+    const Qty = parseInt(this.obj.lstItem[id]['Qty'].toString());
+    const ItemID = this.obj.lstItem[id]['ItemID'].toString();
     if (editField < 0) {
       this.alertService.error('Entered Qty must be greater than or equal to zero.!');
+      $('#' + ItemID).val(Qty);
       return;
     }
     else if (editField > AvailableQty) {
       this.alertService.error('Entered Qty must be less than or equal to Available Qty.!');
+      $('#' + ItemID).val(Qty);
       return;
     }
     else {
@@ -251,10 +254,8 @@ export class PurchaseComponent implements OnInit {
             if (data != null) {
               this.obj.lstItem.map(a => a.TaxNature = data);
             }
-            //
           },
           (err: any) => {
-            //
             console.log(err);
           }
         );
@@ -273,7 +274,7 @@ export class PurchaseComponent implements OnInit {
     // stop here if form is invalid
     if (this.invoiceform.invalid) {
       return;
-    } 
+    }
     let PODate: Date = new Date(moment(new Date(this.PODate)).format("MM-DD-YYYY HH:mm"));
     let InvoiceDate: Date = new Date();
     if (this.invoiceform.controls['InvoiceDate'].value.startDate._d != undefined) {
@@ -282,7 +283,7 @@ export class PurchaseComponent implements OnInit {
     } else {
       InvoiceDate = new Date(moment(new Date(this.invoiceform.controls['InvoiceDate'].
         value.startDate.toLocaleString())).format("MM-DD-YYYY HH:mm"));
-    } 
+    }
     let currentdate: Date = new Date(moment(new Date()).format("MM-DD-YYYY HH:mm"));
     if (!(InvoiceDate > PODate && InvoiceDate <= currentdate)) {
       this.alertService.error('The invoice date must be between PO Date and current datetime.!');
@@ -309,27 +310,23 @@ export class PurchaseComponent implements OnInit {
     this.obj.InvoiceDate = this.invoiceform.controls['InvoiceDate'].value.startDate._d.toLocaleString();
     this.obj.VendorWarehouseID = this.invoiceform.controls['VendorWarehouseID'].value;
     this.obj.Remarks = this.invoiceform.controls['Remarks'].value;
+    this.obj.USDValue = this.invoiceform.controls['USDValue'].value;
     this.obj.LocationID = this.LocationID;
     this.obj.POID = this.POID;
-    this.obj.lstItem = this.obj.lstItem.filter(a => a.Qty > 0);
-    //
-
+    this.obj.lstItem = this.obj.lstItem.filter(a => a.Qty > 0); 
     this._invoiceService.upsert(this.obj).subscribe(
       (data) => {
-        if (data != null && data.Flag == true) {
-          //
+        if (data != null && data.Flag == true) { 
           this.alertService.success(data.Msg);
           this._router.navigate(['/Purchaselist']);
         }
-        else {
-          //
+        else { 
           this.alertService.error(data.Msg);
           this._router.navigate(['/Purchaselist']);
         }
         this.identity = 0;
       },
-      (error: any) => {
-        //
+      (error: any) => { 
         console.log(error);
       }
     );
@@ -337,7 +334,7 @@ export class PurchaseComponent implements OnInit {
 
   Update() {
     this.obj.PurchaseID = this.identity;
-    this.obj.InvoiceNumber = this.invoiceform.controls['InvoiceNumber'].value; 
+    this.obj.InvoiceNumber = this.invoiceform.controls['InvoiceNumber'].value;
     if (this.invoiceform.controls['InvoiceDate'].value.startDate._d != undefined) {
       this.obj.InvoiceDate = this.invoiceform.controls['InvoiceDate'].value.startDate._d.toLocaleString();
     } else {
@@ -346,27 +343,23 @@ export class PurchaseComponent implements OnInit {
 
     this.obj.VendorWarehouseID = this.invoiceform.controls['VendorWarehouseID'].value;
     this.obj.Remarks = this.invoiceform.controls['Remarks'].value;
+    this.obj.USDValue = this.invoiceform.controls['USDValue'].value;
     this.obj.LocationID = this.LocationID;
     this.obj.POID = this.POID;
-    this.obj.lstItem = this.obj.lstItem.filter(a => a.Qty > 0);
-    //
-
+    this.obj.lstItem = this.obj.lstItem.filter(a => a.Qty > 0); 
     this._invoiceService.upsert(this.obj).subscribe(
       (data) => {
-        if (data != null && data.Flag == true) {
-          //
+        if (data != null && data.Flag == true) { 
           this.alertService.success(data.Msg);
           this._router.navigate(['/Purchaselist']);
         }
-        else {
-          //
+        else { 
           this.alertService.error(data.Msg);
           this._router.navigate(['/Purchaselist']);
         }
         this.identity = 0;
       },
-      (error: any) => {
-        //
+      (error: any) => { 
         console.log(error);
       }
     );

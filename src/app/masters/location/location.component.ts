@@ -31,7 +31,7 @@ export class LocationComponent implements OnInit {
     private fb: FormBuilder,
     private _router: Router,
     private aroute: ActivatedRoute,
-    
+
     private usernameValidator: UsernameValidator,
     private _locationService: LocationService,
     private utilityService: UtilityService,
@@ -295,6 +295,12 @@ export class LocationComponent implements OnInit {
       this.alertService.error('Please change the value for any one control to proceed further!');
       return;
     }
+    let GSTStateCode = this.states.filter(a => a.StateID == this.locationform.controls['StateID'].value)[0].GSTStateCode;
+    let State = this.states.filter(a => a.StateID == this.locationform.controls['StateID'].value)[0].State;
+    if (GSTStateCode != this.locationform.controls['GSTNumber'].value.slice(0, 2)) {
+      this.alertService.error('GST Number must start with ' + GSTStateCode + ' for ' + State + ' state.!');
+      return;
+    }
     this.aroute.paramMap.subscribe(params => {
       this.identity = +params.get('id');
     });
@@ -332,12 +338,10 @@ export class LocationComponent implements OnInit {
     this._locationService.add(this.obj).subscribe(
       (data) => {
         if (data != null && data.Flag == true) {
-          //
           this.alertService.success(data.Msg);
           this._router.navigate(['/Locationlist']);
         }
         else {
-          //
           this.alertService.error(data.Msg);
           this._router.navigate(['/Locationlist']);
         }

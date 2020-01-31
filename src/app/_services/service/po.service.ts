@@ -177,6 +177,30 @@ export class PoService {
       .pipe(catchError(this.handleError));
   }
 
+  public UpdateFile(Filedata1: File[], PONumber: string): Observable<boolean> {
+    let currentUser = this.authenticationService.currentUserValue;
+    let frmData = new FormData();
+    frmData.append("CompanyDetailID", currentUser.CompanyDetailID.toString());
+    frmData.append("PONumber", PONumber);
+    frmData.append("LoginId", currentUser.UserId.toString());
+    // frmData.append("Filedata", Filedata); 
+    let f = 0;
+    for (f = 0; f < Filedata1.length; f++) {
+      frmData.append("Filedata", Filedata1[f]);
+    }
+    return this.httpClient.post<boolean>(environment.baseUrl + `POOrder/UpdateFile`, frmData)
+      .pipe(catchError(this.handleError));
+  }
+
+  public GetFile(PONumber: string) {
+    let currentUser = this.authenticationService.currentUserValue;
+    let CompanyDetailID = currentUser.CompanyDetailID;
+    return this.httpClient.get(environment.baseUrl + `POOrder/GetFile?CompanyDetailID=` + CompanyDetailID +
+      `&PONumber=` + PONumber,
+      { responseType: 'blob' })
+      .pipe(catchError(this.handleError));
+  }
+
   private handleError(error: HttpErrorResponse) {
 
     if (error.status === 404)

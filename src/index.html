@@ -14,27 +14,28 @@
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link id="mainStyle1" rel="stylesheet" href="assets/litetheme.css" />
 
-  <!-- <div class="googletrans" id="google_translate_element"></div>
 
-  <script type="text/javascript">
-    function googleTranslateElementInit() {
-      new google.translate.TranslateElement(
-        { pageLanguage: 'en', includedLanguages: 'en,zh-CN,zh-TW,fr,hi,kn,ml,ta,te', },
-        'google_translate_element'
-      );
-    }  
-  </script>
 
-  <script type="text/javascript" src="https://translate.google.com/translate_a/element.js? 
-        cb=googleTranslateElementInit">
-        </script> -->
+
 </head>
 
 <body>
+  <div class="googletrans" id="google_translate_element"></div>
+
 
   <app-root>
   </app-root>
 
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({
+        pageLanguage: 'en', includedLanguages: 'en,zh-CN,zh-TW,',//fr,hi,kn,ml,ta,te
+        layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+      }, 'google_translate_element');
+    }
+  </script>
+  <script type="text/javascript"
+    src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
 
 </body>

@@ -8,13 +8,13 @@
     <div class="pull-right hidden-xs">
       <ol class="breadcrumb" id="dynamicbreadcrumb">
         <li>
-           <span> Revenue</span>
+          <span> Revenue</span>
         </li>
         <li>
-           <span> PickList</span>
+          <span> PickList</span>
         </li>
         <li class="active">
-          
+
           List
         </li>
       </ol>
@@ -24,9 +24,9 @@
 <div class="panel panel-default">
   <div class="panel-heading">
     <div class="row">
-      <div class="col-xs-12 col-sm-7 col-md-7 col-lg-7">
-        <div class="input-group col-sm-12" role="group" aria-label="Basic example">
-          <div class="col-md-3 nopading_loct">
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="input-group col-xs-12 col-sm-12" role="group" aria-label="Basic example">
+          <div class="col-md-2 col-sm-3 col-xs-12 nopading_loct">
             <select class="form-control serchcurv btn-group" [(ngModel)]="SearchBy">
               <option value="" selected="select">SearchBy</option>
               <option value="OrderNumber">Order Number</option>
@@ -36,11 +36,12 @@
               <!-- <option value="StorageNumber">Storage Number</option> -->
             </select>
           </div>
-          <div class="col-md-3 nopading_loct">
-            <input type="text" (keyup.enter)="Search()" [(ngModel)]="SearchKeyword" class="serchcurv form-control btn-group">
+          <div class="col-md-2 col-sm-3 nopading_loct">
+            <input type="text" (keyup.enter)="Search()" [(ngModel)]="SearchKeyword"
+              class="serchcurv form-control btn-group">
           </div>
 
-          <div class="col-md-3 nopading_loct">
+          <div class="col-md-2 col-sm-3 col-xs-12 nopading_loct">
             <select class="form-control serchcurv btn-group" [(ngModel)]="LocationID">
               <option value="0" selected="select">Location</option>
               <option *ngFor="let c1 of locations" value={{c1.LocationID}}>
@@ -49,7 +50,7 @@
             </select>
           </div>
 
-          <div class="col-md-2 nopading_loct">
+          <div class="col-md-3 col-sm-3 col-xs-6 nopading_loct">
             <button class="serchcurv btn btn-default btn-group" (click)="Search()" title="Search">
               <i class="fa fa-search " aria-hidden="true"></i>
             </button>
@@ -64,43 +65,55 @@
     </div>
   </div>
   <div class="panel-body">
-    <kendo-grid [data]="gridView" resizable="true" columnMenu="true" [pageSize]="pageSize" [skip]="skip" [pageable]="{pageSizes: [10, 25, 50, 100]}"
-      (pageChange)="pageChange($event)" [sortable]="{
+    <div class="table-responsive">
+      <table class="table">
+        <kendo-grid [data]="gridView" resizable="true" columnMenu="true" [pageSize]="pageSize" [skip]="skip"
+          [pageable]="{pageSizes: [10, 25, 50, 100, 250, 500]}" (pageChange)="pageChange($event)" [sortable]="{
           allowUnsort: allowUnsort,
           mode:  'single'
           }" [sort]="sort" (sortChange)="sortChange($event)" [filterable]="true"
-      (dataStateChange)="dataStateChange($event)" [filter]="state.filter">
+          (dataStateChange)="dataStateChange($event)" [filter]="state.filter">
 
-      <kendo-grid-column field="OrderID" title="Order ID">
-      </kendo-grid-column>
-      <kendo-grid-column field="InvoiceNumber" title="Sales Invoice No.">
-      </kendo-grid-column>
-      <kendo-grid-column field="InventoryType" title="Inventory Type">
-      </kendo-grid-column>
-      <kendo-grid-column field="LocationName" title="Location Name">
-      </kendo-grid-column> 
-      <kendo-grid-column field="PicklistQty" title="Picklist Qty">
-      </kendo-grid-column>
-      <kendo-grid-column field="PickedQty" title="Picked Qty">
-      </kendo-grid-column>
-      <kendo-grid-column field="TransferQty" title="Transfer Qty">
-      </kendo-grid-column>
-      <kendo-grid-column field="Status" title="Status">
-      </kendo-grid-column>
+          <ng-template kendoGridToolbarTemplate>
+            <input placeholder="Search in all columns..." style="float:right;" kendoTextBox
+              (input)="onFilter($event.target.value)" />
+            <button kendoGridExcelCommand type="button" icon="file-excel"> </button>
+            <button kendoGridPDFCommand icon="file-pdf"> </button>
+            <kendo-grid-pdf fileName="PickList.pdf" [repeatHeaders]="true"></kendo-grid-pdf>
+            <kendo-grid-excel fileName="PickList.xlsx"></kendo-grid-excel>
+          </ng-template>
+          <kendo-grid-column field="OrderID" title="Order ID">
+          </kendo-grid-column>
+          <kendo-grid-column field="InvoiceNumber" title="Sales Invoice No.">
+          </kendo-grid-column>
+          <kendo-grid-column field="InventoryType" title="Inventory Type">
+          </kendo-grid-column>
+          <kendo-grid-column field="LocationName" title="Location Name">
+          </kendo-grid-column>
+          <kendo-grid-column field="PicklistQty" title="Picklist Qty">
+          </kendo-grid-column>
+          <kendo-grid-column field="PickedQty" title="Picked Qty">
+          </kendo-grid-column>
+          <kendo-grid-column field="TransferQty" title="Transfer Qty">
+          </kendo-grid-column>
+          <kendo-grid-column field="Status" title="Status">
+          </kendo-grid-column>
 
-      <kendo-grid-column field="PickListNumber" title="Action" [class]="{'text-center': true}"  [filterable]="false" [sortable]="false" width="80" >
-        <ng-template kendoGridCellTemplate let-obj>
-          <i class="fa fa-edit bgblue pointer" [routerLink]="['/Picklist', obj.PickListNumber]" title="Edit"
-            *ngIf="!(obj.Status == 'Confirmed')"></i>
-          &nbsp;
-          <i class="fa fa-eye bgblue pointer" *ngIf="(obj.Status == 'Confirmed')"
-            [routerLink]="['/PickListView', obj.PickListNumber]" title="View"></i>
-          &nbsp;
-          <i class="fa fa-print bgblue pointer" *ngIf="(obj.Status == 'Confirmed')"
-            [routerLink]="['/SalesInvoice', obj.PickListNumber]" title="Print"></i>
-        </ng-template>
-      </kendo-grid-column>
-    </kendo-grid>
-
+          <kendo-grid-column title="Action" [class]="{'text-center': true}" [filterable]="false" [sortable]="false"
+            width="80">
+            <ng-template kendoGridCellTemplate let-obj>
+              <i class="fa fa-edit bgblue pointer" [routerLink]="['/Picklist', obj.PickListNumber]" title="Edit"
+                *ngIf="!(obj.Status == 'Confirmed')"></i>
+              &nbsp;
+              <i class="fa fa-eye bgblue pointer" *ngIf="(obj.Status == 'Confirmed')"
+                [routerLink]="['/PickListView', obj.PickListNumber]" title="View"></i>
+              &nbsp;
+              <i class="fa fa-print bgblue pointer" *ngIf="(obj.Status == 'Confirmed')"
+                [routerLink]="['/SalesInvoice', obj.PickListNumber]" title="Print"></i>
+            </ng-template>
+          </kendo-grid-column>
+        </kendo-grid>
+      </table>
+    </div>
   </div>
 </div>

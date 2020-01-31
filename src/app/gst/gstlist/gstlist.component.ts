@@ -184,6 +184,51 @@ export class GstlistComponent implements OnInit {
     this.gridView = process(this.items, this.state);
   }
 
-
+  public onFilter(inputValue: string): void {
+    this.gridView = process(this.items.slice(this.skip, this.skip + this.pageSize), {
+      skip: this.skip,
+      take: this.skip + this.pageSize,
+      filter: {
+        logic: "or",
+        filters: [
+          {
+            field: 'FileType',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'Year',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'MonthName',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'FileName',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'ApprovalStatus',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'GSTStatus',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'GSTRemarks',
+            operator: 'contains',
+            value: inputValue
+          },  
+        ],
+      }
+    });
+  }
   //#endregion Paging Sorting and Filtering End
 }

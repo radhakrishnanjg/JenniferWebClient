@@ -1,0 +1,330 @@
+<div class="row">
+  <div class="col-sm-6 col-lg-6">
+    <h3>
+      Vouchers
+    </h3>
+  </div>
+  <div class="col-sm-6 col-lg-6">
+    <div class="pull-right hidden-xs">
+      <ol class="breadcrumb" id="dynamicbreadcrumb">
+        <li>
+          <span> Master</span>
+        </li>
+        <li>
+          <span> Vouchers</span>
+        </li>
+        <li class="active">
+
+          List
+        </li>
+      </ol>
+    </div>
+  </div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="input-group col-sm-12 col-xs-12" role="group" aria-label="Basic example">
+          <div class="col-md-3 col-sm-3 col-xs-12 nopading_loct">
+            <select [(ngModel)]="SearchBy" class="serchcurv form-control btn-group">
+              <option value="" selected="select">SearchBy</option>
+              <option value="ByState">State</option>
+              <option value="ByMarkerPlace">MarkerPlace</option>
+              <option value="ByVoucherType">VoucherType</option>
+              <option value="ByVoucherName">VoucherName</option>
+              <!-- <option value="ByStatus">Status</option> -->
+            </select>
+          </div>
+          <div class="col-md-3 col-sm-3 nopading_loct" *ngIf="(SearchBy!='ByStatus')">
+            <input (keyup.enter)="Search()" [(ngModel)]="SearchKeyword" type="text"
+              class="serchcurv form-control btn-group">
+          </div>
+          <div class="col-md-3 col-sm-3 nopading_loct" *ngIf="(SearchBy=='ByStatus')">
+
+            <select [(ngModel)]="Searchaction" type="select" class="serchcurv form-control btn-group">
+              <option value="true">Active</option>
+              <option value="false">InActive</option>
+            </select>
+
+          </div>
+          <div class="col-md-3 col-sm-3 col-xs-6 nopading_loct">
+            <button class="serchcurv btn btn-default btn-group" (click)="Search()" title="Search">
+              <i class="fa fa-search " aria-hidden="true"></i>
+            </button>
+            <button class="serchcurv btn btn-default btn-group" (click)="Refresh()" title="Reset">
+              <i class="fa fa-refresh" aria-hidden="true"></i>
+            </button>
+          </div>
+
+          <div class="col-xs-6 col-sm-3 col-md-3 text-right nopadding">
+            <button type="button" class="btn btn-xs btn-sm btn-primary" (click)="newButtonClick()" title="Add New">
+              Add New
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="panel-body">
+    <div class="table-responsive">
+      <table class="table">
+        <kendo-grid [data]="gridView" resizable="true" columnMenu="true" [pageSize]="pageSize" [skip]="skip"
+          [pageable]="{pageSizes: [10, 25, 50, 100, 250, 500]}" (pageChange)="pageChange($event)" [sortable]="{
+        allowUnsort: allowUnsort,
+        mode:  'single'
+        }" [sort]="sort" (sortChange)="sortChange($event)" [filterable]="true"
+          (dataStateChange)="dataStateChange($event)" [filter]="state.filter">
+          <ng-template kendoGridToolbarTemplate>
+            <input placeholder="Search in all columns..." style="float:right;" kendoTextBox
+              (input)="onFilter($event.target.value)" />
+            <button kendoGridExcelCommand type="button" icon="file-excel"> </button>
+            <button kendoGridPDFCommand icon="file-pdf"> </button>
+            <kendo-grid-pdf fileName="VoucherList.pdf" [repeatHeaders]="true"></kendo-grid-pdf>
+            <kendo-grid-excel fileName="VoucherList.xlsx"></kendo-grid-excel>
+          </ng-template>
+
+
+          <kendo-grid-column field="StateName" title="State Name">
+          </kendo-grid-column>
+          <kendo-grid-column field="GSTID" title="GST ID">
+          </kendo-grid-column>
+          <kendo-grid-column field="MarketPlace" title="MarketPlace">
+          </kendo-grid-column>
+          <kendo-grid-column field="TaxType" title="Tax Type">
+          </kendo-grid-column>
+          <kendo-grid-column field="VoucherType" title="Voucher Type">
+          </kendo-grid-column>
+          <kendo-grid-column field="TransactionType" title="Transaction Type">
+          </kendo-grid-column>
+          <kendo-grid-column field="VoucherText" title="Voucher Text">
+          </kendo-grid-column>
+          <kendo-grid-column field="VoucherName" title="Voucher Name">
+          </kendo-grid-column>
+
+          <!-- <kendo-grid-column field="IsActive" title="IsActive" [class]="{'text-center': true}" filter="boolean"
+            width="80">
+            <ng-template kendoGridCellTemplate let-dataItem>
+              <i [class]="dataItem.IsActive ? 'fa fa-check': 'fa fa-times'" aria-hidden="true"></i>
+            </ng-template>
+          </kendo-grid-column> -->
+          <kendo-grid-column title="Action" [class]="{'text-center': true}" [filterable]="false" [sortable]="false"
+            width="70">
+            <ng-template kendoGridCellTemplate let-dataItem>
+              <i (click)="editButtonClick(dataItem.VoucherID)" title="Edit" class="fa fa-edit bgblue pointer"></i>
+              &nbsp;
+              <i class="fa fa-trash bgred pointer" (click)="confirmDeleteid(dataItem.VoucherID,dataItem.VoucherName)"
+                title="Delete"></i>
+            </ng-template>
+          </kendo-grid-column>
+        </kendo-grid>
+      </table>
+    </div>
+  </div>
+
+
+  <div id="modaldeleteconfimation" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="modaldeleteconfimation" aria-hidden="true">
+    <div class="modal-dialog ">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+              aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="modaldeleteconfimation">Confirmation</h4>
+        </div>
+        <div class="modal-body alert-warning">
+          <div class="row">
+            <div class="col-xs-2">
+              <i class="fa fa-warning fa-3x "></i>
+            </div>
+            <div class="col-xs-10">
+              <div>
+                <h5>
+                  Are you sure you want to delete this value <span> {{deleteColumn}}</span>?
+                </h5>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-danger btn-sm" (click)="delete()">Yes</button>
+          &nbsp;
+          <button class="btn btn-default btn-sm" data-dismiss="modal">No</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="modalpopupvoucherupsert" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="modalpopupvoucherupsert" aria-hidden="true">
+
+    <form autocomplete="off" [formGroup]="VoucherForm" (ngSubmit)="SaveData()" class="form-horizontal">
+      <div class="modal-dialog ">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="modalpopupvoucherupsert"> {{panelTitle}}</h4>
+          </div>
+          <div class="modal-body">
+
+            <div class="form-group" [ngClass]="{'has-error': formErrors.StateID}">
+              <label class="col-sm-3 control-label" for="StateID">State <span class="mandantory">*</span></label>
+              <div class="col-sm-8">
+                <select id="StateID" class="form-control" formControlName="StateID" (blur)="logValidationErrors()"
+                  (change)="OnchangeforVendorName();onchangeStateID($event.target.value)">
+                  <option value="0" selected="selected">Select</option>
+                  <option *ngFor="let dis of lstStates" value={{dis.StateID}}>
+                    {{dis.State}}
+                  </option>
+                </select>
+
+                <div class="help-block-rk"> <span class="help-block" *ngIf="formErrors.StateID">
+                    {{formErrors.StateID}}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group" [ngClass]="{'has-error': formErrors.GSTID}">
+              <label class="col-sm-3 control-label" for="GSTID">GST ID <span class="mandantory">*</span></label>
+              <div class="col-sm-8">
+                <select id="GSTID" class="form-control" formControlName="GSTID" (blur)="logValidationErrors()"
+                  (change)="OnchangeforVendorName()">
+                  <option value="0" selected="selected">Select</option>
+                  <option *ngFor="let dis of lstGSTId" value={{dis.GSTID}}>
+                    {{dis.GSTID}}
+                  </option>
+                </select>
+
+                <div class="help-block-rk"> <span class="help-block" *ngIf="formErrors.GSTID">
+                    {{formErrors.GSTID}}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+
+
+            <div class="form-group" [ngClass]="{'has-error': formErrors.MarketPlaceID}">
+              <label class="col-sm-3 control-label" for="MarketPlaceID">
+                Market Place <span class="mandantory">*</span>
+              </label>
+              <div class="col-sm-8">
+                <select id="MarketPlaceID" class="form-control" formControlName="MarketPlaceID"
+                  (blur)="logValidationErrors()" (change)="OnchangeforVendorName()">
+                  <option value="0" selected="selected">Select</option>
+                  <option *ngFor="let dis of lstMarketplaces" value={{dis.MarketplaceID}}>
+                    {{dis.MarketPlace}}
+                  </option>
+                </select>
+                <div class="help-block-rk"> <span class="help-block" *ngIf="formErrors.MarketPlaceID">
+                    {{formErrors.MarketPlaceID}}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group" [ngClass]="{'has-error': formErrors.TaxType}">
+              <label class="col-sm-3 control-label" for="TaxType">
+                Tax Type <span class="mandantory">*</span>
+              </label>
+              <div class="col-sm-8">
+                <select id="TaxType" class="form-control" formControlName="TaxType" (blur)="logValidationErrors()"
+                  (change)="OnchangeforVendorName()">
+                  <option value="" selected="selected">Select</option>
+                  <option *ngFor="let dis of lstTaxType" value={{dis.DropdownValue}}>
+                    {{dis.DropDownDescription}}
+                  </option>
+                </select>
+                <div class="help-block-rk"> <span class="help-block" *ngIf="formErrors.TaxType">
+                    {{formErrors.TaxType}}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group" [ngClass]="{'has-error': formErrors.VoucherType}">
+              <label class="col-sm-3 control-label" for="VoucherType">
+                Voucher Type <span class="mandantory">*</span>
+              </label>
+              <div class="col-sm-8">
+                <select id="VoucherType" class="form-control" formControlName="VoucherType"
+                  (blur)="logValidationErrors()" (change)="OnchangeforVendorName()">
+                  <option value="" selected="selected">Select</option>
+                  <option *ngFor="let dis of lstVoucherType" value={{dis.DropdownValue}}>
+                    {{dis.DropDownDescription}}
+                  </option>
+                </select>
+                <div class="help-block-rk"> <span class="help-block" *ngIf="formErrors.VoucherType">
+                    {{formErrors.VoucherType}}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group" [ngClass]="{'has-error': formErrors.TransactionType}">
+              <label class="col-sm-3 control-label" for="TransactionType">
+                Transaction Type <span class="mandantory">*</span>
+              </label>
+              <div class="col-sm-8" >
+                <select   id="TransactionType" class="form-control" formControlName="TransactionType"
+                  (blur)="logValidationErrors()" (change)="OnchangeforVendorName()">
+                  <option value="" selected="selected">Select</option>
+                  <option *ngFor="let dis of lstTransactionType" value={{dis.DropdownValue}}>
+                    {{dis.DropdownValue}}
+                  </option>
+                </select> 
+                <div class="help-block-rk"> <span class="help-block" *ngIf="formErrors.TransactionType">
+                    {{formErrors.TransactionType}}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group" [ngClass]="{'has-error': formErrors.VoucherText}">
+              <label class="col-sm-3 control-label" for="VoucherText">Voucher Text <span
+                  class="mandantory">*</span></label>
+              <div class="col-sm-8">
+                <input id="VoucherText" type="text" class="form-control" formControlName="VoucherText"
+                  (blur)="logValidationErrors()" maxlength="5" (change)="OnchangeforVendorName()"
+                  oninput="this.value = this.value.toUpperCase()">
+                <div class="help-block-rk"> <span class="help-block" *ngIf="formErrors.VoucherText">
+                    {{formErrors.VoucherText}}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-sm-3 control-label" for="VoucherName">Voucher Name</label>
+              <div class="col-sm-8">
+                <b> {{VoucherName}} </b>
+              </div>
+            </div>
+
+            <!-- <div class="form-group" *ngIf="!action">
+              <label class="col-sm-3 col-xs-2 control-label custom-control-label " for="customSwitches">IsActive
+              </label>
+              <div class="col-sm-9 col-xs-9  nopading_loct">
+                <label class="switch">
+                  <input type="checkbox" checked formControlName="IsActive" id="IsActive">
+                  <span class="slider round"></span>
+                </label>
+              </div>
+            </div> -->
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-primary" data-dismiss="modal">Cancel</button>
+            &nbsp;
+            <button class="btn btn-success" type="submit" prevent-double-submit [disabled]="VoucherForm.invalid">
+              Save
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

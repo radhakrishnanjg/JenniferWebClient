@@ -7,16 +7,14 @@ import { DomSanitizer } from "@angular/platform-browser";
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 //kendo
-import { GridModule } from '@progress/kendo-angular-grid'; 
+import { GridModule, PDFModule, ExcelModule } from '@progress/kendo-angular-grid';
 
-import { PreventDoubleSubmitModule } from 'ngx-prevent-double-submission'; 
+import { PreventDoubleSubmitModule } from 'ngx-prevent-double-submission';
 import { EncrDecrService } from '../_services/service/encr-decr.service';
 import { CookieService } from 'ngx-cookie-service';
 import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 
-//Component
-import { ReportmasterlistComponent } from './reportmasterlist/reportmasterlist.component';
-import { ReportmasterComponent } from './reportmaster/reportmaster.component';
+//Component 
 import { ReportsinventoryComponent } from './reportsinventory/reportsinventory.component';
 import { ReportsamazonComponent } from './reportsamazon/reportsamazon.component';
 import { ReportscomplianceComponent } from './reportscompliance/reportscompliance.component';
@@ -24,8 +22,6 @@ import { ReportsanalyticsComponent } from './reportsanalytics/reportsanalytics.c
 import { ReportsmisComponent } from './reportsmis/reportsmis.component';
 import { ReportsothersComponent } from './reportsothers/reportsothers.component';
 import { ReportAmazonMTRComponent } from './report-amazon-mtr/report-amazon-mtr.component';
-import { StatementlistComponent } from './statementlist/statementlist.component';
-import { StatementviewComponent } from './statementview/statementview.component';
 
 //routing module
 import { DownloadRoutingModule } from './download.routing.module'
@@ -48,9 +44,9 @@ export class SafeHtmlPipe implements PipeTransform {
   imports: [
     CommonModule,
     RouterModule,
-    GridModule, 
-    FormsModule, 
-    ReactiveFormsModule, 
+    GridModule,
+    FormsModule,
+    ReactiveFormsModule,
     PreventDoubleSubmitModule.forRoot(),
     ToastrModule.forRoot({
       timeOut: 5000,
@@ -58,18 +54,22 @@ export class SafeHtmlPipe implements PipeTransform {
       preventDuplicates: true,
     }),
     MomentModule,
-    NgxDaterangepickerMd.forRoot(), 
- 
+    NgxDaterangepickerMd.forRoot(),
     GridModule,
-    DropDownListModule, 
+    PDFModule,
+    ExcelModule,
+    DropDownListModule,
     DownloadRoutingModule
   ],
   declarations: [
     SafeHtmlPipe,
-    ReportmasterlistComponent, ReportmasterComponent,
-    ReportsinventoryComponent, ReportsamazonComponent, ReportscomplianceComponent,
-    ReportsanalyticsComponent, ReportsmisComponent, ReportsothersComponent, ReportAmazonMTRComponent,
-    StatementlistComponent, StatementviewComponent,],
+    ReportsinventoryComponent,
+    ReportsamazonComponent,
+    ReportscomplianceComponent,
+    ReportsanalyticsComponent,
+    ReportsmisComponent,
+    ReportsothersComponent,
+    ReportAmazonMTRComponent,],
 
   providers: [
     CookieService,

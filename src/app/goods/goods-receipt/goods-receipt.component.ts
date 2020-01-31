@@ -60,7 +60,7 @@ export class GoodsReceiptComponent implements OnInit {
   TotalTotalReceivedQty: number = 0;
   constructor(
     private fb: FormBuilder,
-    
+
     private _goodsReceiptService: GoodsReceiptService,
     private alertService: ToastrService,
     private _authorizationGuard: AuthorizationGuard,
@@ -199,6 +199,7 @@ export class GoodsReceiptComponent implements OnInit {
       (res) => {
         this.poNumbers = res;
         this.lstPONumber = res;
+        debugger
         this.poNumbers.forEach(obj => { this.poNumberList.push(obj.PONumber) });
         //
       }, (err) => {
@@ -314,21 +315,24 @@ export class GoodsReceiptComponent implements OnInit {
     const InventoryDamageQty = parseInt(this.lstGoodsReceiptDetail[index]['InventoryDamageQty'].toString());
     const InventoryOthersQty = parseInt(this.lstGoodsReceiptDetail[index]['InventoryOthersQty'].toString());
     const editField = InventoryShortageQty + InventoryDamageQty + InventoryOthersQty + parseInt(value.toString());
-
+    const InventorySellableQty = parseInt(this.lstGoodsReceiptDetail[index]['InventorySellableQty'].toString());
+    const ItemID = this.lstGoodsReceiptDetail[index]['ItemID'].toString();
     if (parseInt(value.toString()) < 0) {
       this.alertService.error('Entered Qty must be greater than or equal to zero.!');
+      $('#i' + ItemID).val(InventorySellableQty);
       return;
     }
     else if (editField > AvailableQty) {
       this.alertService.error('Entered Qty must be less than or equal to sum of PO Qty.!');
+      $('#i' + ItemID).val(InventorySellableQty);
       return;
     }
     else {
       this.lstGoodsReceiptDetail[index][key] = parseInt(value.toString());
       this.lstGoodsReceiptDetail[index].TotalReceivedQty = +this.lstGoodsReceiptDetail[index].InventorySellableQty
-        + +this.lstGoodsReceiptDetail[index].InventoryShortageQty
-        + +this.lstGoodsReceiptDetail[index].InventoryDamageQty
-        + +this.lstGoodsReceiptDetail[index].InventoryOthersQty;
+        + this.lstGoodsReceiptDetail[index].InventoryShortageQty
+        + this.lstGoodsReceiptDetail[index].InventoryDamageQty
+        + this.lstGoodsReceiptDetail[index].InventoryOthersQty;
 
       this.TotalPOQty = this.lstGoodsReceiptDetail.reduce((acc, a) => acc + a.POQTY, 0);
       this.TotalAvailableQty = this.lstGoodsReceiptDetail.reduce((acc, a) => acc + a.AvailableQty, 0);
@@ -346,21 +350,24 @@ export class GoodsReceiptComponent implements OnInit {
     const InventoryDamageQty = parseInt(this.lstGoodsReceiptDetail[index]['InventoryDamageQty'].toString());
     const InventoryOthersQty = parseInt(this.lstGoodsReceiptDetail[index]['InventoryOthersQty'].toString());
     const editField = InventorySellableQty + InventoryDamageQty + InventoryOthersQty + parseInt(value.toString());
-
+    const InventoryShortageQty = parseInt(this.lstGoodsReceiptDetail[index]['InventoryShortageQty'].toString());
+    const ItemID = this.lstGoodsReceiptDetail[index]['ItemID'].toString();
     if (parseInt(value.toString()) < 0) {
       this.alertService.error('Entered Qty must be greater than or equal to zero.!');
+      $('#s' + ItemID).val(InventoryShortageQty);
       return;
     }
     else if (editField > AvailableQty) {
       this.alertService.error('Entered Qty must be less than or equal to sum of PO Qty.!');
+      $('#s' + ItemID).val(InventoryShortageQty);
       return;
     }
     else {
       this.lstGoodsReceiptDetail[index][key] = parseInt(value.toString());
       this.lstGoodsReceiptDetail[index].TotalReceivedQty = +this.lstGoodsReceiptDetail[index].InventorySellableQty
-        + +this.lstGoodsReceiptDetail[index].InventoryShortageQty
-        + +this.lstGoodsReceiptDetail[index].InventoryDamageQty
-        + +this.lstGoodsReceiptDetail[index].InventoryOthersQty;
+        + this.lstGoodsReceiptDetail[index].InventoryShortageQty
+        + this.lstGoodsReceiptDetail[index].InventoryDamageQty
+        + this.lstGoodsReceiptDetail[index].InventoryOthersQty;
 
       this.TotalPOQty = this.lstGoodsReceiptDetail.reduce((acc, a) => acc + a.POQTY, 0);
       this.TotalAvailableQty = this.lstGoodsReceiptDetail.reduce((acc, a) => acc + a.AvailableQty, 0);
@@ -378,21 +385,24 @@ export class GoodsReceiptComponent implements OnInit {
     const InventoryShortageQty = parseInt(this.lstGoodsReceiptDetail[index]['InventoryShortageQty'].toString());
     const InventoryOthersQty = parseInt(this.lstGoodsReceiptDetail[index]['InventoryOthersQty'].toString());
     const editField = InventoryShortageQty + InventorySellableQty + InventoryOthersQty + parseInt(value.toString());
-
+    const InventoryDamageQty = parseInt(this.lstGoodsReceiptDetail[index]['InventoryDamageQty'].toString());
+    const ItemID = this.lstGoodsReceiptDetail[index]['ItemID'].toString();
     if (parseInt(value.toString()) < 0) {
       this.alertService.error('Entered Qty must be greater than or equal to zero.!');
+      $('#d' + ItemID).val(InventoryDamageQty);
       return;
     }
     else if (editField > AvailableQty) {
       this.alertService.error('Entered Qty must be less than or equal to sum of PO Qty.!');
+      $('#d' + ItemID).val(InventoryDamageQty);
       return;
     }
     else {
       this.lstGoodsReceiptDetail[index][key] = parseInt(value.toString());
       this.lstGoodsReceiptDetail[index].TotalReceivedQty = +this.lstGoodsReceiptDetail[index].InventorySellableQty
-        + +this.lstGoodsReceiptDetail[index].InventoryShortageQty
-        + +this.lstGoodsReceiptDetail[index].InventoryDamageQty
-        + +this.lstGoodsReceiptDetail[index].InventoryOthersQty;
+        + this.lstGoodsReceiptDetail[index].InventoryShortageQty
+        + this.lstGoodsReceiptDetail[index].InventoryDamageQty
+        + this.lstGoodsReceiptDetail[index].InventoryOthersQty;
 
       this.TotalPOQty = this.lstGoodsReceiptDetail.reduce((acc, a) => acc + a.POQTY, 0);
       this.TotalAvailableQty = this.lstGoodsReceiptDetail.reduce((acc, a) => acc + a.AvailableQty, 0);
@@ -410,21 +420,24 @@ export class GoodsReceiptComponent implements OnInit {
     const InventoryShortageQty = parseInt(this.lstGoodsReceiptDetail[index]['InventoryShortageQty'].toString());
     const InventoryDamageQty = parseInt(this.lstGoodsReceiptDetail[index]['InventoryDamageQty'].toString());
     const editField = InventoryShortageQty + InventoryDamageQty + InventorySellableQty + parseInt(value.toString());
-
+    const InventoryOthersQty = parseInt(this.lstGoodsReceiptDetail[index]['InventoryOthersQty'].toString());
+    const ItemID = this.lstGoodsReceiptDetail[index]['ItemID'].toString();
     if (parseInt(value.toString()) < 0) {
       this.alertService.error('Entered Qty must be greater than or equal to zero.!');
+      $('#o' + ItemID).val(InventoryOthersQty);
       return;
     }
     else if (editField > AvailableQty) {
       this.alertService.error('Entered Qty must be less than or equal to sum of PO Qty.!');
+      $('#o' + ItemID).val(InventoryOthersQty);
       return;
     }
     else {
       this.lstGoodsReceiptDetail[index][key] = parseInt(value.toString());
       this.lstGoodsReceiptDetail[index].TotalReceivedQty = +this.lstGoodsReceiptDetail[index].InventorySellableQty
-        + +this.lstGoodsReceiptDetail[index].InventoryShortageQty
-        + +this.lstGoodsReceiptDetail[index].InventoryDamageQty
-        + +this.lstGoodsReceiptDetail[index].InventoryOthersQty;
+        + this.lstGoodsReceiptDetail[index].InventoryShortageQty
+        + this.lstGoodsReceiptDetail[index].InventoryDamageQty
+        + this.lstGoodsReceiptDetail[index].InventoryOthersQty;
 
       this.TotalPOQty = this.lstGoodsReceiptDetail.reduce((acc, a) => acc + a.POQTY, 0);
       this.TotalAvailableQty = this.lstGoodsReceiptDetail.reduce((acc, a) => acc + a.AvailableQty, 0);

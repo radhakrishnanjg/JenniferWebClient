@@ -336,8 +336,10 @@
           <tbody>
             <tr *ngFor="let item of lstGoodsReceiptDetail; let i = index;">
               <td [ngClass]="(item.ItemID==0)?'bgred':''">
-                <img [src]="item.ImagePath" width="60" height="60" title="SKU Image"
-                  class="img-responsive img-thumbnail " />
+                <a class="pointer" href="{{ 'https://www.amazon.in/dp/' + item.ItemCode}}" target="_blank">
+                  <img [src]="item.ImagePath" width="60" height="60" title="Click To View"
+                    class="img-responsive img-thumbnail " />
+                </a> 
               </td>
               <td [ngClass]="(item.ItemID==0)?'bgred':''">{{item.VendorItemCode}}</td>
               <td [ngClass]="(item.ItemID==0)?'bgred':''">{{item.ItemDescription}}</td>
@@ -346,20 +348,24 @@
               <td [ngClass]="(item.ItemID==0)?'bgred':''">{{item.AvailableQty}}</td>
 
               <td [ngClass]="(item.ItemID==0)?'bgred':''">
-                <input id="InventorySellableQty" type="number" min="0" step="1" class="form-control" max="100000"
+                <input type="text" id="{{'i'+item.ItemID}}" name="{{'i'+item.ItemID}}" class="form-control"
+                  maxlength="13" onkeypress="return /[0-9]/i.test(event.key)"
                   (input)="onInventorySellableQtyChange(i,'InventorySellableQty',$event.target.value)"
                   value="{{item.InventorySellableQty}}">
               </td>
-              <td [ngClass]="(item.ItemID==0)?'bgred':''"><input id="InventoryShortageQty" type="number" min="0"
-                  step="1" class="form-control" max="100000"
+              <td [ngClass]="(item.ItemID==0)?'bgred':''">
+                <input type="text" id="{{'s'+ item.ItemID}}" name="{{'s'+ item.ItemID}}" class="form-control" maxlength="13"
+                  onkeypress="return /[0-9]/i.test(event.key)"
                   (input)="onInventoryShortageQtyChange(i,'InventoryShortageQty',$event.target.value)"
                   value="{{item.InventoryShortageQty}}"> </td>
-              <td [ngClass]="(item.ItemID==0)?'bgred':''"><input id="InventoryDamageQty" type="number" min="0" step="1"
-                  class="form-control" max="100000"
+              <td [ngClass]="(item.ItemID==0)?'bgred':''">
+                <input type="text" id="{{'d'+ item.ItemID}}" name="{{'d'+ item.ItemID}}" class="form-control" maxlength="13"
+                  onkeypress="return /[0-9]/i.test(event.key)"
                   (input)="onInventoryDamageQtyChange(i,'InventoryDamageQty',$event.target.value)"
                   value="{{item.InventoryDamageQty}}"> </td>
-              <td [ngClass]="(item.ItemID==0)?'bgred':''"><input id="InventoryOthersQty" type="number" min="0" step="1"
-                  class="form-control" max="100000"
+              <td [ngClass]="(item.ItemID==0)?'bgred':''">
+                <input type="text" id="{{'o'+ item.ItemID}}" name="{{'o'+ item.ItemID}}" class="form-control" maxlength="13"
+                  onkeypress="return /[0-9]/i.test(event.key)"
                   (input)="onInventoryOthersQtyChange(i,'InventoryOthersQty',$event.target.value)"
                   value="{{item.InventoryOthersQty}}"> </td>
 

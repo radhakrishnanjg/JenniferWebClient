@@ -1,0 +1,339 @@
+<div class='page-topbar '>
+
+    <!------>
+    <nav class="navbar navbar-default">
+        <div class="container-fluid nopadding">
+
+            <div class="navbar-header">
+                <div class="logo-area">
+                    <a routerLink="/Dashboard1">
+                        <span>
+                            <img class="logo " src="assets\images\logo.png" alt="Logo" height="40" />
+                            <img style="display: none;" class="logotogl " src="assets\images\togle-logo.png" alt="Logo"
+                                height="40" />
+                        </span>
+                    </a>
+                </div>
+
+            </div>
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                <span class="fa fa-filter" aria-hidden="true"></span>
+            </button>
+            <div class='slidetoglbtncase'>
+                <ul class="left-links list-inline list-unstyled">
+                    <li class="sidebar-toggle-wrap">
+                        <a data-toggle="#sidebar" class="sidebar_toggle">
+                            <i class="fa fa-bars pointer"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="collapse navbar-collapse" id="myNavbar">
+                <div class='quick-area'>
+
+                    <!-- <div class="search-base">
+                        <div class="topnav">
+                            <div class="search-container"> 
+                                <form (ngSubmit)="SearchData()">
+                                    <input (keyup.enter)="SearchData()" onkeypress="return /[a-z0-9/]/i.test(event.key)"
+                                        class='top-search' type="text" [(ngModel)]="SearchBy"
+                                        placeholder="Tell me what you want to do" name="search" maxlength="50">
+                                    <button type="submit" prevent-double-submit>
+                                        <i class="fa fa-search pointer"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div> -->
+                    <div class='pull-right'>
+                        <div class="slctcompydtals">
+                            <ul class="info-menu right-links list-inline list-unstyled">
+                                <li>
+                                    <ngx-spinner bdOpacity=0.9 size="medium" color="#ce295e" type="ball-fussion"
+                                        [fullScreen]="true">
+                                        <p style="color: #000000"> Fetching for you ... </p>
+                                    </ngx-spinner>
+                                </li>
+
+                                <li>
+                                    <a routerLinkActive="active" routerLink="/Dashboard1">
+                                        Switch Application
+                                    </a>
+                                </li>
+                                <!-- <li> 
+                                    <select id="CompanyID" class="form-control topdropbx" [(ngModel)]="CompanyID"
+                                        (change)="onchangeCompanyID($event.target.value)">
+                                        <option *ngFor="let c1 of lstCompanies" value={{c1.CompanyID}}>
+                                            {{c1.CompanyName}}
+                                        </option>
+                                    </select>
+
+                                </li>
+
+                                <li> 
+                                    <select id="CompanyDetailID" class="form-control topdropbx"
+                                        [(ngModel)]="CompanyDetailID"
+                                        (change)="onchangeCompanyDetailID($event.target.value)">
+                                        <option value="0" selected="selected">Stores</option>
+                                        <option *ngFor="let c1 of lstCompanydetails" value={{c1.CompanyDetailID}}>
+                                            {{c1.StoreName}}
+                                        </option>
+                                    </select>
+
+                                </li> -->
+
+                                <li class="profile1 pfof1styl" style="padding-top:5px">
+                                    <a href="#" data-toggle="dropdown" class="toggl1e">
+                                        <i class="profile"></i>
+                                        {{fullName}}
+                                    </a>
+                                    <ul class="dropdown-menu profile animated fadeIn">
+                                        <li>
+                                            <a routerLinkActive="active" routerLink="/CrossBorder/ChangePassword">
+                                                <i class="fa fa-fw fa-pencil"></i>
+                                                Change Password
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a routerLinkActive="active" routerLink="/CrossBorder/Profile">
+                                                <i class="fa fa-user"></i>
+                                                Profile Update
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a routerLinkActive="active" (click)="logout()">
+                                                <i class="fa fa-fw fa-power-off"></i>
+                                                Sign Out</a>
+                                        </li>
+                                    </ul>
+                                </li>
+
+                                <!-- <li style="padding-top:5px">
+                                    <a routerLinkActive="active" routerLink="/Help">
+                                        <i class="help"></i> <span> Help</span>
+                                    </a>
+                                </li> -->
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- <div class="googletrans">
+                            <div id="google_translate_element"></div>
+                        </div> -->
+                </div>
+            </div>
+        </div>
+        <!-- <div class="themesellection">
+            <a type="button" data-toggle="modal" data-target="#myModal">
+                <i class="themeicon" title="Theme"></i>
+            </a>
+        </div> -->
+    </nav>
+
+    <!------>
+</div>
+<div class="page-container row-fluid container-fluid">
+    <div class="page-sidebar pagescroll">
+        <div class="page-sidebar-wrapper" id="main-menu-wrapper">
+
+            <!-- <ul class="wraplist" *ngIf="Userpermissions && Userpermissions.length">
+                <li class="panel" *ngFor="let parent of Userpermissions">
+                    <a href="javascript:;" class="parentmenu"
+                        *ngIf="(parent.AngularRouteName =='#' && parent.MenuType=='ParentMenu' )" id="{{parent.MenuID}}"
+                        (click)="fnusermenu_ViewEdit(parent.MenuID)">
+                        <i class="{{parent.Menucss}}"></i>
+                        <span class="title"> {{parent.MenuName}}</span> <span class="arrow"></span>
+                    </a>
+                    <ul class="sub-menu" style="display: none;" *ngFor="let sub of filter(parent.MenuID)">
+                        <li>
+                            <a routerLinkActive="active" routerLink="/{{sub.AngularRouteName}}">
+                                <i class="{{sub.Menucss}}"></i>
+                                {{sub.MenuName}}
+                            </a>
+                        </li>
+                    </ul>
+                    <a routerLinkActive="active" routerLink="/{{parent.AngularRouteName}}"
+                        *ngIf="(parent.AngularRouteName !='#' && parent.MenuType=='ParentMenu')">
+                        <i class="{{parent.Menucss}}"></i>
+                        <span class="title"> {{parent.MenuName}}</span>
+                    </a>
+                </li>
+            </ul> -->
+
+            <ul class="wraplist">
+                <li class="panel">
+                    <a href="javascript:;" class="parentmenu" id="1" (click)="fnusermenu_ViewEdit(1)">
+                        <i class="fa fa users"></i>
+                        <span class="title"> Parent Menu</span> <span class="arrow"></span>
+                    </a>
+                    <ul class="sub-menu" style="display: none;">
+                        <li>
+                            <a routerLinkActive="active" routerLink="/CrossBorder/SubMenu1">
+                                <i class="fa fa users"></i>
+                                SubMenu1
+                            </a>
+                        </li>
+                        <li>
+                            <a routerLinkActive="active" routerLink="/CrossBorder/SubMenu2">
+                                <i class="fa fa users"></i>
+                                SubMenu2
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+
+    <section id="main-content">
+        <section class="wrapper main-wrapper row">
+            <div class="col-xs-12">
+
+                <alert></alert>
+                <app-modal-component></app-modal-component>
+                <router-outlet></router-outlet>
+            </div>
+            <div id="spinner" style="display: none;">
+                <i class="fa fa-spinner fa-spin"></i>
+            </div>
+
+        </section>
+    </section>
+</div>
+
+<div id="modalunauthoriseduser" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modalunauthoriseduser"
+    aria-hidden="true">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header paddingTopBottom-5 ">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="modalunauthoriseduser">Unauthorized Access</h4>
+            </div>
+            <div class="modal-body alert-danger">
+                <div class="row">
+                    <div class="col-xs-2">
+                        <i class="fa fa-warning fa-3x "></i>
+                    </div>
+                    <div class="col-xs-10">
+                        <div>
+                            <h5>
+                                Please contact Jennifer Support team for any other queries
+                            </h5>
+                            <p>You do not have permission to access this resource.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-default btn-sm" data-dismiss="modal">Ok</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modalsessionexpired" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modalsessionexpired"
+    aria-hidden="true">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header paddingTopBottom-5 ">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="modalsessionexpired">Information!</h4>
+            </div>
+            <div class="modal-body alert-info">
+                <div class="row">
+                    <div class="col-xs-2">
+                        <i class="fa fa-warning fa-3x "></i>
+                    </div>
+                    <div class="col-xs-10">
+                        <div>
+                            <h5>
+                                Your session expired.!
+                            </h5>
+                            <p>
+                                Any confirmed transaction are saved.but you will need to restart any searches or
+                                unfinished transactions.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer padding0">
+                <button class="btn btn-default btn-block" data-dismiss="modal" routerLink="/Signin" title="Signin">
+                    Back to Signin
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modalbadrequest" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modalbadrequest"
+    aria-hidden="true">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header paddingTopBottom-5 ">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="modalbadrequest">Information!</h4>
+            </div>
+            <div class="modal-body alert-danger">
+                <div class="row">
+                    <div class="col-xs-2">
+                        <i class="fa fa-info fa-3x "></i>
+                    </div>
+                    <div class="col-xs-10">
+                        <div>
+                            <h5>
+                                Something went wrong. Please try again after somettimes.!
+                            </h5>
+                            <p id="modalbadrequestcontent">
+
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer padding0">
+                <button class="btn btn-default btn-sm" data-dismiss="modal">Ok</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Theme Selection</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label class="col-sm-1" for="ThemeSelector">Theme </label>
+                        <div class=" col-sm-3">
+                            <label class="switch">
+                                <input type="checkbox" class="themselt" id="ThemeSelector" [checked]="ThemeSelector"
+                                    [(ngModel)]="ThemeSelector" name="ThemeSelector"
+                                    (change)="onchangeThemeSelector($event)">
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="theme-image">
+                            <img [src]="themeUrl" id="selecttheme" class="theming">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-primary">Cancel</button>
+                &nbsp;
+                <button type="button" class="btn btn-success" (click)="SaveTheme()" data-dismiss="modal">Ok</button>
+            </div>
+        </div>
+    </div>
+</div>

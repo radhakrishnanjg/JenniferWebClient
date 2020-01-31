@@ -1,117 +1,155 @@
 <div class='page-topbar '>
-    <div class='logo-area'>
-        <a routerLink="/Dashboard1">
-            <img src="assets\images\logo.png" alt="Logo" height="40" />
-        </a>
-    </div>
-    <div class='quick-area'>
-        <div class='pull-left'>
-            <ul class="info-menu left-links list-inline list-unstyled">
-                <li class="sidebar-toggle-wrap  ">
-                    <a data-toggle="#sidebar" class="sidebar_toggle">
-                        <i class="fa fa-bars pointer"></i>
+
+    <!------>
+    <nav class="navbar navbar-default">
+        <div class="container-fluid nopadding">
+
+            <div class="navbar-header">
+                <div class="logo-area">
+                    <a routerLink="/Dashboard1">
+                        <span>
+                            <img class="logo " src="assets\images\logo.png" alt="Logo" height="40" />
+                            <img style="display: none;" class="logotogl " src="assets\images\togle-logo.png" alt="Logo"
+                                height="40" />
+                        </span>
                     </a>
-                </li>
-            </ul>
-        </div>
-        <div class="search-base">
-            <div class="topnav">
-                <div class="search-container">
-                    <form (ngSubmit)="SearchData()">
-                        <input (keyup.enter)="SearchData()" onkeypress="return /[a-z0-9/]/i.test(event.key)"
-                            class='top-search' type="text" [(ngModel)]="SearchBy"
-                            placeholder="Tell me what you want to do" name="search" maxlength="50">
-                        <button type="submit" prevent-double-submit>
-                            <i class="fa fa-search pointer"></i>
-                        </button>
-                    </form>
+                </div>
+
+            </div>
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                <span class="fa fa-filter" aria-hidden="true"></span>
+            </button>
+            <div class='slidetoglbtncase'>
+                <ul class="left-links list-inline list-unstyled">
+                    <li class="sidebar-toggle-wrap">
+                        <a data-toggle="#sidebar" class="sidebar_toggle">
+                            <i class="fa fa-bars pointer"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="collapse navbar-collapse" id="myNavbar">
+                <div class='quick-area'>
+
+                    <div class="search-base">
+                        <div class="topnav">
+                            <div class="search-container">
+                                <!-- <form (ngSubmit)="SearchData()" class="form">
+                                    <input class="input" (keyup.enter)="SearchData()"
+                                        onkeypress="return /[a-z0-9/]/i.test(event.key)" type="text"
+                                        [(ngModel)]="SearchBy" placeholder="Tell me what you want to do" name="search"
+                                        maxlength="50">
+                                    <i class="ffa fa fa-search"></i>
+                                </form> -->
+                                <form (ngSubmit)="SearchData()">
+                                    <input (keyup.enter)="SearchData()" onkeypress="return /[a-z0-9/]/i.test(event.key)"
+                                        class='top-search' type="text" [(ngModel)]="SearchBy"
+                                        placeholder="Tell me what you want to do" name="search" maxlength="50">
+                                    <button type="submit" prevent-double-submit>
+                                        <i class="fa fa-search pointer"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class='pull-right'>
+                        <div class="slctcompydtals">
+                            <ul class="info-menu right-links list-inline list-unstyled">
+                                <li>
+                                    <ngx-spinner bdOpacity=0.9 size="medium" color="#ce295e" type="ball-fussion"
+                                        [fullScreen]="true">
+                                        <p style="color: #000000"> Fetching for you ... </p>
+                                    </ngx-spinner>
+                                </li>
+
+                                <li>
+                                    <a routerLinkActive="active" routerLink="/CrossBorder/dashboard2"> 
+                                        Switch Application
+                                    </a>
+                                </li>
+                                <li>
+                                    <!-- <i class="company"></i> -->
+                                    <select id="CompanyID" class="form-control topdropbx" [(ngModel)]="CompanyID"
+                                        (change)="onchangeCompanyID($event.target.value)">
+                                        <option *ngFor="let c1 of lstCompanies" value={{c1.CompanyID}}>
+                                            {{c1.CompanyName}}
+                                        </option>
+                                    </select>
+
+                                </li>
+
+                                <li>
+                                    <!-- <i class="storename"></i> -->
+                                    <select id="CompanyDetailID" class="form-control topdropbx"
+                                        [(ngModel)]="CompanyDetailID"
+                                        (change)="onchangeCompanyDetailID($event.target.value)">
+                                        <option value="0" selected="selected">Stores</option>
+                                        <option *ngFor="let c1 of lstCompanydetails" value={{c1.CompanyDetailID}}>
+                                            {{c1.StoreName}}
+                                        </option>
+                                    </select>
+
+                                </li>
+
+                                <li class="profile1 pfof1styl" style="padding-top:5px">
+                                    <a href="#" data-toggle="dropdown" class="toggl1e">
+                                        <i class="profile"></i>
+                                        {{fullName}}
+                                    </a>
+                                    <ul class="dropdown-menu profile animated fadeIn">
+                                        <li>
+                                            <a routerLinkActive="active" routerLink="/ChangePassword">
+                                                <i class="fa fa-fw fa-pencil"></i>
+                                                Change Password
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a routerLinkActive="active" routerLink="/Profile">
+                                                <i class="fa fa-user"></i>
+                                                Profile Update
+                                            </a>
+                                        </li>
+                                        <li *ngIf="(usertype=='Admin')">
+                                            <a routerLinkActive="active" routerLink="/CompanyProfile">
+                                                <i class="fa fa-institution"></i>
+                                                Company Profile
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a routerLinkActive="active" (click)="logout()">
+                                                <i class="fa fa-fw fa-power-off"></i>
+                                                Sign Out</a>
+                                        </li>
+                                        <!-- <li>
+                                            <a routerLinkActive="active" routerLink="/DynamicForm">
+                                                <i class="fa fa-question-circle"></i> <span> DynamicForm</span>
+                                            </a>
+                                        </li> -->
+                                    </ul>
+                                </li>
+
+                                <li style="padding-top:5px">
+                                    <a routerLinkActive="active" routerLink="/Help">
+                                        <i class="help"></i> <span> Help</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- <div class="googletrans">
+                            <div id="google_translate_element"></div>
+                        </div> -->
                 </div>
             </div>
         </div>
-        <div class='pull-right'>
-
-            <ul class="info-menu right-links list-inline list-unstyled">
-                <li>
-                    <ngx-spinner bdOpacity=0.9 size="medium" color="#ce295e" type="ball-fussion" [fullScreen]="true">
-                        <p style="color: #000000"> Fetching for you ... </p>
-                    </ngx-spinner>
-
-                </li>
-                <li>
-                    <select id="CompanyID" class="form-control topdropbx" [(ngModel)]="CompanyID"
-                        (change)="onchangeCompanyID($event.target.value)">
-                        <option *ngFor="let c1 of lstCompanies" value={{c1.CompanyID}}>
-                            {{c1.CompanyName}}
-                        </option>
-                    </select>
-                </li>
-
-                <li>
-                    <select id="CompanyDetailID" class="form-control topdropbx" [(ngModel)]="CompanyDetailID"
-                        (change)="onchangeCompanyDetailID($event.target.value)">
-                        <option value="0" selected="selected">Stores</option>
-                        <option *ngFor="let c1 of lstCompanydetails" value={{c1.CompanyDetailID}}>
-                            {{c1.StoreName}}
-                        </option>
-                    </select>
-                </li>
-
-                <li class="profile1 pfof1styl" style="padding-top:5px">
-                    <a href="#" data-toggle="dropdown" class="toggl1e">
-                        <i class="fa fa-user-circle-o"></i>
-                        {{fullName}}
-                    </a>
-                    <ul class="dropdown-menu profile animated fadeIn">
-                        <li>
-                            <a routerLinkActive="active" routerLink="/ChangePassword">
-                                <i class="fa fa-fw fa-pencil"></i>
-                                Change Password
-                            </a>
-                        </li>
-                        <li>
-                            <a routerLinkActive="active" routerLink="/Profile">
-                                <i class="fa fa-user"></i>
-                                Profile Update
-                            </a>
-                        </li>
-                        <li *ngIf="(usertype=='Admin')">
-                            <a routerLinkActive="active" routerLink="/CompanyProfile">
-                                <i class="fa fa-institution"></i>
-                                Company Profile
-                            </a>
-                        </li>
-                        <li>
-                            <a routerLinkActive="active" (click)="logout()">
-                                <i class="fa fa-fw fa-power-off"></i>
-                                Sign Out</a>
-                        </li>
-                        <li>
-                            <a type="button" data-toggle="modal" data-target="#myModal">
-                                <i class="fa fa-snowflake-o"></i>
-                                Select Theme</a>
-                        </li>
-                        <!-- <li>
-                            <a routerLinkActive="active" routerLink="/DynamicForm">
-                                <i class="fa fa-question-circle"></i> <span> DynamicForm</span>
-                            </a>
-                        </li> -->
-                    </ul>
-                </li>
-
-                <li style="padding-top:5px">
-                    <a routerLinkActive="active" routerLink="/Help">
-                        <i class="fa fa-question-circle"></i> <span> Help</span>
-                    </a>
-
-
-                </li>
-            </ul>
+        <div class="themesellection">
+            <a type="button" data-toggle="modal" data-target="#myModal">
+                <i class="themeicon" title="Theme"></i>
+            </a>
         </div>
-        <!-- <div class="googletrans">
-            <div id="google_translate_element"></div>
-        </div> -->
-    </div>
+    </nav>
 
+    <!------>
 </div>
 <div class="page-container row-fluid container-fluid">
     <div class="page-sidebar pagescroll">
@@ -144,9 +182,10 @@
         </div>
     </div>
 
-    <section id="main-content" class=" ">
+    <section id="main-content">
         <section class="wrapper main-wrapper row">
             <div class="col-xs-12">
+
                 <alert></alert>
                 <app-modal-component></app-modal-component>
                 <router-outlet></router-outlet>

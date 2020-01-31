@@ -328,6 +328,12 @@ export class VendorComponent implements OnInit {
       this.alertService.error('Please change the value for any one control to proceed further!');
       return;
     }
+    let GSTStateCode = this.states.filter(a => a.StateID == this.vendorform.controls['StateID'].value)[0].GSTStateCode;
+    let State = this.states.filter(a => a.StateID == this.vendorform.controls['StateID'].value)[0].State;
+    if (GSTStateCode != this.vendorform.controls['GSTNumber'].value.slice(0, 2)) {
+      this.alertService.error('GST Number must start with ' + GSTStateCode + ' for ' + State + ' state.!');
+      return;
+    }
     this.aroute.paramMap.subscribe(params => {
       this.identity = +params.get('id');
     });

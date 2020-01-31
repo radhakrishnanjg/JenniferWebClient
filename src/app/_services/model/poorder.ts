@@ -29,6 +29,7 @@ export class Poorder {
     LoginId: number;
     IsPOClosed:boolean;
     BulkString:string;
+    FilePath:string;
 }
 export class Poorderitem {
 

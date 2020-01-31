@@ -138,6 +138,56 @@ export class AllotmentlistComponent implements OnInit {
     this.gridView = process(this.items, this.state);
   }
 
-
+  public onFilter(inputValue: string): void {
+    this.gridView = process(this.items.slice(this.skip, this.skip + this.pageSize), {
+      skip: this.skip,
+      take: this.skip + this.pageSize,
+      filter: {
+        logic: "or",
+        filters: [
+          {
+            field: 'RemovalOrderID',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'TrackingID',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'DisputeType',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'SellingValue',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'AssignToName',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'AssignedByName',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'AssignedDate',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'CurrentStatus',
+            operator: 'contains',
+            value: inputValue
+          },
+        ],
+      }
+    });
+  }
   //#endregion Paging Sorting and Filtering End
 }

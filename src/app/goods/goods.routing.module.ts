@@ -11,14 +11,10 @@ import { GoodsstoragelistComponent } from './goodsstoragelist/goodsstoragelist.c
 import { GoodsReceiptListComponent } from './goods-receipt-list/goods-receipt-list.component';
 import { GoodsReceiptComponent } from './goods-receipt/goods-receipt.component';
 import { GoodsDisputeComponent } from './goods-dispute/goods-dispute.component';
-import { GoodsDisputeListComponent } from './goods-dispute-list/goods-dispute-list.component';
-import { StoListComponent } from './sto-list/sto-list.component';
-import { StoComponent } from './sto/sto.component';
+import { GoodsDisputeListComponent } from './goods-dispute-list/goods-dispute-list.component'; 
 import { InventorydetaillistComponent } from './inventorydetaillist/inventorydetaillist.component';
 import { GoodsdisputeviewComponent } from './goodsdisputeview/goodsdisputeview.component';
-import { GoodsreceiptviewComponent } from './goodsreceiptview/goodsreceiptview.component';
-import { StoviewComponent } from './stoview/stoview.component';
-import { StoeditComponent } from './stoedit/stoedit.component';
+import { GoodsreceiptviewComponent } from './goodsreceiptview/goodsreceiptview.component'; 
 
 const appRoutes: Routes = [ 
     
@@ -29,11 +25,7 @@ const appRoutes: Routes = [
    { path: 'Goodsinward/:id', component: GoodsinwardComponent, canActivate: [AuthGuard, StoreGuard] },
    { path: 'Goodsinwardlist', component: GoodsinwardlistComponent, canActivate: [AuthGuard, StoreGuard] },
    { path: 'Goodsstorage/:id', component: GoodsstorageComponent, canActivate: [AuthGuard, StoreGuard] },
-   { path: 'Goodsstoragelist', component: GoodsstoragelistComponent, canActivate: [AuthGuard, StoreGuard] },
-   { path: 'StoList', component: StoListComponent, canActivate: [AuthGuard, StoreGuard] },
-   { path: 'Sto/:id', component: StoComponent, canActivate: [AuthGuard, StoreGuard] },
-   { path: 'StoEdit/:id', component: StoeditComponent, canActivate: [AuthGuard, StoreGuard] },
-   { path: 'Stoview/:id', component: StoviewComponent, canActivate: [AuthGuard, StoreGuard] },
+   { path: 'Goodsstoragelist', component: GoodsstoragelistComponent, canActivate: [AuthGuard, StoreGuard] },  
    { path: 'Inventorydetaillist', component: InventorydetaillistComponent, canActivate: [AuthGuard, StoreGuard] },
    { path: 'Goodsreceiptview/:id', component: GoodsreceiptviewComponent, canActivate: [AuthGuard, StoreGuard] },
    { path: 'Goodsdisputeview/:id', component: GoodsdisputeviewComponent, canActivate: [AuthGuard, StoreGuard] },

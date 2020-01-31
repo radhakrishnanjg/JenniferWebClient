@@ -7,7 +7,7 @@ import { BadRequest } from './../../common/bad-request';
 import { NotFoundError } from './../../common/not-found-error';
 import { AppError } from './../../common/app-error';
 import { AuthenticationService } from './authentication.service';
-import { Item,Result } from '../model/index';
+import { Item,Result ,Itemtaxdetail, Itemhsndetail} from '../model/index';
 import { environment } from '../../../environments/environment';
 @Injectable({
   providedIn: 'root'
@@ -88,6 +88,22 @@ export class ItemService {
     return this.httpClient.post<Boolean>(environment.baseUrl + `Item/Delete`, this.objitem)
       .pipe(catchError(this.handleError));
   }
+
+  public taxUpdate(tax: Itemtaxdetail): Observable<Result> {
+    let currentUser = this.authenticationService.currentUserValue;
+    tax.CompanyDetailID = currentUser.CompanyDetailID;
+    tax.LoginId = currentUser.UserId;
+    return this.httpClient.post<Result>(environment.baseUrl + `Item/TaxUpdate`, tax)
+      .pipe(catchError(this.handleError));
+  } 
+
+  public hsnUpdate(hsn: Itemhsndetail): Observable<Result> {
+    let currentUser = this.authenticationService.currentUserValue;
+    hsn.CompanyDetailID = currentUser.CompanyDetailID;
+    hsn.LoginId = currentUser.UserId;
+    return this.httpClient.post<Result>(environment.baseUrl + `Item/HSNUpdate`, hsn)
+      .pipe(catchError(this.handleError));
+  } 
 
   private handleError(error: HttpErrorResponse) {
 

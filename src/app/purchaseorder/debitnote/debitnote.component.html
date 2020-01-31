@@ -1,0 +1,220 @@
+<div class="row">
+    <div class="col-sm-6 col-lg-6">
+        <h3>
+            Debit Note
+        </h3>
+    </div>
+    <div class="col-sm-6 col-lg-6">
+        <div class="pull-right hidden-xs">
+            <ol class="breadcrumb" id="dynamicbreadcrumb">
+                <li>
+                    <span> Procurements</span>
+                </li>
+                <li>
+                    <span> Debit Note</span>
+                </li>
+                <li class="active">
+
+                    Save
+                </li>
+            </ol>
+        </div>
+    </div>
+</div>
+<form autocomplete="off" (ngSubmit)="SaveData()" [formGroup]="DebitNoteform">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="row">
+                <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                    <span class="groupspanheader">
+                        New Debit Note ({{DNType}})
+                    </span>
+                </div>
+                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 ">
+                    <div class="pull-right">
+                        <button class="btn btn-primary" routerLinkActive="active"
+                            routerLink="/Debitnotelist">Back</button>
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-3" [ngClass]="{'has-error': formErrors.DNDate}">
+                    <div class="form-group">
+                        <label class="control-label" for="DNDate">Debit Note Payment Date<span class="mandantory">
+                                *</span></label>
+                        <div>
+                            <div class='input-group date'>
+
+                                <input type="text" ngxDaterangepickerMd [minDate]="MinDate" [singleDatePicker]="true"
+                                    class="form-control" id="DNDate" [locale]="{format: 'MM-DD-YYYY HH:mm'}"
+                                    [timePicker]="true" [autoApply]="true" (change)="logValidationErrors()"
+                                    formControlName="DNDate" />
+
+                                <label class="fa fa-calendar"></label>
+                            </div>
+                            <div class="help-block-rk">
+                                <span class="help-block" *ngIf="formErrors.DNDate">
+                                    {{formErrors.DNDate}}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-xs-12">
+                    <div class="form-group" [ngClass]="{'has-error': formErrors.VendorID}">
+                        <label class="control-label" for="VendorID"> Vendor<span class="mandantory">
+                                *</span></label>
+                        <div>
+                            <select id="VendorID" class="form-control" formControlName="VendorID"
+                                (blur)="logValidationErrors()" (change)="onchangegetVendorName($event.target.value)">
+                                <option value="0" selected="selected">Select</option>
+                                <option *ngFor="let c1 of lstVendor" value={{c1.VendorID}}>
+                                    {{c1.VendorName}}
+                                </option>
+                            </select>
+                            <div class="help-block-rk">
+                                <span class="help-block" *ngIf="formErrors.VendorID">
+                                    {{formErrors.VendorID}}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-xs-12">
+                    <div class="form-group" [ngClass]="{'has-error': formErrors.PurchaseID}">
+                        <label class="control-label" for="PurchaseID">Invoice No. <span
+                                class="mandantory">*</span></label>
+                        <div>
+                            <select id="PurchaseID" class="form-control" formControlName="PurchaseID"
+                                (blur)="logValidationErrors()"
+                                (click)="onchangegetPurchaseInvoice($event.target.value)">
+                                <option value="0" selected="selected">Select</option>
+                                <option *ngFor="let c1 of lstPendingPurchaseInvoice" value={{c1.PurchaseID}}>
+                                    {{c1.InvoiceNumber}}
+                                </option>
+                            </select>
+                            <div class="help-block-rk">
+                                <span class="help-block" *ngIf="formErrors.PurchaseID">
+                                    {{formErrors.PurchaseID}}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3 col-xs-12">
+                    <div class="form-group">
+                        <label class="control-label"> Invoice Date</label>
+                        <div>
+                            {{InvoiceDate | date :"MM-dd-yyyy HH:mm"}}
+                            <div class="help-block-rk">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-3 col-xs-12">
+                    <div class="form-group">
+                        <label class="control-label"> Location </label>
+                        <div>
+                            {{LocationName}}
+                            <div class="help-block-rk">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-xs-12">
+                    <div class="form-group">
+                        <label class="control-label" for="TotalPaidAmount">Reference Details</label>
+                        <input type="text" id="ReferenceDetail" class="form-control" formControlName="ReferenceDetail">
+                    </div>
+                </div>
+                <div class="col-md-6 col-xs-12">
+                    <div class="form-group">
+                        <label class="control-label" for="Remarks">Remarks</label>
+                        <input type="text" id="Remarks" class="form-control" formControlName="Remarks">
+                    </div>
+                </div>
+
+            </div>
+            <span class="groupspanheader">Details</span>
+            <div class="table-responsive">
+                <table class="table table-bordered table-condensed">
+                    <thead>
+                        <tr>
+                            <th class="text-center">Description of Goods</th>
+                            <th class="text-center">Item Code</th>
+                            <th class="text-center">Invoice Amount</th>
+                            <th class="text-center" *ngIf="DNType=='DN'">Invoice Qty</th>
+                            <th class="text-center" *ngIf="DNType=='DN'"> Pending Qty</th>
+
+                            <th class="text-center" *ngIf="DNType=='DN'">Debit Note Qty</th> 
+                            <th class="text-center" *ngIf="DNType=='FDN'">Pending Amount</th>
+                            <th class="text-center">Debit Note Amount</th>
+                            <th class="text-center">Reason</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let dis of obj?.lstDebitNoteDetail; let id = index">
+                            <td> {{ dis.ItemName }} </td>
+                            <td> {{ dis.ItemCode}} </td>
+                            <td class="text-right">
+                                {{ dis.InvoiceTotalAmount | currency: 'INR' }} </td>
+                            <td class="text-right" *ngIf="DNType=='DN'"> {{ dis.InvoiceQty  }} </td>
+                            <td class="text-right" *ngIf="DNType=='DN'"> {{ dis.PendingQty  }} </td>
+
+                            <td class="text-right" *ngIf="DNType=='DN'">
+                                <input type="text" id="{{dis.ItemID}}" name="{{dis.ItemID}}" class="form-control"
+                                    maxlength="13" onkeypress="return /[0-9]/i.test(event.key)"
+                                    (input)="updateListQty(id,'Qty',$event.target.value)" value="{{dis.Qty}}">
+                            </td>  
+                            <td class="text-right" *ngIf="DNType=='FDN'">
+                                {{ dis.PendingTotalAmount  | currency: 'INR'}} </td>
+                            <td class="text-right" *ngIf="DNType=='FDN'">
+                                <input type="text" id="{{dis.ItemID}}" name="{{dis.ItemID}}" class="form-control"
+                                    maxlength="13" onkeypress="return /[0-9.]/i.test(event.key)"
+                                    (input)="updateListTotalAmount(id,'TotalAmount',$event.target.value)"
+                                    value="{{dis.TotalAmount}}">
+                            </td>
+                            <td class="text-right" *ngIf="DNType=='DN'">
+                                {{ dis.TotalAmount  | currency: 'INR'}} 
+                            </td>
+                            <td class="text-right">
+                                <input id="Reason" type="text" class="form-control" value="{{dis.Reason}}"
+                                    (input)="onReasonChange(id,'Reason',$event.target.value)" maxlength="200">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Total</th>
+                            <th> </th>
+                            <th> </th>
+                            <th> </th>
+                            <th *ngIf="DNType=='DN'"> </th> 
+
+                            <th class="text-right" *ngIf="DNType=='DN'"> {{TotalQty }}</th>
+                            <th class="text-right" *ngIf="DNType=='DN'">{{TotalDebitNoteAmount | currency: 'INR'}} </th>
+                            <th class="text-right" *ngIf="DNType=='FDN'">{{TotalTotalAmount | currency: 'INR'}} </th>
+                            <th> </th> 
+                        </tr> 
+                    </tbody>
+                </table> 
+            </div>
+        </div>
+
+        <div class="panel-footer">
+            <div class="btn-toolbar pull-right">
+                <button type="button" id="cancel" class="btn btn-primary" routerLink="/Debitnotelist">Cancel</button>
+                <button prevent-double-submit type="submit" id="save" class="btn btn-success"
+                    [disabled]="!DebitNoteform.valid">Save</button>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</form>

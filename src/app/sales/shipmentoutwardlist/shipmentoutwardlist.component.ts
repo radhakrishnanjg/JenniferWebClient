@@ -248,6 +248,32 @@ export class ShipmentoutwardlistComponent implements OnInit {
     this.gridView = process(this.items, this.state);
   }
 
+  public onFilter(inputValue: string): void {
+    this.gridView = process(this.items, {
+      skip: this.skip,
+      take: this.skip + this.pageSize,
+      filter: {
+        logic: "or",
+        filters: [
+          {
+            field: 'OutwardID',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'CourierTrackingID',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'GSTEwayBillNumber',
+            operator: 'contains',
+            value: inputValue
+          }, 
+        ],
+      }
+    })  ;  
+  }
   //#endregion Paging Sorting and Filtering End
 
 

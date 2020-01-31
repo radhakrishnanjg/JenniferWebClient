@@ -16,7 +16,7 @@ import { DataTablesModule } from 'angular-datatables';
 
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { NgxTypeaheadModule } from 'ngx-typeahead';
-import { GridModule } from '@progress/kendo-angular-grid';
+import { GridModule, PDFModule, ExcelModule } from '@progress/kendo-angular-grid';
 import { PopupModule } from '@progress/kendo-angular-popup';
 import { DropDownListModule } from '@progress/kendo-angular-dropdowns';
 import * as bootstrap from "bootstrap";

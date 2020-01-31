@@ -25,13 +25,17 @@
 <div class="panel panel-default">
   <div class="panel-heading">
     <div class="row">
-      <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+      <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
         <span class="groupspanheader">
           {{panelTitle}} - <b> {{obj?.ApprovalStatus }}</b>
         </span>
       </div>
-      <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 ">
-        <div class="pull-right">
+      <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+        <div class="pull-right"> 
+          <button  *ngIf="obj?.FilePath" class="btn btn-default" title="DownloadImages" (click)="DownloadButtonClick(obj?.FilePath)">
+            Download Images
+          </button>
+          &nbsp;
           <button class="btn btn-primary" routerLinkActive="active" routerLink="/Poapprovallist">Back</button>
         </div>
       </div>

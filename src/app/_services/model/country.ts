@@ -3,8 +3,20 @@ export class Country {
     CountryName: string; 
 }
 export class State {
-    StateId : number;
+    StateID : number;
     State: string; 
+    //newly added for gst,voucher and ledgers   
+    StateCode: string; 
+    GSTStateName: string; 
+    GSTStateCode : string;
+}
+export class State1 {
+    StateID : number;
+    State: string; 
+    //newly added for gst,voucher and ledgers  
+    StateCode: string; 
+    GSTStateName: string; 
+    GSTStateCode : string; 
 }
 export class Dropdown { 
     UserId: number;

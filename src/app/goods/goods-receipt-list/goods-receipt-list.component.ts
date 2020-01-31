@@ -160,7 +160,7 @@ export class GoodsReceiptListComponent implements OnInit {
   //#region Paging Sorting and Filtering Start
   public allowUnsort = false;
   public sort: SortDescriptor[] = [{
-    field: 'GRNNumber',
+    field: 'PONumber',
     dir: 'asc'
   }];
   public gridView: GridDataResult;
@@ -175,7 +175,7 @@ export class GoodsReceiptListComponent implements OnInit {
     // Initial filter descriptor
     filter: {
       logic: 'and',
-      filters: [{ field: 'GRNNumber', operator: 'contains', value: '' }]
+      filters: [{ field: 'PONumber', operator: 'contains', value: '' }]
     }
   };
   public pageChange({ skip, take }: PageChangeEvent): void {
@@ -206,6 +206,57 @@ export class GoodsReceiptListComponent implements OnInit {
     this.gridView = process(this.items, this.state);
   }
 
+  public onFilter(inputValue: string): void {
+    this.gridView = process(this.items, {
+      skip: this.skip,
+      take: this.skip + this.pageSize,
+      filter: {
+        logic: "or",
+        filters: [
+          {
+            field: 'PONumber',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'GRNNumber',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'GRNDate',
+            operator: 'contains',
+            value: inputValue
+          }, 
+          {
+            field: 'InvoiceNumber',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'LocationName',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'VendorName',
+            operator: 'contains',
+            value: inputValue
+          }, 
+          {
+            field: 'InventoryType',
+            operator: 'contains',
+            value: inputValue
+          }, 
+          {
+            field: 'GRNStatus',
+            operator: 'contains',
+            value: inputValue
+          }, 
+        ],
+      }
+    })  ;  
+  }
 
   //#endregion Paging Sorting and Filtering End
 

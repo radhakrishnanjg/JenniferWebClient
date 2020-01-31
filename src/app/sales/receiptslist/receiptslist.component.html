@@ -8,13 +8,13 @@
     <div class="pull-right hidden-xs">
       <ol class="breadcrumb" id="dynamicbreadcrumb">
         <li>
-           <span> Revenue</span>
+          <span> Revenue</span>
         </li>
         <li>
-           <span> Receipts</span>
+          <span> Receipts</span>
         </li>
         <li class="active">
-          
+
           Save
         </li>
       </ol>
@@ -26,16 +26,16 @@
 <div class="panel panel-default">
   <div class="panel-heading">
     <div class="row">
-      <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
-        <div class="input-group col-sm-12" role="group" aria-label="Basic example">
-          <div class="col-md-4 nopading_loct">
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="input-group col-xs-12 col-sm-12" role="group" aria-label="Basic example">
+          <div class="col-md-3 col-sm-3 nopading_loct">
             <input type="text" ngxDaterangepickerMd [(ngModel)]="selectedDateRange"
               class="serchcurv form-control btn-group col-xs-12 pointer"
               style="border:1px soloid #ccc !important; padding :3px;left:0px" [showCustomRangeLabel]="true"
               [ranges]="Searchranges" [showCancel]="true" placeholder="Select please..."
               (ngModelChange)="onChange($event)" />
           </div>
-          <div class="col-md-2 nopading_loct">
+          <div class="col-md-3 col-sm-3 col-xs-6 nopading_loct">
             <button class="serchcurv btn btn-default btn-group" (click)="Search()" title="Search">
               <i class="fa fa-search " aria-hidden="true"></i>
             </button>
@@ -43,11 +43,8 @@
               <i class="fa fa-refresh" aria-hidden="true"></i>
             </button>
           </div>
-        </div>
-      </div>
-      <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 ">
-        <div class="pull-right">
-
+          <div class="col-xs-6 col-sm-3 col-md-2 text-right nopadding">
+          </div>
         </div>
       </div>
     </div>
@@ -66,114 +63,122 @@
     </ul>
     <div class="tab-content">
       <div class="tab-pane  active" id="home" role="tabpanel" aria-labelledby="home-tab">
-        <kendo-grid [data]="gridDataunreconciled" (edit)="editHandler($event)" (cancel)="cancelHandler($event)"
-          (save)="saveHandler($event)" (remove)="removeHandler($event)" [height]="410">
-          <ng-template kendoGridToolbarTemplate>
-          </ng-template>
+        <div class="table-responsive">
+          <table class="table">
+            <kendo-grid [data]="gridDataunreconciled" (edit)="editHandler($event)" (cancel)="cancelHandler($event)"
+              (save)="saveHandler($event)" (remove)="removeHandler($event)" [height]="410">
+              <ng-template kendoGridToolbarTemplate>
+              </ng-template>
 
 
-          <kendo-grid-column field="Filename" title="File Name" width="200">
-            <ng-template kendoGridEditTemplate let-column="column" let-formGroup="itemFormGroup" let-isNew="isNew">
-              <input #input [readonly]="true" class="k-textbox" [formControl]="itemFormGroup.get(column.field)">
-            </ng-template>
-          </kendo-grid-column>
+              <kendo-grid-column field="Filename" title="File Name" width="200">
+                <ng-template kendoGridEditTemplate let-column="column" let-formGroup="itemFormGroup" let-isNew="isNew">
+                  <input #input [readonly]="true" class="k-textbox" [formControl]="itemFormGroup.get(column.field)">
+                </ng-template>
+              </kendo-grid-column>
 
-          <kendo-grid-column field="NoOfRecords" title="No. Of Records" width="200">
-            <ng-template kendoGridEditTemplate let-column="column" let-formGroup="itemFormGroup" let-isNew="isNew">
-              <input #input [readonly]="true" class="k-textbox" [formControl]="itemFormGroup.get(column.field)">
-            </ng-template>
-          </kendo-grid-column>
+              <kendo-grid-column field="NoOfRecords" title="No. Of Records" width="200">
+                <ng-template kendoGridEditTemplate let-column="column" let-formGroup="itemFormGroup" let-isNew="isNew">
+                  <input #input [readonly]="true" class="k-textbox" [formControl]="itemFormGroup.get(column.field)">
+                </ng-template>
+              </kendo-grid-column>
 
-          <!-- <kendo-grid-column field="AmountAsPerFile" title="Amount" width="200">
+              <!-- <kendo-grid-column field="AmountAsPerFile" title="Amount" width="200">
             <ng-template kendoGridEditTemplate let-column="column" let-formGroup="itemFormGroup" let-isNew="isNew">
               <kendo-numerictextbox #ntb="popupAnchor" popupAnchor [readonly]="true"
                 [formControl]="itemFormGroup.get(column.field)" format="0.##"></kendo-numerictextbox>
             </ng-template>
           </kendo-grid-column> -->
 
-          <kendo-grid-column field="TotalAmt" title="Deposited Amount" width="120">
-            <ng-template kendoGridEditTemplate let-column="column" let-formGroup="itemFormGroup" let-isNew="isNew">
-              <kendo-numerictextbox #ntb="popupAnchor" popupAnchor [readonly]="true"
-                [formControl]="itemFormGroup.get(column.field)" format="0.##"></kendo-numerictextbox>
-            </ng-template>
-          </kendo-grid-column>
+              <kendo-grid-column field="TotalAmt" title="Deposited Amount" width="120">
+                <ng-template kendoGridEditTemplate let-column="column" let-formGroup="itemFormGroup" let-isNew="isNew">
+                  <kendo-numerictextbox #ntb="popupAnchor" popupAnchor [readonly]="true"
+                    [formControl]="itemFormGroup.get(column.field)" format="0.##"></kendo-numerictextbox>
+                </ng-template>
+              </kendo-grid-column>
 
-          <kendo-grid-column field="BankUTRNumber" title="UTR Number" width="200">
-            <ng-template kendoGridEditTemplate let-column="column" let-formGroup="itemFormGroup" let-isNew="isNew">
-              <input #input class="k-textbox" [formControl]="itemFormGroup.get(column.field)" maxlength="50">
-            </ng-template>
-          </kendo-grid-column>
+              <kendo-grid-column field="BankUTRNumber" title="UTR Number" width="200">
+                <ng-template kendoGridEditTemplate let-column="column" let-formGroup="itemFormGroup" let-isNew="isNew">
+                  <input #input class="k-textbox" [formControl]="itemFormGroup.get(column.field)" maxlength="50">
+                </ng-template>
+              </kendo-grid-column>
 
-          <kendo-grid-column field="BankReceiptDate" title="Uploaded Date" width="200" [format]="{ date: 'MM-dd-yyyy' }">
-            <ng-template kendoGridEditTemplate let-column="column" let-formGroup="itemFormGroup" let-isNew="isNew">
-              <kendo-datepicker class=" k-textbox" [formControl]="itemFormGroup.get(column.field)"
-                [format]="'MM-dd-yyyy'">
-              </kendo-datepicker>
-            </ng-template>
-          </kendo-grid-column>
+              <kendo-grid-column field="BankReceiptDate" title="Uploaded Date" width="200"
+                [format]="{ date: 'MM-dd-yyyy' }">
+                <ng-template kendoGridEditTemplate let-column="column" let-formGroup="itemFormGroup" let-isNew="isNew">
+                  <kendo-datepicker class=" k-textbox" [formControl]="itemFormGroup.get(column.field)"
+                    [format]="'MM-dd-yyyy'">
+                  </kendo-datepicker>
+                </ng-template>
+              </kendo-grid-column>
 
-          <kendo-grid-command-column title="Action" [class]="{'text-center': true}" width="120">
-            <ng-template kendoGridCellTemplate let-isNew="isNew">
-              <button kendoGridEditCommand [primary]="true">Edit</button>
-              <button kendoGridSaveCommand [disabled]="itemFormGroup?.invalid">
-                {{ isNew ? 'Add' : 'Update' }}
-              </button>
-              <button kendoGridCancelCommand>{{ isNew ? 'Discard' : 'Cancel' }}</button>
-            </ng-template>
-          </kendo-grid-command-column>
+              <kendo-grid-command-column title="Action" [class]="{'text-center': true}" width="120">
+                <ng-template kendoGridCellTemplate let-isNew="isNew">
+                  <button kendoGridEditCommand [primary]="true">Edit</button>
+                  <button kendoGridSaveCommand [disabled]="itemFormGroup?.invalid">
+                    {{ isNew ? 'Add' : 'Update' }}
+                  </button>
+                  <button kendoGridCancelCommand>{{ isNew ? 'Discard' : 'Cancel' }}</button>
+                </ng-template>
+              </kendo-grid-command-column>
 
-          <kendo-grid-command-column title="Download" width="70" [class]="{'text-center': true}">
-            <ng-template kendoGridCellTemplate let-isNew="isNew" let-obj>
-              <i (click)="removeHandler(obj.Filename)" class="fa fa-download bgblue pointer"></i>
-            </ng-template>
-          </kendo-grid-command-column>
-        </kendo-grid>
+              <kendo-grid-command-column title="Download" width="70" [class]="{'text-center': true}">
+                <ng-template kendoGridCellTemplate let-isNew="isNew" let-obj>
+                  <i (click)="removeHandler(obj.Filename)" class="fa fa-download bgblue pointer"></i>
+                </ng-template>
+              </kendo-grid-command-column>
+            </kendo-grid>
+          </table>
+        </div>
       </div>
       <div class="tab-pane " id="profile" role="tabpanel" aria-labelledby="profile-tab">
-        <kendo-grid [data]="gridDatareconciled" (edit)="editHandler($event)" (cancel)="cancelHandler($event)"
-          (save)="saveHandler2($event)" (remove)="removeHandler2($event)" [height]="410">
-          <ng-template kendoGridToolbarTemplate>
-          </ng-template>
+        <div class="table-responsive">
+          <table class="table">
+            <kendo-grid [data]="gridDatareconciled" (edit)="editHandler($event)" (cancel)="cancelHandler($event)"
+              (save)="saveHandler2($event)" (remove)="removeHandler2($event)" [height]="410">
+              <ng-template kendoGridToolbarTemplate>
+              </ng-template>
 
-          <kendo-grid-column field="Filename" title="File Name" width="200">
-            <ng-template kendoGridEditTemplate let-column="column" let-formGroup="itemFormGroup" let-isNew="isNew">
-              <input #input [readonly]="true" class="k-textbox" [formControl]="itemFormGroup.get(column.field)">
-            </ng-template>
-          </kendo-grid-column>
-          <kendo-grid-column field="NoOfRecords" title="No. Of Records" width="200">
-            <ng-template kendoGridEditTemplate let-column="column" let-formGroup="itemFormGroup" let-isNew="isNew">
-              <input #input [readonly]="true" class="k-textbox" [formControl]="itemFormGroup.get(column.field)">
-            </ng-template>
-          </kendo-grid-column>
+              <kendo-grid-column field="Filename" title="File Name" width="200">
+                <ng-template kendoGridEditTemplate let-column="column" let-formGroup="itemFormGroup" let-isNew="isNew">
+                  <input #input [readonly]="true" class="k-textbox" [formControl]="itemFormGroup.get(column.field)">
+                </ng-template>
+              </kendo-grid-column>
+              <kendo-grid-column field="NoOfRecords" title="No. Of Records" width="200">
+                <ng-template kendoGridEditTemplate let-column="column" let-formGroup="itemFormGroup" let-isNew="isNew">
+                  <input #input [readonly]="true" class="k-textbox" [formControl]="itemFormGroup.get(column.field)">
+                </ng-template>
+              </kendo-grid-column>
 
-          <!-- <kendo-grid-column field="AmountAsPerFile" title="Amount" width="200">
+              <!-- <kendo-grid-column field="AmountAsPerFile" title="Amount" width="200">
             <ng-template kendoGridEditTemplate let-column="column" let-formGroup="itemFormGroup" let-isNew="isNew">
               <kendo-numerictextbox #ntb="popupAnchor" popupAnchor [readonly]="true"
                 [formControl]="itemFormGroup.get(column.field)" format="0.##"></kendo-numerictextbox>
             </ng-template>
           </kendo-grid-column> -->
 
-          <kendo-grid-column field="TotalAmt" title="Received Amount" width="120">
-            <ng-template kendoGridEditTemplate let-column="column" let-formGroup="itemFormGroup" let-isNew="isNew">
-              <kendo-numerictextbox #ntb="popupAnchor" popupAnchor [readonly]="true"
-                [formControl]="itemFormGroup.get(column.field)" format="0.##"></kendo-numerictextbox>
-            </ng-template>
-          </kendo-grid-column>
+              <kendo-grid-column field="TotalAmt" title="Received Amount" width="120">
+                <ng-template kendoGridEditTemplate let-column="column" let-formGroup="itemFormGroup" let-isNew="isNew">
+                  <kendo-numerictextbox #ntb="popupAnchor" popupAnchor [readonly]="true"
+                    [formControl]="itemFormGroup.get(column.field)" format="0.##"></kendo-numerictextbox>
+                </ng-template>
+              </kendo-grid-column>
 
-          <kendo-grid-column field="BankUTRNumber" title="UTR Number" width="200">
-            <ng-template kendoGridEditTemplate let-column="column" let-formGroup="itemFormGroup" let-isNew="isNew">
-              <input #input class="k-textbox" [formControl]="itemFormGroup.get(column.field)" maxlength="50">
-            </ng-template>
-          </kendo-grid-column>
-          <kendo-grid-column field="BankReceiptDate" title="Receipt Date" width="200" [format]="{ date: 'MM-dd-yyyy' }">
-            <ng-template kendoGridEditTemplate let-column="column" let-formGroup="itemFormGroup" let-isNew="isNew">
-              <kendo-datepicker class=" k-textbox" [formControl]="itemFormGroup.get(column.field)"
-                [format]="'MM-dd-yyyy'">
-              </kendo-datepicker>
-            </ng-template>
-          </kendo-grid-column>
+              <kendo-grid-column field="BankUTRNumber" title="UTR Number" width="200">
+                <ng-template kendoGridEditTemplate let-column="column" let-formGroup="itemFormGroup" let-isNew="isNew">
+                  <input #input class="k-textbox" [formControl]="itemFormGroup.get(column.field)" maxlength="50">
+                </ng-template>
+              </kendo-grid-column>
+              <kendo-grid-column field="BankReceiptDate" title="Receipt Date" width="200"
+                [format]="{ date: 'MM-dd-yyyy' }">
+                <ng-template kendoGridEditTemplate let-column="column" let-formGroup="itemFormGroup" let-isNew="isNew">
+                  <kendo-datepicker class=" k-textbox" [formControl]="itemFormGroup.get(column.field)"
+                    [format]="'MM-dd-yyyy'">
+                  </kendo-datepicker>
+                </ng-template>
+              </kendo-grid-column>
 
-          <!-- <kendo-grid-command-column title="Action" [class]="{'text-center': true}"  width="120">
+              <!-- <kendo-grid-command-column title="Action" [class]="{'text-center': true}"  width="120">
             <ng-template kendoGridCellTemplate let-isNew="isNew">
               <button kendoGridEditCommand [primary]="true">Edit</button>
               <button kendoGridSaveCommand [disabled]="itemFormGroup?.invalid">{{ isNew ? 'Add' : 'Update' }}</button>
@@ -181,16 +186,21 @@
             </ng-template>
           </kendo-grid-command-column> -->
 
+              <kendo-grid-column field="UploadStatus" title="Upload Status" width="120">
+                <ng-template kendoGridEditTemplate let-column="column" let-formGroup="itemFormGroup" let-isNew="isNew">
+                  <input #input [readonly]="true" class="k-textbox" [formControl]="itemFormGroup.get(column.field)">
+                </ng-template>
+              </kendo-grid-column>
 
-          <kendo-grid-command-column title="Download" width="70" [class]="{'text-center': true}">
-            <ng-template kendoGridCellTemplate let-isNew="isNew" let-obj>
-              <i (click)="removeHandler2(obj.Filename)" class="fa fa-download bgblue pointer"></i>
-            </ng-template>
-          </kendo-grid-command-column>
-        </kendo-grid>
+              <kendo-grid-command-column title="Download" width="70" [class]="{'text-center': true}">
+                <ng-template kendoGridCellTemplate let-isNew="isNew" let-obj>
+                  <i (click)="removeHandler2(obj.Filename)" class="fa fa-download bgblue pointer"></i>
+                </ng-template>
+              </kendo-grid-command-column>
+            </kendo-grid>
+          </table>
+        </div>
       </div>
-    </div>
-
-  </div>
-
+    </div> 
+  </div> 
 </div>

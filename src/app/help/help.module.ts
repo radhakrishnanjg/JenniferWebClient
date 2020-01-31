@@ -1,12 +1,12 @@
 //core npms  
-import { NgModule, NO_ERRORS_SCHEMA,   } from '@angular/core';
-import { ReactiveFormsModule, FormsModule } from '@angular/forms'; 
+import { NgModule, NO_ERRORS_SCHEMA, } from '@angular/core';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
- 
+
 //kendo
-import { GridModule } from '@progress/kendo-angular-grid'; 
-import { InputsModule } from '@progress/kendo-angular-inputs';  
+import { GridModule, PDFModule, ExcelModule } from '@progress/kendo-angular-grid';
+import { InputsModule } from '@progress/kendo-angular-inputs';
 import { EditorModule } from '@progress/kendo-angular-editor';
 
 import { PreventDoubleSubmitModule } from 'ngx-prevent-double-submission';
@@ -17,6 +17,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { Pipe, PipeTransform } from '@angular/core';
 import { DomSanitizer } from "@angular/platform-browser";
+import { NgPipesModule } from 'ngx-pipes';
 @Pipe({
   name: 'safeHtml',
 })
@@ -31,20 +32,25 @@ import { HelpnavigationComponent } from './helpnavigation/helpnavigation.compone
 import { HelpmenulistComponent } from './helpmenulist/helpmenulist.component';
 import { HelpmenuComponent } from './helpmenu/helpmenu.component';
 
+// Support 
+
+import { SupporthistoryComponent } from './supporthistory/supporthistory.component';
+
 import { HelpRoutingModule } from './/help.routing.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
-    RouterModule, 
-    ReactiveFormsModule,  
+    RouterModule,
+    ReactiveFormsModule,
     PreventDoubleSubmitModule.forRoot(),
     //kendo
     GridModule,
     EditorModule,
     InputsModule,
-    Ng2SearchPipeModule, 
+    Ng2SearchPipeModule,
+    NgPipesModule,
     HelpRoutingModule
   ],
   declarations: [
@@ -52,6 +58,7 @@ import { HelpRoutingModule } from './/help.routing.module';
     HelpnavigationComponent,
     HelpmenulistComponent,
     HelpmenuComponent,
+    SupporthistoryComponent
   ],
   providers: [
     CookieService,

@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
 //kendo
-import { GridModule } from '@progress/kendo-angular-grid';
+import { GridModule, PDFModule, ExcelModule } from '@progress/kendo-angular-grid';
 import { PopupModule } from '@progress/kendo-angular-popup';
 import { DropDownListModule } from '@progress/kendo-angular-dropdowns'; 
 import { InputsModule } from '@progress/kendo-angular-inputs';
@@ -36,6 +36,9 @@ import { PoprintComponent } from './poprint/poprint.component';
 
 import { PomfilistComponent } from './pomfilist/pomfilist.component';
 import { PurchaseorderRoutingModule } from './/purchaseorder.routing.module';
+import { DebitnoteComponent } from './debitnote/debitnote.component';
+import { DebitnotelistComponent } from './debitnotelist/debitnotelist.component';
+import { DebitnoteviewComponent } from './debitnoteview/debitnoteview.component';
 
 @NgModule({
   imports: [
@@ -49,6 +52,8 @@ import { PurchaseorderRoutingModule } from './/purchaseorder.routing.module';
     FormsModule, 
     InputsModule, 
     GridModule,
+    PDFModule, 
+    ExcelModule,
     DropDownListModule,
     PopupModule, 
     PDFExportModule,
@@ -72,12 +77,13 @@ import { PurchaseorderRoutingModule } from './/purchaseorder.routing.module';
     BoeviewComponent,
     ShipmentviewComponent,
     PoprintComponent,
-    PomfilistComponent
+    PomfilistComponent,
+    DebitnoteComponent,
+    DebitnotelistComponent,
+    DebitnoteviewComponent
   ],
-  providers: [
-    
-    CookieService,
-    
+  providers: [ 
+    CookieService, 
     EncrDecrService
   ],
   schemas: [

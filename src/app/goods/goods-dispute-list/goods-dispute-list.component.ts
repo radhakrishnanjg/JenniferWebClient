@@ -126,6 +126,42 @@ export class GoodsDisputeListComponent implements OnInit {
      this.gridView = process(this.items, this.state);
    }
  
+   public onFilter(inputValue: string): void {
+    this.gridView = process(this.items, {
+      skip: this.skip,
+      take: this.skip + this.pageSize,
+      filter: {
+        logic: "or",
+        filters: [
+          {
+            field: 'GRNNumber',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'ItemCode',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'ItemName',
+            operator: 'contains',
+            value: inputValue
+          }, 
+          {
+            field: 'JenniferItemSerial',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'DisputeType',
+            operator: 'contains',
+            value: inputValue
+          }, 
+        ],
+      }
+    })  ;  
+  }
  
    //#endregion Paging Sorting and Filtering End
  

@@ -107,47 +107,49 @@
       </div>
       <div class="col-xs-12" *ngIf="Download_Master_ID!=0">
         <span class="groupspanheader">Log Details</span>
-        <table class="table table-bordered table-condensed " *ngIf="lstDownloadLog && lstDownloadLog.length">
-          <thead>
-            <tr>
-              <th class="text-center ">Screen Name</th>
-              <th class="text-center ">Start Date </th>
-              <th class="text-center ">End Date </th>
-              <th class="text-center ">Requested By </th>
-              <th class="text-center ">Requested Date </th>
+        <div class="table-responsive">
+          <table class="table table-bordered table-condensed " *ngIf="lstDownloadLog && lstDownloadLog.length">
+            <thead>
+              <tr>
+                <th class="text-center ">Screen Name</th>
+                <th class="text-center ">Start Date </th>
+                <th class="text-center ">End Date </th>
+                <th class="text-center ">Requested By </th>
+                <th class="text-center ">Requested Date </th>
 
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let ms of lstDownloadLog">
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let ms of lstDownloadLog">
 
-              <td>{{ ms.Screen_Name }}</td>
-              <td>{{ ms.Startdate | date :"MM-dd-yyyy" }}</td>
-              <td>{{ ms.EndDate  | date :"MM-dd-yyyy" }}</td>
-              <td>{{ ms.RequestedBy }}</td>
-              <td>{{ ms.RequestedDate | date :"MM-dd-yyyy HH:mm" }}</td>
-            </tr>
-          </tbody>
-        </table>
+                <td>{{ ms.Screen_Name }}</td>
+                <td>{{ ms.Startdate | date :"MM-dd-yyyy" }}</td>
+                <td>{{ ms.EndDate  | date :"MM-dd-yyyy" }}</td>
+                <td>{{ ms.RequestedBy }}</td>
+                <td>{{ ms.RequestedDate | date :"MM-dd-yyyy HH:mm" }}</td>
+              </tr>
+            </tbody>
+          </table>
 
-        <table class="table table-bordered table-condensed" *ngIf="lstDownloadLog==null || lstDownloadLog.length==0">
-          <thead>
-            <tr>
-              <th class="text-center ">Screen Name</th>
-              <th class="text-center ">Start Date </th>
-              <th class="text-center ">End Date </th>
-              <th class="text-center ">Requested By </th>
-              <th class="text-center ">Requested Date </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td colspan="5">
-                No Records Found.!
-              </td>
-            </tr>
-          </tbody>
-        </table>
+          <table class="table table-bordered table-condensed" *ngIf="lstDownloadLog==null || lstDownloadLog.length==0">
+            <thead>
+              <tr>
+                <th class="text-center ">Screen Name</th>
+                <th class="text-center ">Start Date </th>
+                <th class="text-center ">End Date </th>
+                <th class="text-center ">Requested By </th>
+                <th class="text-center ">Requested Date </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td colspan="5">
+                  No Records Found.!
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>

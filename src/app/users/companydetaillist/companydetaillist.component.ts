@@ -149,6 +149,31 @@ export class CompanydetaillistComponent implements OnInit {
     this.state = state;
     this.gridView = process(this.items, this.state);
   }
+  public onFilter(inputValue: string): void {
+    this.gridView = process(this.items, {
+      filter: {
+        logic: "or",
+        filters: [
+          {
+            field: 'StoreName',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'BusinessLaunchDate',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'MarketPlaceSellerID',
+            operator: 'contains',
+            value: inputValue
+          }, 
+        ],
+      }
+    })  ;  
+  }
+
 
   //#endregion Paging Sorting and Filtering End
 

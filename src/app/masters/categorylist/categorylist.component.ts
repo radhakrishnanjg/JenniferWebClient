@@ -22,7 +22,7 @@ export class CategorylistComponent implements OnInit {
   //@ViewChild('dataTable') table;
   //dataTable: 
   any;
-  lstProductGroup: ProductGroup[]; 
+  lstProductGroup: ProductGroup[];
   objCategory: Category = {} as any;
   catgoryForm: FormGroup;
   panelTitle: string;
@@ -36,7 +36,7 @@ export class CategorylistComponent implements OnInit {
   constructor(
     private alertService: ToastrService,
     private _categoryService: CategoryService,
-    
+
     private _authorizationGuard: AuthorizationGuard,
     private fb: FormBuilder,
     private _PrivateutilityService: PrivateutilityService,
@@ -196,9 +196,10 @@ export class CategorylistComponent implements OnInit {
     if (this.catgoryForm.invalid) {
       return;
     }
-    if (this.catgoryForm.pristine) { 
-      this.alertService.error('Please change the value for any one control to proceed further!'); 
-      return; }
+    if (this.catgoryForm.pristine) {
+      this.alertService.error('Please change the value for any one control to proceed further!');
+      return;
+    }
     if (this.identity > 0) {
       this.Update();
     }
@@ -320,9 +321,9 @@ export class CategorylistComponent implements OnInit {
     //
     return this._categoryService.search(SearchBy, Search, IsActive).subscribe(
       (lst) => {
-        if (lst != null) { 
+        if (lst != null) {
           this.items = lst;
-          this.loadItems(); 
+          this.loadItems();
         }
         //
       },
@@ -382,7 +383,27 @@ export class CategorylistComponent implements OnInit {
     this.gridView = process(this.items, this.state);
   }
 
-
+  public onFilter(inputValue: string): void {
+    this.gridView = process(this.items.slice(this.skip, this.skip + this.pageSize), {
+      skip: this.skip,
+      take: this.skip + this.pageSize,
+      filter: {
+        logic: "or",
+        filters: [
+          {
+            field: 'ProductGroupName',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'CategoryName',
+            operator: 'contains',
+            value: inputValue
+          }, 
+        ],
+      }
+    });
+  }
   //#endregion Paging Sorting and Filtering End
 
 }

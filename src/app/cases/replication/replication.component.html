@@ -28,8 +28,10 @@
       <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
         New Replications
       </div>
-      <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 text-right">
-        <button class="btn btn-primary"  routerLink="/Replicationlist">Back</button>
+      <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+        <div class="pull-right">
+          <button type="button" class="btn btn-xs btn-sm btn-primary" routerLink="/Replicationlist">Back</button>
+        </div>
       </div>
     </div>
   </div>
@@ -38,7 +40,7 @@
     <div class="row">
       <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
         <div class="input-group col-sm-12" role="group" aria-label="Basic example">
-          <div class="col-md-3">
+          <div class="col-md-3 col-xs-12">
             <label class="control-label"> Parent Amazon Id <span class="mandantory">*</span> </label> <br />
             <select id="ParentCaseId" [(ngModel)]="ParentRTVid" class="form-control"
               (change)="onchangeParentCaseId($event.target.value)">
@@ -48,15 +50,15 @@
               </option>
             </select>
           </div>
-          <div class="col-md-3 ">
+          <div class="col-md-3 col-xs-12">
             <label class="control-label"> Amazon CaseId <span class="mandantory">*</span></label> <br />
             <input type="text" [(ngModel)]="AmazonCaseId" class="form-control col-xs-12" />
           </div>
-          <div class="col-md-12 ">
+          <div class="col-md-12 col-xs-12">
             <label class="control-label"> Remarks <span class="mandantory">*</span></label> <br />
             <input type="text" [(ngModel)]="Remarks" maxlength="8000" class="form-control col-xs-12" />
           </div>
-          <div class="col-md-12 ">
+          <div class="col-md-12 col-xs-12">
             &nbsp; <br />
           </div>
         </div>
@@ -65,13 +67,13 @@
   </div>
 
 
-  <div class="form-group col-sm-12 col-md-12 col-lg-12">
+  <div class="form-group col-sm-12 col-md-12 col-lg-12 col-xs-12">
     <div class="panel panel-primary">
       <div class="panel-heading">
         <div class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapsetemplateinfo"
           aria-expanded="true">
           <div class="row">
-            <div class="col-lg-12">
+            <div class="col-lg-12 col-xs-12">
               Template Information
             </div>
           </div>
@@ -87,13 +89,13 @@
   </div>
 
 
-  <div class=" form-group col-sm-12 col-md-12 col-lg-12">
+  <div class=" form-group col-sm-12 col-md-12 col-lg-12 col-xs-12">
     <div class="panel panel-primary">
       <div class="panel-heading">
         <div class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapsehistorydetail1"
           aria-expanded="true">
           <div class="row">
-            <div class="col-lg-12">
+            <div class="col-lg-12 col-xs-12">
               Old Case Details
             </div>
           </div>
@@ -116,134 +118,138 @@
             </div>
             <br>
 
-            <div class="form-group col-sm-12 col-md-12 col-lg-12">
+            <div class="form-group col-sm-12 col-md-12 col-lg-12 col-xs-12">
               <div class="panel panel-primary">
                 <div class="panel-heading">
                   <div class="accordion-toggle" data-toggle="collapse" data-parent="#accordion"
                     href="#collapsehistorydetail" aria-expanded="true">
                     <div class="row">
-                      <div class="col-lg-12">
+                      <div class="col-lg-12 col-xs-12">
                         Log Details
                       </div>
                     </div>
                   </div>
                 </div>
                 <div id="collapsehistorydetail" class="panel-body panel-collapse collapse in" aria-expanded="true">
-                  <table class="table table-bordered table-condensed" *ngIf="obj?.lstHistory && obj?.lstHistory.length"
-                    style="width:100%">
-                    <thead>
-                      <tr>
+                  <div class="table-responsive">
+                    <table class="table table-bordered table-condensed"
+                      *ngIf="obj?.lstHistory && obj?.lstHistory.length" style="width:100%">
+                      <thead>
+                        <tr>
 
-                        <th class="text-center ">Status</th>
-                        <th class="text-center ">Remarks</th>
-                        <th class="text-center ">Action By</th>
-                        <th class="text-center ">Created On</th>
+                          <th class="text-center ">Status</th>
+                          <th class="text-center ">Remarks</th>
+                          <th class="text-center ">Action By</th>
+                          <th class="text-center ">Created On</th>
 
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr *ngFor="let ms of obj?.lstHistory; let numberpra = index">
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let ms of obj?.lstHistory; let numberpra = index">
 
-                        <td>{{ ms.Status }}</td>
-                        <td>{{ ms.Remarks }}</td>
-                        <td>{{ ms.ActionBy }}</td>
-                        <td>{{ ms.CreatedDate | date :"MM-dd-yyyy HH:mm" }}</td>
-                      </tr>
-                    </tbody>
-                  </table>
+                          <td>{{ ms.Status }}</td>
+                          <td>{{ ms.Remarks }}</td>
+                          <td>{{ ms.ActionBy }}</td>
+                          <td>{{ ms.CreatedDate | date :"MM-dd-yyyy HH:mm" }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
 
-                  <table class="table table-bordered table-condensed" *ngIf="obj?.lstHistory==null">
-                    <thead>
-                      <tr>
-                        <th class="text-center ">Status</th>
-                        <th class="text-center ">Remarks</th>
-                        <th class="text-center ">Action By</th>
-                        <th class="text-center ">Created On</th>
+                    <table class="table table-bordered table-condensed" *ngIf="obj?.lstHistory==null">
+                      <thead>
+                        <tr>
+                          <th class="text-center ">Status</th>
+                          <th class="text-center ">Remarks</th>
+                          <th class="text-center ">Action By</th>
+                          <th class="text-center ">Created On</th>
 
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td colspan="4">
-                          No Records Found.!
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td colspan="4">
+                            No Records Found.!
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               </div>
             </div>
 
-            <div class="form-group col-sm-12 col-md-12 col-lg-12">
+            <div class="form-group col-sm-12 col-md-12 col-lg-12 col-xs-12">
               <div class="panel panel-primary">
                 <div class="panel-heading">
                   <div class="accordion-toggle" data-toggle="collapse" data-parent="#accordion"
                     href="#collapsetransferdetail" aria-expanded="true">
                     <div class="row">
-                      <div class="col-lg-12">
+                      <div class="col-lg-12 col-xs-12">
                         Transfer Details
                       </div>
                     </div>
                   </div>
                 </div>
                 <div id="collapsetransferdetail" class="panel-body panel-collapse collapse in" aria-expanded="true">
-                  <table class="table table-bordered table-condensed" *ngIf="obj?.lstTrans && obj?.lstTrans.length"
-                    style="width:100%">
-                    <thead>
-                      <tr>
-                        <th class="text-center ">Status</th>
-                        <th class="text-center ">Remarks</th>
-                        <th class="text-center ">Transfer From </th>
-                        <th class="text-center ">Transfer To</th>
-                        <th class="text-center ">Transfer By </th>
-                        <th class="text-center ">Transfer On </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr *ngFor="let ms of obj?.lstTrans; let numberpra = index">
+                  <div class="table-responsive">
+                    <table class="table table-bordered table-condensed" *ngIf="obj?.lstTrans && obj?.lstTrans.length"
+                      style="width:100%">
+                      <thead>
+                        <tr>
+                          <th class="text-center ">Status</th>
+                          <th class="text-center ">Remarks</th>
+                          <th class="text-center ">Transfer From </th>
+                          <th class="text-center ">Transfer To</th>
+                          <th class="text-center ">Transfer By </th>
+                          <th class="text-center ">Transfer On </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let ms of obj?.lstTrans; let numberpra = index">
 
-                        <td>{{ ms.Status }}</td>
-                        <td>{{ ms.Remarks }}</td>
-                        <td>{{ ms.TransferFromName }}</td>
-                        <td>{{ ms.TransferToName }}</td>
-                        <td>{{ ms.TransferByName }}</td>
+                          <td>{{ ms.Status }}</td>
+                          <td>{{ ms.Remarks }}</td>
+                          <td>{{ ms.TransferFromName }}</td>
+                          <td>{{ ms.TransferToName }}</td>
+                          <td>{{ ms.TransferByName }}</td>
 
-                        <td>{{ ms.TransferredDate | date :"MM-dd-yyyy HH:mm"}}</td>
-                      </tr>
-                    </tbody>
-                  </table>
+                          <td>{{ ms.TransferredDate | date :"MM-dd-yyyy HH:mm"}}</td>
+                        </tr>
+                      </tbody>
+                    </table>
 
-                  <table class="table table-bordered table-condensed" *ngIf="obj?.lstTrans==null">
-                    <thead>
-                      <tr>
-                        <th class="text-center ">Status</th>
-                        <th class="text-center ">Remarks </th>
-                        <th class="text-center ">Transfer From </th>
-                        <th class="text-center ">Transfer To</th>
-                        <th class="text-center ">Transfer By </th>
+                    <table class="table table-bordered table-condensed" *ngIf="obj?.lstTrans==null">
+                      <thead>
+                        <tr>
+                          <th class="text-center ">Status</th>
+                          <th class="text-center ">Remarks </th>
+                          <th class="text-center ">Transfer From </th>
+                          <th class="text-center ">Transfer To</th>
+                          <th class="text-center ">Transfer By </th>
 
-                        <th class="text-center ">Transferred On </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td colspan="6">
-                          No Records Found.!
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
+                          <th class="text-center ">Transferred On </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td colspan="6">
+                            No Records Found.!
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               </div>
             </div>
 
-            <div class="form-group col-sm-12 col-md-12 col-lg-12">
+            <div class="form-group col-sm-12 col-md-12 col-lg-12 col-xs-12">
               <div class="panel panel-primary">
                 <div class="panel-heading">
                   <div class="accordion-toggle" data-toggle="collapse" data-parent="#accordion"
                     href="#collapseimagedetail" aria-expanded="true">
                     <div class="row">
-                      <div class="col-lg-12">
+                      <div class="col-lg-12 col-xs-12">
                         RTV Image Details
                       </div>
                     </div>
@@ -267,7 +273,7 @@
 
   <div class="panel-footer">
     <div class="pull-right btn-toolbar">
-      <button  type="button" class="btn btn-primary" routerLink="/Replicationlist" title="Cancel">
+      <button type="button" class="btn btn-primary" routerLink="/Replicationlist" title="Cancel">
         Cancel
       </button>
       <button class="btn btn-success" type="submit" prevent-double-submit (click)="SaveData()">

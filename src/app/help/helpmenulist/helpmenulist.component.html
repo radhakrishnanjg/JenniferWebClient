@@ -63,11 +63,20 @@
   </div>
   <div class="panel-body">
     <kendo-grid [data]="gridView" resizable="true" columnMenu="true" [pageSize]="pageSize" [skip]="skip"
-      [pageable]="{pageSizes: [10, 25, 50, 100]}" (pageChange)="pageChange($event)" [sortable]="{
+      [pageable]="{pageSizes: [10, 25, 50, 100, 250, 500]}" (pageChange)="pageChange($event)" [sortable]="{
           allowUnsort: allowUnsort,
           mode:  'single'
           }" [sort]="sort" (sortChange)="sortChange($event)" [filterable]="true"
       (dataStateChange)="dataStateChange($event)" [filter]="state.filter">
+
+      <ng-template kendoGridToolbarTemplate>
+        <input placeholder="Search in all columns..." style="float:right;" kendoTextBox
+          (input)="onFilter($event.target.value)" />
+        <button kendoGridExcelCommand type="button" icon="file-excel"> </button>
+        <button kendoGridPDFCommand icon="file-pdf"> </button>
+        <kendo-grid-pdf fileName="HelpMenuList.pdf" [repeatHeaders]="true"></kendo-grid-pdf>
+        <kendo-grid-excel fileName="HelpMenuList.xlsx"></kendo-grid-excel>
+      </ng-template>
 
       <kendo-grid-column field="MenuType" title="Menu Type">
       </kendo-grid-column>

@@ -7,6 +7,7 @@ import { PoapprovalService } from '../../_services/service/poapproval.service';
 import { PrivateutilityService } from '../../_services/service/privateutility.service';
 import { AuthorizationGuard } from '../../_guards/Authorizationguard'
 import { Poorder, Location, Result } from '../../_services/model';
+import { PoService } from 'src/app/_services/service/po.service';
 @Component({
   selector: 'app-poapproval',
   templateUrl: './poapproval.component.html',
@@ -28,10 +29,11 @@ export class PoapprovalComponent implements OnInit {
   TotalTotalAmount: number = 0;
   constructor(private router: Router,
     private fb: FormBuilder,
+    private _poService: PoService,
     public _poapprovalService: PoapprovalService,
     public _privateutilityService: PrivateutilityService,
     public _alertService: ToastrService,
-    
+
     private _authorizationGuard: AuthorizationGuard,
     private aroute: ActivatedRoute) { }
 
@@ -81,8 +83,7 @@ export class PoapprovalComponent implements OnInit {
     });
   }
 
-  showapprovaldetailbycompany()
-  {
+  showapprovaldetailbycompany() {
     //
     this._poapprovalService.showapprovaldetailbycompany().subscribe(
       (data) => {
@@ -184,7 +185,7 @@ export class PoapprovalComponent implements OnInit {
       this.objResult.Flag = false;
       this.objResult.Msg = ' ';
     }
-  } 
+  }
 
   Update() {
     if (this._authorizationGuard.CheckAcess("Poapprovallist", "ViewEdit")) {
@@ -197,12 +198,12 @@ export class PoapprovalComponent implements OnInit {
     if (this.poapprovalForm.controls['ApprovalStatus'].value == "Approve") {
       this.obj.IsShipmentRequired = false;
       this.obj.ApprovalStatus = "Approved";
-    } 
+    }
     else if (this.poapprovalForm.controls['ApprovalStatus'].value == "Reject") {
       this.obj.IsShipmentRequired = false;
       this.obj.ApprovalStatus = "Rejected";
     }
-    this.obj.Remarks = this.poapprovalForm.controls['Remarks'].value; 
+    this.obj.Remarks = this.poapprovalForm.controls['Remarks'].value;
     //
     this._poapprovalService.update(this.obj).subscribe(
       (data) => {
@@ -225,5 +226,20 @@ export class PoapprovalComponent implements OnInit {
     );
   }
 
-
+  DownloadButtonClick(PONumber: string) {
+    if (PONumber != '') {
+      this._poService.GetFile(PONumber)
+        .subscribe(data => {
+          this._alertService.success("File downloaded succesfully.!");
+          var re = / /gi;
+          let PONumber = this.obj.PONumber.replace(re, "")
+          saveAs(data, PONumber + '.zip')
+        },
+          (err) => {
+            //
+            console.log(err);
+          }
+        );
+    }
+  }
 }

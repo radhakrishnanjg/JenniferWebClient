@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
 //kendo
-import { GridModule } from '@progress/kendo-angular-grid';
+import { GridModule, PDFModule, ExcelModule } from '@progress/kendo-angular-grid';
 
 import { PreventDoubleSubmitModule } from 'ngx-prevent-double-submission';
 import { MomentModule } from 'ngx-moment';
@@ -51,6 +51,8 @@ import { CasesRoutingModule } from '../cases/cases.routing.module';
     MomentModule,
     NgxDaterangepickerMd.forRoot(), 
     GridModule,
+    PDFModule, 
+    ExcelModule,
     CasesRoutingModule,
   ],
 

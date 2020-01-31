@@ -25,28 +25,28 @@ export class GstfinancefileuploadService {
     : Observable<Gstfinancefileupload[]> {
     let currentUser = this.authenticationService.currentUserValue;
     let LoginId = currentUser.UserId;
-    let CompanyDetailID = currentUser.CompanyDetailID;
+    let CompanyID = currentUser.CompanyID;
     return this.httpClient.get<Gstfinancefileupload[]>(environment.baseUrl +
       `GSTFinance/Search?ApprovalStatus=` + ApprovalStatus + `&FileType=` + FileType + `&FileName=` + FileName
-      + `&LoginId=` + LoginId + `&CompanyDetailID=` + CompanyDetailID)
+      + `&LoginId=` + LoginId + `&CompanyID=` + CompanyID)
       .pipe(catchError(this.handleError));
   }
 
   public SearchById(FileID: number): Observable<Gstfinancefileupload> {
     let currentUser = this.authenticationService.currentUserValue;
-    let CompanyDetailID = currentUser.CompanyDetailID;
+    let CompanyID = currentUser.CompanyID;
     return this.httpClient.get<Gstfinancefileupload>(environment.baseUrl +
-      `GSTFinance/SearchById?FileID=` + FileID + `&CompanyDetailID=` + CompanyDetailID)
+      `GSTFinance/SearchById?FileID=` + FileID + `&CompanyID=` + CompanyID)
       .pipe(catchError(this.handleError));
   }
 
   public Existence(FileId: number, FileType: string, Year: number, Month: number) {
     FileId = isNaN(FileId) ? 0 : FileId;
     let currentUser = this.authenticationService.currentUserValue;
-    let CompanyDetailID = currentUser.CompanyDetailID;
+    let CompanyID = currentUser.CompanyID;
     return this.httpClient.get<Boolean>(environment.baseUrl +
       `GSTFinance/Existence?FileId=` + FileId + `&FileType=` + FileType +
-      `&Year=` + Year + `&Month=` + Month + `&CompanyDetailID=` + CompanyDetailID)
+      `&Year=` + Year + `&Month=` + Month + `&CompanyID=` + CompanyID)
       .pipe(map(users => {
         if (users)
           return true;
@@ -62,7 +62,7 @@ export class GstfinancefileuploadService {
     : Observable<Result> {
     debugger
     let currentUser = this.authenticationService.currentUserValue;
-    let CompanyDetailID = currentUser.CompanyDetailID;
+    let CompanyID = currentUser.CompanyID;
     let LoginId = currentUser.UserId;
     let frmData = new FormData();
 
@@ -76,7 +76,7 @@ export class GstfinancefileuploadService {
     frmData.append("LoginId", LoginId.toString());
     frmData.append("ApprovalStatus", ApprovalStatus);
     frmData.append("Remarks", Remarks);
-    frmData.append("CompanyDetailID", CompanyDetailID.toString());
+    frmData.append("CompanyID", CompanyID.toString());
     frmData.append("FileData", Filedata, Filedata.name);
 
     return this.httpClient.post<Result>(environment.baseUrl + `GSTFinance/UploadFile`, frmData)
@@ -100,7 +100,7 @@ export class GstfinancefileuploadService {
 
   public Approval(objGstfinancefileupload: Gstfinancefileupload): Observable<Result> {
     let currentUser = this.authenticationService.currentUserValue;
-    objGstfinancefileupload.CompanyDetailID = currentUser.CompanyDetailID;
+    objGstfinancefileupload.CompanyID = currentUser.CompanyID;
     objGstfinancefileupload.LoginId = currentUser.UserId;
     return this.httpClient.post<Result>(environment.baseUrl + `GSTFinance/Approval`, objGstfinancefileupload)
       .pipe(catchError(this.handleError));
@@ -110,7 +110,7 @@ export class GstfinancefileuploadService {
   public Delete(FileID: number): Observable<Result> {
     let currentUser = this.authenticationService.currentUserValue;
     this.objGstfinancefileupload.FileID = FileID;
-    this.objGstfinancefileupload.CompanyDetailID = currentUser.CompanyDetailID;
+    this.objGstfinancefileupload.CompanyID = currentUser.CompanyID;
     this.objGstfinancefileupload.LoginId = currentUser.UserId;
     return this.httpClient.post<Result>(environment.baseUrl + `GSTFinance/Delete`, this.objGstfinancefileupload)
       .pipe(catchError(this.handleError));
@@ -118,16 +118,16 @@ export class GstfinancefileuploadService {
 
   public FinanceApproverCheck(): Observable<string> {
     let currentUser = this.authenticationService.currentUserValue;
-    let CompanyDetailID = currentUser.CompanyDetailID;
+    let CompanyID = currentUser.CompanyID;
     let LoginId = currentUser.UserId;
     return this.httpClient.get<string>(environment.baseUrl +
-      `GSTFinance/FinanceApproverCheck?LoginId=` + LoginId + `&CompanyDetailID=` + CompanyDetailID)
+      `GSTFinance/FinanceApproverCheck?LoginId=` + LoginId + `&CompanyID=` + CompanyID)
       .pipe(catchError(this.handleError));
   }
 
   public GSTReturnProcesses(): Observable<Result> {
     let currentUser = this.authenticationService.currentUserValue;
-    this.objGstfinancefileupload.CompanyDetailID = currentUser.CompanyDetailID;
+    this.objGstfinancefileupload.CompanyID = currentUser.CompanyID;
     this.objGstfinancefileupload.LoginId = currentUser.UserId;
     return this.httpClient.post<Result>(environment.baseUrl + `GSTFinance/GSTReturnProcesses`, this.objGstfinancefileupload)
       .pipe(catchError(this.handleError));
@@ -135,10 +135,10 @@ export class GstfinancefileuploadService {
 
   public DownloadGSTReturn(Year: number, Month: number, State: string) {
     let currentUser = this.authenticationService.currentUserValue;
-    let CompanyDetailID = currentUser.CompanyDetailID;
+    let CompanyID = currentUser.CompanyID;
     return this.httpClient.get(environment.baseUrl +
       `GSTFinance/DownloadGSTReturn?Year=` + Year + `&Month=` + Month + `&State=` + State +
-      `&CompanyDetailID=` + CompanyDetailID,
+      `&CompanyID=` + CompanyID,
       { responseType: 'blob' })
       .pipe(catchError(this.handleError));
   }

@@ -17,7 +17,7 @@ import { SortDescriptor, orderBy } from '@progress/kendo-data-query';
 })
 export class UomlistComponent implements OnInit {
   lstUOMMaster: Dropdown[];
-   objUOM: UOM = {} as any;
+  objUOM: UOM = {} as any;
   uomForm: FormGroup;
   panelTitle: string;
   action: boolean;
@@ -30,7 +30,7 @@ export class UomlistComponent implements OnInit {
   constructor(
     private alertService: ToastrService,
     private _uomService: UomService,
-    
+
     private _authorizationGuard: AuthorizationGuard,
     private fb: FormBuilder,
     private _PrivateutilityService: PrivateutilityService,
@@ -95,7 +95,7 @@ export class UomlistComponent implements OnInit {
           //
         },
         (err: any) => {
-          console.log(err); 
+          console.log(err);
         }
       );
 
@@ -355,10 +355,10 @@ export class UomlistComponent implements OnInit {
     //
     return this._uomService.getUOMS(SearchBy, Search, IsActive).subscribe(
       (lst) => {
-        
-        if (lst != null) { 
+
+        if (lst != null) {
           this.items = lst;
-          this.loadItems(); 
+          this.loadItems();
         }
         //
       },
@@ -372,7 +372,7 @@ export class UomlistComponent implements OnInit {
   //#region Paging Sorting and Filtering Start
   public allowUnsort = false;
   public sort: SortDescriptor[] = [{
-    field: 'UOM',
+    field: 'UOMID',
     dir: 'asc'
   }];
   public gridView: GridDataResult;
@@ -387,7 +387,7 @@ export class UomlistComponent implements OnInit {
     // Initial filter descriptor
     filter: {
       logic: 'and',
-      filters: [{ field: 'UOM', operator: 'contains', value: '' }]
+      filters: [{ field: 'UOMID', operator: 'contains', value: '' }]
     }
   };
   public pageChange({ skip, take }: PageChangeEvent): void {
@@ -418,7 +418,37 @@ export class UomlistComponent implements OnInit {
     this.gridView = process(this.items, this.state);
   }
 
-
+  public onFilter(inputValue: string): void {
+    this.gridView = process(this.items.slice(this.skip, this.skip + this.pageSize), {
+      skip: this.skip,
+      take: this.skip + this.pageSize,
+      filter: {
+        logic: "or",
+        filters: [
+          {
+            field: 'UOMID',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'UOM',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'Description',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'MultiplierValue',
+            operator: 'contains',
+            value: inputValue
+          }, 
+        ],
+      }
+    });
+  }
   //#endregion Paging Sorting and Filtering End
 
 }

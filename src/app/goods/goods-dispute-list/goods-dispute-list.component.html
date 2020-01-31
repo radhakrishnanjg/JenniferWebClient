@@ -8,13 +8,13 @@
     <div class="pull-right hidden-xs">
       <ol class="breadcrumb" id="dynamicbreadcrumb">
         <li>
-           <span> GRN</span>
+          <span> GRN</span>
         </li>
         <li>
-           <span>Goods Dispute</span>
+          <span>Goods Dispute</span>
         </li>
         <li class="active">
-          
+
           List
         </li>
       </ol>
@@ -24,23 +24,23 @@
 <div class="panel panel-default">
   <div class="panel-heading">
     <div class="row">
-      <div class="col-xs-12 col-sm-10 col-md-10 col-lg-10">
-        <div class="input-group col-sm-12" role="group" aria-label="Basic example">
-          <div class="col-md-3 nopading_loct">
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="input-group col-xs-12 col-sm-12" role="group" aria-label="Basic example">
+          <div class="col-md-3 col-sm-3 col-xs-12 nopading_loct">
             <select [(ngModel)]="SearchBy" class="serchcurv form-control btn-group">
               <option value="" selected="select">Search By</option>
               <option value="GRNNumber">GRN Number</option>
               <option value="ItemCode">Item Code</option>
               <option value="ItemName">Item Descripation</option>
-              <option value="DisputeType">Dispute Type</option>              
+              <option value="DisputeType">Dispute Type</option>
               <option value="JenniferItemSerial">Jennifer Item Serial</option>
             </select>
           </div>
-          <div class="col-md-3 nopading_loct">
-            <input type="text" (keyup.enter)="Search()" [(ngModel)]="SearchKeyword" class="serchcurv form-control btn-group" id="GRN"
-              aria-describedby="GRN">
+          <div class="col-md-3 col-sm-3 nopading_loct">
+            <input type="text" (keyup.enter)="Search()" [(ngModel)]="SearchKeyword"
+              class="serchcurv form-control btn-group" id="GRN" aria-describedby="GRN">
           </div>
-          <div class="col-md-2 nopading_loct">
+          <div class="col-md-3 col-sm-3 col-xs-6 nopading_loct">
             <button class="serchcurv btn btn-default btn-group" (click)="Search()" title="Search">
               <i class="fa fa-search " aria-hidden="true"></i>
             </button>
@@ -48,40 +48,53 @@
               <i class="fa fa-refresh" aria-hidden="true"></i>
             </button>
           </div>
+          <div class="col-xs-6 col-sm-3 col-md-3 text-right nopadding">
+            <button class="btn btn-xs btn-sm btn-primary" (click)="AddNewLink()" title="Add New">
+              Add New
+            </button>
+          </div>
         </div>
-      </div>
-      <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 text-right">
-        <button class="btn btn-primary" (click)="AddNewLink()" title="Add New">
-          Add New
-        </button>
       </div>
     </div>
   </div>
 
   <div class="panel-body">
-    <kendo-grid [data]="gridView" resizable="true" columnMenu="true" [pageSize]="pageSize" [skip]="skip" [pageable]="{pageSizes: [10, 25, 50, 100]}"
-      (pageChange)="pageChange($event)" [sortable]="{
+    <div class="table-responsive">
+      <table class="table">
+        <kendo-grid [data]="gridView" resizable="true" columnMenu="true" [pageSize]="pageSize" [skip]="skip"
+          [pageable]="{pageSizes: [10, 25, 50, 100, 250, 500]}" (pageChange)="pageChange($event)" [sortable]="{
             allowUnsort: allowUnsort,
             mode:  'single'
             }" [sort]="sort" (sortChange)="sortChange($event)" [filterable]="true"
-      (dataStateChange)="dataStateChange($event)" [filter]="state.filter">
+          (dataStateChange)="dataStateChange($event)" [filter]="state.filter">
 
-      <kendo-grid-column field="GRNNumber" title="GRN Number">
-      </kendo-grid-column>
-      <kendo-grid-column field="ItemCode" title="ItemCode">
-      </kendo-grid-column>
-      <kendo-grid-column field="ItemName" title="Item Description">
-      </kendo-grid-column>
-      
-      <kendo-grid-column field="JenniferItemSerial" title="Jennifer Item Serial No.">
-        </kendo-grid-column>
-      <kendo-grid-column field="DisputeType" title="Dispute Type">
-      </kendo-grid-column>
+          <ng-template kendoGridToolbarTemplate>
+            <input placeholder="Search in all columns..." style="float:right;" kendoTextBox
+              (input)="onFilter($event.target.value)" />
+            <button kendoGridExcelCommand type="button" icon="file-excel"> </button>
+            <button kendoGridPDFCommand icon="file-pdf"> </button>
+            <kendo-grid-pdf fileName="GoodsDisputeList.pdf" [repeatHeaders]="true"></kendo-grid-pdf>
+            <kendo-grid-excel fileName="GoodsDisputeList.xlsx"></kendo-grid-excel>
+          </ng-template>
+          <kendo-grid-column field="GRNNumber" title="GRN Number">
+          </kendo-grid-column>
+          <kendo-grid-column field="ItemCode" title="ItemCode">
+          </kendo-grid-column>
+          <kendo-grid-column field="ItemName" title="Item Description">
+          </kendo-grid-column>
 
-      <kendo-grid-column field="DisputeID" title="Action" [class]="{'text-center': true}" [filterable]="false" [sortable]="false" width="70" >
-        <ng-template kendoGridCellTemplate let-obj>
-          <i class="fa fa-eye bgblue pointer" (click)="editButtonClick(obj.DisputeID)" title="View"></i>
-        </ng-template>
-      </kendo-grid-column>
-    </kendo-grid> 
+          <kendo-grid-column field="JenniferItemSerial" title="Jennifer Item Serial No.">
+          </kendo-grid-column>
+          <kendo-grid-column field="DisputeType" title="Dispute Type">
+          </kendo-grid-column>
+
+          <kendo-grid-column title="Action" [class]="{'text-center': true}" [filterable]="false" [sortable]="false"
+            width="70">
+            <ng-template kendoGridCellTemplate let-obj>
+              <i class="fa fa-eye bgblue pointer" (click)="editButtonClick(obj.DisputeID)" title="View"></i>
+            </ng-template>
+          </kendo-grid-column>
+        </kendo-grid>
+      </table>
+    </div>
   </div>

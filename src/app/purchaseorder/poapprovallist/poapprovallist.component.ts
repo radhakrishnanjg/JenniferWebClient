@@ -141,7 +141,42 @@ export class PoapprovallistComponent implements OnInit {
     this.gridView = process(this.items, this.state);
   }
 
-
+  public onFilter(inputValue: string): void {
+    this.gridView = process(this.items, {
+      skip: this.skip,
+      take: this.skip + this.pageSize,
+      filter: {
+        logic: "or",
+        filters: [
+          {
+            field: 'PONumber',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'PODate',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'OtherReference',
+            operator: 'contains',
+            value: inputValue
+          }, 
+          {
+            field: 'LocationName',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'ApprovalStatus',
+            operator: 'contains',
+            value: inputValue
+          }, 
+        ],
+      }
+    })  ;  
+  }
   //#endregion Paging Sorting and Filtering End
 
 }

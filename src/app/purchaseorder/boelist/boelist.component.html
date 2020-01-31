@@ -8,13 +8,13 @@
     <div class="pull-right hidden-xs">
       <ol class="breadcrumb" id="dynamicbreadcrumb">
         <li>
-           <span> Procurements</span>
+          <span> Procurements</span>
         </li>
         <li>
-           <span> BOE</span>
+          <span> BOE</span>
         </li>
         <li class="active">
-          
+
           List
         </li>
       </ol>
@@ -24,9 +24,9 @@
 <div class="panel panel-default">
   <div class="panel-heading">
     <div class="row">
-      <div class="col-xs-12 col-sm-10 col-md-10 col-lg-10">
-        <div class="input-group col-sm-12" role="group" aria-label="Basic example">
-          <div class="col-md-3 nopading_loct">
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="input-group col-xs-12 col-sm-12" role="group" aria-label="Basic example">
+          <div class="col-md-3 col-sm-3 col-xs-12 nopading_loct">
             <select [(ngModel)]="SearchBy" class="serchcurv form-control btn-group">
               <option value="" selected="select">Search By</option>
               <option value="ByPOInvNum">Invoice Number</option>
@@ -37,18 +37,18 @@
               <option value="ByPurchaseDate">Purchase Date</option>
             </select>
           </div>
-          <div class="col-md-4 nopading_loct" *ngIf="!(SearchBy=='ByBOEDate' || SearchBy=='ByPurchaseDate')">
-            <input (keyup.enter)="Search()" [(ngModel)]="SearchKeyword" type="text" class="serchcurv form-control btn-group" id="Location"
-              aria-describedby="Location">
+          <div class="col-md-3 col-sm-3 nopading_loct" *ngIf="!(SearchBy=='ByBOEDate' || SearchBy=='ByPurchaseDate')">
+            <input (keyup.enter)="Search()" [(ngModel)]="SearchKeyword" type="text"
+              class="serchcurv form-control btn-group" id="Location" aria-describedby="Location">
           </div>
-          <div class="col-md-4 nopading_loct" *ngIf="(SearchBy=='ByBOEDate' || SearchBy=='ByPurchaseDate')">
+          <div class="col-md-3 col-sm-3 nopading_loct" *ngIf="(SearchBy=='ByBOEDate' || SearchBy=='ByPurchaseDate')">
             <input type="text" ngxDaterangepickerMd [(ngModel)]="selectedDateRange"
               class="serchcurv form-control btn-group col-xs-12 pointer"
               style="border:1px soloid #ccc !important; padding :3px;left:0px" [showCustomRangeLabel]="true"
               [ranges]="Searchranges" [showCancel]="true" placeholder="Select please..."
               (ngModelChange)="onChange($event)" />
           </div>
-          <div class="col-md-2 nopading_loct">
+          <div class="col-md-3 col-sm-3 col-xs-6 nopading_loct">
             <button class="serchcurv btn btn-default btn-group" (click)="Search()" title="Search">
               <i class="fa fa-search " aria-hidden="true"></i>
             </button>
@@ -56,53 +56,68 @@
               <i class="fa fa-refresh" aria-hidden="true"></i>
             </button>
           </div>
+          <div class="col-xs-6 col-sm-3 col-md-3 text-right nopadding">
+          </div>
         </div>
-      </div>
-      <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 text-right">
       </div>
     </div>
   </div>
 
   <div class="panel-body">
-    <kendo-grid [data]="gridView" resizable="true" columnMenu="true" [pageSize]="pageSize" [skip]="skip" [pageable]="{pageSizes: [10, 25, 50, 100]}" 
-      (pageChange)="pageChange($event)" [sortable]="{
+    <div class="table-responsive">
+      <table class="table">
+        <kendo-grid [data]="gridView" resizable="true" columnMenu="true" [pageSize]="pageSize" [skip]="skip"
+          [pageable]="{pageSizes: [10, 25, 50, 100, 250, 500]}" (pageChange)="pageChange($event)" [sortable]="{
           allowUnsort: allowUnsort,
           mode:  'single'
           }" [sort]="sort" (sortChange)="sortChange($event)" [filterable]="true"
-      (dataStateChange)="dataStateChange($event)" [filter]="state.filter"  >
+          (dataStateChange)="dataStateChange($event)" [filter]="state.filter">
 
-      <kendo-grid-column field="PONumber" title="PO No.">
-      </kendo-grid-column>
-      <kendo-grid-column field="InvoiceNumber" title="Invoice No.">
-      </kendo-grid-column>
-      <kendo-grid-column field="InvoiceDate" title="Invoice Date" filter="date" format="{0:d}" [filterable]="false" >
-        <ng-template kendoGridCellTemplate let-dataItem>
-          {{ dataItem.InvoiceDate | date :"MM-dd-yyyy HH:mm" }}
-        </ng-template>
-      </kendo-grid-column>
-      <kendo-grid-column field="LocationName" title="Location">
-      </kendo-grid-column>
-      <kendo-grid-column field="BOENumber" title="BOE No.">
-      </kendo-grid-column>
-      <kendo-grid-column field="BOEDate" title="BOE Date" filter="date" format="{0:d}" [filterable]="false" >
-        <ng-template kendoGridCellTemplate let-dataItem>
-          {{ dataItem.InvoiceDate | date :"MM-dd-yyyy HH:mm" }}
-        </ng-template>
-      </kendo-grid-column>
-      <kendo-grid-column field="TotalAmount" title="Total Value" format="{0:##,#.##}">
-      </kendo-grid-column>
-      <kendo-grid-column field="BOEID" title="Action" [class]="{'text-center': true}"  [filterable]="false" [sortable]="false"  width="80">
-        <ng-template kendoGridCellTemplate let-obj>
-          <i class="fa fa-edit bgblue pointer" [routerLink]="['/BOE', obj.BOEID, obj.PurchaseID]" title="Edit"></i>
-          &nbsp;
-          <i class="fa fa-eye bgblue pointer" (click)="viewButtonClick(obj.BOEID,obj.PurchaseID)" title="View"></i>
-          &nbsp;
-          <i class="fa fa-trash bgred pointer" title="Delete" (click)="confirmDeleteid(obj.BOEID,obj.BOEBumber)"></i>
-          &nbsp;
-          <i class="fa fa-plus bgblue pointer" *ngIf="(obj.ISBOE)" (click)="NewBOW(obj.PurchaseID)" title="New BOE"></i>
-        </ng-template>
-      </kendo-grid-column>
-    </kendo-grid> 
+          <ng-template kendoGridToolbarTemplate>
+            <input placeholder="Search in all columns..." style="float:right;" kendoTextBox
+              (input)="onFilter($event.target.value)" />
+            <button kendoGridExcelCommand type="button" icon="file-excel"> </button>
+            <button kendoGridPDFCommand icon="file-pdf"> </button>
+            <kendo-grid-pdf fileName="BOEList.pdf" [repeatHeaders]="true"></kendo-grid-pdf>
+            <kendo-grid-excel fileName="BOEList.xlsx"></kendo-grid-excel>
+          </ng-template>
+          <kendo-grid-column field="PONumber" title="PO No.">
+          </kendo-grid-column>
+          <kendo-grid-column field="InvoiceNumber" title="Invoice No.">
+          </kendo-grid-column>
+          <kendo-grid-column field="InvoiceDate" title="Invoice Date" filter="date" format="{0:d}" [filterable]="false">
+            <ng-template kendoGridCellTemplate let-dataItem>
+              {{ dataItem.InvoiceDate | date :"MM-dd-yyyy HH:mm" }}
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="LocationName" title="Location">
+          </kendo-grid-column>
+          <kendo-grid-column field="BOENumber" title="BOE No.">
+          </kendo-grid-column>
+          <kendo-grid-column field="BOEDate" title="BOE Date" filter="date" format="{0:d}" [filterable]="false">
+            <ng-template kendoGridCellTemplate let-dataItem>
+              {{ dataItem.InvoiceDate | date :"MM-dd-yyyy HH:mm" }}
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="TotalAmount" title="Total Value" format="{0:##,#.##}">
+          </kendo-grid-column>
+          <kendo-grid-column title="Action" [class]="{'text-center': true}" [filterable]="false" [sortable]="false"
+            width="80">
+            <ng-template kendoGridCellTemplate let-obj>
+              <i class="fa fa-edit bgblue pointer" [routerLink]="['/BOE', obj.BOEID, obj.PurchaseID]" title="Edit"></i>
+              &nbsp;
+              <i class="fa fa-eye bgblue pointer" (click)="viewButtonClick(obj.BOEID,obj.PurchaseID)" title="View"></i>
+              &nbsp;
+              <i class="fa fa-trash bgred pointer" title="Delete"
+                (click)="confirmDeleteid(obj.BOEID,obj.BOEBumber)"></i>
+              &nbsp;
+              <i class="fa fa-plus bgblue pointer" *ngIf="(obj.ISBOE)" (click)="NewBOW(obj.PurchaseID)"
+                title="New BOE"></i>
+            </ng-template>
+          </kendo-grid-column>
+        </kendo-grid>
+      </table>
+    </div>
   </div>
 
   <div id="modaldeleteconfimation" class="modal fade" tabindex="-1" role="dialog"

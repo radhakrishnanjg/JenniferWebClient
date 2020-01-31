@@ -1,0 +1,187 @@
+<div class="row">
+  <div class="col-sm-6 col-lg-6">
+    <h3>
+      Debit Note
+    </h3>
+  </div>
+  <div class="col-sm-6 col-lg-6">
+    <div class="pull-right hidden-xs">
+      <ol class="breadcrumb" id="dynamicbreadcrumb">
+        <li>
+          <span> Procurements</span>
+        </li>
+        <li>
+          <span> Debit Notes</span>
+        </li>
+        <li class="active">
+
+          Save
+        </li>
+      </ol>
+    </div>
+  </div>
+</div>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <div class="row">
+      <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+        <span class="groupspanheader">
+          Debit Note
+        </span>
+      </div>
+      <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 ">
+        <div class="pull-right">
+          <button type="button" class="btn btn-primary" routerLinkActive="active"
+            routerLink="/Debitnotelist">Back</button>
+        </div>
+      </div>
+    </div>
+    <div class="clearfix"></div>
+  </div>
+
+  <div class="panel-body">
+
+    <div class="row">
+      <div class="col-md-12">
+        <div class="table-responsive">
+          <table class="table table-bordered bgtable">
+
+            <tr>
+              <th width="15%">
+                Debit Note Date
+              </th>
+              <td width="35%">
+                {{obj?.DNDate | date :"MM-dd-yyyy HH:mm"}}
+              </td>
+              <th width="15%">
+                Debit Note No.
+              </th>
+              <td width="35%">
+                {{obj?.DNNumber}}
+              </td>
+            </tr>
+            <tr>
+              <th>
+                Debit Note Type
+              </th>
+              <td>
+                {{obj?.DNType}}
+              </td>
+              <th>
+                Vendor Name
+              </th>
+              <td>
+                {{obj?.VendorName}}
+              </td>
+            </tr>
+            <tr>
+              <th>
+                Invoice Date
+              </th>
+              <td>
+                {{ obj?.InvoiceDate | date :"MM-dd-yyyy HH:mm" }}
+              </td>
+              <th>
+                Invoice Number
+              </th>
+              <td>
+                {{ obj?.InvoiceNumber }}
+              </td>
+            </tr>
+            <tr>
+              <th>
+                Reference Details
+              </th>
+              <td>
+                {{obj?.ReferenceDetail}}
+              </td>
+              <th>
+                Location
+              </th>
+              <td>
+                {{obj?.LocationName}}
+              </td>
+            </tr>
+            <tr>
+              <th>
+                Remarks
+              </th>
+              <td colspan="3">
+                {{obj?.Remarks}}
+              </td>
+            </tr>
+
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <span class="groupspanheader">Details</span>
+    <div class="table-responsive">
+      <table class="table table-bordered table-condensed">
+        <thead>
+          <tr>
+            <th class="text-center">Description of Goods</th>
+            <th class="text-center">Item Code</th>
+            <th class="text-center" *ngIf="obj.DNType=='DN'">Invoice Qty</th>
+            <th class="text-center">Invoice Amount</th> 
+
+            <th class="text-center" *ngIf="obj.DNType=='DN'">Debit Note Qty</th>
+            <!-- <th class="text-center" *ngIf="obj.DNType=='FDN'">Pending Amount</th> -->
+            <th class="text-center">Debit Note Amount</th>
+            <th class="text-center">Reason</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let dis of obj?.lstDebitNoteDetail; let id = index">
+            <td> {{ dis.ItemName }} </td>
+            <td> {{ dis.ItemCode}} </td>
+            <td class="text-right" *ngIf="obj.DNType=='DN'"> {{ dis.InvoiceQty  }} </td>
+            <td class="text-right">
+              {{ dis.InvoiceTotalAmount | currency: 'INR' }} </td> 
+
+            <td class="text-right" *ngIf="obj.DNType=='DN'">
+              {{dis.Qty}}
+            </td>
+            <!-- <td class="text-right" *ngIf="obj.DNType=='FDN'">
+              {{ dis.PendingTotalAmount  | currency: 'INR'}} </td> -->
+            <td class="text-right" *ngIf="obj.DNType=='DN'">
+              {{ dis.TotalAmount  | currency: 'INR'}}
+            </td>
+            <td class="text-right" *ngIf="obj.DNType=='FDN'">
+              {{dis.TotalAmount| currency: 'INR'}}</td>
+            <td class="text-right">
+              {{dis.Reason}}
+            </td>
+          </tr>
+          <tr>
+            <th>Total</th>
+            <th> </th>
+            <th class="text-right" *ngIf="obj.DNType=='DN'"> {{InvoiceTotalQtyTotal }}</th>
+            <th class="text-right"> {{InvoiceTotalAmountTotal | currency: 'INR'}}</th>
+            <th class="text-right" *ngIf="obj.DNType=='DN'"> {{TotalQty}}</th> 
+
+            <!-- <th class="text-right" *ngIf="obj.DNType=='FDN'">{{PendingAmountTotal | currency: 'INR'}} </th> -->
+            <th class="text-right" *ngIf="obj.DNType=='DN'">{{TotalTotalAmount | currency: 'INR'}} </th>
+            <th class="text-right" *ngIf="obj.DNType=='FDN'">{{TotalTotalAmount | currency: 'INR'}} </th>
+            <th> </th>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="panel-footer">
+    <div class="row">
+      <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+      </div>
+      <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 ">
+        <div class="pull-right">
+          <button type="button" class="btn btn-primary" routerLinkActive="active"
+            routerLink="/Debitnotelist">Cancel</button>
+        </div>
+      </div>
+    </div>
+    <div class="clearfix"></div>
+  </div>
+</div>

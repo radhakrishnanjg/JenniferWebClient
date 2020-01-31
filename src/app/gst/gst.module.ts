@@ -17,7 +17,7 @@ import { DomSanitizer } from "@angular/platform-browser";
 
 
 //kendo
-import { GridModule } from '@progress/kendo-angular-grid'; 
+import { GridModule, PDFModule, ExcelModule } from '@progress/kendo-angular-grid'; 
 import { DropDownListModule } from '@progress/kendo-angular-dropdowns';
 
 @Pipe({
@@ -55,6 +55,8 @@ import {GstRoutingModule} from '../gst/gst.routing.module';
 
     NgxMaskModule.forRoot(),
     GridModule,
+    PDFModule, 
+    ExcelModule,
     DropDownListModule, 
     NgbModule,
     GstRoutingModule

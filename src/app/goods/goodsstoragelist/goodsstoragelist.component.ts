@@ -194,7 +194,7 @@ export class GoodsstoragelistComponent implements OnInit {
   //#region Paging Sorting and Filtering Start
   public allowUnsort = false;
   public sort: SortDescriptor[] = [{
-    field: 'OrderID',
+    field: 'ItemCode',
     dir: 'asc'
   }];
   public gridView: GridDataResult;
@@ -209,7 +209,7 @@ export class GoodsstoragelistComponent implements OnInit {
     // Initial filter descriptor
     filter: {
       logic: 'and',
-      filters: [{ field: 'OrderID', operator: 'contains', value: '' }]
+      filters: [{ field: 'ItemCode', operator: 'contains', value: '' }]
     }
   };
   public pageChange({ skip, take }: PageChangeEvent): void {
@@ -240,6 +240,52 @@ export class GoodsstoragelistComponent implements OnInit {
     this.gridView = process(this.items, this.state);
   }
 
+  public onFilter(inputValue: string): void {
+    this.gridView = process(this.items, {
+      skip: this.skip,
+      take: this.skip + this.pageSize,
+      filter: {
+        logic: "or",
+        filters: [
+          {
+            field: 'ItemCode',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'ItemName',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'VendorItemCode',
+            operator: 'contains',
+            value: inputValue
+          }, 
+          {
+            field: 'JenniferItemSerial',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'WarehouseLocation',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'WarehouseRack',
+            operator: 'contains',
+            value: inputValue
+          }, 
+          {
+            field: 'WarehouseBin',
+            operator: 'contains',
+            value: inputValue
+          }, 
+        ],
+      }
+    })  ;  
+  }
 
   //#endregion Paging Sorting and Filtering End
 

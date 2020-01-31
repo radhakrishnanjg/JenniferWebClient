@@ -32,7 +32,7 @@ export class CustomerwarehouseComponent implements OnInit {
     private fb: FormBuilder,
     private _router: Router,
     private aroute: ActivatedRoute,
-    
+
     private _customerwarehouseService: CustomerwarehouseService,
     private utilityService: UtilityService,
     private _PrivateutilityService: PrivateutilityService,
@@ -256,7 +256,7 @@ export class CustomerwarehouseComponent implements OnInit {
       } else {
         $('#GSTNumber').val(' ');
         this.customerwarehouseform.patchValue({ GSTNumber: ' ' });
-        this.customerwarehouseform.get('GSTNumber').disable(); 
+        this.customerwarehouseform.get('GSTNumber').disable();
       }
     }
   }
@@ -289,6 +289,16 @@ export class CustomerwarehouseComponent implements OnInit {
     if (this.customerwarehouseform.pristine) {
       this.alertService.error('Please change the value for any one control to proceed further!');
       return;
+    }
+    let CustomerType = this.lstCustomer.filter(a => a.CustomerID ==
+      this.customerwarehouseform.controls['CustomerID'].value)[0].CustomerType;
+    if (CustomerType == "B2B") {
+      let GSTStateCode = this.states.filter(a => a.StateID == this.customerwarehouseform.controls['StateID'].value)[0].GSTStateCode;
+      let State = this.states.filter(a => a.StateID == this.customerwarehouseform.controls['StateID'].value)[0].State;
+      if (GSTStateCode != this.customerwarehouseform.controls['GSTNumber'].value.slice(0, 2)) {
+        this.alertService.error('GST Number must start with ' + GSTStateCode + ' for ' + State + ' state.!');
+        return;
+      }
     }
     this.aroute.paramMap.subscribe(params => {
       this.identity = +params.get('id');

@@ -8,13 +8,13 @@
     <div class="pull-right hidden-xs">
       <ol class="breadcrumb" id="dynamicbreadcrumb">
         <li>
-           <span> Procurements</span>
+          <span> Procurements</span>
         </li>
         <li>
-           <span> Purchase Invoices </span>
+          <span> Purchase Invoices </span>
         </li>
         <li class="active">
-          
+
           View
         </li>
       </ol>
@@ -35,7 +35,7 @@
         </div>
         <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 ">
           <div class="pull-right">
-            <button  type="button" class="btn btn-primary" routerLink="/Purchaselist" title="Back">
+            <button type="button" class="btn btn-primary" routerLink="/Purchaselist" title="Back">
               Back
             </button>
           </div>
@@ -76,8 +76,7 @@
         <div class="col-md-6 col-xs-12">
           <span class="groupspanheader"> PO Information </span>
           <div class="table-responsive">
-            <table class="bgtable table table-bordered">
-
+            <table class="bgtable table table-bordered"> 
               <tr>
                 <th width="180px"> PO No. </th>
                 <td> {{obj?.PONumber}} </td>
@@ -91,8 +90,7 @@
                 <th width="180px">
                   Vendor <span class="mandantory">*</span> </th>
                 <td> {{obj?.VendorName}} </td>
-              </tr>
-
+              </tr> 
             </table>
           </div>
         </div>
@@ -101,57 +99,59 @@
 
         <div class="col-md-12 col-xs-12">
           <span class="groupspanheader"> Order Items</span>
-          <table class="table table-bordered table-condensed">
-            <thead>
-              <tr>
-                <th class="text-center">ItemCode</th>
-                <th class="text-center">Vendor ItemCode </th>
-                <th class="text-center">Qty</th>
-                <th class="text-center">Rate</th>
+          <div class="table-responsive">
+            <table class="table table-bordered table-condensed">
+              <thead>
+                <tr>
+                  <th class="text-center">ItemCode</th>
+                  <th class="text-center">Vendor ItemCode </th>
+                  <th class="text-center">Qty</th>
+                  <th class="text-center">Rate</th>
 
-                <th class="text-center">MRP</th>
-                <th class="text-center">TaxRate</th>
-                <th class="text-center">TaxNature</th>
-                <th class="text-center">DirectCost</th>
-                <th class="text-center">TaxAmount</th>
+                  <th class="text-center">MRP</th>
+                  <th class="text-center">TaxRate</th>
+                  <th class="text-center">TaxNature</th>
+                  <th class="text-center">DirectCost</th>
+                  <th class="text-center">TaxAmount</th>
 
-                <th class="text-center">TotalAmount</th>
-              </tr>
-            </thead>
+                  <th class="text-center">TotalAmount</th>
+                </tr>
+              </thead>
 
-            <tbody>
-              <tr *ngFor="let person of  obj?.lstItem; let id = index">
-                <td> {{person.ItemCode}} </td>
-                <td> {{person.VendorItemCode}} </td>
-                <td class="text-right"> {{person.Qty}} </td>
-                <td class="text-right"> {{person.Rate}} </td>
+              <tbody>
+                <tr *ngFor="let person of  obj?.lstItem; let id = index">
+                  <td> {{person.ItemCode}} </td>
+                  <td> {{person.VendorItemCode}} </td>
+                  <td class="text-right"> {{person.Qty}} </td>
+                  <td class="text-right"> {{person.Rate}} </td>
 
-                <td class="text-right"> {{person.MRP | currency: 'INR' }} </td>
-                <td class="text-right"> {{person.TaxRate}} </td>
-                <td> {{person.TaxNature}} </td>
-                <td class="text-right"> {{person.DirectCost | currency: 'INR' }} </td>
-                <td class="text-right"> {{person.TaxAmount | currency: 'INR' }} </td>
+                  <td class="text-right"> {{person.MRP | currency: 'INR' }} </td>
+                  <td class="text-right"> {{person.TaxRate}} </td>
+                  <td> {{person.TaxNature}} </td>
+                  <td class="text-right"> {{person.DirectCost | currency: 'INR' }} </td>
+                  <td class="text-right"> {{person.TaxAmount | currency: 'INR' }} </td>
 
-                <td class="text-right"> {{person.TotalAmount | currency: 'INR' }} </td>
-              </tr>
+                  <td class="text-right"> {{person.TotalAmount | currency: 'INR' }} </td>
+                </tr>
 
-              <tr>
-                <th>Total</th>
-                <th> </th>
-                <th class="text-right"> {{ TotalQty}}</th>
-                <th class="text-right"> {{ TotalRate}}</th>
+                <tr>
+                  <th>Total</th>
+                  <th> </th>
+                  <th class="text-right"> {{ TotalQty}}</th>
+                  <th class="text-right"> {{ TotalRate}}</th>
 
 
-                <th class="text-right"> {{ TotalMRP | currency: 'INR' }} </th>
-                <th class="text-right"> </th>
-                <th> </th>
-                <th class="text-right"> {{ TotalDirectCost | currency: 'INR'}} </th>
-                <th class="text-right"> {{ TotalTaxAmount | currency: 'INR'}} </th>
+                  <th class="text-right"> {{ TotalMRP | currency: 'INR' }} </th>
+                  <th class="text-right"> </th>
+                  <th> </th>
+                  <th class="text-right"> {{ TotalDirectCost | currency: 'INR'}} </th>
+                  <th class="text-right"> {{ TotalTaxAmount | currency: 'INR'}} </th>
 
-                <th class="text-right"> {{ TotalTotalAmount | currency: 'INR'}} </th>
-              </tr>
-            </tbody>
-          </table>
+                  <th class="text-right"> {{ TotalTotalAmount | currency: 'INR'}} </th>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
 
 

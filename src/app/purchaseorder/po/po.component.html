@@ -8,13 +8,13 @@
     <div class="pull-right hidden-xs">
       <ol class="breadcrumb" id="dynamicbreadcrumb">
         <li>
-           <span> Procurements</span>
+          <span> Procurements</span>
         </li>
         <li>
-           <span> Purchase Order</span>
+          <span> Purchase Order</span>
         </li>
         <li class="active">
-          
+
           Save
         </li>
       </ol>
@@ -202,6 +202,26 @@
           </div>
         </div>
       </div>
+      <div class="row" *ngIf="poOrder.POID == 0">
+        <div class="col-sm-3 col-xs-12">
+          <div class="form-group">
+            <div class="inputlevel">
+              <label class="nopading_loct control-label" for="SelectSelect">Browse File
+                
+              </label>
+              <input type="file" id="file" accept="image/*,
+              application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,
+              application/pdf,application/msword,
+              application/vnd.openxmlformats-officedocument.wordprocessingml.document" multiple="multiple"
+                (change)="onFileChanged1($event)">
+              <div class="help-block-rk">
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="row paddingtop20">
         <div class="col-md-3">
           <span class="groupspanheader">Order Items</span>
@@ -226,6 +246,8 @@
           </div>
         </div>
       </div>
+
+
     </div>
     <kendo-grid [data]="gridData" resizable="true" (edit)="editHandler($event)" (cancel)="cancelHandler($event)"
       (save)="saveHandler($event)" (remove)="removeHandler($event)" (add)="addHandler($event)" [height]="410">
@@ -327,7 +349,7 @@
 
         <button type="button" id="cancel" class="btn btn-default" routerLink="/Polist">Cancel</button>
         <button prevent-double-submit type="submit" id="save" class="btn btn-success"
-          [disabled]="!poForm.valid">Save</button>
+          [disabled]="!poForm.valid ||FileFlag">Save</button>
 
       </div>
       <div class="clearfix"></div>

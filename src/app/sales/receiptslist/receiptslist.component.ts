@@ -6,7 +6,7 @@ import { Receipts } from '../../_services/model';
 import { AuthorizationGuard } from '../../_guards/Authorizationguard'
 
 import * as moment from 'moment';
-import { FormGroup, FormControl, } from '@angular/forms';
+import { FormGroup, FormControl, } from '@angular/forms'; 
 
 const createFormGroup = dataItem => new FormGroup({
   'FileID': new FormControl(dataItem.FileID),
@@ -54,7 +54,7 @@ export class ReceiptslistComponent implements OnInit {
   constructor(
     private alertService: ToastrService,
     private _receiptsService: ReceiptsService,
-    
+
     private _authorizationGuard: AuthorizationGuard,
   ) { }
 
@@ -250,46 +250,10 @@ export class ReceiptslistComponent implements OnInit {
   }
 
 
-  // public removeHandler({ rowIndex }): void {
-
-  //   let selectedItem = this.gridDataunreconciled[rowIndex];
-  //   const ReportID = selectedItem.Filename;
-  //   //
-  //   this._receiptsService.DownloadReceiptFile(ReportID)
-  //     .subscribe(data => {
-  //       
-  //         saveAs(data, ReportID.toString());//+ '.csv'
-  //     },
-  //       (err) => {
-  //         //
-  //         console.log(err);
-  //       }
-  //     );
-  // }
-
-  // public removeHandler2({ rowIndex }): void {
-
-  //   let selectedItem = this.gridDatareconciled[rowIndex];
-  //   const ReportID = selectedItem.Filename;
-  //   //
-  //   this._receiptsService.DownloadReceiptFile(ReportID)
-  //     .subscribe(data => {
-  //       
-  //         saveAs(data, ReportID.toString());//+ '.csv'
-  //     },
-  //       (err) => {
-  //         //
-  //         console.log(err);
-  //       }
-  //     );
-  // }
-
-  public removeHandler(Filename:string ): void {
-    //
+  public removeHandler(Filename: string): void { 
     this._receiptsService.DownloadReceiptFile(Filename)
       .subscribe(data => {
-        
-          saveAs(data, Filename.toString()+ '.csv');//+ '.csv'
+        saveAs(data, Filename.toString() + '.csv');//+ '.csv'
       },
         (err) => {
           //
@@ -298,13 +262,10 @@ export class ReceiptslistComponent implements OnInit {
       );
   }
 
-  public removeHandler2(Filename:string ): void {
-
-    //
+  public removeHandler2(Filename: string): void {
     this._receiptsService.DownloadReceiptFile(Filename)
       .subscribe(data => {
-        
-          saveAs(data, Filename.toString()+ '.csv');//+ '.csv'
+        saveAs(data, Filename.toString() + '.csv');//+ '.csv'
       },
         (err) => {
           //
@@ -312,6 +273,7 @@ export class ReceiptslistComponent implements OnInit {
         }
       );
   }
+
 
 
 }

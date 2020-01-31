@@ -76,6 +76,7 @@ export class ReportsinventoryComponent implements OnInit {
         var P_Name = element.P_Name;
         var Column_Name = element.Column_Name;
         if (Column_Name == "Column1") {
+
           dyamicspstring += ' ' + P_Name + '="' + this.txtColumn1 + '",';
         }
         else if (Column_Name == "Column2") {
@@ -90,6 +91,30 @@ export class ReportsinventoryComponent implements OnInit {
           dyamicspstring += ' ' + P_Name + '="' + this.txtColumn5 + '",';
         }
       });
+      let bflag: boolean = true;
+      this.lstDownloadDetail.forEach((element) => {
+        var Column_Name = element.Column_Name;
+        if (Column_Name == "Column1" && element.IsMandatory == true && this.txtColumn1 == "") {
+          this.alertService.error("Please enter " + this.Column1 + ".!");
+          return bflag = false;
+        }
+        else if (Column_Name == "Column2" && element.IsMandatory == true && this.txtColumn2 == "") {
+          this.alertService.error("Please enter " + this.Column2 + ".!");
+          return bflag = false;
+        }
+        else if (Column_Name == "Column3" && element.IsMandatory == true && this.txtColumn3 == "") {
+          this.alertService.error("Please enter " + this.Column3 + ".!");
+          return bflag = false;
+        }
+        else if (Column_Name == "Column4" && element.IsMandatory == true && this.txtColumn4 == "") {
+          this.alertService.error("Please enter " + this.Column4 + ".!");
+          return bflag = false;
+        }
+        else if (Column_Name == "Column5" && element.IsMandatory == true && this.txtColumn5 == "") {
+          this.alertService.error("Please enter " + this.Column5 + ".!");
+          return bflag = false;
+        }
+      });
       //var newStr = dyamicspstring.substring(0, dyamicspstring.length - 1);
       // 87	-Inventory
       // 88	-Amazon
@@ -98,31 +123,32 @@ export class ReportsinventoryComponent implements OnInit {
       // 91	-MIS
       // 92	-Others 
       const MenuId = 89; //87|88|89|90|91|92;  
-      this._DownloadService.downloadExcel(SP_Name, MenuId, Screen_Name, dyamicspstring)
-        .subscribe(data => {
-          if (data != null) {
-            this._DownloadService.Download(Screen_Name, MenuId)
-              .subscribe(data1 => {
-                //
-                saveAs(data1, Screen_Name + '.xls');//+ '.xls'
-                this.alertService.success("File downloaded succesfully.!");
-              },
-                (err) => {
+      if (bflag || this.lstDownloadDetail.length == 0) {
+        this._DownloadService.downloadExcel(SP_Name, MenuId, Screen_Name, dyamicspstring)
+          .subscribe(data => {
+            if (data != null) {
+              this._DownloadService.Download(Screen_Name, MenuId)
+                .subscribe(data1 => {
                   //
-                  console.log(err);
-                }
-              );
-          } else {
-            this.alertService.error(data.Msg);
-          }
+                  saveAs(data1, Screen_Name + '.xls');//+ '.xls'
+                  this.alertService.success("File downloaded succesfully.!");
+                },
+                  (err) => {
+                    //
+                    console.log(err);
+                  }
+                );
+            } else {
+              this.alertService.error(data.Msg);
+            }
 
-        },
-          (err) => {
-            //
-            console.log(err);
-          }
-        );
-
+          },
+            (err) => {
+              //
+              console.log(err);
+            }
+          );
+      }
       //this.alertService.success('Your Dynamic Query:' + newStr);
     }
   }
@@ -140,7 +166,7 @@ export class ReportsinventoryComponent implements OnInit {
         .subscribe(
           (data: DownloadDetail[]) => {
             this.lstDownloadDetail = data;
-             this.Description = this.lstDownloadDetail[0].ReportDecription;
+            this.Description = this.lstDownloadDetail[0].ReportDecription;
             if (data != null && this.lstDownloadDetail.length > 0) {
               $(".dvhide").hide();
               this.lstDownloadDetail.forEach((element) => {

@@ -8,13 +8,13 @@
     <div class="pull-right hidden-xs">
       <ol class="breadcrumb" id="dynamicbreadcrumb">
         <li>
-           <span> Revenue</span>
+          <span> Revenue</span>
         </li>
         <li>
-           <span> Sales Orders </span>
+          <span> Sales Orders </span>
         </li>
         <li class="active">
-          
+
           List
         </li>
       </ol>
@@ -24,9 +24,9 @@
 <div class="panel panel-default">
   <div class="panel-heading">
     <div class="row">
-      <div class="col-xs-12 col-sm-10 col-md-10 col-lg-10">
-        <div class="input-group col-sm-12" role="group" aria-label="Basic example">
-          <div class="col-md-3 nopading_loct">
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="input-group col-xs-12 col-sm-12" role="group" aria-label="Basic example">
+          <div class="col-md-3 col-sm-3 col-xs-12 nopading_loct">
             <select class="form-control serchcurv btn-group" [(ngModel)]="SearchBy">
               <option value="" selected="select">Search By</option>
               <option value="OrderID">OrderID</option>
@@ -38,17 +38,18 @@
               <option value="OrderDate">Order Date</option>
             </select>
           </div>
-          <div class="col-md-4 nopading_loct" *ngIf="(SearchBy!='OrderDate')">
-            <input (keyup.enter)="Search()" [(ngModel)]="SearchKeyword" type="text" class="serchcurv form-control btn-group">
+          <div class="col-md-3 col-sm-3 nopading_loct" *ngIf="(SearchBy!='OrderDate')">
+            <input (keyup.enter)="Search()" [(ngModel)]="SearchKeyword" type="text"
+              class="serchcurv form-control btn-group">
           </div>
-          <div class="col-md-4 nopading_loct" *ngIf="(SearchBy=='OrderDate')">
+          <div class="col-md-3 col-sm-3 nopading_loct" *ngIf="(SearchBy=='OrderDate')">
             <input type="text" ngxDaterangepickerMd [(ngModel)]="selectedDateRange"
               class="serchcurv form-control btn-group col-xs-12 pointer"
               style="border:1px soloid #ccc !important; padding :3px;left:0px" [showCustomRangeLabel]="true"
               [ranges]="Searchranges" [showCancel]="true" placeholder="Select please..."
               (ngModelChange)="onChange($event)" [autoApply]="true" />
           </div>
-          <div class="col-md-2 nopading_loct">
+          <div class="col-md-3 col-sm-3 col-xs-6 nopading_loct">
             <button class="serchcurv btn btn-default btn-group" (click)="Search()" title="Search">
               <i class="fa fa-search " aria-hidden="true"></i>
             </button>
@@ -56,60 +57,73 @@
               <i class="fa fa-refresh" aria-hidden="true"></i>
             </button>
           </div>
+          <div class="col-xs-6 col-sm-3 col-md-3 text-right nopadding">
+            <button class="btn btn-xs btn-sm btn-primary" title="Add New" data-toggle="modal"
+              data-target="#modalsaleorderconfimation">
+              Add New
+            </button>
+          </div>
         </div>
-      </div>
-      <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 text-right">
-        <button class="btn btn-primary" title="Add New" data-toggle="modal" data-target="#modalsaleorderconfimation">
-          Add New
-        </button>
       </div>
     </div>
   </div>
   <div class="panel-body">
-    <kendo-grid [data]="gridView" resizable="true" columnMenu="true" [pageSize]="pageSize" [skip]="skip"
-      [pageable]="{pageSizes: [10, 25, 50, 100]}" (pageChange)="pageChange($event)" [sortable]="{
+    <div class="table-responsive">
+      <table class="table">
+        <kendo-grid [data]="gridView" resizable="true" columnMenu="true" [pageSize]="pageSize" [skip]="skip"
+          [pageable]="{pageSizes: [10, 25, 50, 100, 250, 500]}" (pageChange)="pageChange($event)" [sortable]="{
           allowUnsort: allowUnsort,
           mode:  'single'
           }" [sort]="sort" (sortChange)="sortChange($event)" [filterable]="true"
-      (dataStateChange)="dataStateChange($event)" [filter]="state.filter">
+          (dataStateChange)="dataStateChange($event)" [filter]="state.filter">
 
-      <kendo-grid-column field="OrderID" title="Order ID" width="160">
-      </kendo-grid-column>
-      <kendo-grid-column field="OrderDate" title="Order Date" filter="date" format="{0:d}" [filterable]="false"
-        width="160">
-        <ng-template kendoGridCellTemplate let-dataItem>
-          {{ dataItem.OrderDate | date :"MM-dd-yyyy HH:mm" }}
-        </ng-template>
-      </kendo-grid-column>
-      <kendo-grid-column field="CustomerName" title="Customer Name" width="160">
-      </kendo-grid-column>
-      <kendo-grid-column field="InventoryType" title="Inventory Type" width="100">
-      </kendo-grid-column>
-      <kendo-grid-column field="TransactionType" title="Transaction Type" width="120">
-      </kendo-grid-column>
-      <kendo-grid-column field="TotalValue" title="Total Value" format="{0:##,#.##}">
-      </kendo-grid-column>
-      <kendo-grid-column field="OrderStatus" title="Order Status">
-      </kendo-grid-column>
-      <kendo-grid-column field="ApprovalStatus" title="Approval Status">
-      </kendo-grid-column>
+          <ng-template kendoGridToolbarTemplate>
+            <input placeholder="Search in all columns..." style="float:right;" kendoTextBox
+              (input)="onFilter($event.target.value)" />
+            <button kendoGridExcelCommand type="button" icon="file-excel"> </button>
+            <button kendoGridPDFCommand icon="file-pdf"> </button>
+            <kendo-grid-pdf fileName="SalesOrderList.pdf" [repeatHeaders]="true"></kendo-grid-pdf>
+            <kendo-grid-excel fileName="SalesOrderList.xlsx"></kendo-grid-excel>
+          </ng-template>
+          <kendo-grid-column field="OrderID" title="Order ID" width="160">
+          </kendo-grid-column>
+          <kendo-grid-column field="OrderDate" title="Order Date" filter="date" format="{0:d}" [filterable]="false"
+            width="160">
+            <ng-template kendoGridCellTemplate let-dataItem>
+              {{ dataItem.OrderDate | date :"MM-dd-yyyy HH:mm" }}
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="CustomerName" title="Customer Name" width="160">
+          </kendo-grid-column>
+          <kendo-grid-column field="InventoryType" title="Inventory Type" width="100">
+          </kendo-grid-column>
+          <kendo-grid-column field="TransactionType" title="Transaction Type" width="120">
+          </kendo-grid-column>
+          <kendo-grid-column field="TotalValue" title="Total Value" format="{0:##,#.##}">
+          </kendo-grid-column>
+          <kendo-grid-column field="OrderStatus" title="Order Status">
+          </kendo-grid-column>
+          <kendo-grid-column field="ApprovalStatus" title="Approval Status">
+          </kendo-grid-column>
 
-      <kendo-grid-column field="SalesOrderID" title="Action" [class]="{'text-center': true}" [filterable]="false"
-        [sortable]="false" width="70">
-        <ng-template kendoGridCellTemplate let-obj>
-          <!-- <i class="fa fa-eye bgblue pointer" (click)="editButtonClick(obj.SalesOrderID)" title="Edit"></i>
+          <kendo-grid-column title="Action" [class]="{'text-center': true}" [filterable]="false" [sortable]="false"
+            width="70">
+            <ng-template kendoGridCellTemplate let-obj>
+              <!-- <i class="fa fa-eye bgblue pointer" (click)="editButtonClick(obj.SalesOrderID)" title="Edit"></i>
           &nbsp; -->
-          <i class="fa fa-times bgred pointer"
-            *ngIf="( 
+              <i class="fa fa-times bgred pointer"
+                *ngIf="( 
               (obj.InventoryType =='SELLABLE')  ||   (obj.InventoryType =='UNSELLABLE' && obj.ApprovalStatus == 'Pending Approval'  ) )" title="Cancel"
-            (click)="confirmDeleteid(obj.SalesOrderID,obj.OrderID)"></i>
+                (click)="confirmDeleteid(obj.SalesOrderID,obj.OrderID)"></i>
 
-          &nbsp; <i class="fa fa-eye bgblue pointer" [routerLink]="['/Salesorderview', obj.SalesOrderID]"
-            title="View"></i>
+              &nbsp; <i class="fa fa-eye bgblue pointer" [routerLink]="['/Salesorderview', obj.SalesOrderID]"
+                title="View"></i>
 
-        </ng-template>
-      </kendo-grid-column>
-    </kendo-grid>
+            </ng-template>
+          </kendo-grid-column>
+        </kendo-grid>
+      </table>
+    </div>
   </div>
 </div>
 
@@ -161,15 +175,16 @@
             <div>
               <h5>
                 Please Select Inventory Type to Create Sales Order
-              </h5>
-
-
-              <input id="Sellable" type="radio" [value]="true" name="InventoryType" [(ngModel)]="InventoryType">
-              <label for="Sellable" class="control-label"> &nbsp;&nbsp; Sellable
+              </h5>  
+              <label for="Sellable" class="control-label radio-inline">
+                <input id="Sellable" type="radio" [value]="true" name="InventoryType" [(ngModel)]="InventoryType">
+                Sellable
               </label>
+              
               &nbsp; &nbsp;
-              <input id="Unsellable" type="radio" [value]="false" name="InventoryType" [(ngModel)]="InventoryType">
-              <label for="Unsellable" class="control-label"> &nbsp;&nbsp; Unsellable
+              <label for="Unsellable" class="control-label radio-inline">
+                <input id="Unsellable" type="radio" [value]="false" name="InventoryType" [(ngModel)]="InventoryType">
+                Unsellable
               </label>
             </div>
           </div>

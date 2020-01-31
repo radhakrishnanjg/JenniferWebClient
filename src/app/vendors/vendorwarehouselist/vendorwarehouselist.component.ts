@@ -160,6 +160,58 @@ export class VendorwarehouselistComponent implements OnInit {
     this.state = state;
     this.gridView = process(this.items, this.state);
   }
+
+  public onFilter(inputValue: string): void {
+    this.gridView = process(this.items, {
+      skip: this.skip,
+      take: this.skip + this.pageSize,
+      filter: {
+        logic: "or",
+        filters: [
+          {
+            field: 'VendorName',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'WarehouseName',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'City',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'StateName',
+            operator: 'contains',
+            value: inputValue
+          }, 
+          {
+            field: 'GSTNumber',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'ContactPerson',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'ContactNumber',
+            operator: 'contains',
+            value: inputValue
+          }, 
+          {
+            field: 'Email',
+            operator: 'contains',
+            value: inputValue
+          }, 
+        ],
+      }
+    })  ;  
+  }
   //#endregion Paging Sorting and Filtering End
 
 

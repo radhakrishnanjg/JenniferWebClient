@@ -8,13 +8,13 @@
     <div class="pull-right hidden-xs">
       <ol class="breadcrumb" id="dynamicbreadcrumb">
         <li>
-           <span> Debtors</span>
+          <span> Debtors</span>
         </li>
         <li>
-           <span> Customers</span>
+          <span> Customers</span>
         </li>
         <li class="active">
-          
+
           <span> Save </span>
         </li>
       </ol>
@@ -25,16 +25,16 @@
   <div class="panel panel-default">
     <div class="panel-heading">
       <div class="row">
-        <div class="col-sm-2">
+        <div class="col-md-3 col-sm-3 col-xs-5">
           <span class="groupspanheader">
             {{panelTitle}}
           </span>
         </div>
-        <div class="col-sm-6">
+        <div class="col-md-4 col-sm-4 col-xs-5">
           <div class="pull-left">
             <div class="form-group" *ngIf="!action">
-              <div class="col-sm-12 swtch">
-                <label class="col-sm-6" for=" IsActive">IsActive </label>
+              <div class="col-sm-12 inputlevelswtch">
+                <label class="col-sm-4 col-xs-4 nopading_loct" for=" IsActive">IsActive </label>
                 <div class="pull-right">
                   <label class="switch">
                     <input type="checkbox" formControlName="IsActive" checked>
@@ -45,9 +45,9 @@
             </div>
           </div>
         </div>
-        <div class="col-sm-4">
+        <div class="col-md-5 col-sm-5 col-xs-2">
           <div class="pull-right">
-            <button  type="button" class="btn btn-primary" routerLink="/Customerlist" title="Back">
+            <button type="button" class="btn btn-xs btn-sm btn-primary" routerLink="/Customerlist" title="Back">
 
               Back
             </button>
@@ -177,8 +177,7 @@
             <div class="col-sm-3">
               <div class="form-group" [ngClass]="{'has-error': formErrors.Email}">
                 <div class="col-sm-12 ">
-                  <label class=" control-label" for="Email"> Email <span
-                      class="mandantory">*</span></label>
+                  <label class=" control-label" for="Email"> Email <span class="mandantory">*</span></label>
                   <input id="Email" type="email" class="form-control" formControlName="Email"
                     (blur)="logValidationErrors()" maxlength="50">
                   <div class="help-block-rk">
@@ -201,8 +200,7 @@
             <div class="col-sm-6 col-xs-12">
               <div class="form-group" [ngClass]="{'has-error': formErrors.Address1}">
                 <div class="col-sm-12  ">
-                  <label class=" control-label" for="Address1"> Address 1 <span
-                      class="mandantory">*</span></label>
+                  <label class=" control-label" for="Address1"> Address 1 <span class="mandantory">*</span></label>
                   <textarea id="Address1" type="text" class="form-control" formControlName="Address1"
                     (blur)="logValidationErrors()" rows="1" maxlength="150">
                                   Address 1
@@ -235,8 +233,7 @@
             <div class="col-sm-3 col-xs-12">
               <div class="form-group" [ngClass]="{'has-error': formErrors.CountryID}">
                 <div class=" col-sm-12 " for="CountryID">
-                  <label for="CountryID" class=" control-label">Country <span
-                      class="mandantory">*</span></label>
+                  <label for="CountryID" class=" control-label">Country <span class="mandantory">*</span></label>
                   <select formControlName="CountryID" id='CountryID' type="select" class="form-control"
                     (blur)="logValidationErrors()" (change)="onchangeCountryID($event.target.value)">
                     <option value="0" selected="selected">Select</option>
@@ -255,8 +252,7 @@
             <div class="col-sm-3 col-xs-12">
               <div class="form-group" [ngClass]="{'has-error': formErrors.StateID}">
                 <div class=" col-sm-12 " for="StateID">
-                  <label for="StateID" class=" control-label"> State <span
-                      class="mandantory">*</span></label>
+                  <label for="StateID" class=" control-label"> State <span class="mandantory">*</span></label>
                   <select formControlName="StateID" id='StateID' type="select" class="form-control"
                     (blur)="logValidationErrors()">
                     <option value="0" selected="selected">Select</option>
@@ -394,66 +390,70 @@
 
       </div>
       <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-        <table datatable [dtOptions]="dtOptions" class="table table-bordered table-condensed " *ngIf="obj?.lstContact && obj?.lstContact.length">
-          <thead>
-            <tr>
-              <th class="text-center "><input type="checkbox" 
-                (change)="checkcontacts($event.currentTarget.checked)"></th>
-              <th class="text-center ">Contact Name</th>
-              <th class="text-center ">Mobile Number </th> 
-              <th class="text-center ">Email </th>
-              <th class="text-center ">Designation </th>
+        <div class="table-responsive">
+          <table datatable [dtOptions]="dtOptions" class="table table-bordered table-condensed "
+            *ngIf="obj?.lstContact && obj?.lstContact.length">
+            <thead>
+              <tr>
+                <th class="text-center "><input type="checkbox" (change)="checkcontacts($event.currentTarget.checked)">
+                </th>
+                <th class="text-center ">Contact Name</th>
+                <th class="text-center ">Mobile Number </th>
+                <th class="text-center ">Email </th>
+                <th class="text-center ">Designation </th>
 
-              <th class="text-center ">Department </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let ms of obj?.lstContact">
-              <td class="text-center ">
-                <div *ngIf="(ms.IsActive ==true)">
-                  <input type="checkbox" name="{{ms.ContactID}}" id="{{ms.ContactID }}" checked="checked"
-                    (change)="ContactIDFieldsChange($event)">
-                </div>
-                <div *ngIf="(ms.IsActive != true)">
-                  <input type="checkbox" name="{{ms.ContactID}}" id="{{ms.ContactID }}"
-                    (change)="ContactIDFieldsChange($event)">
-                </div>
-              </td>
-              <td>{{ ms.ContactName }}</td>
-              <td>{{ ms.MobileNumber }}</td> 
-              <td>{{ ms.Email }}</td>
-              <td>{{ ms.Designation }}</td>
+                <th class="text-center ">Department </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let ms of obj?.lstContact">
+                <td class="text-center ">
+                  <div *ngIf="(ms.IsActive ==true)">
+                    <input type="checkbox" name="{{ms.ContactID}}" id="{{ms.ContactID }}" checked="checked"
+                      (change)="ContactIDFieldsChange($event)">
+                  </div>
+                  <div *ngIf="(ms.IsActive != true)">
+                    <input type="checkbox" name="{{ms.ContactID}}" id="{{ms.ContactID }}"
+                      (change)="ContactIDFieldsChange($event)">
+                  </div>
+                </td>
+                <td>{{ ms.ContactName }}</td>
+                <td>{{ ms.MobileNumber }}</td>
+                <td>{{ ms.Email }}</td>
+                <td>{{ ms.Designation }}</td>
 
-              <td>{{ ms.Department }}</td>
+                <td>{{ ms.Department }}</td>
 
-            </tr>
-          </tbody>
-        </table>
+              </tr>
+            </tbody>
+          </table>
 
-        <table class="table table-bordered table-condensed" *ngIf="obj?.lstContact==null">
-          <thead>
-            <tr>
-              <th class="text-center ">Check</th>
-              <th class="text-center ">Contact Name</th>
-              <th class="text-center ">Mobile Number </th> 
-              <th class="text-center ">Email </th>
+          <table class="table table-bordered table-condensed" *ngIf="obj?.lstContact==null">
+            <thead>
+              <tr>
+                <th class="text-center ">Check</th>
+                <th class="text-center ">Contact Name</th>
+                <th class="text-center ">Mobile Number </th>
+                <th class="text-center ">Email </th>
 
-              <th class="text-center ">Designation </th>
-              <th class="text-center ">Department </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td colspan="6">
-                No Records Found.!
-              </td>
-            </tr>
-          </tbody>
-        </table>
+                <th class="text-center ">Designation </th>
+                <th class="text-center ">Department </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td colspan="6">
+                  No Records Found.!
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="panel-footer">
         <div class="pull-right btn-toolbar">
-          <button type="button"  type="button" class="btn btn-primary" routerLink="/Customerlist" title="Cancel">Cancel</button>
+          <button type="button" type="button" class="btn btn-primary" routerLink="/Customerlist"
+            title="Cancel">Cancel</button>
           <button class="btn btn-success" prevent-double-submit type="submit" title="save"
             [disabled]="customerform.invalid">Save</button>
         </div>

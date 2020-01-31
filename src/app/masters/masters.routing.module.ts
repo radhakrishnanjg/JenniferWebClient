@@ -12,10 +12,10 @@ import { LocationlistComponent } from '../masters/locationlist/locationlist.comp
 import { ItemComponent } from '../masters/item/item.component';
 import { ItemlistComponent } from '../masters/itemlist/itemlist.component';
 import { UomlistComponent } from '../masters/uomlist/uomlist.component';
-import { DiscountlistComponent } from '../masters/discountlist/discountlist.component';
-import { MarketplacefeelistComponent } from '../masters/marketplacefeelist/marketplacefeelist.component';
 import { MasteruploadlistComponent } from '../masters/masteruploadlist/masteruploadlist.component';
 import { MasteruploadComponent } from '../masters/masterupload/masterupload.component';
+import { VoucherlistComponent } from './voucherlist/voucherlist.component';
+import { LedgerlistComponent } from './ledgerlist/ledgerlist.component';
 
 const appRoutes: Routes = [
   //masters module
@@ -28,17 +28,18 @@ const appRoutes: Routes = [
   { path: 'Categorylist', component: CategorylistComponent, canActivate: [AuthGuard] },
   { path: 'SubCategorylist', component: SubcategorylistComponent, canActivate: [AuthGuard] },
   { path: 'Uomlist', component: UomlistComponent, canActivate: [AuthGuard] },
-  { path: 'Discountlist', component: DiscountlistComponent, canActivate: [AuthGuard, StoreGuard] },
-  { path: 'Marketplacefeelist', component: MarketplacefeelistComponent, canActivate: [AuthGuard, StoreGuard] },
   { path: 'MasterUploadList', component: MasteruploadlistComponent, canActivate: [AuthGuard, StoreGuard] },
   { path: 'MasterUpload/:id', component: MasteruploadComponent, canActivate: [AuthGuard, StoreGuard] },
+
+  { path: 'Voucherlist', component: VoucherlistComponent, canActivate: [AuthGuard] },
+  { path: 'Ledgerlist', component: LedgerlistComponent, canActivate: [AuthGuard] },
 
 ];
 
 @NgModule({
-    imports: [RouterModule.forChild(appRoutes)
+  imports: [RouterModule.forChild(appRoutes)
 
-    ],
-    exports: [RouterModule]
+  ],
+  exports: [RouterModule]
 })
 export class MastersRoutingModule { }

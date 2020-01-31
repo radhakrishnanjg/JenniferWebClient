@@ -29,6 +29,31 @@ export class Item {
     GRNID: number; 
     InventoryType: string; 
     GRNInwardID: number; 
+    TaxStartDate: Date;
+    HSNStartDate: Date;
+    lstItemTaxDetail: Itemtaxdetail[];
+    lstItemHSNDetail: Itemhsndetail[];
+}
+
+export class Itemtaxdetail {
+    ItemTaxDetailID: number;
+    CompanyDetailID: number;
+    ItemID: number;
+    IsTaxExempted: Boolean;
+    TaxRate: number;
+    StartDate: Date;
+    EndDate: Date; 
+    LoginId: number; 
+}
+
+export class Itemhsndetail {
+    ItemHSNDetailID: number;
+    CompanyDetailID: number;
+    ItemID: number;
+    HSNCode: string; 
+    StartDate: Date;
+    EndDate: Date; 
+    LoginId: number; 
 }
 
 export class Discount {

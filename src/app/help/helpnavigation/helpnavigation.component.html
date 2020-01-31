@@ -49,12 +49,23 @@
   <div class="panel panel-default">
     <div class="panel-heading">
       <div class="row">
-        <div class="col-xs-12 col-sm-10 col-md-10 col-lg-10">
-          <div class="col-md-4 nopading_loct">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+          <div class="col-md-6 nopading_loct">
             <input placeholder="Search any Keywords" [(ngModel)]="SearchKeyword" type="text"
               class="serchcurv form-control btn-group">
           </div>
+          <div class="col-xs-6">
+            <div class="pull-right">
+              <button type="button" class="btn btn-primary" title="View History" routerLink="/Supporthistory">View
+                History</button>
+              &nbsp;
+              <button type="button" class="btn btn-primary" title="Add Help" data-toggle="modal"
+                data-target="#modalstatusconfimation">Add Help</button>
+            </div>
+          </div>
+
         </div>
+
       </div>
 
     </div>
@@ -69,3 +80,87 @@
 </div>
 
 <div id='toTop'> <img src='assets\images\go-top-icon.png' alt="Top" height="30px"> </div>
+
+<div id="modalstatusconfimation" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modalstatusconfimation"
+  aria-hidden="true">
+
+  <form autocomplete="off" [formGroup]="SupportQueryForm" (ngSubmit)="SaveData()" class="form-horizontal">
+    <div class="modal-dialog ">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+              aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="modalstatusconfimation"> Submit New Query</h4>
+        </div>
+        <div class="modal-body">
+
+          <div class="form-group" [ngClass]="{'has-error': formErrors.ModuleType}">
+            <label class="col-sm-3 control-label" for="ModuleType">Module Type<span class="mandantory"> *</span></label>
+            <div class="col-sm-6">
+              <select id="ModuleType" class="form-control" formControlName="ModuleType" (blur)="logValidationErrors()">
+                <option value="" selected="selected">Select</option>
+                <option *ngFor="let dis of lstModuleType" value={{dis.DropdownValue}}>
+                  {{dis.DropDownDescription}}
+                </option>
+              </select>
+
+              <div class="help-block-rk"> <span class="help-block" *ngIf="formErrors.ModuleType">
+                  {{formErrors.ModuleType}}
+                </span>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="form-group" [ngClass]="{'has-error': formErrors.Subject}">
+            <label class="col-sm-3 control-label" for="Subject">Subject<span class="mandantory"> *</span></label>
+            <div class="col-sm-6">
+              <input id="Subject" type="text" class="form-control" formControlName="Subject"
+                (blur)="logValidationErrors()" maxlength="50">
+              <div class="help-block-rk"> <span class="help-block" *ngIf="formErrors.Subject">
+                  {{formErrors.Subject}}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group" [ngClass]="{'has-error': formErrors.ReferenceNumber}">
+            <label class="col-sm-3 control-label" for="ReferenceNumber">Reference Number<span class="mandantory">
+                *</span></label>
+            <div class="col-sm-6">
+              <input id="ReferenceNumber" type="text" class="form-control" formControlName="ReferenceNumber"
+                (blur)="logValidationErrors()" maxlength="50">
+              <div class="help-block-rk"> <span class="help-block" *ngIf="formErrors.ReferenceNumber">
+                  {{formErrors.ReferenceNumber}}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group" [ngClass]="{'has-error': formErrors.Query}">
+            <label class="col-sm-3 control-label" for="Query">Query<span class="mandantory"> *</span></label>
+            <div class="col-sm-8">
+              <textarea id="Query" type="text"  formControlName="Query"
+                (blur)="logValidationErrors()" maxlength="8000" rows="6" cols="50">
+                </textarea>
+              <div class="help-block-rk"> <span class="help-block" *ngIf="formErrors.Query">
+                  {{formErrors.Query}}
+                </span>
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-primary" data-dismiss="modal">Cancel</button>
+          &nbsp;
+          <button class="btn btn-success" type="submit" prevent-double-submit [disabled]="SupportQueryForm.invalid"> 
+            Save
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+

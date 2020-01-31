@@ -44,7 +44,7 @@ export class TransferlistComponent implements OnInit {
     private alertService: ToastrService,
     private router: Router,
     private _rtvcasesService: RTVcasesService,
-    
+
     private _authorizationGuard: AuthorizationGuard
   ) { }
 
@@ -74,17 +74,17 @@ export class TransferlistComponent implements OnInit {
   onLoad(SearchBy: string, Search: string, ) {
     let FromDate: Date = this.selectedDateRange.startDate._d.toISOString().substring(0, 10);
     let ToDate: Date = this.selectedDateRange.endDate._d.toISOString().substring(0, 10);
-    
+
     return this._rtvcasesService.RTVTransferSearch(SearchBy, Search, FromDate.toString(), ToDate.toString()).subscribe(
       (lst) => {
         if (lst != null) {
           this.items = lst;
           this.loadItems();
         }
-        
+
       },
       (err) => {
-        
+
         console.log(err);
       }
     );
@@ -139,7 +139,62 @@ export class TransferlistComponent implements OnInit {
     this.gridView = process(this.items, this.state);
   }
 
-
+  public onFilter(inputValue: string): void {
+    this.gridView = process(this.items.slice(this.skip, this.skip + this.pageSize), {
+      skip: this.skip,
+      take: this.skip + this.pageSize,
+      filter: {
+        logic: "or",
+        filters: [
+          {
+            field: 'RemovalOrderID',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'TrackingID',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'DisputeType',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'Qty',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'SellingValue',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'TransferFromName',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'TransferToName',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'TransferByName',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'Status',
+            operator: 'contains',
+            value: inputValue
+          },
+        ],
+      }
+    });
+  }
   //#endregion Paging Sorting and Filtering End
 
 }

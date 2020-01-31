@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { EChartOption } from 'echarts';
+import { Component, OnInit } from '@angular/core'; 
 import { DashboardoneService } from '../_services/service/dashboardone.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import * as moment from 'moment';
