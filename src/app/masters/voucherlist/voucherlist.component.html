@@ -93,8 +93,8 @@
           </kendo-grid-column>
           <kendo-grid-column field="MarketPlace" title="MarketPlace">
           </kendo-grid-column>
-          <kendo-grid-column field="TaxType" title="Tax Type">
-          </kendo-grid-column>
+          <!-- <kendo-grid-column field="TaxType" title="Tax Type">
+          </kendo-grid-column> -->
           <kendo-grid-column field="VoucherType" title="Voucher Type">
           </kendo-grid-column>
           <kendo-grid-column field="TransactionType" title="Transaction Type">
@@ -160,7 +160,7 @@
   <div id="modalpopupvoucherupsert" class="modal fade" tabindex="-1" role="dialog"
     aria-labelledby="modalpopupvoucherupsert" aria-hidden="true">
 
-    <form autocomplete="off" [formGroup]="VoucherForm" (ngSubmit)="SaveData()" class="form-horizontal">
+    <form   [formGroup]="VoucherForm" (ngSubmit)="SaveData()" class="form-horizontal">
       <div class="modal-dialog ">
         <div class="modal-content">
           <div class="modal-header">
@@ -195,7 +195,7 @@
                   (change)="OnchangeforVendorName()">
                   <option value="0" selected="selected">Select</option>
                   <option *ngFor="let dis of lstGSTId" value={{dis.GSTID}}>
-                    {{dis.GSTID}}
+                    {{dis.GSTNumber}}
                   </option>
                 </select>
 
@@ -227,7 +227,7 @@
               </div>
             </div>
 
-            <div class="form-group" [ngClass]="{'has-error': formErrors.TaxType}">
+            <!-- <div class="form-group" [ngClass]="{'has-error': formErrors.TaxType}">
               <label class="col-sm-3 control-label" for="TaxType">
                 Tax Type <span class="mandantory">*</span>
               </label>
@@ -244,7 +244,7 @@
                   </span>
                 </div>
               </div>
-            </div>
+            </div> -->
 
             <div class="form-group" [ngClass]="{'has-error': formErrors.VoucherType}">
               <label class="col-sm-3 control-label" for="VoucherType">

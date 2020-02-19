@@ -8,6 +8,7 @@ import { RouterModule } from '@angular/router';
 import { GridModule, PDFModule, ExcelModule } from '@progress/kendo-angular-grid';
 import { InputsModule } from '@progress/kendo-angular-inputs';
 import { EditorModule } from '@progress/kendo-angular-editor';
+import { TreeListModule } from '@progress/kendo-angular-treelist';
 
 import { PreventDoubleSubmitModule } from 'ngx-prevent-double-submission';
 import { EncrDecrService } from '../_services/service/encr-decr.service';
@@ -49,6 +50,7 @@ import { HelpRoutingModule } from './/help.routing.module';
     GridModule,
     EditorModule,
     InputsModule,
+    // TreeListModule,
     Ng2SearchPipeModule,
     NgPipesModule,
     HelpRoutingModule

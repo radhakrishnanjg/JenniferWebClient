@@ -178,17 +178,17 @@ export class LedgerlistComponent implements OnInit {
 
     if (TaxRate == 0) {
       this.InterstateLedgerName = VoucherType + ' ' + StateCode + ' '+ GSTID + ' @ Tax Exempted' + ' INTERSTATE' + '-' + LedgerText;
-      this.InterstateOutput_InputLedgerName = 'Output ' + StateCode + '-IGST ' + ' @ Tax Exempted';
-      this.LocalLedgerName = VoucherType + ' ' + StateCode + ' @ Tax Exempted' + ' LOCAL';
-      this.LocalOutput_InputLedgerName1 = 'Output ' + StateCode + ' -CGST ' + ' @ Tax Exempted';
-      this.LocalOutput_InputLedgerName2 = 'Output ' + StateCode + ' -SGST ' + ' @ Tax Exempted';
+      this.InterstateOutput_InputLedgerName = 'Output ' + StateCode + '-IGST ' + ' @ Tax Exempted' + '-' + LedgerText;
+      this.LocalLedgerName = VoucherType + ' ' + StateCode + ' @ Tax Exempted' + ' LOCAL' + '-' + LedgerText;
+      this.LocalOutput_InputLedgerName1 = 'Output ' + StateCode + ' -CGST ' + ' @ Tax Exempted' + '-' + LedgerText;
+      this.LocalOutput_InputLedgerName2 = 'Output ' + StateCode + ' -SGST ' + ' @ Tax Exempted' + '-' + LedgerText;
     }
     else {
       this.InterstateLedgerName = VoucherType + ' ' + StateCode + ' '+ GSTID + ' @ ' + TaxRate + '% INTERSTATE' + '-' + LedgerText;
-      this.InterstateOutput_InputLedgerName = 'Output ' + StateCode + '-IGST ' + ' @ ' + TaxRate + '%';
-      this.LocalLedgerName = VoucherType + ' ' + StateCode + ' @ ' + TaxRate + '% LOCAL';
-      this.LocalOutput_InputLedgerName1 = 'Output ' + StateCode + ' -CGST ' + ' @ ' + TaxRate / 2 + '%';
-      this.LocalOutput_InputLedgerName2 = 'Output ' + StateCode + ' -SGST ' + ' @ ' + TaxRate / 2 + '%';
+      this.InterstateOutput_InputLedgerName = 'Output ' + StateCode + '-IGST ' + ' @ ' + TaxRate + '%' + '-' + LedgerText;
+      this.LocalLedgerName = VoucherType + ' ' + StateCode + ' @ ' + TaxRate + '% LOCAL' + '-' + LedgerText;
+      this.LocalOutput_InputLedgerName1 = 'Output ' + StateCode + ' -CGST ' + ' @ ' + TaxRate / 2 + '%' + '-' + LedgerText;
+      this.LocalOutput_InputLedgerName2 = 'Output ' + StateCode + ' -SGST ' + ' @ ' + TaxRate / 2 + '%' + '-' + LedgerText;
     }
   }
 

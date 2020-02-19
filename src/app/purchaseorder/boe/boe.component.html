@@ -21,7 +21,7 @@
     </div>
   </div>
 </div>
-<form autocomplete="off" [formGroup]=" boeform" (ngSubmit)="SaveData()" class="form-group">
+<form   [formGroup]=" boeform" (ngSubmit)="SaveData()" class="form-group">
   <div class="panel panel-default">
     <div class="panel-heading">
       <div class="row">
@@ -96,7 +96,7 @@
     <div class="panel-body">
       <div class="groupspanheader"> BOE Details </div>
       <div class="row">
-        <div class="col-md-3 col-xs-12">
+        <div class="col-md-4 col-xs-12">
           <div class="form-group" [ngClass]="{'has-error': formErrors.BOENumber}">
             <label class="control-label" for="BOENumber">BOE Number <span class="mandantory">*</span></label>
             <div>
@@ -109,10 +109,24 @@
               </div>
             </div>
           </div>
+        </div> 
+
+        <div class="col-md-4 col-xs-12">
+          <div class="form-group" [ngClass]="{'has-error': formErrors.PortCode}">
+            <label class="control-label" for="PortCode"> Port Code<span class="mandantory">*</span></label>
+            <div>
+              <input id="PortCode" type="text" class="form-control" formControlName="PortCode"
+                (blur)="logValidationErrors()" maxlength="6">
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrors.PortCode">
+                  {{formErrors.PortCode}}
+                </span>
+              </div>
+            </div>
+          </div>
         </div>
 
-
-        <div class="col-md-3 col-xs-12">
+        <div class="col-md-4 col-xs-12">
           <div class="form-group" [ngClass]="{'has-error': formErrors.BOEDate}">
             <label class="control-label" for="BOEDate">BOE Date<span class="mandantory">*</span></label>
             <div>
@@ -132,20 +146,6 @@
           </div>
         </div>
 
-        <div class="col-md-3 col-xs-12">
-          <div class="form-group" [ngClass]="{'has-error': formErrors.PortCode}">
-            <label class="control-label" for="PortCode"> Port Code<span class="mandantory">*</span></label>
-            <div>
-              <input id="PortCode" type="text" class="form-control" formControlName="PortCode"
-                (blur)="logValidationErrors()" maxlength="6">
-              <div class="help-block-rk">
-                <span class="help-block" *ngIf="formErrors.PortCode">
-                  {{formErrors.PortCode}}
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
 
         <div class="col-md-12 col-xs-12">
           <div class="form-group">

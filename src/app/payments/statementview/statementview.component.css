@@ -1,32 +1,74 @@
 kendo-pdf-export {
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-    font-size: 12px;
-  }
-  .table-bordered>tbody>tr>td, .table-bordered>tbody>tr>th, .table-bordered>tfoot>tr>td, .table-bordered>tfoot>tr>th, .table-bordered>thead>tr>td, .table-bordered>thead>tr>th {
-    border: .25px solid #3a3e3d;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 12px;
+}
+.table-bordered>tbody>tr>td, .table-bordered>tbody>tr>th, .table-bordered>tfoot>tr>td, .table-bordered>tfoot>tr>th, .table-bordered>thead>tr>td, .table-bordered>thead>tr>th {
+  border: .25px solid #3a3e3d;
 }
 .table {
-  /* width: 100%;
-  max-width: 100%; */
-  margin-bottom: 1px;
-  margin-top: 1px;
+/* width: 100%;
+max-width: 100%; */
+margin-bottom: 1px;
+margin-top: 1px;
 }
 .red {
-  color: #fb0303; 
-  font-weight: bold;
-  font-size: 10px;
+color: #fb0303; 
+font-weight: bold;
+font-size: 10px;
 }
 .green {
-  color: #12cc12;
-  font-weight: bold;
-  font-size: 10px;
+color: #12cc12;
+font-weight: bold;
+font-size: 10px;
 }
 .grey {
-  background-color: #e4e9e8;
+background-color: #e4e9e8;
 }
 td {
-  font-size: 10px;
+font-size: 10px;
 }
 th {
-  font-size: 10px;
+font-size: 10px;
+}
+.statement_modlhedr {
+border: 1px solid #d02560;
+background:#d02560;
+color:#e4edeb;
+border-top-left-radius: 10px;
+border-top-right-radius: 10px;
+padding: 10px !important;
+}
+.close {
+float: right;
+font-size: 18px;
+font-weight: 400;
+line-height: 0px;
+color:  #000;
+text-shadow: 0 1px 0 #fff;
+opacity: .9 !important;
+background-color: #fff !important;
+border-radius: 50%;
+width: 20px;
+height: 20px;
+webkit-transition-duration: 0.8s;
+  -moz-transition-duration: 0.8s;
+  -o-transition-duration: 0.8s;
+  transition-duration: 0.8s;
+  -webkit-transition-property: -webkit-transform;
+  -moz-transition-property: -moz-transform;
+  -o-transition-property: -o-transform;
+  transition-property: transform;
+}
+.close:hover {
+-webkit-transform: rotate(360deg);
+-moz-transform: rotate(360deg);
+-o-transform: rotate(360deg);
+}
+.statmenthelp{
+width: 15px;
+height: 15px;
+background-image: url(/assets/jicons/help.svg);
+margin:-3px 2px;
+background-repeat: no-repeat;
+display: inline-block;
 }

@@ -41,4 +41,7 @@ export class Statement {
     CreditDate: Date;
     NetRevenue: number;
     Status: string; 
+    //newly added
+    FirstName: string;
+    LastModifiedDate: Date;
 }

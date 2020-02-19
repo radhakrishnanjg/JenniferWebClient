@@ -3,8 +3,7 @@ export class Voucher {
   CompanyID: number;
   StateID: number;
   GSTID: string;
-  MarketPlaceID: number;
-  TaxType: string;
+  MarketPlaceID: number; 
   VoucherType: string;
   TransactionType: string;
   VoucherText: string;

@@ -54,6 +54,7 @@ export class GoodsReceiptDetail {
     POQTY: number;
     AvailableQty: number;
     GRNQty: number;
+    ImagePath:string;
 }
 
 export class PONumber {

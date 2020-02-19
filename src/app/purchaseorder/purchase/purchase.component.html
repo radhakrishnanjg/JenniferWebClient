@@ -21,7 +21,7 @@
     </div>
   </div>
 </div>
-<form autocomplete="off" [formGroup]="invoiceform" (ngSubmit)="SaveData()" class="form-group">
+<form [formGroup]="invoiceform" (ngSubmit)="SaveData()" class="form-group">
   <div class="panel panel-default">
     <div class="panel-heading">
       <div class="row">
@@ -60,26 +60,7 @@
         </div>
 
 
-        <div class="col-md-3 col-xs-12">
-          <div class="form-group" [ngClass]="{'has-error': formErrors.InvoiceDate}">
-            <label class="control-label" for="InvoiceDate">Invoice Date<span class="mandantory">*</span></label>
-            <div>
-              <div class='input-group date'>
-                <input id="InvoiceDate" type="text" ngxDaterangepickerMd [timePicker]="true"
-                  (datesUpdated)="InvoiceDateUpdated($event)" [singleDatePicker]="true"
-                  [locale]="{format: 'MM-DD-YYYY HH:mm'}" [autoApply]="true" class="form-control"
-                  formControlName="InvoiceDate" (change)="logValidationErrors()" maxlength="16"
-                  [(ngModel)]="InvoiceDate" [minDate]="InvoiceMinDate" [maxDate]="InvoiceMaxDate">
-                <label class="fa fa-calendar"></label>
-              </div>
-              <div class="help-block-rk">
-                <span class="help-block" *ngIf="formErrors.InvoiceDate">
-                  {{formErrors.InvoiceDate}}
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
+
 
         <div class="col-md-3 col-xs-12">
           <div class="form-group" [ngClass]="{'has-error': formErrors.VendorWarehouseID}">
@@ -104,10 +85,31 @@
 
         <div class="col-md-3 col-xs-3">
           <div class="form-group">
-            <label class="control-label" for="USDValue">USD Value </label>
+            <label class="control-label" for="USDValue">USD Rate (If Import Purchase) </label>
             <div>
               <input id="USDValue" type="text" class="form-control" formControlName="USDValue"
                 (blur)="logValidationErrors()" maxlength="10" onkeypress="return /[0-9.]/i.test(event.key)">
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-3 col-xs-12">
+          <div class="form-group" [ngClass]="{'has-error': formErrors.InvoiceDate}">
+            <label class="control-label" for="InvoiceDate">Invoice Date<span class="mandantory">*</span></label>
+            <div>
+              <div class='input-group date'>
+                <input id="InvoiceDate" type="text" ngxDaterangepickerMd [timePicker]="true"
+                  (datesUpdated)="InvoiceDateUpdated($event)" [singleDatePicker]="true"
+                  [locale]="{format: 'MM-DD-YYYY HH:mm'}" [autoApply]="true" class="form-control"
+                  formControlName="InvoiceDate" (change)="logValidationErrors()" maxlength="16"
+                  [(ngModel)]="InvoiceDate" [minDate]="InvoiceMinDate" [maxDate]="InvoiceMaxDate">
+                <label class="fa fa-calendar"></label>
+              </div>
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrors.InvoiceDate">
+                  {{formErrors.InvoiceDate}}
+                </span>
+              </div>
             </div>
           </div>
         </div>
@@ -128,7 +130,7 @@
         </div>
 
         <div class="col-md-12 col-xs-12">
-          <h3>Order Items</h3>
+          <span class="groupspanheader">Order Items</span>
           <table class="table table-bordered table-condensed" *ngIf="obj?.lstItem && obj?.lstItem.length">
             <thead>
               <tr>

@@ -213,7 +213,7 @@ export class SigninComponent implements OnInit {
                       this.alertService.warning('Sign in Successful.Please change the password,Because currently you are using auto generated password.!');
                     }
                     else {
-                      this.alertService.success('Sign Successful.!');
+                      this.alertService.success('Sign in Successful.!');
                     }
                     this.router.navigate(['/Dashboard1']);
                     //

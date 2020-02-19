@@ -289,7 +289,7 @@ export class PoComponent implements OnInit {
     }
   }
   //disble shipment checkbox for is 
-  private DisbableShipmentCheckbox(locationID: number) { 
+  private DisbableShipmentCheckbox(locationID: number) {
     if (this.locationList.filter(a => a.LocationID == locationID)[0].IsInvoicing) {
       this.poForm.patchValue(
         {
@@ -846,23 +846,29 @@ export class PoComponent implements OnInit {
   SelectedFiles: File[] = [] as any;
   onFileChanged1(e: any) {
     this.SelectedFiles = e.target.files;
-    if (this.SelectedFiles != null) { 
+    if (this.SelectedFiles != null) {
       let i = 0;
       this.FileFlag = false;
-      for (i = 0; i < this.SelectedFiles.length; i++) {
-        let singlefile = this.SelectedFiles[i];
-        var filesizeMB1 = Math.round(singlefile.size / 1024 / 1024);
-        var fileexte1 = singlefile.name.split('.').pop();
-        if (!this.isInArray(Apisettings.CommonFiles_Ext, fileexte1)) {
-          this._alertService.error("Selected File  must be extension with " + Apisettings.CommonFiles_Ext);
-          this.FileFlag = true;
-          return;
-        }
-        else if (filesizeMB1 > parseInt(Apisettings.CommonFiles_Fileszie.toString().toString())) {
-          this._alertService.error("Selected File size must be less than or equal to " +
-            parseInt(Apisettings.CommonFiles_Fileszie.toString()) + " MB.!");
-          this.FileFlag = true;
-          return;
+      if (this.SelectedFiles.length > 10) {
+        this._alertService.error("You can't select more than 10 files");
+        this.FileFlag = true;
+        return;
+      } else {
+        for (i = 0; i < this.SelectedFiles.length; i++) {
+          let singlefile = this.SelectedFiles[i];
+          var filesizeMB1 = Math.round(singlefile.size / 1024 / 1024);
+          var fileexte1 = singlefile.name.split('.').pop();
+          if (!this.isInArray(Apisettings.CommonFiles_Ext, fileexte1)) {
+            this._alertService.error("Selected File  must be extension with " + Apisettings.CommonFiles_Ext);
+            this.FileFlag = true;
+            return;
+          }
+          else if (filesizeMB1 > parseInt(Apisettings.CommonFiles_Fileszie.toString().toString())) {
+            this._alertService.error("Selected File size must be less than or equal to " +
+              parseInt(Apisettings.CommonFiles_Fileszie.toString()) + " MB.!");
+            this.FileFlag = true;
+            return;
+          }
         }
       }
     }
@@ -870,5 +876,5 @@ export class PoComponent implements OnInit {
   isInArray(array, word) {
     return array.indexOf(word.toLowerCase()) > -1;
   }
- 
+
 }

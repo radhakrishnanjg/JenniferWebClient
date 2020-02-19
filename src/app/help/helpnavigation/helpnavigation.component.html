@@ -1,4 +1,4 @@
-<!-- <div class="row">
+<div class="row">
   <div class="col-sm-6 col-lg-6">
     <h3>
       Jennifer Help
@@ -13,7 +13,7 @@
       </ol>
     </div>
   </div>
-</div> -->
+</div>
 
 <div class="col-md-3">
   <div class="scroolingdivc">
@@ -56,11 +56,12 @@
           </div>
           <div class="col-xs-6">
             <div class="pull-right">
-              <button type="button" class="btn btn-primary" title="View History" routerLink="/Supporthistory">View
-                History</button>
+              <a type="button" class="needhelp" title="How can we assist you?" data-toggle="modal"
+                data-target="#modalstatusconfimation">How can we assist you?</a>
               &nbsp;
-              <button type="button" class="btn btn-primary" title="Add Help" data-toggle="modal"
-                data-target="#modalstatusconfimation">Add Help</button>
+              <a type="button" class="needhelp" title="View Resolutions" routerLink="/Supporthistory">
+                View Resolutions</a>
+
             </div>
           </div>
 
@@ -78,7 +79,6 @@
     </div>
   </div>
 </div>
-
 <div id='toTop'> <img src='assets\images\go-top-icon.png' alt="Top" height="30px"> </div>
 
 <div id="modalstatusconfimation" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modalstatusconfimation"
@@ -140,8 +140,8 @@
           <div class="form-group" [ngClass]="{'has-error': formErrors.Query}">
             <label class="col-sm-3 control-label" for="Query">Query<span class="mandantory"> *</span></label>
             <div class="col-sm-8">
-              <textarea id="Query" type="text"  formControlName="Query"
-                (blur)="logValidationErrors()" maxlength="8000" rows="6" cols="50">
+              <textarea id="Query" type="text" formControlName="Query" (blur)="logValidationErrors()" maxlength="8000"
+                rows="6" cols="50">
                 </textarea>
               <div class="help-block-rk"> <span class="help-block" *ngIf="formErrors.Query">
                   {{formErrors.Query}}
@@ -155,7 +155,7 @@
         <div class="modal-footer">
           <button class="btn btn-primary" data-dismiss="modal">Cancel</button>
           &nbsp;
-          <button class="btn btn-success" type="submit" prevent-double-submit [disabled]="SupportQueryForm.invalid"> 
+          <button class="btn btn-success" type="submit" prevent-double-submit [disabled]="SupportQueryForm.invalid">
             Save
           </button>
         </div>
@@ -163,4 +163,3 @@
     </div>
   </form>
 </div>
-

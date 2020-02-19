@@ -24,20 +24,34 @@
 <div class="panel panel-default">
   <div class="panel-heading">
     <div class="row">
-      <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
+      <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
         <button type="button" class="btn btn-success" (click)="pdf.saveAs(obj?.StatementNumber+ '.pdf')">
-          Save As PDF
+          Save As PDF/ 另存为PDF
         </button>
       </div>
-      <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
+      <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 nopadding">
         <div class="pull-right">
-          <a class="pointer" title="Status" data-toggle="modal" data-target="#modalstatusconfimation"> {{obj?.Status}}
-            <i *ngIf="obj?.Status == 'Pending'" class="fa fa-bell" aria-hidden="true"></i></a>
+          <b>Statement Status/ 付款单状态: </b>
+          <a class="pointer" title="Status" data-toggle="modal" data-target="#modalstatusconfimation"
+            *ngIf="obj?.Status == 'Agreed'">
+            <b>({{obj?.Status}} - By {{obj?.FirstName}} on {{obj?.LastModifiedDate | date:'MM-dd-yyyy HH:mm'}})</b>
+          </a>
+
+          <a class="pointer badge badge-warning" title="Status" data-toggle="modal"
+            data-target="#modalstatusconfimation" *ngIf="obj?.Status == 'Pending'"> <b> {{obj?.Status}} </b>
+          </a>
+          <a style="color:hotpink;" *ngIf="obj?.Status == 'Pending'" data-toggle="modal"
+            data-target="#modalstatusconfimation">
+            <i class="statmenthelp"></i> Help!/ 帮助!
+          </a>
+
+
         </div>
       </div>
+
       <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
         <div class="pull-right">
-          <button type="button" class="btn btn-primary" routerLink="/Statementlist" title="Back">
+          <button type="button" class="btn btn-primary" (click)="onClickBackButton()" title="Back">
             Back
           </button>
         </div>
@@ -49,7 +63,7 @@
     <div class="row">
       <div class="col-md-12">
         <div class="table-responsive">
-          <kendo-pdf-export #pdf paperSize="A4" margin="1cm" landscape="true">
+          <kendo-pdf-export #pdf1 paperSize="A4" margin="1cm" landscape="true">
             <table class="table table-bordered table-condensed  table-striped" width="3508px" style=" font-family: Verdana, Geneva, Tahoma, sans-serif;
               font-size:9px;background-color: #fff;color:#000;">
               <tr>
@@ -78,24 +92,24 @@
               </tr>
               <tr>
                 <td colspan="2" class="grey">
-                  <b>Merchant Name:</b> {{obj?.SellerName}}
+                  <b>Merchant Name/ 卖方名称:</b> {{obj?.SellerName}}
                 </td>
                 <td colspan="2" class="grey">
-                  <b>FBA Shipment ID:</b> {{obj?.ShipmentID}}
+                  <b>FBA Shipment ID/ FBA货运编号:</b> {{obj?.ShipmentID}}
                 </td>
                 <td colspan="2" class="grey">
-                  <b>Available Quota:</b> {{obj?.Remaining_Perc}}%
+                  <b>Available Quota/ 待付款百分比:</b> {{obj?.Remaining_Perc}}%
                 </td>
               </tr>
               <tr>
                 <td colspan="2" class="grey">
-                  <b>Merchant ID:</b> {{obj?.AmazonID}}
+                  <b>Merchant ID/ 卖方编号:</b> {{obj?.AmazonID}}
                 </td>
                 <td colspan="2">
-                  <b>Shipment Value:</b> {{obj?.PurchaseCost | currency: 'INR'}}
+                  <b>Shipment Value/ 出货价值:</b> {{obj?.PurchaseCost | currency: 'INR'}}
                 </td>
                 <td colspan="2">
-                  <b>Balance Payable:</b> {{obj?.PurchaseBalance | currency: 'INR'}}
+                  <b>Balance Payable/ 待付款:</b> {{obj?.PurchaseBalance | currency: 'INR'}}
                 </td>
               </tr>
               <tr>
@@ -103,95 +117,57 @@
 
                 </td>
                 <td colspan="2" class="grey">
-                  <b>Investment Recovered:</b> {{obj?.Recover_Perc}}%
+                  <b>Investment Recovered/ 收回投资:</b> {{obj?.Recover_Perc}}%
                 </td>
                 <td colspan="2" class="grey">
-                  <b>Amount Payable:</b> {{obj?.PaidAmt | currency: 'INR'}}
+                  <b>Amount Payable/ 应付金额:</b> {{obj?.PaidAmt | currency: 'INR'}}
                 </td>
               </tr>
               <tr>
                 <td colspan="6" class="text-center">
-                  <b><u>Statement Summary</u></b>
+                  <b><u>Statement Summary/ 付款单总结</u></b>
                 </td>
               </tr>
               <tr>
-                <td colspan="6">
+                <td colspan="6" class="grey">
                   <div class="pull-left">
-                    Statement Number: <i>{{obj?.StatementNumber}}</i> <br>
-                    Statement Date: {{obj?.StatementDate | date:'MM-dd-yyyy'}}
+                    Statement Number/ 付款单编号: <i>{{obj?.StatementNumber}}</i> <br>
+                    Statement Date/ 付款单日期: {{obj?.StatementDate | date:'MM-dd-yyyy'}}
                   </div>
                   <div class="pull-right">
-                    Credits from Amazon.in of INR <b>{{obj?.AmazonCredits | currency: 'INR'}}</b> on
+                    Credits from Amazon.in (收的亚马逊积分) of INR <b>{{obj?.AmazonCredits | currency: 'INR'}}</b> on
                     {{obj?.CreditDate | date:'MM-dd-yyyy'}}
                   </div>
                 </td>
               </tr>
+
               <tr>
                 <td class="text-left" style="width:35%">
-                  <b>Opening Balance of Previous Statement</b>
+                  <b>Marketplace Credits/ 亚马逊积分 </b>
                 </td>
                 <td style="width:7%">
 
                 </td>
-                <td class="text-right" style="width:8%" [ngClass]="obj?.Stateopbalance < 0?'red':'green'">
-                  <b>{{obj?.Stateopbalance | currency: 'INR'}} </b>
-                </td>
-                <td class="text-left" style="width:35%">
-                  <b>IOR Investments </b>
-                </td>
-                <td style="width:7%">
-
-                </td>
-                <td class="text-right" style="width:8%" [ngClass]="obj?.Investments < 0?'red':'green'">
-                  <b>{{obj?.Investments | currency: 'INR'}} </b>
-                </td>
-
-              </tr>
-              <tr>
-                <td>
-
-                </td>
-                <td>
-
-                </td>
-                <td>
-
-                </td>
-                <td class="text-left">
-                  Investment in Customs Duty
-                </td>
-                <td class="text-right" [ngClass]="obj?.Investments < 0?'red':'green'">
-                  {{obj?.Investments | currency: 'INR'}}
-                </td>
-                <td class="text-right">
-
-                </td>
-
-              </tr>
-              <tr>
-                <td class="text-left">
-                  <b>Marketplace Credits </b>
-                </td>
-                <td>
-
-                </td>
-                <td class="text-right" [ngClass]="obj?.MPCredits < 0?'red':'green'">
+                <td class="text-right" style="width:8%" [ngClass]="obj?.MPCredits < 0?'red':'green'">
                   <b>{{obj?.MPCredits | currency: 'INR'}} </b>
                 </td>
-                <td class="text-left">
-                  Others (if any)
+                <td class="text-left" style="width:35%">
+                  <b>IOR Investments/ 进口商投资 </b>
                 </td>
-                <td class="text-right green">
-                  0
-                </td>
-                <td class="text-right">
+                <td style="width:7%">
 
                 </td>
-
+                <!-- <td class="text-right" style="width:8%" [ngClass]="obj?.Investments < 0?'red':'green'">
+                  <b>{{obj?.Investments | currency: 'INR'}} </b>
+                </td> -->
+                <td class="text-right" style="width:8%" [ngClass]="investmentTotal < 0?'red':'green'">
+                  <b>{{investmentTotal | currency: 'INR'}} </b>
+                </td>
               </tr>
+
               <tr>
                 <td class="text-left">
-                  Previous Credits Balance
+                  Previous Credits Balance/ 先前的积分余额
                 </td>
                 <td class="text-right" [ngClass]="obj?.OpeningBalance < 0?'red':'green'">
                   {{obj?.OpeningBalance | currency: 'INR'}}
@@ -200,19 +176,19 @@
 
                 </td>
                 <td class="text-left">
-
+                  IOR investment opening balance/ 待收回的进口商投资
+                </td>
+                <td class="text-right" [ngClass]="obj?.Stateopbalance < 0?'red':'green'">
+                  <b>{{obj?.Stateopbalance | currency: 'INR'}} </b>
                 </td>
                 <td>
 
                 </td>
-                <td class="text-right">
-
-                </td>
-
               </tr>
+
               <tr>
                 <td class="text-left">
-                  Credits from Amazon.in
+                  Credits from Amazon.in/ 亚马逊积分
                 </td>
                 <td class="text-right" [ngClass]="obj?.AmazonCredits < 0?'red':'green'">
                   {{obj?.AmazonCredits | currency: 'INR'}}
@@ -221,40 +197,40 @@
 
                 </td>
                 <td class="text-left">
-                  <b>Taxes </b>
+                  Investment in Customs Duty/ 海关税投资
                 </td>
-                <td>
-
-                </td>
-                <td class="text-right" [ngClass]="obj?.GSTOutFlow < 0?'red':'green'">
-                  <b>{{obj?.GSTOutFlow | currency: 'INR'}} </b>
-                </td>
-
-              </tr>
-              <tr>
-                <td class="text-left">
-
-                </td>
-                <td>
-
+                <td class="text-right" [ngClass]="obj?.Investments < 0?'red':'green'">
+                  {{obj?.Investments | currency: 'INR'}}
                 </td>
                 <td class="text-right">
 
                 </td>
-                <td class="text-left">
-                  GST Outflow on Sales
+              </tr>
+
+              <tr>
+                <td>
+
                 </td>
-                <td class="text-right" [ngClass]="obj?.GSTOutFlow < 0?'red':'green'">
-                  {{obj?.GSTOutFlow | currency: 'INR'}}
+                <td>
+
+                </td>
+                <td>
+
+                </td>
+                <td class="text-left">
+                  Others (if any)/ 其他
+                </td>
+                <td class="text-right green">
+                  0
                 </td>
                 <td class="text-right">
 
                 </td>
-
               </tr>
+
               <tr>
                 <td class="text-left">
-                  <b> Net Revenue </b>
+                  <b> Net Revenue/ 净收入 </b>
                 </td>
                 <td>
 
@@ -271,11 +247,11 @@
                 <td class="text-right">
 
                 </td>
-
               </tr>
+
               <tr>
                 <td class="text-left">
-                  Net Sales in Amazon.in
+                  Net Sales in Amazon.in/ 亚马逊净销售额
                 </td>
                 <td class="text-right" [ngClass]="obj?.TotalSales < 0?'red':'green'">
                   {{obj?.TotalSales | currency: 'INR'}}
@@ -284,19 +260,19 @@
 
                 </td>
                 <td class="text-left">
-                  <b>Commissions </b>
+                  <b>Taxes </b>
                 </td>
                 <td>
 
                 </td>
-                <td class="text-right" [ngClass]="obj?.IORMargin < 0?'red':'green'">
-                  <b>{{obj?.IORMargin | currency: 'INR'}} </b>
+                <td class="text-right" [ngClass]="obj?.GSTOutFlow < 0?'red':'green'">
+                  <b>{{obj?.GSTOutFlow | currency: 'INR'}} </b>
                 </td>
-
               </tr>
+
               <tr>
                 <td class="text-left">
-                  Expenses on net Sales
+                  Expenses on net Sales/ 亚马逊费用
                 </td>
                 <td class="text-right" [ngClass]="obj?.TotalAmazonExpenses < 0?'red':'green'">
                   {{obj?.TotalAmazonExpenses | currency: 'INR'}}
@@ -305,40 +281,40 @@
 
                 </td>
                 <td class="text-left">
-                  IOR Margin @3.5%
+                  GST Outflow on Sales/ GST税
                 </td>
-                <td class="text-right" [ngClass]="obj?.IORMargin < 0?'red':'green'">
-                  {{obj?.IORMargin | currency: 'INR'}}
+                <td class="text-right" [ngClass]="obj?.GSTOutFlow < 0?'red':'green'">
+                  {{obj?.GSTOutFlow | currency: 'INR'}}
                 </td>
                 <td class="text-right">
 
                 </td>
-
               </tr>
-              <tr>
-                <td class="text-left">
+
+              <tr style="height: 23px;">
+                <td>
 
                 </td>
                 <td>
 
                 </td>
-                <td class="text-right">
+                <td>
 
                 </td>
-                <td class="text-left">
-                  Software Charges
-                </td>
-                <td class="text-right green">
-                  0
-                </td>
-                <td class="text-right">
+                <td>
 
                 </td>
+                <td>
 
+                </td>
+                <td>
+
+                </td>
               </tr>
+
               <tr>
                 <td class="text-left">
-                  <b> Adjustments(+/-) </b>
+                  <b> Adjustments(+/-)/ 积分调整 </b>
                 </td>
                 <td>
 
@@ -347,19 +323,19 @@
                   <b>{{obj?.ClosingBalance | currency: 'INR'}} </b>
                 </td>
                 <td class="text-left">
-
+                  <b>Commissions/ 佣金 </b>
                 </td>
                 <td>
 
                 </td>
-                <td class="text-right">
-
+                <td class="text-right" [ngClass]="obj?.IORMargin < 0?'red':'green'">
+                  <b>{{obj?.IORMargin | currency: 'INR'}} </b>
                 </td>
-
               </tr>
+
               <tr>
                 <td class="text-left">
-                  Others(Unreconciled Credits)
+                  Others(Unreconciled Credits)/ 未核对的积分
                 </td>
                 <td class="text-right" [ngClass]="obj?.ClosingBalance < 0?'red':'green'">
                   {{obj?.ClosingBalance | currency: 'INR'}}
@@ -368,19 +344,40 @@
 
                 </td>
                 <td class="text-left">
+                  IOR Margin @3.5%/ 进口商佣金 @3.5%
+                </td>
+                <td class="text-right" [ngClass]="obj?.IORMargin < 0?'red':'green'">
+                  {{obj?.IORMargin | currency: 'INR'}}
+                </td>
+                <td class="text-right">
 
                 </td>
-                <td>
+              </tr>
+
+              <tr>
+                <td class="text-left">
 
                 </td>
                 <td class="text-right">
 
                 </td>
+                <td class="text-right">
 
+                </td>
+                <td class="text-left">
+                  Software Charges/ 软件费用
+                </td>
+                <td class="text-right green">
+                  0
+                </td>
+                <td class="text-right">
+
+                </td>
               </tr>
+
               <tr>
                 <td class="text-left">
-                  <b>Payable to {{obj?.SellerName}}</b>
+                  <b>Payable to/ 应付给 {{obj?.SellerName}}</b>
                 </td>
                 <td>
 
@@ -389,7 +386,7 @@
                   <b>{{obj?.PayabletoMerchant | currency: 'INR'}}</b>
                 </td>
                 <td class="text-left">
-                  <b>Total Deductions </b>
+                  <b>Total Deductions/ 总成本 </b>
                 </td>
                 <td>
 
@@ -397,15 +394,357 @@
                 <td class="text-right" [ngClass]="obj?.Deductions < 0?'red':'green'">
                   <b>{{obj?.Deductions | currency: 'INR'}} </b>
                 </td>
-
               </tr>
+
               <tr>
                 <td colspan="6" class="text-right">
-                  <b> Closing Balance Amount {{obj?.StatementOPBal | currency: 'INR'}}</b>
+                  <b> IOR Investments yet to recover {{obj?.StatementOPBal | currency: 'INR'}}</b>
                 </td>
               </tr>
             </table>
           </kendo-pdf-export>
+          <div style="position: absolute; left: -1000px; top: 2000px;">
+            <kendo-pdf-export #pdf paperSize="A4" margin="1cm" landscape="true">
+              <table class="table table-bordered table-condensed  table-striped" width="3508px" style=" font-family: Verdana, Geneva, Tahoma, sans-serif;
+              font-size:9px;background-color: #fff;color:#000;">
+                <tr>
+                  <td colspan="6" class="text-right">
+                    <b>Payment Statement</b> <br>
+                    <small>All amounts in INR</small>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="6">
+                    <b>Summaries -</b> Includes only Fulfilment by Amazon (FBA)
+                    transactions with Valuecart India Private
+                    Limited
+                  </td>
+                </tr>
+                <tr>
+                  <th colspan="2" class="text-center">
+                    <i>Merchant Details</i>
+                  </th>
+                  <th colspan="2" class="text-center">
+                    <i> References</i>
+                  </th>
+                  <th colspan="2" class="text-center">
+                    <i>Quota Status</i>
+                  </th>
+                </tr>
+                <tr>
+                  <td colspan="2" class="grey">
+                    <b>Merchant Name </b> {{obj?.SellerName}}
+                  </td>
+                  <td colspan="2" class="grey">
+                    <b>FBA Shipment ID :</b> {{obj?.ShipmentID}}
+                  </td>
+                  <td colspan="2" class="grey">
+                    <b>Available Quota :</b> {{obj?.Remaining_Perc}}%
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="2" class="grey">
+                    <b>Merchant ID :</b> {{obj?.AmazonID}}
+                  </td>
+                  <td colspan="2">
+                    <b>Shipment Value :</b> {{obj?.PurchaseCost  }}
+                  </td>
+                  <td colspan="2">
+                    <b>Balance Payable :</b> {{obj?.PurchaseBalance  }}
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="2" class="grey">
+
+                  </td>
+                  <td colspan="2" class="grey">
+                    <b>Investment Recovered :</b> {{obj?.Recover_Perc}}%
+                  </td>
+                  <td colspan="2" class="grey">
+                    <b>Amount Payable :</b> {{obj?.PaidAmt  }}
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="6" class="text-center">
+                    <b><u>Statement Summary </u></b>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="6" class="grey">
+                    <div class="pull-left">
+                      Statement Number : <i>{{obj?.StatementNumber}}</i> <br>
+                      Statement Date : {{obj?.StatementDate | date:'MM-dd-yyyy'}}
+                    </div>
+                    <div class="pull-right">
+                      Credits from Amazon.in  of INR <b>{{obj?.AmazonCredits  }}</b> on
+                      {{obj?.CreditDate | date:'MM-dd-yyyy'}}
+                    </div>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td class="text-left" style="width:35%">
+                    <b>Marketplace Credits </b>
+                  </td>
+                  <td style="width:7%">
+
+                  </td>
+                  <td class="text-right" style="width:8%" [ngClass]="obj?.MPCredits < 0?'red':'green'">
+                    <b>{{obj?.MPCredits  }} </b>
+                  </td>
+                  <td class="text-left" style="width:35%">
+                    <b>IOR Investments </b>
+                  </td>
+                  <td style="width:7%">
+
+                  </td>
+                  <!-- <td class="text-right" style="width:8%" [ngClass]="obj?.Investments < 0?'red':'green'">
+                  <b>{{obj?.Investments  }} </b>
+                </td> -->
+                  <td class="text-right" style="width:8%" [ngClass]="investmentTotal < 0?'red':'green'">
+                    <b>{{investmentTotal  }} </b>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td class="text-left">
+                    Previous Credits Balance 
+                  </td>
+                  <td class="text-right" [ngClass]="obj?.OpeningBalance < 0?'red':'green'">
+                    {{obj?.OpeningBalance  }}
+                  </td>
+                  <td class="text-right">
+
+                  </td>
+                  <td class="text-left">
+                    IOR investment opening balance 
+                  </td>
+                  <td class="text-right" [ngClass]="obj?.Stateopbalance < 0?'red':'green'">
+                    <b>{{obj?.Stateopbalance  }} </b>
+                  </td>
+                  <td>
+
+                  </td>
+                </tr>
+
+                <tr>
+                  <td class="text-left">
+                    Credits from Amazon.in 
+                  </td>
+                  <td class="text-right" [ngClass]="obj?.AmazonCredits < 0?'red':'green'">
+                    {{obj?.AmazonCredits  }}
+                  </td>
+                  <td class="text-right">
+
+                  </td>
+                  <td class="text-left">
+                    Investment in Customs Duty 
+                  </td>
+                  <td class="text-right" [ngClass]="obj?.Investments < 0?'red':'green'">
+                    {{obj?.Investments  }}
+                  </td>
+                  <td class="text-right">
+
+                  </td>
+                </tr>
+
+                <tr>
+                  <td>
+
+                  </td>
+                  <td>
+
+                  </td>
+                  <td>
+
+                  </td>
+                  <td class="text-left">
+                    Others (if any) 
+                  </td>
+                  <td class="text-right green">
+                    0
+                  </td>
+                  <td class="text-right">
+
+                  </td>
+                </tr>
+
+                <tr>
+                  <td class="text-left">
+                    <b> Net Revenue  </b>
+                  </td>
+                  <td>
+
+                  </td>
+                  <td class="text-right" [ngClass]="obj?.SalesAfterExp < 0?'red':'green'">
+                    <b>{{obj?.SalesAfterExp  }} </b>
+                  </td>
+                  <td class="text-left">
+
+                  </td>
+                  <td>
+
+                  </td>
+                  <td class="text-right">
+
+                  </td>
+                </tr>
+
+                <tr>
+                  <td class="text-left">
+                    Net Sales in Amazon.in 
+                  </td>
+                  <td class="text-right" [ngClass]="obj?.TotalSales < 0?'red':'green'">
+                    {{obj?.TotalSales  }}
+                  </td>
+                  <td class="text-right">
+
+                  </td>
+                  <td class="text-left">
+                    <b>Taxes </b>
+                  </td>
+                  <td>
+
+                  </td>
+                  <td class="text-right" [ngClass]="obj?.GSTOutFlow < 0?'red':'green'">
+                    <b>{{obj?.GSTOutFlow  }} </b>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td class="text-left">
+                    Expenses on net Sales 
+                  </td>
+                  <td class="text-right" [ngClass]="obj?.TotalAmazonExpenses < 0?'red':'green'">
+                    {{obj?.TotalAmazonExpenses  }}
+                  </td>
+                  <td class="text-right">
+
+                  </td>
+                  <td class="text-left">
+                    GST Outflow on Sales 
+                  </td>
+                  <td class="text-right" [ngClass]="obj?.GSTOutFlow < 0?'red':'green'">
+                    {{obj?.GSTOutFlow  }}
+                  </td>
+                  <td class="text-right">
+
+                  </td>
+                </tr>
+
+                <tr style="height: 23px;">
+                  <td>
+
+                  </td>
+                  <td>
+
+                  </td>
+                  <td>
+
+                  </td>
+                  <td>
+
+                  </td>
+                  <td>
+
+                  </td>
+                  <td>
+
+                  </td>
+                </tr>
+
+                <tr>
+                  <td class="text-left">
+                    <b> Adjustments(+/-)  </b>
+                  </td>
+                  <td>
+
+                  </td>
+                  <td class="text-right" [ngClass]="obj?.ClosingBalance < 0?'red':'green'">
+                    <b>{{obj?.ClosingBalance  }} </b>
+                  </td>
+                  <td class="text-left">
+                    <b>Commissions </b>
+                  </td>
+                  <td>
+
+                  </td>
+                  <td class="text-right" [ngClass]="obj?.IORMargin < 0?'red':'green'">
+                    <b>{{obj?.IORMargin  }} </b>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td class="text-left">
+                    Others(Unreconciled Credits) 
+                  </td>
+                  <td class="text-right" [ngClass]="obj?.ClosingBalance < 0?'red':'green'">
+                    {{obj?.ClosingBalance  }}
+                  </td>
+                  <td class="text-right">
+
+                  </td>
+                  <td class="text-left">
+                    IOR Margin @3.5% 
+                  </td>
+                  <td class="text-right" [ngClass]="obj?.IORMargin < 0?'red':'green'">
+                    {{obj?.IORMargin  }}
+                  </td>
+                  <td class="text-right">
+
+                  </td>
+                </tr>
+
+                <tr>
+                  <td class="text-left">
+
+                  </td>
+                  <td class="text-right">
+
+                  </td>
+                  <td class="text-right">
+
+                  </td>
+                  <td class="text-left">
+                    Software Charges 
+                  </td>
+                  <td class="text-right green">
+                    0
+                  </td>
+                  <td class="text-right">
+
+                  </td>
+                </tr>
+
+                <tr>
+                  <td class="text-left">
+                    <b>Payable to {{obj?.SellerName}}</b>
+                  </td>
+                  <td>
+
+                  </td>
+                  <td class="text-right" [ngClass]="obj?.PayabletoMerchant < 0?'red':'green'">
+                    <b>{{obj?.PayabletoMerchant  }}</b>
+                  </td>
+                  <td class="text-left">
+                    <b>Total Deductions </b>
+                  </td>
+                  <td>
+
+                  </td>
+                  <td class="text-right" [ngClass]="obj?.Deductions < 0?'red':'green'">
+                    <b>{{obj?.Deductions  }} </b>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td colspan="6" class="text-right">
+                    <b> IOR Investments yet to recover {{obj?.StatementOPBal  }}</b>
+                  </td>
+                </tr>
+              </table>
+            </kendo-pdf-export>
+          </div>
         </div>
       </div>
     </div>
@@ -414,7 +753,7 @@
   <div class="panel-footer">
     <div class="btn-toolbar pull-right">
       <button type="button" title="Cancel" type="button" class="btn btn-primary"
-        routerLink="/Statementlist">Cancel</button>
+        (click)="onClickBackButton()">Cancel</button>
     </div>
     <div class="clearfix"></div>
   </div>
@@ -422,102 +761,113 @@
 
 <div id="modalstatusconfimation" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modalstatusconfimation"
   aria-hidden="true">
-  <div class="modal-dialog ">
+  <div class="modal-dialog">
     <div class="modal-content">
-      <div class="modal-header alert-warning">
+      <div class="modal-header statement_modlhedr" [ngClass]="obj?.Status == 'Pending' ? '' : ''">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
             aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="modalstatusconfimation">Submit a Query</h4>
+        <h4 *ngIf="obj?.Status == 'Pending'" class="modal-title" id="modalstatusconfimation">
+          We're here to help!</h4>
+        <h4 *ngIf="obj?.Status != 'Pending'" class="modal-title text-center" id="modalstatusconfimation">Thank You !
+        </h4>
       </div>
 
-      <div class="modal-body" *ngIf="obj?.Status == 'Pending'" style="height: 400px; overflow-y: auto;">
-        <div class="row" *ngIf="!action && userType == 'C'">
-          <div class="col-xs-12">
-            <div>
-              <h5 class="text-center">
-                Please click 'Agree' if you agree with this reconciled statement. If you have any
-                doubts on the statement click 'I need more help'.
-              </h5>
-              <div class="text-center">
-                <button type="button" title="Agree" type="button" class="btn btn-success"
-                  (click)="onClickAgree(obj?.StatementNumber, 'Agreed')">Agree</button>
-                &nbsp; &nbsp;
-                <button type="button" title="Need more help" type="button" class="btn btn-primary"
-                  (click)="onClickNeedMoreHelp()">
-                  I need more help !</button>
+      <div class="modal-body" *ngIf="obj?.Status == 'Pending'"
+        style="height:auto; overflow-y: auto; overflow-x: hidden;">
+        <form [formGroup]="AgreeForm" (ngSubmit)="onClickAgree(obj?.StatementNumber, 'Agreed')">
+          <div class="row" *ngIf="!action && userType == 'C'">
+            <div class="col-xs-12">
+              <div>
+                <h5 class="text-center">
+                  Click on 'Agree' to process the payment or click on 'Need more Help' for more clarification.
+                </h5>
+                <div class="text-center">
+                  <button type="button" title="Need more help" type="button" class="btn btn-primary"
+                    (click)="onClickNeedMoreHelp()">
+                    Need more help!</button>
+                  &nbsp; &nbsp;
+                  <button type="button" title="Agree" type="submit" prevent-double-submit
+                    class="btn btn-success">Agree</button>
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        </form>
         <div class="row" *ngIf="!action && userType == 'S'">
           <div class="col-xs-12">
             <div>
               <h5 class="text-center">
-                Please provide support to the seller if they have any query.
+                Please assist the seller in resolving their concerns
               </h5>
               <div class="text-center">
-                <button type="button" title="Check Query" type="button" class="btn btn-primary"
+                <button type="button" title="Review" type="button" class="btn btn-primary"
                   (click)="onClickNeedMoreHelp()">
-                  Check Query</button>
+                  Review</button>
               </div>
             </div>
           </div>
         </div>
 
-        <div class="row" *ngIf="action && lstcustomerMsg.length > 0">
+        <div class="row" *ngIf="action && lstHistory.length > 0">
           <div class="col-xs-12">
             <div>
               <h5>
                 Chat History
               </h5>
-              <div class="text-left">
-                <label class="control-label"><b>Seller Query</b></label>
-                <div *ngFor="let data of lstcustomerMsg">
-                  <p>{{data.Query}} - By <b>{{data.CreatedByName}}</b> on
-                    {{data.CreatedDate | date :"MM-dd-yyyy HH:mm" }}</p>
+              <div *ngFor="let tool of lstHistory | groupBy:'CreatedDate'| pairs">
+                <!-- <h3>{{tool[0]}}</h3> -->
+                <div *ngFor="let val of tool[1] | filterBy: ['UserType']: 'C'">
+                  <p>
+                    <span style="color:green;">Seller</span> - {{val.Query}} - By <b>{{val.CreatedByName}}</b> on
+                    {{val.CreatedDate  |date :"MM-dd-yyyy HH:mm"  }} </p>
                 </div>
-              </div>
-              <div class="text-right" *ngIf="lstsupportMsg.length > 0">
-                <label class="control-label"><b>Jennifer Support</b></label>
-                <div *ngFor="let data of lstsupportMsg">
-                  <p>{{data.Query}} - By <b>{{data.CreatedByName}}</b> on
-                    {{data.CreatedDate | date :"MM-dd-yyyy HH:mm" }}</p>
+
+                <div *ngFor="let val of tool[1] | filterBy: ['UserType']: 'S'">
+                  <p class="pull-right" style="padding-top:30px">
+
+                    <span style="color:hotpink;">Support</span> - {{val.Query}} - By <b>{{val.CreatedByName}}</b> on
+                    {{val.CreatedDate  |date :"MM-dd-yyyy HH:mm"  }} </p>
                 </div>
+
               </div>
             </div>
           </div>
         </div>
 
-        <div class="row" *ngIf="action && lstcustomerMsg.length == 0">
+        <div class="row" *ngIf="action && lstHistory.length == 0">
           <div class="col-xs-12">
             <div>
               <h5 class="text-center">
-                No Query Submitted Yet !
+                No tickets submitted yet
               </h5>
             </div>
           </div>
         </div>
 
         <div class="row" *ngIf="action">
-          <div class="col-xs-12">
-            <div>
-              <h5 *ngIf="userType == 'C'">
-                Please enter a message and our escalation team will get back to you shortly!
-              </h5>
-              <h5 *ngIf="userType == 'S'" class="text-center">
-                Please provide the required support
-              </h5>
-              <textarea rows="4" cols="90" [(ngModel)]="customerMsg" maxlength="8000"></textarea><br />
-              <div class="text-center">
-                <button type="button" title="Submit" type="button" class="btn btn-success"
-                  (click)="onClickSellerQuery()">Submit</button>
-                &nbsp; &nbsp;
-                <button type="button" title="Go Back" type="button" class="btn btn-primary" (click)="onClickGoBack()">
-                  Go
-                  Back</button>
+          <form [formGroup]="SellerQueryForm" (ngSubmit)="onClickSellerQuery()">
+            <div class="col-xs-12">
+              <div>
+                <h5 *ngIf="userType == 'C'">
+                  Please describe your issue and our resolution team will get back to you shortly!
+                  <!-- <span class="mandantory"> *</span> -->
+                </h5>
+                <!-- <h5 *ngIf="userType == 'S'">
+                Please provide the required support <span class="mandantory"> *</span>
+              </h5> -->
+                <textarea placeholder="Please tell us more about your issue" formControlName="Query" rows="4" cols="80"
+                  [(ngModel)]="customerMsg" maxlength="8000"></textarea><br />
+                <div class="text-right">
+                  <button type="button" title="Go Back" type="button" class="btn btn-primary" (click)="onClickGoBack()">
+                    Go Back</button>
+                  &nbsp; &nbsp;
+                  <button type="button" title="Submit" type="submit" prevent-double-submit
+                    class="btn btn-success">Submit</button>
+
+                </div>
               </div>
             </div>
-          </div>
+          </form>
         </div>
       </div>
 
@@ -525,17 +875,47 @@
         <div class="row">
           <div class="col-xs-12">
             <div>
-              <h5 class="text-center">
-                Thank you for agreeing this statement! Your payment will be processed soon.
+              <h5 *ngIf="userType == 'C'" class="text-center">
+                Your payment will be processed soon!
               </h5>
+              <h5 *ngIf="userType == 'S'" class="text-center">
+                This statement is agreed by the seller.
+              </h5>
+            </div>
+          </div>
+        </div>
+        <div class="row" *ngIf="lstHistory.length > 0">
+          <div class="col-xs-12">
+            <div>
+              <h5>
+                Agreed By
+              </h5>
+              <div *ngFor="let tool of lstHistory | groupBy:'CreatedDate'| pairs">
+                <!-- <h3>{{tool[0]}}</h3> -->
+                <div *ngFor="let val of tool[1] | filterBy: ['UserType']: 'C'">
+                  <p>
+                    <span style="color:green;">Seller</span> - {{val.Query}} - By <b>{{val.CreatedByName}}</b> on
+                    {{val.CreatedDate  |date :"MM-dd-yyyy HH:mm"  }}
+                  </p>
+                </div>
+
+                <div *ngFor="let val of tool[1] | filterBy: ['UserType']: 'S'">
+                  <p class="pull-right" style="padding-top:30px">
+
+                    <span style="color:hotpink;">Support</span> - {{val.Query}} - By <b>{{val.CreatedByName}}</b> on
+                    {{val.CreatedDate  |date :"MM-dd-yyyy HH:mm"  }}
+                  </p>
+                </div>
+
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="modal-footer">
+      <!-- <div class="modal-footer">
         <button class="btn btn-primary btn-sm" data-dismiss="modal">Cancel</button>
-      </div>
+      </div> -->
     </div>
   </div>
 </div>

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Ticket, Result, JsonModal, History } from '../model/index';
+import { Ticket, Result, JsonModal, History, SurveyMaster, Survey1Answers } from '../model/index';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { AuthenticationService } from '../service/authentication.service';
 import { throwError, Observable } from 'rxjs';
@@ -75,7 +75,38 @@ export class TicketService {
     this.objJsonModal.Json = JSON.stringify(obj);
     return this.httpClient.post<Result>(environment.baseUrl + `Ticket/Insert`, this.objJsonModal)
     .pipe(catchError(this.handleError));
+  } 
+
+  public closeTicket(SupportQueryID: number): Observable<Result> {
+    let obj: Ticket = {} as any;
+    let currentUser = this.authenticationService.currentUserValue;
+    obj.LoginId = currentUser.UserId; 
+    obj.CompanyDetailID = currentUser.CompanyDetailID; 
+    obj.SupportQueryID = SupportQueryID;
+    this.objJsonModal.Json = JSON.stringify(obj);
+    return this.httpClient.post<Result>(environment.baseUrl + `Ticket/CloseTicket`, this.objJsonModal)
+      .pipe(catchError(this.handleError));
   }
+
+  public pendingSurvey(): Observable<SurveyMaster[]> {
+    let currentUser = this.authenticationService.currentUserValue;
+    let LoginId = currentUser.UserId; 
+    return this.httpClient.get<string>(environment.baseUrl + `Ticket/PendingSurvey?LoginId=` + LoginId) 
+    .pipe(
+      map(data => {
+        return JSON.parse(data) as SurveyMaster[];
+      }),
+      catchError(this.handleError))
+  }
+
+  public survey1Insert(obj: Survey1Answers): Observable<Result> {
+    let currentUser = this.authenticationService.currentUserValue; 
+    obj.LoginId = currentUser.UserId; 
+    obj.SurveyMasterID = 1; 
+    this.objJsonModal.Json = JSON.stringify(obj);
+    return this.httpClient.post<Result>(environment.baseUrl + `Ticket/Survey1Insert`, this.objJsonModal)
+    .pipe(catchError(this.handleError));
+  } 
 
   private handleError(error: HttpErrorResponse) {
     if (error.status == 404)

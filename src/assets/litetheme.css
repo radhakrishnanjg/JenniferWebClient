@@ -2879,7 +2879,7 @@ input.top-search:focus {
     FONT-SIZE: 11px;
     border-color: #fff;
     outline: 0;
-    border: 1px solid #efefef!important;
+    border: 1px solid #efefef;
     font-weight: inherit;
     text-align: inherit;
     overflow: hidden;
@@ -3545,7 +3545,11 @@ td.sorting_1 img {
 .mfi { background-image: url(../assets/jicons/mfi.svg)}
 .rtv_configuration  { background-image: url(../assets/jicons/rtv_configuration.svg)}
 .rtvorder  { background-image: url(../assets/jicons/rtvorder.svg)}
-
+/* added  on 0402 2020 */
+.vouchers { background-image: url(../assets/jicons/vouchers.svg) }
+.ledgers { background-image: url(../assets/jicons/ledgers.svg) }
+.debitnote { background-image: url(../assets/jicons/debitnote.svg) }
+.vendorpayment { background-image: url(../assets/jicons/vendorpayment.svg) }
 i.jicon {
     /* display: block!important;
     width: 20px!important;
@@ -3732,23 +3736,53 @@ i.jicon {
       bottom: 0;
   }
   
-  .goog-te-menu-value {
-      text-decoration: none;
-      color: #0000cc;
-      white-space: nowrap;
-      margin-left: 4px;
-      font-size: 11px;
-      margin-right: 4px;
-  }
   
-  .goog-te-gadget-icon {
-      margin-left: 0px;
-      margin-right: -1px;
-      width: 18px;
-      height: 18px;
-      border: none;
-      vertical-align: middle;
-  }
+  .goog-te-menu-value {
+    text-decoration: none;
+    color: #0000cc;
+    white-space: nowrap;
+    margin-left: 4px;
+    font-size: 11px;
+    margin-right: 4px;
+    display: none;
+}
+
+.goog-te-gadget-icon {
+    margin-left: 0px;
+    margin-right: -1px;
+    width: 18px;
+    height: 18px;
+    border: none;
+    vertical-align: middle;
+}
+.goog-te-gadget-simple {
+  background-color: #fff;
+  border-left: transparent;
+  border-top: transparent;
+  border-bottom: transparent;
+  border-right: transparent;
+  font-size: 10pt;
+  display: inline-block;
+  padding-top: 0px;
+  padding-bottom: 2px;
+  cursor: pointer;
+  zoom: 1;
+}
+.goog-te-gadget img {
+  background-image: url("../assets/jicons/googleTranslate.svg") !important;
+  width: 24px;
+  height: 24px;
+  background-repeat: no-repeat;
+  background-position: 0px 0px !important;
+}
+   
+.needhelp { 
+  cursor: pointer;
+  font-weight: 700; 
+  color: #369 !important;
+  font-style: italic !important;
+  text-decoration: underline;
+}
 /****************************************************************
 ************************CUSTOM MEDIA QUEARIES************************
 ******************************************************************/

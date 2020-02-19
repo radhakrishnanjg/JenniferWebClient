@@ -207,6 +207,7 @@ export class LocationComponent implements OnInit {
               this.locationform.get('GSTNumber').disable();
               this.locationform.get('CountryID').disable();
               this.locationform.get('StateID').disable();
+              this.locationform.get('IsInvoicing').disable();
             },
             (err: any) => {
               //

@@ -32,8 +32,9 @@
       </div>
       <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
         <div class="pull-right"> 
-          <button  *ngIf="obj?.FilePath" class="btn btn-default" title="DownloadImages" (click)="DownloadButtonClick(obj?.FilePath)">
-            Download Images
+          <button  *ngIf="obj?.FilePath" class="btn btn-default" title="DownloadImages" 
+          (click)="DownloadButtonClick(obj?.FilePath)">
+            Download Documents
           </button>
           &nbsp;
           <button class="btn btn-primary" routerLinkActive="active" routerLink="/Poapprovallist">Back</button>
@@ -41,7 +42,7 @@
       </div>
     </div>
   </div>
-  <form autocomplete="off" [formGroup]="poapprovalForm" (ngSubmit)="Update()" class="form-horizontal">
+  <form   [formGroup]="poapprovalForm" (ngSubmit)="Update()" class="form-horizontal">
     <div class="panel-body">
       <div class="row">
 

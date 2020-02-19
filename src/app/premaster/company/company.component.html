@@ -147,7 +147,7 @@
       </div>
     </div>
     <div class="panel-footer">
-      <form autocomplete="off" (ngSubmit)="AuthorsieCompany()" class="form-horizontal">
+      <form   (ngSubmit)="AuthorsieCompany()" class="form-horizontal">
         <div class="pull-right btn-toolbar">
           <button  type="button" class="btn btn-primary" routerLink="/Companylist">Cancel</button>
           <button class="btn btn-success" type="submit" prevent-double-submit *ngIf="!company?.IsAuthorised">

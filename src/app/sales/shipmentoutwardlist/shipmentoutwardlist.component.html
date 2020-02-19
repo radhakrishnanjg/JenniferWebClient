@@ -89,7 +89,7 @@
   <div id="modalpopup_shipmentoutward" class="modal fade " tabindex="-1" role="dialog"
     aria-labelledby="modalpopup_shipmentoutward" aria-hidden="true">
 
-    <form autocomplete="off" (keydown.enter)="$event.preventDefault()" [formGroup]="shipmentoutwardform"
+    <form   (keydown.enter)="$event.preventDefault()" [formGroup]="shipmentoutwardform"
       (ngSubmit)="SaveData()">
       <div class="modal-dialog ">
         <div class="modal-content">

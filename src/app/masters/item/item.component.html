@@ -23,7 +23,7 @@
     </div>
   </div>
 </div>
-<form autocomplete="off" [formGroup]="itemform" (ngSubmit)="SaveData()" class="form-group" *ngIf="action">
+<form   [formGroup]="itemform" (ngSubmit)="SaveData()" class="form-group" *ngIf="action">
   <div class="panel panel-default">
     <div class="panel-heading">
       <div class="row">
@@ -392,7 +392,7 @@
   </div>
 </form>
 <!-- 
-<form autocomplete="off" [formGroup]="UploadForm" (ngSubmit)="uploadFiles()" class="form-horizontal" *ngIf="!action">
+<form   [formGroup]="UploadForm" (ngSubmit)="uploadFiles()" class="form-horizontal" *ngIf="!action">
   <div class="panel-body">
     <div class="row">
       <div class="col-sm-7">
@@ -436,7 +436,7 @@
 <!-- Update -->
 
 
-<form autocomplete="off" [formGroup]="itemformupdate" (ngSubmit)="SaveDataItem()" class="form-group" *ngIf="!action">
+<form   [formGroup]="itemformupdate" (ngSubmit)="SaveDataItem()" class="form-group" *ngIf="!action">
   <div class="panel panel-default">
     <div class="panel-heading">
       <div class="row">
@@ -705,7 +705,7 @@
     </div>
   </div>
 </form>
-<form autocomplete="off" [formGroup]="taxform" (ngSubmit)="SaveDataTax()" class="form-group" *ngIf="!action">
+<form   [formGroup]="taxform" (ngSubmit)="SaveDataTax()" class="form-group" *ngIf="!action">
   <div class="panel panel-default">
     <div class="panel-body">
       <span class="groupspanheader">Tax Information</span>
@@ -814,7 +814,7 @@
     </div>
   </div>
 </form>
-<form autocomplete="off" [formGroup]="hsnform" (ngSubmit)="SaveDataHSN()" class="form-group" *ngIf="!action">
+<form   [formGroup]="hsnform" (ngSubmit)="SaveDataHSN()" class="form-group" *ngIf="!action">
   <div class="panel panel-default">
     <div class="panel-body">
       <span class="groupspanheader">HSN Information</span>

@@ -1,0 +1,419 @@
+<div class="row">
+  <div class="col-sm-6 col-lg-6">
+    <h3>
+      Survey
+    </h3>
+  </div>
+  <div class="col-sm-6 col-lg-6">
+  </div>
+</div>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <div class="row">
+      <div class="col-md-3 col-sm-3 col-xs-5">
+        <span class="groupspanheader">
+          Submit a Survey
+        </span>
+      </div>
+      <div class="col-md-4 col-sm-4 col-xs-5">
+      </div>
+      <div class="col-md-5 col-sm-5 col-xs-2">
+        <div class="pull-right">
+          <button type="button" class="btn btn-xs btn-sm btn-primary" routerLink="/Statementlist" title="Back">
+            Back
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ul class="nav nav-tabs" id="myTabContent" role="tablist">
+    <li class="nav-item">
+      <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home"
+        aria-selected="true">Chinese</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile"
+        aria-selected="false">English</a>
+    </li>
+  </ul>
+  <div class="tab-content" id="myTabContent">
+    <div class="tab-pane active" id="home" role="tabpanel" aria-labelledby="home-tab">
+      <form [formGroup]="ChineseForm" (ngSubmit)="InsertChinese()" class="form-group">
+        <div class="panel-body">
+          <div class="row">
+            <div class="form-group" [ngClass]="{'has-error': formErrors.Doyouunderstandthepaymentsummarycompletely}">
+              <div class=" col-sm-6 text-right" for="Doyouunderstandthepaymentsummarycompletely">
+                <label class="control-label" for="whichareaofthepaymentsummarydoyounotunderstand">
+                 1. 您是否完全了解付款对账？
+                  <span class="mandantory">*</span></label>
+              </div>
+              <div class=" col-sm-6">
+                <label for="Yes" class="control-label radio-inline">
+                  <input id="Yes" type="radio" value="Yes" name="Doyouunderstandthepaymentsummarycompletely"
+                    (blur)="logValidationErrorschinese()" formControlName="Doyouunderstandthepaymentsummarycompletely"
+                    (change)="DoyouunderstandthepaymentsummarycompletelyChangeYes($event)">
+                  是
+                </label>
+                <label for="No" class="control-label radio-inline">
+                  <input id="No" type="radio" value="No" name="Doyouunderstandthepaymentsummarycompletely"
+                    (blur)="logValidationErrorschinese()" formControlName="Doyouunderstandthepaymentsummarycompletely"
+                    (change)="DoyouunderstandthepaymentsummarycompletelyChange($event)">
+                  否
+                </label>
+              </div>
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrors.Doyouunderstandthepaymentsummarycompletely">
+                  {{formErrors.Doyouunderstandthepaymentsummarycompletely}}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="row"
+            *ngIf="whichareaofthepaymentsummarydoyounotunderstandFlag && !DoyouunderstandthepaymentsummarycompletelyChangeYesFlag">
+            <div class="form-group"
+              [ngClass]="{'has-error': formErrors.whichareaofthepaymentsummarydoyounotunderstand}">
+              <div class="col-sm-6 text-right" for="whichareaofthepaymentsummarydoyounotunderstand">
+                <label class="control-label" for="whichareaofthepaymentsummarydoyounotunderstand">
+                 1.1 如果否的话，您不了解付款对账的哪个部分？ (允许多项选择）
+                  <span class="mandantory">*</span></label>
+              </div>
+              <div class="col-sm-6">
+                <input type="checkbox" formControlName="whichareaofthepaymentsummarydoyounotunderstand"
+                  name="whichareaofthepaymentsummarydoyounotunderstand" id="MarketplaceCredits"
+                  (change)="whichareaofthepaymentsummarydoyounotunderstandChange($event)">
+                <span class="stornme">市场积分</span> <br />
+                <input type="checkbox" formControlName="whichareaofthepaymentsummarydoyounotunderstand"
+                  name="whichareaofthepaymentsummarydoyounotunderstand" id="NetRevenue"
+                  (change)="whichareaofthepaymentsummarydoyounotunderstandChange($event)">
+                <span class="stornme">净收入</span> <br />
+
+                <input type="checkbox" formControlName="whichareaofthepaymentsummarydoyounotunderstand"
+                  name="whichareaofthepaymentsummarydoyounotunderstand" id="IORInvestments"
+                  (change)="whichareaofthepaymentsummarydoyounotunderstandChange($event)">
+                <span class="stornme">IOR投资</span> <br />
+                <input type="checkbox" formControlName="whichareaofthepaymentsummarydoyounotunderstand"
+                  name="whichareaofthepaymentsummarydoyounotunderstand" id="TaxesandCommissions"
+                  (change)="whichareaofthepaymentsummarydoyounotunderstandChange($event)">
+                <span class="stornme">税收和佣金</span> <br />
+
+                <input type="checkbox" formControlName="whichareaofthepaymentsummarydoyounotunderstand"
+                  name="whichareaofthepaymentsummarydoyounotunderstand" id="Others"
+                  (change)="whichareaofthepaymentsummarydoyounotunderstandChange($event)">
+                <span class="stornme">其他（请提及）</span> <br />
+              </div>
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrors.whichareaofthepaymentsummarydoyounotunderstand">
+                  {{formErrors.whichareaofthepaymentsummarydoyounotunderstand}}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="row" *ngIf="whichareaofthepaymentsummarydoyounotunderstandOtherFlag ">
+            <div class="form-group"
+              [ngClass]="{'has-error': formErrors.whichareaofthepaymentsummarydoyounotunderstandOther}">
+              <label class="col-sm-6 control-label" for="whichareaofthepaymentsummarydoyounotunderstandOther">请提及<span
+                  class="mandantory">*</span></label>
+              <div class="col-sm-6">
+                <input id="whichareaofthepaymentsummarydoyounotunderstandOther" type="text" class="form-control"
+                  formControlName="whichareaofthepaymentsummarydoyounotunderstandOther" (blur)="logValidationErrors()"
+                  maxlength="200">
+                <div class="help-block-rk">
+                  <span class="help-block" *ngIf="formErrors.whichareaofthepaymentsummarydoyounotunderstandOther">
+                    {{formErrors.whichareaofthepaymentsummarydoyounotunderstandOther}}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="form-group"
+              [ngClass]="{'has-error': formErrors.DoyouthinkthistoolJenniferhashelpedyouunderstandthepaymentsummarybetter}">
+              <div class="col-sm-6 text-right" for="DoyouthinkthistoolJenniferhashelpedyouunderstandthepaymentsummarybetter">
+                <label class=" control-label" for="whichareaofthepaymentsummarydoyounotunderstand">
+                  2. 您认为该软件（Jennifer）帮助您更好地了解了付款对账吗？
+                  <span class="mandantory">*</span></label>
+              </div>
+
+              <div class="col-sm-6">
+                <label for="Clarity" class="control-label radio-inline">
+                  <input id="Clarity" type="radio" value="It has given me better clarity on the report"
+                    name="DoyouthinkthistoolJenniferhashelpedyouunderstandthepaymentsummarybetter"
+                    formControlName="DoyouthinkthistoolJenniferhashelpedyouunderstandthepaymentsummarybetter"
+                    (blur)="logValidationErrorschinese()"
+                    (change)="DoyouthinkthistoolJenniferhashelpedyouunderstandthepaymentsummarybetterOtherYesChange($event)">
+                  Jennifer使我对付款报告更加清楚。
+                </label> <br />
+
+                <label for="DontKnow" class="control-label radio-inline">
+                  <input id="DontKnow" type="radio"
+                    value="I don’t know why we need to use this, I already have all of this information"
+                    name="DoyouthinkthistoolJenniferhashelpedyouunderstandthepaymentsummarybetter"
+                    formControlName="DoyouthinkthistoolJenniferhashelpedyouunderstandthepaymentsummarybetter"
+                    (blur)="logValidationErrorschinese()"
+                    (change)="DoyouthinkthistoolJenniferhashelpedyouunderstandthepaymentsummarybetterOtherYesChange($event)">
+                  我不清楚为什么需要使用Jennifer，我已经有所有需要的付款信息。
+                </label> <br />
+
+                <label for="Other" class="control-label radio-inline">
+                  <input id="Other" type="radio" value="Other"
+                    name="DoyouthinkthistoolJenniferhashelpedyouunderstandthepaymentsummarybetter"
+                    formControlName="DoyouthinkthistoolJenniferhashelpedyouunderstandthepaymentsummarybetter"
+                    (blur)="logValidationErrorschinese()"
+                    (change)="DoyouthinkthistoolJenniferhashelpedyouunderstandthepaymentsummarybetterChange($event)">
+                  其他（请提及）
+                </label>
+              </div>
+              <div class="help-block-rk">
+                <span class="help-block"
+                  *ngIf="formErrors.DoyouthinkthistoolJenniferhashelpedyouunderstandthepaymentsummarybetter">
+                  {{formErrors.DoyouthinkthistoolJenniferhashelpedyouunderstandthepaymentsummarybetter}}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="row"
+            *ngIf="DoyouthinkthistoolJenniferhashelpedyouunderstandthepaymentsummarybetterOtherFlag && !DoyouthinkthistoolJenniferhashelpedyouunderstandthepaymentsummarybetterOtherYesFlag">
+
+            <div class="form-group"
+              [ngClass]="{'has-error': formErrors.DoyouthinkthistoolJenniferhashelpedyouunderstandthepaymentsummarybetterOther}">
+              <label class="col-sm-6 control-label"
+                for="DoyouthinkthistoolJenniferhashelpedyouunderstandthepaymentsummarybetterOther">请提及<span
+                  class="mandantory">*</span></label>
+              <div class="col-sm-6">
+                <input id="DoyouthinkthistoolJenniferhashelpedyouunderstandthepaymentsummarybetterOther" type="text"
+                  class="form-control"
+                  formControlName="DoyouthinkthistoolJenniferhashelpedyouunderstandthepaymentsummarybetterOther"
+                  (blur)="logValidationErrors()" maxlength="200">
+                <div class="help-block-rk">
+                  <span class="help-block"
+                    *ngIf="formErrors.DoyouthinkthistoolJenniferhashelpedyouunderstandthepaymentsummarybetterOther">
+                    {{formErrors.DoyouthinkthistoolJenniferhashelpedyouunderstandthepaymentsummarybetterOther}}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row" style="margin-top: 5px;">
+            <div class="form-group" [ngClass]="{'has-error': formErrors.CommentsSection}">
+              <label class="col-sm-6 control-label text-right" for="CommentsSection"> 3. 请提供其他评论 <span
+                  class="mandantory">*</span></label>
+              <div class="col-sm-6">
+                <input id="CommentsSection" type="text" class="form-control" formControlName="CommentsSection"
+                  (blur)="logValidationErrorschinese()" maxlength="200">
+                <div class="help-block-rk">
+                  <span class="help-block" *ngIf="formErrors.CommentsSection">
+                    {{formErrors.CommentsSection}}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="panel-footer">
+          <div class="pull-right btn-toolbar">
+            <button type="button" type="button" class="btn btn-primary" routerLink="/Statementlist"
+              title="Cancel">Cancel</button>
+            <button class="btn btn-success" prevent-double-submit type="submit" title="save"
+              [disabled]="ChineseForm.invalid">Save</button>
+          </div>
+          <div class="clearfix"></div>
+        </div>
+      </form>
+    </div>
+    <div class="tab-pane  fade" id="profile" role="tabpanel" aria-labelledby="profile-tab"> 
+      <form [formGroup]="PaymentSurveyForm" (ngSubmit)="Insert()" class="form-group">
+        <div class="panel-body">
+          <div class="row">
+            <div class="form-group" [ngClass]="{'has-error': formErrors.Doyouunderstandthepaymentsummarycompletely}">
+              <div class="col-sm-6 text-right" for="Doyouunderstandthepaymentsummarycompletely">
+                <label class=" control-label " for="whichareaofthepaymentsummarydoyounotunderstand">
+                 1. Do you understand
+                  the payment summary completely?
+                  <span class="mandantory">*</span></label>
+              </div>
+              <div class=" col-sm-6">
+                <label for="Yes" class="control-label radio-inline">
+                  <input id="Yes" type="radio" value="Yes" name="Doyouunderstandthepaymentsummarycompletely"
+                    formControlName="Doyouunderstandthepaymentsummarycompletely" (blur)="logValidationErrors()"
+                    (change)="DoyouunderstandthepaymentsummarycompletelyChangeYes($event)">
+                  Yes
+                </label>
+                <label for="No" class="control-label radio-inline">
+                  <input id="No" type="radio" value="No" name="Doyouunderstandthepaymentsummarycompletely"
+                    formControlName="Doyouunderstandthepaymentsummarycompletely" (blur)="logValidationErrors()"
+                    (change)="DoyouunderstandthepaymentsummarycompletelyChange($event)">
+                  No
+                </label>
+              </div>
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrors.Doyouunderstandthepaymentsummarycompletely">
+                  {{formErrors.Doyouunderstandthepaymentsummarycompletely}}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="row"
+            *ngIf="whichareaofthepaymentsummarydoyounotunderstandFlag && !DoyouunderstandthepaymentsummarycompletelyChangeYesFlag">
+            <div class="form-group"
+              [ngClass]="{'has-error': formErrors.whichareaofthepaymentsummarydoyounotunderstand}">
+              <div class=" col-sm-6 text-right" for="whichareaofthepaymentsummarydoyounotunderstand">
+                <label class=" control-label" for="whichareaofthepaymentsummarydoyounotunderstand">
+                 1.1  which area
+                  of the payment summary do you not understand?
+                  <span class="mandantory">*</span></label>
+              </div>
+              <div class="col-sm-6">
+                <input type="checkbox" formControlName="whichareaofthepaymentsummarydoyounotunderstand"
+                  name="whichareaofthepaymentsummarydoyounotunderstand" id="MarketplaceCredits"
+                  (change)="whichareaofthepaymentsummarydoyounotunderstandChange($event)">
+                <span class="stornme">Marketplace Credits</span> <br />
+                <input type="checkbox" formControlName="whichareaofthepaymentsummarydoyounotunderstand"
+                  name="whichareaofthepaymentsummarydoyounotunderstand" id="NetRevenue"
+                  (change)="whichareaofthepaymentsummarydoyounotunderstandChange($event)">
+                <span class="stornme">Net Revenue</span> <br />
+
+                <input type="checkbox" formControlName="whichareaofthepaymentsummarydoyounotunderstand"
+                  name="whichareaofthepaymentsummarydoyounotunderstand" id="IORInvestments"
+                  (change)="whichareaofthepaymentsummarydoyounotunderstandChange($event)">
+                <span class="stornme">IOR Investments</span> <br />
+                <input type="checkbox" formControlName="whichareaofthepaymentsummarydoyounotunderstand"
+                  name="whichareaofthepaymentsummarydoyounotunderstand" id="TaxesandCommissions"
+                  (change)="whichareaofthepaymentsummarydoyounotunderstandChange($event)">
+                <span class="stornme">Taxes and Commissions</span> <br />
+
+                <input type="checkbox" formControlName="whichareaofthepaymentsummarydoyounotunderstand"
+                  name="whichareaofthepaymentsummarydoyounotunderstand" id="Others"
+                  (change)="whichareaofthepaymentsummarydoyounotunderstandChange($event)">
+                <span class="stornme">Others (Please mention)</span> <br />
+              </div>
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrors.whichareaofthepaymentsummarydoyounotunderstand">
+                  {{formErrors.whichareaofthepaymentsummarydoyounotunderstand}}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="row" *ngIf="whichareaofthepaymentsummarydoyounotunderstandOtherFlag ">
+            <div class="form-group"
+              [ngClass]="{'has-error': formErrors.whichareaofthepaymentsummarydoyounotunderstandOther}">
+              <label class="col-sm-6 control-label" for="whichareaofthepaymentsummarydoyounotunderstandOther">Please
+                mention (If Others)<span class="mandantory">*</span></label>
+              <div class="col-sm-6">
+                <input id="whichareaofthepaymentsummarydoyounotunderstandOther" type="text" class="form-control"
+                  formControlName="whichareaofthepaymentsummarydoyounotunderstandOther" (blur)="logValidationErrors()"
+                  maxlength="200">
+                <div class="help-block-rk">
+                  <span class="help-block" *ngIf="formErrors.whichareaofthepaymentsummarydoyounotunderstandOther">
+                    {{formErrors.whichareaofthepaymentsummarydoyounotunderstandOther}}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="form-group"
+              [ngClass]="{'has-error': formErrors.DoyouthinkthistoolJenniferhashelpedyouunderstandthepaymentsummarybetter}">
+              <div class=" col-sm-6 text-right" for="DoyouthinkthistoolJenniferhashelpedyouunderstandthepaymentsummarybetter">
+                <label class=" control-label" for="whichareaofthepaymentsummarydoyounotunderstand">2. Do you think this
+                  tool (Jennifer) has helped you understand the payment summary better?
+                  <span class="mandantory">*</span></label>
+              </div>
+
+              <div class="col-sm-6">
+                <label for="Clarity" class="control-label radio-inline">
+                  <input id="Clarity" type="radio" value="It has given me better clarity on the report"
+                    name="DoyouthinkthistoolJenniferhashelpedyouunderstandthepaymentsummarybetter"
+                    formControlName="DoyouthinkthistoolJenniferhashelpedyouunderstandthepaymentsummarybetter"
+                    (blur)="logValidationErrors()"
+                    (change)="DoyouthinkthistoolJenniferhashelpedyouunderstandthepaymentsummarybetterOtherYesChange($event)">
+                  It has given me better clarity on the report.
+                </label> <br />
+
+                <label for="DontKnow" class="control-label radio-inline">
+                  <input id="DontKnow" type="radio"
+                    value="I don’t know why we need to use this, I already have all of this information"
+                    name="DoyouthinkthistoolJenniferhashelpedyouunderstandthepaymentsummarybetter"
+                    formControlName="DoyouthinkthistoolJenniferhashelpedyouunderstandthepaymentsummarybetter"
+                    (blur)="logValidationErrors()"
+                    (change)="DoyouthinkthistoolJenniferhashelpedyouunderstandthepaymentsummarybetterOtherYesChange($event)">
+                  I don’t know why we need to use this, I already have all of this information.
+                </label> <br />
+
+                <label for="Other" class="control-label radio-inline">
+                  <input id="Other" type="radio" value="Other"
+                    name="DoyouthinkthistoolJenniferhashelpedyouunderstandthepaymentsummarybetter"
+                    formControlName="DoyouthinkthistoolJenniferhashelpedyouunderstandthepaymentsummarybetter"
+                    (blur)="logValidationErrors()"
+                    (change)="DoyouthinkthistoolJenniferhashelpedyouunderstandthepaymentsummarybetterChange($event)">
+                  Others (Please mention)
+                </label>
+              </div>
+              <div class="help-block-rk">
+                <span class="help-block"
+                  *ngIf="formErrors.DoyouthinkthistoolJenniferhashelpedyouunderstandthepaymentsummarybetter">
+                  {{formErrors.DoyouthinkthistoolJenniferhashelpedyouunderstandthepaymentsummarybetter}}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="row"
+            *ngIf="DoyouthinkthistoolJenniferhashelpedyouunderstandthepaymentsummarybetterOtherFlag && !DoyouthinkthistoolJenniferhashelpedyouunderstandthepaymentsummarybetterOtherYesFlag">
+
+            <div class="form-group"
+              [ngClass]="{'has-error': formErrors.DoyouthinkthistoolJenniferhashelpedyouunderstandthepaymentsummarybetterOther}">
+              <label class="col-sm-6 control-label"
+                for="DoyouthinkthistoolJenniferhashelpedyouunderstandthepaymentsummarybetterOther">Please
+                mention (If Others)<span class="mandantory">*</span></label>
+              <div class="col-sm-6">
+                <input id="DoyouthinkthistoolJenniferhashelpedyouunderstandthepaymentsummarybetterOther" type="text"
+                  class="form-control"
+                  formControlName="DoyouthinkthistoolJenniferhashelpedyouunderstandthepaymentsummarybetterOther"
+                  (blur)="logValidationErrors()" maxlength="200">
+                <div class="help-block-rk">
+                  <span class="help-block"
+                    *ngIf="formErrors.DoyouthinkthistoolJenniferhashelpedyouunderstandthepaymentsummarybetterOther">
+                    {{formErrors.DoyouthinkthistoolJenniferhashelpedyouunderstandthepaymentsummarybetterOther}}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+         
+          <div class="row" style="margin-top: 5px;">
+            <div class="form-group" [ngClass]="{'has-error': formErrors.CommentsSection}">
+              <label class="col-sm-6 control-label text-right" for="CommentsSection">3. Comments Section<span
+                  class="mandantory">*</span></label>
+              <div class="col-sm-6">
+                <input id="CommentsSection" type="text" class="form-control" formControlName="CommentsSection"
+                  (blur)="logValidationErrors()" maxlength="200">
+                <div class="help-block-rk">
+                  <span class="help-block" *ngIf="formErrors.CommentsSection">
+                    {{formErrors.CommentsSection}}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="panel-footer">
+          <div class="pull-right btn-toolbar">
+            <button type="button" type="button" class="btn btn-primary" routerLink="/Statementlist"
+              title="Cancel">Cancel</button>
+            <button class="btn btn-success" prevent-double-submit type="submit" title="save"
+              [disabled]="PaymentSurveyForm.invalid">Save</button>
+          </div>
+          <div class="clearfix"></div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

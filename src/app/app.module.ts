@@ -33,6 +33,7 @@ import { InputsModule } from '@progress/kendo-angular-inputs';
 import { DateInputsModule } from '@progress/kendo-angular-dateinputs';
 import { EditorModule } from '@progress/kendo-angular-editor';
 import { ChartsModule } from '@progress/kendo-angular-charts';
+import { TreeListModule } from '@progress/kendo-angular-treelist';
 
 import { JwtInterceptor, HttpErrorInterceptor, LoaderInterceptor } from './_helpers';
 import { EncrDecrService } from './_services/service/encr-decr.service';
@@ -53,6 +54,7 @@ import { IndexComponent } from './index/index.component';
 import { Dashboard2Component } from './dashboard2/dashboard2.component';
 import { Submenu1Component } from './submenu1/submenu1.component';
 import { Submenu2Component } from './submenu2/submenu2.component';
+
 
 
 @NgModule({
@@ -95,7 +97,7 @@ import { Submenu2Component } from './submenu2/submenu2.component';
     ChartsModule,
     // user defined modules by rk 
     AccountModule,
-    AppRoutingModule,
+    AppRoutingModule, 
 
   ],
   declarations: [

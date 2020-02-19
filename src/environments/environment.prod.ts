@@ -5,14 +5,14 @@ export const environment = {
   // basedomain: 'http://meeraapi.jennifer-in.com/',
 
   // aws server 1 
-  baseUrl: 'http://sandbox.jennifer-cn.com/api/',
-  basedomain: 'http://sandbox.jennifer-cn.com/',
+  // baseUrl: 'http://sandbox.jennifer-cn.com/api/',
+  // basedomain: 'http://sandbox.jennifer-cn.com/',
  
 
   //aws server 3
 
-  // baseUrl: 'https://api.jennifer-in.com/api/',
-  // basedomain: 'https://api.jennifer-in.com/',
+  baseUrl: 'https://api.jennifer-in.com/api/',
+  basedomain: 'https://api.jennifer-in.com/',
 
 
   defaultImageUrl: 'UploadFiles/Item/default.png'

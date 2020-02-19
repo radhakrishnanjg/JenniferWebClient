@@ -21,7 +21,7 @@
     </div>
   </div>
 </div>
-<form autocomplete="off" [formGroup]="reportmasterform" (ngSubmit)="SaveData()" class="form-horizontal">
+<form   [formGroup]="reportmasterform" (ngSubmit)="SaveData()" class="form-horizontal">
   <div class="panel panel-default">
     <div class="panel-heading">
       <div class="row">
@@ -138,7 +138,7 @@
         </div>
       </div>
 
-      <form autocomplete="off" [formGroup]="reportdetailform" class="form-horizontal">
+      <form   [formGroup]="reportdetailform" class="form-horizontal">
         <span class="groupspanheader"> Parameter Details </span>
         <div class="row" *ngIf="action">
           <div class="col-sm-1">

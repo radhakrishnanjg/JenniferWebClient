@@ -174,6 +174,7 @@ export class BoeComponent implements OnInit {
     let HSNCode = (this.lstItem[id]["HSNCode"].toString())
     if (editField < 0) {
       this.alertService.error('Entered Duty Amount must be greater than or equal to zero.!');
+      // $('#' + id).val(Qty);
       return;
     }
     else {

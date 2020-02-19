@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthorizationGuard } from '../../_guards/Authorizationguard';
 
+import { ViewportScroller } from '@angular/common';
 import { Helpmenu } from '../../_services/model/helpmenu';
 import { HelpmenuService } from '../../_services/service/helpmenu.service';
 import { TicketService } from '../../_services/service/ticket.service'
@@ -10,10 +11,11 @@ import { Dropdown, Ticket } from 'src/app/_services/model';
 import { PrivateutilityService } from '../../_services/service/privateutility.service';
 import { ToastrService } from 'ngx-toastr';
 
+import { Employee, employees } from 'src/app/_services/model';
 @Component({
   selector: 'app-helpnavigation',
   templateUrl: './helpnavigation.component.html',
-  styleUrls: ['./helpnavigation.component.scss']
+  styleUrls: ['./helpnavigation.component.css']
 })
 
 export class HelpnavigationComponent implements OnInit {
@@ -23,7 +25,6 @@ export class HelpnavigationComponent implements OnInit {
   objTicket: Ticket = {} as any;
 
   items: Helpmenu[] = [] as any;
-  leftmenus: Helpmenu[] = [] as any;
   SearchKeyword: string = '';
   panelTitle: string;
   constructor(
@@ -32,7 +33,7 @@ export class HelpnavigationComponent implements OnInit {
     private fb: FormBuilder,
     private _router: Router,
     private _authorizationGuard: AuthorizationGuard,
-    private _ticketService:TicketService,
+    private _ticketService: TicketService,
     private alertService: ToastrService,
   ) { }
 
@@ -87,46 +88,7 @@ export class HelpnavigationComponent implements OnInit {
     });
   }
 
-
-  onLoad() {
-
-    if (localStorage.getItem("helpmenucontent") == null) {
-      return this._HelpmenuService.search('PageContent', '', true).subscribe(
-        (lst) => {
-          if (lst != null) {
-            this.items = lst;
-            this.leftmenus = lst;
-            localStorage.setItem("helpmenucontent", JSON.stringify(lst));
-          }
-        },
-        (err) => {
-          console.log(err);
-        }
-      );
-    }
-  }
-
-  filter(HelpMenuID: number): Helpmenu[] {
-    let result: Helpmenu[] = [];
-    let helpmenucontent = JSON.parse(localStorage.getItem("helpmenucontent"));
-    this.items = helpmenucontent;
-    result = helpmenucontent.filter(a => a.ParentId == HelpMenuID);
-    return result;
-  }
-  childfilter(HelpMenuID: number): Helpmenu[] {
-    let result: Helpmenu[] = [];
-    let helpmenucontent = JSON.parse(localStorage.getItem("helpmenucontent"));
-    this.items = helpmenucontent;
-    result = helpmenucontent.filter(a => a.ParentId == HelpMenuID);
-    return result;
-  }
-
-  // Refresh(): void {
-  //   this.SearchKeyword = ''
-  //   let helpmenucontent = JSON.parse(localStorage.getItem("helpmenucontent"));
-  //   this.items = helpmenucontent;
-  // }
-
+  
   ngOnInit() {
 
     this.SupportQueryForm = this.fb.group({
@@ -165,6 +127,52 @@ export class HelpnavigationComponent implements OnInit {
 
   }
 
+  public data: Employee[] = employees;
+  leftmenus: Helpmenu[] = [] as any;
+  griddata: Helpmenu[] = [] as any;
+  onLoad() {
+
+    if (localStorage.getItem("helpmenucontent") == null) {
+      return this._HelpmenuService.search('PageContent', '', true).subscribe(
+        (lst) => {
+          if (lst != null) {
+            this.items = lst;
+            this.leftmenus = lst;     
+            this.griddata = lst;
+            localStorage.setItem("helpmenucontent", JSON.stringify(this.griddata));
+          }
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
+    }
+  }
+
+  filter(HelpMenuID: number): Helpmenu[] {
+    let result: Helpmenu[] = [];
+    let helpmenucontent = JSON.parse(localStorage.getItem("helpmenucontent"));
+    this.items = helpmenucontent;
+    result = helpmenucontent.filter(a => a.ParentId == HelpMenuID);
+    return result;
+  }
+
+  childfilter(HelpMenuID: number): Helpmenu[] {
+    let result: Helpmenu[] = [];
+    let helpmenucontent = JSON.parse(localStorage.getItem("helpmenucontent"));
+    this.items = helpmenucontent;
+    result = helpmenucontent.filter(a => a.ParentId == HelpMenuID);
+    return result;
+  }
+
+  filterdata(HelpMenuID: number) {
+    let result: Helpmenu[] = [];
+    let helpmenucontent = JSON.parse(localStorage.getItem("helpmenucontent"));
+    result = helpmenucontent.filter(a => a.HelpMenuID == HelpMenuID);
+    this.griddata = result;
+  } 
+  
+
   lstModuleType: Dropdown[];
   GetModuleType() {
     this._PrivateutilityService.GetValues('ModuleType')
@@ -202,18 +210,18 @@ export class HelpnavigationComponent implements OnInit {
       (data) => {
         if (data != null && data.Flag == true) {
           this._router.navigate(['/Supporthistory']);
-          this.alertService.success(data.Msg); 
+          this.alertService.success(data.Msg);
         } else {
           this._router.navigate(['/Supporthistory']);
           this.alertService.error(data.Msg);
         }
-        $('#modalstatusconfimation').modal('hide'); 
+        $('#modalstatusconfimation').modal('hide');
       },
       (error: any) => {
         console.log(error);
       }
     );
-  } 
+  }
 
 }
 

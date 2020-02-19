@@ -27,6 +27,8 @@ import { VendorpaymentlistComponent } from './vendorpaymentlist/vendorpaymentlis
 import { VendorpaymentviewComponent } from './vendorpaymentview/vendorpaymentview.component';
 
 import { PaymentsRoutingModule } from './payments.routing.module';
+import { PaymentsurveyComponent } from './paymentsurvey/paymentsurvey.component';
+import { NgPipesModule } from 'ngx-pipes';
 
 @NgModule({
   imports: [
@@ -50,6 +52,7 @@ import { PaymentsRoutingModule } from './payments.routing.module';
     DropDownListModule,
     PopupModule, 
     PDFExportModule,
+    NgPipesModule,
     PaymentsRoutingModule
   ],
   declarations: [
@@ -57,7 +60,8 @@ import { PaymentsRoutingModule } from './payments.routing.module';
     StatementviewComponent,
      VendorpaymentComponent,
     VendorpaymentlistComponent,
-    VendorpaymentviewComponent
+    VendorpaymentviewComponent,
+    PaymentsurveyComponent
   ],
 
   providers: [

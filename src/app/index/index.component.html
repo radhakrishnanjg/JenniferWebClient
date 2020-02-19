@@ -434,7 +434,7 @@
         <p>
           For any enquiries, questions or recommendations, please fill out the following form and will get back to you.
         </p>
-        <form autocomplete="off" [formGroup]="captchaForm" (ngSubmit)="SaveData()">
+        <form   [formGroup]="captchaForm" (ngSubmit)="SaveData()">
           <div class="row rownopadding">
             <div class="form-group col-md-6" [ngClass]="{'has-error': formErrors.Name}">
               <label>Name</label>

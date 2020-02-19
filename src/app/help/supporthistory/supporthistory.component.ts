@@ -9,6 +9,7 @@ import { TicketService } from '../../_services/service/ticket.service';
 import { process, State } from '@progress/kendo-data-query';
 import { GridDataResult, DataStateChangeEvent, PageChangeEvent } from '@progress/kendo-angular-grid';
 import { SortDescriptor, orderBy } from '@progress/kendo-data-query';
+import { FormGroup, FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-supporthistory',
@@ -26,7 +27,7 @@ export class SupporthistoryComponent implements OnInit {
   constructor(
     private alertService: ToastrService,
     private router: Router,
-
+    private fb: FormBuilder,
     private _ticketService: TicketService,
     private _authorizationGuard: AuthorizationGuard
 
@@ -34,8 +35,14 @@ export class SupporthistoryComponent implements OnInit {
 
   }
 
+  SupportForm: FormGroup;
   ngOnInit() {
     this.onLoad('', '', true);
+
+    this.GetUserType();
+    this.SupportForm = this.fb.group({      
+      Query: ['', []],
+    });
   }
 
   Search(): void {
@@ -46,6 +53,19 @@ export class SupporthistoryComponent implements OnInit {
     this.SearchBy = '';
     this.SearchKeyword = '';
     this.Searchaction = true;
+  }
+
+  userType: string;
+  GetUserType() {
+    this._ticketService.getUserType()
+      .subscribe(
+        (data) => {
+          this.userType = data.UserType;
+        },
+        (err: any) => {
+          console.log(err);
+        }
+      );
   }
 
   // editButtonClick(HelpMenuID: number) {
@@ -76,6 +96,7 @@ export class SupporthistoryComponent implements OnInit {
   lstcustomerMsg: History[] = [] as any;
   lstsupportMsg: History[] = [] as any;
   now :Date;
+  SupportStatus: string;
   editButtonClick(id: number) {
     // if (this._authorizationGuard.CheckAcess("Brandlist", "ViewEdit")) {
     //   return;
@@ -89,8 +110,10 @@ export class SupporthistoryComponent implements OnInit {
         (data) => {
           if (data != null && data.length > 0) {
             this.lstHistory = data;
-            this.lstcustomerMsg = this.lstHistory.filter(a => a.UserType == 'C');
-            this.lstsupportMsg = this.lstHistory.filter(a => a.UserType == 'S');
+            // this.lstcustomerMsg = this.lstHistory.filter(a => a.UserType == 'C');
+            // this.lstsupportMsg = this.lstHistory.filter(a => a.UserType == 'S');
+            this.lstHistory = data;
+            this.SupportStatus = data[0].SupportStatus;
           }
         },
         (err: any) => {
@@ -132,6 +155,27 @@ export class SupporthistoryComponent implements OnInit {
         }
       );
     }
+  }
+
+  onClickCloseTicket() {   
+    this._ticketService.closeTicket(this.identity).subscribe(
+      (data) => {
+        if (data != null && data.Flag == true) {
+          this.router.navigate(['/Supporthistory']);
+          this.alertService.success(data.Msg);
+          this.onLoad('', '', true);
+        } else {
+          this.router.navigate(['/Supporthistory']);
+          this.alertService.error(data.Msg);
+          this.onLoad('', '', true);
+        }
+        $('#modalstatusconfimationUpdate').modal('hide'); 
+      },
+      (error: any) => {
+        //
+        console.log(error);
+      }
+    );
   }
 
 
