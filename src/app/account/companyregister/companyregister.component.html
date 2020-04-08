@@ -37,7 +37,7 @@
           </div>
           <div class="row">
             <div class="form-group col-md-6 col-sm-6" [ngClass]="{'has-error': formErrors.EMail}">
-              <label class="control-label" for="EMail">Email<span class="mandantory">*</span></label>
+              <label class="control-label" for="EMail">Email <span class="mandantory">*</span></label>
               <div >
                 <input id="EMail" type="text" class="form-control" formControlName="EMail"
                   (blur)="logValidationErrors()" maxlength="50">

@@ -1,0 +1,411 @@
+<div class="container">
+  <div class="card col-md-12">
+    <div class="card-body">
+
+      <div class='landscren'>
+        <div class='text-left'>
+          <img src="assets\images\logo.png" alt="Logo" height="50" style="margin-top:10px;margin-bottom:10px;" />
+        </div>
+
+        <div class="row">
+          <div class='text-left'>
+            <h2 class="pagheadng">Seller Registration Form 报名表格</h2>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="form-group col-md-6 col-sm-6">
+            <label class="control-label" for="PSP">Select PSP 选择支付服务提供商
+              <span class="mandantory">*</span> :</label>
+          </div>
+          <div class="form-group col-md-6 col-sm-6">
+            <select id="PSP" class="form-control" [(ngModel)]="PSP">
+              <option value="" selected="selected">Select</option>
+              <option *ngFor="let c1 of lstPSP" value={{c1.DropdownValue}}>
+                {{c1.DropdownValue}}
+              </option>
+            </select>
+            <div class="help-block-rk">
+            </div>
+          </div>
+        </div>
+
+        <form *ngIf="PSP == 'PAYONEER'" [formGroup]="registerFormPayoneer" (ngSubmit)="RegisterCompanyPayoneer()">
+          <div class="row">
+            <div class="form-group col-md-6 col-sm-6">
+              <label class="control-label" for="VendorID">EOR Partner 选择出口商伙伴 <span class="mandantory">*</span>
+                :</label>
+            </div>
+            <div class="form-group col-md-6 col-sm-6" [ngClass]="{'has-error': formErrors1.VendorID}">
+              <select id="VendorID" class="form-control" formControlName="VendorID" (blur)="logValidationErrors1()">
+                <option value="0" selected="selected">Select</option>
+                <option *ngFor="let c1 of lstVendor" value={{c1.VendorID}}>
+                  {{c1.VendorName}}
+                </option>
+              </select>
+              <div class="help-block-rk"><span class="help-block" *ngIf="formErrors1.VendorID">
+                  {{formErrors1.VendorID}}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="form-group col-md-6 col-sm-6">
+              <label class="control-label" for="PSPAccountID">Payoneer Account ID 支付服务提供商账号 <span
+                  class="mandantory">*</span> :</label>
+            </div>
+            <div class="form-group col-md-6 col-sm-6" [ngClass]="{'has-error': formErrors1.PSPAccountID}">
+              <input id="PSPAccountID" type="text" class="form-control" formControlName="PSPAccountID"
+                (blur)="logValidationErrors1()" maxlength="30">
+              <div class="help-block-rk"><span class="help-block" *ngIf="formErrors1.PSPAccountID">
+                  {{formErrors1.PSPAccountID}}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="form-group col-md-6 col-sm-6">
+              <label class="control-label" for="IORPartnerID">IOR Partner 选择进口商伙伴 <span class="mandantory">*</span>
+                :</label>
+            </div>
+            <div class="form-group col-md-6 col-sm-6" [ngClass]="{'has-error': formErrors1.IORPartnerID}">
+              <select id="IORPartnerID" class="form-control" formControlName="IORPartnerID"
+                (blur)="logValidationErrors1()">
+                <option value="0" selected="selected">Select</option>
+                <option *ngFor="let c1 of lstIOR" value={{c1.CompanyID}}>
+                  {{c1.CompanyName}}
+                </option>
+              </select>
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrors1.IORPartnerID">
+                  {{formErrors1.IORPartnerID}}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="form-group col-md-6 col-sm-6">
+              <label class="control-label" for="PayoneerEmailID">Payoneer Email ID <span class="mandantory">*</span>
+                :</label>
+            </div>
+            <div class="form-group col-md-6 col-sm-6" [ngClass]="{'has-error': formErrors1.PayoneerEmailID}">
+              <input id="PayoneerEmailID" type="text" class="form-control" formControlName="PayoneerEmailID"
+                (blur)="logValidationErrors1()" maxlength="30">
+              <div class="help-block-rk"><span class="help-block" *ngIf="formErrors1.PayoneerEmailID">
+                  {{formErrors1.PayoneerEmailID}}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="form-group col-md-6 col-sm-6">
+              <label class="control-label" for="PayoneerEmailID">Payoneer Email ID <span class="mandantory">*</span>
+                :</label>
+            </div>
+            <div class="form-group col-md-6 col-sm-6" [ngClass]="{'has-error': formErrors1.PayoneerEmailID}">
+              <input id="PayoneerEmailID" type="text" class="form-control" formControlName="PayoneerEmailID"
+                (blur)="logValidationErrors1()" maxlength="30">
+              <div class="help-block-rk"><span class="help-block" *ngIf="formErrors1.PayoneerEmailID">
+                  {{formErrors1.PayoneerEmailID}}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="form-group col-md-6 col-sm-6">
+            </div>
+            <div class="form-group col-md-4 col-sm-4">
+              <re-captcha (resolved)="resolved($event)" siteKey="6Lcs0-EUAAAAAOO02B-7hFwouI3qGpPcU5BIACP1">
+              </re-captcha>
+              <div class="help-block-rk">
+              </div>
+            </div>
+            <div class="form-group col-md-2 col-sm-2">
+              <button style="background-color: #c63e6c; color: #FFF" class="btn btn-success" type="button"
+                (click)="onClickGetOTP()"> Get OTP 取得 OTP</button>
+            </div>
+          </div>
+
+
+          <div class="form-group">
+            <div class="pull-right btn-toolbar">
+              <button class="btn btn-success" type="submit" prevent-double-submit
+                [disabled]="registerFormPayoneer.invalid">
+                Submit 提交</button>
+              <div class="clearfix"></div>
+            </div>
+            <div class="pull-left">
+              <p>
+                <a routerLinkActive="active" routerLink="/Signin" class="pointer">Already a Member ? Sign In 登录</a>
+              </p>
+            </div>
+          </div>
+        </form>
+
+        <form *ngIf="PSP != 'PAYONEER' && PSP != ''" [formGroup]="registerFormOthers" (ngSubmit)="RegisterCompany()">
+          <div class="row">
+            <div class="form-group col-md-6 col-sm-6">
+              <label class="control-label" for="CompanyName">Company Name (Pinyin) 公司名称（拼音）<span
+                  class="mandantory">*</span> :</label>
+            </div>
+            <div class="form-group col-md-6 col-sm-6" [ngClass]="{'has-error': formErrors2.CompanyName}">
+              <input id="CompanyName" type="text" class="form-control" formControlName="CompanyName"
+                (blur)="logValidationErrors2()" maxlength="200">
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrors2.CompanyName">
+                  {{formErrors2.CompanyName}}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="form-group col-md-6 col-sm-6">
+              <label class="control-label" for="CompanyPhoneNumber">Company Phone Number 公司电话 <span
+                  class="mandantory">*</span> :</label>
+            </div>
+            <div class="form-group col-md-2 col-sm-2" [ngClass]="{'has-error': formErrors2.CompanyPhoneNumberCode}">
+              <input id="CompanyPhoneNumberCode" type="text" class="form-control" placeholder="Country Code"
+                formControlName="CompanyPhoneNumberCode" (blur)="logValidationErrors2()" maxlength="5"
+                onkeypress="return /[0-9.]/i.test(event.key)">
+              <div class="help-block-rk"><span class="help-block" *ngIf="formErrors2.CompanyPhoneNumberCode">
+                  {{formErrors2.CompanyPhoneNumberCode}}
+                </span>
+              </div>
+            </div>
+            <div class="form-group col-md-4 col-sm-4" [ngClass]="{'has-error': formErrors2.CompanyPhoneNumber}">
+              <input id="CompanyPhoneNumber" type="text" class="form-control" formControlName="CompanyPhoneNumber"
+                maxlength="15" (blur)="logValidationErrors2()" placeholder="Number"
+                onkeypress="return /[0-9.]/i.test(event.key)">
+              <div class="help-block-rk"><span class="help-block" *ngIf="formErrors2.CompanyPhoneNumber">
+                  {{formErrors2.CompanyPhoneNumber}}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="form-group col-md-6 col-sm-6">
+              <label class="control-label" for="CountryID">Country 国家 <span class="mandantory">* </span>
+                :</label>
+            </div>
+            <div class="form-group col-md-6 col-sm-6" [ngClass]="{'has-error': formErrors2.CountryID}">
+              <select id="CountryID" class="form-control" formControlName="CountryID" (blur)="logValidationErrors2()">
+                <option value="0" selected="selected">Select</option>
+                <option *ngFor="let c1 of lstCountries" value={{c1.CountryID}}>
+                  {{c1.CountryName}}
+                </option>
+              </select>
+              <div class="help-block-rk"><span class="help-block" *ngIf="formErrors2.CountryID">
+                  {{formErrors2.CountryID}}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="form-group col-md-6 col-sm-6">
+              <label class="control-label" for="CompanyAddress">Company Address 公司地址 （拼音）<span
+                  class="mandantory">*</span> :</label>
+            </div>
+            <div class="form-group col-md-6 col-sm-6" [ngClass]="{'has-error': formErrors2.CompanyAddress}">
+              <input id="CompanyAddress" type="text" class="form-control" formControlName="CompanyAddress"
+                (blur)="logValidationErrors2()" maxlength="400">
+              <div class="help-block-rk"><span class="help-block" *ngIf="formErrors2.CompanyAddress">
+                  {{formErrors2.CompanyAddress}}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="form-group col-md-6 col-sm-6">
+              <label class="control-label" for="FileData1">Upload Business License (jpg, pdf, png) 上传营业执照（jpg,
+                pdf, png）<span class="mandantory">*</span> :</label>
+            </div>
+            <div class="form-group col-md-6 col-sm-6" [ngClass]="{'has-error': formErrors2.FileData1}">
+              <input type="file" id="file" accept="image/*,application/pdf,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" formControlName="FileData1"
+                (change)="onFileChanged($event)">
+              <div class="help-block-rk"><span class="help-block" *ngIf="formErrors2.FileData1">
+                  {{formErrors2.FileData1}}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="form-group col-md-6 col-sm-6">
+              <label class="control-label" for="ContactPerson">Contact Person Name 联系人（英文名/拼音）<span
+                  class="mandantory">*</span> :</label>
+            </div>
+            <div class="form-group col-md-6 col-sm-6" [ngClass]="{'has-error': formErrors2.ContactPerson}">
+              <input id="ContactPerson" type="text" class="form-control" formControlName="ContactPerson"
+                (blur)="logValidationErrors2()" maxlength="80">
+              <div class="help-block-rk"><span class="help-block" *ngIf="formErrors2.ContactPerson">
+                  {{formErrors2.ContactPerson}}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="form-group col-md-6 col-sm-6">
+              <label class="control-label" for="EMail">Email ID 邮箱 ID <span class="mandantory">*</span> :</label>
+            </div>
+            <div class="form-group col-md-6 col-sm-6" [ngClass]="{'has-error': formErrors2.EMail}">
+              <input id="EMail" type="text" class="form-control" formControlName="EMail" (blur)="logValidationErrors2()"
+                maxlength="50">
+              <div class="help-block-rk"><span class="help-block" *ngIf="formErrors2.EMail">
+                  {{formErrors2.EMail}}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="form-group col-md-6 col-sm-6">
+              <label class="control-label" for="ContactNumber">Mobile Number 手机号码 <span class="mandantory">*</span>
+                :</label>
+            </div>
+            <div class="form-group col-md-2 col-sm-2" [ngClass]="{'has-error': formErrors2.ContactNumberCode}">
+              <input id="ContactNumberCode" type="text" class="form-control" placeholder="Country Code"
+                formControlName="ContactNumberCode" (blur)="logValidationErrors2()" maxlength="5"
+                onkeypress="return /[0-9.]/i.test(event.key)">
+              <div class="help-block-rk"><span class="help-block" *ngIf="formErrors2.ContactNumberCode">
+                  {{formErrors2.ContactNumberCode}}
+                </span>
+              </div>
+            </div>
+            <div class="form-group col-md-4 col-sm-4" [ngClass]="{'has-error': formErrors2.ContactNumber}">
+              <input id="ContactNumber" type="text" class="form-control" formControlName="ContactNumber" maxlength="15"
+                (blur)="logValidationErrors2()" placeholder="Number" onkeypress="return /[0-9.]/i.test(event.key)">
+              <div class="help-block-rk"><span class="help-block" *ngIf="formErrors2.ContactNumber">
+                  {{formErrors2.ContactNumber}}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="form-group col-md-6 col-sm-6">
+              <label class="control-label" for="WeChatID">WeChat ID 微信ID <span class="mandantory">*</span> :</label>
+            </div>
+            <div class="form-group col-md-6 col-sm-6" [ngClass]="{'has-error': formErrors2.WeChatID}">
+              <input id="WeChatID" type="text" class="form-control" formControlName="WeChatID"
+                (blur)="logValidationErrors2()" maxlength="50">
+              <div class="help-block-rk"><span class="help-block" *ngIf="formErrors2.WeChatID">
+                  {{formErrors2.WeChatID}}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="form-group col-md-6 col-sm-6">
+              <label class="control-label" for="IORPartnerID">IOR Partner 选择进口商伙伴 <span class="mandantory">*</span>
+                :</label>
+            </div>
+            <div class="form-group col-md-6 col-sm-6" [ngClass]="{'has-error': formErrors2.IORPartnerID}">
+              <select id="IORPartnerID" class="form-control" formControlName="IORPartnerID"
+                (blur)="logValidationErrors2()">
+                <option value="0" selected="selected">Select</option>
+                <option *ngFor="let c1 of lstIOR" value={{c1.CompanyID}}>
+                  {{c1.CompanyName}}
+                </option>
+              </select>
+              <div class="help-block-rk"><span class="help-block" *ngIf="formErrors2.IORPartnerID">
+                  {{formErrors2.IORPartnerID}}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="form-group col-md-6 col-sm-6">
+              <label class="control-label" for="PSPAccountID">PSP Account ID (if any) 支付服务提供商账号（如果有）<span
+                  class="mandantory">*</span> :</label>
+            </div>
+            <div class="form-group col-md-6 col-sm-6" [ngClass]="{'has-error': formErrors2.PSPAccountID}">
+              <input id="PSPAccountID" type="text" class="form-control" formControlName="PSPAccountID"
+                (blur)="logValidationErrors2()" maxlength="30">
+              <div class="help-block-rk"><span class="help-block" *ngIf="formErrors2.PSPAccountID">
+                  {{formErrors2.PSPAccountID}}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="form-group col-md-6 col-sm-6">
+              <label class="control-label" for="VendorID">EOR Partner 选择出口商伙伴 <span class="mandantory">*</span>
+                :</label>
+            </div>
+            <div class="form-group col-md-6 col-sm-6" [ngClass]="{'has-error': formErrors2.VendorID}">
+              <select id="VendorID" class="form-control" formControlName="VendorID" (blur)="logValidationErrors2()">
+                <option value="0" selected="selected">Select</option>
+                <option *ngFor="let c1 of lstVendor" value={{c1.VendorID}}>
+                  {{c1.VendorName}}
+                </option>
+              </select>
+              <div class="help-block-rk"><span class="help-block" *ngIf="formErrors2.VendorID">
+                  {{formErrors2.VendorID}}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="form-group col-md-6 col-sm-6">
+              <label class="control-label" for="LogisticsPartner">Logistics Partner 选择物流公司 :</label>
+            </div>
+            <div class="form-group col-md-6 col-sm-6">
+              <select id="LogisticsPartner" class="form-control" formControlName="LogisticsPartner">
+                <option value="" selected="selected">Select</option>
+                <option *ngFor="let c1 of lstLogisticsPartner" value={{c1.DropdownValue}}>
+                  {{c1.DropdownValue}}
+                </option>
+              </select>
+              <div class="help-block-rk">
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="form-group col-md-6 col-sm-6">
+              <label class="control-label" for="TotalSKU">Total Number of Preferred SKUs you want to list
+                您要列出的首选SKU总数 <span class="mandantory">*</span> :</label>
+            </div>
+            <div class="form-group col-md-6 col-sm-6" [ngClass]="{'has-error': formErrors2.TotalSKU}">
+              <input id="TotalSKU" type="text" class="form-control" formControlName="TotalSKU"
+                (blur)="logValidationErrors2()" maxlength="5" onkeypress="return /[0-9]/i.test(event.key)">
+              <div class="help-block-rk"><span class="help-block" *ngIf="formErrors2.TotalSKU">
+                  {{formErrors2.TotalSKU}}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="pull-right btn-toolbar">
+              <button class="btn btn-success" type="submit" prevent-double-submit
+                [disabled]="registerFormOthers.invalid">
+                Submit 提交</button>
+              <div class="clearfix"></div>
+            </div>
+            <div class="pull-left">
+              <p>
+                <a routerLinkActive="active" routerLink="/Signin" class="pointer">Already a Member ? Sign In 登录</a>
+              </p>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<alert></alert>

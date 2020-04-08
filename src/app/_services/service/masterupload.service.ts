@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { MasterUpload,Result } from '../model/index';
+import { MasterUpload, Result } from '../model/index';
 import { AuthenticationService } from './authentication.service';
 import { environment } from '../../../environments/environment';
 @Injectable({
@@ -11,7 +11,7 @@ import { environment } from '../../../environments/environment';
 export class MasteruploadService {
 
   UploadList: MasterUpload[];
-  objUpload: MasterUpload; 
+  objUpload: MasterUpload;
 
   constructor(private httpClient: HttpClient,
     private authenticationService: AuthenticationService) { }
@@ -68,6 +68,27 @@ export class MasteruploadService {
   }
 
 
+  //#region Object File
+
+  public FileSave(Filedata: File, Objectid: string): Observable<string> {
+    let currentUser = this.authenticationService.currentUserValue;
+    let LoginId = currentUser.UserId;
+    let frmData = new FormData();
+    frmData.append("LoginId", LoginId.toString());
+    frmData.append("FileData", Filedata, Filedata.name);
+    // frmData.append("CompanyID", currentUser.CompanyID.toString());
+    frmData.append("Objectid", Objectid);
+    return this.httpClient.post<string>(environment.baseUrl + `MasterUpload/FileSave`, frmData)
+      .pipe(catchError(this.handleError));
+  }
+
+  public DownloadObjectFile(Objectid: string) {
+    return this.httpClient.get(environment.baseUrl + `MasterUpload/DownloadObjectFile?Objectid=` + Objectid,
+      { responseType: 'blob' })
+      .pipe(catchError(this.handleError));
+  }
+
+  //#endregion
   private handleError(errorResponse: HttpErrorResponse) {
     if (errorResponse.error instanceof ErrorEvent) {
       console.error('Client Side Error :', errorResponse.error.message);

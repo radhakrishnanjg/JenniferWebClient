@@ -26,7 +26,7 @@ export class CustomerwarehouseComponent implements OnInit {
   action: boolean;
   identity: number = 0;
   Searchaction: boolean = true;
-  emailPattern = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$";
+  emailPattern = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}$";
   constructor(
     private alertService: ToastrService,
     private fb: FormBuilder,

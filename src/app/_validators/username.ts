@@ -36,6 +36,7 @@ import { ValidatorFn, Validators } from '@angular/forms';
 import 'rxjs/add/operator/map';
 import { VoucherService } from '../_services/service/voucher.service';
 import { LedgerService } from '../_services/service/ledger.service';
+import { SellerregistrationService } from '../_services/service/crossborder/sellerregistration.service';
 function isEmptyInputValue(value: any): boolean {
   // we don't check for string here so it also works with arrays
   return value == null || value.length === 0;
@@ -48,6 +49,7 @@ export class UsernameValidator {
 
   constructor(
     private _accountService: AccountService,
+    private _SellerregistrationService: SellerregistrationService,
     private _userService: UserService,
     private _companydetailService: CompanydetailService,
     private _locationService: LocationService,
@@ -70,14 +72,13 @@ export class UsernameValidator {
     private _goodsstorageService: GoodsstorageService,
     private _goodsDisputeService: GoodsDisputeService,
     private _salesShipmentService: SalesShipmentService,
-    
+
     private _BoeService: BoeService,
     private _goodsReceiptService: GoodsReceiptService,
     private _voucherService: VoucherService,
     private _ledgerService: LedgerService,
   ) {
   }
-
 
   checkUsername(): AsyncValidatorFn {
     return (control: AbstractControl): Observable<{ [key: string]: any } | null> => {
@@ -91,6 +92,20 @@ export class UsernameValidator {
         );
     };
   }
+
+  isEmailCrossborderRegisterd(): AsyncValidatorFn {
+    return (control: AbstractControl): Observable<{ [key: string]: any } | null> => {
+      return this._SellerregistrationService.isEmailRegisterd(encodeURIComponent(control.value))
+        .pipe(
+          map(res => {
+            if (res) {
+              return { 'EmailIdInUse': true };
+            }
+          })
+        );
+    };
+  }
+
   CheckUserEmail(UserID: number): AsyncValidatorFn {
     return (control: AbstractControl): Observable<{ [key: string]: any } | null> => {
       return this._userService.isEmailRegisterd(UserID, encodeURIComponent(control.value))
@@ -317,6 +332,18 @@ export class UsernameValidator {
         );
     };
   }
+  existVendorEmail(identity: number): AsyncValidatorFn {
+    return (control: AbstractControl): Observable<{ [key: string]: any } | null> => {
+      return this._vendorService.ExistEmail(identity, encodeURIComponent(control.value))
+        .pipe(
+          map(res => {
+            if (res) {
+              return { 'VendorEmailInUse': true };
+            }
+          })
+        );
+    };
+  }
 
   existVendorItemCode(identity: number): AsyncValidatorFn {
     return (control: AbstractControl): Observable<{ [key: string]: any } | null> => {
@@ -496,6 +523,6 @@ export class UsernameValidator {
           })
         );
     };
-  } 
+  }
 
 }

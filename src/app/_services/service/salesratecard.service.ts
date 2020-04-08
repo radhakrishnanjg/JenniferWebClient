@@ -6,7 +6,7 @@ import { BadRequest } from '../../common/bad-request';
 import { NotFoundError } from '../../common/not-found-error';
 import { AppError } from '../../common/app-error';
 import { AuthenticationService } from './authentication.service';
-import { Salesratecard,  Result } from '../model/index';
+import { Salesratecard, Result } from '../model/index';
 import { environment } from '../../../environments/environment';
 
 @Injectable({
@@ -16,7 +16,7 @@ import { environment } from '../../../environments/environment';
 export class SalesratecardService {
   lstSalesratecard: Salesratecard[];
   objSalesratecard: Salesratecard = {} as any;
-  
+
   constructor(private httpClient: HttpClient,
     private authenticationService: AuthenticationService) { }
 
@@ -27,26 +27,27 @@ export class SalesratecardService {
 
     return this.httpClient.get<Salesratecard[]>(environment.baseUrl +
       `SalesRateCard/Search?SearchBy=` + encodeURIComponent(SearchBy) + `&Search=` + Search +
-       `&CompanyDetailID=` + CompanyDetailID + `&StartDate=` + StartDate + `&EndDate=` + EndDate + `&IsActive=` + IsActive)
+      `&CompanyDetailID=` + CompanyDetailID + `&StartDate=` + StartDate + `&EndDate=` + EndDate + `&IsActive=` + IsActive)
       .pipe(catchError(this.handleError));
   }
 
   public upsert(objSalesratecard: Salesratecard, ItemIds: number[]): Observable<Result> {
     this.lstSalesratecard = [] as any;
     ItemIds.forEach(element => {
-      let objSalesratecard1: Salesratecard={} as any;
+      let objSalesratecard1: Salesratecard = {} as any;
       // old data      
       objSalesratecard1.InventoryType = objSalesratecard.InventoryType;
       objSalesratecard1.SellingPrice = objSalesratecard.SellingPrice;
       objSalesratecard1.StartDate = objSalesratecard.StartDate;
       objSalesratecard1.EndDate = objSalesratecard.EndDate;
       // log and comany detail
-      let currentUser = this.authenticationService.currentUserValue; 
+      let currentUser = this.authenticationService.currentUserValue;
       objSalesratecard1.LoginId = currentUser.UserId;
       objSalesratecard1.CompanyDetailID = currentUser.CompanyDetailID;
       objSalesratecard1.ItemID = element;
-      this.lstSalesratecard.push(objSalesratecard1); 
-    }); 
+      this.lstSalesratecard.push(objSalesratecard1);
+    });
+
     return this.httpClient.post<Result>(environment.baseUrl + `SalesRateCard/Upsert`, this.lstSalesratecard)
       .pipe(catchError(this.handleError));
   }

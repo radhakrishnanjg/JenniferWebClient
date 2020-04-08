@@ -22,7 +22,8 @@ export class Invoice {
     lstItem: Invoiceitem[];
     IsEditable: boolean;
     ISBOE:boolean;
-    USDValue: number; 
+    CurrencyType: string; 
+    CurrencyValue: number; 
     // who is doing this task
     LoginId: number;
 
@@ -35,6 +36,7 @@ export class Invoiceitem {
     Qty: number;
 
     TaxNature: string;
+    OriginalRate: number;
     Rate: number;
     TaxRate: number;
     TaxAmount: number;
@@ -51,6 +53,8 @@ export class Invoiceitem {
     //reference for the calculation
     POQty: number;
     AvailableQty: number; 
+    CurrencyType: string; 
+    CurrencyValue: number; 
 }
 
 

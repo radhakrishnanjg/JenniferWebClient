@@ -80,24 +80,25 @@
               {{ dataItem.StatementDate | date :"MM-dd-yyyy" }}
             </ng-template>
           </kendo-grid-column>
-          <kendo-grid-column field="Stateopbalance" title="Opening Balance" format="{0:##,#.##}" width="200">
-          </kendo-grid-column>
+          <!-- <kendo-grid-column field="Stateopbalance" title="Opening Balance" format="{0:##,#.##}" width="200">
+          </kendo-grid-column> -->
           <kendo-grid-column field="AmazonCredits" title="Credits/ 亚马逊积分" format="{0:##,#.##}" width="200">
           </kendo-grid-column>
           <kendo-grid-column field="NetRevenue" title="Net Revenue/ 净收入" format="{0:##,#.##}" width="200">
           </kendo-grid-column>
-          <kendo-grid-column field="Deductions" title="Deductions/ 税及佣金" format="{0:##,#.##}" width="200">
-          </kendo-grid-column>
-          <kendo-grid-column field="ClosingBalance" title="Adjustments/ 积分调整" format="{0:##,#.##}" width="200">
-          </kendo-grid-column>
-          <kendo-grid-column field="ClosingBalance" title="Closing Balance" format="{0:##,#.##}" width="200">
-          </kendo-grid-column>
+          <!-- <kendo-grid-column field="Deductions" title="Deductions/ 税及佣金" format="{0:##,#.##}" width="200">
+          </kendo-grid-column> -->
+          <!-- <kendo-grid-column field="ClosingBalance" title="Adjustments/ 积分调整" format="{0:##,#.##}" width="200">
+          </kendo-grid-column> -->
+          <!-- <kendo-grid-column field="ClosingBalance" title="Closing Balance" format="{0:##,#.##}" width="200">
+          </kendo-grid-column> -->
           <kendo-grid-column field="PayabletoMerchant" title="Deposit Total/ 应付金额" format="{0:##,#.##}" width="200">
           </kendo-grid-column>
-          <kendo-grid-column field="Status" title="Status/ 批准状态" width="200">
+          <!-- Status/ -->
+          <kendo-grid-column field="Status" title="批准状态" width="200">
           </kendo-grid-column>
-
-          <kendo-grid-column title="Action/ 详情/下载" [class]="{'text-center': true}" [filterable]="false"
+          <!-- Action/ -->
+          <kendo-grid-column title="详情/下载" [class]="{'text-center': true}" [filterable]="false"
             [sortable]="false" width="140">
             <ng-template kendoGridCellTemplate let-obj>
               <i class="fa fa-eye bgblue pointer" [routerLink]="['/Statementview', obj.StatementNumber]"

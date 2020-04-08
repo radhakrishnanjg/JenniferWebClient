@@ -8,13 +8,13 @@
     <div class="pull-right hidden-xs">
       <ol class="breadcrumb" id="dynamicbreadcrumb">
         <li>
-           <span> Procurements</span>
+          <span> Procurements</span>
         </li>
         <li>
-           <span> PO Approval</span>
+          <span> PO Approval</span>
         </li>
         <li class="active">
-          
+
           Save
         </li>
       </ol>
@@ -31,9 +31,9 @@
         </span>
       </div>
       <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-        <div class="pull-right"> 
-          <button  *ngIf="obj?.FilePath" class="btn btn-default" title="DownloadImages" 
-          (click)="DownloadButtonClick(obj?.FilePath)">
+        <div class="pull-right">
+          <button *ngIf="obj?.FilePath" class="btn btn-default" title="DownloadImages"
+            (click)="DownloadButtonClick(obj?.FilePath)">
             Download Documents
           </button>
           &nbsp;
@@ -42,7 +42,7 @@
       </div>
     </div>
   </div>
-  <form   [formGroup]="poapprovalForm" (ngSubmit)="Update()" class="form-horizontal">
+  <form [formGroup]="poapprovalForm" (ngSubmit)="Update()" class="form-horizontal">
     <div class="panel-body">
       <div class="row">
 
@@ -132,9 +132,15 @@
               </tr>
               <tr>
                 <th>
+                  CurrencyType
+                </th>
+                <td>
+                  {{obj?.CurrencyType}}
+                </td>
+                <th>
                   Remarks
                 </th>
-                <td colspan="3">
+                <td>
                   {{obj?.Remarks}}
                 </td>
               </tr>

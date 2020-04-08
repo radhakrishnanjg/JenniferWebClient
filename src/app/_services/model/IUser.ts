@@ -1,4 +1,4 @@
- 
+
 import { Companydetails } from './company-register';
 import { Dropdown } from './country';
 export class IUser {
@@ -10,27 +10,29 @@ export class IUser {
     Email: string;
     Password: string;
     Salt: string;
-    UserType: string; 
+    UserType: string;
     IsActive: Boolean;
 
     //custom field added
     AuthToken: string;
-    lstUserPermission: Userpermission[];
-    lstUserStores: Companydetails[];
-    lstmasterscreens: Dropdown[];
+    lstUserPermission: Userpermission[]=[] as any;
+    lstUserStores: Companydetails[]=[] as any;
+    lstmasterscreens: Dropdown[]=[] as any;
+    lstApplicationAccess: ApplicationAccess[]=[] as any;
     // who is doing this task
     LoginId: number;
     Flag: boolean;
     IsMailRequired: boolean;
-    IsForceChangePwd: boolean;  
-    ImagePath: string; 
+    IsForceChangePwd: boolean;
+    ImagePath: string;
     LastLogin: Date;
     ImagePathData: File;
+    SellerFormID:number;
 }
 
 export class Userpermission {
-    LoginId :Number;
-    MenuID:Number;
+    LoginId: Number;
+    MenuID: Number;
     MenuType: string;
     ParentId: number;
     MenuName: string;
@@ -40,13 +42,19 @@ export class Userpermission {
     DisplayOrder: number;
 
     // permission
-    Permission:string;
-    MenuActionId:number;
-    UserId :number
-    IsViewEdit:string
+    Permission: string;
+    MenuActionId: number;
+    UserId: number
+    IsViewEdit: string
     // Menu    
-    IsActive:Boolean
-} 
+    IsActive: Boolean;
+    ApplicationName:string;
+}
+
+export class ApplicationAccess {
+    UserId: Number;
+    ApplicationName: string;
+}
 export class Userlog {
     Type: string;
     UserId: number;
@@ -57,9 +65,9 @@ export class Userlog {
 
 export interface IChangepassword {
     OldPassword: string;
-    NewPassword: string; 
-    ConfirmPassword: string; 
-    UserId :Number; 
-    CompanyDetailID :Number; 
-    Email:string;
+    NewPassword: string;
+    ConfirmPassword: string;
+    UserId: Number;
+    CompanyDetailID: Number;
+    Email: string;
 }

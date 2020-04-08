@@ -37,7 +37,7 @@ export class StatementlistComponent implements OnInit {
     private router: Router,
     private _statementService: StatementService,
     private _sellerStatementService: SellerstatementService,
-    
+
     private _authorizationGuard: AuthorizationGuard
   ) { }
 
@@ -49,6 +49,11 @@ export class StatementlistComponent implements OnInit {
       endDate: moment().subtract(1, 'days')
     };
 
+    if (sessionStorage.getItem("IsSaveVideo") == null || sessionStorage.getItem("IsSaveVideo") == undefined) {
+      if (sessionStorage.getItem("IsSaveVideo") == "0") {
+        $('#myModalvideo').modal('show');
+      }
+    }
     this.onLoad(this.SearchBy, this.SearchKeyword);
   }
 
@@ -72,8 +77,8 @@ export class StatementlistComponent implements OnInit {
       this._statementService.downloadFile(GRNNumber)
         .subscribe(data => {
           this.alertService.success("File downloaded succesfully.!");
-          
-            saveAs(data, GRNNumber + '.xlsx')
+
+          saveAs(data, GRNNumber + '.xlsx')
         },
           (err) => {
             //
@@ -102,15 +107,15 @@ export class StatementlistComponent implements OnInit {
 
   onLoad(SearchBy: string, Search: string) {
     let startdate: Date = this.selectedDateRange.startDate._d.toISOString().substring(0, 10);
-    let enddate: Date = this.selectedDateRange.endDate._d.toISOString().substring(0, 10); 
+    let enddate: Date = this.selectedDateRange.endDate._d.toISOString().substring(0, 10);
     this._sellerStatementService.Search(SearchBy, Search, startdate, enddate).subscribe(
       (data) => {
         if (data != null) {
           this.items = data;
           this.loadItems();
-        } 
+        }
       },
-      (err) => { 
+      (err) => {
         console.log(err);
       }
     );
@@ -119,8 +124,8 @@ export class StatementlistComponent implements OnInit {
   //#region Paging Sorting and Filtering Start
   public allowUnsort = false;
   public sort: SortDescriptor[] = [{
-    field: 'StatementNumber',
-    dir: 'asc'
+    field: 'StatementDate',
+    dir: 'desc'
   }];
   public gridView: GridDataResult;
   public pageSize = 10;
@@ -134,7 +139,7 @@ export class StatementlistComponent implements OnInit {
     // Initial filter descriptor
     filter: {
       logic: 'and',
-      filters: [{ field: 'StatementNumber', operator: 'contains', value: '' }]
+      filters: [{ field: 'StatementDate', operator: 'contains', value: '' }]
     }
   };
   public pageChange({ skip, take }: PageChangeEvent): void {
@@ -186,7 +191,7 @@ export class StatementlistComponent implements OnInit {
             field: 'Stateopbalance',
             operator: 'contains',
             value: inputValue
-          }, 
+          },
           {
             field: 'AmazonCredits',
             operator: 'contains',
@@ -196,7 +201,7 @@ export class StatementlistComponent implements OnInit {
             field: 'NetRevenue',
             operator: 'contains',
             value: inputValue
-          }, 
+          },
           {
             field: 'Deductions',
             operator: 'contains',
@@ -211,7 +216,7 @@ export class StatementlistComponent implements OnInit {
             field: 'ClosingBalance',
             operator: 'contains',
             value: inputValue
-          }, 
+          },
           {
             field: 'PayabletoMerchant',
             operator: 'contains',
@@ -221,10 +226,10 @@ export class StatementlistComponent implements OnInit {
             field: 'Status',
             operator: 'contains',
             value: inputValue
-          }, 
+          },
         ],
       }
-    })  ;  
+    });
   }
   //#endregion Paging Sorting and Filtering End
 

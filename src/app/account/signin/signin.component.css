@@ -1,6 +1,5 @@
-
 .landscren {
-  margin-top:1.5rem;
+  margin-top:.5rem;
 }
 .landscren p {
   font-size: 10px;
@@ -17,7 +16,7 @@
   font-weight:normal;
   text-align:center;
   text-transform:capitalize;
-  margin-bottom:1.5rem;
+  margin-bottom:.2rem;
 }
 .loginform-control {
   display: block;
@@ -51,41 +50,33 @@ border: 0;
 font-weight: 400;
 }
 .card {
-position: relative;
-display: flex;
-flex-direction: column;
-width:400px;
-word-wrap: break-word;
-background-color: #ffffffb8;
-background-clip: border-box;
-border: 1px solid rgba(0,0,0,.125);
-border-radius: 1.25rem;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width:400px;
+  height: 270px; 
+  word-wrap: break-word;
+  background-color: #ffffffb8;
+  background-clip: border-box;
+  border: 1px solid rgba(0,0,0,.125);
+  border-radius:0rem;
 }
+
 .card-body {
 padding: 10px;
 -webkit-border-radius: 0!important;
 border-radius: 0!important;
 }
 .centered {
-position: fixed;
-top: 40%;
-right: 34%;
-transform: translate(-0%, -50%);
--webkit-transform: translate(-0%, -50%);
--moz-transform: translate(-0%, -50%);
--o-transform: translate(-0%, -50%);
--ms-transform: translate(-0%, -50%); 
-z-index: 100;
-/* transform: scale(1.1) translate(-6px, -2px) skew(0deg, -10deg); */
-/* position: fixed;
-top: 50%;
-left: 50%;
-transform: translate(-50%, -50%);
--webkit-transform: translate(-50%, -50%);
--moz-transform: translate(-50%, -50%);
--o-transform: translate(-50%, -50%);
--ms-transform: translate(-50%, -50%); 
-z-index: 100; */
+  position: fixed;
+  top:30%;
+  left: 20%;
+  transform: translate(-0%, -20%);
+  -webkit-transform: translate(-0%, -20%);
+  -moz-transform: translate(-0%, -20%);
+  -o-transform: translate(-0%, -20%);
+  -ms-transform: translate(-0%, -20%);
+  z-index: 100; 
 }
 .control-label
 {
@@ -125,7 +116,9 @@ text-transform: none !important;
   margin: 5px !important; 
 }
 .terms p { margin-top:2px; text-align:left;text-transform:inherit; font-size:10px;}
-
+.cardvideo { 
+  background-color: #000; 
+}
 /**07012020 SHIVA**/
 /*MEDIA QUEARY FOR MOBILE BELOW 4.5*/
 @media screen and (max-width:480px) { 

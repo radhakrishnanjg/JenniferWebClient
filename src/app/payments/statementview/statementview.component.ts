@@ -23,7 +23,7 @@ export class StatementviewComponent implements OnInit {
   dtOptions: DataTables.Settings = {};
   action: boolean = false;
   customerMsg: string = '';
-  userType: string; 
+  userType: string;
   investmentTotal: number = 0.00;
   constructor(
     public _statementService: StatementService,
@@ -61,10 +61,10 @@ export class StatementviewComponent implements OnInit {
 
     this.GetUserType();
 
-    this.AgreeForm = this.fb.group({      
+    this.AgreeForm = this.fb.group({
       // Query: ['', []],
     });
-    this.SellerQueryForm = this.fb.group({      
+    this.SellerQueryForm = this.fb.group({
       Query: ['', []],
     });
   }
@@ -81,18 +81,17 @@ export class StatementviewComponent implements OnInit {
       );
   }
 
-  // lstcustomerMsg: History[] = [] as any;
-  // lstsupportMsg: History[] = [] as any;
   lstHistory: History[] = [] as any;
+  TimeLeft:string;
   GetChatHistory() {
     this._ticketService.searchSellerStatementChatHistory(this.identity)
       .subscribe(
         (data) => {
           if (data != null && data.length > 0) {
-            // this.lstcustomerMsg = data.filter(a => a.UserType == 'C');
-            // this.lstsupportMsg = data.filter(a => a.UserType == 'S');
             this.lstHistory = data;
             this.SupportQueryID = data[0].SupportQueryID;
+            this.TimeLeft = data[0].TimeLeft;
+            
           }
         },
         (err: any) => {
@@ -105,7 +104,7 @@ export class StatementviewComponent implements OnInit {
     if (this._authorizationGuard.CheckAcess("Statementlist", "ViewEdit")) {
       return;
     }
- 
+
     this._sellerStatementService.UpdateStatus(StatementNumber, Status).subscribe(
       (data) => {
         if (data != null && data.Flag == true) {
@@ -115,13 +114,13 @@ export class StatementviewComponent implements OnInit {
           this._router.navigate(['/Statementlist']);
           this.alertService.error(data.Msg);
         }
-        $('#modalstatusconfimation').modal('hide'); 
+        $('#modalstatusconfimation').modal('hide');
       },
       (error: any) => {
         //
         console.log(error);
       }
-    ); 
+    );
   }
 
   SupportQueryID: number = 0;
@@ -134,7 +133,13 @@ export class StatementviewComponent implements OnInit {
     this.action = false;
   }
 
-  onClickSellerQuery() {
+  onClickSellerQuery(buttontype) {
+    if (buttontype == 'Forward') {
+      this.objTicket.IsForwarded = true;
+    }
+    else {
+      this.objTicket.IsForwarded = false;
+    }
     this.objTicket.Query = this.customerMsg;
     this.objTicket.ModuleType = 'SELLER STATEMENTS';
     this.objTicket.Subject = 'Regarding Seller Statement';

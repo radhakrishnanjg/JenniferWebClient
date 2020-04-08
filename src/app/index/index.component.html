@@ -1,518 +1,1140 @@
-<header>
-  <div class="sticky">
-    <div class="">
-      <div class="logo-brand">
-        <a href="#">
-          <div class="logo-font">
-            <img src='/assets/images/logo.png' />
-            <!--Jennifer-->
-          </div>
-        </a>
-      </div>
-      <nav class="navbar">
-        <div class="container-fluid">
-          <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-            </button>
-            <!-- <a class="navbar-brand" href="#">WebSiteName</a> -->
-          </div>
-          <div class="collapse navbar-collapse" id="myNavbar">
-            <ul class="nav navbar-nav">
-              <li class="active"><a>Home</a></li>
-              <li><a (click)="element.scrollIntoView({ behavior: 'smooth', block: 'center' })">About</a></li>
-              <li><a (click)="element1.scrollIntoView({ behavior: 'smooth', block: 'center' })"> Cross Border</a></li>
-              <li><a (click)="element2.scrollIntoView({ behavior: 'smooth', block: 'center' })"> Contact Us</a></li>
-              <!-- <li class="dropdown">
-            <a class="dropdown-toggle" data-toggle="dropdown" >Language<span class="caret"></span></a>
-            <ul class="dropdown-menu">
-              <li><a >English</a></li>
-              <li><a >Chinees</a></li> 
-            </ul>
-          </li> -->
-            </ul>
-            <a routerLinkActive="active" routerLink="/Signin" class="nav navbar-nav navbar-right">
-              <li>
-                <a>
-                  <span class="glyphicon glyphicon-user"></span> Login
-                </a> 
-              </li>
-            </a>
-          </div>
+<section>
+    <div id="opening">
+        <div class="main_header">
+            <nav class="navbar navbar-inverse">
+                <div class="container">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <div class="logo_img">
+                            <img src="assets/jimages/logo.png" alt="image" width="100" heigh="50">
+                        </div>
+                    </div>
+                    <div class="collapse navbar-collapse" id="myNavbar">
+                        <div class="pull-right mobile_view">
+                            <ul class="nav navbar-nav">
+                                <li class=""><a class="scroll" href="#Home">Home</a></li>
+                                <li><a class="scroll" href="#Service">Services</a></li>
+                                <li><a class="scroll" href="#CrossBorder">Cross Border</a></li>
+                                <li><a class="scroll" href="#ContactUs">Contact Us</a></li>
+                                <li><a routerLinkActive="active" routerLink="/Signin"><span
+                                            class="glyphicon glyphicon-log-in"></span> Login</a></li>
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+
         </div>
-      </nav>
     </div>
-  </div>
-</header>
-<!--SLIDER-->
-<section class="slidersec">
-  <div class="slide_box">
-    <div id="slideshow">
-      <div>
-        <img src="assets\jimages\slider1.jpg">
-      </div>
-      <div>
-        <img src="assets\jimages\slider2.jpg">
-      </div>
-      <div>
-        <img src="assets\jimages\slider3.jpg">
-      </div>
-    </div>
-    <!-- <ul class="slide_pic"> 
-          <li><img src="assets\jimages\slider1.jpg"></li>
-          <li><img src="assets\jimages\slider2.jpg"></li>
-          <li><img src="assets\jimages\slider3.jpg"></li> 
-      </ul>
-      <ul class="slide_tab"></ul>
-      <a href="javascript:" class="slide_nav slide_prev">&lt;</a>
-      <a href="javascript:" class="slide_nav slide_next">&gt;</a> -->
-  </div>
 </section>
-<!--ABOUT SECTION-->
-<div class="about-area text-center" id="about" #element>
-  <div class="container">
-    <div class="row">
-      <div class="col-md-6 hidden-xs"></div>
-      <div class="col-md-6 col-xs-12">
-        <div class="about-container section-padding">
-          <div class="section-title">
-            <div class="title-border">
-              <h1>About <span>Jennifer</span></h1>
+
+<section id="Home">
+    <div class="main_body">
+        <div class="container py-5">
+            <div class="row">
+                <div class="col-md-7 col-sm-7 col-xs-12" style="text-align: left;">
+                    <h1>Empower your
+                        e-store with <div class="output" id="output">
+                            <b class="cursor"></b> <span class="spp2"> ERP solution</span>
+                        </div>
+                    </h1>
+                    <h5>Jennifer is a complete ERP solution for your online seller account with host of features to
+                        accelerate your online business.</h5>
+                    <a href="#about" class="btn btn-danger btn_color" role="button" title="ReadMore">Read More</a>
+
+                </div>
             </div>
-          </div>
-          <p class="text-center">
-            Trusted by top sellers on Amazon, Jennifer is an ERP solution that integrates seamlessly with your
-            e-commerce store. Automate everything from order fulfillment to purchasing.
-          </p>
-          <p class="text-block black center quote">
-            “Jennifer does 100% automation of accounting and compliance.
-            All reconciliations are now a click Away!”
-          </p>
-          <p>Managing Partner</p>
         </div>
-      </div>
+
     </div>
-  </div>
-</div>
-<!---->
-<div class="service-area section-padding text-center">
-  <div class="container">
-    <div class="row">
-      <div class='sectionum col-md-4 col-xs-12'>
-        <img src="assets/jimages/reconcile.png" class="primary-img" alt="">
-        <div class='numscroller-info-top'>Shipment Created</div>
-        <div class='numscroller numscroller-big-bottom' data-slno='1' data-min='0' data-max='1822' data-delay='10'
-          data-increment="9">0</div>
-      </div>
-      <div class='sectionum col-md-4 col-xs-12'>
-        <img src="assets/jimages/manage.png" class="primary-img" alt="">
-        <div class='numscroller-info-top'>orders Reconciled</div>
-        <div class='numscroller numscroller-big-bottom' data-slno='1' data-min='0' data-max='1991' data-delay='10'
-          data-increment="9">0</div>
-      </div>
-      <div class='sectionum col-md-4 col-xs-12'>
-        <img src="assets/jimages/procure.png" class="primary-img" alt="">
-        <div class='numscroller-info-top'>Claims Received</div>
-        <div class='numscroller numscroller-big-bottom' data-slno='1' data-min='0' data-max='1185' data-delay='10'
-          data-increment="9">0</div>
-      </div>
-      <div class='clear'></div>
-    </div>
-  </div>
-</div>
-<!---->
-<div class="testimonial-section">
-  <div class="bg"></div>
-  <div class="bg bg2"></div>
-  <div class="bg bg3"></div>
-  <div class="inner-width">
-    <h1>SALIENT FEATURES</h1>
-    <span class="text-block-4">What makes Jennifer awesome?</span>
-    <div id="nav-tab" class="testimonial-pics">
-      <img src="assets/icons/workperformans.svg" id="0" title="Enhanced Work Performance" alt="img-1" class="active">
-      <img src="assets/icons/costreduce.svg" id="1" title="Reduced Inventory Cost" alt="img-2">
-      <img src="assets/icons/customersatisfie.svg" id="2" title="Better Customer Satisfaction Rate" alt="img-3">
-    </div>
-
-    <div class="testimonial-contents">
-      <div class="testimonial active">
-        <p>E-commerce orders when integrated to the ERP system in real-time streamlines multiple business processes,
-          reduce human resource involvement and data redundancy.</p>
-
-      </div>
-
-      <div class="testimonial">
-        <p>Inventory management is the most crucial aspect of e-commerce. Our robust ERP system can be fully integrated
-          with your online store and efficiently manage your inventory. </p>
-      </div>
-
-      <div class="testimonial">
-        <p>Jennifer reduces operational hassles for your seller account which leads to higher customer satisfaction.</p>
-      </div>
-    </div>
-  </div>
-</div>
-<!---->
-<section class="scrolingtabsbase">
-  <div class="container">
-    <div class="row">
-      <div class="col-md-2 col-xs-12">
-        <nav class="navigation" id="mainNav">
-          <a class="navigation__link" (click)="element011.scrollIntoView({ behavior: 'smooth', block: 'center' })">
-            <img class="lft_navicons" src="assets/jimages/i_procure.png">Procure </a>
-          <a class="navigation__link" (click)="element012.scrollIntoView({ behavior: 'smooth', block: 'center' })">
-            <img class="lft_navicons" src="assets/jimages/i_manage.png">Manage</a>
-          <a class="navigation__link" (click)="element013.scrollIntoView({ behavior: 'smooth', block: 'center' })">
-            <img class="lft_navicons" src="assets/jimages/i_reconcile.png">Reconcile</a>
-          <a class="navigation__link" (click)="element014.scrollIntoView({ behavior: 'smooth', block: 'center' })">
-            <img class="lft_navicons" src="assets/jimages/i_comply.png">Comply</a>
-        </nav>
-      </div>
-      <div class="col-md-10 col-xs-12">
-        <div class="page-section hero pgs1" id="procure" #element011>
-          <h1>Powerful procurement and Inventory Management under one roof</h1>
-          <p>
-            Success in e-commerce requires robust inventory management practices. Jennifer let’s you automate,
-            streamline and centralize stock operations to provide your business the control and insight needed for
-            scaling growth and profitability.
-          </p>
-          <div class="row rowno-padding">
-            <div class="col-xs-12 col-md-6 sec3prt1 hover-effect">
-              <div class="sec3prtbg2 box14">
-                <img src="assets/jimages/mainpage-icons-2211.png" class="image-8">
-                <h3> Process transactions with minimal effort </h3>
-                <div class="box-content">
-                  Speed up your post sale processes with minimal effort. Automated emails, purchase orders, sale
-                  invoices, customer payments, and all other activities can be done swiftly under one roof.
-                </div>
-              </div>
-            </div>
-            <div class="col-xs-12 col-md-6 sec3prt2 hover-effect">
-              <div class="sec3prtbg2 box14">
-                <img src="assets/jimages/mainpage-icons-2222.png" class="image-8">
-                <h3> Stock transfer </h3>
-                <div class="box-content">
-                  Automatically pass the Sales and Purchases entries to the respective locations in different states by
-                  enabling inter unit transfer under the new GST regime.
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row rowno-padding">
-            <div class="col-xs-12 col-md-6 sec3prt3 hover-effect">
-              <div class="sec3prtbg2 box14">
-                <img src="assets/jimages/mainpage-icons-2233.png" class="image-8">
-                <h3> Automatic Replenishment triggers </h3>
-                <div class="box-content">
-                  Determine how much stock needs to be reordered effortlessly. Preset minimum, maximum, and reorder
-                  points for each item that you want to be replenished using historical data. Create purchase orders
-                  when inventory levels for those items approach their reorder levels.
-                </div>
-              </div>
-            </div>
-            <div class="col-xs-12 col-md-6 sec3prt4 hover-effect">
-              <div class="sec3prtbg2 box14">
-                <img src="assets/jimages/mainpage-icons-2244.png" class="image-8">
-                <h3> Inwarding Automation </h3>
-                <div class="box-content">
-                  Manage end to end procurement and shipment of inventory to Amazon. Keep a track of the inventory
-                  purchased and real time stock levels across different SKUs.
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="page-section pgs2" id="manage" #element012>
-          <h1>Inventory warehouse management made ridiculously easy</h1>
-          <p>
-            No more losing of customers due to disorganized order management. Track and synchronize data of all stock
-            transfers from across sources so you never have to run the risk of disappointing your costumes with a "Sold
-            Out" Message.
-          </p>
-          <div class="row rowno-padding">
-            <div class="col-xs-12 col-md-6 sec3prt1 hover-effect">
-              <div class="sec3prtbg2 box14">
-                <img src="assets/jimages/mainpage-icons-3311.png" class="image-8">
-                <h3> Reduce Pilferage </h3>
-                <div class="box-content">
-                  Track inventory on a real time basis to check what gets lost in transit during delivery. If Amazon
-                  processes a ‘refund’ to the customer and the inventory doesn’t get returned, Jennifer will provide
-                  full data to raise a claim to Amazon.
-                </div>
-              </div>
-            </div>
-            <div class="col-xs-12 col-md-6 sec3prt2 hover-effect">
-              <div class="sec3prtbg2 box14">
-                <img src="assets/jimages/mainpage-icons-3322.png" class="image-8">
-                <h3>Boost profitability </h3>
-                <div class="box-content">
-                  Manage unfulfillable inventory by categorizing them into different grades in order to sell the best
-                  stock at a higher price and the dead ones at a lower price.
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row rowno-padding">
-            <div class="col-xs-12 col-md-6 sec3prt3 hover-effect">
-              <div class="sec3prtbg2 box14">
-                <img src="assets/jimages/mainpage-icons-3333.png" class="image-8">
-                <h3> Direct sync with Tally </h3>
-                <div class="box-content">
-                  Automatically synchronize your invoices, purchase orders and bill to liquidators between Jennifer and
-                  Tally.
-                </div>
-              </div>
-            </div>
-            <div class="col-xs-12 col-md-6 sec3prt4 hover-effect">
-              <div class="sec3prtbg2 box14">
-                <img src="assets/jimages/mainpage-icons-3344.png" class="image-8">
-                <h3> Multi user level access</h3>
-                <div class="box-content">
-                  Give access to your team members within your organisation with different roles and module permissions.
-                  Delegate work without losing control.
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="page-section pgs3" id="reconcile" #element013>
-          <h1>Real-time end to end reconciliation </h1>
-          <p>
-            Jennifer automates reconciliation process in real-time for amazon charges, stock refunds, unsaleable, lost
-            or damaged inventory.
-          </p>
-          <div class="row rowno-padding">
-            <div class="col-xs-12 col-md-12 sec3prt5 hover-effect">
-              <div class="sec3prtbg3 box14">
-                <h3><img src="assets/jimages/mainpage-icons-3311.png" class="image-8">Keep a tab on Amazon charges </h3>
-                <div class="box-content3">
-                  Automatically analyze millions of shipments and check if Amazon is charging you as per the terms for
-                  storage and delivery of shipments.
-                </div>
-              </div>
-              <div class="sec3prtbg3 box14">
-
-                <h3><img src="assets/jimages/mainpage-icons-3322.png" class="image-8">Automatic classification of
-                  inventory </h3>
-                <div class="box-content3">
-                  Monitor changes in inventory levels when orders are fulfilled by Amazon and automatically classify
-                  them into different categories such as returned, damaged or lost in transit.
-                </div>
-              </div>
-              <h2>Track inventory returns and amazon refunds in a snapshot</h2>
-              <ul class="unordered-list">
-                <li class="feature-description large">Get a summary of unsaleable receivables from Amazon</li>
-                <li class="feature-description large">Monitor inventory returns or refunds and file claims in time in
-                  case of any errors</li>
-                <li class="feature-description large">Avoid heavy losses by getting a complete overview of inventory
-                </li>
-              </ul>
-            </div>
-          </div>
-
-        </div>
-        <div class="page-section pgs4 hover-effect" id="comply" #element014>
-          <h1>Simplify the process for GST returns filings across all states of operations on Amazon.</h1>
-          <ul class="unordered-list">
-            <li class="feature-description large">Record all GST inputs such as purchases, expenses of Amazon charges
-              and outputs such as sales and promotional activities</li>
-            <li class="feature-description large">Get complete GST filings in formats as prescribed by the government
-              (3, 3A, 3B) </li>
-            <li class="feature-description large">Download returns and upload directly on GST portal </li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
 </section>
-<!--CROSSBORDER SECTION-->
-<section class="crossborderBase" id="crossborder" #element1>
-  <div class="container">
-    <h1 class="title-line-g"><strong>Jennifer </strong>complete Import, Export & <strong> ERP</strong> Solutions</h1>
-    <div class="row">
-      <div class="col-xs-12 col-md-6">
-        <h3> Services we offer </h3>
-        <ul class="crossborderlist">
-          <li><img src="assets/icons/china.svg" class="crossvg">China Exporter Service</li>
-          <li><img src="assets/icons/india.svg" class="crossvg">Indian Importer Service</li>
-          <li><img src="assets/icons/interonal_domestic.svg" class="crossvg">International & Domestic Shipping</li>
-          <li><img src="assets/icons/customClearance.svg" class="crossvg">Custom Clearance Service </li>
-          <li><img src="assets/icons/dutyfunding.svg" class="crossvg">Customs duty funding service</li>
-          <li><img src="assets/icons/marketplaceSeller.svg" class="crossvg">Indian Marketplace Seller Service </li>
-          <li><img src="assets/icons/warehouse.svg" class="crossvg">Warehousing & Labelling Service for Re/Unsellable
-            Goods</li>
-        </ul>
-      </div>
-      <div class="col-xs-12 col-md-6">
-        <h3> ERP Technology Features </h3>
-        <ul class="crossborderlist">
-          <li><img src="assets/icons/chinaManagement.svg" class="crossvg">China Supplier Account Management</li>
-          <li><img src="assets/icons/cataloguemanagement.svg" class="crossvg">Catalogue Management</li>
-          <li><img src="assets/icons/inventorymanagement.svg" class="crossvg">Inventory Management</li>
-          <li><img src="assets/icons/thirdpartylogistics.svg" class="crossvg">3rd Party Logistics Integration</li>
-          <li><img src="assets/icons/reconciliation.svg" class="crossvg">Finance Reconciliation Order-ID level in T+0
-            timeline</li>
-          <li><img src="assets/icons/chinasupplier.svg" class="crossvg">Payment to China supplier in RMB in T+3 timeline
-          </li>
 
-        </ul>
-      </div>
-    </div>
-    <div class="row">
-      <h1><strong>S</strong>elling in <strong>India</strong></h1>
-      <div class="col-md-12 col-xs-12">
-        <ul class="nav nav-tabs">
-          <li class="active"><a data-toggle="tab" href="#home">
-              <img src="assets/jimages/jennifericn.png" title="jennifer">
-            </a></li>
-          <li><a data-toggle="tab" href="#menu1">
-              <img src="assets/jimages/valuecart.png" title="Value Cart">
-            </a></li>
-          <li><a data-toggle="tab" href="#menu2">
-              <img src="assets/jimages/amazon.png" title="amazon">
-            </a>
-          </li>
-          <li><a data-toggle="tab" href="#menu3">
-              <img src="assets/jimages/pingpong.png" title="pingpong">
-            </a>
-          </li>
-        </ul>
-        <div class="tab-content">
-          <div id="home" class="tab-pane fade in active">
-            <h3>Jennifer</h3>
-            <ul class="crossborderTablist">
-              <li>ERP software service</li>
-              <li>Order-ID level payment reconciliation</li>
-              <li>Track & trace of goods from China to India FBA warehouse</li>
-              <li>Track & trace of cash flow from Amazon to China seller Bank account</li>
-              <li>MIS & Business Intelligence reports</li>
-              <li>Sponsored Ad services</li>
-            </ul>
-          </div>
-          <div id="menu1" class="tab-pane fade">
-            <h3>Value Cart</h3>
-            <ul class="crossborderTablist">
-              <li>Takes end-to-end responsibility of imports in India</li>
-              <li>Investing in Customs duty</li>
-              <li>Takes care of Customs compliance & Taxes</li>
-              <li>Registering seller account in Marketplaces and giving access to China Sellers </li>
-            </ul>
-          </div>
-          <div id="menu2" class="tab-pane fade">
-            <h3>Amazon</h3>
-            <ul class="crossborderTablist">
-              <li>Marketplace </li>
-              <li>Fulfilment by Amazon </li>
-            </ul>
-          </div>
-          <div id="menu3" class="tab-pane fade">
-            <h3>Pingpong</h3>
-            <ul class="crossborderTablist">
-              <li>Gives payment guarantee to China sellers</li>
-              <li>Engaging & co-working in problem solving from China, for China sellers</li>
-              <li>Remittance of sales proceeds in RMB</li>
-            </ul>
-          </div>
+<section id="about">
+    <div class="container-fluid middle_content">
+        <div class="information_part">
+            <div class="img-path fixed_color">
+                <div class="row">
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="homeHeading1">
+
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-12" style="margin-bottom: 20px;">
+                        <div class="homeHeading2">
+                            <h2>About <strong>Jennifer</strong>
+                            </h2>
+                            <div class="patner_part">
+                                <p class="text-seller">Trusted by top sellers on Amazon, Jennifer is an ERP solution
+                                    that
+                                    integrates
+                                    seamlessly
+                                    with your e-commerce store. Automate everything from order fulfillment to
+                                    purchasing. Jennifer is a robust reconciliation and accounting package. It is
+                                    an end-to-end automated solution for reconciling the business data for Amazon
+                                    Platform.
+                                </p>
+                                <p class="text-block">“Jennifer does 100% automation of accounting and compliance. All
+                                    reconciliations are now
+                                    a click Away!”</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 </section>
-<!--CONTACT SECTION-->
-<section class="sec-contact" id="contact" #element2>
-  <h1 class="title-line-g"><strong>C</strong>ONTACT</h1>
-  <div class="map">
-    <iframe height="400" id="gmap_canvas"
-      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3887.944723685334!2d77.57636511373451!3d12.97538731830855!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bae3d97cea66535%3A0xf3800177961d026a!2sRK+Group!5e0!3m2!1sen!2sin!4v1560936832046!5m2!1sen!2sin"></iframe>
-  </div>
-  <div class="container">
-    <div class="row">
-      <div class="col-12 col-md-6">
-        <h4>CONTACT</h4>
-        <p>
-          For any enquiries, questions or recommendations, please fill out the following form and will get back to you.
-        </p>
-        <form   [formGroup]="captchaForm" (ngSubmit)="SaveData()">
-          <div class="row rownopadding">
-            <div class="form-group col-md-6" [ngClass]="{'has-error': formErrors.Name}">
-              <label>Name</label>
-              <input type="name" class="form-control" id="inputName" formControlName="Name"
-                (blur)="logValidationErrors()" placeholder="Name" required>
-              <div class="help-block-rk">
-                <span class="help-block" *ngIf="formErrors.Name">
-                  {{formErrors.Name}}
-                </span>
-              </div>
-            </div>
-            <div class="form-group col-md-6" [ngClass]="{'has-error': formErrors.PhoneNumber}">
-              <label>Phone Number</label>
-              <input type="number" class="form-control" placeholder="9513 917 830" formControlName="PhoneNumber"
-                (blur)="logValidationErrors()" required>
-              <div class="help-block-rk">
-                <span class="help-block" *ngIf="formErrors.PhoneNumber">
-                  {{formErrors.PhoneNumber}}
-                </span>
-              </div>
-            </div>
-          </div>
-          <div class="form-group" [ngClass]="{'has-error': formErrors.Email}">
-            <label>Email</label>
-            <input type="text" class="form-control" placeholder="support@jennifer-in.com" formControlName="Email"
-              (blur)="logValidationErrors()" required>
-            <div class="help-block-rk">
-              <span class="help-block" *ngIf="formErrors.Email">
-                {{formErrors.Email}}
-              </span>
-            </div>
-          </div>
-          <div class="form-group row">
-            <div class="col-md-6 col-xs-12">
-              <re-captcha (resolved)="resolved($event)" siteKey="6LfYesEUAAAAAG4BBbHbx5gkj0chyYVTv5n2J_dL">
-              </re-captcha>
-            </div>
-            <div class="col-md-6 col-xs-12"></div>
-          </div>
-          <div class="form-group">
-            <button [disabled]="captchaForm.invalid || captchaLength == 0" type="submit"
-              class="btn btn-primary btn-block">Submit</button>
-          </div>
-        </form>
-      </div>
-      <div class="col-12 col-md-6">
-        <h4>Head Office</h4>
-        <p>
-          RK Group, Vinayak Tower, 1st Cross Rd, Gandhi Nagar, Bengaluru, Karnataka 560009, India
-        </p>
+
+
+<section class="services service_paddng" id="Service">
+    <div class="container">
         <div class="row">
-          <div class="col-12 col-sm-4">
-            <div class="sociallogos">
-              <img src="assets/icons/skype.png">
-              <h3>Support</h3>
-              support@jennifer-in.com
+            <div class="col-sm-12 col-xs-12">
+                <div class="section-title text-center section_margin">
+                    <h2>our <strong>
+                            services
+                        </strong>
+                    </h2>
+                </div>
             </div>
-          </div>
-          <div class="col-12 col-sm-4">
-            <div class="sociallogos">
-              <img src="assets/icons/wechat.jpg">
-              <h3>WeChat</h3>
-              ID: RKJennifer2017
-            </div>
-          </div>
-          <div class="col-12 col-sm-4">
-            <div class="sociallogos">
-              <img src="assets/icons/watsup.png">
-              <h3>Whatsapp</h3>
-              +91 9513 917 830
-            </div>
-          </div>
         </div>
-      </div>
+
+        <div class="margin_botom">
+            <div class="row">
+                <div class="col-sm-3 col-xs-12">
+                    <div class="single_service service_right">
+                        <img src="assets/jimages/payment-reconciliation.svg" alt="">
+                        <h4>Payment Reconciliation</h4>
+                        <p> All reconciliations of inventory, payments and receivables happens automatically through
+                            API. </p>
+                        <a type="button" title="Read More" class="readmore" data-toggle="modal"
+                            data-target="#modalpaymentreconciliation">Read More <i class="fa fa-arrow-right"
+                                aria-hidden="true"></i></a>
+
+                    </div>
+                </div>
+                <div class="col-sm-3 col-xs-12">
+                    <div class="single_service service_right">
+                        <img src="assets/jimages/erp.svg" alt="">
+                        <h4>ERP Integration</h4>
+                        <p>Zero hassles and seamless integration with ERP tools like Tally.
+                        </p>
+                        <a type="button" title="Read More" class="readmore" data-toggle="modal"
+                            data-target="#modalERPIntegration">Read More <i class="fa fa-arrow-right"
+                                aria-hidden="true"></i></a>
+                    </div>
+                </div>
+                <div class="col-sm-3 col-xs-12">
+                    <div class="single_service service_right">
+                        <img src="assets/jimages/GST.svg" alt="">
+                        <h4>GST Compliance</h4>
+                        <p>Easy-to-use software that ensures 100% accuracy and compliance.
+                        </p>
+                        <a type="button" title="Read More" class="readmore" data-toggle="modal"
+                            data-target="#modalGSTCompliance">Read More <i class="fa fa-arrow-right"
+                                aria-hidden="true"></i></a>
+                    </div>
+                </div>
+                <div class="col-sm-3 col-xs-12">
+                    <div class="single_service service_right">
+                        <img src="assets/jimages/inventory-management.svg" alt="">
+                        <h4>Inventory Management</h4>
+                        <p>Have the right stock, at the right levels, in the right place, at the right time, and at
+                            the right cost
+
+                        </p>
+                        <a type="button" title="Read More" class="readmore" data-toggle="modal"
+                            data-target="#modalInventoryManagement">Read More <i class="fa fa-arrow-right"
+                                aria-hidden="true"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="service_width">
+                    <div class=" col-sm-3 col-xs-12">
+                        <div class="single_service service_right">
+                            <img src="assets/jimages/procurement.svg" alt="">
+                            <h4>Procurement</h4>
+                            <p>Raise the bar of your workflow; issue purchase orders, automatically create shipments
+                                to Amazon and do a lot more in easy one-two-three clicks.</p>
+                            <a type="button" title="Read More" class="readmore" data-toggle="modal"
+                                data-target="#modalProcurement">Read More <i class="fa fa-arrow-right"
+                                    aria-hidden="true"></i></a>
+
+                        </div>
+                    </div>
+                    <div class=" col-sm-3 col-xs-12">
+                        <div class="single_service service_right">
+                            <img src="assets/jimages/returns.svg" alt="">
+                            <h4>Returns and claims</h4>
+                            <p>Effective inventory control gives a positive impact on the returns process and will
+                                help organisations to better manage this area of the customer experience.
+                            </p>
+                            <a type="button" title="Read More" class="readmore" data-toggle="modal"
+                                data-target="#modalReturns">Read More <i class="fa fa-arrow-right"
+                                    aria-hidden="true"></i></a>
+                        </div>
+                    </div>
+                    <div class="col-sm-3 col-xs-12">
+                        <div class="single_service service_right">
+                            <img src="assets/jimages/sales-order.svg" alt="">
+                            <h4>Sales Order Management</h4>
+                            <p>A comprehensive sales order management like ours automates complete order processing
+                                with integrated work flow.
+                            </p>
+                            <a type="button" title="Read More" class="readmore" data-toggle="modal"
+                                data-target="#modalSalesOrder">Read More <i class="fa fa-arrow-right"
+                                    aria-hidden="true"></i></a>
+                        </div>
+                    </div>
+                    <div class="col-sm-3 col-xs-12">
+                        <div class="single_service service_right">
+                            <img src="assets/jimages/pricing.svg" alt="">
+                            <h4>Pricing & Receipts</h4>
+                            <p>Set up selling prices & never miss any payment by performing timely reconciliation of
+                                the receipts.
+                            </p>
+                            <a type="button" title="Read More" class="readmore" data-toggle="modal"
+                                data-target="#modalpricing">Read More <i class="fa fa-arrow-right"
+                                    aria-hidden="true"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-3 col-xs-12">
+                    <div class="single_service service_right">
+                        <img src="assets/jimages/vendors-customers.svg" alt="">
+                        <h4>Vendors, customers & Stock management</h4>
+                        <p>Manage all your vendors and customers and set a minimum and maximum stock level for their
+                            stock in multiple locations.
+                        </p>
+                        <a type="button" title="Read More" class="readmore" data-toggle="modal"
+                            data-target="#modalVendors">Read More <i class="fa fa-arrow-right"
+                                aria-hidden="true"></i></a>
+                    </div>
+                </div>
+                <div class="col-sm-3 col-xs-12">
+                    <div class="single_service service_right">
+                        <img src="assets/jimages/auto-rtv.svg" alt="">
+                        <h4>Auto RTV & Reports</h4>
+                        <p>Perform Amazon auto RTV configuration and download all the necessary reports required to
+                            analyse your business trends from your marketplace in one-click.
+                        </p>
+                        <a type="button" title="Read More" class="readmore" data-toggle="modal"
+                            data-target="#modalReports">Read More <i class="fa fa-arrow-right"
+                                aria-hidden="true"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
     </div>
-  </div>
-  <div id='toTop'> <img src="assets/jimages/go-top-icon.png"> </div>
+
 </section>
-<div class="bottom_footer">
-  <p>© <span [(ngModel)]="Year"> </span> Jennifer. All Rights Reserved.</p>
+
+<section id="CrossBorder" class="crossborderBase">
+    <div class="container">
+        <h1>Selling In <strong>India</strong></h1>
+        <div class="row">
+            <div class="col-md-12 col-xs-12">
+                <ul class="nav nav-tabs">
+                    <li class="active"><a data-toggle="tab" href="#menu1"><img src="assets/jimages/jennifericn.png"
+                                title="jennifer"></a></li>
+                    <li><a data-toggle="tab" href="#menu3"><img src="assets/jimages/amazon.png" title=" amazon "></a>
+                    </li>
+                    <li><a data-toggle="tab" href="#menu4"><img src="assets/jimages/valuecart.png"
+                                title="Value Cart"></a>
+                    </li>
+                    <li><a data-toggle="tab" href="#menu2"><img src="assets/jimages/gati.png" title="Gati"></a>
+                    </li>
+                    <li><a data-toggle="tab" href="#menu5"><img src="assets/jimages/pingpong.png" title="pingpong"></a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div id="menu1" class="tab-pane fade in active">
+                        <h3>Jennifer</h3>
+                        <ul class="crossborderTablist">
+                            <li>ERP software service</li>
+                            <li>Order-ID level payment reconciliation</li>
+                            <li>Track &amp; trace of goods from China to India FBA warehouse</li>
+                            <li>Track &amp; trace of cash flow from Amazon to China seller Bank
+                                account</li>
+                            <li>MIS &amp; Business Intelligence reports</li>
+                            <li>Sponsored Ad services</li>
+                        </ul>
+                    </div>
+
+                    <div id="menu2" class="tab-pane fade">
+                        <h3>Gati</h3>
+                        <ul class="crossborderTablist">
+                            <li>International & domestic shipping service
+                            </li>
+                            <li>FBA inbound service
+                            </li>
+                            <li>Goods aggregation & export service
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div id="menu3" class="tab-pane fade">
+                        <h3>Amazon</h3>
+                        <ul class="crossborderTablist">
+                            <li>Marketplace </li>
+                            <li>Fulfilment by Amazon </li>
+                        </ul>
+
+                    </div>
+
+                    <div id="menu4" class="tab-pane fade">
+                        <h3>Value Cart</h3>
+                        <ul class="crossborderTablist">
+                            <li>Takes end-to-end responsibility of imports in India</li>
+                            <li>Investing in Customs duty</li>
+                            <li>Takes care of Customs compliance &amp; Taxes</li>
+                            <li>Registering seller account in Marketplaces and giving access to
+                                China Sellers </li>
+                        </ul>
+                    </div>
+
+                    <div id="menu5" class="tab-pane fade">
+                        <h3>Pingpong</h3>
+                        <ul class="crossborderTablist">
+                            <li>Gives payment guarantee to China sellers</li>
+                            <li>Engaging &amp; co-working in problem solving from China, for China
+                                sellers</li>
+                            <li>Remittance of sales proceeds in RMB</li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="import_part">
+                <h1><strong>Jennifer </strong>complete Import, Export & <strong>
+                        ERP</strong><br>
+                    Solutions</h1>
+                <div class="col-xs-12 col-md-6">
+                    <h3> Services we offer </h3>
+                    <ul class="crossborderlist">
+                        <li><img src="assets/icons/china.svg" class="crossvg">China Exporter Service</li>
+                        <li><img src="assets/icons/india.svg" class="crossvg">Indian Importer Service</li>
+                        <li><img src="assets/icons/interonal_domestic.svg" class="crossvg">International & Domestic
+                            Shipping</li>
+                        <li><img src="assets/icons/customClearance.svg" class="crossvg">Custom Clearance Service </li>
+                        <li><img src="assets/icons/dutyfunding.svg" class="crossvg">Customs duty funding service</li>
+                        <li><img src="assets/icons/marketplaceSeller.svg" class="crossvg">Indian Marketplace Seller
+                            Service </li>
+                        <li><img src="assets/icons/warehouse.svg" class="crossvg">Warehousing & Labelling Service for
+                            Re/Unsellable
+                            Goods</li>
+                    </ul>
+                </div>
+                <div class="col-xs-12 col-md-6">
+                    <h3> ERP Technology Features </h3>
+                    <ul class="crossborderlist">
+                        <li><img src="assets/icons/chinaManagement.svg" class="crossvg">China Supplier Account
+                            Management</li>
+                        <li><img src="assets/icons/cataloguemanagement.svg" class="crossvg">Catalogue Management</li>
+                        <li><img src="assets/icons/inventorymanagement.svg" class="crossvg">Inventory Management</li>
+                        <li><img src="assets/icons/thirdpartylogistics.svg" class="crossvg">3rd Party Logistics
+                            Integration</li>
+                        <li><img src="assets/icons/reconciliation.svg" class="crossvg">Finance Reconciliation Order-ID
+                            level in T+0
+                            timeline</li>
+                        <li><img src="assets/icons/chinasupplier.svg" class="crossvg">Payment to China supplier in RMB
+                            in T+3 timeline
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="About">
+    <div class="feature_part">
+        <div class="container-fluid middle_part">
+            <div class="fixed_col">
+                <div class="row feature_heading1">
+                    <div class="">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <h2>Salient <strong>
+                                    Features
+                                </strong>
+
+                            </h2>
+                        </div>
+
+                        <div class="col-md-6 col-sm-6 col-xs-12" style="margin-bottom: 20px;">
+                            <div class="featureheading1">
+                                <p class="wrk_perform">Enhanced Work Performance
+                                </p>
+                                <p class="wrk_descrip">E-commerce orders when integrated to the ERP system in real-time
+                                    streamlines
+                                    multiple business processes, reduce human resource involvement and data redundancy.
+                                </p>
+                            </div>
+                            <!-- <div class="featureheading2">
+                          <p class="wrk_perform">Reduced Inventory Cost
+                          </p>
+                          <p class="wrk_descrip">Inventory management is the most crucial aspect of e-commerce.
+                              Our robust
+                              ERP system can be fully integrated with your online store and efficiently manage
+                              your inventory.
+                          </p>
+                      </div>
+                      <div class="featureheading3">
+                          <p class="wrk_perform">Better Customer Satisfaction Rate
+                          </p>
+                          <p class="wrk_descrip">Jennifer reduces operational hassles for your
+                              seller account which leads to higher customer satisfaction.
+
+                          </p>
+                      </div> -->
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <div class="featureheading_image">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row feature_heading1">
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="featureheading_image1">
+
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-12" style="margin-bottom: 20px;">
+                        <div class="featureheading2">
+                            <p class="wrk_perform">Reduced Inventory Cost
+                            </p>
+                            <p class="wrk_descrip">Inventory management is the most crucial aspect of e-commerce.
+                                Our robust
+                                ERP system can be fully integrated with your online store and efficiently manage
+                                your inventory.
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row feature_heading1">
+                    <div class="col-md-6 col-sm-6 col-xs-12" style="margin-bottom: 20px;">
+                        <div class="featureheading3">
+                            <p class="wrk_perform">Better Customer Satisfaction Rate
+                            </p>
+                            <p class="wrk_descrip">Jennifer reduces operational hassles for your seller account by
+                                providing proper guidance to operate the application
+                                through easy-to-access screens, which leads to better customer satisfaction.
+
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="featureheading_image2">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class="container client_part">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <h2> Our <strong>
+                        Clients
+                    </strong>
+                </h2>
+            </div>
+            <div class="col-md-12 col-sm-12 col-xs-12">
+
+                <!-- <section class="customer-logos slider">
+                  <div class="slide"><img src="assets/jimages/client1.jpg"></div>
+                  <div class="slide"><img src="assets/jimages/client2.jpg"></div>
+                  <div class="slide"><img src="assets/jimages/client3.jpg"></div>
+                  <div class="slide"><img src="assets/jimages/client4.jpg"></div>
+                  <div class="slide"><img src="assets/jimages/client5.jpg"></div>
+                  <div class="slide"><img src="assets/jimages/client6.jpg"></div>
+                  <div class="slide"><img src="assets/jimages/client7.jpg"></div>
+              </section>  -->
+                <!-- <section class="customer-logos slider">
+                  
+                  <ngx-slick class="carousel" #slickModal="slick-modal" [config]="slideConfig">
+                      <div class="slide"><img src="assets/jimages/client1.jpg"></div>
+                      <div class="slide"><img src="assets/jimages/client2.jpg"></div>
+                      <div class="slide"><img src="assets/jimages/client3.jpg"></div>
+                      <div class="slide"><img src="assets/jimages/client4.jpg"></div>
+                      <div class="slide"><img src="assets/jimages/client5.jpg"></div>
+                      <div class="slide"><img src="assets/jimages/client6.jpg"></div>
+                      <div class="slide"><img src="assets/jimages/client7.jpg"></div>
+                  </ngx-slick>
+              </section> -->
+                <section class="customer-logos">
+                    <div class="slide"><img src="assets/jimages/amazonclient.jpg"></div>
+                    <div class="slide"><img src="assets/jimages/gaticlient.jpg"></div>
+                    <div class="slide"><img src="assets/jimages/payoneerclient.jpg"></div>
+                    <div class="slide"><img src="assets/jimages/Pingpongclient.jpg"></div>
+                    <div class="slide"><img src="assets/jimages/rk.jpg"></div>
+                    <div class="slide"><img src="assets/jimages/valuecartclient.jpg"></div>
+                    <div class="slide"><img src="assets/jimages/citi.jpg"></div>
+                </section>
+
+
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="ContactUs">
+    <div class="container">
+        <div class="conatct_us">
+            <div class="contct_part">
+                <h2>Contact <strong>Us</strong></h2>
+            </div>
+            <div class="row">
+                <div class="col-md-8 col-xs-12">
+                    <div class="Contact_part">
+
+                    </div>
+                </div>
+
+                <div class="col-md-4 col-xs-12">
+                    <h5 class="touch_part">Get in touch with Us</h5>
+
+                    <div class="contactForm">
+                        <form autocomplete="off" [formGroup]="Generalsupportform" (ngSubmit)="SaveData()">
+                            <div class="form-group" [ngClass]="{'has-error': formErrors.Name}">
+                                <input type="text" name="name" class="form-control" id="inputName"
+                                    formControlName="Name" maxlength="50" (blur)="logValidationErrors()"
+                                    placeholder="Name">
+                                <div class="help-block-rk">
+                                    <span class="help-block" *ngIf="formErrors.Name">
+                                        {{formErrors.Name}}
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group" [ngClass]="{'has-error': formErrors.Email}">
+                                <input type="email" name="email" class="form-control" id="Email" formControlName="Email"
+                                    (blur)="logValidationErrors()" maxlength="50" placeholder="Email">
+                                <div class="help-block-rk">
+                                    <span class="help-block" *ngIf="formErrors.Email">
+                                        {{formErrors.Email}}
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group" [ngClass]="{'has-error': formErrors.MobileNumber}">
+                                <input type="text" name="mobile" class="form-control" id="MobileNumber"
+                                    formControlName="MobileNumber" maxlength="12"
+                                    onkeypress="return /[0-9]/i.test(event.key)" (blur)="logValidationErrors()"
+                                    placeholder="Mobile">
+                                <div class="help-block-rk">
+                                    <span class="help-block" *ngIf="formErrors.MobileNumber">
+                                        {{formErrors.MobileNumber}}
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group" [ngClass]="{'has-error': formErrors.Message}">
+                                <textarea class="text_area" id="Message" type="text" formControlName="Message"
+                                    (blur)="logValidationErrors()" maxlength="1000" rows="4" cols="48"
+                                    placeholder="Message"></textarea>
+                                <div class="help-block-rk"> <span class="help-block" *ngIf="formErrors.Message">
+                                        {{formErrors.Message}}
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <re-captcha (resolved)="resolved($event)"
+                                    siteKey="6Lcs0-EUAAAAAOO02B-7hFwouI3qGpPcU5BIACP1">
+                                </re-captcha>
+                            </div>
+                            <div class="form-group btn_custom">
+                                <div class="pull-right btn-toolbar">
+                                    <button type="button" title="Reset" class="btn btn-warning"
+                                        (click)="Reset()">Reset</button>
+                                    <button type="submit" title="Submit" class="btn btn-danger"
+                                        [disabled]="!Generalsupportform.valid|| captchaLength == 0">
+                                        Submit</button>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="">
+    <div class="main_footer">
+        <div class="container bottom_border">
+            <div class="row">
+                <div class=" col-sm-3 col-md-3 col-xs-12 footer_content">
+                    <h5 class="footr_color footer_head">Find us</h5>
+                    <p class="mb10">RK Group
+                        Parking @ Sukhsagar Mall, Vinayak Tower, 1/1, 3rd Floor, 1st Cross Rd, Gandhi Nagar, Bengaluru,
+                        Karnataka 56000</p>
+                </div>
+
+
+                <div class=" col-sm-2 col-md-2 col-xs-12 ">
+                    <h5 class=" footr_color footer_head">Quick links</h5>
+                    <ul class="footer_lst">
+                        <li class=""><a class="scroll" href="#Home">Home</a></li>
+                        <li><a class="scroll" href="#about">About</a></li>
+                        <li><a class="scroll" href="#CrossBorder">Cross Border</a></li>
+                        <li><a class="scroll" href="#ContactUs">Contact Us</a></li>
+
+                    </ul>
+                </div>
+
+                <div class=" col-sm-2 col-md-2 col-xs-12 ">
+                    <h5 class=" footr_color footer_head">Legal</h5>
+                    <ul class="footer_lst">
+                        <li class=""><a type="button" title="Read More" class="" data-toggle="modal"
+                                data-target="#modalTermsofService">Terms of Service </a></li>
+                        <li>
+                            <a type="button" title="Read More" class="" data-toggle="modal"
+                                data-target="#modalPrivacyPolicy">Privacy Policy</a></li>
+                    </ul>
+                </div>
+
+                <div class=" col-sm-2 col-md-2 col-xs-12 footer_content">
+                    <h5 class="footr_color footer_head">Contact Us</h5>
+                    <p><i class="fa fa-phone"></i> +91-9513917830 </p>
+                    <p><i class="fa fa fa-envelope"></i> support@jennifer-in.com </p>
+
+                </div>
+
+                <div class="col-sm-2 col-md-2 col-xs-12 footer_content">
+                    <h5 class="footr_color footer_head">Cross Border</h5>
+                    <div class="wechat">
+                    </div>
+                    <h3>We Chat</h3>
+                    <h3 class="rk_jennifer">ID: RKJennifer2020</h3>
+
+                </div>
+
+            </div>
+        </div>
+
+
+        <div class="container">
+            <div class="row">
+                <div class="copy_footer">
+                    <p class="text-left col-sm-6 col-xs-6">Copyright @2020</p>
+                    <p class="text-right col-sm-6 col-xs-6">Designed by <a href="#"> Jennifer</a></p>
+                    <!-- <ul class="social_footer_ul">
+                      <li><a href=""><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+                      <li><a href=""><i class="fa fa-linkedin" aria-hidden="true"></i></a></li>
+                      <li><a href=""><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+                      <li><a href=""><i class="fa fa-instagram" aria-hidden="true"></i></a></li>
+                  </ul> -->
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<div id="modalpaymentreconciliation" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="modalpaymentreconciliation" aria-hidden="true">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="modalpaymentreconciliation">Payment Reconciliation</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12 col-xs-12">
+                        <ul>
+                            <li> Reconciliations can be tracked through interactive dashboards on a real time basis.
+                            </li>
+                            <li>We help you to achieve 99.99% accurate reconciliation of Payments, Returns and inventory
+                                in
+                                real-time. </li>
+                            <li>Save 80% of your productive time in knowing where exactly and how your money is spent.
+                            </li>
+
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+<div id="modalERPIntegration" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modalERPIntegration"
+    aria-hidden="true">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="modalERPIntegration">ERP Integration</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12 col-xs-12">
+                        <ul>
+                            <li> You do not have to waste time and resources on manual, repetitive tasks and can shift
+                                your focus on improving your business by optimising business process management.
+                            </li>
+                            <li>One-Click is all you need to seamlessly sync all orders, returns, payments and
+                                commissions from Jennifer to your favourite ERP and 100% compliant accounting
+                                integration. </li>
+
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+<div id="modalGSTCompliance" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modalGSTCompliance"
+    aria-hidden="true">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="modalGSTCompliance">GST Compliance</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12 col-xs-12">
+                        <ul>
+                            <li>Comply with global accounting regulations that strengthen your business. Simplify GST
+                                compliance with automated functions that integrate with your existing financial software
+                                (Tally, SAP or Oracle).
+                            </li>
+                            <li>Ready availability of GSTR1 & GSTR3B for GST returns filing with sales and purchase
+                                books just with a Single click upload data. </li>
+
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+<div id="modalInventoryManagement" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="modalInventoryManagement" aria-hidden="true">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="modalInventoryManagement">Inventory Management</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12 col-xs-12">
+                        <ul>
+                            <li>Comply with global accounting regulations that strengthen your business. Simplify GST
+                                compliance with automated functions that integrate with your existing financial software
+                                (Tally, SAP or Oracle).
+                            </li>
+                            <li>Ready availability of GSTR1 & GSTR3B for GST returns filing with sales and purchase
+                                books just with a Single click upload data. </li>
+
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+<div id="modalProcurement" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modalProcurement"
+    aria-hidden="true">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="modalProcurement">Procurement</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12 col-xs-12">
+                        <ul>
+                            <li>Jennifer helps you in achieving strategic procurement which includes an assessment of
+                                demand, a tendering phase, selection of the supplier, and finally the placing of an
+                                order.
+                            </li>
+                            <li>The operative procurement which follows later, starts with the supervision of orders,
+                                stock receipt, accounting control and the payment. </li>
+
+                        </ul>
+                        <b>Our mainly aimed factors for our sellers are:</b>
+                        <ul>
+                            <li>Reduce man-efforts and operational costs
+                            </li>
+                            <li>Improve Business Performance by solving complex business problems</li>
+                            <li>100% claims and reimbursements from marketplace</li>
+                            <li>Consequent reductions in inventory holdings (value/stock turnover)</li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+<div id="modalReturns" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modalReturns" aria-hidden="true">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="modalReturns">Returns and claims</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12 col-xs-12">
+                        <ul>
+                            <li>Get a summary of unsaleable receivables from Amazon.
+                            </li>
+                            <li>Monitor inventory returns or refunds and file claims in time in case of any errors.
+                            </li>
+                            <li>Avoid heavy losses by getting a complete overview of inventory.
+                            </li>
+
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+<div id="modalSalesOrder" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modalSalesOrder"
+    aria-hidden="true">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="modalSalesOrder">Sales Order Management</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12 col-xs-12">
+                        <ul>
+                            <li>Get a summary of unsaleable receivables from Amazon.
+                            </li>
+                            <li>Monitor inventory returns or refunds and file claims in time in case of any errors.
+                            </li>
+                            <li>Avoid heavy losses by getting a complete overview of inventory.
+                            </li>
+
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+<div id="modalpricing" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modalpricing" aria-hidden="true">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="modalpricing">Pricing & Receipts</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12 col-xs-12">
+                        <ul>
+                            <li>Manage complex pricing and customer discount policies. Set up quantity and volume
+                                discounts as a percent or an amount and specify multiple discount rules and sequences
+                                for all your products.
+                            </li>
+                            <li>Reconcile all your receipts received from your marketplace and keep a track of them
+                                using download option.
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+<div id="modalVendors" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modalVendors" aria-hidden="true">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="modalVendors">Vendors, customers & Stock management</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12 col-xs-12">
+                        <ul>
+                            <li>Easily store all your products, vendors and customers’ information in Jennifer and have
+                                them handy for all your transactions throughout Jennifer.
+                            </li>
+                            <li>Jennifer helps you to suit your business needs and to ensure that you always have
+                                sufficient stock on hand while keeping a clean balance sheets.
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+<div id="modalReports" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modalReports" aria-hidden="true">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="modalReports">Auto RTV & Reports</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12 col-xs-12">
+                        <ul>
+                            <li>Amazon auto ‘Return To Vendor’ screen helps you to transfer all the unsaleable goods
+                                from marketplace warehouse to your warehouse and track the in transit goods from
+                                Jennifer.
+                            </li>
+                        </ul>
+                        <b>Below is the list of reports available for download in Jennifer</b>
+                        <ul>
+                            <li>Inventory (your and marketplace warehouses) related reports
+                            </li>
+                            <li>Orders related reports
+                            </li>
+                            <li>RTV related reports
+                            </li>
+                            <li>Customer returns
+                            </li>
+                            <li>Claims and reimbursements
+                            </li>
+                            <li>Bill of entry and so on.
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+<div id="modalTermsofService" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modalTermsofService"
+    aria-hidden="true">
+    <div class="modal-dialog ">
+        <div class="modal-content model_part">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="modalTermsofService">TERMS OF SERVICE</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12 col-xs-12">
+                        <p>These terms and conditions outline the rules and regulations for the use of Jennifer's
+                            Website, located at <a href="https://www.jennifer-in.com.">https://www.jennifer-in.com.</a>
+                        </p>
+                        <p>By accessing this website we assume you accept these terms and conditions. Do not continue to
+                            use Jennifer if you do not agree to take all of the terms and conditions stated on this
+                            page. </p>
+                        &nbsp;
+                        <h5>
+                            <b>
+                                1. LICENCE
+                            </b>
+                        </h5>
+                        <p>Unless otherwise stated, Jennifer and/or its licensors own the intellectual property rights
+                            for all material on Jennifer. All intellectual property rights are reserved. You may access
+                            this from Jennifer for your own personal use subjected to restrictions set in these terms
+                            and conditions.</p>
+                        <p>You must not:</p>
+                        <ul>
+                            <li>Republish material from Jennifer</li>
+                            <li>Sell, rent or sub-license material from Jennifer</li>
+                            <li>Reproduce, duplicate or copy material from Jennifer</li>
+                            <li>Redistribute content from Jennifer</li>
+
+                        </ul>
+                        <p>This Agreement shall begin on the date hereof <b>February 07, 2020</b></p>
+                        &nbsp;
+                        <h5>
+                            <b>
+                                2. IFRAMES
+                            </b>
+                        </h5>
+                        <p>Without prior approval and written permission, you may not create frames around our Webpages
+                            that alter in any way the visual presentation or appearance of our Website.</p>
+                        &nbsp;
+                        <h5>
+                            <b>
+                                3. ACCOUNT REGISTRATION AND AUTHORIZED USERS
+                            </b>
+                        </h5>
+                        <p>
+                            You must register for an account with us in order to use software services. Your
+                            registration information must be accurate, current and complete. You must keep your
+                            registration current so that we may send notices, statements and other information to you by
+                            email or through your account. You are responsible for all actions taken through your
+                            account.
+                        </p>
+                        <p>
+                            Only Authorized Users may access and use the Software. Jennifer may allow you to designate
+                            different types of Authorized Users, in which case pricing and functionality may vary
+                            according to the type of Authorized User. You are responsible for compliance with this
+                            Agreement by all Authorized Users, including what Authorized Users do with your data, and
+                            for all fees incurred for adding users. All use of Software must be solely for the benefit
+                            of you or your Affiliates and must be within the Scope of Use.
+                        </p>
+                        &nbsp;
+                        <h5>
+                            <b>
+                                4. SECONDARY USERS
+                            </b>
+                        </h5>
+                        <p>
+                            Parts of Jennifer software may need you to give access to your supporting users. Subject to
+                            the terms and conditions of this Agreement, you may grant your own users (“Secondary Users”)
+                            limited rights to use the Software solely so that they may view and interact with such
+                            resources. You may not permit Secondary Users to use the Software for purposes unrelated to
+                            supporting your own offerings or grant Secondary Users administrator, configuration or
+                            similar use of the Software. Notwithstanding anything to the contrary in this Agreement,
+                            Jennifer has no direct or indirect warranty, indemnity or other liability or obligations of
+                            any kind to Secondary Users.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+<div id="modalPrivacyPolicy" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modalPrivacyPolicy"
+    aria-hidden="true">
+    <div class="modal-dialog ">
+        <div class="modal-content model_part">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="modalPrivacyPolicy">PRIVACY POLICY</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12 col-xs-12">
+                        <p><b>Effective as of February 07, 2020,</b> you using the <b>Jennifer</b> services in any way
+                            means that you
+                            agree to all of the below Terms which will remain in effect while you use the Services. </p>
+                        <ol>
+                            <li>We reserve the right, at our sole discretion, to change, modify or otherwise alter
+                                these Terms at any time.</li>
+                            &nbsp;
+                            <li>We commit to protect the data privacy of all Jennifer users.</li>
+                            &nbsp;
+                            <li>The information we collect may include, but is not limited to the following: Email,
+                                name, phone, and address. We will use this information while sending you service emails,
+                                resolving the disputes and while responding to service enquiries.</li>
+                            &nbsp;
+                            <li>None of the information that is collected by Jennifer is rented or sold to any third
+                                parties for any purpose and is used to create an efficient and friendlier user
+                                experience while working with Jennifer. </li>
+                            &nbsp;
+                            <li>We reserve the right to disclose information when required by law.</li>
+                            &nbsp;
+                            <li>If you request that we modify or remove all of your personal information, we will
+                                promptly do so, to the extent possible.</li>
+                            &nbsp;
+                            <li>IP addresses are used to analyse your transactions in Jennifer but are not linked to
+                                any personally identifiable information and we may insert cookies solely to improve the
+                                quality of our Products and Services by tracking your session.</li>
+                            &nbsp;
+                            <li>We have implemented administrative and technical security measures to help prevent
+                                unauthorized access. Despite these measures, no data transmission over the Internet can
+                                be entirely secure, and we cannot guarantee or warrant the security of any information
+                                you transmit via our websites or apps. Please note that you are responsible for
+                                maintaining the security of your credentials used to access your account and you must
+                                report suspected unauthorized activity to us.</li>
+                            &nbsp;
+                            <li>We make reasonable efforts to restrict access to information to only those employees,
+                                contractors, and agents who need such access in order to operate, develop, improve, or
+                                deliver our programs, products, and services.</li>
+                            &nbsp;
+                            <li>In the event that Jennifer merges or is acquired by another company, your information
+                                will never be shared with other company without your consent.</li>
+                            &nbsp;
+                            <li>If we are going to use personally identifiable information collected through our sites
+                                in a manner materially different from that stated at the time of collection we will
+                                notify users via email and/or by posting a notice on our site prior to such use.</li>
+
+                        </ol>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
 </div>

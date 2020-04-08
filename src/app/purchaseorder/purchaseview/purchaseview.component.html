@@ -21,7 +21,7 @@
     </div>
   </div>
 </div>
-<form  >
+<form>
   <div class="panel panel-default">
     <div class="panel-heading">
       <div class="row">
@@ -59,10 +59,23 @@
                   Invoice Date<span class="mandantory">*</span> </th>
                 <td> {{obj?.InvoiceDate | date :"MM-dd-yyyy HH:mm"}}</td>
               </tr>
+
               <tr>
                 <th width="180px">
                   Vendor Warehouse <span class="mandantory">*</span></th>
                 <td> {{obj?.WarehouseName}} </td>
+              </tr>
+              <tr>
+                <th width="180px">
+                  CurrencyType <span class="mandantory">*</span>
+                </th>
+                <td> {{obj?.CurrencyType}} </td>
+              </tr>
+              <tr>
+                <th width="180px">
+                  CurrencyValue <span class="mandantory">*</span>
+                </th>
+                <td> {{obj?.CurrencyValue}} </td>
               </tr>
               <tr>
                 <th width="180px"> Remarks <span class="mandantory">*</span> </th>
@@ -76,7 +89,7 @@
         <div class="col-md-6 col-xs-12">
           <span class="groupspanheader"> PO Information </span>
           <div class="table-responsive">
-            <table class="bgtable table table-bordered"> 
+            <table class="bgtable table table-bordered">
               <tr>
                 <th width="180px"> PO No. </th>
                 <td> {{obj?.PONumber}} </td>
@@ -90,7 +103,7 @@
                 <th width="180px">
                   Vendor <span class="mandantory">*</span> </th>
                 <td> {{obj?.VendorName}} </td>
-              </tr> 
+              </tr>
             </table>
           </div>
         </div>

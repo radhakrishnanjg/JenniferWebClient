@@ -1,0 +1,189 @@
+<div class="row">
+  <div class="col-sm-6 col-lg-6">
+    <h3>
+      EORCatalogue
+    </h3>
+  </div>
+  <div class="col-sm-6 col-lg-6">
+    <div class="pull-right hidden-xs">
+      <ol class="breadcrumb" id="dynamicbreadcrumb">
+        <li>
+          <span> Cross Border</span>
+        </li>
+        <li>
+          <span>EORCatalogue</span>
+        </li>
+        <li class="active">
+
+          View
+        </li>
+      </ol>
+    </div>
+  </div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <div class="row">
+      <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+        <span class="groupspanheader">
+          View EOR Catalogue
+        </span>
+      </div>
+      <div class="col-sm-4">
+        <div class="pull-left">
+
+        </div>
+      </div>
+      <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 ">
+        <div class="pull-right">
+          <button type="button" class="btn btn-primary" routerLink="/CrossBorder/EORCataloguelist" title="Back">
+            Back
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="panel-body">
+    <div class="row">
+      <div class="col-xs-4 col-sm-3 ">
+        Catalogue No. : <b>{{objHeader?.CatalogueNumber}}</b>
+      </div>
+      <div class="col-xs-4 col-sm-3 ">
+        Date: <b>{{objHeader?.CatalogueDate | date:'MM-dd-yyyy HH:mm'}}</b>
+      </div>
+      <div class="col-xs-4 col-sm-3 ">
+        Total Items : <b>{{objHeader?.NoOfItem}} </b>
+      </div>
+      <div class="col-xs-4 col-sm-3 ">
+        Seller ID : <b>{{objHeader?.RKSellerID}} </b>
+      </div>
+    </div>
+    <hr>
+    <div class="row">
+      <div class="col-xs-4 col-sm-2 ">
+        Status : <b>{{objHeader?.EOR_CatalogueStatus}}</b>
+      </div>
+      <div class="col-xs-4 col-sm-2 ">
+        <a type="button" title="View More" class="needhelp" data-toggle="modal"
+          data-target="#modalstatusconfimation">View More</a>
+      </div>
+    </div>
+    <hr>
+
+    <span class="groupspanheader"> Product Details </span>
+    <div class="row">
+      <div class="col-md-12 col-xs-12">
+        <div class="table-responsive">
+          <table class="table table-bordered table-condensed table-striped" *ngIf="objHeader?.lstCatalogueDetail !=null 
+          && objHeader?.lstCatalogueDetail.length > 0">
+            <thead>
+              <tr>
+                <th>Product Name</th>
+                <th>Merchant SKU</th>
+                <th>Amazon ASIN</th>
+                <th>Product Desciption</th>
+                <th>HSN Code</th>
+                <th>Declared Value (In Dollars)</th>
+                <th>MRP (In INR)</th>
+                <th>Selling Price (In INR)</th>
+                <th>Product Image</th>
+                <th>File 1</th>
+                <th>File 2</th>
+                <th>File 3</th>
+                <th>CTN(HSN)</th>
+                <th>BCD</th>
+                <th>SWS</th>
+                <th>IGSt</th>
+                <th>Others</th>
+                <th>Remarks</th>
+                <th>Consultant Status</th>
+                <th>IOR Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of objHeader?.lstCatalogueDetail; let i = index;">
+                <td>{{item.ProductName}}</td>
+                <td>{{item.MerchantSKU}}</td>
+                <td>{{item.ASIN}}</td>
+                <td>{{item.ProductDescription}}</td>
+                <td>{{item.HSNCode}}</td>
+                <td>{{item.DeclareValueInDollar}}</td>
+                <td>{{item.MRPInINR}}</td>
+                <td>{{item.SellingPriceInINR}}</td>
+                <td *ngIf="item.ImagePath != ''"> <i class="fa fa-download bgblue pointer"
+                    (click)="DownloadButtonClick(item.ImagePath)" title="Download"></i></td>
+                <td *ngIf="item.DocumentPath1 != ''"> <i class="fa fa-download bgblue pointer"
+                    (click)="DownloadButtonClick(item.DocumentPath1)" title="Download"></i></td>
+                <td *ngIf="item.DocumentPath1 == ''"> </td>
+                <td *ngIf="item.DocumentPath2 != ''"> <i class="fa fa-download bgblue pointer"
+                    (click)="DownloadButtonClick(item.DocumentPath2)" title="Download"></i></td>
+                <td *ngIf="item.DocumentPath2 == ''"> </td>
+                <td *ngIf="item.DocumentPath3 != ''"> <i class="fa fa-download bgblue pointer"
+                    (click)="DownloadButtonClick(item.DocumentPath3)" title="Download"></i></td>
+                <td *ngIf="item.DocumentPath3 == ''"> </td>
+                <td>{{item.CTH_HSN}}</td>
+                <td>{{item.BCD}}</td>
+                <td>{{item.SWS}}</td>
+                <td>{{item.IGST}}</td>
+                <td>{{item.Others}}</td>
+                <td>{{item.Custom_Remarks}}</td>
+                <td>{{item.Custom_Status}}</td>
+                <td>{{item.IOR_Status}}</td> 
+              </tr>
+            </tbody>
+          </table>
+
+        </div>
+      </div>
+      <div class="col-md-12 col-xs-12">
+        <div class="pull-right btn-toolbar">
+          <button type="button" class="btn btn-primary" routerLink="/CrossBorder/EORCataloguelist">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div> 
+</div>
+
+<div id="modalstatusconfimation" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modalstatusconfimation"
+  aria-hidden="true">
+  <div class="modal-dialog ">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="modalstatusconfimation">Status Log</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-12 col-xs-12">
+            <div class="table-responsive">
+              <table class="table table-bordered table-condensed table-striped" *ngIf="objHeader?.lstCatalogueHistory !=null 
+              && objHeader?.lstCatalogueHistory.length > 0">
+                <thead>
+                  <tr>
+                    <th>Status</th>
+                    <th>Updated Date</th>
+                    <th>Remarks</th>
+                    <th>Updated By</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of objHeader?.lstCatalogueHistory;">
+                    <td>{{item.CatalogueStatus}}</td>
+                    <td>{{item.LastModifiedDate | date:'MM-dd-yyyy HH:mm'}}</td>
+                    <td>{{item.Remarks}}</td>
+                    <td>{{item.LastModifiedByName}}</td> 
+                  </tr>
+                </tbody>
+              </table> 
+            </div>
+          </div>
+        </div> 
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary text-center" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div> 
+</div>

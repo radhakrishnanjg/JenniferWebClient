@@ -84,7 +84,7 @@
           </ng-template>
           <kendo-grid-column field="PONumber" title="PO No.">
           </kendo-grid-column>
-          <kendo-grid-column field="PODate" title="PO Date" filter="date" format="{0:d}" [filterable]="false">
+          <kendo-grid-column field="PODate" title="PO Date" filter="date">
             <ng-template kendoGridCellTemplate let-dataItem>
               {{ dataItem.PODate | date :"MM-dd-yyyy HH:mm" }}
             </ng-template>

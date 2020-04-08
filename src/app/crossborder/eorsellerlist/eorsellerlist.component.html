@@ -1,0 +1,116 @@
+<div class="row">
+  <div class="col-sm-6 col-lg-6">
+    <h3>
+      Seller List
+    </h3>
+  </div>
+  <div class="col-sm-6 col-lg-6">
+    <div class="pull-right hidden-xs">
+      <ol class="breadcrumb" id="dynamicbreadcrumb">
+        <li>
+          <span> CrossBorder</span>
+        </li>
+        <li>
+          <span>Seller</span>
+        </li>
+        <li class="active">
+          List
+        </li>
+      </ol>
+    </div>
+  </div>
+</div>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="input-group col-xs-12 col-sm-12" role="group" aria-label="Basic example">
+          <div class="col-md-3 col-sm-3 col-xs-12 nopading_loct">
+            <select [(ngModel)]="SearchBy" class="form-control serchcurv btn-group">
+              <option value="" selected="select">Search By</option>
+              <option value="CompanyName">Company Name</option>
+              <option value="Email">Email</option>
+              <option value="ApprovalStatus">Approval Status</option>
+              <option value="Status">Status</option>
+            </select>
+          </div>
+          <div class="col-md-4 col-sm-3 nopading_loct" *ngIf="(SearchBy!='ByStatus')">
+            <input (keyup.enter)="Search()" [(ngModel)]="SearchKeyword" type="text"
+              class="form-control btn-group serchcurv">
+          </div>
+          <div class="col-md-3 col-sm-3 nopading_loct" *ngIf="(SearchBy=='ByStatus')">
+
+            <select [(ngModel)]="Searchaction" type="select" class="serchcurv form-control btn-group">
+
+              <option value="true">Active</option>
+              <option value="false">InActive</option>
+            </select>
+
+          </div>
+          <div class="col-md-3 col-sm-3 col-xs-6 nopading_loct">
+            <button class="btn btn-default btn-group serchcurv" (click)="Search()" title="Search">
+              <i class="fa fa-search " aria-hidden="true"></i>
+            </button>
+            <button class="btn btn-default btn-group serchcurv" (click)="Refresh()" title="Reset">
+              <i class="fa fa-refresh" aria-hidden="true"></i>
+            </button>
+          </div>
+          <!-- <div class="col-xs-6 col-sm-3 col-md-2 text-right nopadding">
+            <button type="button" class="btn btn-xs btn-sm btn-primary" (click)="AddNewLink()" title="Add New">
+
+              Add New Record
+            </button>
+          </div> -->
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="panel-body">
+    <div class="table-responsive">
+      <table class="table">
+        <kendo-grid [data]="gridView" resizable="true" columnMenu="true" [pageSize]="pageSize" [skip]="skip"
+          [pageable]="{pageSizes: [10, 25, 50, 100, 250, 500]}" (pageChange)="pageChange($event)" [sortable]="{
+          allowUnsort: allowUnsort,
+          mode:  'single'
+          }" [sort]="sort" (sortChange)="sortChange($event)" [filterable]="true"
+          (dataStateChange)="dataStateChange($event)" [filter]="state.filter">
+
+          <ng-template kendoGridToolbarTemplate>
+            <input placeholder="Search in all columns..." style="float:right;" kendoTextBox
+              (input)="onFilter($event.target.value)" />
+            <button kendoGridExcelCommand type="button" icon="file-excel"> </button>
+            <button kendoGridPDFCommand icon="file-pdf"> </button>
+            <kendo-grid-pdf fileName="SellerList.pdf" [repeatHeaders]="true"></kendo-grid-pdf>
+            <kendo-grid-excel fileName="SellerList.xlsx"></kendo-grid-excel>
+          </ng-template>
+          <kendo-grid-column field="RKSellerID" title="RKSeller ID">
+          </kendo-grid-column>
+          <kendo-grid-column field="CompanyName" title="Company Name">
+          </kendo-grid-column>
+          <kendo-grid-column field="Email" title="Email">
+          </kendo-grid-column>
+          <kendo-grid-column field="CreatedDate" title="Date" filter="date" format="{0:d}" [filterable]="false">
+            <ng-template kendoGridCellTemplate let-dataItem>
+              {{ dataItem.CreatedDate | date :"MM-dd-yyyy HH:mm" }}
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="ApprovalStatus" title="Status">
+          </kendo-grid-column>
+
+          <kendo-grid-column title="Action" [class]="{'text-center': true}" [filterable]="false" [sortable]="false"
+            width="120">
+            <ng-template kendoGridCellTemplate let-obj>
+              <i class="fa fa-edit bgblue pointer" title="Approval" *ngIf="obj.ApprovalStatus=='Pending'"
+                [routerLink]="['/CrossBorder/EORSellerapproval',obj.SellerFormID ]"></i>
+
+              <i class="fa fa-eye bgblue pointer" title="View" *ngIf="obj.ApprovalStatus!='Pending'"
+                [routerLink]="['/CrossBorder/EORSellerapproval',obj.SellerFormID ]"></i>
+            </ng-template>
+          </kendo-grid-column>
+        </kendo-grid>
+      </table>
+    </div>
+  </div>
+</div>

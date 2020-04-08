@@ -133,7 +133,13 @@
                       <span style="color:hotpink;">Support</span> - {{val.Query}} - By <b>{{val.CreatedByName}}</b> on
                       {{val.CreatedDate  |date :"MM-dd-yyyy HH:mm"  }} </p>
                   </div>
-
+                  
+                  <div *ngFor="let val of tool[1] | filterBy: ['UserType']: 'P'">
+                    <p class="pull-right" style="padding-top:30px">
+  
+                      - {{val.Query}} - By <b>{{val.CreatedByName}}</b> on
+                      {{val.CreatedDate  |date :"MM-dd-yyyy HH:mm"  }} </p>
+                  </div>
                 </div>
               </div>
             </div>

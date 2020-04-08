@@ -12,6 +12,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { first } from 'rxjs/operators';
 import { switchMap, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
+import { SellerregistrationService } from '../../_services/service/crossborder/sellerregistration.service';
+
 @Component({
   selector: 'app-signin',
   templateUrl: './signin.component.html',
@@ -36,9 +38,10 @@ export class SigninComponent implements OnInit {
     private authenticationService: AuthenticationService,
     private alertService: ToastrService,
     private cookieService: CookieService,
-    
+
     private httpClient: HttpClient,
     private deviceService: DeviceDetectorService,
+    private _SellerregistrationService: SellerregistrationService
   ) {
     // redirect to home if already logged in
     if (this.authenticationService.currentUserValue) {
@@ -126,9 +129,21 @@ export class SigninComponent implements OnInit {
               else {
                 this.alertService.success('Sign in Successful.!');
               }
-              this.router.navigate(['/Dashboard1']);
-              //
-              //
+              //this.router.navigate(['/Dashboard1']);
+              // this._SellerregistrationService.GetApplicationAccess()
+              //   .subscribe(
+              //     data => {
+              //       if (data != null && data.length == 2 ||
+              //         data[0].ApplicationName == 'CrossBorder') {
+              //         this.router.navigate(['/CrossBorder/dashboard2']);
+              //       }
+              //       else {
+              //         this.router.navigate(['/Dashboard1']);
+              //       }
+              //     },
+              //     error => {
+              //     });
+              this.GetApplicationAccess();
               this.loading = false;
             }
           },
@@ -186,14 +201,12 @@ export class SigninComponent implements OnInit {
   }
 
   LoginCheck(username: string, password: string) {
-    //
     this.authenticationService.login(this.f.Email.value, this.f.password.value)
       .pipe(first())
       .subscribe(
         datalogin => {
           if (datalogin == null) {
             this.alertService.error('Invalid credentials');
-            //
             this.loading = false;
           }
           else {
@@ -204,7 +217,6 @@ export class SigninComponent implements OnInit {
               this.cookieService.set('jennifergauuid2', this.f.password.value);
             }
             this.objuser = datalogin;
-            //
             this.authenticationService.adduserLog(this.objuserlog)
               .subscribe(
                 data => {
@@ -215,13 +227,25 @@ export class SigninComponent implements OnInit {
                     else {
                       this.alertService.success('Sign in Successful.!');
                     }
-                    this.router.navigate(['/Dashboard1']);
-                    //
+                    //this.router.navigate(['/Dashboard1']);
+                    // this._SellerregistrationService.GetApplicationAccess()
+                    //   .subscribe(
+                    //     data => {
+                    //       if (data != null && data.length == 2 ||
+                    //         data[0].ApplicationName == 'CrossBorder') {
+                    //         this.router.navigate(['/CrossBorder/dashboard2']);
+                    //       }
+                    //       else {
+                    //         this.router.navigate(['/Dashboard1']);
+                    //       }
+                    //     },
+                    //     error => {
+                    //     });
+                    this.GetApplicationAccess();
                   }
                 },
                 error => {
                   this.loading = false;
-                  //
                 })
             //
             this.loading = false;
@@ -245,6 +269,36 @@ export class SigninComponent implements OnInit {
 
     return of(this.objuser);
   }
+
+  GetApplicationAccess() {
+    let currentUser = this.authenticationService.currentUserValue;
+    if (currentUser.lstUserPermission.filter(a => a.ApplicationName == "Jennifer").length > 1 &&
+      currentUser.lstUserPermission.filter(a => a.ApplicationName == "CrossBorder").length > 1) {
+      this.router.navigate(['/CrossBorder/dashboard2']);
+    }
+    else {
+      if (currentUser.lstUserPermission[0].ApplicationName == "CrossBorder") {
+        this.router.navigate(['/CrossBorder/dashboard2']);
+      }
+      else {
+        this.router.navigate(['/Dashboard1']);
+      }
+    }
+
+    // this._SellerregistrationService.GetApplicationAccess()
+    //   .subscribe(
+    //     data => {
+    //       if (data != null && data.length == 2 && data[0].ApplicationName == 'CrossBorder') {
+    //         this.IsSwitchApplicationEnable = true;
+    //       }
+    //       else {
+    //         this.IsSwitchApplicationEnable = false;
+    //       }
+    //     },
+    //     error => {
+    //     });
+  }
+
 }
 
 

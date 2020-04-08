@@ -9,6 +9,7 @@ import { PrivateutilityService } from '../_services/service/privateutility.servi
 import { EncrDecrService } from '../_services/service/encr-decr.service';
 import { CompanydetailService } from "../_services/service/companydetail.service";
 import { ConnectionService } from 'ng-connection-service';
+import { SellerregistrationService } from '../_services/service/crossborder/sellerregistration.service';
 
 @Component({
   selector: 'app-privatelayout',
@@ -42,7 +43,8 @@ export class PrivatelayoutComponent implements OnInit {
     private _PrivateutilityService: PrivateutilityService,
     private EncrDecr: EncrDecrService,
     private _CompanydetailService: CompanydetailService,
-    private connectionService: ConnectionService
+    private connectionService: ConnectionService,
+    private _SellerregistrationService: SellerregistrationService
   ) {
     this.objCompanydetails = new Companydetails();
     this.connectionService.monitor().subscribe(isConnected => {
@@ -94,6 +96,7 @@ export class PrivatelayoutComponent implements OnInit {
   }
 
   ngOnInit() {
+
     this._CompanydetailService.currentMessage.subscribe(message => {
       let currentUser = this.authenticationService.currentUserValue;
       if (message != null) {
@@ -141,11 +144,7 @@ export class PrivatelayoutComponent implements OnInit {
       head1.appendChild(link);
       localStorage.setItem("Theme_Name", localStorage.getItem("Theme_Name"));
     }
-    let currentUser = this.authenticationService.currentUserValue;
-    this.fullName = currentUser.FirstName + ' ' + currentUser.LastName;
-    this.usertype = currentUser.UserType;
-
-    this.Userpermissions = currentUser.lstUserPermission.filter(a => a.ParentId != 120 && a.MenuID != 120);
+    this.GetApplicationAccess();
     if (localStorage.getItem("Isloaded") == null) {
       //
       this._PrivateutilityService.getTopCompanies()
@@ -236,7 +235,6 @@ export class PrivatelayoutComponent implements OnInit {
     let id = parseInt(selectedValue);
     let currentUser = this.authenticationService.currentUserValue;
     currentUser.CompanyID = id;
-    //
     this._PrivateutilityService.getTopUserStores(id)
       .subscribe(
         (data: Companydetails[]) => {
@@ -248,11 +246,9 @@ export class PrivatelayoutComponent implements OnInit {
           var encrypted = this.EncrDecr.set('Radha@123!()', JSON.stringify(currentUser));
           localStorage.setItem('currentJennifer1', encrypted);
           this.router.navigate(['/Dashboard1']);
-          //
         },
         (err: any) => {
           console.log(err);
-          //
         }
       );
   }
@@ -344,5 +340,44 @@ export class PrivatelayoutComponent implements OnInit {
     }
   }
 
+  IsSwitchApplicationEnable: boolean = false;
+  GetApplicationAccess() {
+    let currentUser = this.authenticationService.currentUserValue;
+    this.fullName = currentUser.FirstName + ' ' + currentUser.LastName;
+    this.usertype = currentUser.UserType;
+    this.Userpermissions = currentUser.lstUserPermission.filter(a => a.ParentId != 120 && a.MenuID != 120);
+    if (this.Userpermissions.filter(a => a.ApplicationName == "Jennifer").length > 1 &&
+      this.Userpermissions.filter(a => a.ApplicationName == "CrossBorder").length > 1) {
+      this.IsSwitchApplicationEnable = true;
+    }
+    else {
+      this.IsSwitchApplicationEnable = false;
+    }
+    this.Userpermissions = this.Userpermissions.filter(a => a.ApplicationName == 'Jennifer');
+    // this._SellerregistrationService.GetApplicationAccess()
+    //   .subscribe(
+    //     data => {
+    //       debugger
+    //       if (data != null && data.length == 2) {
+    //         this.IsSwitchApplicationEnable = true;
+    //       }
+    //       else {
+    //         this.IsSwitchApplicationEnable = false;
+    //       }
+    //     },
+    //     error => {
+    //     });
+  }
 
+  IsSaveVideo: Boolean = false;
+  SaveVideo() { 
+    if (this.IsSaveVideo) {
+      this.IsSaveVideo = true;
+      sessionStorage.setItem("IsSaveVideo", "1");
+    }
+    else {
+      this.IsSaveVideo = false;
+      sessionStorage.setItem("IsSaveVideo", "0");
+    }
+  }
 }

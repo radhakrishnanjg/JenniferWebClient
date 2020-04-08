@@ -81,3 +81,5 @@ export * from './debitnote';
 export * from './jsonmodel';
 export * from './voucher';
 export * from './ticket';
+
+export * from './generalsupport';

@@ -1,0 +1,180 @@
+<div class="row">
+  <div class="col-sm-6 col-lg-6">
+    <h3>
+      Mobile Master
+    </h3>
+  </div>
+  <div class="col-sm-6 col-lg-6">
+    <div class="pull-right hidden-xs">
+      <ol class="breadcrumb" id="dynamicbreadcrumb">
+        <li>
+          <span> Cross Border</span>
+        </li>
+        <li>
+          <span> Mobile Master</span>
+        </li>
+        <li class="active">
+
+          Save
+        </li>
+      </ol>
+    </div>
+  </div>
+</div>
+<form  [formGroup]="Mobilemasterform" (ngSubmit)="SaveData()">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <div class="row">
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+          <span class="groupspanheader">
+            {{panelTitle}}
+          </span>
+        </div>
+        <div class="col-sm-6">
+          <div class="pull-left">
+            <div class="form-group" *ngIf="!Action">
+              <div class="col-sm-12 inputlevelswtch">
+                <label class="col-sm-6" for="IsActive">IsActive </label>
+                <div class="pull-right">
+                  <label class="switch">
+                    <input type="checkbox" formControlName="IsActive" checked>
+                    <span class="slider round"></span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 ">
+          <div class="pull-right">
+            <button type="button" class="btn btn-primary" routerLink="/CrossBorder/Mobilemasterlist">Back</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel-body">
+      <span class="groupspanheader">Bank Detail</span>
+
+      <div class="row">
+        <div class="col-xs-4 col-sm-3 ">
+          <span class="spanheader">
+            Bank Name: Citi Bank
+          </span>
+        </div>
+        <div class="col-xs-4 col-sm-3 ">
+          <span class="spanheader">
+            Account Type: Current Account
+          </span>
+        </div>
+        <div class="col-xs-4 col-sm-3">
+          <span class="spanheader">
+            IFSC: CITI0000004
+          </span>
+        </div>
+      </div>
+      <br>
+      <div class="row">
+
+        <div class="col-md-6 col-xs-12">
+          <div class="form-group" [ngClass]="{'has-error': formErrors.AccountName}">
+            <label class="control-label" for="AccountName">Account Name<span class="mandantory">
+              *</span></label>
+            <input type="text" id="AccountName" class="form-control" (blur)="logValidationErrors()"
+              formControlName="AccountName" maxlength="30">
+
+            <div class="help-block-rk">
+              <span class="help-block" *ngIf="formErrors.AccountName">
+                {{formErrors.AccountName}}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-xs-12">
+          <div class="form-group" [ngClass]="{'has-error': formErrors.AccountNumber}">
+            <label class="control-label" for="AccountNumber">Account Number<span class="mandantory">
+              *</span></label>
+            <input type="text" id="AccountNumber" class="form-control" (blur)="logValidationErrors()"
+              formControlName="AccountNumber" maxlength="30">
+
+            <div class="help-block-rk">
+              <span class="help-block" *ngIf="formErrors.AccountNumber">
+                {{formErrors.AccountNumber}}
+              </span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+    <div class="panel-body">
+      <span class="groupspanheader">GST & Mobile Detail</span>
+      <div class="row">
+
+        <div class="col-md-4">
+          <div class="form-group" [ngClass]="{'has-error': formErrors.IndianGSTNumber}">
+            <label class="control-label" for="IndianGSTNumber">GSTIN No.<span class="mandantory">
+                *</span></label>
+            <input type="text" id="IndianGSTNumber" class="form-control" (blur)="logValidationErrors()"
+              formControlName="IndianGSTNumber" maxlength="15">
+
+            <div class="help-block-rk">
+              <span class="help-block" *ngIf="formErrors.IndianGSTNumber">
+                {{formErrors.IndianGSTNumber}}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-4 col-xs-12">
+          <div class="form-group" [ngClass]="{'has-error': formErrors.GSTState}">
+            <div class=" col-sm-12 " for="GSTState">
+              <label for="GSTState" class=" control-label"> GST State <span class="mandantory">*</span></label>
+              <select formControlName="GSTState" id='GSTState' type="select" class="form-control"
+                (blur)="logValidationErrors()">
+                <option value="0" selected="selected">Select</option>
+                <option *ngFor="let dis of states" value={{dis.StateID}}>
+                  {{dis.State}}
+                </option>
+              </select>
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrors.GSTState">
+                  {{formErrors.GSTState}}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="form-group" [ngClass]="{'has-error': formErrors.IndianMobileNumber}">
+            <label class="control-label" for="IndianMobileNumber">Mobile Number<span class="mandantory">
+                *</span></label>
+            <input type="text" id="IndianMobileNumber" class="form-control" (blur)="logValidationErrors()"
+              formControlName="IndianMobileNumber" maxlength="13" onkeypress="return /[0-9.]/i.test(event.key)">
+
+            <div class="help-block-rk">
+              <span class="help-block" *ngIf="formErrors.IndianMobileNumber">
+                {{formErrors.IndianMobileNumber}}
+              </span>
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+
+
+    <div class="panel-footer  ">
+      <div class="pull-right btn-toolbar">
+        <button type="button" class="btn btn-primary" routerLink="/CrossBorder/Mobilemasterlist">Cancel</button>
+        <button class="btn btn-success" type="submit" prevent-double-submit [disabled]="Mobilemasterform.invalid">
+          Save </button>
+      </div>
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</form>

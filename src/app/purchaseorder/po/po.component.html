@@ -221,7 +221,7 @@
           </div>
         </div>
 
-        <div class="col-sm-6 col-xs-6" *ngIf="poOrder.POID == 0">
+        <div class="col-sm-3 col-xs-3" *ngIf="poOrder.POID == 0">
           <div class="form-group">
             <div class="inputlevel">
               <label class="nopading_loct control-label" for="SelectSelect">Browse File
@@ -233,7 +233,7 @@
               application/vnd.openxmlformats-officedocument.wordprocessingml.document" multiple="multiple"
                 (change)="onFileChanged1($event)">
               <small>
-                You can upload maximum 10 files and each file size should not exceed 3MB. 
+                You can upload maximum 10 files and each file size should not exceed 3MB.
               </small>
               <div class="help-block-rk">
 
@@ -241,6 +241,25 @@
             </div>
           </div>
         </div>
+
+        <div class="col-md-3" [ngClass]="{'has-error': formErrors.CurrencyType}">
+          <div class="form-group">
+            <label class="control-label" for="CurrencyType">Currency Type <span class="mandantory"> *</span></label>
+            <select class="form-control" name="poOrder.CurrencyType" id="CurrencyType" (blur)="logValidationErrors()"
+              formControlName="CurrencyType">
+              <!-- <option value="0" selected="selected">Select</option> -->
+              <option *ngFor="let location of lstCurrencyType" value={{location.DropdownValue}}>
+                {{location.DropDownDescription}}
+              </option>
+            </select>
+            <div class="help-block-rk">
+              <span class="help-block" *ngIf="formErrors.CurrencyType">
+                {{formErrors.CurrencyType}}
+              </span>
+            </div>
+          </div>
+        </div>
+
       </div>
 
       <div class="row paddingtop20">

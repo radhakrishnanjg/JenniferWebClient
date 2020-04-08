@@ -9,6 +9,7 @@ import { PrivateutilityService } from '../_services/service/privateutility.servi
 import { EncrDecrService } from '../_services/service/encr-decr.service';
 import { CompanydetailService } from "../_services/service/companydetail.service";
 import { ConnectionService } from 'ng-connection-service';
+import { SellerregistrationService } from '../_services/service/crossborder/sellerregistration.service';
 @Component({
   selector: 'app-parent',
   templateUrl: './parent.component.html',
@@ -43,7 +44,8 @@ export class ParentComponent implements OnInit {
     private _PrivateutilityService: PrivateutilityService,
     private EncrDecr: EncrDecrService,
     private _CompanydetailService: CompanydetailService,
-    private connectionService: ConnectionService
+    private connectionService: ConnectionService,
+    private _SellerregistrationService: SellerregistrationService
   ) {
     this.objCompanydetails = new Companydetails();
     this.connectionService.monitor().subscribe(isConnected => {
@@ -61,7 +63,6 @@ export class ParentComponent implements OnInit {
             closeButton: true,
             tapToDismiss: false
           });
-
       }
 
     });
@@ -93,114 +94,21 @@ export class ParentComponent implements OnInit {
       sub.slideDown(200);
     }
   }
-
   ngOnInit() {
-    this._CompanydetailService.currentMessage.subscribe(message => {
-      let currentUser = this.authenticationService.currentUserValue;
-      if (message != null) {
-        //
-        this._PrivateutilityService.getTopUserStores(currentUser.CompanyID)
-          .subscribe(
-            (data: Companydetails[]) => {
-              this.lstCompanydetails = data;
-              //
-            },
-            (err: any) => {
-              console.log(err);
-              //
-              //
-            }
-          );
-      }
-      this.lstCompanydetails.push(message)
-    });
-    // this.lstCompanydetails.push(this.addedCompanydetail);
-    this.themeUrl = this.lightTheme;
-    if (localStorage.getItem("Theme_Name") == null || localStorage.getItem("Theme_Name") == undefined) {
-      localStorage.setItem("Theme_Name", "assets/litetheme.css");
-      this.ThemeSelector = false;
-      let head1 = document.getElementsByTagName('head')[0];
-      let link = document.createElement('link');
-      link.id = 'mainStyle';
-      link.rel = 'stylesheet';
-      link.type = 'text/css';
-      link.href = localStorage.getItem("Theme_Name"); // you may want to get this from local storage or location
-      head1.appendChild(link);
-    }
-    else {
-      if ($('#mainStyle').length != 0) {
-        let head = document.getElementsByTagName('head')[0];
-        var element = document.getElementById("mainStyle");
-        head.removeChild(element);
-      }
-      let head1 = document.getElementsByTagName('head')[0];
-      let link = document.createElement('link');
-      link.id = 'mainStyle';
-      link.rel = 'stylesheet';
-      link.type = 'text/css';
-      link.href = localStorage.getItem("Theme_Name"); // you may want to get this from local storage or location
-      head1.appendChild(link);
-      localStorage.setItem("Theme_Name", localStorage.getItem("Theme_Name"));
-    }
-    let currentUser = this.authenticationService.currentUserValue;
-    this.fullName = currentUser.FirstName + ' ' + currentUser.LastName;
-    this.usertype = currentUser.UserType;
 
-    this.Userpermissions = currentUser.lstUserPermission.filter(a => a.ParentId != 120 && a.MenuID != 120);
-    if (localStorage.getItem("Isloaded") == null) {
-      //
-      this._PrivateutilityService.getTopCompanies()
-        .subscribe(
-          (data: CompanyRegister[]) => {
-            this.lstCompanies = data;
-            if (this.lstCompanies != null && this.lstCompanies.length > 0) {
-              this.CompanyID = this.lstCompanies[0].CompanyID;
-              this.onchangeCompanyID(this.CompanyID.toString());
-              localStorage.setItem("Isloaded", "1");
-            }
-            //
-          },
-          (err: any) => {
-            console.log(err);
-            //
-          }
-        );
-    }
-    else {
-      localStorage.setItem("Isloaded", "1");
-      let currentUser = this.authenticationService.currentUserValue;
-      //
-      this._PrivateutilityService.getTopCompanies()
-        .subscribe(
-          (data: CompanyRegister[]) => {
-            this.lstCompanies = data;
-            if (this.lstCompanies != null && this.lstCompanies.length > 0) {
-              this.CompanyID = currentUser.CompanyID;
-              //
-              this._PrivateutilityService.getTopUserStores(this.CompanyID)
-                .subscribe(
-                  (data: Companydetails[]) => {
-                    this.lstCompanydetails = data;
-                    if (this.lstCompanydetails != null && this.lstCompanydetails.length > 0) {
-                      this.CompanyDetailID = currentUser.CompanyDetailID;
-                    }
-                    //
-                  },
-                  (err: any) => {
-                    console.log(err);
-                    //
-                  }
-                );
-            }
-            //
-          },
-          (err: any) => {
-            console.log(err);
-            //
-          }
-        );
-    }
+    //newly added
+    this.GetApplicationAccess();
+    // Needs to use get cross border menus 
 
+    localStorage.setItem("Theme_Name", "assets/litetheme.css");
+    this.ThemeSelector = false;
+    let head1 = document.getElementsByTagName('head')[0];
+    let link = document.createElement('link');
+    link.id = 'mainStyle';
+    link.rel = 'stylesheet';
+    link.type = 'text/css';
+    link.href = localStorage.getItem("Theme_Name"); // you may want to get this from local storage or location
+    head1.appendChild(link);
     /*--------------------------------
          Collapsed Main Menu
      --------------------------------*/
@@ -232,6 +140,8 @@ export class ParentComponent implements OnInit {
       $(".page-sidebar.chat_shift .wraplist li.open").removeClass("open");
     });
   }
+
+
 
   onchangeCompanyID(selectedValue: string) {
     let id = parseInt(selectedValue);
@@ -345,5 +255,33 @@ export class ParentComponent implements OnInit {
     }
   }
 
+  IsSwitchApplicationEnable: boolean = false;
+  GetApplicationAccess() { 
+    let currentUser = this.authenticationService.currentUserValue;
+    this.fullName = currentUser.FirstName + ' ' + currentUser.LastName;
+    this.usertype = currentUser.UserType;
+    this.Userpermissions = currentUser.lstUserPermission.filter(a => a.ParentId != 120 && a.MenuID != 120);
+    if (this.Userpermissions.filter(a => a.ApplicationName == "Jennifer").length > 1 &&
+      this.Userpermissions.filter(a => a.ApplicationName == "CrossBorder").length > 1) {
+      this.IsSwitchApplicationEnable = true;
+    }
+    else {
+      this.IsSwitchApplicationEnable = false;
+    }
+    this.Userpermissions = this.Userpermissions.filter(a => a.ApplicationName == 'CrossBorder');
+
+    // this._SellerregistrationService.GetApplicationAccess()
+    //   .subscribe(
+    //     data => {
+    //       if (data != null && data.length == 2 && data[0].ApplicationName == 'CrossBorder') {
+    //         this.IsSwitchApplicationEnable = true;
+    //       }
+    //       else {
+    //         this.IsSwitchApplicationEnable = false;
+    //       }
+    //     },
+    //     error => {
+    //     });
+  }
 
 }

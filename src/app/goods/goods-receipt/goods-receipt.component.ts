@@ -199,11 +199,10 @@ export class GoodsReceiptComponent implements OnInit {
       (res) => {
         this.poNumbers = res;
         this.lstPONumber = res;
-        debugger
-        this.poNumbers.forEach(obj => { this.poNumberList.push(obj.PONumber) });
+        // debugger
+         this.poNumbers.forEach(obj => { this.poNumberList.push(obj.PONumber) });
         //
       }, (err) => {
-        //
         console.log(err);
       });
   }
@@ -215,7 +214,7 @@ export class GoodsReceiptComponent implements OnInit {
       debounceTime(200),
       distinctUntilChanged(),
       map(term => term === '' ? []
-        : this.poNumberList.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
+        : this.poNumberList.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 1000))
     )
 
   public getInventoryTypes(): void {

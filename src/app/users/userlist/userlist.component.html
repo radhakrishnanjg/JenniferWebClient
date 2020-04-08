@@ -88,7 +88,45 @@
           <kendo-grid-column field="Email" title="Email">
           </kendo-grid-column>
           <kendo-grid-column field="UserType" title="User Type">
+            <ng-template kendoGridCellTemplate let-dataItem>
+              <div [ngSwitch]="dataItem.UserType">
+                <div *ngSwitchCase="'0'">
+                  User
+                </div>
+                <div *ngSwitchCase="'1'">
+                  Admin
+                </div>
+                <div *ngSwitchCase="'2'">
+                  Jennifer Admin
+                </div>
+                <div *ngSwitchCase="'3'">
+                  Seller Admin
+                </div>
+                <div *ngSwitchCase="'4'">
+                  Seller User
+                </div>
+                <div *ngSwitchCase="'5'">
+                  EOR Admin
+                </div>
+                <div *ngSwitchCase="'6'">
+                  EOR User
+                </div>
+                <div *ngSwitchCase="'7'">
+                  IOR Admin
+                </div>
+                <div *ngSwitchCase="'8'">
+                  IOR User
+                </div>
+                <div *ngSwitchCase="'9'">
+                  Custom
+                </div> 
+                <!-- <div *ngSwitchDefault>
+                  {{item[key.DataFieldName]}}
+                </div> -->
+              </div>
+            </ng-template>
           </kendo-grid-column>
+
           <kendo-grid-column field="IsActive" title="IsActive" [class]="{'text-center': true}" filter="boolean"
             width="80">
             <ng-template kendoGridCellTemplate let-dataItem>

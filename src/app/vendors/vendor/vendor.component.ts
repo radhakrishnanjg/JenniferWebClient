@@ -28,14 +28,14 @@ export class VendorComponent implements OnInit {
   action: boolean;
   identity: number = 0;
   Searchaction: boolean = true;
-  emailPattern = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$";
+  emailPattern = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}$";
   dtOptions: DataTables.Settings = {};
   constructor(
     private alertService: ToastrService,
     private fb: FormBuilder,
     private _router: Router,
     private aroute: ActivatedRoute,
-    
+
     private usernameValidator: UsernameValidator,
     private _vendorService: VendorService,
     private utilityService: UtilityService,
@@ -111,6 +111,7 @@ export class VendorComponent implements OnInit {
     'Email': {
       'required': 'This field is required',
       'pattern': 'Email must be valid one.',
+      'VendorEmailInUse': 'Vendor Email is already registered!',
     },
 
     'BankName': {
@@ -211,7 +212,8 @@ export class VendorComponent implements OnInit {
 
       ContactPerson: ['', [Validators.required, Validators.pattern("^([a-zA-Z ]+)$")]],
       ContactNumber: ['', [Validators.required, Validators.minLength(10), Validators.pattern("^([0-9]+)$")]],
-      Email: ['', [Validators.required, Validators.pattern(this.emailPattern)]],
+      Email: ['', [Validators.required, Validators.pattern(this.emailPattern)],
+        this.usernameValidator.existVendorEmail(this.identity)],
 
       AccountType: ['',],
       AccountNumber: ['', [Validators.pattern("^([a-zA-Z0-9]+)$")]],
@@ -220,6 +222,7 @@ export class VendorComponent implements OnInit {
       IFSCCode: ['', [Validators.pattern("^([a-zA-Z0-9]+)$")]],
 
       IsActive: [0,],
+      IsEOR: [0,],
     });
   }
 
@@ -292,9 +295,12 @@ export class VendorComponent implements OnInit {
       IFSCCode: data.IFSCCode,
       AccountType: data.AccountType,
       IsActive: data.IsActive,
+      IsEOR: data.IsEOR,
     });
     this.vendorform.get('CountryID').disable();
     this.vendorform.get('StateID').disable();
+    this.vendorform.get('IsEOR').disable();
+    this.vendorform.get('Email').disable();
   }
 
 
@@ -369,6 +375,8 @@ export class VendorComponent implements OnInit {
     this.obj.IFSCCode = this.vendorform.controls['IFSCCode'].value;
 
     this.obj.IsActive = this.vendorform.controls['IsActive'].value;
+    //only is EOR on insert time
+    this.obj.IsEOR = this.vendorform.controls['IsEOR'].value;
     if (this.obj.lstContact != null && this.obj.lstContact.length > 0) {
       this.obj.lstContact = this.obj.lstContact.filter(a => a.IsActive == true);
     }

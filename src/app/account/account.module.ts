@@ -9,6 +9,7 @@ import { NgxMaskModule } from 'ngx-mask'
 import { ToastrModule } from 'ngx-toastr';
 import { CookieService } from 'ngx-cookie-service';
 
+import { RecaptchaModule ,RecaptchaFormsModule} from 'ng-recaptcha';
 
 import { SelectDropDownModule } from 'ngx-select-dropdown'
 import { AngularFontAwesomeModule } from 'angular-font-awesome';
@@ -34,6 +35,7 @@ import { EncrDecrService } from '../_services/service/encr-decr.service';
 import { CompanyregisterComponent } from './companyregister/companyregister.component';
 import { SigninComponent } from './signin/signin.component';
 import { ForgotpasswordComponent } from './forgotpassword/forgotpassword.component';
+import { SellerregistrationComponent } from './sellerregistration/sellerregistration.component';
 
 @NgModule({
   imports: [
@@ -69,13 +71,16 @@ import { ForgotpasswordComponent } from './forgotpassword/forgotpassword.compone
     GridModule,
     DropDownListModule,
     PopupModule,
-    NgbModule,
+    NgbModule,    
+    RecaptchaModule.forRoot(),
+    RecaptchaFormsModule,
   ],
 
   declarations: [
     CompanyregisterComponent,
     SigninComponent,
     ForgotpasswordComponent,
+    SellerregistrationComponent
   ],
   providers: [
     

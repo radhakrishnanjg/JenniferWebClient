@@ -7,7 +7,7 @@ import { BadRequest } from './../../common/bad-request';
 import { NotFoundError } from './../../common/not-found-error';
 import { AppError } from './../../common/app-error';
 import { AuthenticationService } from './authentication.service';
-import { Vendor, Result} from '../model/index';
+import { Vendor, Result } from '../model/index';
 import { environment } from '../../../environments/environment';
 @Injectable({
   providedIn: 'root'
@@ -39,7 +39,22 @@ export class VendorService {
     let currentUser = this.authenticationService.currentUserValue;
     let CompanyID = currentUser.CompanyID;
     return this.httpClient.get<Boolean>(environment.baseUrl +
-      `Vendor/Exist?CompanyID=` + CompanyID + `&VendorName=` + encodeURIComponent(VendorName) + `&VendorID=` + VendorID)
+      `Vendor/Exist?CompanyID=` + CompanyID + `&VendorName=` + (VendorName) + `&VendorID=` + VendorID)
+      .pipe(map(users => {
+        if (users)
+          return true;
+        else
+          return false;
+      })
+      );
+  }
+  public ExistEmail(VendorID: number, Email: string) {
+    VendorID = isNaN(VendorID) ? 0 : VendorID;
+    let currentUser = this.authenticationService.currentUserValue;
+    let CompanyID = currentUser.CompanyID;
+    debugger
+    return this.httpClient.get<Boolean>(environment.baseUrl +
+      `Vendor/ExistEmail?CompanyID=` + CompanyID + `&Email=` + (Email) + `&VendorID=` + VendorID)
       .pipe(map(users => {
         if (users)
           return true;
@@ -53,7 +68,7 @@ export class VendorService {
     VendorID = isNaN(VendorID) ? 0 : VendorID;
     let currentUser = this.authenticationService.currentUserValue;
     let CompanyID = currentUser.CompanyID;
-    return this.httpClient.get<Boolean>(environment.baseUrl + `Vendor/ExistGSTNumber?VendorID=` + VendorID + `&GSTNumber=` + encodeURIComponent(GSTNumber) +`&CompanyID=` + CompanyID)
+    return this.httpClient.get<Boolean>(environment.baseUrl + `Vendor/ExistGSTNumber?VendorID=` + VendorID + `&GSTNumber=` + encodeURIComponent(GSTNumber) + `&CompanyID=` + CompanyID)
       .pipe(
         map(users => {
           if (users && users == true)

@@ -59,9 +59,6 @@
           </div>
         </div>
 
-
-
-
         <div class="col-md-3 col-xs-12">
           <div class="form-group" [ngClass]="{'has-error': formErrors.VendorWarehouseID}">
             <label class="control-label" for="VendorWarehouseID"> Vendor Warehouse <span
@@ -85,17 +82,26 @@
 
         <div class="col-md-3 col-xs-3">
           <div class="form-group">
-            <label class="control-label" for="USDValue">USD Rate (If Import Purchase) </label>
-            <div>
-              <input id="USDValue" type="text" class="form-control" formControlName="USDValue"
-                (blur)="logValidationErrors()" maxlength="10" onkeypress="return /[0-9.]/i.test(event.key)">
+            <label class="control-label" for="CurrencyValue">{{CurrencyType}} Rate (If Import Purchase)
+              <span class="mandantory">*</span>
+            </label>
+            <div *ngIf="CurrencyType=='INR' || identity>0">
+              {{CurrencyValue}}
+              <input type="hidden" formControlName="CurrencyValue">
+            </div>
+            <div *ngIf="CurrencyType!='INR' && identity==0">
+
+              <input id="CurrencyValue" type="text" [(ngModel)]="CurrencyValue" class="form-control"
+                formControlName="CurrencyValue" (blur)="logValidationErrors()" maxlength="5"
+                onkeypress="return /[0-9.]/i.test(event.key)" (change)="onChangeCurrencyValue($event.target.value)">
             </div>
           </div>
         </div>
 
         <div class="col-md-3 col-xs-12">
           <div class="form-group" [ngClass]="{'has-error': formErrors.InvoiceDate}">
-            <label class="control-label" for="InvoiceDate">Invoice Date<span class="mandantory">*</span></label>
+            <label class="control-label" for="InvoiceDate">Invoice Date
+              <span class="mandantory">*</span></label>
             <div>
               <div class='input-group date'>
                 <input id="InvoiceDate" type="text" ngxDaterangepickerMd [timePicker]="true"
@@ -129,6 +135,7 @@
           </div>
         </div>
 
+        <!-- {{obj?.lstItem | json }} -->
         <div class="col-md-12 col-xs-12">
           <span class="groupspanheader">Order Items</span>
           <table class="table table-bordered table-condensed" *ngIf="obj?.lstItem && obj?.lstItem.length">
@@ -165,27 +172,27 @@
                   value="{{person.Qty}}">
               </td>
               <td class="text-right">
-                <span>{{person.Rate}}</span>
+                <span>{{person.Rate | number : '1.2-2'}}</span>
               </td>
 
               <td class="text-right">
-                <span>{{person.MRP}}</span>
+                <span>{{person.MRP | number : '1.2-2'}}</span>
               </td>
               <td class="text-right">
-                <span>{{person.TaxRate}}</span>
+                <span>{{person.TaxRate | number : '1.2-2'}}</span>
               </td>
               <td class="text-right">
                 <span>{{person.TaxNature}}</span>
               </td>
               <td class="text-right">
-                <span>{{person.DirectCost}}</span>
+                <span>{{person.DirectCost | number : '1.2-2'}}</span>
               </td>
               <td class="text-right">
-                <span>{{person.TaxAmount}}</span>
+                <span>{{person.TaxAmount | number : '1.2-2'}}</span>
               </td>
 
               <td class="text-right">
-                <span>{{person.TotalAmount}}</span>
+                <span>{{person.TotalAmount | number : '1.2-2'}}</span>
               </td>
             </tr>
             <tr>
@@ -193,7 +200,7 @@
               <th> </th>
               <th> </th>
               <th class="text-right"> {{ TotalQty}}</th>
-              <th class="text-right"> {{ TotalRate}}</th>
+              <th class="text-right"> {{ TotalRate | currency: 'INR'}}</th>
 
 
               <th class="text-right">

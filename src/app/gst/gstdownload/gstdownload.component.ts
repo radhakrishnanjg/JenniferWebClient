@@ -80,7 +80,7 @@ export class GstdownloadComponent implements OnInit {
     this._gstfinancefileuploadService.DownloadGSTReturn(this.Year, this.Month, this.State)
       .subscribe(data => {
         this.alertService.success('File Downloaded successfully');
-        saveAs(data, this.State + '_' + this.Year + '_' + this.Month)
+        saveAs(data, this.State + '_' + this.Year + '_' + this.Month + '.xlsx');
       },
         (err) => {
           console.log(err);
@@ -102,13 +102,13 @@ export class GstdownloadComponent implements OnInit {
           this.alertService.error(data.Msg);
         }
       },
-        (err) => {
-          //
+        (err) => { 
           console.log(err);
         }
       );
 
   }
+  
   Refresh(): void {
     this.State = '';
     this.Year = 0;

@@ -12,7 +12,7 @@ import { AccountService, } from  '../../_services/service/account.service';
 export class ForgotpasswordComponent implements OnInit {
   forgotpasswordForm: FormGroup;
   isVerify: boolean = false;
-  emailPattern = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$";
+  emailPattern = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}$";
   constructor(
     private _accountService: AccountService,
     private alertService: ToastrService,

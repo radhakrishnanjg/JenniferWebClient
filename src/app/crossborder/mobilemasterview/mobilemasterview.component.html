@@ -1,0 +1,118 @@
+<div class="row">
+  <div class="col-sm-6 col-lg-6">
+    <h3>
+      Mobile Master
+    </h3>
+  </div>
+  <div class="col-sm-6 col-lg-6">
+    <div class="pull-right hidden-xs">
+      <ol class="breadcrumb" id="dynamicbreadcrumb">
+        <li>
+          <span> Cross Border</span>
+        </li>
+        <li>
+          <span> Mobile Master</span>
+        </li>
+        <li class="active">
+
+          View
+        </li>
+      </ol>
+    </div>
+  </div>
+</div>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <div class="row">
+      <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+        <span class="groupspanheader">
+          Mobile Master View
+        </span>
+      </div>
+      <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 ">
+        <div class="pull-right">
+          <button type="button" class="btn btn-primary" routerLinkActive="active"
+            routerLink="/CrossBorder/Mobilemasterlist">Back</button>
+        </div>
+      </div>
+    </div>
+    <div class="clearfix"></div>
+  </div>
+
+  <div class="panel-body">
+
+    <div class="row">
+      <div class="col-xs-4 col-sm-3 ">
+        Status : <b>{{obj?.AssignedDetailDate | date:'MM-dd-yyyy HH:mm'}}</b>
+
+      </div>
+    </div>
+    <hr>
+    <div class="row">
+      <div class="col-sm-12 col-xs-12">
+        <span class="groupspanheader">Basic Details</span>
+      </div>
+      <div class="col-xs-4 col-sm-5 ">
+        GSTIN : {{obj?.IndianGSTNumber}}
+      </div>
+      <div class="col-xs-4 col-sm-5 ">
+        GST State : <b>{{obj?.StateName}}</b>
+      </div>
+      <div class="col-xs-4 col-sm-5 ">
+        Mobile No : <b>{{obj?.IndianMobileNumber}} </b>
+      </div>
+      <div class="col-xs-4 col-sm-5 ">
+        <span *ngIf="(obj?.IsOTPSent)"><i class="fa fa-check"></i></span>
+        <span *ngIf="(!obj?.IsOTPSent)">
+          Is OTP sent? : 
+        </span>
+        <span *ngIf="(!obj?.IsOTPSent)"><i class="fa fa-times"></i></span>
+        <span *ngIf="(obj?.IsOTPSent)">
+          OTP is shared with the seller on <b>{{obj?.OTPSentDate | date:'MM-dd-yyyy HH:mm'}}</b>
+        </span> </div>
+    </div>
+    <hr>
+    <div class="row">
+      <div class="col-sm-12 col-xs-12">
+        <span class="groupspanheader">Bank Details</span>
+      </div>
+      <div class="col-xs-4 col-sm-4 ">
+        Bank Name <b>: Citi Bank</b>
+      </div>
+      <div class="col-xs-4 col-sm-4 ">
+        Account Type <b>: Current Account</b>
+      </div>
+      <div class="col-xs-4 col-sm-4 ">
+        IFSC <b>: CITI0000004</b>
+      </div>
+      <div class="col-xs-4 col-sm-4 ">
+        Account Name Provided By Bank <b>: {{obj?.AccountName}} </b>
+      </div>
+      <div class="col-xs-4 col-sm-4 ">
+        Account Number <b>: {{obj?.AccountNumber}} </b>
+      </div>
+    </div>
+    <hr>
+    <div class="row">
+      <div class="col-sm-12 col-xs-12">
+        <span class="groupspanheader">Assigned Seller Details</span>
+      </div>
+      <div class="col-xs-4 col-sm-4 ">
+        Seller Status <b>: {{obj?.ApprovalStatus}} </b>
+      </div>
+      <div class="col-xs-4 col-sm-4 ">
+        RK SellerID <b>: {{obj?.RKSellerID}} </b>
+      </div>
+      <div class="col-xs-4 col-sm-4 ">
+        Seller Email <b>: {{obj?.Email}} </b>
+      </div>
+      <div class="col-xs-4 col-sm-4 ">
+        Amazon Seller ID <b>: {{obj?.MarketPlaceSellerID}} </b>
+      </div>
+      <div class="col-xs-4 col-sm-4 ">
+        Amazon Store Name <b>: {{obj?.StoreName}} </b>
+      </div>
+    </div>
+
+  </div>
+</div>

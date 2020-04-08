@@ -35,9 +35,9 @@
               <option value="WarehouseBin">Bin Number</option>
             </select>
           </div>
-          <div class="col-md-4 col-sm-3 nopading_loct">
-            <input type="text" class="serchcurv form-control btn-group" id="GRN" aria-describedby="GRN"
-              (keyup.enter)="Search()" [(ngModel)]="SearchKeyword">
+          <div class="col-md-3 col-sm-3 nopading_loct">
+            <input type="text" (keyup.enter)="Search()" [(ngModel)]="SearchKeyword"
+              class="serchcurv form-control btn-group" id="GRN" aria-describedby="GRN">
           </div>
           <div class="col-md-3 col-sm-3 col-xs-6 nopading_loct">
             <button class="serchcurv btn btn-default btn-group" (click)="Search()" title="Search">
@@ -47,7 +47,7 @@
               <i class="fa fa-refresh" aria-hidden="true"></i>
             </button>
           </div>
-          <div class="col-xs-6 col-sm-3 col-md-4 text-right nopadding">
+          <div class="col-xs-6 col-sm-3 col-md-3 text-right nopadding">
             <button class="btn btn-xs btn-sm btn-primary" (click)="AddNewLink()" title="Add New">
               Add New
             </button>
@@ -105,7 +105,7 @@
 
   <div id="modalpopup_goodsstorage" class="modal fade" tabindex="-1" role="dialog"
     aria-labelledby="modalpopup_goodsstorage" aria-hidden="true">
-    <form   [formGroup]="goodsstorageform" (ngSubmit)="SaveData()">
+    <form [formGroup]="goodsstorageform" (ngSubmit)="SaveData()">
       <div class="modal-dialog ">
         <div class="modal-content">
           <div class="modal-header">

@@ -1,0 +1,136 @@
+<div class="row">
+  <div class="col-sm-6 col-lg-6">
+    <h3>
+      IOR Catalogue
+    </h3>
+  </div>
+  <div class="col-sm-6 col-lg-6">
+    <div class="pull-right hidden-xs">
+      <ol class="breadcrumb" id="dynamicbreadcrumb">
+        <li>
+          <span>Cross Border</span>
+        </li>
+        <li>
+          <span>IOR Catalogue</span>
+        </li>
+        <li class="active">
+
+          List
+        </li>
+      </ol>
+    </div>
+  </div>
+</div>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="input-group col-xs-12 col-sm-12" role="group" aria-label="Basic example">
+          <div class="col-md-3 col-sm-3 col-xs-12 nopading_loct">
+            <select [(ngModel)]="SearchBy" class="serchcurv form-control btn-group">
+              <option value="" selected="select">Search By</option>
+              <option value="CatalogueNumber">Catalogue Number</option>
+              <option value="CatalogueStatus">Catalogue Status</option>
+              <option value="CatalogueDate">Catalogue Date</option>
+            </select>
+          </div>
+          <div class="col-md-3 col-sm-3 nopading_loct" *ngIf="(SearchBy!='CatalogueDate')">
+            <input type="text" class="serchcurv form-control btn-group" id="Catalogue" aria-describedby="Catalogue"
+              (keyup.enter)="Search()" [(ngModel)]="SearchKeyword">
+          </div>
+          <div class="col-md-3 col-sm-3 nopading_loct" *ngIf="(SearchBy=='CatalogueDate')">
+            <input type="text" ngxDaterangepickerMd [(ngModel)]="selectedDateRange"
+              class="serchcurv form-control btn-group col-xs-12 pointer"
+              style="border:1px soloid #ccc !important; padding :3px;left:0px" [showCustomRangeLabel]="true"
+              [ranges]="Searchranges" [showCancel]="true" placeholder="Select please..."
+              (ngModelChange)="onChange($event)" />
+          </div>
+          <div class="col-md-3 col-sm-3 col-xs-6 nopading_loct">
+            <button class="serchcurv btn btn-default btn-group" (click)="Search()" title="Search">
+              <i class="fa fa-search " aria-hidden="true"></i>
+            </button>
+            <button class="serchcurv btn btn-default btn-group" (click)="Refresh()" title="Reset">
+              <i class="fa fa-refresh" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="col-xs-6 col-sm-3 col-md-3 text-right nopadding">
+           
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="panel-body">
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="pull-left btn-toolbar">
+          <button type="button" class="btn btn-primary" (click)="UnderConsultant('ResentToMerchant')"
+            title="Under Consultant">Under
+            Consultant</button>
+          <button class="btn btn-success" type="button" (click)="ResenttoMerchant('ResentToMerchant')"
+            title="Resent to Merchant">
+            Resent to Merchant </button>
+        </div>
+      </div>
+    </div>
+    <div class="table-responsive">
+      <table class="table">
+        <kendo-grid [data]="gridView" resizable="true" columnMenu="true" [pageSize]="pageSize" [skip]="skip"
+          [pageable]="{pageSizes: [10, 25, 50, 100, 250, 500]}" (pageChange)="pageChange($event)" [sortable]="{
+            allowUnsort: allowUnsort,
+            mode:  'single'
+            }" [sort]="sort" (sortChange)="sortChange($event)" [filterable]="true"
+          (dataStateChange)="dataStateChange($event)" [filter]="state.filter">
+
+          <ng-template kendoGridToolbarTemplate>
+            <input placeholder="Search in all columns..." style="float:right;" kendoTextBox
+              (input)="onFilter($event.target.value)" />
+            <button kendoGridExcelCommand type="button" icon="file-excel"> </button>
+            <button kendoGridPDFCommand icon="file-pdf"> </button>
+            <kendo-grid-pdf fileName="IORCatalogueList.pdf" [repeatHeaders]="true"></kendo-grid-pdf>
+            <kendo-grid-excel fileName="IORCatalogueList.xlsx"></kendo-grid-excel>
+          </ng-template>
+          <kendo-grid-column field="MarketPlaceSellerID" title="Seller Id">
+          </kendo-grid-column>
+          <kendo-grid-column field="CatalogueNumber" title="Catalogue No.">
+          </kendo-grid-column>
+          <kendo-grid-column field="CatalogueDate" title="Catalogue Date" filter="date" format="{0:d}"
+            [filterable]="false">
+            <ng-template kendoGridCellTemplate let-dataItem>
+              {{ dataItem.CatalogueDate | date :"MM-dd-yyyy HH:mm" }}
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="NoOfItem" title="Total Items">
+          </kendo-grid-column>
+          <kendo-grid-column field="IOR_CatalogueStatus" title="Status">
+          </kendo-grid-column>
+          <kendo-grid-column field="LastModifiedDate" title="Updated Date" filter="date" format="{0:d}"
+            [filterable]="false">
+            <ng-template kendoGridCellTemplate let-dataItem>
+              {{ dataItem.LastModifiedDate | date :"MM-dd-yyyy HH:mm" }}
+            </ng-template>
+          </kendo-grid-column>
+
+          <kendo-grid-column title="Action" [class]="{'text-center': true}" [filterable]="false" [sortable]="false"
+            width="100">
+            <ng-template kendoGridCellTemplate let-obj>
+
+              <i class="fa fa-edit bgblue pointer" [routerLink]="['/CrossBorder/IORCatalogueupdate', obj.CatalogueID]"
+                title="Edit" *ngIf="obj.IOR_CatalogueStatus != 'Confirmed'">
+              </i>
+              &nbsp;
+              <i class="fa fa-eye bgblue pointer" [routerLink]="['/CrossBorder/IORCatalogueview', obj.CatalogueID]"
+                title="View">
+              </i>
+
+            </ng-template>
+          </kendo-grid-column>
+        </kendo-grid>
+      </table>
+    </div>
+  </div>
+
+
+</div>

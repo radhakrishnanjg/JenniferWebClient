@@ -30,6 +30,7 @@ export class Poorder {
     IsPOClosed:boolean;
     BulkString:string;
     FilePath:string;
+    CurrencyType: string; 
 }
 export class Poorderitem {
 

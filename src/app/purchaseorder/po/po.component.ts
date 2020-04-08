@@ -7,7 +7,7 @@ import { ToastrService } from 'ngx-toastr';
 import { isNumeric } from "rxjs/util/isNumeric"
 import {
   Poorder, Location, Vendor, Brand, ProductGroup, Category, SubCategory,
-  Item, UOM, Poorderitem, Apisettings
+  Item, UOM, Poorderitem, Apisettings, Dropdown
 } from '../../_services/model';
 import * as moment from 'moment';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -93,8 +93,8 @@ export class PoComponent implements OnInit {
   formErrors = {
     'PODate': '',
     'PODeliveryDate': '',
-    'Location': '',
-    'Vendor': '',
+    'LocationID': '',
+    'VendorID': '',
     'OtherReference': '',
     'AgainstReference': '',
     'PaymentReference': '',
@@ -102,7 +102,8 @@ export class PoComponent implements OnInit {
     'CaseSize': '',
     'UOM': '',
     'Rate': '',
-    'TotalAmount': ''
+    'TotalAmount': '',
+    'CurrencyType': '' 
   };
 
   validationMessages = {
@@ -137,6 +138,10 @@ export class PoComponent implements OnInit {
       'minlength': 'This Field must be greater than 3 characters.',
       'maxlength': 'This Field must be less than 250 characters.'
     },
+    'CurrencyType': {
+      'required': 'This Field is required.',
+    },
+    
   };
 
   logValidationErrors(group: FormGroup = this.poForm): void {
@@ -174,18 +179,13 @@ export class PoComponent implements OnInit {
       AgainstReference: ['', []],
       PaymentReference: ['', []],
       Remarks: ['', []],
+      CurrencyType: ['INR', [Validators.required]],
     });
 
-    // var PODate = moment(new Date(), 'YYYY-MM-DD[T]HH:mm').format('MM-DD-YYYY HH:mm').toString();
-    // this.poForm.patchValue({
-    //   PODate: { startDate: new Date(PODate) },
-    //   PODeliveryDate: { startDate: new Date(PODate) },
-    // });
-    //this.poMinDate = moment().add(0, 'days'); 
-    // this.poDeliveryMinDate = moment().add(0, 'days');
     this.getCurrentServerDateTime();
     this.gridData = this.poOrder.lstItem;
     this.getUOMs();
+    this.GetCurrencyType();
     var end = moment().endOf('day');
     var currentend = new Date();
     var differ = end.diff(currentend, 'minutes');
@@ -207,7 +207,6 @@ export class PoComponent implements OnInit {
   }
 
   private getCurrentServerDateTime() {
-    //
     this._PrivateutilityService.getCurrentDate()
       .subscribe(
         (data: Date) => {
@@ -216,14 +215,11 @@ export class PoComponent implements OnInit {
             PODate: { startDate: new Date(mcurrentDate) },
             PODeliveryDate: { startDate: new Date(mcurrentDate) },
           });
-          this.poMinDate = moment(data).add(0, 'days');
+          this.poMinDate = moment(data).subtract(7, 'days');
           this.poDeliveryMinDate = moment(data).add(0, 'days');
-          //
         },
         (err: any) => {
           console.log(err);
-
-          //
         }
       );
   }
@@ -231,7 +227,6 @@ export class PoComponent implements OnInit {
   private editPO(poID): void {
     this.poOrder.POID = poID;
     this.panelTitle = "Update PO";
-    //
     this._poService.searchById(poID)
       .subscribe(
         (data: Poorder) => {
@@ -258,15 +253,14 @@ export class PoComponent implements OnInit {
             OtherReference: data.OtherReference,
             AgainstReference: data.AgainstReference,
             PaymentReference: data.PaymentReference,
-            Remarks: data.Remarks
+            Remarks: data.Remarks,
+            CurrencyType: data.CurrencyType
           });
           this.onVendorChanged(this.poOrder.VendorID);
           this.DisbableShipmentCheckbox(data.LocationID);
-          // 
         },
         (err: any) => {
           console.log(err);
-          //
         }
       );
   }
@@ -276,13 +270,10 @@ export class PoComponent implements OnInit {
     this.poOrder.LocationID = locationID;
     if (locationID > 0) {
       this.DisbableShipmentCheckbox(locationID);
-      //
       this._poService.getPONumber(locationID).subscribe(
         (res) => {
           this.poOrder.PONumber = res;
-          //
         }, (err) => {
-          //
           console.log(err);
         });
 
@@ -301,17 +292,26 @@ export class PoComponent implements OnInit {
       this.poForm.get('IsShipmentRequired').enable();
     }
   }
+  lstCurrencyType: Dropdown[] = [] as any;
+  public GetCurrencyType(): void {
+    this._PrivateutilityService.GetValues('CurrencyType')
+      .subscribe(
+        (data: Dropdown[]) => {
+          this.lstCurrencyType = data;
+        },
+        (err: any) => {
+          console.log(err);
+        }
+      );
+  }
 
   //Get Locations
   public getLocations(): void {
-    //
     this._PrivateutilityService.getLocations().subscribe(
       (data) => {
         this.locationList = data;
-        //
       },
       (err) => {
-        //
         console.log(err);
       }
     );
@@ -323,35 +323,27 @@ export class PoComponent implements OnInit {
     this._PrivateutilityService.getVendors().subscribe(
       (res) => {
         this.vendorList = res;
-        //
       }, (err) => {
-        //
         console.log(err);
       });
   }
 
   //Get Brands
   public getBrands(): void {
-    //
     this._poService.getOrderBrands().subscribe(
       (res) => {
         this.brandList = res;
-        //
       }, (err) => {
-        //
         console.log(err);
       });
   }
 
   //Get Product Groups
   public getProductGroups(brandID: number): void {
-    //
     this._poService.getOrderProductGroups(brandID).subscribe(
       (res) => {
         this.productGroups = res;
-        //
       }, (err) => {
-        //
         console.log(err);
       });
   }
@@ -362,38 +354,30 @@ export class PoComponent implements OnInit {
     this._poService.getOrderCategories(brandID, productGroupdID).subscribe(
       (res) => {
         this.categoryList = res;
-        //
       }, (err) => {
-        //
         console.log(err);
       });
   }
 
   // Get SubCategory List
   public getSubCategories(brandID: number, categoryID: number): void {
-    //
     this._poService.getOrderSubCategories(brandID, categoryID).subscribe(
       (res) => {
         this.subCategoryList = res;
-        //
       }, (err) => {
-        //
         console.log(err);
       });
   }
   // Get Item List
   public onVendorChanged(vendorID: number): void {
-    //
     if (vendorID > 0) {
       this._poService.getVendorItemLevels(vendorID).subscribe(
         (res) => {
           if (res != null) {
             this.itemList = res.filter(e => { return e.Type == "Item" });
           }
-          //
         }, (err) => {
           this.itemList = [];
-          //
           console.log(err);
         });
     }
@@ -420,13 +404,10 @@ export class PoComponent implements OnInit {
 
   // Get Item Description
   public getUOMs(): void {
-    //
     this._poService.getOrderUOMs().subscribe(
       (res) => {
         this.uomList = res;
-        //
       }, (err) => {
-        //
         console.log(err);
       });
   }
@@ -553,7 +534,7 @@ export class PoComponent implements OnInit {
     this.poOrder.AgainstReference = this.poForm.controls['AgainstReference'].value;
     this.poOrder.PaymentReference = this.poForm.controls['PaymentReference'].value;
     this.poOrder.Remarks = this.poForm.controls['Remarks'].value;
-
+    this.poOrder.CurrencyType = this.poForm.controls['CurrencyType'].value; 
     if (this.poOrder.POID > 0) {
       this.Update();
 
@@ -750,16 +731,12 @@ export class PoComponent implements OnInit {
   };
 
   onDownloadTemplate() {
-
     let filetype = 'POBulk'
-    //
     this._masteruploadService.getFileTemplate(filetype)
       .subscribe(data => {
-
         saveAs(data, filetype + '.xlsx')
       },
         (err) => {
-          //
           console.log(err);
         }
       );
@@ -815,7 +792,6 @@ export class PoComponent implements OnInit {
         (res: Poorderitem[]) => {
           this.poOrder.lstItem = res;
           this.gridData = this.poOrder.lstItem;
-          //
           if (this.gridData.length > 0) {
             this.poForm.get('VendorID').disable();
 
@@ -835,12 +811,10 @@ export class PoComponent implements OnInit {
           $('#modalpopupbulkupload').modal('hide');
         },
         (err) => {
-          //
           $('#modalpopupbulkupload').modal('hide');
           console.log(err);
         });
     }
-    // console.log(this.parsedCsv);
   }
   FileFlag: boolean = false;
   SelectedFiles: File[] = [] as any;

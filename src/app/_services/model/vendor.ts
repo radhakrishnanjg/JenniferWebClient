@@ -29,6 +29,8 @@ export class Vendor {
     // who is doing this task
     LoginId: number;
     TotalAmount: number;
+    //added on 03 03 2020
+    IsEOR: boolean
 }
 export class Vendorwarehouse {
     VendorWarehouseID: number;

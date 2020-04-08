@@ -38,6 +38,7 @@ import { GstComponent } from './gst/gst.component';
 import { GstlistComponent } from './gstlist/gstlist.component';
 import { GstdownloadComponent } from './gstdownload/gstdownload.component';
 import { GstapprovalComponent } from './gstapproval/gstapproval.component';
+import { TallyprocesslistComponent } from './tallyprocesslist/tallyprocesslist.component';
 
 //module routing
 import {GstRoutingModule} from '../gst/gst.routing.module';
@@ -62,7 +63,12 @@ import {GstRoutingModule} from '../gst/gst.routing.module';
     GstRoutingModule
   ],
 
-  declarations: [SafeHtmlPipe, GstComponent, GstlistComponent, GstdownloadComponent, GstapprovalComponent,
+  declarations: [SafeHtmlPipe,
+     GstComponent,
+      GstlistComponent,
+       GstdownloadComponent, 
+       GstapprovalComponent,
+       TallyprocesslistComponent,
    ],
    providers: [
     CookieService,

@@ -1,0 +1,187 @@
+<div class="row">
+  <div class="col-sm-6 col-lg-6">
+    <h3>
+      Tally Process
+    </h3>
+  </div>
+  <div class="col-sm-6 col-lg-6">
+    <div class="pull-right hidden-xs">
+      <ol class="breadcrumb" id="dynamicbreadcrumb">
+        <li>
+          <span> GST</span>
+        </li>
+        <li>
+          <span> Tally Process</span>
+        </li>
+        <li class="active">
+
+          List
+        </li>
+      </ol>
+    </div>
+  </div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="input-group col-xs-12 col-sm-12" role="group" aria-label="Basic example">
+          <div class="col-md-3 col-sm-3 col-xs-12 nopading_loct">
+            <select [(ngModel)]="SearchBy" class="serchcurv form-control btn-group">
+              <option value="" selected="select">Search By</option>
+              <option value="TransactionType">Transaction Type</option>
+              <option value="GSTMonth">GST Month</option>
+            </select>
+          </div>
+          <div class="col-md-4 col-sm-3 nopading_loct">
+            <input (keyup.enter)="Search()" [(ngModel)]="SearchKeyword" type="text"
+              class="serchcurv form-control btn-group">
+          </div>
+          <div class="col-md-3 col-sm-3 col-xs-6 nopading_loct">
+            <button class="serchcurv btn btn-default btn-group" (click)="Search()" title="Search">
+              <i class="fa fa-search " aria-hidden="true"></i>
+            </button>
+            <button class="serchcurv btn btn-default btn-group" (click)="Refresh()" title="Reset">
+              <i class="fa fa-refresh" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="col-xs-6 col-sm-3 col-md-2 text-right nopadding">
+            <button type="button" class="btn btn-xs btn-sm btn-primary" (click)="newButtonClick()" title="New Process">
+              New Process
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="panel-body">
+    <div class="table-responsive">
+      <table class="table">
+        <kendo-grid [data]="gridView" resizable="true" columnMenu="true" [pageSize]="pageSize" [skip]="skip"
+          [pageable]="{pageSizes: [10, 25, 50, 100, 250, 500]}" (pageChange)="pageChange($event)" [sortable]="{
+        allowUnsort: allowUnsort,
+        mode:  'single'
+        }" [sort]="sort" (sortChange)="sortChange($event)" [filterable]="true"
+          (dataStateChange)="dataStateChange($event)" [filter]="state.filter">
+          <ng-template kendoGridToolbarTemplate>
+            <input placeholder="Search in all columns..." style="float:right;" kendoTextBox
+              (input)="onFilter($event.target.value)" />
+            <button kendoGridExcelCommand type="button" icon="file-excel"> </button>
+            <button kendoGridPDFCommand icon="file-pdf"> </button>
+            <kendo-grid-pdf fileName="TallyProcessList.pdf" [repeatHeaders]="true"></kendo-grid-pdf>
+            <kendo-grid-excel fileName="TallyProcessList.xlsx"></kendo-grid-excel>
+          </ng-template>
+          <kendo-grid-column field="TransactionType" title="Transaction Type">
+          </kendo-grid-column>
+          <kendo-grid-column field="StoreName" title="Store">
+          </kendo-grid-column>
+          <kendo-grid-column field="GSTMonth" title="GST Month">
+          </kendo-grid-column>
+          <kendo-grid-column field="DateRange" title="Date Range">
+          </kendo-grid-column>
+          <kendo-grid-column field="ProcessedBy" title="Processed By">
+          </kendo-grid-column>
+          <kendo-grid-column field="ProcessedDate" title="Processed Date">
+          </kendo-grid-column>
+          <kendo-grid-column field="RejectedReason" title="Rejected Reason">
+          </kendo-grid-column>
+          <kendo-grid-column title="Download" [class]="{'text-center': true}" [filterable]="false" [sortable]="false"
+            width="70">
+            <ng-template kendoGridCellTemplate let-dataItem>
+              <i class="fa fa-download bgblue pointer" (click)="Download(dataItem.BatchID)" title="Delete"></i>
+            </ng-template>
+          </kendo-grid-column>
+        </kendo-grid>
+      </table>
+    </div>
+
+  </div>
+
+
+
+
+  <div id="modalpopupcategoryupsert" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="modalpopupcategoryupsert" aria-hidden="true">
+
+    <form [formGroup]="catgoryForm" (ngSubmit)="SaveData()" class="form-horizontal">
+      <div class="modal-dialog ">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="modalpopupcategoryupsert"> {{panelTitle}}</h4>
+          </div>
+          <div class="modal-body">
+            <div class="form-group" [ngClass]="{'has-error': formErrors.TransactionType}">
+              <label class="col-sm-3 control-label" for="VoucherType">
+                Transaction Type <span class="mandantory">*</span>
+              </label>
+              <div class="col-sm-8">
+                <select id="TransactionType" class="form-control" formControlName="TransactionType"
+                  (blur)="logValidationErrors()">
+                  <option value="" selected="selected">Select</option>
+                  <option *ngFor="let dis of lstTallyTransactionType" value={{dis.DropdownValue}}>
+                    {{dis.DropDownDescription}}
+                  </option>
+                </select>
+                <div class="help-block-rk"> <span class="help-block" *ngIf="formErrors.TransactionType">
+                    {{formErrors.TransactionType}}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group" [ngClass]="{'has-error': formErrors.GSTMonth}">
+              <label class="col-sm-3 control-label" for="GSTMonth">GST Month<span class="mandantory">*</span></label>
+              <div class="col-sm-9">
+                <input id="GSTMonth" disabled="true" type="text" class="form-control" formControlName="GSTMonth"
+                  (blur)="logValidationErrors()" maxlength="30" required>
+                <div class="help-block-rk">
+                  <span class="help-block" *ngIf="formErrors.GSTMonth">
+                    {{formErrors.GSTMonth}}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group" [ngClass]="{'has-error': formErrors.FromDate}">
+              <label class="col-sm-3 control-label" for="FromDate"> From Date <span class="mandantory">*</span></label>
+              <div class="col-sm-9">
+                <input id="FromDate" type="date" class="form-control" formControlName="FromDate"
+                  (blur)="logValidationErrors()" maxlength="10" required>
+                <div class="help-block-rk">
+                  <span class="help-block" *ngIf="formErrors.FromDate">
+                    {{formErrors.FromDate}}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group" [ngClass]="{'has-error': formErrors.Todate}">
+              <label class="col-sm-3 control-label" for="Todate">To Date <span class="mandantory">*</span></label>
+              <div class="col-sm-9">
+                <input id="Todate" type="date" class="form-control" formControlName="Todate"
+                  (blur)="logValidationErrors()" maxlength="10" required>
+                <div class="help-block-rk">
+                  <span class="help-block" *ngIf="formErrors.Todate">
+                    {{formErrors.Todate}}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-primary" data-dismiss="modal">Cancel</button>
+            &nbsp;
+            <button class="btn btn-success" type="submit" prevent-double-submit [disabled]="catgoryForm.invalid">
+
+              Save
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>

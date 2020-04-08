@@ -39,3 +39,19 @@ export class GSTApprovalStatusViewModel {
     CreatedDate: Date | string;
 }
 
+export class TallyProcess {
+    BatchID: string;
+    StoreName: string;
+    DateRange : string;
+    ProcessedBy : string;
+    ProcessedDate : Date;
+    ExecutionStatus: string;
+    RejectedReason : string;
+    // insert time
+    TransactionType : string;
+    GSTMonth : Date;
+    FromDate : Date;
+    Todate : Date;
+    CompanyID: number; 
+    LoginId: number; 
+}

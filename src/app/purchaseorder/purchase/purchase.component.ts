@@ -59,6 +59,7 @@ export class PurchaseComponent implements OnInit {
     'InvoiceDate': '',
     'VendorWarehouseID': '',
     'Remarks': '',
+    'CurrencyValue': '',
   };
 
   validationMessages = {
@@ -78,6 +79,9 @@ export class PurchaseComponent implements OnInit {
     'Remarks': {
       'required': 'This Field is required.',
       'maxlength': 'This Field must be less than or equal to 250 charecters.',
+    },
+    'CurrencyValue': {
+      'min': 'This Field is required.',
     },
   };
 
@@ -104,7 +108,7 @@ export class PurchaseComponent implements OnInit {
   }
 
   ngOnInit() {
-
+    this.CurrencyValue = 1;
     this.IsEditable = true;
     this.aroute.paramMap.subscribe(params => {
       this.identity = +params.get('id');
@@ -124,45 +128,42 @@ export class PurchaseComponent implements OnInit {
               .subscribe(
                 (data: Vendorwarehouse[]) => {
                   this.lstVendorwarehouse = data;
-                  //
                 },
                 (err: any) => {
-                  //
                   console.log(err);
                 }
               );
+
+            this.CurrencyType = data.CurrencyType;
             if (this.identity > 0) {
               this.panelTitle = "Edit Invoice";
               this.action = false;
-              //
               this._invoiceService.searchById(this.identity, this.POID)
                 .subscribe(
                   (data: Invoice) => {
                     this.obj = data;
-                    this.TotalQty = this.obj.lstItem.reduce((acc, a) => acc + a.Qty, 0);
-                    this.TotalRate = this.obj.lstItem.reduce((acc, a) => acc + a.Rate, 0);
-                    this.TotalMRP = this.obj.lstItem.reduce((acc, a) => acc + a.MRP, 0);
-                    this.TotalTaxRate = this.obj.lstItem.reduce((acc, a) => acc + a.TaxRate, 0);
-                    this.TotalTaxAmount = this.obj.lstItem.reduce((acc, a) => acc + a.TaxAmount, 0);
-                    this.TotalDirectCost = this.obj.lstItem.reduce((acc, a) => acc + a.DirectCost, 0);
-                    this.TotalTotalAmount = this.obj.lstItem.reduce((acc, a) => acc + a.TotalAmount, 0); 
+                    // this.TotalQty = this.obj.lstItem.reduce((acc, a) => acc + a.Qty, 0);
+                    // this.TotalRate = this.obj.lstItem.reduce((acc, a) => acc + a.Rate, 0);
+                    // this.TotalMRP = this.obj.lstItem.reduce((acc, a) => acc + a.MRP, 0);
+                    // this.TotalTaxRate = this.obj.lstItem.reduce((acc, a) => acc + a.TaxRate, 0);
+                    // this.TotalTaxAmount = this.obj.lstItem.reduce((acc, a) => acc + a.TaxAmount, 0);
+                    // this.TotalDirectCost = this.obj.lstItem.reduce((acc, a) => acc + a.DirectCost, 0);
+                    // this.TotalTotalAmount = this.obj.lstItem.reduce((acc, a) => acc + a.TotalAmount, 0);
                     var VendorWarehouseID = data.VendorWarehouseID.toString();
                     this.invoiceform.patchValue({
                       InvoiceNumber: data.InvoiceNumber,
-                      //InvoiceDate: data.InvoiceDate,
                       VendorWarehouseID: VendorWarehouseID,
                       Remarks: data.Remarks,
-                      USDValue: data.USDValue,
+                      CurrencyValue: data.CurrencyValue,
                     });
+                    this.CurrencyValue = data.CurrencyValue;
                     this.IsEditable = data.IsEditable;
                     this.invoiceform.get('InvoiceNumber').disable();
                     var InvoiceDate1 = moment(data.InvoiceDate, 'YYYY-MM-DD[T]HH:mm').
                       format('MM-DD-YYYY HH:mm').toString();
                     this.InvoiceDate = { startDate: new Date(InvoiceDate1) };
-
                   },
                   (err: any) => {
-                    //
                     console.log(err);
                   }
                 );
@@ -170,23 +171,12 @@ export class PurchaseComponent implements OnInit {
             else {
               this.action = true;
               this.panelTitle = "Add New Invoice";
-              //
               this._invoiceService.getNewInvoice(this.POID)
                 .subscribe(
                   (data: Invoiceitem[]) => {
                     this.obj.lstItem = data;
-                    this.TotalQty = this.obj.lstItem.reduce((acc, a) => acc + a.Qty, 0);
-                    this.TotalRate = this.obj.lstItem.reduce((acc, a) => acc + a.Rate, 0);
-                    this.TotalMRP = this.obj.lstItem.reduce((acc, a) => acc + a.MRP, 0);
-                    this.TotalTaxRate = this.obj.lstItem.reduce((acc, a) => acc + a.TaxRate, 0);
-                    this.TotalTaxAmount = this.obj.lstItem.reduce((acc, a) => acc + a.TaxAmount, 0);
-                    this.TotalDirectCost = this.obj.lstItem.reduce((acc, a) => acc + a.DirectCost, 0);
-                    this.TotalTotalAmount = this.obj.lstItem.reduce((acc, a) => acc + a.TotalAmount, 0);
-
-                    //
                   },
                   (err: any) => {
-                    //
                     console.log(err);
                   }
                 );
@@ -194,7 +184,6 @@ export class PurchaseComponent implements OnInit {
 
           },
           (err: any) => {
-            //
             console.log(err);
           }
         );
@@ -208,10 +197,42 @@ export class PurchaseComponent implements OnInit {
       InvoiceDate: ['', [Validators.required,]],
       VendorWarehouseID: [0, [Validators.min(1),]],
       Remarks: ['', [Validators.required, Validators.maxLength(250)]],
-      USDValue: ['', []],
+      CurrencyValue: ['1', [Validators.required]],
     });
   }
+  // public onChangeCurrencyValuePageload(CurrencyValue: number): void {
+  //   this.obj.lstItem.forEach((element, id) => {
+  //     this.obj.lstItem[id]["DirectCost"] = element.Qty * this.obj.lstItem[id]["Rate"] / CurrencyValue;
+  //     this.obj.lstItem[id]["TaxAmount"] = this.obj.lstItem[id]["DirectCost"] * this.obj.lstItem[id]["TaxRate"] / 100;
+  //     this.obj.lstItem[id]["TotalAmount"] = parseFloat(this.obj.lstItem[id]["DirectCost"].toString()) +
+  //       parseFloat(this.obj.lstItem[id]["TaxAmount"].toString());
+  //     this.TotalQty = this.obj.lstItem.reduce((acc, a) => acc + a.Qty, 0);
+  //     this.TotalRate = this.obj.lstItem.reduce((acc, a) => acc + a.Rate, 0);
+  //     this.TotalMRP = this.obj.lstItem.reduce((acc, a) => acc + a.MRP, 0);
+  //     this.TotalTaxRate = this.obj.lstItem.reduce((acc, a) => acc + a.TaxRate, 0);
+  //     this.TotalTaxAmount = this.obj.lstItem.reduce((acc, a) => acc + a.TaxAmount, 0);
+  //     this.TotalDirectCost = this.obj.lstItem.reduce((acc, a) => acc + a.DirectCost, 0);
+  //     this.TotalTotalAmount = this.obj.lstItem.reduce((acc, a) => acc + a.TotalAmount, 0);
+  //   });
+  // }
 
+  public onChangeCurrencyValue(CurrencyValue: number): void {
+    debugger
+    this.obj.lstItem.forEach((element, id) => {
+      this.obj.lstItem[id]["Rate"] = this.obj.lstItem[id]["OriginalRate"] * CurrencyValue;
+      this.obj.lstItem[id]["DirectCost"] = element.Qty * this.obj.lstItem[id]["Rate"];
+      this.obj.lstItem[id]["TaxAmount"] = this.obj.lstItem[id]["DirectCost"] * this.obj.lstItem[id]["TaxRate"] / 100;
+      this.obj.lstItem[id]["TotalAmount"] = parseFloat(this.obj.lstItem[id]["DirectCost"].toString()) +
+        parseFloat(this.obj.lstItem[id]["TaxAmount"].toString());
+      this.TotalQty = this.obj.lstItem.reduce((acc, a) => acc + a.Qty, 0);
+      this.TotalRate = this.obj.lstItem.reduce((acc, a) => acc + a.Rate, 0);
+      this.TotalMRP = this.obj.lstItem.reduce((acc, a) => acc + a.MRP, 0);
+      this.TotalTaxRate = this.obj.lstItem.reduce((acc, a) => acc + a.TaxRate, 0);
+      this.TotalTaxAmount = this.obj.lstItem.reduce((acc, a) => acc + a.TaxAmount, 0);
+      this.TotalDirectCost = this.obj.lstItem.reduce((acc, a) => acc + a.DirectCost, 0);
+      this.TotalTotalAmount = this.obj.lstItem.reduce((acc, a) => acc + a.TotalAmount, 0);
+    });
+  }
   updateList(id: number, property: string, value: number) {
     const editField = parseInt(value.toString());
     const AvailableQty = parseInt(this.obj.lstItem[id]['AvailableQty'].toString());
@@ -229,6 +250,7 @@ export class PurchaseComponent implements OnInit {
     }
     else {
       this.obj.lstItem[id][property] = editField;
+      this.obj.lstItem[id]["Rate"] = this.obj.lstItem[id]["OriginalRate"] * this.CurrencyValue;
       this.obj.lstItem[id]["DirectCost"] = editField * this.obj.lstItem[id]["Rate"];
       this.obj.lstItem[id]["TaxAmount"] = this.obj.lstItem[id]["DirectCost"] * this.obj.lstItem[id]["TaxRate"] / 100;
       this.obj.lstItem[id]["TotalAmount"] = parseFloat(this.obj.lstItem[id]["DirectCost"].toString()) +
@@ -247,7 +269,6 @@ export class PurchaseComponent implements OnInit {
     let VendorWarehouseID = parseInt(selectedValue);
     if (VendorWarehouseID > 0) {
       let LocationID = this.LocationID;
-      //
       this._invoiceService.getGSTType(VendorWarehouseID, LocationID)
         .subscribe(
           (data) => {
@@ -274,7 +295,11 @@ export class PurchaseComponent implements OnInit {
     // stop here if form is invalid
     if (this.invoiceform.invalid) {
       return;
+    } if (this.CurrencyValue < 1) {
+      this.alertService.error('Currency Value must be greater than one!');
+      return;
     }
+
     let PODate: Date = new Date(moment(new Date(this.PODate)).format("MM-DD-YYYY HH:mm"));
     let InvoiceDate: Date = new Date();
     if (this.invoiceform.controls['InvoiceDate'].value.startDate._d != undefined) {
@@ -303,30 +328,32 @@ export class PurchaseComponent implements OnInit {
       this.Insert();
     }
   }
-
+  CurrencyType: string = '';
+  CurrencyValue: number = 0;
   Insert() {
 
     this.obj.InvoiceNumber = this.invoiceform.controls['InvoiceNumber'].value;
     this.obj.InvoiceDate = this.invoiceform.controls['InvoiceDate'].value.startDate._d.toLocaleString();
     this.obj.VendorWarehouseID = this.invoiceform.controls['VendorWarehouseID'].value;
     this.obj.Remarks = this.invoiceform.controls['Remarks'].value;
-    this.obj.USDValue = this.invoiceform.controls['USDValue'].value;
+    this.obj.CurrencyType = this.CurrencyType;
+    this.obj.CurrencyValue = this.CurrencyValue;
     this.obj.LocationID = this.LocationID;
     this.obj.POID = this.POID;
-    this.obj.lstItem = this.obj.lstItem.filter(a => a.Qty > 0); 
+    this.obj.lstItem = this.obj.lstItem.filter(a => a.Qty > 0);
     this._invoiceService.upsert(this.obj).subscribe(
       (data) => {
-        if (data != null && data.Flag == true) { 
+        if (data != null && data.Flag == true) {
           this.alertService.success(data.Msg);
           this._router.navigate(['/Purchaselist']);
         }
-        else { 
+        else {
           this.alertService.error(data.Msg);
           this._router.navigate(['/Purchaselist']);
         }
         this.identity = 0;
       },
-      (error: any) => { 
+      (error: any) => {
         console.log(error);
       }
     );
@@ -343,23 +370,24 @@ export class PurchaseComponent implements OnInit {
 
     this.obj.VendorWarehouseID = this.invoiceform.controls['VendorWarehouseID'].value;
     this.obj.Remarks = this.invoiceform.controls['Remarks'].value;
-    this.obj.USDValue = this.invoiceform.controls['USDValue'].value;
+    this.obj.CurrencyType = this.CurrencyType;
+    this.obj.CurrencyValue = this.CurrencyValue;
     this.obj.LocationID = this.LocationID;
     this.obj.POID = this.POID;
-    this.obj.lstItem = this.obj.lstItem.filter(a => a.Qty > 0); 
+    this.obj.lstItem = this.obj.lstItem.filter(a => a.Qty > 0);
     this._invoiceService.upsert(this.obj).subscribe(
       (data) => {
-        if (data != null && data.Flag == true) { 
+        if (data != null && data.Flag == true) {
           this.alertService.success(data.Msg);
           this._router.navigate(['/Purchaselist']);
         }
-        else { 
+        else {
           this.alertService.error(data.Msg);
           this._router.navigate(['/Purchaselist']);
         }
         this.identity = 0;
       },
-      (error: any) => { 
+      (error: any) => {
         console.log(error);
       }
     );

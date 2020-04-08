@@ -52,6 +52,11 @@
                             </div>
                         </div>
                     </div>
+                    <div class="playvideobtn swing">
+                        <a type="button" data-toggle="modal" data-target="#myModalvideo">
+                            <i class="fa fa-play" aria-hidden="true" title="Watch Jennifer video - 观看珍妮弗介绍视频"></i>
+                        </a>
+                    </div>
                     <div class='pull-right'>
                         <div class="slctcompydtals">
                             <ul class="info-menu right-links list-inline list-unstyled">
@@ -62,11 +67,11 @@
                                     </ngx-spinner>
                                 </li>
 
-                                <!-- <li>
-                                    <a routerLinkActive="active" routerLink="/CrossBorder/dashboard2"> 
-                                        Switch Application
+                                <li *ngIf="IsSwitchApplicationEnable">
+                                    <a routerLinkActive="active" routerLink="/CrossBorder/dashboard2">
+                                        EOR Application
                                     </a>
-                                </li> -->
+                                </li>
                                 <li>
                                     <!-- <i class="company"></i> -->
                                     <select id="CompanyID" class="form-control topdropbx" [(ngModel)]="CompanyID"
@@ -330,6 +335,35 @@
                 <button type="button" data-dismiss="modal" class="btn btn-primary">Cancel</button>
                 &nbsp;
                 <button type="button" class="btn btn-success" (click)="SaveTheme()" data-dismiss="modal">Ok</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="myModalvideo" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Watch Jennifer video - 观看珍妮弗介绍视频</h4>
+            </div>
+            <div class="modal-body">
+                <div class="videobg">
+                    <div class="videobase">
+                        <video width="100%" controls>
+                            <source src="assets\videos\jenniferchineses.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <div class="checkbox videocheck pull-left">
+                    <label><input type="checkbox" [checked]="IsSaveVideo" [(ngModel)]="IsSaveVideo"
+                            name="IsSaveVideo">Don’t show me again</label>
+                </div>
+                <button type="button" data-dismiss="modal" title="save" (click)="SaveVideo()"
+                    class="btn btn-primary pull-right">Save</button>
             </div>
         </div>
     </div>

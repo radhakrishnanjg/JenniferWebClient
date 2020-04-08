@@ -3836,6 +3836,66 @@ i.jicon {
      .salsecase h6 { background-color: #fff;  border-bottom: 1px solid #d02560; color: #373737;} 
      .page-sidebar .pagescroll { background-color: #FFF; background-image:none;} 
 }
+.playvideobtn {
+    float: left;
+    display: block;
+    background-color:#578278;
+    width: 30px;
+    height: 30px;
+    position: relative;
+    top: 10px;
+    left: 22px;
+    border-radius: 50%;
+    padding:8px 11px;
+    animation: background 0.2s, color 0.2s;
+    playvideobtn
+}  
+.playvideobtn i {
+    color: #FFF !important;
+}
+.swing {
+    animation: swing ease-in-out 1s infinite alternate;
+    transform-origin:center -40px; 
+}
+.swing i { 
+    display: block;
+}
+.swing:after{
+    content: '';
+    position: absolute;
+    width: 13px;
+    height: 15px;
+    border: 1px solid #999;
+        border-right-color: rgb(153, 153, 153);
+        border-right-style: solid;
+        border-right-width: 1px;
+        border-bottom-color: rgb(153, 153, 153);
+        border-bottom-style: solid;
+        border-bottom-width: 1px;
+    top: -4px;
+    left: 26%;
+    z-index: 0;
+    border-bottom: none;
+    border-right: none;
+    transform: rotate(45deg);
+}
+/* nail */
+.swing:before{
+    content: '';
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    top: -9px;
+    left: 43%;
+    z-index: 5;
+    border-radius: 50% 50%;
+    background: #000;
+}
+ 
+@keyframes swing {
+    0% { transform: rotate(3deg); }
+    100% { transform: rotate(-3deg); }
+} 
 /****************************************************************
 ************************MOBILE VIEW************************
 ******************************************************************/
@@ -3873,4 +3933,8 @@ i.jicon {
         font-size: 11px;
         font-family: Lato, sans-serif;
     }
+}
+
+.playvideobtn {
+    cursor: pointer;
 }

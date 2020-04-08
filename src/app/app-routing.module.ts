@@ -15,6 +15,7 @@ import { Submenu2Component } from './submenu2/submenu2.component';
 import { CompanyregisterComponent } from './account/companyregister/companyregister.component';
 import { SigninComponent } from './account/signin/signin.component';
 import { ForgotpasswordComponent } from './account/forgotpassword/forgotpassword.component';
+import { SellerregistrationComponent } from './account/sellerregistration/sellerregistration.component';
 
 import { CustompreloadingService } from './_services/service/custompreloading.service';
 
@@ -26,9 +27,9 @@ import { IndexComponent } from './index/index.component';
 // the route to redirect to if the client side path is empty.
 const appRoutes: Routes = [
   //Landing page
-  //{ path: '', component: IndexComponent },
-  { path: '', component: SigninComponent, canActivate: [MaintenanceGuard] },
+  { path: '', component: IndexComponent },
 
+  // { path: '', component: SigninComponent, canActivate: [MaintenanceGuard] }, 
   //Cross Border routes goes here  
   {
     path: 'CrossBorder',
@@ -37,12 +38,8 @@ const appRoutes: Routes = [
       { path: 'dashboard2', component: Dashboard2Component },
       { path: 'SubMenu1', component: Submenu1Component },
       { path: 'SubMenu2', component: Submenu2Component },
-      { path: '', loadChildren: './userprofile/userprofile.module#UserprofileModule' },
-      { path: 'Search/:key', component: SearchComponent },
-      { path: '', loadChildren: './masters/masters.module#MastersModule' },
+      { path: '', loadChildren: './crossborder/crossborder.module#CrossborderModule' },
 
-      { path: 'Termsofuse', component: TermsofuseComponent },
-      { path: 'PrivacyPolicy', component: PrivacyPolicyComponent },
     ]
   },
   //Site routes goes here  
@@ -81,10 +78,11 @@ const appRoutes: Routes = [
 
     ]
   },
-  //no layout routes 
+  //no layout routes  
   { path: 'Signin', component: SigninComponent, canActivate: [MaintenanceGuard] },
   { path: 'ForgotPassword', component: ForgotpasswordComponent },
   { path: 'Companyregister', component: CompanyregisterComponent },
+  { path: 'Sellerregistration', component: SellerregistrationComponent },
   { path: 'Maintenance', component: MaintenanceComponent },
   { path: 'Termsofuse', component: TermsofuseComponent },
   { path: 'PrivacyPolicy', component: PrivacyPolicyComponent },

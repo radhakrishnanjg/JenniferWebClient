@@ -8,6 +8,7 @@ import { GstComponent } from '../gst/gst/gst.component';
 import { GstlistComponent } from '../gst/gstlist/gstlist.component';
 import { GstdownloadComponent } from '../gst/gstdownload/gstdownload.component';
 import { GstapprovalComponent } from '../gst/gstapproval/gstapproval.component';
+import { TallyprocesslistComponent } from './tallyprocesslist/tallyprocesslist.component';
 
 const appRoutes: Routes = [
     //Cases module
@@ -16,6 +17,7 @@ const appRoutes: Routes = [
     { path: 'Gstapproval/:id', component: GstapprovalComponent, canActivate: [AuthGuard, StoreGuard] },
     { path: 'Gstlist', component: GstlistComponent, canActivate: [AuthGuard, StoreGuard] },
     { path: 'GstDownload', component: GstdownloadComponent, canActivate: [AuthGuard, StoreGuard] },
+    { path: 'Tallyprocesslist', component: TallyprocesslistComponent, canActivate: [AuthGuard] },
 
 
 ];

@@ -179,11 +179,10 @@ export class CompanyregisterComponent implements OnInit {
     'SecondaryPostalCode'
   ];
 
-  emailPattern = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$";
+  emailPattern = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}$";
   constructor(
     private router: Router,
-    private fb: FormBuilder,
-    private authenticationService: AuthenticationService,
+    private fb: FormBuilder, 
     private accountService: AccountService,
     private alertService: ToastrService,
     

@@ -7,7 +7,7 @@ export const environment = {
   // aws server 1 
   // baseUrl: 'http://sandbox.jennifer-cn.com/api/',
   // basedomain: 'http://sandbox.jennifer-cn.com/',
- 
+
 
   //aws server 3
 

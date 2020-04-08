@@ -10,8 +10,7 @@ import { TicketService } from '../../_services/service/ticket.service'
 import { Dropdown, Ticket } from 'src/app/_services/model';
 import { PrivateutilityService } from '../../_services/service/privateutility.service';
 import { ToastrService } from 'ngx-toastr';
-
-import { Employee, employees } from 'src/app/_services/model';
+ 
 @Component({
   selector: 'app-helpnavigation',
   templateUrl: './helpnavigation.component.html',
@@ -126,8 +125,7 @@ export class HelpnavigationComponent implements OnInit {
     this.GetModuleType();
 
   }
-
-  public data: Employee[] = employees;
+ 
   leftmenus: Helpmenu[] = [] as any;
   griddata: Helpmenu[] = [] as any;
   onLoad() {

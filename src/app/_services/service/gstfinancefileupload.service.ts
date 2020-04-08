@@ -7,7 +7,7 @@ import { BadRequest } from './../../common/bad-request';
 import { NotFoundError } from './../../common/not-found-error';
 import { AppError } from './../../common/app-error';
 import { AuthenticationService } from './authentication.service';
-import { Gstfinancefileupload, Result } from '../model/index'
+import { Gstfinancefileupload, Result, TallyProcess } from '../model/index'
 import { environment } from '../../../environments/environment';
 
 @Injectable({
@@ -143,8 +143,48 @@ export class GstfinancefileuploadService {
       .pipe(catchError(this.handleError));
   }
 
+  //#region Tally process
 
+  public SearchProcessedRecords(SearchBy: string, Search: string):
+  Observable<TallyProcess[]> {
+  let currentUser = this.authenticationService.currentUserValue;
+  let CompanyID = currentUser.CompanyID;
+  let LoginId = currentUser.UserId;
+  return this.httpClient.get<string>(environment.baseUrl + `GSTFinance/SearchProcessedRecords?Search=` + Search
+    + `&SearchBy=` + encodeURIComponent(SearchBy)
+    + `&LoginId=` + LoginId
+    + `&CompanyID=` + CompanyID)
+    .pipe(
+      map(data => {
+        return JSON.parse(data) as TallyProcess[];
+      }),
+      catchError(this.handleError)
+    );
+}
+  public InsertTallyProcess(obj:TallyProcess): Observable<Result> {
+    let currentUser = this.authenticationService.currentUserValue;
+    obj.CompanyID = currentUser.CompanyID;
+    obj.LoginId = currentUser.UserId;
+    return this.httpClient.post<Result>(environment.baseUrl + `GSTFinance/InsertTallyProcess`, obj)
+      .pipe(catchError(this.handleError));
+  }
 
+  public DownloadLTallyProcess(obj:TallyProcess): Observable<Result> {
+    let currentUser = this.authenticationService.currentUserValue;
+    obj.CompanyID = currentUser.CompanyID;
+    obj.LoginId = currentUser.UserId;
+    return this.httpClient.post<Result>(environment.baseUrl + `GSTFinance/DownloadLTallyProcess`, obj)
+      .pipe(catchError(this.handleError));
+  }
+
+  public DownloadTallyFile(filename: string) { 
+    return this.httpClient.get(environment.baseUrl + `GSTFinance/DownloadTallyFile?` +  
+      `filename=` + filename ,
+      { responseType: 'blob' })
+      .pipe(catchError(this.handleError));
+  }
+
+  // #endregion
   private handleError(error: HttpErrorResponse) {
 
     if (error.status === 404)

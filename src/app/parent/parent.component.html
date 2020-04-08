@@ -6,7 +6,7 @@
 
             <div class="navbar-header">
                 <div class="logo-area">
-                    <a routerLink="/Dashboard1">
+                    <a routerLink="/dashboard2">
                         <span>
                             <img class="logo " src="assets\images\logo.png" alt="Logo" height="40" />
                             <img style="display: none;" class="logotogl " src="assets\images\togle-logo.png" alt="Logo"
@@ -55,7 +55,7 @@
                                     </ngx-spinner>
                                 </li>
 
-                                <li>
+                                <li *ngIf="IsSwitchApplicationEnable">
                                     <a routerLinkActive="active" routerLink="/Dashboard1">
                                         Switch Application
                                     </a>
@@ -81,7 +81,6 @@
                                     </select>
 
                                 </li> -->
-
                                 <li class="profile1 pfof1styl" style="padding-top:5px">
                                     <a href="#" data-toggle="dropdown" class="toggl1e">
                                         <i class="profile"></i>
@@ -135,7 +134,7 @@
     <div class="page-sidebar pagescroll">
         <div class="page-sidebar-wrapper" id="main-menu-wrapper">
 
-            <!-- <ul class="wraplist" *ngIf="Userpermissions && Userpermissions.length">
+            <ul class="wraplist" *ngIf="Userpermissions && Userpermissions.length">
                 <li class="panel" *ngFor="let parent of Userpermissions">
                     <a href="javascript:;" class="parentmenu"
                         *ngIf="(parent.AngularRouteName =='#' && parent.MenuType=='ParentMenu' )" id="{{parent.MenuID}}"
@@ -145,43 +144,19 @@
                     </a>
                     <ul class="sub-menu" style="display: none;" *ngFor="let sub of filter(parent.MenuID)">
                         <li>
-                            <a routerLinkActive="active" routerLink="/{{sub.AngularRouteName}}">
+                            <a routerLinkActive="active" routerLink="/CrossBorder/{{sub.AngularRouteName}}">
                                 <i class="{{sub.Menucss}}"></i>
                                 {{sub.MenuName}}
                             </a>
                         </li>
                     </ul>
-                    <a routerLinkActive="active" routerLink="/{{parent.AngularRouteName}}"
+                    <a routerLinkActive="active" routerLink="/CrossBorder/{{parent.AngularRouteName}}"
                         *ngIf="(parent.AngularRouteName !='#' && parent.MenuType=='ParentMenu')">
                         <i class="{{parent.Menucss}}"></i>
                         <span class="title"> {{parent.MenuName}}</span>
                     </a>
                 </li>
-            </ul> -->
-
-            <ul class="wraplist">
-                <li class="panel">
-                    <a href="javascript:;" class="parentmenu" id="1" (click)="fnusermenu_ViewEdit(1)">
-                        <i class="fa fa users"></i>
-                        <span class="title"> Parent Menu</span> <span class="arrow"></span>
-                    </a>
-                    <ul class="sub-menu" style="display: none;">
-                        <li>
-                            <a routerLinkActive="active" routerLink="/CrossBorder/SubMenu1">
-                                <i class="fa fa users"></i>
-                                SubMenu1
-                            </a>
-                        </li>
-                        <li>
-                            <a routerLinkActive="active" routerLink="/CrossBorder/SubMenu2">
-                                <i class="fa fa users"></i>
-                                SubMenu2
-                            </a>
-                        </li>
-                    </ul>
-                </li>
             </ul>
-
         </div>
     </div>
 
