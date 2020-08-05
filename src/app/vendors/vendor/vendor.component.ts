@@ -159,13 +159,6 @@ export class VendorComponent implements OnInit {
       if (this.identity > 0) {
         this.panelTitle = "Edit Vendor";
         this.action = false;
-        // nested subscribe
-        // this.userService.getUser().pipe(
-        //   tap(u => this.user = u),
-        //   flatMap(u => this.userService.getPreferences(u.username))
-        // ).subscribe(p => this.preferences = p);
-
-        //
         this._vendorService.searchById(this.identity).pipe(
           tap(data => {
             this.obj.lstContact = data.lstContact;
@@ -181,10 +174,10 @@ export class VendorComponent implements OnInit {
           flatMap(u => this.utilityService.getStates(u.CountryID))
         ).subscribe(p => {
           this.states = p;
-          //
+
         }),
           (err) => {
-            //
+
             console.log(err);
           };
       }
@@ -223,11 +216,12 @@ export class VendorComponent implements OnInit {
 
       IsActive: [0,],
       IsEOR: [0,],
+      IsEORApprovalRequired: [0,],
     });
   }
 
   private BindNewContacts() {
-    //
+
     this._contactService.searchByType('External').subscribe((data) => {
       this.obj.lstContact = data;
       if (this.obj.lstContact != null && this.obj.lstContact.length > 0) {
@@ -240,36 +234,36 @@ export class VendorComponent implements OnInit {
           "search": 'Filter',
         },
       };
-      //
+
     }, (err) => {
-      //
+
       console.log(err);
     });
   }
 
   private BindCountries() {
-    //
+
     this.utilityService.getCountries()
       .subscribe(
         (data: Country[]) => {
           this.countries = data;
-          //
+
         },
         (err: any) => {
-          //
+
           console.log(err);
         }
       );
   }
 
   private BindAccountTypes() {
-    //
+
     this._PrivateutilityService.GetValues('BankAccountType')
       .subscribe((data: Dropdown[]) => {
         this.lstAccountType = data;
-        //
+
       }, (err: any) => {
-        //
+
         console.log(err);
       });
   }
@@ -296,6 +290,7 @@ export class VendorComponent implements OnInit {
       AccountType: data.AccountType,
       IsActive: data.IsActive,
       IsEOR: data.IsEOR,
+      IsEORApprovalRequired: data.IsEORApprovalRequired,
     });
     this.vendorform.get('CountryID').disable();
     this.vendorform.get('StateID').disable();
@@ -307,15 +302,15 @@ export class VendorComponent implements OnInit {
   onchangeCountryID(selectedValue: string) {
     let countrid = parseInt(selectedValue);
     if (countrid > 0) {
-      //
+
       this.utilityService.getStates(countrid)
         .subscribe(
           (data: State[]) => {
             this.states = data;
-            //
+
           },
           (err: any) => {
-            //
+
             console.log(err);
           }
         );
@@ -375,12 +370,14 @@ export class VendorComponent implements OnInit {
     this.obj.IFSCCode = this.vendorform.controls['IFSCCode'].value;
 
     this.obj.IsActive = this.vendorform.controls['IsActive'].value;
-    //only is EOR on insert time
+    // only is EOR on insert time
     this.obj.IsEOR = this.vendorform.controls['IsEOR'].value;
+    this.obj.IsEORApprovalRequired = this.vendorform.controls['IsEORApprovalRequired'].value;
+
     if (this.obj.lstContact != null && this.obj.lstContact.length > 0) {
       this.obj.lstContact = this.obj.lstContact.filter(a => a.IsActive == true);
     }
-    //
+
     this._vendorService.existGSTNumber(this.obj.VendorID, this.obj.GSTNumber)
       .subscribe(
         (data) => {
@@ -388,32 +385,25 @@ export class VendorComponent implements OnInit {
             this.alertService.error('This GSTNumber is already registered');
           }
           else {
-            //
             this._vendorService.add(this.obj).subscribe(
               (data) => {
                 if (data != null && data.Flag == true) {
-                  //
                   this.alertService.success(data.Msg);
                   this._router.navigate(['/Vendorlist']);
                 }
                 else {
-                  //
-
                   this.alertService.error(data.Msg);
                   this._router.navigate(['/Vendorlist']);
                 }
                 this.identity = 0;
               },
               (error: any) => {
-                //
                 console.log(error);
               }
             );
           }
-          //
         },
         (error: any) => {
-          //
         }
       );
 
@@ -445,10 +435,10 @@ export class VendorComponent implements OnInit {
     this.obj.IFSCCode = this.vendorform.controls['IFSCCode'].value;
 
     this.obj.IsActive = this.vendorform.controls['IsActive'].value;
+    this.obj.IsEORApprovalRequired = this.vendorform.controls['IsEORApprovalRequired'].value;
     if (this.obj.lstContact != null && this.obj.lstContact.length > 0) {
       this.obj.lstContact = this.obj.lstContact.filter(a => a.IsActive == true);
     }
-    //
     this._vendorService.existGSTNumber(this.obj.VendorID, this.obj.GSTNumber)
       .subscribe(
         (data) => {
@@ -456,31 +446,30 @@ export class VendorComponent implements OnInit {
             this.alertService.error('This GSTNumber is already registered');
           }
           else {
-            //
+
             this._vendorService.update(this.obj).subscribe(
               (data) => {
                 if (data != null && data.Flag == true) {
-                  //
                   this.alertService.success(data.Msg);
                   this._router.navigate(['/Vendorlist']);
                 }
                 else {
-                  //
+
                   this.alertService.error(data.Msg);
                   this._router.navigate(['/Vendorlist']);
                 }
                 this.identity = 0;
               },
               (error: any) => {
-                //
+
                 console.log(error);
               }
             );
           }
-          //
+
         },
         (error: any) => {
-          //
+
         }
       );
 

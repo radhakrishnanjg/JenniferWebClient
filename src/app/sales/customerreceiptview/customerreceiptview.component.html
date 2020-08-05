@@ -1,0 +1,169 @@
+<div class="row">
+  <div class="col-sm-6 col-lg-6">
+    <h3>
+      Customer Receipts
+    </h3>
+  </div>
+  <div class="col-sm-6 col-lg-6">
+    <div class="pull-right hidden-xs">
+      <ol class="breadcrumb" id="dynamicbreadcrumb">
+        <li>
+          <span>Revenue</span>
+        </li>
+        <li>
+          <span>Customer Receipts</span>
+        </li>
+        <li class="active">
+
+          View
+        </li>
+      </ol>
+    </div>
+  </div>
+</div>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <div class="row">
+      <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+        <span class="groupspanheader">
+          Customer Receipt View
+        </span>
+      </div>
+      <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 ">
+        <div class="pull-right">
+          <button type="button" class="btn btn-primary" routerLinkActive="active"
+            routerLink="/Customerreceiptlist">Back</button>
+        </div>
+      </div>
+    </div>
+    <div class="clearfix"></div>
+  </div>
+
+  <div class="panel-body">
+
+    <div class="row">
+      <div class="col-md-12">
+        <div class="table-responsive">
+          <table class="table table-bordered bgtable">
+
+            <tr>
+              <th width="15%">
+                Bill Number <span class="mandantory"> *</span>
+              </th>
+              <td width="35%">
+                {{obj?.BillNumber  }}
+              </td>
+              <th width="15%">
+                Received Date <span class="mandantory"> *</span>
+              </th>
+              <td width="35%">
+                {{obj?.ReceivedDate | date :"MM-dd-yyyy HH:mm" }}
+              </td>
+            </tr>
+            <tr>
+              <th>
+                Customer Name <span class="mandantory"> *</span>
+              </th>
+              <td>
+                {{obj?.CustomerName}}
+              </td>
+              <!-- <th>
+                Order ID.
+              </th>
+              <td>
+                {{obj?.OrderIDs}}
+              </td> -->
+              <th>
+                Payment Mode
+              </th>
+              <td>
+                {{obj?.PaymentMode}}
+              </td>
+            </tr>
+            <tr>
+              <th>
+                Total Received Amount
+              </th>
+              <td>
+                {{obj?.TotalReceivedAmount}}
+              </td>
+              <th>
+                Transaction Date
+              </th>
+              <td>
+                {{obj?.TransactionDate | date :"MM-dd-yyyy HH:mm"}}
+              </td>
+            </tr>
+            <tr>
+              <th>
+                UTR No.
+              </th>
+              <td>
+                {{obj?.TransactionNumber }}
+              </td>
+              <th>
+                Remarks
+              </th>
+              <td colspan="3">
+                {{obj?.Remarks}}
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <span class="groupspanheader">Details</span>
+    <div class="table-responsive">
+      <table class="table table-bordered table-condensed">
+        <thead>
+          <tr>
+            <th class="text-center">Invoice Aging</th>
+            <th class="text-center">Order Date</th>
+            <th class="text-center">Order ID</th>
+            <th class="text-center">Receivable Amount</th>
+
+            <th class="text-center" width="200px">Receipt Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let dis of obj.lstCustomerReceiptDetail; let id = index">
+
+            <td> {{ dis.AgingDays}} </td>
+            <td> {{ dis.OrderDate | date :"MM-dd-yyyy HH:mm"}} </td>
+            <td> {{ dis.OrderID }} </td>
+            <td> {{ dis.ReceivableAmt | currency: 'INR'}} </td>
+            <td> {{ dis.ReceivedAmt | currency: 'INR'}} </td>
+
+          </tr>
+          <tr>
+            <th></th>
+            <th></th>
+            <th>Total</th>
+            <th class="text-right">{{TotalReceivableAmt | currency: 'INR'}}</th>
+
+            <th class="text-right">{{TotalReceivedAmt | currency: 'INR'}}</th>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+
+  </div>
+
+  <div class="panel-footer">
+    <div class="row">
+      <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+      </div>
+      <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 ">
+        <div class="pull-right">
+          <button type="button" class="btn btn-primary" routerLinkActive="active"
+            routerLink="/Customerreceiptlist">Cancel</button>
+        </div>
+      </div>
+    </div>
+    <div class="clearfix"></div>
+  </div>
+
+
+</div>

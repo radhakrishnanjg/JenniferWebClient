@@ -34,13 +34,6 @@
                     <div class="search-base">
                         <div class="topnav">
                             <div class="search-container">
-                                <!-- <form (ngSubmit)="SearchData()" class="form">
-                                    <input class="input" (keyup.enter)="SearchData()"
-                                        onkeypress="return /[a-z0-9/]/i.test(event.key)" type="text"
-                                        [(ngModel)]="SearchBy" placeholder="Tell me what you want to do" name="search"
-                                        maxlength="50">
-                                    <i class="ffa fa fa-search"></i>
-                                </form> -->
                                 <form (ngSubmit)="SearchData()">
                                     <input (keyup.enter)="SearchData()" onkeypress="return /[a-z0-9/]/i.test(event.key)"
                                         class='top-search' type="text" [(ngModel)]="SearchBy"
@@ -67,11 +60,11 @@
                                     </ngx-spinner>
                                 </li>
 
-                                <li *ngIf="IsSwitchApplicationEnable">
+                                <!-- <li *ngIf="IsSwitchApplicationEnable">
                                     <a routerLinkActive="active" routerLink="/CrossBorder/dashboard2">
                                         EOR Application
                                     </a>
-                                </li>
+                                </li> -->
                                 <li>
                                     <!-- <i class="company"></i> -->
                                     <select id="CompanyID" class="form-control topdropbx" [(ngModel)]="CompanyID"
@@ -125,11 +118,6 @@
                                                 <i class="fa fa-fw fa-power-off"></i>
                                                 Sign Out</a>
                                         </li>
-                                        <!-- <li>
-                                            <a routerLinkActive="active" routerLink="/DynamicForm">
-                                                <i class="fa fa-question-circle"></i> <span> DynamicForm</span>
-                                            </a>
-                                        </li> -->
                                     </ul>
                                 </li>
 
@@ -141,9 +129,6 @@
                             </ul>
                         </div>
                     </div>
-                    <!-- <div class="googletrans">
-                            <div id="google_translate_element"></div>
-                        </div> -->
                 </div>
             </div>
         </div>
@@ -262,7 +247,11 @@
                 </div>
             </div>
             <div class="modal-footer padding0">
-                <button class="btn btn-default btn-block" data-dismiss="modal" routerLink="/Signin" title="Signin">
+                <!-- <button class="btn btn-default btn-block" (click)="BacktoSignin()">
+                    Back to Signin
+                </button> -->
+                <button class="btn btn-default btn-block" data-dismiss="modal"
+                routerLinkActive="active"  routerLink="/Signin" title="Signin">
                     Back to Signin
                 </button>
             </div>

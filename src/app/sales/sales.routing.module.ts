@@ -17,24 +17,46 @@ import { ReceiptslistComponent } from '../sales/receiptslist/receiptslist.compon
 import { SalesorderunsellableComponent } from '../sales/salesorderunsellable/salesorderunsellable.component';
 import { SalesorderapprovallistComponent } from '../sales/salesorderapprovallist/salesorderapprovallist.component';
 import { SalesorderapprovalComponent } from '../sales/salesorderapproval/salesorderapproval.component';
+//Customer Receipt
+import { CustomerreceiptComponent } from './customerreceipt/customerreceipt.component';
+import { CustomerreceiptlistComponent } from './customerreceiptlist/customerreceiptlist.component';
+import { CustomerreceiptviewComponent } from './customerreceiptview/customerreceiptview.component';
 
-const appRoutes: Routes = [ 
-      // Sales module
-      { path: 'Salesorder/:id', component: SalesorderComponent, canActivate: [AuthGuard, StoreGuard] },
-      { path: 'Salesorderunsellable/:id', component: SalesorderunsellableComponent, canActivate: [AuthGuard, StoreGuard] },
-      { path: 'Salesorderview/:id', component: SalesorderviewComponent, canActivate: [AuthGuard, StoreGuard] },
-      { path: 'Salesorderlist', component: SalesorderlistComponent, canActivate: [AuthGuard, StoreGuard] },
-      { path: 'Salesorderapproval/:id', component: SalesorderapprovalComponent, canActivate: [AuthGuard, StoreGuard] },
-      { path: 'Salesorderapprovallist', component: SalesorderapprovallistComponent, canActivate: [AuthGuard, StoreGuard] },
-      { path: 'Salesshipment/:id', component: SalesShipmentComponent, canActivate: [AuthGuard, StoreGuard] },
-      { path: 'Salesshipmentlist', component: SalesShipmentListComponent, canActivate: [AuthGuard, StoreGuard] },
-      { path: 'Shipmentoutwardlist', component: ShipmentoutwardlistComponent, canActivate: [AuthGuard] }, 
+//Credit Note
+import { CreditnoteComponent } from './creditnote/creditnote.component';
+import { CreditnotelistComponent } from './creditnotelist/creditnotelist.component';
+import { CreditnoteviewComponent } from './creditnoteview/creditnoteview.component';
+import { RefundlistComponent } from './refundlist/refundlist.component';
+import { RefundComponent } from './refund/refund.component';
 
-      { path: 'Picklist/:id', component: PicklistComponent, canActivate: [AuthGuard, StoreGuard] },
-      { path: 'PickListView/:id', component: PicklistviewComponent, canActivate: [AuthGuard, StoreGuard] },
-      { path: 'Picklistsearch', component: PicklistsearchComponent, canActivate: [AuthGuard, StoreGuard] },
-      { path: 'SalesInvoice/:id', component: SalesinvoiceComponent, },
-      { path: 'Receiptslist', component: ReceiptslistComponent, canActivate: [AuthGuard, StoreGuard] }, 
+const appRoutes: Routes = [
+    // Sales module
+    { path: 'Salesorder/:id', component: SalesorderComponent, canActivate: [AuthGuard, StoreGuard] },
+    { path: 'Salesorderunsellable/:id', component: SalesorderunsellableComponent, canActivate: [AuthGuard, StoreGuard] },
+    { path: 'Salesorderview/:id', component: SalesorderviewComponent, canActivate: [AuthGuard, StoreGuard] },
+    { path: 'Salesorderlist', component: SalesorderlistComponent, canActivate: [AuthGuard, StoreGuard] },
+    { path: 'Salesorderapproval/:id', component: SalesorderapprovalComponent, canActivate: [AuthGuard, StoreGuard] },
+    { path: 'Salesorderapprovallist', component: SalesorderapprovallistComponent, canActivate: [AuthGuard, StoreGuard] },
+    { path: 'Salesshipment/:id', component: SalesShipmentComponent, canActivate: [AuthGuard, StoreGuard] },
+    { path: 'Salesshipmentlist', component: SalesShipmentListComponent, canActivate: [AuthGuard, StoreGuard] },
+    { path: 'Shipmentoutwardlist', component: ShipmentoutwardlistComponent, canActivate: [AuthGuard] },
+
+    { path: 'Picklist/:id', component: PicklistComponent, canActivate: [AuthGuard, StoreGuard] },
+    { path: 'PickListView/:id', component: PicklistviewComponent, canActivate: [AuthGuard, StoreGuard] },
+    { path: 'Picklistsearch', component: PicklistsearchComponent, canActivate: [AuthGuard, StoreGuard] },
+    { path: 'SalesInvoice/:id', component: SalesinvoiceComponent, },
+    { path: 'Receiptslist', component: ReceiptslistComponent, canActivate: [AuthGuard, StoreGuard] },
+    //Customer Receipt
+    { path: 'Customerreceipt/:id', component: CustomerreceiptComponent, canActivate: [AuthGuard, StoreGuard] },
+    { path: 'Customerreceiptlist', component: CustomerreceiptlistComponent, canActivate: [AuthGuard, StoreGuard] },
+    { path: 'Customerreceiptview/:id', component: CustomerreceiptviewComponent, canActivate: [AuthGuard, StoreGuard] },
+
+    //Credit  Note
+    { path: 'Creditnote/:CNType/:id', component: CreditnoteComponent, canActivate: [AuthGuard, StoreGuard] },
+    { path: 'Creditnotelist', component: CreditnotelistComponent, canActivate: [AuthGuard, StoreGuard] },
+    { path: 'Creditnoteview/:id/:CNType', component: CreditnoteviewComponent, canActivate: [AuthGuard, StoreGuard] },
+    { path: 'Refund/:id', component: RefundComponent, canActivate: [AuthGuard, StoreGuard] },
+    { path: 'Refundlist', component: RefundlistComponent, canActivate: [AuthGuard, StoreGuard] },
 ];
 
 @NgModule({

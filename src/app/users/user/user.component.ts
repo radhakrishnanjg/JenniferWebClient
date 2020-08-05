@@ -193,9 +193,7 @@ export class UserComponent implements OnInit {
             LastName: data.LastName,
             IsActive: data.IsActive
           });
-          this.identity = data.UserId;
-
-          //
+          this.identity = data.UserId; 
           this._PrivateutilityService.getEditUserStores(this.identity)
             .subscribe(
               (data: Companydetails[]) => {
@@ -206,9 +204,7 @@ export class UserComponent implements OnInit {
                 console.log(err);
                 //
               }
-            );
-
-          //
+            ); 
           this._userService.getUserMasterUploadScreensEdit(this.identity)
             .subscribe(
               (data: Dropdown[]) => {
@@ -225,8 +221,13 @@ export class UserComponent implements OnInit {
           this.userForm.get('FirstName').disable();
           this.userForm.get('LastName').disable();
           this.UserTypeErrorMessage = 'This email already registered.';
+        } 
+        else {
+          this.userForm.get('FirstName').enable();
+          this.userForm.get('LastName').enable();
+          this.UserTypeErrorMessage = '';
+          this.identity = 0;
         }
-        //
       },
       (error: any) => {
         //

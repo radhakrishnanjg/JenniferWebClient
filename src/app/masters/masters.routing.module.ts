@@ -16,6 +16,8 @@ import { MasteruploadlistComponent } from '../masters/masteruploadlist/masterupl
 import { MasteruploadComponent } from '../masters/masterupload/masterupload.component';
 import { VoucherlistComponent } from './voucherlist/voucherlist.component';
 import { LedgerlistComponent } from './ledgerlist/ledgerlist.component';
+import { PpoblistComponent } from './ppoblist/ppoblist.component';
+import { PpobComponent } from './ppob/ppob.component';
 
 const appRoutes: Routes = [
   //masters module
@@ -33,6 +35,9 @@ const appRoutes: Routes = [
 
   { path: 'Voucherlist', component: VoucherlistComponent, canActivate: [AuthGuard] },
   { path: 'Ledgerlist', component: LedgerlistComponent, canActivate: [AuthGuard] },
+  { path: 'PPOBlist', component: PpoblistComponent, canActivate: [AuthGuard] },
+  { path: 'PPOB/:id', component: PpobComponent, canActivate: [AuthGuard] },
+
 
 ];
 

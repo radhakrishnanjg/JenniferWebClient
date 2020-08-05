@@ -118,6 +118,9 @@
               &nbsp;
               <i class="fa fa-eye bgblue pointer" [routerLink]="['/Poshipmentview', obj.ShipmentID, obj.POID]"
                 title="View"></i>
+              &nbsp;
+              <i class="fa  fa-download  bgblue  pointer" title="Download"
+                (click)="downloadLabels(obj.POID,  obj.ShipmentID,  obj.PONumber,  obj.ShipmentNumber)"></i>
             </ng-template>
           </kendo-grid-column>
         </kendo-grid>

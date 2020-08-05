@@ -37,14 +37,12 @@ export class PrivatelayoutComponent implements OnInit {
   constructor(
     private router: Router,
     private _alertService: ToastrService,
-    private cookieService: CookieService,
     private authenticationService: AuthenticationService,
 
     private _PrivateutilityService: PrivateutilityService,
     private EncrDecr: EncrDecrService,
     private _CompanydetailService: CompanydetailService,
     private connectionService: ConnectionService,
-    private _SellerregistrationService: SellerregistrationService
   ) {
     this.objCompanydetails = new Companydetails();
     this.connectionService.monitor().subscribe(isConnected => {
@@ -100,17 +98,13 @@ export class PrivatelayoutComponent implements OnInit {
     this._CompanydetailService.currentMessage.subscribe(message => {
       let currentUser = this.authenticationService.currentUserValue;
       if (message != null) {
-        //
         this._PrivateutilityService.getTopUserStores(currentUser.CompanyID)
           .subscribe(
             (data: Companydetails[]) => {
               this.lstCompanydetails = data;
-              //
             },
             (err: any) => {
               console.log(err);
-              //
-              //
             }
           );
       }
@@ -231,6 +225,10 @@ export class PrivatelayoutComponent implements OnInit {
     });
   }
 
+  BacktoSignin() { 
+     $('#modalsessionexpired').modal('hide');
+    this.router.navigate(['/Signin']);
+  }
   onchangeCompanyID(selectedValue: string) {
     let id = parseInt(selectedValue);
     let currentUser = this.authenticationService.currentUserValue;
@@ -370,7 +368,7 @@ export class PrivatelayoutComponent implements OnInit {
   }
 
   IsSaveVideo: Boolean = false;
-  SaveVideo() { 
+  SaveVideo() {
     if (this.IsSaveVideo) {
       this.IsSaveVideo = true;
       sessionStorage.setItem("IsSaveVideo", "1");

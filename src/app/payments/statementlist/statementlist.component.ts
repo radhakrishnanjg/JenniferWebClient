@@ -35,7 +35,6 @@ export class StatementlistComponent implements OnInit {
   constructor(
     private alertService: ToastrService,
     private router: Router,
-    private _statementService: StatementService,
     private _sellerStatementService: SellerstatementService,
 
     private _authorizationGuard: AuthorizationGuard
@@ -71,39 +70,30 @@ export class StatementlistComponent implements OnInit {
     this.SearchKeyword = '';
   }
 
-  DownloadButtonClick(GRNNumber: string) {
-    if (GRNNumber != "") {
-      //
-      this._statementService.downloadFile(GRNNumber)
+  DownloadButtonClick(StatementNumber: string) {
+    if (StatementNumber != "") {
+      this._sellerStatementService.GenerateStatementFile(StatementNumber)
         .subscribe(data => {
-          this.alertService.success("File downloaded succesfully.!");
-
-          saveAs(data, GRNNumber + '.xlsx')
+          if (data.Flag == true) {
+            this._sellerStatementService.downloadFile(StatementNumber)
+              .subscribe(data => {
+                this.alertService.success("File downloaded succesfully.!");
+                saveAs(data, StatementNumber + '.xls')
+              },
+                (err) => {
+                  console.log(err);
+                }
+              );
+          }
         },
           (err) => {
-            //
             console.log(err);
           }
         );
-    } else {
+
+
     }
   }
-
-  // onLoad(SearchBy: string, Search: string) {
-  //   let startdate: Date = this.selectedDateRange.startDate._d.toISOString().substring(0, 10);
-  //   let enddate: Date = this.selectedDateRange.endDate._d.toISOString().substring(0, 10); 
-  //   this._statementService.search(SearchBy, Search, startdate, enddate).subscribe(
-  //     (data) => {
-  //       if (data != null) {
-  //         this.items = data;
-  //         this.loadItems();
-  //       } 
-  //     },
-  //     (err) => { 
-  //       console.log(err);
-  //     }
-  //   );
-  // }
 
   onLoad(SearchBy: string, Search: string) {
     let startdate: Date = this.selectedDateRange.startDate._d.toISOString().substring(0, 10);

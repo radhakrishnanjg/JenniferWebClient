@@ -13,6 +13,8 @@ import { first } from 'rxjs/operators';
 import { switchMap, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { SellerregistrationService } from '../../_services/service/crossborder/sellerregistration.service';
+import { environment } from 'src/environments/environment';
+// import { DOCUMENT } from '@angular/common';
 
 @Component({
   selector: 'app-signin',
@@ -41,7 +43,8 @@ export class SigninComponent implements OnInit {
 
     private httpClient: HttpClient,
     private deviceService: DeviceDetectorService,
-    private _SellerregistrationService: SellerregistrationService
+    private _SellerregistrationService: SellerregistrationService,
+    // private document: Document
   ) {
     // redirect to home if already logged in
     if (this.authenticationService.currentUserValue) {
@@ -129,20 +132,6 @@ export class SigninComponent implements OnInit {
               else {
                 this.alertService.success('Sign in Successful.!');
               }
-              //this.router.navigate(['/Dashboard1']);
-              // this._SellerregistrationService.GetApplicationAccess()
-              //   .subscribe(
-              //     data => {
-              //       if (data != null && data.length == 2 ||
-              //         data[0].ApplicationName == 'CrossBorder') {
-              //         this.router.navigate(['/CrossBorder/dashboard2']);
-              //       }
-              //       else {
-              //         this.router.navigate(['/Dashboard1']);
-              //       }
-              //     },
-              //     error => {
-              //     });
               this.GetApplicationAccess();
               this.loading = false;
             }
@@ -175,28 +164,8 @@ export class SigninComponent implements OnInit {
 
     this.objuserlog.Type = 'SIGNIN';
     this.objuserlog.MACAddress = '';
-    //
     this.objuserlog.IPAddress = '';
-    //
     this.loading = true;
-    // const headers = new HttpHeaders({
-    //   //'Content-Type': 'application/json',
-    //   "Access-Control-Allow-Origin": "*"
-    // });
-    // this.httpClient.get<{ ip: string }>('https://ipapi.co/json/', { headers: headers })
-    //   .pipe(
-    //     tap(output => {
-    //       this.objuserlog.IPAddress = output.ip;
-    //     }),
-    //     switchMap(output1 =>
-    //       this.LoginCheck(this.f.Email.value, this.f.password.value)
-    //     ),
-    //     tap(output2 => {
-    //       console.log(output2);
-    //     }),
-    //   )
-    //   .subscribe(output2 => console.log(output2));
-
     this.LoginCheck(this.f.Email.value, this.f.password.value);
   }
 
@@ -227,20 +196,6 @@ export class SigninComponent implements OnInit {
                     else {
                       this.alertService.success('Sign in Successful.!');
                     }
-                    //this.router.navigate(['/Dashboard1']);
-                    // this._SellerregistrationService.GetApplicationAccess()
-                    //   .subscribe(
-                    //     data => {
-                    //       if (data != null && data.length == 2 ||
-                    //         data[0].ApplicationName == 'CrossBorder') {
-                    //         this.router.navigate(['/CrossBorder/dashboard2']);
-                    //       }
-                    //       else {
-                    //         this.router.navigate(['/Dashboard1']);
-                    //       }
-                    //     },
-                    //     error => {
-                    //     });
                     this.GetApplicationAccess();
                   }
                 },
@@ -269,34 +224,29 @@ export class SigninComponent implements OnInit {
 
     return of(this.objuser);
   }
-
+  SellerDomain: string = '';
   GetApplicationAccess() {
-    let currentUser = this.authenticationService.currentUserValue;
-    if (currentUser.lstUserPermission.filter(a => a.ApplicationName == "Jennifer").length > 1 &&
-      currentUser.lstUserPermission.filter(a => a.ApplicationName == "CrossBorder").length > 1) {
-      this.router.navigate(['/CrossBorder/dashboard2']);
-    }
-    else {
-      if (currentUser.lstUserPermission[0].ApplicationName == "CrossBorder") {
-        this.router.navigate(['/CrossBorder/dashboard2']);
-      }
-      else {
-        this.router.navigate(['/Dashboard1']);
-      }
-    }
+    // this.SellerDomain = environment.SellerDomain;
+    // window.location.href = this.SellerDomain + "?u=anurag@valuecart.in&p=0PlNRg";
+    // // this.document.location.href = 'https://stackoverflow.com';
+    // window.location.href = "http://www.google.com";
+    // this.router.navigateByUrl('https://stackoverflow.com');
+    // this.SellerDomain = environment.SellerDomain;
 
-    // this._SellerregistrationService.GetApplicationAccess()
-    //   .subscribe(
-    //     data => {
-    //       if (data != null && data.length == 2 && data[0].ApplicationName == 'CrossBorder') {
-    //         this.IsSwitchApplicationEnable = true;
-    //       }
-    //       else {
-    //         this.IsSwitchApplicationEnable = false;
-    //       }
-    //     },
-    //     error => {
-    //     });
+    // let currentUser = this.authenticationService.currentUserValue;
+    // if (currentUser.lstUserPermission.filter(a => a.ApplicationName == "Jennifer").length > 1 &&
+    //   currentUser.lstUserPermission.filter(a => a.ApplicationName == "CrossBorder").length > 1) {
+    //   this.router.navigate(['/CrossBorder/dashboard2']); 
+    // }
+    // else {
+    //   if (currentUser.lstUserPermission[0].ApplicationName == "CrossBorder") {
+    //     this.router.navigate(['/CrossBorder/dashboard2']);
+    //   }
+    //   else {
+    //     this.router.navigate(['/Dashboard1']);
+    //   }
+    // }
+    this.router.navigate(['/Dashboard1']);
   }
 
 }

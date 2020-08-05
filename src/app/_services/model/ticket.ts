@@ -8,6 +8,7 @@ export class Ticket {
     ReferenceNumber: string;
     LoginId: number;
     SupportStatus: string;
+    IsForwarded: boolean;
 
     // Support Reply
     SupportReplyD: number;
@@ -17,7 +18,6 @@ export class Ticket {
     LastModifiedDate: Date;
     // SupportQueryID:	number;
     // LoginId: number;
-    IsForwarded:boolean;
 }
 
 export class History {
@@ -26,8 +26,8 @@ export class History {
     CreatedByName: string;
     UserType: string;
     SupportQueryID: number;
-    SupportStatus: string; 
-    TimeLeft:string;
+    SupportStatus: string;
+    TimeLeft: string;
 }
 
 export class SurveyMaster { 

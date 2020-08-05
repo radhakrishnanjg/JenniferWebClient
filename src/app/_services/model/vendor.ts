@@ -30,7 +30,8 @@ export class Vendor {
     LoginId: number;
     TotalAmount: number;
     //added on 03 03 2020
-    IsEOR: boolean
+    IsEOR: boolean;
+    IsEORApprovalRequired:boolean;
 }
 export class Vendorwarehouse {
     VendorWarehouseID: number;

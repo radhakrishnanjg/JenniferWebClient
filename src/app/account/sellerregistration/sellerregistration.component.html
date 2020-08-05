@@ -37,7 +37,8 @@
                 :</label>
             </div>
             <div class="form-group col-md-6 col-sm-6" [ngClass]="{'has-error': formErrors1.VendorID}">
-              <select id="VendorID" class="form-control" formControlName="VendorID" (blur)="logValidationErrors1()">
+              <select id="VendorID" class="form-control" formControlName="VendorID" (blur)="logValidationErrors1()"
+              (change)="onchangeVendorID($event.target.value)" >
                 <option value="0" selected="selected">Select</option>
                 <option *ngFor="let c1 of lstVendor" value={{c1.VendorID}}>
                   {{c1.VendorName}}
@@ -45,21 +46,6 @@
               </select>
               <div class="help-block-rk"><span class="help-block" *ngIf="formErrors1.VendorID">
                   {{formErrors1.VendorID}}
-                </span>
-              </div>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="form-group col-md-6 col-sm-6">
-              <label class="control-label" for="PSPAccountID">Payoneer Account ID 支付服务提供商账号 <span
-                  class="mandantory">*</span> :</label>
-            </div>
-            <div class="form-group col-md-6 col-sm-6" [ngClass]="{'has-error': formErrors1.PSPAccountID}">
-              <input id="PSPAccountID" type="text" class="form-control" formControlName="PSPAccountID"
-                (blur)="logValidationErrors1()" maxlength="30">
-              <div class="help-block-rk"><span class="help-block" *ngIf="formErrors1.PSPAccountID">
-                  {{formErrors1.PSPAccountID}}
                 </span>
               </div>
             </div>
@@ -88,25 +74,26 @@
 
           <div class="row">
             <div class="form-group col-md-6 col-sm-6">
-              <label class="control-label" for="PayoneerEmailID">Payoneer Email ID <span class="mandantory">*</span>
-                :</label>
+              <label class="control-label" for="PSPAccountID">Payoneer Account ID 支付服务提供商账号 <span
+                  class="mandantory">*</span> :</label>
             </div>
-            <div class="form-group col-md-6 col-sm-6" [ngClass]="{'has-error': formErrors1.PayoneerEmailID}">
-              <input id="PayoneerEmailID" type="text" class="form-control" formControlName="PayoneerEmailID"
+            <div class="form-group col-md-6 col-sm-6" [ngClass]="{'has-error': formErrors1.PSPAccountID}">
+              <input id="PSPAccountID" type="text" class="form-control" formControlName="PSPAccountID"
                 (blur)="logValidationErrors1()" maxlength="30">
-              <div class="help-block-rk"><span class="help-block" *ngIf="formErrors1.PayoneerEmailID">
-                  {{formErrors1.PayoneerEmailID}}
+              <div class="help-block-rk"><span class="help-block" *ngIf="formErrors1.PSPAccountID">
+                  {{formErrors1.PSPAccountID}}
                 </span>
               </div>
             </div>
           </div>
+
 
           <div class="row">
             <div class="form-group col-md-6 col-sm-6">
               <label class="control-label" for="PayoneerEmailID">Payoneer Email ID <span class="mandantory">*</span>
                 :</label>
             </div>
-            <div class="form-group col-md-6 col-sm-6" [ngClass]="{'has-error': formErrors1.PayoneerEmailID}">
+            <div class="form-group col-md-4 col-sm-4" [ngClass]="{'has-error': formErrors1.PayoneerEmailID}">
               <input id="PayoneerEmailID" type="text" class="form-control" formControlName="PayoneerEmailID"
                 (blur)="logValidationErrors1()" maxlength="30">
               <div class="help-block-rk"><span class="help-block" *ngIf="formErrors1.PayoneerEmailID">
@@ -114,9 +101,28 @@
                 </span>
               </div>
             </div>
+            <div class="form-group col-md-2 col-sm-2">
+              <button style="background-color: #c63e6c; color: #FFF" class="btn btn-success" type="button"
+                (click)="onClickGetOTP()"> Get OTP 取得 OTP</button>
+            </div>
           </div>
 
           <div class="row">
+            <div class="form-group col-md-6 col-sm-6">
+              <label class="control-label" for="EmailOTP">Email OTP <span class="mandantory">*</span>
+                :</label>
+            </div>
+            <div class="form-group col-md-4 col-sm-4" [ngClass]="{'has-error': formErrors1.EmailOTP}">
+              <input id="EmailOTP" type="text" class="form-control" formControlName="EmailOTP"
+                (blur)="logValidationErrors1()" maxlength="30">
+              <div class="help-block-rk"><span class="help-block" *ngIf="formErrors1.EmailOTP">
+                  {{formErrors1.EmailOTP}}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- <div class="row">
             <div class="form-group col-md-6 col-sm-6">
             </div>
             <div class="form-group col-md-4 col-sm-4">
@@ -129,7 +135,7 @@
               <button style="background-color: #c63e6c; color: #FFF" class="btn btn-success" type="button"
                 (click)="onClickGetOTP()"> Get OTP 取得 OTP</button>
             </div>
-          </div>
+          </div> -->
 
 
           <div class="form-group">
@@ -346,7 +352,8 @@
                 :</label>
             </div>
             <div class="form-group col-md-6 col-sm-6" [ngClass]="{'has-error': formErrors2.VendorID}">
-              <select id="VendorID" class="form-control" formControlName="VendorID" (blur)="logValidationErrors2()">
+              <select id="VendorID" class="form-control" formControlName="VendorID" (blur)="logValidationErrors2()"
+              (change)="onchangeVendorID($event.target.value)">
                 <option value="0" selected="selected">Select</option>
                 <option *ngFor="let c1 of lstVendor" value={{c1.VendorID}}>
                   {{c1.VendorName}}

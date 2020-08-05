@@ -22,69 +22,67 @@ export class TicketService {
     let currentUser = this.authenticationService.currentUserValue;
     let LoginId = currentUser.UserId;
     let CompanyDetailID = currentUser.CompanyDetailID;
-    return this.httpClient.get<string>(environment.baseUrl + `Ticket/Search?CompanyDetailID=`
-      + CompanyDetailID + `&SearchBy=` + SearchBy + `&Search=` + Search + `&LoginId=` + LoginId)
-      .pipe(
-        map(data => {
-          return JSON.parse(data) as Ticket[];
-        }),
-        catchError(this.handleError))
+    return this.httpClient.get<string>(environment.baseUrl + `Ticket/Search?CompanyDetailID=` 
+    + CompanyDetailID + `&SearchBy=` + SearchBy + `&Search=` + Search + `&LoginId=` + LoginId) 
+    .pipe(
+      map(data => {
+        return JSON.parse(data) as Ticket[];
+      }),
+      catchError(this.handleError))
   }
 
   public searchById(SupportQueryID: number): Observable<History[]> {
-    let currentUser = this.authenticationService.currentUserValue;
+    let currentUser = this.authenticationService.currentUserValue; 
     let CompanyDetailID = currentUser.CompanyDetailID;
     return this.httpClient.get<string>(environment.baseUrl + `Ticket/SearchById?SupportQueryID=`
-      + SupportQueryID + `&CompanyDetailID=` + CompanyDetailID)
-      .pipe(
-        map(data => {
-          return JSON.parse(data) as History[];
-        }),
-        catchError(this.handleError)
-      )
+    + SupportQueryID + `&CompanyDetailID=` + CompanyDetailID)
+    .pipe(
+      map(data => {
+        return JSON.parse(data) as History[];
+      }),
+      catchError(this.handleError)
+    )
   }
 
   public getUserType(): Observable<History> {
     let currentUser = this.authenticationService.currentUserValue;
-    let LoginId = currentUser.UserId;
-    return this.httpClient.get<string>(environment.baseUrl + `Ticket/GetUserType?LoginId=` + LoginId)
-      .pipe(
-        map(data => {
-          return JSON.parse(data) as History;
-        }),
-        catchError(this.handleError))
+    let LoginId = currentUser.UserId; 
+    return this.httpClient.get<string>(environment.baseUrl + `Ticket/GetUserType?LoginId=` + LoginId) 
+    .pipe(
+      map(data => {
+        return JSON.parse(data) as History;
+      }),
+      catchError(this.handleError))
   }
 
-  public searchSellerStatementChatHistory(ReferenceNumber: string): Observable<History[]> {
-    let currentUser = this.authenticationService.currentUserValue;
+  public searchSellerStatementChatHistory(ReferenceNumber: string): Observable<History[]> { 
+    let currentUser = this.authenticationService.currentUserValue; 
     let CompanyDetailID = currentUser.CompanyDetailID;
     let LoginId = currentUser.UserId;
     return this.httpClient.get<string>(environment.baseUrl + `Ticket/SearchSellerStatementChatHistory?ReferenceNumber=`
-      + ReferenceNumber
-      + `&CompanyDetailID=` + CompanyDetailID
-      + `&LoginId=` + LoginId)
-      .pipe(
-        map(data => {
-          return JSON.parse(data) as History[];
-        }),
-        catchError(this.handleError)
-      )
+    + ReferenceNumber + `&CompanyDetailID=` + CompanyDetailID + `&LoginId=` + LoginId)
+    .pipe(
+      map(data => {
+        return JSON.parse(data) as History[];
+      }),
+      catchError(this.handleError)
+    )
   }
 
   public insert(obj: Ticket): Observable<Result> {
-    let currentUser = this.authenticationService.currentUserValue;
+    let currentUser = this.authenticationService.currentUserValue; 
     obj.LoginId = currentUser.UserId;
     obj.CompanyDetailID = currentUser.CompanyDetailID;
     this.objJsonModal.Json = JSON.stringify(obj);
     return this.httpClient.post<Result>(environment.baseUrl + `Ticket/Insert`, this.objJsonModal)
-      .pipe(catchError(this.handleError));
-  }
+    .pipe(catchError(this.handleError));
+  } 
 
   public closeTicket(SupportQueryID: number): Observable<Result> {
     let obj: Ticket = {} as any;
     let currentUser = this.authenticationService.currentUserValue;
-    obj.LoginId = currentUser.UserId;
-    obj.CompanyDetailID = currentUser.CompanyDetailID;
+    obj.LoginId = currentUser.UserId; 
+    obj.CompanyDetailID = currentUser.CompanyDetailID; 
     obj.SupportQueryID = SupportQueryID;
     this.objJsonModal.Json = JSON.stringify(obj);
     return this.httpClient.post<Result>(environment.baseUrl + `Ticket/CloseTicket`, this.objJsonModal)
@@ -93,23 +91,23 @@ export class TicketService {
 
   public pendingSurvey(): Observable<SurveyMaster[]> {
     let currentUser = this.authenticationService.currentUserValue;
-    let LoginId = currentUser.UserId;
-    return this.httpClient.get<string>(environment.baseUrl + `Ticket/PendingSurvey?LoginId=` + LoginId)
-      .pipe(
-        map(data => {
-          return JSON.parse(data) as SurveyMaster[];
-        }),
-        catchError(this.handleError))
+    let LoginId = currentUser.UserId; 
+    return this.httpClient.get<string>(environment.baseUrl + `Ticket/PendingSurvey?LoginId=` + LoginId) 
+    .pipe(
+      map(data => {
+        return JSON.parse(data) as SurveyMaster[];
+      }),
+      catchError(this.handleError))
   }
 
   public survey1Insert(obj: Survey1Answers): Observable<Result> {
-    let currentUser = this.authenticationService.currentUserValue;
-    obj.LoginId = currentUser.UserId;
-    obj.SurveyMasterID = 1;
+    let currentUser = this.authenticationService.currentUserValue; 
+    obj.LoginId = currentUser.UserId; 
+    obj.SurveyMasterID = 1; 
     this.objJsonModal.Json = JSON.stringify(obj);
     return this.httpClient.post<Result>(environment.baseUrl + `Ticket/Survey1Insert`, this.objJsonModal)
-      .pipe(catchError(this.handleError));
-  }
+    .pipe(catchError(this.handleError));
+  } 
 
   private handleError(error: HttpErrorResponse) {
     if (error.status == 404)
@@ -118,5 +116,5 @@ export class TicketService {
     if (error.status == 400)
       return throwError(new BadRequest(error));
     return throwError(new AppError(error));
-  }
+  } 
 }

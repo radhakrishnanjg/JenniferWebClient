@@ -18,7 +18,7 @@ import { SortDescriptor, orderBy } from '@progress/kendo-data-query';
 export class PoshipmentlistComponent implements OnInit {
 
   //#region variable declartion
- 
+
   obj: Poshipment;
 
   selectedDeleteId: number;
@@ -44,7 +44,7 @@ export class PoshipmentlistComponent implements OnInit {
     private alertService: ToastrService,
     private router: Router,
     private _poshipmentService: PoshipmentService,
-    
+
     private _authorizationGuard: AuthorizationGuard
   ) { }
 
@@ -73,6 +73,18 @@ export class PoshipmentlistComponent implements OnInit {
       return;
     }
     this.router.navigate(['/Poshipment', id, PoId]);
+  }
+
+  downloadLabels(POID: number, ShipmentID: number, PONumber: string, ShipmentNumber: string) {
+    this._poshipmentService.DownloadLabels(POID, ShipmentID).subscribe
+      (data => {
+        this.alertService.success("File  downloaded  succesfully.!");
+        saveAs(data, ShipmentNumber + '.zip')
+      },
+        (err) => {
+          console.log(err);
+        }
+      );
   }
 
   confirmDeleteid(id: number, POID: number, DeleteColumnvalue: string) {
@@ -108,15 +120,15 @@ export class PoshipmentlistComponent implements OnInit {
   }
 
 
-  onLoad(SearchBy: string, Search: string, ) {
+  onLoad(SearchBy: string, Search: string,) {
     let startdate: Date = this.selectedDateRange.startDate._d.toISOString().substring(0, 10);
     let enddate: Date = this.selectedDateRange.endDate._d.toISOString().substring(0, 10);
     //
     return this._poshipmentService.search(SearchBy, Search, startdate, enddate).subscribe(
       (lst) => {
-        if (lst != null ) { 
+        if (lst != null) {
           this.items = lst;
-          this.loadItems(); 
+          this.loadItems();
         }
         //
       },
@@ -204,7 +216,7 @@ export class PoshipmentlistComponent implements OnInit {
             field: 'PODate',
             operator: 'contains',
             value: inputValue
-          }, 
+          },
           {
             field: 'ShipmentType',
             operator: 'contains',
@@ -219,20 +231,20 @@ export class PoshipmentlistComponent implements OnInit {
             field: 'ShipmentName',
             operator: 'contains',
             value: inputValue
-          }, 
+          },
           {
             field: 'IsMailSent',
             operator: 'contains',
             value: inputValue
-          }, 
+          },
           {
             field: 'ShipmentStatus',
             operator: 'contains',
             value: inputValue
-          }, 
+          },
         ],
       }
-    })  ;  
+    });
   }
 
   //#endregion Paging Sorting and Filtering End

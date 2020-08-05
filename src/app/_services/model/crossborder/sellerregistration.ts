@@ -42,6 +42,7 @@ export class SellerRegistration {
     IsMobileRequested: boolean;
     MobileRequestedDate: Date;
     StateName:string;
+    IsCatalogueConfirmed: boolean;
     // Action - MU: MarketPlaceID,StoreName,MarketPlaceSellerID,MarketPlaceAPIToken,BusinessLaunchDate,SellerFormID
 
     // Action - MR: IsMobileRequested,MobileRequestedDate 

@@ -26,6 +26,8 @@ export class CatalogueHeader {
 export class CatalogueDetail {
     CatalogueDetailID: number;
     CatalogueID: number;
+    CountryID: number;
+    CountryName: string;
     ProductName: string;
     MerchantSKU: string;
     ASIN: string;
@@ -46,8 +48,9 @@ export class CatalogueDetail {
     SWS: number = 0.00;
     IGST: number = 0.00;
     Others: string;
+    Certificates: string;
+    
     Custom_Remarks: string;
-
     Custom_Status: string;
     IOR_Status: string;
     EOR_Status: string;

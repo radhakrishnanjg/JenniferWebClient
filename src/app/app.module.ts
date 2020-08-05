@@ -27,12 +27,12 @@ import * as $ from "jquery";
 //kendo
 import { GridModule, PDFModule, ExcelModule } from '@progress/kendo-angular-grid';
 import { PopupModule } from '@progress/kendo-angular-popup';
-import { DropDownListModule } from '@progress/kendo-angular-dropdowns';
+import { DropDownListModule, DropDownsModule } from '@progress/kendo-angular-dropdowns';
 import { PDFExportModule } from '@progress/kendo-angular-pdf-export';
 import { InputsModule } from '@progress/kendo-angular-inputs';
 import { DateInputsModule } from '@progress/kendo-angular-dateinputs';
 import { EditorModule } from '@progress/kendo-angular-editor';
-import { ChartsModule } from '@progress/kendo-angular-charts';
+ import { ChartsModule } from '@progress/kendo-angular-charts';
 import { TreeListModule } from '@progress/kendo-angular-treelist';
 
 import { SlickCarouselModule } from 'ngx-slick-carousel';
@@ -59,13 +59,13 @@ import { Submenu1Component } from './submenu1/submenu1.component';
 import { Submenu2Component } from './submenu2/submenu2.component';
 
 
+  import 'hammerjs';
 
 @NgModule({
   imports: [
     BrowserModule,
     ReactiveFormsModule,
-    HttpClientModule,
-    RecaptchaModule.forRoot(),
+    HttpClientModule, 
     BrowserAnimationsModule,
     FormsModule,
 
@@ -94,6 +94,7 @@ import { Submenu2Component } from './submenu2/submenu2.component';
     PDFExportModule,
     InputsModule,
     DropDownListModule,
+    DropDownsModule,
     PopupModule,
     DateInputsModule,
     EditorModule,
@@ -122,13 +123,12 @@ import { Submenu2Component } from './submenu2/submenu2.component';
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: HttpErrorInterceptor, multi: true },
-    CookieService,
-
+    CookieService, 
     EncrDecrService,
   ],
   bootstrap: [AppComponent],
   schemas: [
-    CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA,
+    CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA,  
   ]
 })
 export class AppModule { }

@@ -69,7 +69,6 @@ export class SellerregistrationComponent implements OnInit {
     },
     'PSPAccountID': {
       'required': 'This Field is required.',
-      'pattern': 'This field must be Alphanumeric',
     },
     'PayoneerEmailID': {
       'required': 'This Field is required.',
@@ -84,7 +83,6 @@ export class SellerregistrationComponent implements OnInit {
   validationMessages2 = {
     'CompanyName': {
       'required': 'This Field is required.',
-      'pattern': 'This field must be Alphanumeric',
     },
     'CompanyPhoneNumberCode': {
       'required': 'This Field is required.',
@@ -97,14 +95,12 @@ export class SellerregistrationComponent implements OnInit {
     },
     'CompanyAddress': {
       'required': 'This Field is required.',
-      'pattern': 'This field must be Alphanumeric',
     },
     'FileData1': {
       'required': 'This Field is required.',
     },
     'ContactPerson': {
       'required': 'This Field is required.',
-      'pattern': 'This field must be Alphanumeric',
     },
     'EMail': {
       'required': 'This Field is required.',
@@ -119,14 +115,12 @@ export class SellerregistrationComponent implements OnInit {
     },
     'WeChatID': {
       'required': 'This Field is required.',
-      'pattern': 'This field must be Alphanumeric',
     },
     'IORPartnerID': {
       'min': 'This Field is required.',
     },
     'PSPAccountID': {
       'required': 'This Field is required.',
-      'pattern': 'This field must be Alphanumeric',
     },
     'VendorID': {
       'min': 'This Field is required.',
@@ -184,35 +178,34 @@ export class SellerregistrationComponent implements OnInit {
 
   ngOnInit() {
     this.loadPSP();
-    this.loadLogistics();
-    this.loadIOR();
+    this.loadLogistics(); 
     this.loadEOR();
     this.loadCountries();
 
     this.registerFormPayoneer = this.fb.group({
       VendorID: [0, [Validators.min(1)]],
-      PSPAccountID: ['', [Validators.required, Validators.pattern("^([a-zA-Z0-9]+)$")],],
+      PSPAccountID: ['', [Validators.required],],
       PayoneerEmailID: ['', [Validators.required, Validators.pattern(this.emailPattern)]
-      ,this.usernameValidator.isEmailCrossborderRegisterd()],
+        , this.usernameValidator.isEmailCrossborderRegisterd()],
       EmailOTP: ['', [Validators.required],],
-      IORPartnerID: [0, [Validators.min(1)]],  
+      IORPartnerID: [0, [Validators.min(1)]],
     });
 
     this.registerFormOthers = this.fb.group({
-      CompanyName: ['', [Validators.required, Validators.pattern("^([a-zA-Z0-9]+)$")]],
+      CompanyName: ['', [Validators.required]],
       CompanyPhoneNumberCode: ['', [Validators.required]],
       CompanyPhoneNumber: ['', [Validators.required]],
       CountryID: [0, [Validators.min(1)]],
-      CompanyAddress: ['', [Validators.required, Validators.pattern("^([a-zA-Z0-9]+)$")],],
+      CompanyAddress: ['', [Validators.required],],
       FileData1: ['', [Validators.required]],
-      ContactPerson: ['', [Validators.required, Validators.pattern("^([a-zA-Z0-9]+)$")]],
+      ContactPerson: ['', [Validators.required]],
       EMail: ['', [Validators.required, Validators.pattern(this.emailPattern)],
         this.usernameValidator.isEmailCrossborderRegisterd()],
       ContactNumberCode: ['', [Validators.required]],
       ContactNumber: ['', [Validators.required]],
-      WeChatID: ['', [Validators.required, Validators.pattern("^([a-zA-Z0-9]+)$")],],
+      WeChatID: ['', [Validators.required],],
       IORPartnerID: [0, [Validators.min(1)]],
-      PSPAccountID: ['', [Validators.required, Validators.pattern("^([a-zA-Z0-9]+)$")]],
+      PSPAccountID: ['', [Validators.required]],
       VendorID: [0, [Validators.min(1)]],
       LogisticsPartner: [''],
       TotalSKU: [0, [Validators.required, Validators.min(1)]],
@@ -244,15 +237,23 @@ export class SellerregistrationComponent implements OnInit {
   }
 
   lstIOR: IORPartners[] = [] as any;
-  loadIOR() {
-    this._sellerregistrationService.getIORPartners().subscribe(
-      (data: IORPartners[]) => {
-        this.lstIOR = data;
-      },
-      (err: any) => {
-        console.log(err);
-      }
-    )
+  // loadIOR() {
+
+  // }
+
+  onchangeVendorID(selectedValue: string) {
+    let VendorID = parseInt(selectedValue);
+    if (VendorID > 0) {
+      this._sellerregistrationService.getIORPartners(VendorID).subscribe(
+        (data: IORPartners[]) => {
+          this.lstIOR = data;
+        },
+        (err: any) => {
+          console.log(err);
+        }
+      )
+    }
+
   }
 
   lstVendor: EORPartners[] = [] as any;
@@ -286,10 +287,10 @@ export class SellerregistrationComponent implements OnInit {
       this.alertService.error('Please enter Payoneer Email ID');
       return;
     }
-    if (this.captchaLength == 0) {
-      this.alertService.error('Please confirm that you are not a robot.!');
-      return;
-    }
+    // if (this.captchaLength == 0) {
+    //   this.alertService.error('Please confirm that you are not a robot.!');
+    //   return;
+    // }
 
     else {
       this._sellerregistrationService.getOTP(this.registerFormPayoneer.controls['PayoneerEmailID'].value).subscribe(

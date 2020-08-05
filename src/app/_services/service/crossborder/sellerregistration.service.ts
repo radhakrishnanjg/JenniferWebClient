@@ -188,8 +188,8 @@ export class SellerregistrationService {
       );
   }
 
-  public getIORPartners(): Observable<IORPartners[]> {
-    return this.httpClient.get<string>(environment.baseUrl + 'SellerRegistration/GetIORPartners')
+  public getIORPartners(VendorId:number): Observable<IORPartners[]> {
+    return this.httpClient.get<string>(environment.baseUrl + `SellerRegistration/GetIORPartners?VendorId=` + VendorId)
       .pipe(
         map(data => {
           return JSON.parse(data) as IORPartners[];

@@ -29,6 +29,8 @@ import { MasteruploadlistComponent } from './masteruploadlist/masteruploadlist.c
 import { MasteruploadComponent } from './masterupload/masterupload.component';
 import { VoucherlistComponent } from './voucherlist/voucherlist.component';
 import { LedgerlistComponent } from './ledgerlist/ledgerlist.component';
+import { PpoblistComponent } from './ppoblist/ppoblist.component';
+import { PpobComponent } from './ppob/ppob.component';
 
 import { MastersRoutingModule } from './masters.routing.module';
 @NgModule({
@@ -64,6 +66,8 @@ import { MastersRoutingModule } from './masters.routing.module';
     MasteruploadComponent, 
     VoucherlistComponent,
     LedgerlistComponent, 
+    PpoblistComponent,
+    PpobComponent,
   ],
   providers: [
     CookieService,

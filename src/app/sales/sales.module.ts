@@ -1,13 +1,13 @@
 //core npms  
-import { NgModule, NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA,   } from '@angular/core';
-import { ReactiveFormsModule, FormsModule } from '@angular/forms'; 
+import { NgModule, NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA, } from '@angular/core';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
 //kendo
 import { GridModule, PDFModule, ExcelModule } from '@progress/kendo-angular-grid';
 import { PopupModule } from '@progress/kendo-angular-popup';
-import { DropDownListModule } from '@progress/kendo-angular-dropdowns'; 
+import { DropDownListModule } from '@progress/kendo-angular-dropdowns';
 import { DateInputsModule } from '@progress/kendo-angular-dateinputs';
 import { InputsModule } from '@progress/kendo-angular-inputs';
 import { PDFExportModule } from '@progress/kendo-angular-pdf-export';
@@ -36,26 +36,38 @@ import { SalesorderunsellableComponent } from './salesorderunsellable/salesorder
 import { SalesorderapprovallistComponent } from './salesorderapprovallist/salesorderapprovallist.component';
 import { SalesorderapprovalComponent } from './salesorderapproval/salesorderapproval.component';
 import { SalesorderviewComponent } from './salesorderview/salesorderview.component';
+
+//Customer Receipt
+import { CustomerreceiptComponent } from './customerreceipt/customerreceipt.component';
+import { CustomerreceiptlistComponent } from './customerreceiptlist/customerreceiptlist.component';
+import { CustomerreceiptviewComponent } from './customerreceiptview/customerreceiptview.component';
+
+//Credit Note
+import { CreditnoteComponent } from './creditnote/creditnote.component';
+import { CreditnotelistComponent } from './creditnotelist/creditnotelist.component';
+import { CreditnoteviewComponent } from './creditnoteview/creditnoteview.component';
 import { SalesRoutingModule } from './sales.routing.module';
+import { RefundlistComponent } from './refundlist/refundlist.component';
+import { RefundComponent } from './refund/refund.component';
 @NgModule({
   imports: [
     CommonModule,
     // ReactiveFormsModule,
     FormsModule,
     // UserRoutingModule
- 
+
     RouterModule,
-    ReactiveFormsModule, 
+    ReactiveFormsModule,
     PreventDoubleSubmitModule.forRoot(),
     MomentModule,
-    NgxDaterangepickerMd.forRoot(), 
+    NgxDaterangepickerMd.forRoot(),
     SelectDropDownModule,
-    InputsModule, 
+    InputsModule,
     GridModule,
-    PDFModule, 
+    PDFModule,
     ExcelModule,
     DropDownListModule,
-    PopupModule,  
+    PopupModule,
     IntlModule,
     DateInputsModule,
     PDFExportModule,
@@ -63,7 +75,7 @@ import { SalesRoutingModule } from './sales.routing.module';
   ],
 
   declarations: [
-    PopupAnchorDirective, 
+    PopupAnchorDirective,
     SalesorderlistComponent,
     SalesorderComponent,
     SalesShipmentComponent,
@@ -77,7 +89,15 @@ import { SalesRoutingModule } from './sales.routing.module';
     SalesorderapprovallistComponent,
     SalesorderapprovalComponent,
     PicklistviewComponent,
-    SalesorderviewComponent
+    SalesorderviewComponent,
+    CustomerreceiptComponent,
+    CustomerreceiptlistComponent,
+    CustomerreceiptviewComponent,
+    CreditnoteComponent,
+    CreditnotelistComponent,
+    CreditnoteviewComponent,
+    RefundlistComponent,
+    RefundComponent,
   ],
   providers: [
 

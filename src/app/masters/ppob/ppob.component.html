@@ -1,0 +1,309 @@
+<div class="row">
+  <div class="col-sm-6 col-lg-6">
+    <h3>
+      PPOB
+    </h3>
+  </div>
+  <div class="col-sm-6 col-lg-6">
+    <div class="pull-right hidden-xs">
+      <ol class="breadcrumb" id="dynamicbreadcrumb">
+        <li>
+          <span> Master</span>
+        </li>
+        <li>
+          <span>PPOB</span>
+        </li>
+        <li class="active">
+
+          Save
+        </li>
+      </ol>
+    </div>
+  </div>
+</div>
+<form [formGroup]="PPOBform" (ngSubmit)="SaveData()" class="form-group">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <div class="row">
+        <div class="col-md-3 col-sm-3 col-xs-4">
+          <span class="groupspanheader">
+            {{panelTitle}}
+          </span>
+        </div>
+        <div class="col-md-4 col-sm-4 col-xs-6">
+          <div class="pull-left">
+            <div class="form-group" *ngIf="!action">
+              <div class="col-sm-12 inputlevelswtch">
+                <label class="col-sm-4 col-xs-4 nopading_loct" for=" IsActive">IsActive </label>
+                <div class="pull-right">
+                  <label class="switch">
+                    <input type="checkbox" formControlName="IsActive" checked>
+                    <span class="slider round"></span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-5 col-sm-5 col-xs-2">
+          <div class="pull-right">
+            <button type="button" class="btn btn-primary" routerLink="/PPOBlist" title="Back">
+
+              Back
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="panel-body">
+      <span class="groupspanheader"> General Information </span>
+      <div class="row">
+
+        <div class="col-sm-3 col-xs-12">
+          <div class="form-group" [ngClass]="{'has-error': formErrors.GSTNumber}">
+            <label class="control-label" for="GSTNumber">GST Number <span class="mandantory">*</span></label>
+            <div>
+              <input id="GSTNumber" [readonly]="!action" type="text" class="text-uppercase form-control"
+                formControlName="GSTNumber" (blur)="logValidationErrors()" maxlength="30">
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrors.GSTNumber">
+                  {{formErrors.GSTNumber}}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-3 col-xs-12">
+          <div class="form-group">
+            <label class="control-label" for="GSTPortalUserName">GSTPortal UserName </label>
+            <div>
+              <input id="GSTPortalUserName" type="text" class="form-control" formControlName="GSTPortalUserName"
+                maxlength="50">
+              <div class="help-block-rk">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-3 col-xs-12">
+          <div class="form-group">
+            <label class="control-label" for="GSTPortalPassword">GSTPortal Password </label>
+            <div>
+              <input id="GSTPortalPassword" type="text" class="form-control" formControlName="GSTPortalPassword"
+                maxlength="50">
+              <div class="help-block-rk">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-3 col-xs-12" *ngIf="!action">
+          <div class="form-group">
+            <div class=" col-sm-12 inputlevel">
+              <label class="control-label checkbox-inline" for="ImagePathFlag">
+                <input type="checkbox" id="ImagePathFlag" [(ngModel)]="ImagePathFlag" formControlName="ImagePathFlag"
+                  (change)="onchangeImagePathFlag($event)">
+                Change GST details </label>
+            </div>
+            <div class=" col-sm-12 inputlevel pointer" *ngIf="identity > 0 && !ImagePathFlag">
+              <label>
+                <i class="fa fa-download bgblue pointer" (click)="DownloadButtonClick(obj.GSTFilePath)"
+                  title="Download">
+                  Download GST Details </i></label>
+            </div>
+            <div class=" col-sm-12 inputlevel" *ngIf="identity > 0 && ImagePathFlag">
+              <label class="nopading_loct control-label" for="SelectSelect">GST Upload</label>
+              <input type="file" id="file"
+                accept="image/*,application/pdf,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+                formControlName="GSTFilePath" (change)="onFileChangedImagePath($event)">
+              <div class="help-block-rk">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-3 col-xs-12" *ngIf="action">
+          <div class="form-group">
+            <div class=" col-sm-12 inputlevel">
+              <label class="nopading_loct control-label" for="SelectSelect">GST Upload
+                <span class="mandantory">*</span>
+              </label>
+              <input type="file" id="file"
+                accept="image/*,application/pdf,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+                formControlName="GSTFilePath" (change)="onFileChangedImagePath($event)">
+              <div class="help-block-rk">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-3 col-xs-12">
+          <div class="form-group" [ngClass]="{'has-error': formErrors.CountryID}">
+            <label class="control-label" for="CountryID">Country <span class="mandantory">*</span></label>
+            <div>
+              <select id="CountryID" class="form-control" formControlName="CountryID" (blur)="logValidationErrors()"
+                (change)="onchangeCountryID($event.target.value)">
+                <option value="0" selected="selected">Select</option>
+                <option *ngFor="let c1 of countries" value={{c1.CountryID}}>
+                  {{c1.CountryName}}
+                </option>
+              </select>
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrors.CountryID">
+                  {{formErrors.CountryID}}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 col-xs-12">
+          <div class="form-group" [ngClass]="{'has-error': formErrors.StateID}">
+            <label class="control-label" for="StateID">State <span class="mandantory">*</span></label>
+            <div>
+              <select id="StateID" [readonly]="!action" class="form-control" formControlName="StateID"
+                (blur)="logValidationErrors()">
+                <option value="0" selected="selected">Select</option>
+                <option *ngFor="let dis of states" value={{dis.StateID}}>
+                  {{dis.State}}
+                </option>
+              </select>
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrors.StateID">
+                  {{formErrors.StateID}}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 col-xs-12">
+          <div class="form-group" [ngClass]="{'has-error': formErrors.City}">
+            <label class="control-label" for="City">City <span class="mandantory">*</span></label>
+            <div>
+              <input id="City" type="text" class="form-control" formControlName="City" (blur)="logValidationErrors()"
+                maxlength="50">
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrors.City">
+                  {{formErrors.City}}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 col-xs-12">
+          <div class="form-group" [ngClass]="{'has-error': formErrors.Pincode}">
+            <label class="control-label" for="Pincode">Postal Code <span class="mandantory">*</span></label>
+            <div>
+              <input id="Pincode" type="text" class="form-control" formControlName="Pincode" maxlength="6" mask="000000"
+                (blur)="logValidationErrors()">
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrors.Pincode">
+                  {{formErrors.Pincode}}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6 col-xs-12">
+          <div class="form-group" [ngClass]="{'has-error': formErrors.Address1}">
+            <label class="control-label" for="Address1">Address 1 <span class="mandantory">*</span></label>
+            <div>
+              <textarea id="Address1" type="text" class="form-control" formControlName="Address1"
+                (blur)="logValidationErrors()" rows="2" maxlength="150"></textarea>
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrors.Address1">
+                  {{formErrors.Address1}}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-xs-12">
+          <div class="form-group" [ngClass]="{'has-error': formErrors.Address2}">
+            <label class="control-label" for="Address2">Address 2 </label>
+            <div>
+              <textarea id="Address2" type="text" class="form-control" formControlName="Address2"
+                (blur)="logValidationErrors()" rows="2" maxlength="100"></textarea>
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrors.Address2">
+                  {{formErrors.Address2}}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+
+    <div class="panel-body">
+      <span class="groupspanheader"> Contact Details </span>
+
+      <div class="row">
+        <div class="col-sm-3 col-xs-12">
+          <div class="form-group" [ngClass]="{'has-error': formErrors.ContactName}">
+            <label class="control-label" for="ContactName">Contact Name <span class="mandantory">*</span></label>
+            <div>
+              <input id="ContactName" type="text" class="form-control" formControlName="ContactName"
+                (blur)="logValidationErrors()" maxlength="30">
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrors.ContactName">
+                  {{formErrors.ContactName}}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-3 col-xs-12">
+          <div class="form-group" [ngClass]="{'has-error': formErrors.ContactNumber}">
+            <label class="control-label" for="ContactNumber">Contact Number <span class="mandantory">*</span></label>
+            <div>
+              <input id="ContactNumber" type="text" class="form-control" formControlName="ContactNumber"
+                (blur)="logValidationErrors()" maxlength="12" mask="000000000000">
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrors.ContactNumber">
+                  {{formErrors.ContactNumber}}
+                </span>
+
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 col-xs-12">
+          <div class="form-group" [ngClass]="{'has-error': formErrors.Email}">
+            <label class="control-label" for="Email">Email <span class="mandantory">*</span></label>
+            <div>
+              <input id="Email" type="email" class="form-control" formControlName="Email" (blur)="logValidationErrors()"
+                maxlength="50">
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrors.Email">
+                  {{formErrors.Email}}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+
+    </div>
+
+    <div class="panel-footer">
+      <div class="pull-right btn-toolbar">
+        <button type="button" class="btn btn-primary" routerLink="/PPOBlist" title="Cancel">
+
+          Cancel
+        </button>
+        <button class="btn btn-success" type="submit" prevent-double-submit [disabled]="PPOBform.invalid">
+
+          Save
+        </button>
+      </div>
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</form>

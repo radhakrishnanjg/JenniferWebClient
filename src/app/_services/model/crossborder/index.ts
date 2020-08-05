@@ -8,3 +8,4 @@ export * from './../Result';
 export * from './mobilemaster';
 export * from './catalogue';
 export * from './sellerregistration'; 
+export * from './package'; 

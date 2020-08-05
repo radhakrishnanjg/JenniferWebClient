@@ -9,7 +9,7 @@ import { NotFoundError } from '../../common/not-found-error';
 import { AppError } from '../../common/app-error';
 
 import { AuthenticationService } from './authentication.service';
-import { Poshipment,  Poorderitem, Result } from '../model/index';
+import { Poshipment, Poorderitem, Result } from '../model/index';
 import { environment } from '../../../environments/environment';
 @Injectable({
   providedIn: 'root'
@@ -85,7 +85,7 @@ export class PoshipmentService {
       );
   }
 
-  public add(obj: Poshipment, Filedata: File[], ): Observable<Result> {
+  public add(obj: Poshipment, Filedata: File[],): Observable<Result> {
     let currentUser = this.authenticationService.currentUserValue;
     let CompanyDetailID = currentUser.CompanyDetailID;
     let LoginId = currentUser.UserId;
@@ -137,7 +137,15 @@ export class PoshipmentService {
     return this.httpClient.post<Result>(environment.baseUrl + `Poshipment/Delete`, this.objPoshipment)
       .pipe(catchError(this.handleError));
   }
-
+  public DownloadLabels(POID: number, ShipmentID: number) {
+    let currentUser = this.authenticationService.currentUserValue;
+    let CompanyID = currentUser.CompanyID;
+    let CompanyDetailID = currentUser.CompanyDetailID;
+    return this.httpClient.get(environment.baseUrl + `Poshipment/DownloadLabels?POID=` + POID
+      + `&ShipmentID=` + ShipmentID + `&CompanyDetailID=` + CompanyDetailID + `&CompanyID=` + CompanyID,
+      { responseType: 'blob' })
+      .pipe(catchError(this.handleError));
+  }
   private handleError(error: HttpErrorResponse) {
 
     if (error.status === 404)

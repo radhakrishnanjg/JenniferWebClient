@@ -44,4 +44,5 @@ export class Statement {
     //newly added
     FirstName: string;
     LastModifiedDate: Date;
+    LoginId: number;
 }

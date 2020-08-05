@@ -1198,11 +1198,11 @@ ul.states li {
 
 #main-menu-wrapper li a:hover {
   color: #fff;
-  background: #578278;
-  border-left-color: #578278;
-  border-left: 6px solid #578278;
+  background: #888888;
+  border-left-color: #888888;
+  border-left: 6px solid #888888;
   transform: scale(1.0);
-} 
+}
 
 #main-menu-wrapper li .sub-menu a {
   line-height: 32px;
@@ -1220,17 +1220,16 @@ ul.states li {
 #main-menu-wrapper li .sub-menu a:hover,
 #main-menu-wrapper li.open .sub-menu a.active,
 #main-menu-wrapper li.open .sub-menu a:hover {
-  background-color: #bad0cb;
+  background-color: #EFBBC6;
   color: #2d423d;
-  border-bottom:0px solid #aecac4;
-  transform:scale(1.0);
+  border-bottom: 0px solid #EFBBC6;
+  transform: scale(1.0);
   padding-left: 1px;
 }
 
 #main-menu-wrapper li.open a {
   color: #e4edeb;
-  background: #578278;
-  /* border-left-color: #578278 */
+  background: #888888; 
 }
 
 #main-menu-wrapper li a:hover .arrow:before,

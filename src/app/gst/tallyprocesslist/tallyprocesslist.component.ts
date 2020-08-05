@@ -184,7 +184,7 @@ export class TallyprocesslistComponent implements OnInit {
       new Date(this.catgoryForm.controls['Todate'].value)) {
       this.alertService.error('The To Date must be greater than or equal to the From Date!');
       return;
-    } 
+    }
     $('#modalpopupcategoryupsert').modal('hide');
     this.Insert();
   }

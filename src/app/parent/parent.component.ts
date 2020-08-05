@@ -100,7 +100,7 @@ export class ParentComponent implements OnInit {
     this.GetApplicationAccess();
     // Needs to use get cross border menus 
 
-    localStorage.setItem("Theme_Name", "assets/litetheme.css");
+    localStorage.setItem("Theme_Name", "assets/crossbordertheme.css");
     this.ThemeSelector = false;
     let head1 = document.getElementsByTagName('head')[0];
     let link = document.createElement('link');

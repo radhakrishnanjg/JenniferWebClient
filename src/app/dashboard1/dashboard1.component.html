@@ -11,20 +11,7 @@
             </option>
           </select>
         </div>
-        <div class="col-md-4 ">
-          <label> Date Range<span class="mandantory">*</span></label>
-          <input type="text" ngxDaterangepickerMd [(ngModel)]="selectedDateRange"
-            class="form-control   col-xs-12 pointer serchcurv" placeholder="Select please..."
-            (datesUpdated)="selectedDateRangeUpdated($event)" />
-        </div>
-        <div class="col-md-3 marginDPtop25">
-          <button class="btn btn-default serchcurv" (click)="Search()" title="Search">
-            <i class="fa fa-search " aria-hidden="true"></i>
-          </button>
-          <button class="btn btn-default serchcurv" (click)="Reset()" title="Reset">
-            <i class="fa fa-refresh" aria-hidden="true"></i>
-          </button>
-        </div>
+
       </div>
     </div>
 
@@ -34,18 +21,19 @@
         <div class="valucasebox">
           <div class="row">
             <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-              <span class="spanheader">
-                Last Updated: {{ LastUpdatedDate | date :"MM-dd-yyyy HH:mm"}} IST
+              <span class="">
+                Sales snapshot taken at {{ LastUpdatedDate | date :"MM-dd-yyyy HH:mm"}} IST
               </span>
             </div>
             <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-              <span class="spanheader">
-                Live Sales: {{ TodayDate | date :"MM-dd-yyyy"}}
-              </span>
+              <h5 class="text-center">
+                Live Sales Dashboard
+                <!-- {{ TodayDate | date :"MM-dd-yyyy"}} -->
+              </h5>
             </div>
             <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
               <div class="pull-right">
-                <span class="spanheader"> Values in Lakhs </span>
+                <span class=""> Values in INR </span>
               </div>
             </div>
           </div>
@@ -57,7 +45,7 @@
           </div>
           <div class="box">
             <h6 class="boldvalues">Ordered Product Sales</h6>
-            <div> {{ OrderedProductSales | currency: 'INR' }}</div>
+            <div> {{ OrderedProductSales | currency : 'INR' : '₹' : '1.0-0'}}</div>
           </div>
           <div class="box">
             <h6 class="boldvalues"> Total Units Ordered </h6>
@@ -65,11 +53,11 @@
           </div>
           <div class="box">
             <h6 class="boldvalues"> Average Sales/Order Item</h6>
-            <div> {{ AvgSalesPerorderitem | currency: 'INR' }}</div>
+            <div> {{ AvgSalesPerorderitem | currency : 'INR' : '₹' : '1.0-0'}}</div>
           </div>
           <div class="box">
             <h6 class="boldvalues"> Average Unit/Order Item</h6>
-            <div> {{ AvgunitPerorderitem | currency: 'INR' }}</div>
+            <div> {{ AvgunitPerorderitem  }}</div>
           </div>
           <div class="box">
             <h6 class="boldvalues"> Total Returns</h6>
@@ -77,27 +65,30 @@
           </div>
           <div class="box">
             <h6 class="boldvalues"> Total Returns Value</h6>
-            <div> {{ ReturnsValue | currency: 'INR' }}</div>
+            <div> {{ ReturnsValue | currency : 'INR' : '₹' : '1.0-0'}}</div>
           </div>
 
+          <div class=" ">
+            <hr>
+          </div>
 
           <div class="row salescase">
-            <div class="col-md-6 ">
-              <h6> Sales Order By Time </h6>
+            <div class="col-md-4 col-xs-12">
+              <h6> Sales By Hours </h6>
               <div>
                 <kendo-chart [seriesColors]="Sales_OrderByTime">
                   <kendo-chart-tooltip>
-                    <ng-template kendoChartSeriesTooltipTemplate let-category="category">
-                      {{ category }}
+                    <ng-template kendoChartSeriesTooltipTemplate let-category="category" let-Value="value">
+                      Sale Value - {{ Value | currency : 'INR' : '₹' : '1.0-0'}}
                     </ng-template>
                   </kendo-chart-tooltip>
                   <kendo-chart-value-axis>
-                    <kendo-chart-value-axis-item [title]="{ text: 'Sales Value' }">
+                    <kendo-chart-value-axis-item [title]="{ text: 'Sales Value' }" [visible]="false">
                     </kendo-chart-value-axis-item>
                   </kendo-chart-value-axis>
                   <kendo-chart-axis-defaults [majorGridLines]="false"></kendo-chart-axis-defaults>
                   <kendo-chart-category-axis>
-                    <kendo-chart-category-axis-item [categories]="sales_purchaseHours" [title]="{ text: 'Time' }">
+                    <kendo-chart-category-axis-item [categories]="sales_purchaseHours" [title]="{ text: 'Hours' }">
                     </kendo-chart-category-axis-item>
                   </kendo-chart-category-axis>
                   <kendo-chart-series>
@@ -108,21 +99,21 @@
               </div>
             </div>
 
-            <div class="col-md-6">
-              <h6>Returns By Time </h6>
+            <div class="col-md-4 col-xs-12">
+              <h6>Returns By Hours </h6>
               <div>
                 <kendo-chart [seriesColors]="Sales_ReturnsByTime">
                   <kendo-chart-tooltip>
-                    <ng-template kendoChartSeriesTooltipTemplate let-category="category">
-                      {{ category }}
+                    <ng-template kendoChartSeriesTooltipTemplate let-category="category" let-Value="value">
+                      Return Value - {{ Value | currency : 'INR' : '₹' : '1.0-0'}}
                     </ng-template>
                   </kendo-chart-tooltip>
                   <kendo-chart-value-axis>
-                    <kendo-chart-value-axis-item [title]="{ text: 'Returns Value' }">
+                    <kendo-chart-value-axis-item [title]="{ text: 'Returns Value' }" [visible]="false">
                     </kendo-chart-value-axis-item>
                   </kendo-chart-value-axis>
                   <kendo-chart-category-axis>
-                    <kendo-chart-category-axis-item [categories]="sales_ReturnsHours" [title]="{text: 'Time'}">
+                    <kendo-chart-category-axis-item [categories]="sales_ReturnsHours" [title]="{text: 'Hours'}">
                     </kendo-chart-category-axis-item>
                   </kendo-chart-category-axis>
                   <kendo-chart-axis-defaults [majorGridLines]="false"></kendo-chart-axis-defaults>
@@ -134,21 +125,69 @@
               </div>
             </div>
 
+            <div class="col-md-4 col-xs-12">
+              <div>
+                <h6> Top Products in Sales Today</h6>
+                <kendo-chart [seriesColors]="Sales_TopProductainSales">
+                  <kendo-chart-tooltip>
+                    <ng-template kendoChartSeriesTooltipTemplate let-category="category">
+                      {{ category }}
+                    </ng-template>
+                  </kendo-chart-tooltip>
+                  <kendo-chart-legend position="bottom" orientation="horizontal"></kendo-chart-legend>
+                  <kendo-chart-series>
+                    <kendo-chart-series-item type="funnel" [data]="sales_TopProductsinSalesToday" field="Salesorder"
+                      categoryField="ASIN" colorField="color">
+                      <kendo-chart-series-item-labels background="none" color="white" format="N0"
+                        style="font-size: 6px; font-family: Verdana, Geneva, Tahoma, sans-serif;">
+                      </kendo-chart-series-item-labels>
+                    </kendo-chart-series-item>
+                  </kendo-chart-series>
+                </kendo-chart>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 ">
+            <h5 class="text-center">
+              Sales Dashboard By Date Range
+            </h5>
+          </div>
+          <div class="">
+            <div class="col-md-1">
+              <label> Date Range<span class="mandantory">*</span></label>
+            </div>
+            <div class="col-md-4 ">
+              <input type="text" ngxDaterangepickerMd [(ngModel)]="selectedDateRange"
+                class="form-control   col-xs-12 pointer serchcurv" placeholder="Select please..."
+                (datesUpdated)="selectedDateRangeUpdated($event)" />
+            </div>
+            <div class="col-md-3  ">
+              <button class="btn btn-default serchcurv" (click)="Search()" title="Search">
+                <i class="fa fa-search " aria-hidden="true"></i>
+              </button>
+              <button class="btn btn-default serchcurv" (click)="Reset()" title="Reset">
+                <i class="fa fa-refresh" aria-hidden="true"></i>
+              </button>
+            </div>
+            <br />
           </div>
         </div>
         <div class="row">
           <div class="col-md-12">
             <div class="salsecase">
               <h6 class="boldvalues"> Total Sales </h6>
-              <div> {{ TotalSales | currency: 'INR' }}</div>
+              <div> {{ TotalSales | currency : 'INR' : '₹' : '1.0-0' }}</div>
             </div>
             <div class="salsecase">
               <h6 class="boldvalues">Net Sales </h6>
-              <div> {{ NetSales | currency: 'INR' }}</div>
+              <div> {{ NetSales | currency : 'INR' : '₹' : '1.0-0'}}</div>
             </div>
             <div class="salsecase">
               <h6 class="boldvalues"> Total Profit</h6>
-              <div> {{ GrossProfit | currency: 'INR' }}</div>
+              <div> {{ GrossProfit | currency : 'INR' : '₹' : '1.0-0'}}</div>
             </div>
             <div class="salsecase">
               <h6 class="boldvalues"> Profit Margin</h6>
@@ -160,11 +199,11 @@
                 <kendo-chart [seriesColors]="Sales_Performance">
                   <kendo-chart-tooltip>
                     <ng-template kendoChartSeriesTooltipTemplate let-category="category" let-Value="value">
-                      {{ category }} - {{ Value }}
+                      Sales Value - {{ category }} - {{ Value | currency : 'INR' : '₹' : '1.0-0'}}
                     </ng-template>
                   </kendo-chart-tooltip>
                   <kendo-chart-value-axis>
-                    <kendo-chart-value-axis-item [title]="{ text: 'Sales Values' }">
+                    <kendo-chart-value-axis-item [title]="{ text: 'Sales Values' }" [visible]="false">
                     </kendo-chart-value-axis-item>
                   </kendo-chart-value-axis>
                   <kendo-chart-category-axis>
@@ -184,27 +223,8 @@
         </div>
 
         <div class="row">
-          <div class="col-md-6 col-xs-12 pad1">
-            <div class="prodbase">
-              <h6> Top Products in Sales Today</h6>
-              <kendo-chart [seriesColors]="Sales_TopProductainSales">
-                <kendo-chart-tooltip>
-                  <ng-template kendoChartSeriesTooltipTemplate let-category="category">
-                    {{ category }}
-                  </ng-template>
-                </kendo-chart-tooltip>
-                <kendo-chart-legend position="left" orientation="vertical"></kendo-chart-legend>
-                <kendo-chart-series>
-                  <kendo-chart-series-item type="funnel" [data]="sales_TopProductsinSalesToday" field="Salesorder"
-                    categoryField="ASIN" colorField="color">
-                    <kendo-chart-series-item-labels background="none" color="white" format="N0">
-                    </kendo-chart-series-item-labels>
-                  </kendo-chart-series-item>
-                </kendo-chart-series>
-              </kendo-chart>
-            </div>
-          </div>
-          <div class="col-md-6 col-xs-12 sellerscase">
+
+          <!-- <div class="col-md-6 col-xs-12 sellerscase">
             <div class="rvnubase">
               <h6>Top Sellers in Revenue</h6>
               <kendo-chart [seriesColors]="Sales_TopSellersinRevenueBarChart">
@@ -232,12 +252,121 @@
                 </kendo-chart-series>
               </kendo-chart>
             </div>
+          </div> -->
+          <div class="col-md-12 col-xs-12 sellerscase">
+            <div class="rvnubase">
+              <h6 class="boldvalues text-center"> Item Level Gross Profit Performance</h6>
+              <div class="table-responsive">
+                <table class="table">
+                  <kendo-grid [height]="300" [data]="lstItemLevelStaticData" resizable="true" columnMenu="true">
+                    <ng-template kendoGridColumnMenuTemplate let-service="service">
+                      <kendo-grid-columnmenu-chooser [service]="service">
+                      </kendo-grid-columnmenu-chooser>
+                    </ng-template>
+                    <kendo-grid-column field="Itemcode" title="Item Code" width="120" [hidden]="true">
+                    </kendo-grid-column>
+                    <kendo-grid-column field="ItemName" title="Item Name" width="180">
+                    </kendo-grid-column>
+                    <kendo-grid-column field="GrossSales" title="Gross Sales" width="120">
+
+                      <ng-template kendoGridCellTemplate let-dataItem>
+                        {{ dataItem.GrossSales| currency : 'INR' : '₹' : '1.0-0' }}
+                      </ng-template>
+                    </kendo-grid-column>
+                    <kendo-grid-column field="NetSales" title="Net Sales" width="120">
+                      <ng-template kendoGridCellTemplate let-dataItem>
+                        {{ dataItem.NetSales| currency : 'INR' : '₹' : '1.0-0' }}
+                      </ng-template>
+                    </kendo-grid-column>
+                    <kendo-grid-column field="GrossProfit" title="Gross Profit" width="120">
+                      <ng-template kendoGridCellTemplate let-dataItem>
+                        {{ dataItem.GrossProfit| currency : 'INR' : '₹' : '1.0-0' }}
+                      </ng-template>
+                    </kendo-grid-column>
+                    <kendo-grid-column field="GPPercentage" title="GP %" width="140">
+
+                    </kendo-grid-column>
+                    <kendo-grid-column field="AvgASP" title="Avg. ASP" width="120">
+                      <ng-template kendoGridCellTemplate let-dataItem>
+                        {{ dataItem.AvgASP| currency : 'INR' : '₹' : '1.0-0' }}
+                      </ng-template>
+                    </kendo-grid-column>
+                    <kendo-grid-column field="AvgPurchasePrice" title="Avg. PP" width="120">
+                      <ng-template kendoGridCellTemplate let-dataItem>
+                        {{ dataItem.AvgPurchasePrice| currency : 'INR' : '₹' : '1.0-0' }}
+                      </ng-template>
+                    </kendo-grid-column>
+                  </kendo-grid>
+                </table>
+              </div>
+            </div>
           </div>
+
+          <div class="col-md-12 col-xs-12 sellerscase">
+            <div class="rvnubase  ">
+              <div class="pull-right">
+                <span class="pointer" (click)="sales_Revenuegraphtable=!sales_Revenuegraphtable">
+                  <i class="fa fa-bar-chart "></i> <span class="hidden-xs">Graph &nbsp;</span>
+                </span>
+                <span class="pointer" (click)="sales_Revenuegraphtable=!sales_Revenuegraphtable">
+                  <i class="fa fa-table"></i> <span class="hidden-xs">Table </span>
+                </span>
+              </div>
+              <div id="sales_Revenuetable" *ngIf="!sales_Revenuegraphtable">
+                <h6>Revenue By Customer State </h6>
+                <table class="table table-bordered table-condensed "
+                  *ngIf="sales_RevenueByLocation && sales_RevenueByLocation.length">
+                  <thead>
+                    <tr>
+                      <th class="text-center ">State Code</th>
+                      <th class="text-center ">State Name</th>
+                      <th class="text-center ">No. of Sales Orders </th>
+                      <th class="text-center ">Sales Value</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let ms of sales_RevenueByLocation">
+
+                      <td>{{ ms.StateCode }}</td>
+                      <td>{{ ms.City }}</td>
+                      <td>{{ ms.NoOfSalesOrder }}</td>
+                      <td>{{ ms.TotalRevenue | currency: 'INR'}}</td>
+
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div id="sales_Revenuegraph" *ngIf="sales_Revenuegraphtable">
+                <h6>Sales Value By Customer State</h6>
+                <kendo-chart [seriesColors]="Sales_RevenueByLocation">
+                  <kendo-chart-tooltip>
+                    <ng-template kendoChartSeriesTooltipTemplate let-category="category" let-Value="value">
+                      Sale Value - {{ Value | currency : 'INR' : '₹' : '1.0-0'}}
+                    </ng-template>
+                  </kendo-chart-tooltip>
+                  <kendo-chart-value-axis>
+                    <kendo-chart-value-axis-item [title]="{ text: 'Sales Value' }" [visible]="false">
+                    </kendo-chart-value-axis-item>
+                  </kendo-chart-value-axis>
+                  <kendo-chart-axis-defaults [majorGridLines]="false"></kendo-chart-axis-defaults>
+                  <kendo-chart-series>
+                    <kendo-chart-series-item type="column" [data]="sales_RevenueByLocation" field="TotalRevenue"
+                      categoryField="StateCode">
+                      <kendo-chart-series-item-labels background="none" color="white" format="N0">
+                      </kendo-chart-series-item-labels>
+                    </kendo-chart-series-item>
+                  </kendo-chart-series>
+                </kendo-chart>
+
+              </div>
+            </div>
+          </div>
+
         </div>
 
-        <div class="row">
+        <!-- <div class="row">
 
-          <div class="col-md-8 ">
+          <div class="col-md-12 ">
 
             <div class="PerformCase fixedheight370">
               <h6 class="salcasehed">Sales Vs Returns</h6>
@@ -275,61 +404,9 @@
             </div>
           </div>
 
-          <div class="col-md-4 ">
 
-            <div class="rvnubase fixedheight370">
-              <div class="revnlocgrp">
-                <span class="pointer" (click)="sales_Revenuegraphtable=!sales_Revenuegraphtable">
-                  <i class="fa fa-bar-chart "></i> <span class="hidden-xs">Graph &nbsp;</span>
-                </span>
-                <span class="pointer" (click)="sales_Revenuegraphtable=!sales_Revenuegraphtable">
-                  <i class="fa fa-table"></i> <span class="hidden-xs">Table </span>
-                </span>
-              </div>
-              <div id="sales_Revenuetable" *ngIf="!sales_Revenuegraphtable">
-                <h6>Revenue By Location </h6>
-                <table class="table table-bordered table-condensed "
-                  *ngIf="sales_RevenueByLocation && sales_RevenueByLocation.length">
-                  <thead>
-                    <tr>
-                      <th class="text-center ">Location</th>
-                      <th class="text-center ">No. of Sales Orders </th>
-                      <th class="text-center ">Sales Value</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr *ngFor="let ms of sales_RevenueByLocation">
 
-                      <td>{{ ms.City }}</td>
-                      <td>{{ ms.NoOfSalesOrder }}</td>
-                      <td>{{ ms.TotalRevenue | currency: 'INR'}}</td>
-
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-              <div id="sales_Revenuegraph" *ngIf="sales_Revenuegraphtable">
-                <h6>Sales Value By Location and Date</h6>
-                <kendo-chart [seriesColors]="Sales_RevenueByLocation">
-                  <kendo-chart-tooltip>
-                    <ng-template kendoChartSeriesTooltipTemplate let-category="category">
-                      {{ category }}
-                    </ng-template>
-                  </kendo-chart-tooltip>
-                  <kendo-chart-legend position="left" orientation="vertical"></kendo-chart-legend>
-                  <kendo-chart-series>
-                    <kendo-chart-series-item type="funnel" [data]="sales_RevenueByLocation" field="TotalRevenue"
-                      categoryField="City">
-                      <kendo-chart-series-item-labels background="none" color="white" format="N0">
-                      </kendo-chart-series-item-labels>
-                    </kendo-chart-series-item>
-                  </kendo-chart-series>
-                </kendo-chart>
-              </div>
-            </div>
-          </div>
-
-        </div>
+        </div> -->
 
       </div>
     </div>

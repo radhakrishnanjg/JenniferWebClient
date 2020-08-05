@@ -1,0 +1,190 @@
+<div class="row">
+  <div class="col-sm-6 col-lg-6">
+    <h3>
+      Credit Note
+    </h3>
+  </div>
+  <div class="col-sm-6 col-lg-6">
+    <div class="pull-right hidden-xs">
+      <ol class="breadcrumb" id="dynamicbreadcrumb">
+        <li>
+          <span> Receipts</span>
+        </li>
+        <li>
+          <span> Credit Notes</span>
+        </li>
+        <li class="active">
+
+          Save
+        </li>
+      </ol>
+    </div>
+  </div>
+</div>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <div class="row">
+      <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+        <span class="groupspanheader">
+          Credit Note
+        </span>
+      </div>
+      <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 ">
+        <div class="pull-right">
+          <button type="button" class="btn btn-primary" routerLinkActive="active"
+            routerLink="/Creditnotelist">Back</button>
+        </div>
+      </div>
+    </div>
+    <div class="clearfix"></div>
+  </div>
+
+  <div class="panel-body">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="table-responsive">
+          <table class="table table-bordered bgtable">
+            <tr>
+              <th width="15%">
+                Credit Note Date
+              </th>
+              <td width="35%">
+                {{obj?.CNDate | date :"MM-dd-yyyy HH:mm"}}
+              </td>
+              <th width="15%">
+                Credit Note No.
+              </th>
+              <td width="35%">
+                {{obj?.CNNumber}}
+              </td>
+            </tr>
+            <tr>
+              <th>
+                Credit Note Type
+              </th>
+              <td>
+                {{obj?.CNType}}
+              </td>
+              <th>
+                Credit Note Status
+              </th>
+              <td>
+                {{obj?.CNStatus}}
+              </td>
+            </tr>
+            <tr>
+              <th>
+                Customer Name
+              </th>
+              <td>
+                {{obj?.CustomerName}}
+              </td>
+              <th>
+                Order Date
+              </th>
+              <td>
+                {{ obj?.OrderDate | date :"MM-dd-yyyy HH:mm" }}
+              </td>
+            </tr>
+            <tr>
+              <th>
+                Order ID
+              </th>
+              <td>
+                {{ obj?.OrderID }}
+              </td>
+              <th>
+                Reference Details
+              </th>
+              <td>
+                {{obj?.ReferenceDetail}}
+              </td> 
+            </tr> 
+            <tr>
+              <th>
+                Reason For Return
+              </th>
+              <td>
+                {{ obj?.Reason }}
+              </td> 
+              <th>
+                Remarks
+              </th>
+              <td colspan="3">
+                {{obj?.Remarks}}
+              </td>
+            </tr> 
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <span class="groupspanheader">Details</span>
+    <div class="table-responsive">
+      <table class="table table-bordered table-condensed">
+        <thead>
+          <tr>
+            <th class="text-center">Description of Goods</th>
+            <th class="text-center">Item Code</th>
+            <th class="text-center" *ngIf="obj.CNType=='CN'">Invoice Qty</th>
+            <th class="text-center">Invoice Amount</th>
+
+            <th class="text-center" *ngIf="obj.CNType=='CN'">Credit Note Qty</th>
+            <!-- <th class="text-center" *ngIf="obj.CNType=='FCN'">Pending Amount</th> -->
+            <th class="text-center">Credit Note Amount</th>
+            <th class="text-center">Reason</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let dis of obj?.lstCreditNoteDetail; let id = index">
+            <td> {{ dis.ItemName }} </td>
+            <td> {{ dis.ItemCode}} </td>
+            <td class="text-right" *ngIf="obj.CNType=='CN'"> {{ dis.InvoiceQty  }} </td>
+            <td class="text-right">
+              {{ dis.InvoiceTotalAmount | currency: 'INR' }} </td>
+
+            <td class="text-right" *ngIf="obj.CNType=='CN'">
+              {{dis.Qty}}
+            </td>
+            <!-- <td class="text-right" *ngIf="obj.CNType=='FCN'">
+              {{ dis.PendingTotalAmount  | currency: 'INR'}} </td> -->
+            <td class="text-right" *ngIf="obj.CNType=='CN'">
+              {{ dis.TotalAmount  | currency: 'INR'}}
+            </td>
+            <td class="text-right" *ngIf="obj.CNType=='FCN'">
+              {{dis.TotalAmount| currency: 'INR'}}</td>
+            <td class="text-right">
+              {{dis.Reason}}
+            </td>
+          </tr>
+          <tr>
+            <th>Total</th>
+            <th> </th>
+            <th class="text-right" *ngIf="obj.CNType=='CN'"> {{InvoiceTotalQtyTotal }}</th>
+            <th class="text-right"> {{InvoiceTotalAmountTotal | currency: 'INR'}}</th>
+            <th class="text-right" *ngIf="obj.CNType=='CN'"> {{TotalQty}}</th>
+
+            <!-- <th class="text-right" *ngIf="obj.CNType=='FCN'">{{PendingAmountTotal | currency: 'INR'}} </th> -->
+            <th class="text-right" *ngIf="obj.CNType=='CN'">{{TotalTotalAmount | currency: 'INR'}} </th>
+            <th class="text-right" *ngIf="obj.CNType=='FCN'">{{TotalTotalAmount | currency: 'INR'}} </th>
+            <th> </th>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="panel-footer">
+    <div class="row">
+      <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+      </div>
+      <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 ">
+        <div class="pull-right">
+          <button type="button" class="btn btn-primary" routerLinkActive="active"
+            routerLink="/Creditnotelist">Cancel</button>
+        </div>
+      </div>
+    </div>
+    <div class="clearfix"></div>
+  </div>
+</div>

@@ -1,15 +1,14 @@
-import { Component, OnInit } from '@angular/core'; 
+import { Component, OnInit } from '@angular/core';
 import { DashboardoneService } from '../_services/service/dashboardone.service';
-import { NgxSpinnerService } from 'ngx-spinner';
 import * as moment from 'moment';
 import { ToastrService } from 'ngx-toastr';
+import { Userpermission, ItemLevelStaticData, } from '../_services/model';
+import { SalesChartColors } from '../../assets/ChartColors';
 
-import { Userlog, Userpermission, } from '../_services/model';
-import { PlotBand } from '@progress/kendo-angular-charts';
+import { AuthenticationService } from '../_services/service/authentication.service'; import { Router } from '@angular/router';
+;
 
-import { SalesChartColors} from '../../assets/ChartColors';
-
-import { AuthenticationService } from '../_services/service/authentication.service';;
+// import 'hammerjs';
 
 @Component({
   selector: 'app-dashboard1',
@@ -24,31 +23,33 @@ import { AuthenticationService } from '../_services/service/authentication.servi
   `],
 })
 export class Dashboard1Component implements OnInit {
-
-
   constructor(
     private _alertService: ToastrService,
     public _authenticationService: AuthenticationService,
     public _dashboard1Service: DashboardoneService,
-    public _spinner: NgxSpinnerService,
-  ) { }
+    private router: Router,
+  ) {
+    // this.router.routeReuseStrategy.shouldReuseRoute = function () {
+    //   return false;
+    // };
+  }
 
 
   //#region variable declartion start
   lstMenus: Userpermission[] = [] as any;
   MenuID: number = 0;
 
-  
+
   Sales_OrderByTime: any = SalesChartColors.Sales_OrderByTime;
   Sales_ReturnsByTime: any = SalesChartColors.Sales_ReturnsByTime;;
   Sales_TopProductainSales: any = SalesChartColors.Sales_TopProductainSales;
   Sales_Performance: any = SalesChartColors.Sales_Performance;
   Sales_TopSellersinRevenueBarChart: any = SalesChartColors.Sales_TopSellersinRevenueBarChart;
-  
+
   Sales_ReturnsAndSalesOrders: any = SalesChartColors.Sales_ReturnsAndSalesOrders;
   Sales_ReturnsValueAndSalesValue: any = SalesChartColors.Sales_ReturnsValueAndSalesValue;
   Sales_RevenueByLocation: any = SalesChartColors.Sales_RevenueByLocation;
- 
+
 
 
   selectedDateRange: any;
@@ -65,12 +66,7 @@ export class Dashboard1Component implements OnInit {
 
   ngOnInit() {
     this.selectedDateRange = { startDate: moment().subtract(0, 'months').date(1), endDate: moment().subtract(1, 'days') };
-
-    let startdate: string = this.selectedDateRange.startDate._d.toISOString().substring(0, 10);
-    let enddate: string = this.selectedDateRange.endDate._d.toISOString().substring(0, 10);
     this.BindDropdown();
-
-    
     this.OnloadupdatedDate();
     this.onLoadLiveSalesData();
     this.onLoadliveReturnsValue();
@@ -80,7 +76,7 @@ export class Dashboard1Component implements OnInit {
 
   }
 
-   //#region Method declaration
+  //#region Method declaration
   Search() {
     if (this.MenuID == 0) {
       this._alertService.error("Please select the Dashboard");
@@ -88,25 +84,26 @@ export class Dashboard1Component implements OnInit {
     }
     else if (this.MenuID == 122) {
       this.onLoadSaticSalesData();
-      this.onLoadTopSellersInRevenue();
       this.onLoadPerformance();
-      this.onLoadSalesReturnsOrder();
-      this.onLoadSalesReturnsValue();
       this.onLoadRevenueByLocation();
-    } 
+      this.onLoadItemLevelStaticData();
+      // this.onLoadTopSellersInRevenue();
+      // this.onLoadSalesReturnsOrder();
+      // this.onLoadSalesReturnsValue();
+    }
   }
   selectedDateRangeUpdated(range) {
     //this.Search();
   }
-  
+
   Reset() {
     this.MenuID = 0;
-    this.selectedDateRange = { startDate: moment().subtract(3, 'months').date(1), endDate: moment().subtract(1, 'days') };
+    this.selectedDateRange = { startDate: moment().subtract(0, 'months').date(1), endDate: moment().subtract(1, 'days') };
 
   }
 
   onchangeMenuID(MenuID: number) {
- 
+
   }
   BindDropdown() {
     this.lstMenus = this._authenticationService.currentUserValue.lstUserPermission.filter(a => a.ParentId == 120);
@@ -243,9 +240,8 @@ export class Dashboard1Component implements OnInit {
   GrossProfit: number = 0;
   GrossProfitPer: number = 0;
   onLoadSaticSalesData() {
-    let startdate: string = this.selectedDateRange.startDate._d.toISOString().substring(0, 10);
-    let enddate: string = this.selectedDateRange.endDate._d.toISOString().substring(0, 10);
-
+    let startdate: string = moment(this.selectedDateRange.startDate._d, 'YYYY-MM-DD[T]HH:mm').format('YYYY-MM-DD').toString();
+    let enddate: string = moment(this.selectedDateRange.endDate._d, 'YYYY-MM-DD[T]HH:mm').format('YYYY-MM-DD').toString();
     this._dashboard1Service.staticSalesData(startdate, enddate)
       .subscribe(
         (data) => {
@@ -264,41 +260,41 @@ export class Dashboard1Component implements OnInit {
 
   }
 
-  public sales_Brand = [] = [] as any;
-  public sales_Returnsvalue = [] = [] as any;
-  public sales_SalesValue = [] = [] as any;
-  onLoadTopSellersInRevenue() {
-    let startdate: string = this.selectedDateRange.startDate._d.toISOString().substring(0, 10);
-    let enddate: string = this.selectedDateRange.endDate._d.toISOString().substring(0, 10);
+  // public sales_Brand = [] = [] as any;
+  // public sales_Returnsvalue = [] = [] as any;
+  // public sales_SalesValue = [] = [] as any;
+  // onLoadTopSellersInRevenue() {
+  //   let startdate: string = this.selectedDateRange.startDate._d.toISOString().substring(0, 10);
+  //   let enddate: string = this.selectedDateRange.endDate._d.toISOString().substring(0, 10);
 
-    this._dashboard1Service.topSellersInRevenue(startdate, enddate)
-      .subscribe(
-        (data) => {
-          if (data != null) {
-            let resJSON = JSON.parse(data);
-            this.sales_Brand = resJSON.map(a => a.Brand);
-            this.sales_Returnsvalue = resJSON.map(a => a.ReturnsValue);
-            this.sales_SalesValue = resJSON.map(a => a.SalesValue);
-          }
-        },
-        (err) => {
-          console.log(err);
-        }
-      );
+  //   this._dashboard1Service.topSellersInRevenue(startdate, enddate)
+  //     .subscribe(
+  //       (data) => {
+  //         if (data != null) {
+  //           let resJSON = JSON.parse(data);
+  //           this.sales_Brand = resJSON.map(a => a.Brand);
+  //           this.sales_Returnsvalue = resJSON.map(a => a.ReturnsValue);
+  //           this.sales_SalesValue = resJSON.map(a => a.SalesValue);
+  //         }
+  //       },
+  //       (err) => {
+  //         console.log(err);
+  //       }
+  //     );
 
-  }
+  // }
 
   public sales_Performence = [] = [] as any;
   public sales_Performence_PostedDate = [] = [] as any;
   public sales_Performence_NetSales = [] = [] as any;
   onLoadPerformance() {
-    let startdate: string = this.selectedDateRange.startDate._d.toISOString().substring(0, 10);
-    let enddate: string = this.selectedDateRange.endDate._d.toISOString().substring(0, 10);
+    let startdate: string = moment(this.selectedDateRange.startDate._d, 'YYYY-MM-DD[T]HH:mm').format('YYYY-MM-DD').toString();
+    let enddate: string = moment(this.selectedDateRange.endDate._d, 'YYYY-MM-DD[T]HH:mm').format('YYYY-MM-DD').toString();
     this._dashboard1Service.performence(startdate, enddate)
       .subscribe(
         (data) => {
           if (data != null) {
-            let resJSON = JSON.parse(data); 
+            let resJSON = JSON.parse(data);
             this.sales_Performence = resJSON;
             this.sales_Performence_PostedDate = resJSON.map(a => a.PostedDate);
             this.sales_Performence_NetSales = resJSON.map(a => a.NetSales);
@@ -311,46 +307,47 @@ export class Dashboard1Component implements OnInit {
 
   }
 
-  public sales_TotalSalesOrders = [] = [] as any;
-  onLoadSalesReturnsOrder() {
-    let startdate: string = this.selectedDateRange.startDate._d.toISOString().substring(0, 10);
-    let enddate: string = this.selectedDateRange.endDate._d.toISOString().substring(0, 10);
-    this._dashboard1Service.salesVsReturnsOrders(startdate, enddate)
-      .subscribe(
-        (data) => {
-          if (data != null) {
-            // let resJSON = JSON.parse(data);
-            this.sales_TotalSalesOrders = JSON.parse(data);
-          }
-        },
-        (err) => {
-          console.log(err);
-        }
-      );
-  }
+  // public sales_TotalSalesOrders = [] = [] as any;
+  // onLoadSalesReturnsOrder() {
+  //   let startdate: string = moment(this.selectedDateRange.startDate._d, 'YYYY-MM-DD[T]HH:mm').format('YYYY-MM-DD').toString();
+  //   let enddate: string = moment(this.selectedDateRange.endDate._d, 'YYYY-MM-DD[T]HH:mm').format('YYYY-MM-DD').toString();
+  //   this._dashboard1Service.salesVsReturnsOrders(startdate, enddate)
+  //     .subscribe(
+  //       (data) => {
+  //         if (data != null) {
+  //           // let resJSON = JSON.parse(data);
+  //           this.sales_TotalSalesOrders = JSON.parse(data);
+  //         }
+  //       },
+  //       (err) => {
+  //         console.log(err);
+  //       }
+  //     );
+  // }
 
-  public sales_TotalSales = [] = [] as any;
-  onLoadSalesReturnsValue() {
-    let startdate: string = this.selectedDateRange.startDate._d.toISOString().substring(0, 10);
-    let enddate: string = this.selectedDateRange.endDate._d.toISOString().substring(0, 10);
-    this._dashboard1Service.salesVsReturnsValue(startdate, enddate)
-      .subscribe(
-        (data) => {
-          if (data != null) {
-            this.sales_TotalSales = JSON.parse(data);
-          }
-        },
-        (err) => {
-          console.log(err);
-        }
-      );
+  // public sales_TotalSales = [] = [] as any;
+  // onLoadSalesReturnsValue() {
+  //   let startdate: string = moment(this.selectedDateRange.startDate._d, 'YYYY-MM-DD[T]HH:mm').format('YYYY-MM-DD').toString();
+  //   let enddate: string = moment(this.selectedDateRange.endDate._d, 'YYYY-MM-DD[T]HH:mm').format('YYYY-MM-DD').toString();
+  //   this._dashboard1Service.salesVsReturnsValue(startdate, enddate)
+  //     .subscribe(
+  //       (data) => {
+  //         if (data != null) {
+  //           this.sales_TotalSales = JSON.parse(data);
+  //         }
+  //       },
+  //       (err) => {
+  //         console.log(err);
+  //       }
+  //     );
 
-  }
+  // }
+
   sales_RevenueByLocation: number[] = [] as any;
-  sales_Revenuegraphtable:boolean=true;
+  sales_Revenuegraphtable: boolean = true;
   onLoadRevenueByLocation() {
-    let startdate: string = this.selectedDateRange.startDate._d.toISOString().substring(0, 10);
-    let enddate: string = this.selectedDateRange.endDate._d.toISOString().substring(0, 10);
+    let startdate: string = moment(this.selectedDateRange.startDate._d, 'YYYY-MM-DD[T]HH:mm').format('YYYY-MM-DD').toString();
+    let enddate: string = moment(this.selectedDateRange.endDate._d, 'YYYY-MM-DD[T]HH:mm').format('YYYY-MM-DD').toString();
     this._dashboard1Service.revenueByLocation(startdate, enddate)
       .subscribe(
         (data) => {
@@ -363,10 +360,22 @@ export class Dashboard1Component implements OnInit {
           console.log(err);
         }
       );
-
   }
-   //#endregion Method declaration
-   
+
+  lstItemLevelStaticData: ItemLevelStaticData[] = [] as any;
+  onLoadItemLevelStaticData() {
+    this._dashboard1Service.ItemLevelStaticData()
+      .subscribe(
+        (data: ItemLevelStaticData[]) => {
+          this.lstItemLevelStaticData = data
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
+  }
+  //#endregion Method declaration
+
   // changesale_RevenueByLocation() {
   //   this.sale_RevenueByLocation = !this.sale_RevenueByLocation;
   // }

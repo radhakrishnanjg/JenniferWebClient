@@ -31,7 +31,7 @@
             <div class="form-group" [ngClass]="{'has-error': formErrors.password}">
               <div>
                 <input id="password" type="password" placeholder='Password' class="form-control"
-                  formControlName="password" (blur)="logValidationErrors()">
+                  formControlName="password" (blur)="logValidationErrors()" autocomplete="off">
                 <div class="help-block-rk">
                   <span class="help-block" *ngIf="formErrors.password">
                     {{formErrors.password}}
@@ -53,9 +53,10 @@
               </div>
               <div class="pull-right text-right">
                 <div><a routerLinkActive="active" routerLink="/ForgotPassword">Forgot Password</a></div>
-                <div><a routerLinkActive="active" routerLink="/Companyregister">Sign Up Company. / </a>
-                  <!-- <a routerLinkActive="active" routerLink="/Sellerregistration"> Sign Up
-                    Seller</a> -->
+                <div>
+                  <!-- <a routerLinkActive="active" routerLink="/Companyregister">Sign Up Company. / </a> -->
+                  <a routerLinkActive="active" routerLink="/Sellerregistration"> Sign Up
+                    Seller</a>
                 </div>
               </div>
             </div>

@@ -1,23 +1,18 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes, PreloadAllModules } from '@angular/router';
-import { AuthGuard, StoreGuard, MaintenanceGuard } from './_guards';
+import { AuthGuard, StoreGuard,MaintenanceGuard   } from './_guards';
 // Import the components so they can be referenced in routes
 
 import { PrivatelayoutComponent } from './privatelayout/privatelayout.component';
-import { ParentComponent } from './parent/parent.component';
 import { TermsofuseComponent } from './termsofuse/termsofuse.component';
 import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
 import { Dashboard1Component } from './dashboard1/dashboard1.component';
-import { Dashboard2Component } from './dashboard2/dashboard2.component';
-import { Submenu1Component } from './submenu1/submenu1.component';
-import { Submenu2Component } from './submenu2/submenu2.component';
 
 import { CompanyregisterComponent } from './account/companyregister/companyregister.component';
 import { SigninComponent } from './account/signin/signin.component';
 import { ForgotpasswordComponent } from './account/forgotpassword/forgotpassword.component';
 import { SellerregistrationComponent } from './account/sellerregistration/sellerregistration.component';
 
-import { CustompreloadingService } from './_services/service/custompreloading.service';
 
 import { MaintenanceComponent } from './maintenance/maintenance.component';
 import { SearchComponent } from './search/search.component';
@@ -27,21 +22,7 @@ import { IndexComponent } from './index/index.component';
 // the route to redirect to if the client side path is empty.
 const appRoutes: Routes = [
   //Landing page
-  { path: '', component: IndexComponent },
-
-  // { path: '', component: SigninComponent, canActivate: [MaintenanceGuard] }, 
-  //Cross Border routes goes here  
-  {
-    path: 'CrossBorder',
-    component: ParentComponent,
-    children: [
-      { path: 'dashboard2', component: Dashboard2Component },
-      { path: 'SubMenu1', component: Submenu1Component },
-      { path: 'SubMenu2', component: Submenu2Component },
-      { path: '', loadChildren: './crossborder/crossborder.module#CrossborderModule' },
-
-    ]
-  },
+  { path: '', component: IndexComponent }, 
   //Site routes goes here  
   {
     path: '',
@@ -62,7 +43,7 @@ const appRoutes: Routes = [
       { path: '', loadChildren: './help/help.module#HelpModule' },
       { path: '', loadChildren: './masters/masters.module#MastersModule' },
       { path: '', loadChildren: './premaster/premaster.module#PremasterModule' },
-      { path: '', data: { preload: true }, loadChildren: './purchaseorder/purchaseorder.module#PurchaseorderModule' },
+      { path: '', loadChildren: './purchaseorder/purchaseorder.module#PurchaseorderModule' },
       { path: '', loadChildren: './sales/sales.module#SalesModule' },
       { path: '', loadChildren: './userprofile/userprofile.module#UserprofileModule' },
       { path: '', loadChildren: './users/users.module#UsersModule' },
@@ -79,7 +60,7 @@ const appRoutes: Routes = [
     ]
   },
   //no layout routes  
-  { path: 'Signin', component: SigninComponent, canActivate: [MaintenanceGuard] },
+  { path: 'Signin', component: SigninComponent, canActivate: [ ] },
   { path: 'ForgotPassword', component: ForgotpasswordComponent },
   { path: 'Companyregister', component: CompanyregisterComponent },
   { path: 'Sellerregistration', component: SellerregistrationComponent },
@@ -106,7 +87,7 @@ const appRoutes: Routes = [
     initialNavigation: 'enabled',
     onSameUrlNavigation: 'reload',
     //preloadingStrategy: CustompreloadingService
-    preloadingStrategy: PreloadAllModules
+    // preloadingStrategy: PreloadAllModules
   })
 
   ],

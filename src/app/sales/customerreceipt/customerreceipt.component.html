@@ -1,0 +1,225 @@
+<div class="row">
+  <div class="col-sm-6 col-lg-6">
+    <h3>
+      Customer Receipts
+    </h3>
+  </div>
+  <div class="col-sm-6 col-lg-6">
+    <div class="pull-right hidden-xs">
+      <ol class="breadcrumb" id="dynamicbreadcrumb">
+        <li>
+          <span> Revenue</span>
+        </li>
+        <li>
+          <span> Customer Receipts</span>
+        </li>
+        <li class="active">
+
+          Save
+        </li>
+      </ol>
+    </div>
+  </div>
+</div>
+
+<form autocomplete="off" (ngSubmit)="SaveData()" [formGroup]="CustomerReceiptForm">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <div class="row">
+        <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+          <span class="groupspanheader">
+            New Customer Receipt
+          </span>
+        </div>
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 ">
+          <div class="pull-right">
+            <button type="button" class="btn btn-primary" routerLinkActive="active"
+              routerLink="/Customerreceiptlist">Back</button>
+          </div>
+        </div>
+      </div>
+      <div class="clearfix"></div>
+    </div>
+
+    <div class="panel-body">
+      <div class="row">
+
+        <div class="col-md-3 col-xs-12">
+          <div class="form-group" [ngClass]="{'has-error': formErrors.CustomerType}">
+            <label class="control-label" for="CustomerType"> Customer Type <span class="mandantory">*</span></label>
+            <div>
+              <select formControlName="CustomerType" id='CustomerType' type="select" class="form-control"
+                (blur)="logValidationErrors()" (change)="onchangecustomertype($event.target.value)">
+                <option value="" selected="selected">Select</option>
+                <option *ngFor="let dis of lstCustomerType" value={{dis.DropdownValue}}>
+                  {{dis.DropdownValue}}
+                </option>
+              </select>
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrors.CustomerType">
+                  {{formErrors.CustomerType}}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-3 col-xs-12">
+          <div class="form-group" [ngClass]="{'has-error': formErrors.CustomerID}">
+            <label class="control-label" for="CustomerID"> Customer Name <span class="mandantory">*</span></label>
+            <div>
+              <select formControlName="CustomerID" id='CustomerID' type="select" class="form-control"
+                (blur)="logValidationErrors()" (change)="onchangeCustomerId($event.target.value)">
+                <option value="0" selected="selected">Select</option>
+                <option *ngFor="let dis of lstCustomerName" value={{dis.CustomerID}}>
+                  {{dis.CustomerName}}
+                </option>
+              </select>
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrors.CustomerID">
+                  {{formErrors.CustomerID}}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-3 col-xs-12">
+          <div class="form-group" [ngClass]="{'has-error': formErrors.PaymentMode}">
+            <label class="control-label" for="PaymentMode"> Payment Mode <span class="mandantory">*</span></label>
+            <div>
+              <select id="PaymentMode" class="form-control" formControlName="PaymentMode"
+                (blur)="logValidationErrors()"  (change)="onchangePaymentMode($event.target.value)">
+                <option value="" selected="selected">Select</option>
+                <option *ngFor="let c1 of lstPaymentMode" value={{c1.DropdownValue}}>
+                  {{c1.DropDownDescription}}
+                </option>
+              </select>
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrors.PaymentMode">
+                  {{formErrors.PaymentMode}}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-3 col-xs-12" *ngIf="PaymentMode == 'ONLINE'">
+          <div class="form-group" [ngClass]="{'has-error': formErrors.TransactionNumber}">
+            <label class="control-label" for="TransactionNumber">Transaction No. <span class="mandantory">*</span></label>
+            <input type="text" id="TransactionNumber" class="form-control" (blur)="logValidationErrors()"
+              formControlName="TransactionNumber" maxlength="30">
+            <div class="help-block-rk">
+              <span class="help-block" *ngIf="formErrors.TransactionNumber">
+                {{formErrors.TransactionNumber}}
+              </span>
+            </div>
+          </div>
+        </div> 
+      </div>
+
+      <div class="row"> 
+        <div class="col-md-3 col-xs-12" [ngClass]="{'has-error': formErrors.TransactionDate}">
+          <div class="form-group">
+            <label class="control-label" for="TransactionDate">Transaction Date<span class="mandantory">
+                *</span></label>
+            <div>
+              <div class='input-group date'>
+
+                <input type="text" ngxDaterangepickerMd [minDate]="CustomerReciptMinDate"
+                  [maxDate]="CustomerReciptMaxDate" [singleDatePicker]="true" class="form-control" id="TransactionDate"
+                  [locale]="{format: 'MM-DD-YYYY HH:mm'}" [timePicker]="true" [autoApply]="true"
+                  (change)="logValidationErrors()" formControlName="TransactionDate" />
+
+                <label class="fa fa-calendar"></label>
+              </div>
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrors.TransactionDate">
+                  {{formErrors.TransactionDate}}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="form-group" [ngClass]="{'has-error': formErrors.TotalReceivedAmount}">
+            <label class="control-label" for="TotalReceivedAmount">Total Received Amount<span class="mandantory">
+                *</span></label>
+            <input type="text" id="TotalReceivedAmount" class="form-control" (blur)="logValidationErrors()"
+              formControlName="TotalReceivedAmount" maxlength="13" onkeypress="return /[0-9.]/i.test(event.key)">
+
+            <div class="help-block-rk">
+              <span class="help-block" *ngIf="formErrors.TotalReceivedAmount">
+                {{formErrors.TotalReceivedAmount}}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="control-label" for="Remarks">Remarks</label>
+            <input type="text" id="Remarks" class="form-control" formControlName="Remarks" maxlength="500">
+          </div>
+        </div>
+
+      </div>
+
+      <div *ngIf="lstCustomerReceiptDetail != null && lstCustomerReceiptDetail.length>0">
+        <span class="groupspanheader">Details</span>
+        <div class="table-responsive">
+          <table class="table table-bordered table-condensed">
+            <thead>
+              <tr>
+                <th class="text-center">Invoice Aging</th>
+                <th class="text-center">Order Date</th>
+                <th class="text-center">Sales Order No.</th>
+                <th class="text-center">Receivable Amount</th>
+                <th class="text-center">Pending Amount</th>
+
+                <th class="text-center" width="200px">Receipt Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let dis of lstCustomerReceiptDetail; let id = index">
+                
+                <td> {{ dis.AgingDays}} </td>
+                <td> {{ dis.OrderDate | date :"MM-dd-yyyy HH:mm"}} </td>
+                <td> {{ dis.OrderID }} </td>
+                <td> {{ dis.ReceivableAmt | currency: 'INR'}} </td>
+                <td class="text-right"> {{ dis.PendingAmt | currency: 'INR'}} </td>
+
+                <td class="text-right">
+                  <input type="text" class="form-control" id="{{dis.SalesOrderID}}" name="{{dis.SalesOrderID}}"
+                    (input)="updateList(id,'ReceivedAmt',$event.target.value)" value="{{dis.ReceivedAmt}}"
+                    maxlength="13" onkeypress="return /[0-9.]/i.test(event.key)">
+                </td>
+              </tr>
+              <tr>
+                <th></th>
+                <th></th>
+                <th>Total</th>
+                <th class="text-right">{{TotalReceivableAmt | currency: 'INR'}}</th>
+                <th class="text-right">{{TotalPendingAmt | currency: 'INR'}}</th>
+                
+                <th class="text-right">{{TotalReceivedAmt | currency: 'INR'}}</th>
+              </tr>
+            </tbody>
+          </table>
+
+        </div>
+      </div>
+
+    </div>
+
+    <div class="panel-footer">
+      <div class="btn-toolbar pull-right">
+        <button type="button" id="cancel" class="btn btn-primary" routerLink="/Customerreceiptlist">Cancel</button>
+        <button prevent-double-submit type="submit" id="save" class="btn btn-success"
+          [disabled]="!CustomerReceiptForm.valid">Save</button>
+      </div>
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</form>

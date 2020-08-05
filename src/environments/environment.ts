@@ -6,7 +6,9 @@ export const environment = {
   production: false,
   baseUrl: 'http://localhost:55555/api/',
   basedomain: 'http://localhost:55555/',
-  defaultImageUrl: 'UploadFiles/Item/default.png'
+  defaultImageUrl: 'UploadFiles/Item/default.png',
+  JSONFileUploadPath: 'http://localhost:55555/uploadfiles/common/',
+  // SellerDomain: 'http://localhost:4099/Signin/',
 };
 
 /*

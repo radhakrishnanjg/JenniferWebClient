@@ -142,13 +142,13 @@ export class PurchaseComponent implements OnInit {
                 .subscribe(
                   (data: Invoice) => {
                     this.obj = data;
-                    // this.TotalQty = this.obj.lstItem.reduce((acc, a) => acc + a.Qty, 0);
-                    // this.TotalRate = this.obj.lstItem.reduce((acc, a) => acc + a.Rate, 0);
-                    // this.TotalMRP = this.obj.lstItem.reduce((acc, a) => acc + a.MRP, 0);
-                    // this.TotalTaxRate = this.obj.lstItem.reduce((acc, a) => acc + a.TaxRate, 0);
-                    // this.TotalTaxAmount = this.obj.lstItem.reduce((acc, a) => acc + a.TaxAmount, 0);
-                    // this.TotalDirectCost = this.obj.lstItem.reduce((acc, a) => acc + a.DirectCost, 0);
-                    // this.TotalTotalAmount = this.obj.lstItem.reduce((acc, a) => acc + a.TotalAmount, 0);
+                    this.TotalQty = this.obj.lstItem.reduce((acc, a) => acc + a.Qty, 0);
+                    this.TotalRate = this.obj.lstItem.reduce((acc, a) => acc + a.Rate, 0);
+                    this.TotalMRP = this.obj.lstItem.reduce((acc, a) => acc + a.MRP, 0);
+                    this.TotalTaxRate = this.obj.lstItem.reduce((acc, a) => acc + a.TaxRate, 0);
+                    this.TotalTaxAmount = this.obj.lstItem.reduce((acc, a) => acc + a.TaxAmount, 0);
+                    this.TotalDirectCost = this.obj.lstItem.reduce((acc, a) => acc + a.DirectCost, 0);
+                    this.TotalTotalAmount = this.obj.lstItem.reduce((acc, a) => acc + a.TotalAmount, 0);
                     var VendorWarehouseID = data.VendorWarehouseID.toString();
                     this.invoiceform.patchValue({
                       InvoiceNumber: data.InvoiceNumber,

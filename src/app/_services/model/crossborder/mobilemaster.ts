@@ -22,6 +22,7 @@ export class MobileMaster {
   Action: string;
   LoginId: number;
   StateName:string;
+  AssignStatus: string;
 
   // Action - O: SellerFormID,IsOTPSent,OTPSentDate
 

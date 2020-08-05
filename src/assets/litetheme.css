@@ -3938,3 +3938,9 @@ i.jicon {
 .playvideobtn {
     cursor: pointer;
 }
+
+/* add by rk */
+
+.k-grid-edit-row>td>.k-textbox
+{  margin-left: 0px;
+}

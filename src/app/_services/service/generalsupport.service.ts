@@ -1,14 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError, } from 'rxjs';
-import { catchError } from 'rxjs/operators';
-import { map } from 'rxjs/operators';
-
+import { catchError } from 'rxjs/operators'; 
 import { BadRequest } from '../../common/bad-request';
 import { NotFoundError } from '../../common/not-found-error';
 import { AppError } from '../../common/app-error';
-
-import { AuthenticationService } from './authentication.service';
+ 
 import { Generalsupport, Result, JsonModal } from '../model/index';
 import { environment } from '../../../environments/environment';
 
@@ -18,12 +15,10 @@ import { environment } from '../../../environments/environment';
 export class GeneralsupportService {
 
   objJsonModal: JsonModal = {} as any;
-  constructor(private httpClient: HttpClient,
-    private authenticationService: AuthenticationService) {
+  constructor(private httpClient: HttpClient) {
   }
 
-  public Insert(obj: Generalsupport): Observable<Result> { 
-    let currentUser = this.authenticationService.currentUserValue;
+  public Insert(obj: Generalsupport): Observable<Result> {
     this.objJsonModal.Json = JSON.stringify(obj);
     return this.httpClient.post<Result>(environment.baseUrl + `GeneralSupport/Insert`, this.objJsonModal)
       .pipe(catchError(this.handleError));
