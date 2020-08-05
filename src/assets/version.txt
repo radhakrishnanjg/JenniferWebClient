@@ -1,12 +1,26 @@
 
+
+
+Version 6.0
+    Date
+        06 Aug 2020
+    Descriptions
+		- Auto EOR Approval has been added in Vendor screen 
+        
+Version 5.0
+    Date
+        30 July 2020
+    Descriptions
+		- Dashbaord has been changed
+		- Shipment Label Download     
+        
 Version 4.0
     Date
         22 July 2020
     Descriptions
 		- PPOB added
 		- Shipment Label Download
-         
-        Version 3.0
+          
     Date
         30 Jan 2020
      Descriptions
