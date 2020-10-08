@@ -1,5 +1,35 @@
 
+Version 9.0
+    Date 
+        OCT 5 Sep 2020
+    Descriptions
+		- Item Level profit Loss screen added
+        - Event Maanger Scrreen has been added
+        - Manual Auto RTV Screen has been added
+        - Goods Ack screen has been added
+        - Scroll view improved in parivate layout
+        - Download Log option has been added in all download screen
 
+Version 8.0
+    Date 
+        15 Sep 2020
+    Descriptions
+		- IsSellingPriceValueLess and note has been added in unsellable sales order screen
+        - Profit Loss screen UI Improved 
+        - 
+Version 7.0
+    Date 
+        14 Sep 2020
+    Descriptions
+		- help and support section has been fixed
+        - applciation name field has been added in Help content screen
+        - EOE changes has been added - 5 columns added
+        - Vouchers screen changes attended
+        - Ledger screen changed as tax ledger. and some changes has been attended
+        - New Ledger screen has been added
+        - Dispute column added in Inventory Details
+        - Reference column has been added in HSN DB custom screen  
+        - 
 
 Version 6.0
     Date

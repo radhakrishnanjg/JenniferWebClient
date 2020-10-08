@@ -8,13 +8,13 @@
     <div class="pull-right hidden-xs">
       <ol class="breadcrumb" id="dynamicbreadcrumb">
         <li>
-           <span> Pricing</span>
+          <span> Pricing</span>
         </li>
         <li>
-           <span> Sales Rates</span>
+          <span> Sales Rates</span>
         </li>
         <li class="active">
-          
+
           List
         </li>
       </ol>
@@ -35,7 +35,8 @@
             </select>
           </div>
           <div class="col-md-3 col-sm-3 nopading_loct" *ngIf="(SearchBy!= 'ByDate')">
-            <input (keyup.enter)="Search()" [(ngModel)]="SearchKeyword" type="text" class="serchcurv form-control btn-group">
+            <input (keyup.enter)="Search()" [(ngModel)]="SearchKeyword" type="text"
+              class="serchcurv form-control btn-group">
           </div>
           <div class="col-md-3 col-sm-3 nopading_loct" *ngIf="(SearchBy=='ByDate')">
             <input type="text" ngxDaterangepickerMd [(ngModel)]="selectedDateRange"
@@ -53,7 +54,7 @@
             </button>
           </div>
           <div class="col-xs-6 col-sm-3 col-md-3 text-right nopadding">
-            <button class="btn btn-xs btn-sm btn-primary" (click)="newButtonClick()" title="Add New"> 
+            <button class="btn btn-xs btn-sm btn-primary" (click)="newButtonClick()" title="Add New">
               Add New
             </button>
           </div>
@@ -64,40 +65,40 @@
   <div class="panel-body">
     <div class="table-responsive">
       <table class="table">
-    <kendo-grid [data]="gridView" resizable="true" columnMenu="true" [pageSize]="pageSize" [skip]="skip" [pageable]="{pageSizes: [10, 25, 50, 100, 250, 500]}"
-      (pageChange)="pageChange($event)" [sortable]="{
+        <kendo-grid [data]="gridView" resizable="true" columnMenu="true" [pageSize]="pageSize" [skip]="skip"
+          [pageable]="{pageSizes: [10, 25, 50, 100, 250, 500]}" (pageChange)="pageChange($event)" [sortable]="{
       allowUnsort: allowUnsort,
       mode:  'single'
       }" [sort]="sort" (sortChange)="sortChange($event)" [filterable]="true"
-      (dataStateChange)="dataStateChange($event)" [filter]="state.filter">
+          (dataStateChange)="dataStateChange($event)" [filter]="state.filter">
 
-      <ng-template kendoGridToolbarTemplate>
-        <input placeholder="Search in all columns..." style="float:right;" kendoTextBox
-          (input)="onFilter($event.target.value)" />
-        <button kendoGridExcelCommand type="button" icon="file-excel"> </button>
-        <button kendoGridPDFCommand icon="file-pdf"> </button>
-        <kendo-grid-pdf fileName="SalesRateCardList.pdf" [repeatHeaders]="true"></kendo-grid-pdf>
-        <kendo-grid-excel fileName="SalesRateCardList.xlsx"></kendo-grid-excel>
-      </ng-template>
-      <kendo-grid-column field="ItemCode" title="ItemCode">
-      </kendo-grid-column>
-      <kendo-grid-column field="InventoryType" title="Inventory Type">
-      </kendo-grid-column>
-      <kendo-grid-column field="SellingPrice" title="Selling Price" format="{0:##,#.##}">
-      </kendo-grid-column>
-      <kendo-grid-column field="StartDate" title="Effective From" filter="date" format="{0:d}" [filterable]="false">
-        <ng-template kendoGridCellTemplate let-dataItem>
-          {{ dataItem.StartDate | date :"MM-dd-yyyy HH:mm" }}
-        </ng-template>
-      </kendo-grid-column>
-      <kendo-grid-column field="EndDate" title="Effective To" filter="date" format="{0:d}" [filterable]="false">
-        <ng-template kendoGridCellTemplate let-dataItem>
-          {{ dataItem.EndDate | date :"MM-dd-yyyy HH:mm" }}
-        </ng-template>
-      </kendo-grid-column>
-    </kendo-grid>
-  </table>
-</div>
+          <ng-template kendoGridToolbarTemplate>
+            <input placeholder="Search in all columns..." style="float:right;" kendoTextBox
+              (input)="onFilter($event.target.value)" />
+            <button kendoGridExcelCommand type="button" icon="file-excel"> </button>
+            <button kendoGridPDFCommand icon="file-pdf"> </button>
+            <kendo-grid-pdf fileName="SalesRateCardList.pdf" [repeatHeaders]="true"></kendo-grid-pdf>
+            <kendo-grid-excel fileName="SalesRateCardList.xlsx"></kendo-grid-excel>
+          </ng-template>
+          <kendo-grid-column field="ItemCode" title="ItemCode">
+          </kendo-grid-column>
+          <kendo-grid-column field="InventoryType" title="Inventory Type">
+          </kendo-grid-column>
+          <kendo-grid-column field="SellingPrice" title="Selling Price" format="{0:##,#.##}">
+          </kendo-grid-column>
+          <kendo-grid-column field="StartDate" title="Effective From" filter="date" format="{0:d}" [filterable]="false">
+            <ng-template kendoGridCellTemplate let-dataItem>
+              {{ dataItem.StartDate | date :"MM-dd-yyyy HH:mm" }}
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="EndDate" title="Effective To" filter="date" format="{0:d}" [filterable]="false">
+            <ng-template kendoGridCellTemplate let-dataItem>
+              {{ dataItem.EndDate | date :"MM-dd-yyyy HH:mm" }}
+            </ng-template>
+          </kendo-grid-column>
+        </kendo-grid>
+      </table>
+    </div>
   </div>
 
 
@@ -106,7 +107,7 @@
   <div id="modalpopup_salesratecard" class="modal fade " tabindex="-1" role="dialog"
     aria-labelledby="modalpopup_salesratecard" aria-hidden="true">
 
-    <form   [formGroup]="salesratecardForm" (ngSubmit)="SaveData()">
+    <form [formGroup]="salesratecardForm" (ngSubmit)="SaveData()">
       <div class="modal-dialog ">
         <div class="modal-content">
           <div class="modal-header">
@@ -172,7 +173,7 @@
                       formControlName="StartDate" id="StartDate" (change)="logValidationErrors()"
                       [locale]="{format: 'MM-DD-YYYY HH:mm'}" maxlength="16" [autoApply]="true" />
 
-                    <label class="fa fa-calendar"></label> 
+                    <label class="fa fa-calendar"></label>
                   </div>
                   <div class="help-block-rk">
                   </div><span class="help-block" *ngIf="formErrors.StartDate">
@@ -185,9 +186,9 @@
                 <label class="control-label" for="EndDate">End Date <span class="mandantory">*</span> </label>
                 <div class=" ">
                   <div class='input-group date'>
-                    <input type="text" ngxDaterangepickerMd [minDate]="MinDate" [autoApply]="true" [singleDatePicker]="true"
-                      (datesUpdated)="EndDateUpdated($event)" [timePicker]="true" class="form-control"
-                      formControlName="EndDate" (change)="logValidationErrors()" id="EndDate"
+                    <input type="text" ngxDaterangepickerMd [minDate]="MinDate" [autoApply]="true"
+                      [singleDatePicker]="true" (datesUpdated)="EndDateUpdated($event)" [timePicker]="true"
+                      class="form-control" formControlName="EndDate" (change)="logValidationErrors()" id="EndDate"
                       [locale]="{format: 'MM-DD-YYYY HH:mm'}" maxlength="16" />
                     <label class="fa fa-calendar"></label>
                   </div>

@@ -18,10 +18,11 @@ import { BoeComponent } from '../purchaseorder/boe/boe.component';
 import { BoelistComponent } from '../purchaseorder/boelist/boelist.component';
 import { BoeviewComponent } from '../purchaseorder/boeview/boeview.component';
 import { PoprintComponent } from '../purchaseorder/poprint/poprint.component';
-import { PomfilistComponent } from '../purchaseorder/pomfilist/pomfilist.component';
 import { DebitnoteComponent } from '../purchaseorder/debitnote/debitnote.component';
 import { DebitnotelistComponent } from '../purchaseorder/debitnotelist/debitnotelist.component';
 import { DebitnoteviewComponent } from '../purchaseorder/debitnoteview/debitnoteview.component';
+import { PomfilistComponent } from '../purchaseorder/pomfilist/pomfilist.component';
+import { MFICaseComponent } from './mficase/mficase.component';
 
 
 const appRoutes: Routes = [
@@ -42,11 +43,13 @@ const appRoutes: Routes = [
     { path: 'BOE/:id/:PurchaseId', component: BoeComponent, canActivate: [AuthGuard, StoreGuard] },
     { path: 'BOEview/:id/:PurchaseId', component: BoeviewComponent, canActivate: [AuthGuard, StoreGuard] },
     { path: 'POprint/:id', component: PoprintComponent, canActivate: [AuthGuard, StoreGuard] },
-    { path: 'PoMFIlist', component: PomfilistComponent, canActivate: [AuthGuard, StoreGuard] },
     //debitnote
     { path: 'Debitnote/:DNType/:id', component: DebitnoteComponent, canActivate: [AuthGuard, StoreGuard] },
     { path: 'Debitnotelist', component: DebitnotelistComponent, canActivate: [AuthGuard, StoreGuard] },
     { path: 'Debitnoteview/:id/:dntype', component: DebitnoteviewComponent, canActivate: [AuthGuard, StoreGuard] },
+    // MFI  
+    { path: 'PoMFIlist', component: PomfilistComponent, canActivate: [AuthGuard, StoreGuard] },
+    { path: 'MFICase/:id', component: MFICaseComponent, canActivate: [AuthGuard, StoreGuard] },
 ];
 
 @NgModule({

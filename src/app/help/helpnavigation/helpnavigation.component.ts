@@ -10,7 +10,7 @@ import { TicketService } from '../../_services/service/ticket.service'
 import { Dropdown, Ticket } from 'src/app/_services/model';
 import { PrivateutilityService } from '../../_services/service/privateutility.service';
 import { ToastrService } from 'ngx-toastr';
- 
+
 @Component({
   selector: 'app-helpnavigation',
   templateUrl: './helpnavigation.component.html',
@@ -19,7 +19,6 @@ import { ToastrService } from 'ngx-toastr';
 
 export class HelpnavigationComponent implements OnInit {
 
-  // objLedger: TimerHandler = {} as any;
   SupportQueryForm: FormGroup;
   objTicket: Ticket = {} as any;
 
@@ -87,7 +86,7 @@ export class HelpnavigationComponent implements OnInit {
     });
   }
 
-  
+  ModuleType: string = '';
   ngOnInit() {
 
     this.SupportQueryForm = this.fb.group({
@@ -125,17 +124,18 @@ export class HelpnavigationComponent implements OnInit {
     this.GetModuleType();
 
   }
- 
+
   leftmenus: Helpmenu[] = [] as any;
   griddata: Helpmenu[] = [] as any;
   onLoad() {
 
     if (localStorage.getItem("helpmenucontent") == null) {
-      return this._HelpmenuService.search('PageContent', '', true).subscribe(
+      return this._HelpmenuService.search('ApplicationName', 'Jennifer', true).subscribe(
         (lst) => {
           if (lst != null) {
+            debugger
             this.items = lst;
-            this.leftmenus = lst;     
+            this.leftmenus = lst;
             this.griddata = lst;
             localStorage.setItem("helpmenucontent", JSON.stringify(this.griddata));
           }
@@ -163,13 +163,15 @@ export class HelpnavigationComponent implements OnInit {
     return result;
   }
 
-  filterdata(HelpMenuID: number) {
-    let result: Helpmenu[] = [];
+
+
+  scroll1(el: number) {
+    this.SearchKeyword = '';
     let helpmenucontent = JSON.parse(localStorage.getItem("helpmenucontent"));
-    result = helpmenucontent.filter(a => a.HelpMenuID == HelpMenuID);
-    this.griddata = result;
-  } 
-  
+    this.items = helpmenucontent;
+    document.querySelector('#div' + el).scrollIntoView(true);
+    document.querySelector('#div' + el).scrollTop -= 220;
+  }
 
   lstModuleType: Dropdown[];
   GetModuleType() {
@@ -183,20 +185,6 @@ export class HelpnavigationComponent implements OnInit {
         }
       );
   }
-
-  scroll(el: HTMLElement) {
-    el.scrollIntoView();
-  }
-
-  scroll1(el: number) {
-    //$('#div' + el).addClass('paddingtop40');
-    this.SearchKeyword = '';
-    let helpmenucontent = JSON.parse(localStorage.getItem("helpmenucontent"));
-    this.items = helpmenucontent;
-    document.querySelector('#div' + el).scrollIntoView();
-  }
-
-  identity: string;
   SaveData() {
     this.objTicket.Query = this.SupportQueryForm.controls['Query'].value;;
     this.objTicket.ModuleType = this.SupportQueryForm.controls['ModuleType'].value;;
@@ -207,13 +195,12 @@ export class HelpnavigationComponent implements OnInit {
     this._ticketService.insert(this.objTicket).subscribe(
       (data) => {
         if (data != null && data.Flag == true) {
+          $('#modalstatusconfimation').modal('hide');
           this._router.navigate(['/Supporthistory']);
           this.alertService.success(data.Msg);
         } else {
-          this._router.navigate(['/Supporthistory']);
           this.alertService.error(data.Msg);
         }
-        $('#modalstatusconfimation').modal('hide');
       },
       (error: any) => {
         console.log(error);

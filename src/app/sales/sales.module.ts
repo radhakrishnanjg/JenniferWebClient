@@ -49,13 +49,11 @@ import { CreditnoteviewComponent } from './creditnoteview/creditnoteview.compone
 import { SalesRoutingModule } from './sales.routing.module';
 import { RefundlistComponent } from './refundlist/refundlist.component';
 import { RefundComponent } from './refund/refund.component';
+import { StockauditComponent } from './stockaudit/stockaudit.component';
 @NgModule({
   imports: [
-    CommonModule,
-    // ReactiveFormsModule,
-    FormsModule,
-    // UserRoutingModule
-
+    CommonModule, 
+    FormsModule, 
     RouterModule,
     ReactiveFormsModule,
     PreventDoubleSubmitModule.forRoot(),
@@ -98,11 +96,10 @@ import { RefundComponent } from './refund/refund.component';
     CreditnoteviewComponent,
     RefundlistComponent,
     RefundComponent,
+    StockauditComponent,
   ],
   providers: [
-
     CookieService,
-
     EncrDecrService
   ],
   schemas: [

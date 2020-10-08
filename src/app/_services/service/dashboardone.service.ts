@@ -4,7 +4,7 @@ import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { AuthenticationService } from './authentication.service';
-import { Result, ItemLevelStaticData } from '../model/index';
+import { Result, ItemLevelStaticData, ProfitLossData, ItemWiseProfitLossData, Companydetails } from '../model/index';
 @Injectable({
   providedIn: 'root'
 })
@@ -124,6 +124,77 @@ export class DashboardoneService {
         catchError(this.handleError)
       );
   }
+
+  //#region  Profit Loss
+
+  public GetProfitStores(CompanyID: number): Observable<Companydetails[]> {
+    return this.httpClient.get<string>(environment.baseUrl +
+      `Dashboard1/GetProfitStores?CompanyID=` + CompanyID)
+      .pipe(
+        map(data => {
+          return JSON.parse(data) as Companydetails[];
+        }),
+        catchError(this.handleError)
+      );
+  }
+
+
+  public GetProfitLossOrders(CompanyDetailID: number): Observable<ProfitLossData[]> {
+    return this.httpClient.get<string>(environment.baseUrl +
+      `Dashboard1/GetProfitLossOrders?CompanyDetailID=` + CompanyDetailID)
+      .pipe(
+        map(data => {
+          return JSON.parse(data) as ProfitLossData[];
+        }),
+        catchError(this.handleError)
+      );
+  }
+
+  public GetProfitLossSKUs(CompanyDetailID: number): Observable<ProfitLossData[]> {
+    return this.httpClient.get<string>(environment.baseUrl +
+      `Dashboard1/GetProfitLossSKUs?CompanyDetailID=` + CompanyDetailID)
+      .pipe(
+        map(data => {
+          return JSON.parse(data) as ProfitLossData[];
+        }),
+        catchError(this.handleError)
+      );
+  }
+
+  public GetProfitLossData(CompanyDetailID: number, OrderID: string, SKU: string,
+    StrtDT: string, EndDT: string): Observable<ProfitLossData[]> {
+    let currentUser = this.authenticationService.currentUserValue;
+    let CompanyId = currentUser.CompanyID;
+    return this.httpClient.get<string>(environment.baseUrl +
+      `Dashboard1/GetProfitLossData?CompanyId=` + CompanyId +
+      `&CompanyDetailID=` + CompanyDetailID + `&OrderID=` + OrderID +
+      `&SKU=` + SKU + `&StrtDT=` + StrtDT + `&EndDT=` + EndDT
+    )
+      .pipe(
+        map(data => {
+          return JSON.parse(data) as ProfitLossData[];
+        }),
+        catchError(this.handleError)
+      );
+  }
+
+  public GetItemWiseProfitLossData(SearchBy: string, Search: string, 
+    StrtDT: string, EndDT: string): Observable<ItemWiseProfitLossData[]> {
+    let currentUser = this.authenticationService.currentUserValue;
+    let CompanyId = currentUser.CompanyID;
+    return this.httpClient.get<string>(environment.baseUrl +
+      `Dashboard1/GetItemWiseProfitLossData?CompanyId=` + CompanyId +
+      `&SearchBy=` + SearchBy + `&Search=` + Search +
+      `&StrtDT=` + StrtDT + `&EndDT=` + EndDT
+    )
+      .pipe(
+        map(data => {
+          return JSON.parse(data) as ItemWiseProfitLossData[];
+        }),
+        catchError(this.handleError)
+      );
+  }
+  //#endregion
 
   private handleError(errorResponse: HttpErrorResponse) {
     if (errorResponse.error instanceof ErrorEvent) {

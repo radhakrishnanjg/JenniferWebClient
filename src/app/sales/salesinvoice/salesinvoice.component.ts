@@ -1,9 +1,8 @@
-import { Component,OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, } from '@angular/router';
 import { PicklistService } from '../../_services/service/picklist.service';
 
 import { SalesInvoiceHeader, } from '../../_services/model';
-
 @Component({
   selector: 'app-salesinvoice',
   templateUrl: './salesinvoice.component.html',
@@ -11,13 +10,13 @@ import { SalesInvoiceHeader, } from '../../_services/model';
 })
 
 export class SalesinvoiceComponent implements OnInit {
- 
+
   objSalesInvoiceHeader: SalesInvoiceHeader = new SalesInvoiceHeader();
   public breakParagraphs = false;
   public get keepTogether(): string {
     return this.breakParagraphs ? '' : 'div';
-  } 
-  public repeatHeaders = true;  
+  }
+  public repeatHeaders = true;
   TotalQty: number = 0;
   TotalTaxableValue: number = 0
   TotalIGSTTaxAmount: number = 0;
@@ -28,7 +27,7 @@ export class SalesinvoiceComponent implements OnInit {
   constructor(
     private aroute: ActivatedRoute,
     private _PicklistService: PicklistService,
-    
+
   ) { }
 
   ngOnInit() {

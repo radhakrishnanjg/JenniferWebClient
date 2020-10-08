@@ -6,7 +6,7 @@ export class Helpmenu {
     LinkText: string;
     ShortDescription: string;
     PageContent: string;
-    IsActive: boolean; 
-    LoginId:number;
-
+    IsActive: boolean;
+    LoginId: number;
+    ApplicationName: string;
 } 

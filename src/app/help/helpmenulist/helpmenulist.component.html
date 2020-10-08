@@ -29,6 +29,7 @@
           <div class="col-md-3 nopading_loct">
             <select [(ngModel)]="SearchBy" class="form-control serchcurv btn-group">
               <option value="" selected="select">Search By</option>
+              <option value="Application"> Application</option>
               <option value="LinkText"> Link Text</option>
               <option value="ShortDescription">Short Description</option>
               <option value="Status">Status</option>
@@ -72,12 +73,14 @@
       <ng-template kendoGridToolbarTemplate>
         <input placeholder="Search in all columns..." style="float:right;" kendoTextBox
           (input)="onFilter($event.target.value)" />
-        <button kendoGridExcelCommand type="button" icon="file-excel"> </button>
+        <!-- <button kendoGridExcelCommand type="button" icon="file-excel"> </button>
         <button kendoGridPDFCommand icon="file-pdf"> </button>
         <kendo-grid-pdf fileName="HelpMenuList.pdf" [repeatHeaders]="true"></kendo-grid-pdf>
-        <kendo-grid-excel fileName="HelpMenuList.xlsx"></kendo-grid-excel>
+        <kendo-grid-excel fileName="HelpMenuList.xlsx"></kendo-grid-excel> -->
       </ng-template>
 
+      <kendo-grid-column field="ApplicationName" title="Application">
+      </kendo-grid-column>
       <kendo-grid-column field="MenuType" title="Menu Type">
       </kendo-grid-column>
       <kendo-grid-column field="LinkText" title="Link Text">

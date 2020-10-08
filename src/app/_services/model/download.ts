@@ -14,9 +14,9 @@ export class DownloadMaster {
     MenuID: number;
     UserId: number;
     IsActive: boolean;
-    CompanyID:number;
-    CompanyDetailID:number;
-    ReportDecription:string;
+    CompanyID: number;
+    CompanyDetailID: number;
+    ReportDecription: string;
 }
 
 export class DownloadDetail {
@@ -34,16 +34,24 @@ export class DownloadDetail {
     Status: Boolean;
     // who is doing this task
     LoginId: number;
-    ReportDecription:string;
-    IsMandatory:boolean;
+    ReportDecription: string;
+    IsMandatory: boolean;
+    IsManualRequest: boolean;
 }
 
 export class DownloadLog {
     Screen_Name: string;
-    Startdate: Date;
-    EndDate: Date;
+    CompanyID: number;
+    CompanyDetailID: number;
+    MenuId: number;
+    Download_Master_ID: number;
+    Dynamic_Query: string;
+    LoginId: number;
     RequestedDate: Date;
     RequestedBy: string;
+    ReportID: string;
+    IsProcessed: boolean;
+    Report_Type: string;
 }
 export class AmazonMTR {
     ReportId: string;

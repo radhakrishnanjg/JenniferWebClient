@@ -60,6 +60,11 @@
         <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile"
           aria-selected="false">Reconciled Details </a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" id="upcomingReceipts-tab" data-toggle="tab" href="#upcomingReceipts" 
+        role="tab" aria-controls="upcomingReceipts"
+          aria-selected="false">Up Coming Receipts </a>
+      </li>
     </ul>
     <div class="tab-content">
       <div class="tab-pane  active" id="home" role="tabpanel" aria-labelledby="home-tab">
@@ -201,6 +206,47 @@
           </table>
         </div>
       </div>
-    </div> 
-  </div> 
+
+      <div class="tab-pane " id="upcomingReceipts" role="tabpanel" aria-labelledby="upcomingReceipts">
+        <div class="table-responsive">
+          <table class="table">
+            <kendo-grid [data]="lstUpcomingReceipts" resizable="true" columnMenu="true" [height]="410"> 
+              <kendo-grid-column field="SettlementStartDate" title="Settlement Start">
+                <ng-template kendoGridCellTemplate let-dataItem>
+                  {{ dataItem.SettlementStartDate | date :"MM-dd-yyyy HH:mm" }}
+                </ng-template>
+              </kendo-grid-column>
+              <kendo-grid-column field="SettlementEndDate" title="Settlement End">
+                <ng-template kendoGridCellTemplate let-dataItem>
+                  {{ dataItem.SettlementEndDate | date :"MM-dd-yyyy HH:mm" }}
+                </ng-template>
+              </kendo-grid-column>
+              <kendo-grid-column field="Amount" title="Amount" format="{0:##,#.##}">
+              </kendo-grid-column>
+              <kendo-grid-column field="Currency" title="Currency">
+              </kendo-grid-column>
+              <kendo-grid-column field="Status" title="Status">
+              </kendo-grid-column>
+              <kendo-grid-column field="FundTransferStatus" title="Fund Transfer Status">
+              </kendo-grid-column>
+              <kendo-grid-column field="FundTransferDate" title="Fund Transfer Date">
+                <ng-template kendoGridCellTemplate let-dataItem>
+                  {{ dataItem.FundTransferDate | date :"MM-dd-yyyy HH:mm" }}
+                </ng-template>
+              </kendo-grid-column>
+              <kendo-grid-column field="AccountNumberEndingwith" title="Account Number Ending with">
+              </kendo-grid-column>
+              <kendo-grid-column field="UTRNumber" title="UTR Number">
+              </kendo-grid-column>
+              <kendo-grid-column field="BankReceiptDate" title="Bank Receipt Date">
+                <ng-template kendoGridCellTemplate let-dataItem>
+                  {{ dataItem.BankReceiptDate | date :"MM-dd-yyyy HH:mm" }}
+                </ng-template>
+              </kendo-grid-column>
+            </kendo-grid>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

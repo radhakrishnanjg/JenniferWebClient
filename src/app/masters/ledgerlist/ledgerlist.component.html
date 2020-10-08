@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col-sm-6 col-lg-6">
     <h3>
-      Ledgers
+      Tax Ledgers
     </h3>
   </div>
   <div class="col-sm-6 col-lg-6">
@@ -11,7 +11,7 @@
           <span> Master</span>
         </li>
         <li>
-          <span> Ledgers</span>
+          <span> Tax Ledgers</span>
         </li>
         <li class="active">
 
@@ -159,7 +159,7 @@
   <div id="modalpopupledgerupsert" class="modal fade" tabindex="-1" role="dialog"
     aria-labelledby="modalpopupledgerupsert" aria-hidden="true">
 
-    <form   [formGroup]="LedgerForm" (ngSubmit)="SaveData()" class="form-horizontal">
+    <form [formGroup]="LedgerForm" (ngSubmit)="SaveData()" class="form-horizontal">
       <div class="modal-dialog ">
         <div class="modal-content">
           <div class="modal-header">
@@ -209,8 +209,9 @@
 
 
             <div class="form-group" [ngClass]="{'has-error': formErrors.LedgerText}">
-              <label class="col-sm-5 control-label" for="LedgerText">Ledger Text <span
-                  class="mandantory">*</span></label>
+              <label class="col-sm-5 control-label" for="LedgerText">Ledger Text
+                <!-- <span class="mandantory">*</span> -->
+              </label>
               <div class="col-sm-6">
                 <input id="LedgerText" type="text" class="form-control" formControlName="LedgerText"
                   (blur)="logValidationErrors()" maxlength="5" (change)="OnChangeforLedgerName()"

@@ -15,6 +15,7 @@ import { GoodsDisputeListComponent } from './goods-dispute-list/goods-dispute-li
 import { InventorydetaillistComponent } from './inventorydetaillist/inventorydetaillist.component';
 import { GoodsdisputeviewComponent } from './goodsdisputeview/goodsdisputeview.component';
 import { GoodsreceiptviewComponent } from './goodsreceiptview/goodsreceiptview.component'; 
+import { GoodsgateacknowledgementComponent } from './goodsgateacknowledgement/goodsgateacknowledgement.component';
 
 const appRoutes: Routes = [ 
     
@@ -29,6 +30,7 @@ const appRoutes: Routes = [
    { path: 'Inventorydetaillist', component: InventorydetaillistComponent, canActivate: [AuthGuard, StoreGuard] },
    { path: 'Goodsreceiptview/:id', component: GoodsreceiptviewComponent, canActivate: [AuthGuard, StoreGuard] },
    { path: 'Goodsdisputeview/:id', component: GoodsdisputeviewComponent, canActivate: [AuthGuard, StoreGuard] },
+   { path: 'GoodsGateAcknowledgement', component: GoodsgateacknowledgementComponent, canActivate: [AuthGuard,] },
 
 ];
 

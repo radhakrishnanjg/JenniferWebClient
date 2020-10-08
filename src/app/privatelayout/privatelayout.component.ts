@@ -1,15 +1,13 @@
 import { Component, OnInit, } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import { Router } from '@angular/router';
-import { CookieService } from 'ngx-cookie-service';
+import { Router } from '@angular/router'; 
 
 import { AuthenticationService } from '../_services/service/authentication.service';
 import { Userpermission, Companydetails, CompanyRegister } from '../_services/model';
 import { PrivateutilityService } from '../_services/service/privateutility.service';
 import { EncrDecrService } from '../_services/service/encr-decr.service';
 import { CompanydetailService } from "../_services/service/companydetail.service";
-import { ConnectionService } from 'ng-connection-service';
-import { SellerregistrationService } from '../_services/service/crossborder/sellerregistration.service';
+import { ConnectionService } from 'ng-connection-service'; 
 
 @Component({
   selector: 'app-privatelayout',

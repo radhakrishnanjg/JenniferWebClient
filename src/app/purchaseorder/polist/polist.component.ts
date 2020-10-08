@@ -17,14 +17,11 @@ import { SortDescriptor, orderBy } from '@progress/kendo-data-query';
 })
 export class PolistComponent implements OnInit {
 
-  //#region variable declartion
-
-  obj: Poorder;
+  //#region variable declartion 
 
   selectedDeleteId: number;
   deleteColumn: string;
   LocationID: number;
-  dtOptions: DataTables.Settings = {};
   SearchBy: string = '';
   SearchKeyword: string = '';
   Searchaction: boolean = true;
@@ -60,8 +57,9 @@ export class PolistComponent implements OnInit {
   }
 
   onChange(range) {
-    let startdate: string = range.startDate._d.toISOString().substring(0, 10);
-    let enddate: string = range.endDate._d.toISOString().substring(0, 10);
+    let startdate: string = moment(this.selectedDateRange.startDate._d, 'YYYY-MM-DD[T]HH:mm').format('YYYY-MM-DD').toString();
+    let enddate: string = moment(this.selectedDateRange.endDate._d, 'YYYY-MM-DD[T]HH:mm').format('YYYY-MM-DD').toString();
+
   }
   Search(): void {
     this.onLoad(this.SearchBy, this.SearchKeyword);
@@ -133,7 +131,7 @@ export class PolistComponent implements OnInit {
     );
   }
 
-  onLoad(SearchBy: string, Search: string, ) {
+  onLoad(SearchBy: string, Search: string) {
     let startdate: Date = this.selectedDateRange.startDate._d.toISOString().substring(0, 10);
     let enddate: Date = this.selectedDateRange.endDate._d.toISOString().substring(0, 10);
     //
@@ -162,8 +160,8 @@ export class PolistComponent implements OnInit {
   //#region Paging Sorting and Filtering Start
   public allowUnsort = false;
   public sort: SortDescriptor[] = [{
-    field: 'PONumber',
-    dir: 'asc'
+    field: 'PODate',
+    dir: 'desc'
   }];
   public gridView: GridDataResult;
   public pageSize = 10;
@@ -177,7 +175,7 @@ export class PolistComponent implements OnInit {
     // Initial filter descriptor
     filter: {
       logic: 'and',
-      filters: [{ field: 'PONumber', operator: 'contains', value: '' }]
+      filters: [{ field: 'PODate', operator: 'contains', value: '' }]
     }
   };
   public pageChange({ skip, take }: PageChangeEvent): void {

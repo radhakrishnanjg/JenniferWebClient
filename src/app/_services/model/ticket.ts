@@ -16,8 +16,7 @@ export class Ticket {
     ReadFlag: number;
     UserType: string;
     LastModifiedDate: Date;
-    // SupportQueryID:	number;
-    // LoginId: number;
+    Action:string; 
 }
 
 export class History {
@@ -27,7 +26,9 @@ export class History {
     UserType: string;
     SupportQueryID: number;
     SupportStatus: string;
+    ModuleType:string;
     TimeLeft: string;
+    IsForwarded: boolean;
 }
 
 export class SurveyMaster { 

@@ -16,7 +16,6 @@ import { environment } from '../../../environments/environment';
   providedIn: 'root'
 })
 export class VoucherService {
-  objJsonModal: JsonModal = {} as any;
 
   constructor(private httpClient: HttpClient,
     private authenticationService: AuthenticationService) { }
@@ -81,6 +80,7 @@ export class VoucherService {
       );
   }
 
+  objJsonModal: JsonModal = {} as any;
   public Insert(obj: Voucher): Observable<Result> {
     let currentUser = this.authenticationService.currentUserValue;
     obj.CompanyID = currentUser.CompanyID;

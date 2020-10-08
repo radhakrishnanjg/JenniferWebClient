@@ -170,7 +170,7 @@
                                 <td> {{ dis.InvoiceDate | date :"MM-dd-yyyy HH:mm" }} </td>
                                 <td> {{ dis.InvoiceNumber }} </td>
                                 <td class="text-right"> {{ dis.PayableAmt | currency: 'INR'}} </td>
-                                <td class="text-right"> {{ dis.PendingAmt | currency: 'INR'}} </td>
+                                <td class="text-right"> {{ dis.PendingAmt  }} </td>
                                 <td class="text-right">
                                     <input type="text" class="form-control" id="{{dis.PurchaseID}}"
                                         name="{{dis.PurchaseID}}" (input)="updateList(id,'PaidAmt',$event.target.value)"
@@ -191,7 +191,7 @@
 
                 </div>
             </div>
-            
+
         </div>
 
         <div class="panel-footer">

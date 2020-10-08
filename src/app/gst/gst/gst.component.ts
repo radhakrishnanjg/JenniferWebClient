@@ -181,7 +181,8 @@ export class GstComponent implements OnInit {
     var Year = this.GstUploadForm.controls['Year'].value;//.startDate._d.getFullYear();
     var Month = this.GstUploadForm.controls['Month'].value//.startDate._d.getMonth();
 
-    this._gstfinancefileuploadService.FinanceApproverCheck()
+    let ActionName= "LO";
+    this._gstfinancefileuploadService.FinanceApproverCheck(ActionName)
       .subscribe(
         (CheckAcess) => {
           if (CheckAcess != "LO") {

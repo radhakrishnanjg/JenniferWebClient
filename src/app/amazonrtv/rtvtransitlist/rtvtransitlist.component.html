@@ -8,7 +8,7 @@
     <div class="pull-right hidden-xs">
       <ol class="breadcrumb" id="dynamicbreadcrumb">
         <li>
-          <span>Amazon Auto RTV</span>
+          <span>Amazon RTV</span>
         </li>
         <li>
           <span> In-Transit</span>
@@ -23,56 +23,93 @@
 <div class="row">
   <div class="col-lg-12">
     <div class="panel panel-default">
-      <div class="table-responsive">
-        <table class="table">
-          <kendo-grid [data]="gridView" resizable="true" columnMenu="true" [pageSize]="pageSize" [skip]="skip"
-            [pageable]="{pageSizes: [10, 25, 50, 100, 250, 500]}" (pageChange)="pageChange($event)" [sortable]="{
+      <div class="panel-heading">
+        <div class="row">
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="input-group col-xs-12 col-sm-12" role="group" aria-label="Basic example">
+              <div class="col-md-3 col-sm-3 col-xs-12 nopading_loct">
+                <select [(ngModel)]="SearchBy" class="serchcurv form-control btn-group">
+                  <option value="" selected="select">Search By</option>
+                  <option value="ByMerchantRemovalOrderID">RTV Number</option>
+                  <option value="ByTrackingNumber">Tracking Number</option>
+                  <option value="ByDate">Date</option>
+                </select>
+              </div>
+              <div class="col-md-4 col-sm-3 nopading_loct" *ngIf="(SearchBy!='ByDate')">
+                <input [(ngModel)]="SearchKeyword" type="text" class="serchcurv form-control btn-group">
+              </div>
+              <div class="col-md-3 col-sm-3 nopading_loct" *ngIf="(SearchBy=='ByDate')">
+                <input type="text" ngxDaterangepickerMd [(ngModel)]="selectedDateRange"
+                  class="serchcurv form-control btn-group col-xs-12 pointer"
+                  style="border:1px soloid #ccc !important; padding :3px;left:0px" [showCustomRangeLabel]="true"
+                  [ranges]="Searchranges" [showCancel]="true" placeholder="Select please..."
+                  (ngModelChange)="onChange($event)" />
+              </div>
+              <div class="col-md-3 col-sm-3 col-xs-6 nopading_loct nopading_loct">
+                <button class="serchcurv btn btn-default btn-group" (click)="Search()" title="Search">
+                  <i class="fa fa-search " aria-hidden="true"></i>
+                </button>
+                <button class="serchcurv btn btn-default btn-group" (click)="Refresh()" title="Reset">
+                  <i class="fa fa-refresh" aria-hidden="true"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel-body">
+        <div class="table-responsive">
+          <table class="table">
+            <kendo-grid [data]="gridView" resizable="true" columnMenu="true" [pageSize]="pageSize" [skip]="skip"
+              [pageable]="{pageSizes: [10, 25, 50, 100, 250, 500]}" (pageChange)="pageChange($event)" [sortable]="{
             allowUnsort: allowUnsort,
             mode:  'single'
             }" [sort]="sort" (sortChange)="sortChange($event)" [filterable]="true"
-            (dataStateChange)="dataStateChange($event)" [filter]="state.filter">
-            <ng-template kendoGridToolbarTemplate>
-              <input placeholder="Search in all columns..." style="float:right;" kendoTextBox
-                (input)="onFilter($event.target.value)" />
-              <button kendoGridExcelCommand type="button" icon="file-excel"> </button>
-              <button kendoGridPDFCommand icon="file-pdf"> </button>
-              <kendo-grid-pdf fileName="RTVTransitList.pdf" [repeatHeaders]="true"></kendo-grid-pdf>
-              <kendo-grid-excel fileName="RTVTransitList.xlsx"></kendo-grid-excel>
-            </ng-template>
-            <kendo-grid-column field="RemovalOrderID" title="Removal OrderID">
-            </kendo-grid-column>
-            <kendo-grid-column field="RemovalDate" title="Removal Date" filter="date" format="{0:d}"
-              [filterable]="false">
-              <ng-template kendoGridCellTemplate let-dataItem>
-                {{ dataItem.RemovalDate | date :"MM-dd-yyyy" }}
+              (dataStateChange)="dataStateChange($event)" [filter]="state.filter">
+              <ng-template kendoGridToolbarTemplate>
+                <input placeholder="Search in all columns..." style="float:right;" kendoTextBox
+                  (input)="onFilter($event.target.value)" />
+                <button kendoGridExcelCommand type="button" icon="file-excel"> </button>
+                <button kendoGridPDFCommand icon="file-pdf"> </button>
+                <kendo-grid-pdf fileName="RTVTransitList.pdf" [repeatHeaders]="true"></kendo-grid-pdf>
+                <kendo-grid-excel fileName="RTVTransitList.xlsx"></kendo-grid-excel>
               </ng-template>
-            </kendo-grid-column>
-            <kendo-grid-column field="TrackingNumber" title="Tracking Number">
-            </kendo-grid-column>
-            <kendo-grid-column field="ShipmentDate" title="Shipment Date" filter="date" format="{0:d}"
-              [filterable]="false">
-              <ng-template kendoGridCellTemplate let-dataItem>
-                {{ dataItem.ShipmentDate | date :"MM-dd-yyyy HH:mm" }}
-              </ng-template>
-            </kendo-grid-column>
-            <kendo-grid-column field="Carrier" title="Carrier">
-            </kendo-grid-column>
-            <kendo-grid-column field="ItemCode" title="Item Code">
-            </kendo-grid-column>
-            <kendo-grid-column field="ItemCode2" title="Item Code2">
-            </kendo-grid-column>
-            <kendo-grid-column field="InventoryType" title="Inventory Type">
-            </kendo-grid-column>
-            <kendo-grid-column field="Qty" title="Qty">
-            </kendo-grid-column>
-            <kendo-grid-column field="InTransitValue" title="InTransit Value">
-            </kendo-grid-column>
-            <kendo-grid-column field="ShipmentStatus" title="Shipment Status">
-            </kendo-grid-column>
-            <kendo-grid-column field="Ageing_on_Shipment" title="Ageing on Shipment">
-            </kendo-grid-column>
-          </kendo-grid>
-        </table>
+              <kendo-grid-column field="RemovalOrderID" title="Removal OrderID">
+              </kendo-grid-column>
+              <kendo-grid-column field="RemovalDate" title="Removal Date" filter="date" format="{0:d}"
+                [filterable]="false">
+                <ng-template kendoGridCellTemplate let-dataItem>
+                  {{ dataItem.RemovalDate | date :"MM-dd-yyyy" }}
+                </ng-template>
+              </kendo-grid-column>
+              <kendo-grid-column field="TrackingNumber" title="Tracking Number">
+              </kendo-grid-column>
+              <kendo-grid-column field="ShipmentDate" title="Shipment Date" filter="date" format="{0:d}"
+                [filterable]="false">
+                <ng-template kendoGridCellTemplate let-dataItem>
+                  {{ dataItem.ShipmentDate | date :"MM-dd-yyyy HH:mm" }}
+                </ng-template>
+              </kendo-grid-column>
+              <kendo-grid-column field="Carrier" title="Carrier">
+              </kendo-grid-column>
+              <kendo-grid-column field="ItemCode" title="Item Code">
+              </kendo-grid-column>
+              <kendo-grid-column field="ItemCode2" title="Item Code2">
+              </kendo-grid-column>
+              <kendo-grid-column field="InventoryType" title="Inventory Type">
+              </kendo-grid-column>
+              <kendo-grid-column field="Qty" title="Qty">
+              </kendo-grid-column>
+              <kendo-grid-column field="InTransitValue" title="InTransit Value">
+              </kendo-grid-column>
+              <kendo-grid-column field="ShipmentStatus" title="Shipment Status">
+              </kendo-grid-column>
+              <kendo-grid-column field="Ageing_on_Shipment" title="Ageing on Shipment">
+              </kendo-grid-column>
+            </kendo-grid>
+          </table>
+        </div>
       </div>
     </div>
   </div>

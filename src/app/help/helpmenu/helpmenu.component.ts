@@ -16,7 +16,6 @@ import { PrivateutilityService } from '../../_services/service/privateutility.se
 export class HelpmenuComponent implements OnInit {
   Helpmenuform: FormGroup;
   lst: Helpmenu[];
-  lstMenuType: Dropdown[];
   obj: Helpmenu = {} as any;
   panelTitle: string;
   action: boolean;
@@ -27,7 +26,7 @@ export class HelpmenuComponent implements OnInit {
     private fb: FormBuilder,
     private _router: Router,
     private aroute: ActivatedRoute,
-    
+
     private _helpmenuService: HelpmenuService,
     private _authorizationGuard: AuthorizationGuard,
     private _PrivateutilityService: PrivateutilityService,
@@ -41,12 +40,15 @@ export class HelpmenuComponent implements OnInit {
     'MenuType': '',
     'LinkText': '',
     'ShortDescription': '',
-
+    'ApplicationName': '',
 
   };
 
   validationMessages = {
 
+    'ApplicationName': {
+      'required': 'This field is required.',
+    },
     'MenuType': {
       'required': 'This field is required.',
 
@@ -89,6 +91,7 @@ export class HelpmenuComponent implements OnInit {
 
 
     this.BindMenuTypes();
+    this.BindApplications();
     this.aroute.paramMap.subscribe(params => {
       this.identity = +params.get('id');
     });
@@ -108,10 +111,12 @@ export class HelpmenuComponent implements OnInit {
               IsActive: data.IsActive,
               MenuType: data.MenuType,
               ParentId: ParentId,
+              ApplicationName: data.ApplicationName,
             });
             //
             this.Helpmenuform.get('MenuType').disable();
             this.Helpmenuform.get('ParentId').disable();
+            this.Helpmenuform.get('ApplicationName').disable();
           },
           (err: any) => {
             //
@@ -132,21 +137,33 @@ export class HelpmenuComponent implements OnInit {
       ShortDescription: ['', [Validators.required]],
       PageContent: ['', []],
       IsActive: [0,],
+      ApplicationName: ['', [Validators.required]],
     });
 
   }
 
 
+  lstMenuType: Dropdown[];
   BindMenuTypes() {
-    //
     this._PrivateutilityService.GetValues('HelpMenuType')
       .subscribe(
         (data: Dropdown[]) => {
           this.lstMenuType = data;
-          //
         },
         (err: any) => {
-          //
+          console.log(err);
+        }
+      );
+  }
+
+  lstApplication: Dropdown[];
+  BindApplications() {
+    this._PrivateutilityService.GetValues('Application')
+      .subscribe(
+        (data: Dropdown[]) => {
+          this.lstApplication = data;
+        },
+        (err: any) => {
           console.log(err);
         }
       );
@@ -154,16 +171,12 @@ export class HelpmenuComponent implements OnInit {
 
   onchangeMenuType(selectedValue: string) {
     if (selectedValue == 'S' || selectedValue == 'C') {
-      //
       this._helpmenuService.getMenus(selectedValue)
         .subscribe(
           (data: Helpmenu[]) => {
-            debugger
             this.lst = data;
-            //
           },
           (err: any) => {
-            //
             console.log(err);
           }
         );
@@ -202,31 +215,25 @@ export class HelpmenuComponent implements OnInit {
 
   Insert() {
 
+    this.obj.ApplicationName = this.Helpmenuform.controls['ApplicationName'].value;
     this.obj.MenuType = this.Helpmenuform.controls['MenuType'].value;
     this.obj.ParentId = this.Helpmenuform.controls['ParentId'].value;
     this.obj.LinkText = this.Helpmenuform.controls['LinkText'].value;
     this.obj.ShortDescription = this.Helpmenuform.controls['ShortDescription'].value;
     this.obj.PageContent = this.Helpmenuform.controls['PageContent'].value;
-
-
-
-    //
     this._helpmenuService.Insert(this.obj).subscribe(
       (data) => {
         if (data != null && data.Flag == true) {
-          //
           this.alertService.success(data.Msg);
           this._router.navigate(['/Helpmenulist']);
         }
         else {
-          //
           this.alertService.error(data.Msg);
           this._router.navigate(['/Helpmenulist']);
         }
         this.identity = 0;
       },
       (error: any) => {
-        //
         console.log(error);
       }
     );
@@ -234,30 +241,26 @@ export class HelpmenuComponent implements OnInit {
 
   Update() {
     this.obj.HelpMenuID = this.identity;
+    this.obj.ApplicationName = this.Helpmenuform.controls['ApplicationName'].value;
     this.obj.MenuType = this.Helpmenuform.controls['MenuType'].value;
     this.obj.ParentId = this.Helpmenuform.controls['ParentId'].value;
     this.obj.LinkText = this.Helpmenuform.controls['LinkText'].value;
     this.obj.ShortDescription = this.Helpmenuform.controls['ShortDescription'].value;
     this.obj.PageContent = this.Helpmenuform.controls['PageContent'].value;
     this.obj.IsActive = this.Helpmenuform.controls['IsActive'].value;
-
-    //
     this._helpmenuService.Update(this.obj).subscribe(
       (data) => {
         if (data != null && data.Flag == true) {
-          //
           this.alertService.success(data.Msg);
           this._router.navigate(['/Helpmenulist']);
         }
         else {
-          //
           this.alertService.error(data.Msg);
           this._router.navigate(['/Helpmenulist']);
         }
         this.identity = 0;
       },
       (error: any) => {
-        //
         console.log(error);
       }
     );

@@ -1,6 +1,21 @@
+
 .landscren {
   margin-top:.5rem;
 }
+.signinsection {
+  width: 100%;
+  height: 100vh;
+  margin: 0 auto;
+  padding: 0;
+ background-image: url(/assets/images/login-banner.gif);
+  background-size: contain; 
+  background-color:#000000ba;
+  /* background: rgb(28,28,28);
+  background: linear-gradient(90deg, rgba(28,28,28,1) 0%, rgba(46,46,46,1) 63%, rgba(57,57,57,1) 100%); */
+  background-repeat: no-repeat;
+  background-blend-mode: multiply;
+  background-position:10% 0;
+} 
 .landscren p {
   font-size: 10px;
   text-align: center;
@@ -18,22 +33,20 @@
   text-transform:capitalize;
   margin-bottom:.2rem;
 }
-.loginform-control {
+.form-control {
   display: block;
   width: 100%;
-  height: calc(2.25rem + 2px);
-  padding: .275rem .55rem;
-  font-size: .80rem;
-  line-height: 1.5;
-  color: #515559;
-  background-color: #fff;
-  background-clip: padding-box;
-  border-bottom: 1px solid #cecece;
-  border-radius: 0;
-  transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
-  border-top:1px solid #FFF;
-  border-left:1px solid #FFF;
-  border-right:1px solid #FFF; 
+  height: 34px;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.42857143;
+  color: #555;
+  background-color: #fff !important;
+  background-image: none;
+  border: 1px solid #201e1e;
+  border-radius: 0px;
+  box-shadow: inset 0 1px 1px rgb(0 0 0 / 16%);
+  transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
 }
 .loginform-control:focus {
   color: #495057;
@@ -66,17 +79,12 @@ font-weight: 400;
 padding: 10px;
 -webkit-border-radius: 0!important;
 border-radius: 0!important;
+background-color: #FFF;
+height: 100vh;
 }
-.centered {
-  position: fixed;
-  top:30%;
-  left: 20%;
-  transform: translate(-0%, -20%);
-  -webkit-transform: translate(-0%, -20%);
-  -moz-transform: translate(-0%, -20%);
-  -o-transform: translate(-0%, -20%);
-  -ms-transform: translate(-0%, -20%);
-  z-index: 100; 
+.form-horizontal .form-group {
+  margin-right: 0px ;
+  margin-left: 0px;
 }
 .control-label
 {
@@ -84,17 +92,17 @@ font-weight:500;
 }
 /****/
 .form-horizontal .control-label {
-padding-top: 10px !important;
-margin: 0px 3px; 
-text-align: right;
-vertical-align: super;
-text-transform: capitalize;
-font-size: 11px;
+  padding-top: 12px !important;
+  margin: 0px 4px;
+  text-align: right;
+  vertical-align: super;
+  text-transform: capitalize;
+  font-size: 12px;
 }
 a {
-color: #337ab7;
-text-decoration: none;
-font-size: 11px;
+  color: #2f3ee5;
+  text-decoration: none;
+  font-size:12px;
 }
 .btn-success {
 color: #fff;
@@ -112,12 +120,12 @@ text-transform: none !important;
 }
 .actionheading h2
 {
-  text-transform: uppercase !important;
-  margin: 5px !important; 
+  text-transform: capitalize !important;
+  margin:20px !important; 
 }
-.terms p { margin-top:2px; text-align:left;text-transform:inherit; font-size:10px;}
+.terms p { margin-top:2px; text-transform:inherit; font-size:11px;}
 .cardvideo { 
-  background-color: #000; 
+  background-color: #FFF; 
 }
 /**07012020 SHIVA**/
 /*MEDIA QUEARY FOR MOBILE BELOW 4.5*/
@@ -181,5 +189,6 @@ text-transform: none !important;
     background-size: contain;
     background-position: bottom;
     background-repeat: no-repeat;
-   } 
+   }  
 }
+ 

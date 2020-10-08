@@ -8,8 +8,8 @@ import { NotFoundError } from '../../common/not-found-error';
 import { AppError } from '../../common/app-error';
 import { AuthenticationService } from './authentication.service';
 import { environment } from '../../../environments/environment';
-import { GoodsReceipt, GoodsReceiptDetail, PONumber, } from '../model/goodsreceipt.model';
-import { Result } from '../model';
+import { DocketNumber, GoodsReceipt, GoodsReceiptDetail, PONumber, } from '../model/goodsreceipt.model';
+import { JsonModal, Result } from '../model';
 import { Dropdown } from '../model';
 
 @Injectable({
@@ -131,7 +131,36 @@ export class GoodsReceiptService {
       .pipe(catchError(this.handleError));
   }
 
+  //#region Goods Gate Acknowledgement
+  public DocketNumberSearch(SearchBy: string, Search: string, StartDate: string, EndDate: string):
+    Observable<DocketNumber[]> {
+    return this.httpClient.get<string>(environment.baseUrl + `GoodsReceipt/DocketNumberSearch`
+      + `?SearchBy=` + encodeURIComponent(SearchBy) + `&Search=` + encodeURIComponent(Search)
+      + `&StartDate=` + StartDate + `&EndDate=` + EndDate)
+      .pipe(
+        map(data => {
+          return JSON.parse(data) as DocketNumber[]
+        }),
+        catchError(this.handleError)
+      );
+  }
 
+  objJsonModal: JsonModal = {} as any;
+  lstDocketNumber: DocketNumber[] = [] as any;
+  public DocketNumberAction(lstDocketNumber: DocketNumber[]): Observable<Result> {
+    let currentUser = this.authenticationService.currentUserValue;
+    let LoginId = currentUser.UserId;
+    lstDocketNumber.forEach(element => {
+      let objSalesratecard1: DocketNumber = {} as any;
+      objSalesratecard1.DocketNumber = element.DocketNumber;
+      objSalesratecard1.LoginId = LoginId;
+      this.lstDocketNumber.push(objSalesratecard1);
+    });
+    this.objJsonModal.Json = JSON.stringify(this.lstDocketNumber);
+    return this.httpClient.post<Result>(environment.baseUrl + `GoodsReceipt/DocketNumberAction`, this.objJsonModal)
+      .pipe(catchError(this.handleError));
+  }
+  // #endregion
   private handleError(error: HttpErrorResponse) {
 
     if (error.status === 404)

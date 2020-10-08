@@ -45,3 +45,21 @@ export class VoucherGSTID {
 export class LedgerTaxRate {
   TaxRate: number;
 }
+
+export class TaxLedger { 
+  AccountID: number;
+  FinancialStatementType: string;
+  Groups: string;
+  SubGroup: string;
+  LedgerName: string; 
+
+  Action: string;
+  LoginId: number;
+  CompanyID: number;
+}
+ 
+export class ChartOfAccount {  
+  FinancialStatementType: string;
+  Groups: string;
+  SubGroup: string; 
+}

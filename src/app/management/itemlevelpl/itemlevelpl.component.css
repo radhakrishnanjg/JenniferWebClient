@@ -1,0 +1,32 @@
+tr.collapse.in {
+    display:table-row;
+  }
+  .bggrey
+  {
+    background: #CCc !important;
+    font-weight: 700!important;
+  }
+  .bgblack
+  {
+    background: #000 !important ;
+    color:#fff !important ;
+    
+  } 
+  .bggreen
+  {
+    background: #008080 !important;
+    font-weight: 700!important;
+    color:#fff !important ;
+  }
+  .bgorg
+  {
+    background: #FF7F62 !important;
+    font-weight: 700!important;
+    color: #fff !important;
+  }
+  .fontbig
+  {
+    font-size: 20px;
+    padding-left: 5px;
+    border-radius:10px;
+  } 

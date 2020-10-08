@@ -37,10 +37,8 @@ export class LedgerlistComponent implements OnInit {
     private alertService: ToastrService,
     private _usernameValidator: UsernameValidator,
     private _ledgerService: LedgerService,
-    private _router: Router,
     private utilityService: UtilityService,
     private _authorizationGuard: AuthorizationGuard,
-    private _PrivateutilityService: PrivateutilityService,
     private fb: FormBuilder,
   ) { }
 
@@ -103,8 +101,9 @@ export class LedgerlistComponent implements OnInit {
     this.LedgerForm = this.fb.group({
       VoucherID: [0, [Validators.min(1)]],
       TaxRate: ['', [Validators.required]],
-      LedgerText: ['', [Validators.required],
-        this._usernameValidator.existLedgerText(this.identity)],
+      LedgerText: ['', [],
+        // this._usernameValidator.existLedgerText(this.identity)
+      ],
 
     });
 
@@ -163,10 +162,10 @@ export class LedgerlistComponent implements OnInit {
       );
 
 
-  } 
-  
-   
-  OnChangeforLedgerName() { 
+  }
+
+
+  OnChangeforLedgerName() {
     let VoucherID = this.LedgerForm.controls['VoucherID'].value;;
     let TaxRate = this.LedgerForm.controls['TaxRate'].value;
     let LedgerText = this.LedgerForm.controls['LedgerText'].value;
@@ -177,18 +176,22 @@ export class LedgerlistComponent implements OnInit {
     let StateCode = this.lstStates.filter(a => a.StateID == StateID)[0].StateCode;
 
     if (TaxRate == 0) {
-      this.InterstateLedgerName = VoucherType + ' ' + StateCode + ' '+ GSTID + ' @ Tax Exempted' + ' INTERSTATE' + '-' + LedgerText;
+      this.InterstateLedgerName = VoucherType + ' ' + StateCode + ' ' + GSTID + ' @ Tax Exempted' + ' INTERSTATE' + '-' + LedgerText;
       this.InterstateOutput_InputLedgerName = 'Output ' + StateCode + '-IGST ' + ' @ Tax Exempted' + '-' + LedgerText;
       this.LocalLedgerName = VoucherType + ' ' + StateCode + ' @ Tax Exempted' + ' LOCAL' + '-' + LedgerText;
       this.LocalOutput_InputLedgerName1 = 'Output ' + StateCode + ' -CGST ' + ' @ Tax Exempted' + '-' + LedgerText;
       this.LocalOutput_InputLedgerName2 = 'Output ' + StateCode + ' -SGST ' + ' @ Tax Exempted' + '-' + LedgerText;
     }
     else {
-      this.InterstateLedgerName = VoucherType + ' ' + StateCode + ' '+ GSTID + ' @ ' + TaxRate + '% INTERSTATE' + '-' + LedgerText;
+      this.InterstateLedgerName = VoucherType + ' ' + StateCode + ' ' + GSTID + ' @ ' + TaxRate + '% INTERSTATE' + '-' + LedgerText;
       this.InterstateOutput_InputLedgerName = 'Output ' + StateCode + '-IGST ' + ' @ ' + TaxRate + '%' + '-' + LedgerText;
       this.LocalLedgerName = VoucherType + ' ' + StateCode + ' @ ' + TaxRate + '% LOCAL' + '-' + LedgerText;
       this.LocalOutput_InputLedgerName1 = 'Output ' + StateCode + ' -CGST ' + ' @ ' + TaxRate / 2 + '%' + '-' + LedgerText;
       this.LocalOutput_InputLedgerName2 = 'Output ' + StateCode + ' -SGST ' + ' @ ' + TaxRate / 2 + '%' + '-' + LedgerText;
+    }
+    if (VoucherType == "PURCHASE") {
+      this.InterstateLedgerName = "";
+      this.InterstateOutput_InputLedgerName = "";
     }
   }
 
@@ -225,10 +228,10 @@ export class LedgerlistComponent implements OnInit {
     this.LedgerForm = this.fb.group({
       VoucherID: [0, [Validators.min(1)]],
       TaxRate: ['', [Validators.required]],
-      LedgerText: ['', [Validators.required],
-        this._usernameValidator.existLedgerText(this.identity)],
-
-    });
+      LedgerText: ['', [],
+        // this._usernameValidator.existLedgerText(this.identity)
+      ],
+    }); 
 
   }
 
@@ -245,8 +248,9 @@ export class LedgerlistComponent implements OnInit {
     this.LedgerForm = this.fb.group({
       VoucherID: [0, [Validators.min(1)]],
       TaxRate: ['', [Validators.required]],
-      LedgerText: ['', [Validators.required],
-        this._usernameValidator.existLedgerText(this.identity)],
+      LedgerText: ['', [],
+        // this._usernameValidator.existLedgerText(this.identity)
+      ],
 
     });
 

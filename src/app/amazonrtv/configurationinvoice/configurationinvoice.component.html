@@ -1,0 +1,388 @@
+<div class="row">
+  <div class="col-sm-6 col-lg-6">
+    <h3>
+      Sales Invoice
+    </h3>
+  </div>
+  <div class="col-sm-6 col-lg-6">
+    <div class="pull-right hidden-xs">
+      <ol class="breadcrumb" id="dynamicbreadcrumb">
+        <li>
+          <span> Revenue</span>
+        </li>
+        <li>
+          <span> Invoice</span>
+        </li>
+        <li class="active">
+
+          Download
+        </li>
+      </ol>
+    </div>
+  </div>
+</div>
+<div class="panel panel-default">
+
+  <div class="panel-heading">
+
+    <div class="row">
+      <div class="col-sm-4">
+        <div class="form-group">
+          <div>
+            <label class="control-label"> Invoice Number <span class="mandantory">*</span></label>
+            <select class="form-control" [(ngModel)]="SalesInvoiceID"
+              (change)="onchange_SalesInvoiceID($event.target.value)">
+              <option value="0" selected="selected">Select</option>
+              <option *ngFor="let dis of lstInvoiceNumber" value={{dis.SalesInvoiceID}}>
+                {{dis.InvoiceNumber}}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-2" style="padding-top:30px">
+        <div class="form-group" *ngIf="SalesInvoiceID!=0">
+          <button type="button" class="btn btn-danger"
+            (click)="pdf.saveAs(objSalesInvoiceHeader?.InvoiceNumber +'.pdf')">
+            Download Invoice PDF
+          </button>
+        </div>
+      </div>
+      <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 " style="padding-top:30px">
+        <div class="pull-right">
+          <button type="button" class="btn btn-primary" routerLink="/Orderlist" title="Back">
+            Back
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="panel-body">
+    <!-- *ngIf="SalesInvoiceID!=0" -->
+    <!-- margin="2cm" [keepTogether]="keepTogether"-->
+    <kendo-pdf-export #pdf paperSize="A4" margin="1cm" [repeatHeaders]="repeatHeaders">
+      <table class="table table-bordered table-condensed  table-striped" width="2480px" style=" font-family: Verdana, Geneva, Tahoma, sans-serif;
+        font-size:9px;background-color: #fff;color:#000;">
+        <tbody>
+          <tr style="font-size:9px;">
+            <td colspan="9" class="text-center" style="font-size:9px;">
+              <h2 style="font-size: 16px; text-transform:uppercase;">Tax Invoice</h2>
+            </td>
+          </tr>
+          <tr style="font-size:9px;">
+            <td colspan="3" rowspan="3">
+              <b>Seller </b><br>
+              {{ objSalesInvoiceHeader?.Seller}}
+            </td>
+            <td colspan="3">
+              <b>Invoice No. </b><br>
+              {{ objSalesInvoiceHeader?.InvoiceNumber}}
+            </td>
+            <td colspan="3">
+              <b>Dated </b><br>
+              {{ objSalesInvoiceHeader?.Dated  | date :"MM-dd-yyyy HH:mm" }}
+            </td>
+          </tr>
+          <tr style="font-size:9px;">
+            <td colspan="3">
+              <b>Delivery Note </b><br>
+              {{ objSalesInvoiceHeader?.DeliveryNote}}
+            </td>
+            <td colspan="3">
+              <b>Mode/Terms of Payment </b><br>
+              {{ objSalesInvoiceHeader?.DiscountAllowedinDays}}
+            </td>
+          </tr>
+          <tr style="font-size:9px;">
+            <td colspan="3">
+              <b>Supplier's Ref </b><br>
+              {{ objSalesInvoiceHeader?.SupplierRef}}
+            </td>
+            <td colspan="3">
+              <b> Other Reference(s) </b><br>
+              {{ objSalesInvoiceHeader?.OtherRef}}
+            </td>
+          </tr>
+          <tr style=" font-size:9px;">
+            <td colspan="3" rowspan="4">
+              <b>Buyer </b><br>
+              {{ objSalesInvoiceHeader?.Buyer}}
+            </td>
+            <td colspan="3">
+              <b>Buyer's Order No. </b> <br>
+              {{ objSalesInvoiceHeader?.BuyerRef}}
+            </td>
+            <td colspan="3">
+              <b>Dated </b><br>
+              {{ objSalesInvoiceHeader?.Dated  | date :"MM-dd-yyyy HH:mm" }}
+            </td>
+
+          </tr>
+          <tr style=" font-size:9px;">
+            <td colspan="3">
+              <b>Dispatch Document No. </b><br>
+              {{ objSalesInvoiceHeader?.DispathDocument}}
+            </td>
+            <td colspan="3">
+              <b>Delivery Note Date </b><br>
+              {{ objSalesInvoiceHeader?.DeliveryNoteDate  | date :"MM-dd-yyyy HH:mm" }}
+
+            </td>
+          </tr>
+          <tr style=" font-size:9px;">
+            <td colspan="3">
+              <b>Dispatch through </b><br>
+              {{ objSalesInvoiceHeader?.CourierName}}
+            </td>
+            <td colspan="3">
+              <b>Destination </b> <br>
+              {{ objSalesInvoiceHeader?.City}}
+            </td>
+          </tr>
+          <tr style=" font-size:9px;">
+            <td colspan="6">
+              <b>Terms of Delivery </b> <br>
+              {{ objSalesInvoiceHeader?.TermOfDelovery}}
+            </td>
+          </tr>
+
+        </tbody>
+      </table>
+      <table class="table table-bordered table-condensed table-striped" width="2480px" style="font-family: Verdana, Geneva, Tahoma, sans-serif;
+        font-size:9px;background-color: #fff!important;color:#000!important;">
+        <thead>
+          <tr style="font-family: Verdana, Geneva, Tahoma, sans-serif;
+            font-size:9px;background-color: #fff;color:#000;">
+            <th class=" text-center" width="30" style="background-color: #FFF !important;color: #000 !important;"> SlNo
+            </th>
+            <th class="text-center" width="110" style="background-color: #FFF !important;color: #000 !important;">
+              Description Of Goods</th>
+            <th class="text-center" width="60" style="background-color: #FFF !important;color: #000 !important;">HSN/SAC
+            </th>
+            <th class="text-center" width="50" style="background-color: #FFF !important;color: #000 !important;">Qty
+            </th>
+            <th class="text-center" width="70" style="background-color: #FFF !important;color: #000 !important;">Rate
+            </th>
+
+            <th class="text-center" width="40" style="background-color: #FFF !important;color: #000 !important;">Per
+            </th>
+            <th class="text-center" width="70" style="background-color: #FFF !important;color: #000 !important;">Amount
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of objSalesInvoiceHeader?.lstDetail">
+            <td>{{ row.SLno }}</td>
+            <td>{{ row.ItemName }}</td>
+            <td>{{ row.HSNCode }}</td>
+            <td class="text-right">{{ row.Qty }}</td>
+            <td class="text-right"> {{ row.Rate }}</td>
+
+            <td class="text-center">{{ row.Per }}</td>
+            <td class="text-right">{{ row.Amount }}</td>
+          </tr>
+          <tr *ngFor="let row1 of objSalesInvoiceHeader?.lsttax" style="font-size:9px;">
+            <td style="font-size:9px;">
+            </td>
+            <td class="text-right" style="font-size:9px;">
+              OUTPUT
+              <span> {{row1?.TaxNature}}</span>
+              @ {{row1?.TaxRate}} % - {{row1?.TaxState}}
+            </td>
+            <td style="font-size:9px;">
+            </td>
+            <td style="font-size:9px;">
+            </td>
+            <td style="font-size:9px;">
+            </td>
+            <td style="font-size:9px;">
+            </td>
+            <td class="text-right" style="font-size:9px;">
+              {{ row1.TaxAmount }}
+            </td>
+          </tr>
+
+          <tr style="font-size:9px;">
+            <td style="font-size:9px;">
+            </td>
+            <td class="text-right" style="font-size:9px;">
+              Rounded Off
+            </td>
+            <td style="font-size:9px;">
+            </td>
+            <td style="font-size:9px;">
+
+            </td>
+            <td style="font-size:9px;">
+            </td>
+            <td style="font-size:9px;">
+            </td>
+            <td class="text-right" style="font-size:9px;">
+              <b> {{objSalesInvoiceHeader?.TotalAmountRoundtype  }} {{objSalesInvoiceHeader?.TotalAmountRoundValue  }}
+              </b>
+            </td>
+          </tr>
+
+          <tr style="font-size:9px;">
+            <th style="font-size:9px;">
+            </th>
+            <th class="text-right" style="font-size:9px;">
+              Total
+            </th>
+            <th style="font-size:9px;">
+            </th>
+            <th class="text-right" style="font-size:9px;">
+              <b>{{TotalQty  }} PCS </b>
+            </th>
+            <th style="font-size:9px;">
+            </th>
+            <th style="font-size:9px;">
+            </th>
+            <th class="text-right" style="font-size:9px;">
+              <b>{{objSalesInvoiceHeader?.TotalAmount | number:'.0'}} </b>
+            </th>
+          </tr>
+        </tbody>
+      </table>
+      <table class="table table-bordered table-condensed table-striped" width="2480px" style="font-family: Verdana, Geneva, Tahoma, sans-serif;
+          font-size:9px;background-color: #fff!important;color:#000!important;">
+
+        <tbody>
+          <tr>
+            <td colspan="7" style="font-size:9px;">
+              <b> Amount Chargeable(In Words) </b> <br />
+              {{ objSalesInvoiceHeader?.TotalAmuntWords}}
+            </td>
+          </tr>
+
+          <tr *ngIf="objSalesInvoiceHeader?.TaxNature=='IGST'" style="font-size:9px;">
+            <th colspan="3" class="text-center">HSNCode </th>
+            <th class="text-center">Taxable Value </th>
+            <th colspan="2" class="text-center">
+              Integrated Tax
+            </th>
+            <th rowspan="2" class="text-center">
+              Total <br /> Tax Amount
+            </th>
+          </tr>
+
+          <tr *ngIf="objSalesInvoiceHeader?.TaxNature=='IGST'" style="font-size:9px;">
+            <th colspan="3" class="text-center"> </th>
+            <th> </th>
+            <th class="text-center">
+              Rate
+            </th>
+            <th class="text-center">
+              Amount
+            </th>
+
+          </tr>
+
+          <tr [hidden]="objSalesInvoiceHeader?.TaxNature!='IGST'" *ngFor="let row of objSalesInvoiceHeader?.lstHSNCode"
+            style="font-size:9px;">
+            <td colspan="3">{{ row.HSNCode }}</td>
+            <td class="text-right">{{ row.TaxableValue }}</td>
+            <td class="text-right">{{ row.TaxRate }} %</td>
+            <td class="text-right"> {{ row.IGSTTaxAmount }}</td>
+            <td class="text-right">
+              {{ row.TaxAmount }}
+            </td>
+          </tr>
+          <tr [hidden]="objSalesInvoiceHeader?.TaxNature!='IGST'" style="font-size:9px;">
+            <td colspan="3" class="text-right"> Total </td>
+            <td class="text-right">{{TotalTaxableValue}}</td>
+            <td> </td>
+            <td class="text-right"> {{ TotalIGSTTaxAmount }}</td>
+            <td class="text-right">
+              {{ TotalTaxAmount }}
+            </td>
+          </tr>
+
+          <tr *ngIf="objSalesInvoiceHeader?.TaxNature!='IGST'" style="font-size:9px;">
+            <th class="text-center">HSNCode </th>
+            <th class="text-center">Taxable Value </th>
+            <th colspan="2" class="text-center">
+              Central Tax
+            </th>
+            <th colspan="2" class="text-center" style="font-size:9px;">
+              State Tax
+            </th>
+            <th rowspan="2" class="text-center">
+              Total <br /> Tax Amount
+            </th>
+          </tr>
+
+          <tr *ngIf="objSalesInvoiceHeader?.TaxNature!='IGST'" style="font-size:9px;">
+            <th class="text-center"> </th>
+            <th> </th>
+            <th class="text-center">
+              Rate </th>
+            <th class="text-center">
+              Amount </th>
+            <th class="text-center">
+              Rate
+            </th>
+            <th class="text-center">
+              Amount
+            </th>
+          </tr>
+
+          <tr [hidden]="objSalesInvoiceHeader?.TaxNature=='IGST'" *ngFor="let row of objSalesInvoiceHeader?.lstHSNCode"
+            style="font-size:9px;">
+            <td>{{ row.HSNCode }}</td>
+            <td class="text-right">{{ row.TaxableValue }}</td>
+            <td class="text-right">{{ row.TaxRate    }} %</td>
+            <td class="text-right"> {{ row.CGSTTaxAmount }}</td>
+            <td class="text-right">{{ row.TaxRate     }} %</td>
+            <td class="text-right"> {{ row.SGSTTaxAmount }}</td>
+            <td class="text-center">
+              {{ row.TaxAmount }}
+            </td>
+          </tr>
+
+          <tr [hidden]="objSalesInvoiceHeader?.TaxNature=='IGST'" style="font-size:9px;">
+            <th>Total</th>
+            <th class="text-right">{{ TotalTaxableValue }}</th>
+            <th class="text-right"> </th>
+            <th class="text-right"> {{ TotalCGSTTaxAmount }}</th>
+            <th class="text-right"> </th>
+            <th class="text-right"> {{ TotalSGSTTaxAmount }}</th>
+            <th class="text-right">
+              {{ TotalTaxAmount}}
+            </th>
+          </tr>
+
+          <tr style="font-size:9px;">
+            <td colspan="7">
+              <b> Tax Amount (In words):
+              </b> <br />
+              {{ objSalesInvoiceHeader?.TotalTaxWords}}
+            </td>
+          </tr>
+          <tr style="font-size:9px;">
+            <td colspan="4">
+              <b>Remarks: </b><br />
+              {{ objSalesInvoiceHeader?.Remarks}}
+            </td>
+            <td colspan="3" rowspan="2" class="text-center">
+              For {{ objSalesInvoiceHeader?.CompanyName}} : <br>
+              Signature <br>
+              <br>
+              <br>
+              <b>Authorised Signatory </b>
+            </td>
+          </tr>
+          <tr style="font-size:9px;">
+            <td colspan="4">
+              <b>Declaration : </b><br />
+              We declare that this invoice shows the actual price of the goods described and that all particulars are
+              true
+              I and correct.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </kendo-pdf-export>
+  </div>
+
+</div>

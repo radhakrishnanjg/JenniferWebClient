@@ -26,25 +26,26 @@
     <div class="row">
       <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
         <div class="input-group col-xs-12 col-sm-12" role="group" aria-label="Basic example">
-          <div class="col-md-3 col-sm-3 col-xs-12 nopading_loct">
+          <div class="col-md-3 col-sm-2 nopading_loct">
             <select [(ngModel)]="SearchBy" class="serchcurv form-control btn-group">
               <option value="" selected="select">Search By</option>
               <option value="ByLocation">Location</option>
+              <option value="ByCusomerWarehouse">Customer Warehouse</option>
               <option value="ByInventoryType"> Inventory Type</option>
               <option value="ByDateRange"> Date</option>
             </select>
           </div>
-          <div class="col-md-4 col-sm-3 nopading_loct" *ngIf="(SearchBy!='ByDateRange')">
+          <div class="col-md-3 col-sm-2 nopading_loct" *ngIf="(SearchBy!='ByDateRange')">
             <input [(ngModel)]="SearchKeyword" type="text" class="serchcurv form-control btn-group">
           </div>
-          <div class="col-md-3 col-sm-3 nopading_loct" *ngIf="(SearchBy=='ByDateRange')">
+          <div class="col-md-2 col-sm-2 nopading_loct" *ngIf="(SearchBy=='ByDateRange')">
             <input type="text" ngxDaterangepickerMd [(ngModel)]="selectedDateRange"
               class="serchcurv form-control btn-group col-xs-12 pointer"
               style="border:1px soloid #ccc !important; padding :3px;left:0px" [showCustomRangeLabel]="true"
               [ranges]="Searchranges" [showCancel]="true" placeholder="Select please..."
               (ngModelChange)="onChange($event)" />
           </div>
-          <div class="col-md-3 col-sm-3 col-xs-6 nopading_loct">
+          <div class="col-md-2 col-sm-2 nopading_loct">
             <button class="serchcurv btn btn-default btn-group" (click)="Search()" title="Search">
               <i class="fa fa-search " aria-hidden="true"></i>
             </button>
@@ -52,8 +53,12 @@
               <i class="fa fa-refresh" aria-hidden="true"></i>
             </button>
           </div>
-          <div class="col-xs-6 col-sm-3 col-md-2 text-right nopadding">
-            <button class="btn btn-primary" routerLink="/Configuration/Create">Add New</button>
+          <div class="col-xs-4 col-sm-4 col-md-4 pun">
+            <div class="pull-right">
+              <button class="btn btn-primary" routerLink="/ConfigurationManual/Create">Upload </button>
+              &nbsp; &nbsp;
+              <button class="btn btn-primary" routerLink="/Configuration/Create">Add New</button>
+            </div>
           </div>
         </div>
       </div>
@@ -101,10 +106,23 @@
           </kendo-grid-column>
           <kendo-grid-column field="LastModifiedByName" title="Created By">
           </kendo-grid-column>
+          <kendo-grid-column field="RTVType" title="RTV Type">
+          </kendo-grid-column>
+          <kendo-grid-column field="ApprovalStatus" title="Approval Status">
+          </kendo-grid-column>
           <kendo-grid-column title="Action" [class]="{'text-center': true}" [filterable]="false" [sortable]="false"
             width="70">
             <ng-template kendoGridCellTemplate let-obj>
-              <i class="fa fa-edit bgblue pointer" title="Edit" [routerLink]="['/Configuration', obj.ConfigID]"></i>
+              <i *ngIf="obj.RTVType!='Manual' " class="fa fa-edit bgblue pointer" title="Edit"
+                [routerLink]="['/Configuration', obj.ConfigID]"></i>
+              &nbsp;
+              <i *ngIf="obj.RTVType=='Manual' && obj.ApprovalStatus=='Pending Approval'"
+                class="fa fa-check-square bgblue pointer" title="Approval"
+                [routerLink]="['/ConfigurationApproval', obj.BatchId]"></i>
+              &nbsp;
+              <i *ngIf="obj.RTVType=='Manual' " class="fa fa-eye bgblue pointer" title="View"
+                [routerLink]="['/ConfigurationView', obj.BatchId]"></i>
+
             </ng-template>
           </kendo-grid-column>
         </kendo-grid>

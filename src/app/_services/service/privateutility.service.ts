@@ -5,7 +5,7 @@ import { catchError } from 'rxjs/operators';
 import { BadRequest } from '../../common/bad-request';
 import { NotFoundError } from '../../common/not-found-error';
 import { AppError } from '../../common/app-error';
-import {RTVAmazonCaseID, RTVUsers} from '../../_services/model';
+import { RTVAmazonCaseID, RTVUsers } from '../../_services/model';
 import { AuthenticationService } from './authentication.service';
 import {
   CompanyRegister, Companydetails, Marketplace,
@@ -370,7 +370,11 @@ export class PrivateutilityService {
     return this.httpClient.get<Location[]>(environment.baseUrl + `PrivateUtility/GetRTVLocations?CompanyID=` + CompanyID)
       .pipe(catchError(this.handleError));
   }
-
+  
+  public getItemLevelsByStore(CompanyDetailID: number): Observable<object[]> {
+    return this.httpClient.get<object[]>(environment.baseUrl + `PrivateUtility/GetItemLevels?CompanyDetailID=` + CompanyDetailID)
+      .pipe(catchError(this.handleError));
+  }
   private handleError(error: HttpErrorResponse) {
 
     if (error.status === 404)

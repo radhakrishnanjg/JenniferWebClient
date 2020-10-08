@@ -28,6 +28,7 @@ import { CreditnotelistComponent } from './creditnotelist/creditnotelist.compone
 import { CreditnoteviewComponent } from './creditnoteview/creditnoteview.component';
 import { RefundlistComponent } from './refundlist/refundlist.component';
 import { RefundComponent } from './refund/refund.component';
+import { StockauditComponent } from './stockaudit/stockaudit.component';
 
 const appRoutes: Routes = [
     // Sales module
@@ -57,6 +58,7 @@ const appRoutes: Routes = [
     { path: 'Creditnoteview/:id/:CNType', component: CreditnoteviewComponent, canActivate: [AuthGuard, StoreGuard] },
     { path: 'Refund/:id', component: RefundComponent, canActivate: [AuthGuard, StoreGuard] },
     { path: 'Refundlist', component: RefundlistComponent, canActivate: [AuthGuard, StoreGuard] },
+    { path: 'StockAudit', component: StockauditComponent, canActivate: [AuthGuard, StoreGuard] },
 ];
 
 @NgModule({

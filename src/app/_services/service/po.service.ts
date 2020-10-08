@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError, } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 
 import { BadRequest } from '../../common/bad-request';
 import { NotFoundError } from '../../common/not-found-error';
@@ -10,7 +10,7 @@ import { AppError } from '../../common/app-error';
 import { AuthenticationService } from './authentication.service';
 import {
   Poorder, Poorderitem, Result, Brand, ProductGroup, Category, SubCategory, UOM, Item, Poprint
-  , PoMFI
+  , PoMFI, JsonModal, MFICaseHeader, MFICaseDetail
 } from '../model/index';
 import { environment } from '../../../environments/environment';
 @Injectable({
@@ -24,7 +24,6 @@ export class PoService {
 
   public search(SearchBy: string, Search: string, StartDate: Date, EndDate: Date):
     Observable<Poorder[]> {
-
     let currentUser = this.authenticationService.currentUserValue;
     let CompanyDetailID = currentUser.CompanyDetailID;
     return this.httpClient.get<Poorder[]>(environment.baseUrl + `POOrder/Search?CompanyDetailID=` + CompanyDetailID
@@ -200,6 +199,49 @@ export class PoService {
       { responseType: 'blob' })
       .pipe(catchError(this.handleError));
   }
+
+  ////#region  MFI Cases
+
+  public MFICaseSearch(SearchBy: string, Search: string, StartDate: string, EndDate: string):
+    Observable<MFICaseHeader[]> {
+    let currentUser = this.authenticationService.currentUserValue;
+    let CompanyDetailID = currentUser.CompanyDetailID;
+    return this.httpClient.get<string>(environment.baseUrl + `POOrder/MFICaseSearch?CompanyDetailID=` + CompanyDetailID
+      + `&SearchBy=` + encodeURIComponent(SearchBy) + `&Search=` + encodeURIComponent(Search)
+      + `&StartDate=` + StartDate + `&EndDate=` + EndDate)
+      .pipe(
+        map(data => {
+          return JSON.parse(data) as MFICaseHeader[];
+        }),
+        catchError(this.handleError)
+      );
+  }
+
+  public MFICaseSearchById(ShipmentNumber: string): Observable<MFICaseHeader> {
+    let currentUser = this.authenticationService.currentUserValue;
+    let CompanyDetailID = currentUser.CompanyDetailID; 
+    return this.httpClient.get<string>(environment.baseUrl + `POOrder/MFICaseSearchById?ShipmentNumber=` + ShipmentNumber
+      + `&CompanyDetailID=` + CompanyDetailID)
+      .pipe(
+        map(data => {
+          return JSON.parse(data) as MFICaseHeader;
+        }),
+        catchError(this.handleError)
+      );
+  }
+
+  objJsonModal: JsonModal = {} as any;
+  public MFICaseSave(obj: MFICaseDetail): Observable<Result> {
+    let currentUser = this.authenticationService.currentUserValue;
+    obj.CompanyDetailID = currentUser.CompanyDetailID;
+    obj.LoginId = currentUser.UserId;
+    this.objJsonModal.Json = JSON.stringify(obj);
+    return this.httpClient.post<Result>(environment.baseUrl + `POOrder/MFICaseSave`, this.objJsonModal)
+      .pipe(catchError(this.handleError));
+  }
+
+
+  //#endregion
 
   private handleError(error: HttpErrorResponse) {
 

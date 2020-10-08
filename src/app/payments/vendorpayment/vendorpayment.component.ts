@@ -198,9 +198,9 @@ export class VendorpaymentComponent implements OnInit {
       return;
     }
 
-    let TotalPaidAmount = parseFloat(this.VendorPaymentform.controls['TotalPaidAmount'].value);
-    let downTotalPaidAmount = parseFloat(this.TotalPaidAmt.toString());
-    if (downTotalPaidAmount == 0) {
+    let TotalPaidAmount = parseFloat(this.VendorPaymentform.controls['TotalPaidAmount'].value.toString()).toFixed(2);
+    let downTotalPaidAmount = parseFloat(this.TotalPaidAmt.toString()).toFixed(2);
+    if (downTotalPaidAmount == "") {
       this.alertService.error("Please Enter Atleast one Invoice Paid Amount.!");
       return;
     }

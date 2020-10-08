@@ -51,10 +51,10 @@
         </div>
       </div>
       <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5 text-right">
-        <!-- <button class="btn btn-primary" (click)="AddNewLink()" title="Add New">
-
-          Add New
-        </button> -->
+        <div class="pull-right">
+          <a type="button" class="needhelp" title="How can we assist you?" data-toggle="modal"
+            data-target="#modalstatusconfimation">How can we assist you?</a>
+        </div>
       </div>
     </div>
   </div>
@@ -82,9 +82,9 @@
       </kendo-grid-column>
       <kendo-grid-column field="SupportStatus" title="Status">
       </kendo-grid-column>
-
-      <kendo-grid-column field="HelpMenuID" *ngIf="userType == 'S'" title="Action" [class]="{'text-center': true}"
-        [filterable]="false" [sortable]="false" width="70">
+      <!-- *ngIf="userType == 'S'" -->
+      <kendo-grid-column field="HelpMenuID" title="Action" [class]="{'text-center': true}" [filterable]="false"
+        [sortable]="false" width="70">
         <ng-template kendoGridCellTemplate let-obj>
           <i (click)="editButtonClick(obj.SupportQueryID)" title="Edit" class="fa fa-edit bgblue pointer"></i>
 
@@ -103,7 +103,8 @@
             aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="modalstatusconfimationUpdate">Provide Support</h4>
       </div>
-      <form [formGroup]="SupportForm" (ngSubmit)="Update()">
+      <form [formGroup]="SupportForm" class="form-horizontal">
+        <!-- (ngSubmit)="Update()" -->
         <div class="modal-body" style="height: 400px; overflow-y: auto; overflow-x: hidden;">
           <div class="row" *ngIf="SupportStatus == 'Closed'">
             <div class="col-sm-12 col-xs-12">
@@ -115,30 +116,41 @@
 
           <div class="row" *ngIf="lstHistory.length > 0">
             <div class="col-sm-12 col-xs-12">
-              <div>
+              <div class="col-sm-12 col-xs-12">
                 <h5>
                   Chat History
                 </h5>
+
                 <div *ngFor="let tool of lstHistory | groupBy:'CreatedDate'| pairs">
-                  <!-- <h3>{{tool[0]}}</h3> -->
-                  <div *ngFor="let val of tool[1] | filterBy: ['UserType']: 'C'">
-                    <p>
+                  <div class="row" *ngFor="let val of tool[1] | filterBy: ['UserType']: 'C'">
+                    <p class="pull-left">
                       <span style="color:green;">Seller</span> - {{val.Query}} - By <b>{{val.CreatedByName}}</b> on
                       {{val.CreatedDate  |date :"MM-dd-yyyy HH:mm"  }} </p>
                   </div>
 
-                  <div *ngFor="let val of tool[1] | filterBy: ['UserType']: 'S'">
+                  <div class="row" *ngFor="let val of tool[1] | filterBy: ['UserType']: 'S'">
                     <p class="pull-right" style="padding-top:30px">
 
                       <span style="color:hotpink;">Support</span> - {{val.Query}} - By <b>{{val.CreatedByName}}</b> on
                       {{val.CreatedDate  |date :"MM-dd-yyyy HH:mm"  }} </p>
                   </div>
-                  
-                  <div *ngFor="let val of tool[1] | filterBy: ['UserType']: 'P'">
-                    <p class="pull-right" style="padding-top:30px">
-  
-                      - {{val.Query}} - By <b>{{val.CreatedByName}}</b> on
-                      {{val.CreatedDate  |date :"MM-dd-yyyy HH:mm"  }} </p>
+
+                  <div class="row" *ngFor="let val of tool[1] | filterBy: ['UserType']: 'P'">
+
+                    <div *ngIf="userType=='C'  && !val.IsForwarded">
+                      <p class="pull-right" style="padding-top:30px">
+
+                        <span style="color:orange">PSP</span> - {{val.Query}} - By <b>{{val.CreatedByName}}</b> on
+                        {{val.CreatedDate  |date :"MM-dd-yyyy HH:mm"  }} </p>
+                    </div>
+                    <div *ngIf="userType=='S'  ||  userType=='P'">
+                      <p class="pull-right" style="padding-top:30px">
+
+                        <span style="color:orange">PSP</span> - {{val.Query}} - By <b>{{val.CreatedByName}}</b> on
+                        {{val.CreatedDate  |date :"MM-dd-yyyy HH:mm"  }} </p>
+                    </div>
+
+
                   </div>
                 </div>
               </div>
@@ -159,26 +171,125 @@
             <div class="col-sm-12 col-xs-12">
               <h5>
                 Please enter a message <span class="mandantory"> *</span>
-                <!-- Please enter a message and our escalation team will get back to you shortly! -->
               </h5>
-              <textarea  formControlName="Query" rows="4" cols="90" name="textarea" [(ngModel)]="customerMsg" maxlength="8000"></textarea>
+              <textarea formControlName="Query" rows="4" cols="90" name="textarea" [(ngModel)]="customerMsg"
+                maxlength="8000"></textarea>
             </div>
           </div>
         </div>
- 
+
         <div class="modal-footer">
           <button class="btn btn-primary btn-sm" data-dismiss="modal">Cancel</button>
           &nbsp;
-          <button type="button" title="Submit" type="submit" prevent-double-submit 
-           class="btn btn-success" 
-            *ngIf="SupportStatus == 'Pending'">Submit</button>
-
+          <button type="button" title="Update" type="Update" prevent-double-submit class="btn btn-success"
+            *ngIf="SupportStatus == 'Pending' && IsForwarded==false " (click)="Save('Update')">
+            Submit
+          </button>
           &nbsp;
-          <button type="button" title="Close" type="button" class="btn btn-success" *ngIf="SupportStatus == 'Pending'"
-            (click)="onClickCloseTicket()">Close</button>
+          <button type="button" title="Forward" type="submit" prevent-double-submit class="btn btn-success"
+            *ngIf="SupportStatus == 'Pending' && ModuleType=='SELLER STATEMENTS' && userType=='P' "
+            (click)="Save('Forward')">
+            Forward
+          </button>
+          &nbsp;
+          <button type="button" title="Close" type="submit" prevent-double-submit class="btn btn-success"
+            *ngIf="SupportStatus == 'Pending' && (userType=='P' ||  userType=='S') "
+            (click)="Save('Close')">Close</button>
+          <!-- onClickCloseTicket -->
         </div>
         <div class="clearfix"></div>
       </form>
     </div>
   </div>
+</div>
+
+<div id="modalstatusconfimation" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modalstatusconfimation"
+  aria-hidden="true">
+
+  <form autocomplete="off" [formGroup]="SupportQueryForm" (ngSubmit)="SaveData()" class="form-horizontal">
+    <div class="modal-dialog ">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+              aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="modalstatusconfimation"> Submit New Query</h4>
+        </div>
+        <div class="modal-body">
+
+          <div class="form-group" [ngClass]="{'has-error': formErrors.ModuleType}">
+            <label class="col-sm-4 control-label" for="ModuleType">Module Type<span class="mandantory"> *</span></label>
+            <div class="col-sm-6">
+              <select id="ModuleType" class="form-control" formControlName="ModuleType" (blur)="logValidationErrors()"
+                [(ngModel)]="ModuleType" name="ModuleType">
+                <option value="" selected="selected">Select</option>
+                <option *ngFor="let dis of lstModuleType" value={{dis.DropdownValue}}>
+                  {{dis.DropDownDescription}}
+                </option>
+              </select>
+
+              <div class="help-block-rk"> <span class="help-block" *ngIf="formErrors.ModuleType">
+                  {{formErrors.ModuleType}}
+                </span>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="form-group" [ngClass]="{'has-error': formErrors.Subject}">
+            <label class="col-sm-4 control-label" for="Subject">Subject<span class="mandantory"> *</span></label>
+            <div class="col-sm-6">
+              <input id="Subject" type="text" class="form-control" formControlName="Subject"
+                (blur)="logValidationErrors()" maxlength="50">
+              <div class="help-block-rk"> <span class="help-block" *ngIf="formErrors.Subject">
+                  {{formErrors.Subject}}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group" [ngClass]="{'has-error': formErrors.ReferenceNumber}">
+            <label class="col-sm-4 control-label" for="ReferenceNumber">
+              <span *ngIf="ModuleType!='SELLER STATEMENTS'">
+                Reference Number
+              </span>
+              <span *ngIf="ModuleType=='SELLER STATEMENTS'">
+                Payment Statement Number
+              </span>
+              <span class="mandantory">
+                *</span></label>
+            <div class="col-sm-6">
+              <input id="ReferenceNumber" type="text" class="form-control" formControlName="ReferenceNumber"
+                (blur)="logValidationErrors()" maxlength="50">
+              <div class="help-block-rk"> <span class="help-block" *ngIf="formErrors.ReferenceNumber">
+                  {{formErrors.ReferenceNumber}}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group" [ngClass]="{'has-error': formErrors.Query}">
+            <label class="col-sm-4 control-label" for="Query">Query<span class="mandantory"> *</span></label>
+            <div class="col-sm-8">
+              <textarea id="Query" type="text" formControlName="Query" (blur)="logValidationErrors()" maxlength="8000"
+                rows="6" cols="50">
+                </textarea>
+              <div class="help-block-rk"> <span class="help-block" *ngIf="formErrors.Query">
+                  {{formErrors.Query}}
+                </span>
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-primary" data-dismiss="modal">Cancel</button>
+          &nbsp;
+          <button class="btn btn-success" type="submit" prevent-double-submit [disabled]="SupportQueryForm.invalid">
+            Save
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
 </div>

@@ -9,7 +9,9 @@ import { CompanylistComponent } from '../premaster/companylist/companylist.compo
 import { CompanyComponent } from '../premaster/company/company.component';
 import { MenulistComponent } from '../premaster/menulist/menulist.component';
 import { ReportmasterlistComponent } from './reportmasterlist/reportmasterlist.component';
-import { ReportmasterComponent } from './reportmaster/reportmaster.component';
+import { ReportmasterComponent } from './reportmaster/reportmaster.component'; 
+import { CommonModule } from '@angular/common';
+
 
 const appRoutes: Routes = [
     // Pre master module  
@@ -19,12 +21,14 @@ const appRoutes: Routes = [
     { path: 'Dropdownlist', component: DropdownlistComponent, canActivate: [AuthGuard] },
     { path: 'Marketplacelist', component: MarketplacelistComponent, canActivate: [AuthGuard] },
     { path: 'Reportmaster/:id', component: ReportmasterComponent, canActivate: [AuthGuard] },
-    { path: 'Reportmasterlist', component: ReportmasterlistComponent, canActivate: [AuthGuard, StoreGuard] },
+    { path: 'Reportmasterlist', component: ReportmasterlistComponent, canActivate: [AuthGuard, StoreGuard] }, 
+
 ];
 
 @NgModule({
-    imports: [RouterModule.forChild(appRoutes)
-
+    imports: [
+        CommonModule,
+        RouterModule.forChild(appRoutes)
     ],
     exports: [RouterModule]
 })

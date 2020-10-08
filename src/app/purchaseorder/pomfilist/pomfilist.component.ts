@@ -1,14 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
-import { AuthorizationGuard } from '../../_guards/Authorizationguard'
 import { process, State } from '@progress/kendo-data-query';
 
 import { GridDataResult, DataStateChangeEvent, PageChangeEvent } from '@progress/kendo-angular-grid';
 import { SortDescriptor, orderBy } from '@progress/kendo-data-query';
-import { PrivateutilityService } from 'src/app/_services/service/privateutility.service';
-import { PoMFI } from '../../_services/model';
+import { MFICaseHeader } from '../../_services/model';
 import { PoService } from '../../_services/service/po.service'
+import * as moment from 'moment';
+import { AuthorizationGuard } from 'src/app/_guards/Authorizationguard';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-pomfilist',
@@ -16,23 +15,64 @@ import { PoService } from '../../_services/service/po.service'
   styleUrls: ['./pomfilist.component.css']
 })
 export class PomfilistComponent implements OnInit {
-  obj: PoMFI;
-  lst: PoMFI[];
   constructor(
-    private alertService: ToastrService,
     private router: Router,
-    public _PoService: PoService,
-    private _PrivateutilityService: PrivateutilityService,
-    private _authorizationGuard: AuthorizationGuard,
+    private _poService: PoService,
+    private _authorizationGuard: AuthorizationGuard
   ) { }
 
+  SearchBy: string = '';
+  SearchKeyword: string = '';
+  Searchaction: boolean = true;
+  selectedDateRange: any;
+  Searchranges: any = {
+    'Today': [moment(), moment()],
+    'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+    'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+    'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+    'This Month': [moment().startOf('month'), moment().endOf('month')],
+    'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+  }
   ngOnInit() {
-    this.onLoad();
+    this.SearchBy = '';
+    this.SearchKeyword = '';
+    this.selectedDateRange = {
+      startDate: moment().subtract(0, 'months').date(1),
+      endDate: moment().subtract(1, 'days')
+    };
+
+    this.onLoad(this.SearchBy, this.SearchKeyword);
   }
 
-  onLoad() {
-    return this._PoService.MFISearch().subscribe(
-      (lst) => {
+  editButtonClick(ShipmentNumber: string) {
+    if (this._authorizationGuard.CheckAcess("PoMFIlist", "ViewEdit")) {
+      return;
+    }
+    this.router.navigate(['/MFICase', ShipmentNumber]);
+  }
+
+
+  onChange(range) {
+    let startdate: string = moment(this.selectedDateRange.startDate._d, 'YYYY-MM-DD[T]HH:mm').format('YYYY-MM-DD').toString();
+    let enddate: string = moment(this.selectedDateRange.endDate._d, 'YYYY-MM-DD[T]HH:mm').format('YYYY-MM-DD').toString();
+
+  }
+  Search(): void {
+    this.onLoad(this.SearchBy, this.SearchKeyword);
+  }
+
+
+  Refresh(): void {
+    this.SearchBy = '';
+    this.SearchKeyword = '';
+    this.Searchaction = true;
+  }
+
+  onLoad(SearchBy: string, Search: string) {
+    let startdate: string = moment(this.selectedDateRange.startDate._d, 'YYYY-MM-DD[T]HH:mm').format('YYYY-MM-DD').toString();
+    let enddate: string = moment(this.selectedDateRange.endDate._d, 'YYYY-MM-DD[T]HH:mm').format('YYYY-MM-DD').toString();
+    return this._poService.MFICaseSearch(SearchBy, Search, startdate, enddate).subscribe(
+      (lst: MFICaseHeader[]) => {
         if (lst != null) {
           this.items = lst;
           this.loadItems();
@@ -44,17 +84,16 @@ export class PomfilistComponent implements OnInit {
       }
     );
   }
-
   public allowUnsort = false;
   public sort: SortDescriptor[] = [{
-    field: 'POnumber',
+    field: 'PONumber',
     dir: 'asc'
   }];
   public gridView: GridDataResult;
   public pageSize = 10;
   public skip = 0;
   private data: Object[];
-  private items: PoMFI[] = [] as any;
+  private items: MFICaseHeader[] = [] as any;
   public state: State = {
     skip: 0,
     take: 5,
@@ -62,7 +101,7 @@ export class PomfilistComponent implements OnInit {
     // Initial filter descriptor
     filter: {
       logic: 'and',
-      filters: [{ field: 'POnumber', operator: 'contains', value: '' }]
+      filters: [{ field: 'PONumber', operator: 'contains', value: '' }]
     }
   };
   public pageChange({ skip, take }: PageChangeEvent): void {
@@ -101,7 +140,7 @@ export class PomfilistComponent implements OnInit {
         logic: "or",
         filters: [
           {
-            field: 'POnumber',
+            field: 'PONumber',
             operator: 'contains',
             value: inputValue
           },
@@ -114,7 +153,7 @@ export class PomfilistComponent implements OnInit {
             field: 'ShipmentDate',
             operator: 'contains',
             value: inputValue
-          }, 
+          },
           {
             field: 'ShipmentNumber',
             operator: 'contains',
@@ -129,12 +168,12 @@ export class PomfilistComponent implements OnInit {
             field: 'ItemName',
             operator: 'contains',
             value: inputValue
-          }, 
+          },
           {
             field: 'ShippedQty',
             operator: 'contains',
             value: inputValue
-          }, 
+          },
           {
             field: 'ReceivedQty',
             operator: 'contains',
@@ -149,15 +188,15 @@ export class PomfilistComponent implements OnInit {
             field: 'DiffValue',
             operator: 'contains',
             value: inputValue
-          }, 
+          },
           {
             field: 'Ageing',
             operator: 'contains',
             value: inputValue
-          }, 
+          },
         ],
       }
-    })  ;  
+    });
   }
 
 }

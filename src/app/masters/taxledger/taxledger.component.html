@@ -1,0 +1,207 @@
+<div class="row">
+  <div class="col-sm-6 col-lg-6">
+    <h3>
+      Ledgers
+    </h3>
+  </div>
+  <div class="col-sm-6 col-lg-6">
+    <div class="pull-right hidden-xs">
+      <ol class="breadcrumb" id="dynamicbreadcrumb">
+        <li>
+          <span> Master</span>
+        </li>
+        <li>
+          <span> Ledgers</span>
+        </li>
+        <li class="active">
+
+          List
+        </li>
+      </ol>
+    </div>
+  </div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="input-group col-sm-12 col-xs-12" role="group" aria-label="Basic example">
+          <div class="col-md-3 col-sm-3 col-xs-12 nopading_loct">
+            <select [(ngModel)]="SearchBy" class="serchcurv form-control btn-group">
+              <option value="" selected="select">SearchBy</option>
+              <option value="LedgerName">Ledger Name</option>
+              <option value="Group">Group</option>
+            </select>
+          </div>
+          <div class="col-md-3 col-sm-3 nopading_loct" *ngIf="(SearchBy!='ByStatus')">
+            <input (keyup.enter)="Search()" [(ngModel)]="SearchKeyword" type="text"
+              class="serchcurv form-control btn-group">
+          </div> 
+          <div class="col-md-3 col-sm-3 col-xs-6 nopading_loct">
+            <button class="serchcurv btn btn-default btn-group" (click)="Search()" title="Search">
+              <i class="fa fa-search " aria-hidden="true"></i>
+            </button>
+            <button class="serchcurv btn btn-default btn-group" (click)="Refresh()" title="Reset">
+              <i class="fa fa-refresh" aria-hidden="true"></i>
+            </button>
+          </div>
+
+          <div class="col-xs-6 col-sm-3 col-md-3 text-right nopadding">
+            <button type="button" class="btn btn-xs btn-sm btn-primary" (click)="newButtonClick()" title="Add New">
+              Add New
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="panel-body">
+    <div class="table-responsive">
+      <table class="table">
+        <kendo-grid [data]="gridView" resizable="true" columnMenu="true" [pageSize]="pageSize" [skip]="skip"
+          [pageable]="{pageSizes: [10, 25, 50, 100, 250, 500]}" (pageChange)="pageChange($event)" [sortable]="{
+        allowUnsort: allowUnsort,
+        mode:  'single'
+        }" [sort]="sort" (sortChange)="sortChange($event)" [filterable]="true"
+          (dataStateChange)="dataStateChange($event)" [filter]="state.filter">
+          <ng-template kendoGridToolbarTemplate>
+            <input placeholder="Search in all columns..." style="float:right;" kendoTextBox
+              (input)="onFilter($event.target.value)" />
+            <button kendoGridExcelCommand type="button" icon="file-excel"> </button>
+            <button kendoGridPDFCommand icon="file-pdf"> </button>
+            <kendo-grid-pdf fileName="LedgerList.pdf" [repeatHeaders]="true"></kendo-grid-pdf>
+            <kendo-grid-excel fileName="LedgerList.xlsx"></kendo-grid-excel>
+          </ng-template>
+
+
+          <kendo-grid-column field="LedgerName" title="Ledger Name">
+          </kendo-grid-column>
+          <kendo-grid-column field="FinancialStatementType" title="Financial Statement Type">
+          </kendo-grid-column>
+          <kendo-grid-column field="Groups" title="Group">
+          </kendo-grid-column>
+          <kendo-grid-column field="SubGroup" title="Sub Group">
+          </kendo-grid-column>
+          <kendo-grid-column title="Action" [class]="{'text-center': true}" [filterable]="false" [sortable]="false"
+            width="70">
+            <ng-template kendoGridCellTemplate let-dataItem>
+              <i (click)="editButtonClick(dataItem.AccountID)" title="Edit" class="fa fa-edit bgblue pointer"></i> 
+            </ng-template>
+          </kendo-grid-column>
+        </kendo-grid>
+      </table>
+    </div>
+  </div> 
+  <div id="modalpopupledgerupsert" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="modalpopupledgerupsert" aria-hidden="true">
+
+    <form [formGroup]="LedgerForm" (ngSubmit)="SaveData()" class="form-horizontal">
+      <div class="modal-dialog ">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="modalpopupledgerupsert"> {{panelTitle}}</h4>
+          </div>
+          <div class="modal-body">
+
+            <div class="form-group" [ngClass]="{'has-error': formErrors.Groups}">
+              <label class="col-sm-5 control-label" for="Groups">
+                Group
+                <span class="mandantory">*</span></label>
+              <div class="col-sm-6">
+                <select *ngIf="identity==0" class="form-control" formControlName="Groups" (blur)="logValidationErrors()"
+                  (change)="OnChange_AccountsGroup($event.target.value)">
+                  <option value="" selected="selected">Select</option>
+                  <option *ngFor="let dis of lstGroup" value={{dis.Groups}}>
+                    {{dis.Groups}}
+                  </option>
+                </select>
+                <div *ngIf="identity>0">
+                  {{objLedger.Groups}}
+                </div>
+                <div class="help-block-rk"> <span class="help-block" *ngIf="formErrors.Groups">
+                    {{formErrors.Groups}}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group" [ngClass]="{'has-error': formErrors.SubGroup}">
+              <label class="col-sm-5 control-label" for="SubGroup">
+                Sub Group
+                <span class="mandantory">*</span>
+              </label>
+              <div class="col-sm-6">
+                <select *ngIf="identity==0" class="form-control" formControlName="SubGroup" (blur)="logValidationErrors()"
+                  (change)="OnChange_AccountsSubGroup($event.target.value)">
+                  <option value="" selected="selected">Select</option>
+                  <option *ngFor="let dis of lstSubGroup" value={{dis.SubGroup}}>
+                    {{dis.SubGroup}}
+                  </option>
+                </select>
+                <div *ngIf="identity>0">
+                  {{objLedger.SubGroup}}
+                </div>
+                <div class="help-block-rk"> <span class="help-block" *ngIf="formErrors.SubGroup">
+                    {{formErrors.SubGroup}}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+
+            <div class="form-group" [ngClass]="{'has-error': formErrors.FinancialStatementType}">
+              <label class="col-sm-5 control-label" for="LedgerText">
+                Financial Statement Type
+                <span class="mandantory">*</span>
+              </label>
+              <div class="col-sm-6">
+                <select *ngIf="identity==0" class="form-control" formControlName="FinancialStatementType" (blur)="logValidationErrors()">
+                  <option value="" selected="selected">Select</option>
+                  <option *ngFor="let dis of lstFinancialStatementType" value={{dis.FinancialStatementType}}>
+                    {{dis.FinancialStatementType}}
+                  </option>
+                </select>
+                <div *ngIf="identity>0">
+                  {{objLedger.FinancialStatementType}}
+                </div>
+                <div class="help-block-rk"> <span class="help-block" *ngIf="formErrors.FinancialStatementType">
+                    {{formErrors.FinancialStatementType}}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+
+            <div class="form-group" [ngClass]="{'has-error': formErrors.LedgerName}">
+              <label class="col-sm-5 control-label" for="LedgerText">
+                LedgerName
+                <span class="mandantory">*</span>
+              </label>
+              <div class="col-sm-6">
+                <input type="text" class="form-control" formControlName="LedgerName" (blur)="logValidationErrors()"
+                  maxlength="200" oninput="this.value = this.value.toUpperCase()">
+                <div class="help-block-rk"> <span class="help-block" *ngIf="formErrors.LedgerName">
+                    {{formErrors.LedgerName}}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-primary" data-dismiss="modal">Cancel</button>
+            &nbsp;
+            <button class="btn btn-success" type="submit" prevent-double-submit [disabled]="LedgerForm.invalid">
+
+              Save
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

@@ -136,10 +136,16 @@ export class HelpmenulistComponent implements OnInit {
         logic: "or",
         filters: [
           {
+            field: 'ApplicationName',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
             field: 'MenuType',
             operator: 'contains',
             value: inputValue
           },
+          
           {
             field: 'LinkText',
             operator: 'contains',

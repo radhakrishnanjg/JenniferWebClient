@@ -31,22 +31,22 @@ export class CompanyRegister {
     IsAuthorised: Boolean;
     AuthorisedDate: string;
     IsPrimarySecondarySame: Boolean;
- 
+
     // who is doing the action
     LoginId: number;
 }
 export class Companydetails {
-    StoreName:string;
-    BusinessLaunchDate:Date;
-    MarketPlaceSellerID:string;
-    MarketPlaceAPIToken:string;
-    MarketplaceID:number;
+    StoreName: string;
+    BusinessLaunchDate: Date;
+    MarketPlaceSellerID: string;
+    MarketPlaceAPIToken: string;
+    MarketplaceID: number;
 
-    CompanyDetailID:number;
-    CompanyID:number;
-    IsActive:Boolean;    
-    LoginId:Number;
+    CompanyDetailID: number;
+    CompanyID: number;
+    IsActive: Boolean;
+    LoginId: Number;
     // master tables columns 
-    MarketPlace :string
+    MarketPlace: string
+    ExpireStatus: string;
 }
- 

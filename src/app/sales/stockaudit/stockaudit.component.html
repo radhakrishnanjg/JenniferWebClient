@@ -1,0 +1,234 @@
+<div class="row">
+  <div class="col-sm-6 col-lg-6">
+    <h3>
+      Stock Audit
+    </h3>
+  </div>
+  <div class="col-sm-6 col-lg-6">
+    <div class="pull-right hidden-xs">
+      <ol class="breadcrumb" id="dynamicbreadcrumb">
+        <li>
+          <span> Revenue</span>
+        </li>
+        <li>
+          <span> Stock Audit</span>
+        </li>
+        <li class="active">
+          Check
+        </li>
+      </ol>
+    </div>
+  </div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <div class="row">
+      <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+        <span class="groupspanheader">
+          Stock Audit Check
+        </span>
+      </div>
+      <div class="col-sm-6">
+        <div class="pull-left">
+
+        </div>
+      </div>
+      <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 ">
+        <div class="pull-right">
+          <!-- <button  type="button" class="btn btn-primary" routerLink="/Picklistsearch" title="Back">
+
+            Back
+          </button> -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ul class="nav nav-tabs" id="myTab" role="tablist">
+    <li class="nav-item">
+      <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home"
+        aria-selected="true">Stock Audit </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile"
+        aria-selected="false">Check Status </a>
+    </li>
+  </ul>
+  <div class="tab-content" id="myTabContent">
+
+    <div class="tab-pane  active" id="home" role="tabpanel" aria-labelledby="home-tab">
+      <div class="panel-body">
+        <div class="col-md-12">
+          <div class="row">
+            <div class="col-md-6">
+
+              <div class="row">
+                <div class="col-md-12 col-xs-12">
+                  <div class="form-group">
+                    <label class="col-md-4 control-label" for="JenniferItem erial"> Jennifer Item Serial No.</label>
+                    <div class="col-md-4">
+                      <input id="JenniferItemSerial" type="text" class="form-control" maxlength="15"
+                        [(ngmodel)]="JenniferItemSerial" (change)="onJenniferItemSerialChange($event.target.value)">
+                      <div class="help-block-rk">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-12">
+                  <div *ngIf="lstPicklistdetail && lstPicklistdetail.length">Scanned Items</div>
+                  <table datatable [dtOptions]="dtOptions" class="table table-bordered table-condensed "
+                    *ngIf="lstPicklistdetail && lstPicklistdetail.length">
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>Jennifer Item Serial No.</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let obj1 of lstPicklistdetail; let id = index">
+                        <td>{{ id +1 }}</td>
+                        <td>{{ obj1.JenniferItemSerial}}</td>
+                        <td>
+                          <i class="fa fa-trash bgred pointer" title="Remove" (click)="removeRow(id)"></i>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+
+                  <table class="table table-bordered table-condensed " *ngIf="lstPicklistdetail==null">
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>Jennifer Item Serial No.</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td colspan="3"> No Records Found</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="form-group col-sm-12">
+                  <div class="pull-right">
+                    <button type="button" class="btn btn-success" (click)="Process()" title="Process">
+                      Process </button>
+                  </div>
+                </div>
+
+              </div>
+
+
+            </div>
+          </div>
+          <div class="row" *ngIf="gridView_StockAuditReport && gridView_StockAuditReport.length">
+            <div>
+              <span class="groupspanheader">Stock Audit Report </span>
+            </div>
+            <div class="table-responsive">
+              <table class="table">
+                <kendo-grid [height]="410" [data]="gridView_StockAuditReport" resizable="true" columnMenu="true">
+                  <ng-template kendoGridToolbarTemplate>
+                    <!-- <input placeholder="Search in all columns..." style="float:right;" kendoTextBox
+                      (input)="onFilter($event.target.value)" /> -->
+                    <button kendoGridExcelCommand type="button" icon="file-excel"> </button>
+                    <kendo-grid-excel fileName="StockAuditReport.xlsx"></kendo-grid-excel>
+                    <!-- <button kendoGridPDFCommand icon="file-pdf"> </button> -->
+                    <!-- <kendo-grid-pdf fileName="StockAuditReport.pdf" [repeatHeaders]="true"></kendo-grid-pdf> -->
+                  </ng-template>
+                  <kendo-grid-column field="JenniferItemSerial" title="Jennifer Item Serial No." width="160">
+                  </kendo-grid-column>
+                  <kendo-grid-column field="ItemCode" title="Item Code" width="160">
+                  </kendo-grid-column>
+                  <kendo-grid-column field="ItemName" title="Item Name" width="100">
+                  </kendo-grid-column>
+                  <kendo-grid-column field="Status" title="Status" width="120">
+                  </kendo-grid-column>
+                  <kendo-grid-column field="Remarks" title="Remarks">
+                  </kendo-grid-column>
+                </kendo-grid>
+              </table>
+            </div>
+          </div>
+        </div> 
+      </div>
+    </div>
+    <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+      <div class="panel-body">
+        <div class="col-md-12">
+          <div class="row">
+            <div class="col-md-6">
+              <form [formGroup]="refundForm">
+                <div class="row">
+                  <div class="col-md-12 col-xs-12">
+                    <div class="form-group">
+                      <label class="col-md-4 control-label" for="JenniferItemSerial1"> Jennifer Item Serial No.</label>
+                      <div class="col-md-4">
+                        <input type="text" class="form-control" maxlength="15" formControlName="JenniferItemSerial1"
+                          id="JenniferItemSerial1" name="JenniferItemSerial1">
+                        <div class="help-block-rk">
+                          <span class="help-block">
+                            {{ErrorMessage}}
+                          </span>
+                        </div>
+                      </div>
+                      <div>
+                        <button type="button" class="btn btn-success" (click)="CheckStatus()" title="Check">
+                          Check Status</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </form>
+
+            </div>
+          </div>
+          <div class="row" *ngIf="gridView_StockAuditStatus && gridView_StockAuditStatus.length">
+            <div>
+              <span class="groupspanheader">Stock Audit Status </span>
+            </div>
+            <div class="table-responsive">
+              <table class="table">
+                <kendo-grid [height]="410" [data]="gridView_StockAuditStatus" resizable="true" columnMenu="true">
+                  <ng-template kendoGridToolbarTemplate>
+                    <!-- <input placeholder="Search in all columns..." style="float:right;" kendoTextBox
+                      (input)="onFilter($event.target.value)" /> -->
+                    <button kendoGridExcelCommand type="button" icon="file-excel"> </button>
+                    <kendo-grid-excel fileName="StockAuditStatus.xlsx"></kendo-grid-excel>
+                    <!-- <button kendoGridPDFCommand icon="file-pdf"> </button> -->
+                    <!-- <kendo-grid-pdf fileName="StockAuditReport.pdf" [repeatHeaders]="true"></kendo-grid-pdf> -->
+                  </ng-template>
+                  <kendo-grid-column field="JenniferItemSerial" title="Jennifer Item Serial No.">
+                  </kendo-grid-column>
+                  <kendo-grid-column field="ItemCode" title="Item Code">
+                  </kendo-grid-column>
+                  <kendo-grid-column field="ItemName" title="Item Name">
+                  </kendo-grid-column>
+                  <kendo-grid-column field="Action" title="Action">
+                  </kendo-grid-column>
+                  <kendo-grid-column field="ActionBy" title="Action By">
+                  </kendo-grid-column>
+                  <kendo-grid-column field="ActionDate" title="Action Date">
+                    <ng-template kendoGridCellTemplate let-dataItem>
+                      {{ dataItem.ActionDate | date :"MM-dd-yyyy HH:mm" }}
+                    </ng-template>
+                  </kendo-grid-column>
+                </kendo-grid>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

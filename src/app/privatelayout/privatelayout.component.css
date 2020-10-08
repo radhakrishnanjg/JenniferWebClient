@@ -6,7 +6,7 @@ body.boxed .page-topbar {
 .page-topbar {
     position: fixed;
     width: 100%;
-    background-color: #f7fafe;
+    background-color:#FFF;
     top: 0;
     left: 0;
     top: 0;
@@ -96,7 +96,7 @@ body.boxed .page-topbar {
 .page-topbar i {
     font-size: 14px;
     font-weight: 100;
-    color: #578278
+    color: #578278;
 }
 
 .page-topbar .message-toggle-wrapper,
@@ -320,17 +320,15 @@ body.boxed .page-topbar {
 .page-topbar li .dropdown-menu.profile li {
     line-height: 36px;
     display: block;
-    height: 36px;
+    /* height: 36px; */
     margin: 0
 }
 
 .page-topbar li .dropdown-menu.profile li i {
-    margin-right: 6px;
-    line-height: 36px;
-    height: 31px;
-    width: auto;
+    margin: 0px;
     font-size: 11px;
-    text-align: center
+    text-align: center;
+    vertical-align: middle;
 }
 
 .page-topbar li .dropdown-menu.profile li a {
@@ -499,21 +497,8 @@ i.storename {
     right:-9px;
     top: 22px;
 }
-i.help { 
-    width: 15px;
-    height: 15px;
-    background-image: url(/assets/jicons/help.svg);
-    margin: -2px 0px;
-    display: inline-block;
-}
-i.themeicon {
-    width:20px;
-    height:20px;
-    background-image: url(/assets/jicons/themeicon.svg);
-    margin:4px 7px;
-    display: inline-block;
-    cursor: pointer;
-}
+
+
 ul.info-menu li a span { color:  #d02560;  font-size: 13px;}
  
  
@@ -658,13 +643,13 @@ ul.info-menu li a span { color:  #d02560;  font-size: 13px;}
 }
 
 .page-topbar .quick-area .info-menu li .dropdown-menu {
-    left:-52px;
+    left:-142px;
     position: absolute
 }
 .page-topbar .logo-area {
     background-repeat: no-repeat;
     background-size: auto 80%;
-    background-color: #f7fafe;
+    background-color: #FFF;
     margin: 0 1px;
     border-bottom: 1px solid #e7ebf1;
     border: none;
@@ -1132,11 +1117,11 @@ ul.states li {
 .page-sidebar.pagescroll {
     position: fixed;
     /* scroll-behavior: smooth;
-    overflow-y: scroll; */
+    overflow-y: scroll;
     background-image: url(/assets/images/leftpanel.png);
-    background-size: cover;
-    border-right: 1px solid #ddd;
-    background-color: #000;
+    background-size: cover; */
+    border-right: 1px solid #FFF;
+    background-color: #FFF;
 }
 
 .fixedscroll #main-menu-wrapper {
@@ -1184,7 +1169,7 @@ ul.states li {
     min-height: 32px;
     font-weight: 400;
     height: auto;
-    color: #bdc4c2;
+    color: #578278;
     text-decoration: none;
     padding-left: 5px;
     clear: both;
@@ -1272,7 +1257,7 @@ ul.states li {
     content: "\f104";
     font-weight: 300;
     text-shadow: none;
-    color: #578278
+    color: #578278;
 }
 
 #main-menu-wrapper li.open a .arrow.open:before {
@@ -1310,7 +1295,8 @@ ul.states li {
     border-radius: 0px;
     box-shadow: 0 1px 1px rgba(0,0,0,.05);
 } 
-
+ 
+ 
 .videobase { 
     margin: 0px auto;   
     width: 100%;
@@ -1321,5 +1307,73 @@ ul.states li {
 } 
 .videocheck label { text-transform: none;}
 @media (max-width:480px) { 
-    .videobase {width:100%;}
+    .videobase {width:100%;}    
+}
+
+/*30-07 SHIVA*/
+.slectdrpdown {
+    display: inline-block;
+    border: 1px solid #e9e6e6;
+    padding: 0px;
+    margin: 3px 3px;
+    width: 45%;
+    vertical-align: middle;
+    text-align: center;
+}
+.fulnme {
+    color: #578278 !important;
+    padding: 0px 0px !important;
+    visibility: hidden;
+    margin: 0 4px;
+    border-bottom: transparent;
+    font-size: 15px !important;
+    display: block;
+    width:10px;
+    font-weight: 700;
+      top: 3px;
+      text-transform: uppercase; 
+      left: -14px;
+    }
+     .fulnme:first-letter {visibility: visible;}
+i.changepasword  {
+    width: 30px !important;
+    height: 30px !important;
+    background-image: url(/assets/jicons/changepasword.svg); 
+    display: inline-block;
+    cursor: pointer;
+}
+i.profileupdate  {
+    width: 30px !important;
+    height: 30px !important;
+    background-image: url(/assets/jicons/profileupdate.svg); 
+    display: inline-block;
+    cursor: pointer;
+}
+i.signout {
+    width: 30px !important;
+    height: 30px !important;
+    background-image: url(/assets/jicons/signout.svg); 
+    display: inline-block;
+    cursor: pointer;
+}
+i.help { 
+    width: 30px !important;
+    height: 30px !important;
+    background-image: url(/assets/jicons/help.svg);
+    display: inline-block;
+    cursor: pointer;
+}
+i.themeicon {
+    width: 30px !important;
+    height: 30px !important;
+    background-image: url(/assets/jicons/themeicon.svg); 
+    display: inline-block;
+    cursor: pointer;
+}
+i.video {
+    width: 30px !important;
+    height: 30px !important;
+    background-image: url(/assets/jicons/video.svg); 
+    display: inline-block;
+    cursor: pointer;
 }

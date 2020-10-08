@@ -5,9 +5,8 @@ import { ToastrService } from 'ngx-toastr';
 import { Userpermission, ItemLevelStaticData, } from '../_services/model';
 import { SalesChartColors } from '../../assets/ChartColors';
 
-import { AuthenticationService } from '../_services/service/authentication.service'; import { Router } from '@angular/router';
-;
-
+import { AuthenticationService } from '../_services/service/authentication.service';
+import { Router } from '@angular/router'; 
 // import 'hammerjs';
 
 @Component({

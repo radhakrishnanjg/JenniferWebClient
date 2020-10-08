@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AmazonautortvService } from '../../_services/service/amazonautortv.service';
-import { AmazonAutoRTVConfiguration} from '../../_services/model';
+import { AmazonAutoRTVConfiguration } from '../../_services/model';
 
 import { AuthorizationGuard } from '../../_guards/Authorizationguard';
 import * as moment from 'moment';
@@ -66,11 +66,10 @@ export class ConfigurationlistComponent implements OnInit {
     let enddate: string = range.endDate._d.toISOString().substring(0, 10);
   }
 
-  onLoad(SearchBy: string, Search: string, ) {
-    let FromDate: Date = this.selectedDateRange.startDate._d.toISOString().substring(0, 10);
-    let ToDate: Date = this.selectedDateRange.endDate._d.toISOString().substring(0, 10);
-
-    return this._amazonautortvService.Search(SearchBy, Search, FromDate, ToDate).subscribe(
+  onLoad(SearchBy: string, Search: string,) {
+    let startdate: string = moment(this.selectedDateRange.startDate._d, 'YYYY-MM-DD[T]HH:mm').format('YYYY-MM-DD').toString();
+    let enddate: string = moment(this.selectedDateRange.endDate._d, 'YYYY-MM-DD[T]HH:mm').format('YYYY-MM-DD').toString();
+    return this._amazonautortvService.Search(SearchBy, Search, startdate, enddate).subscribe(
       (lst) => {
         if (lst != null) {
           this.items = lst;

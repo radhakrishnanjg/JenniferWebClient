@@ -126,8 +126,7 @@ export class VoucherlistComponent implements OnInit {
       // TaxType: ['', [Validators.required]],
       VoucherType: ['', [Validators.required]],
       TransactionType: ['', [Validators.required]],
-      VoucherText: ['', [Validators.required],
-        this._usernameValidator.existVoucherText(this.identity)],
+      VoucherText: ['', [],],
     });
 
     this.SearchBy = '';
@@ -150,7 +149,7 @@ export class VoucherlistComponent implements OnInit {
   OnchangeforVendorName() {
     this.objVoucher.StateID = this.VoucherForm.controls['StateID'].value;
     this.objVoucher.GSTID = this.VoucherForm.controls['GSTID'].value;
-    this.objVoucher.MarketPlaceID = this.VoucherForm.controls['MarketPlaceID'].value; 
+    this.objVoucher.MarketPlaceID = this.VoucherForm.controls['MarketPlaceID'].value;
     this.objVoucher.TransactionType = this.VoucherForm.controls['TransactionType'].value;
     this.objVoucher.VoucherType = this.VoucherForm.controls['VoucherType'].value;
     this.objVoucher.VoucherText = this.VoucherForm.controls['VoucherText'].value;
@@ -159,11 +158,21 @@ export class VoucherlistComponent implements OnInit {
       this.objVoucher.MarketPlaceID != 0) {
       //Sample text to show down (KA-Amazon-GST-B2C-Sales)
       let StateCode = this.lstStates.filter(a => a.StateID == this.objVoucher.StateID)[0].StateCode;
-      let MarketPlaceCode = this.lstMarketplaces.filter(a => a.MarketplaceID == this.objVoucher.MarketPlaceID)[0].MarketPlace;
-      this.VoucherName = StateCode + '-' + this.objVoucher.GSTID + '-'
-        + MarketPlaceCode + '-' 
-        + this.objVoucher.TransactionType + '-'
-        + this.objVoucher.VoucherType + '-' + this.objVoucher.VoucherText;
+      let MarketPlaceCode = this.lstMarketplaces.filter(a => a.MarketplaceID == this.objVoucher.MarketPlaceID)[0].MarketPlaceCode;
+      // this.VoucherName = StateCode + '-' + this.objVoucher.GSTID + '-'
+      //   + MarketPlaceCode + '-'
+      //   + this.objVoucher.TransactionType + '-'
+      //   + this.objVoucher.VoucherType + '-' + this.objVoucher.VoucherText;
+
+      let VoucherText = this.objVoucher.VoucherText == "" ? "" : '-' + this.objVoucher.VoucherText;
+      this.VoucherName =
+        this.objVoucher.VoucherType + '-' +
+        StateCode + '-' +
+        this.objVoucher.GSTID + '-' +
+        MarketPlaceCode + '-' +
+        this.objVoucher.TransactionType +
+        VoucherText;
+
 
     }
 
@@ -209,20 +218,6 @@ export class VoucherlistComponent implements OnInit {
         }
       );
   }
-
-  // lstTaxType: Dropdown[];
-  // GettaxType() {
-  //   this._PrivateutilityService.GetValues('TaxType')
-  //     .subscribe(
-  //       (data: Dropdown[]) => {
-  //         this.lstTaxType = data;
-  //       },
-  //       (err: any) => {
-  //         console.log(err);
-  //       }
-  //     );
-  // }
-
   lstVoucherType: Dropdown[];
   GetVoucherType() {
     this._PrivateutilityService.GetValues('VoucherType')
@@ -286,8 +281,8 @@ export class VoucherlistComponent implements OnInit {
       // TaxType: ['', [Validators.required]],
       VoucherType: ['', [Validators.required]],
       TransactionType: ['', [Validators.required]],
-      VoucherText: ['', [Validators.required],
-        this._usernameValidator.existVoucherText(this.identity)],
+      VoucherText: ['', [],
+      ],
 
     });
   }
@@ -308,8 +303,8 @@ export class VoucherlistComponent implements OnInit {
       // TaxType: ['', [Validators.required]],
       VoucherType: ['', [Validators.required]],
       TransactionType: ['', [Validators.required]],
-      VoucherText: ['', [Validators.required],
-        this._usernameValidator.existVoucherText(this.identity)],
+      VoucherText: ['', [],
+      ],
 
     });
 
@@ -323,7 +318,7 @@ export class VoucherlistComponent implements OnInit {
           this.VoucherForm.patchValue({
             StateID: StateID,
             MarketPlaceID: MarketPlaceID,
-            GSTID: GSTID, 
+            GSTID: GSTID,
             VoucherType: data.VoucherType,
             TransactionType: data.TransactionType,
             VoucherText: data.VoucherText,
@@ -365,7 +360,7 @@ export class VoucherlistComponent implements OnInit {
   Insert() {
     this.objVoucher.StateID = this.VoucherForm.controls['StateID'].value;
     this.objVoucher.GSTID = this.VoucherForm.controls['GSTID'].value;
-    this.objVoucher.MarketPlaceID = this.VoucherForm.controls['MarketPlaceID'].value; 
+    this.objVoucher.MarketPlaceID = this.VoucherForm.controls['MarketPlaceID'].value;
     this.objVoucher.TransactionType = this.VoucherForm.controls['TransactionType'].value;
     this.objVoucher.VoucherType = this.VoucherForm.controls['VoucherType'].value;
 
@@ -394,7 +389,7 @@ export class VoucherlistComponent implements OnInit {
     this.objVoucher.VoucherID = this.identity;
     this.objVoucher.StateID = this.VoucherForm.controls['StateID'].value;
     this.objVoucher.GSTID = this.VoucherForm.controls['GSTID'].value;
-    this.objVoucher.MarketPlaceID = this.VoucherForm.controls['MarketPlaceID'].value; 
+    this.objVoucher.MarketPlaceID = this.VoucherForm.controls['MarketPlaceID'].value;
     this.objVoucher.TransactionType = this.VoucherForm.controls['TransactionType'].value;
 
     this.objVoucher.VoucherType = this.VoucherForm.controls['VoucherType'].value;

@@ -5,10 +5,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UsernameValidator } from '../../_validators/username';
 import { ToastrService } from 'ngx-toastr';
 import { AuthorizationGuard } from '../../_guards/Authorizationguard'
-import { Vendorwarehouse, State, BOEHeader, Poorder, BOEDetail } from '../../_services/model';
+import { Vendorwarehouse, State, BOEHeader, Poorder, BOEDetail, TaxLedger, Dropdown } from '../../_services/model';
 import { BoeService } from '../../_services/service/BOE.service';
 import * as moment from 'moment';
 import { saveAs } from 'file-saver';
+import { JsonPrivateUtilityService } from 'src/app/_services/service/crossborder/jsonprivateutility.service';
 @Component({
   selector: 'app-boe',
   templateUrl: './boe.component.html',
@@ -39,10 +40,10 @@ export class BoeComponent implements OnInit {
     private fb: FormBuilder,
     private _router: Router,
     private aroute: ActivatedRoute,
-    
     private usernameValidator: UsernameValidator,
     private _BoeService: BoeService,
-    private _authorizationGuard: AuthorizationGuard
+    private _authorizationGuard: AuthorizationGuard,
+    private _jsonPrivateUtilityService: JsonPrivateUtilityService,
 
   ) { }
 
@@ -51,6 +52,11 @@ export class BoeComponent implements OnInit {
     'BOEDate': '',
     'PortCode': '',
     'ReferenceDetail': '',
+    'ShipmentMode': '',
+    'DutyMode': '',
+    'CHAAgentID': '',
+    'DutyPayableID': '',
+    'LedgerID': '',
   };
 
   validationMessages = {
@@ -69,6 +75,23 @@ export class BoeComponent implements OnInit {
     },
     'ReferenceDetail': {
       'required': 'This Field is required.',
+    },
+    'ShipmentMode': {
+      'required': 'This Field is required.',
+    },
+
+    'DutyMode': {
+      'required': 'This Field is required.',
+    },
+
+    'CHAAgentID': {
+      'min': 'This Field is required.',
+    },
+    'DutyPayableID': {
+      'min': 'This Field is required.',
+    },
+    'LedgerID': {
+      'min': 'This Field is required.',
     },
   };
 
@@ -96,6 +119,10 @@ export class BoeComponent implements OnInit {
 
   ngOnInit() {
 
+    this.GetAccounts();
+    this.GetShipmentMode();
+    this.GetDutyMode();
+
     this.IsEditable = true;
     this.aroute.paramMap.subscribe(params => {
       this.identity = +params.get('id');
@@ -116,15 +143,23 @@ export class BoeComponent implements OnInit {
               //
               this.IsEditable = data.IsEditable;
               this.boeform.get('BOENumber').disable();
+              this.boeform.get('CHAAgentID').disable();
+              this.boeform.get('DutyPayableID').disable();
+              this.boeform.get('LedgerID').disable();
               var BOEDate1 = moment(data.BOEDate, 'YYYY-MM-DD[T]HH:mm').
                 format('MM-DD-YYYY HH:mm').toString();
-              this.BOEDate = { startDate: new Date(BOEDate1) }; 
+              this.BOEDate = { startDate: new Date(BOEDate1) };
 
               this.boeform.patchValue({
                 BOENumber: data.BOENumber,
                 PODate: { startDate: new Date(BOEDate1) },
                 PortCode: data.PortCode,
                 ReferenceDetail: data.ReferenceDetail,
+                ShipmentMode: data.ShipmentMode,
+                DutyMode: data.DutyMode,
+                CHAAgentID: data.CHAAgentID,
+                DutyPayableID: data.DutyPayableID,
+                LedgerID: data.LedgerID,
               });
             },
             (err: any) => {
@@ -166,7 +201,51 @@ export class BoeComponent implements OnInit {
       BOEDate: ['', [Validators.required,]],
       PortCode: ['', [Validators.required]],
       ReferenceDetail: ['', []],
+      ShipmentMode: ['', [Validators.required]],
+      DutyMode: ['', [Validators.required]],
+      CHAAgentID: [0, [Validators.min(1)]],
+      DutyPayableID: [0, [Validators.min(1)]],
+      LedgerID: [0, [Validators.min(1)]],
     });
+  }
+
+  lstAccounts: TaxLedger[];
+  GetAccounts() {
+    this._jsonPrivateUtilityService.GetAccounts()
+      .subscribe(
+        (data: TaxLedger[]) => {
+          this.lstAccounts = data;
+        },
+        (err: any) => {
+          console.log(err);
+        }
+      );
+  }
+
+  lstShipmentMode: Dropdown[];
+  GetShipmentMode() {
+    this._jsonPrivateUtilityService.getvalues('ShipmentMode')
+      .subscribe(
+        (data: Dropdown[]) => {
+          this.lstShipmentMode = data;
+        },
+        (err: any) => {
+          console.log(err);
+        }
+      );
+  }
+
+  lstDutyMode: Dropdown[];
+  GetDutyMode() {
+    this._jsonPrivateUtilityService.getvalues('DutyMode')
+      .subscribe(
+        (data: Dropdown[]) => {
+          this.lstDutyMode = data;
+        },
+        (err: any) => {
+          console.log(err);
+        }
+      );
   }
 
   updateList(id: number, property: string, value: number) {
@@ -227,7 +306,7 @@ export class BoeComponent implements OnInit {
 
   mergecells(HSNCode: string, IGSTRate: number, i: number) {
     let ii = i + 1;
-    
+
     let c = this.lstItem.filter(a => a.HSNCode == HSNCode && a.IGSTRate == IGSTRate).length;
     let rem = this.lstItem.length % c;
     return ii % c == rem ? true : false;
@@ -289,6 +368,23 @@ export class BoeComponent implements OnInit {
       this.alertService.error('Required order items.!');
       return;
     }
+    this.obj.ShipmentMode = this.boeform.controls['ShipmentMode'].value;
+    this.obj.DutyMode = this.boeform.controls['DutyMode'].value;
+    this.obj.CHAAgentID = this.boeform.controls['CHAAgentID'].value;
+    this.obj.DutyPayableID = this.boeform.controls['DutyPayableID'].value;
+    this.obj.LedgerID = this.boeform.controls['LedgerID'].value;
+    if (this.obj.CHAAgentID == this.obj.DutyPayableID) {
+      this.alertService.error('CHAAgent , DutyPayable and Ledger should be different!');
+      return;
+    }
+    if (this.obj.DutyPayableID == this.obj.LedgerID) {
+      this.alertService.error('CHAAgent , DutyPayable and Ledger should be different!');
+      return;
+    }
+    if (this.obj.LedgerID == this.obj.CHAAgentID) {
+      this.alertService.error('CHAAgent , DutyPayable and Ledger should be different!');
+      return;
+    }
     this.aroute.paramMap.subscribe(params => {
       this.identity = +params.get('id');
     });
@@ -308,21 +404,16 @@ export class BoeComponent implements OnInit {
     this.obj.ReferenceDetail = this.boeform.controls['ReferenceDetail'].value;
     this.obj.PurchaseID = this.PurchaseID;
     this.obj.lstDetail = this.lstItem.filter(a => a.DutyAmount > 0);
-    //
-
     this._BoeService.upsert(this.obj).subscribe(
       (data) => {
         if (data != null && data.Flag == true) {
-          //
           this.alertService.success(data.Msg);
+          this.identity = 0;
           this._router.navigate(['/BOElist']);
         }
         else {
-          //
-          this.alertService.error(data.Msg);
-          this._router.navigate(['/BOElist']);
+          this.alertService.error(data.Msg); 
         }
-        this.identity = 0;
       },
       (error: any) => {
         //
@@ -344,26 +435,21 @@ export class BoeComponent implements OnInit {
     this.obj.ReferenceDetail = this.boeform.controls['ReferenceDetail'].value;
     this.obj.PurchaseID = this.PurchaseID;
     this.obj.lstDetail = this.lstItem.filter(a => a.DutyAmount > 0);
-    //
     this._BoeService.upsert(this.obj).subscribe(
       (data) => {
         if (data != null && data.Flag == true) {
-          //
           this.alertService.success(data.Msg);
+          this.identity = 0;
           this._router.navigate(['/BOElist']);
         }
         else {
-          //
-          this.alertService.error(data.Msg);
-          this._router.navigate(['/BOElist']);
+          this.alertService.error(data.Msg); 
         }
-        this.identity = 0;
       },
       (error: any) => {
-        //
         console.log(error);
       }
     );
-  } 
+  }
 
 }

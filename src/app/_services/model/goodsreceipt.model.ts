@@ -24,12 +24,12 @@ export class GoodsReceipt {
     ImagePath2: string;
     ImagePath3: string;
     ImagePath4: string;
-    
+
     GRNType: string;
     VendorWarehouseID: number;
     TrackingNumber: string;
-    GRNStatus:string;
- 
+    GRNStatus: string;
+
 }
 
 export class GoodsReceiptDetail {
@@ -54,7 +54,7 @@ export class GoodsReceiptDetail {
     POQTY: number;
     AvailableQty: number;
     GRNQty: number;
-    ImagePath:string;
+    ImagePath: string;
 }
 
 export class PONumber {
@@ -65,8 +65,8 @@ export class PONumber {
     LocationName: string;
     VendorID: number;
     VendorName: string;
-    GRNType: string; 
-    InventoryType: string; 
+    GRNType: string;
+    InventoryType: string;
 }
 
 export class Goodsinward {
@@ -132,6 +132,8 @@ export class Goodsdispute {
     Image10: string;
     CompanyDetailID: number;
     LoginId: number;
+    TrackingNumber: string;
+    RemovalOrderID: string;
 
 }
 
@@ -168,4 +170,15 @@ export class Inventorydetail {
     ItemName: string;
     BrandID: number;
     BrandName: string;
+    DisputeQty: number;
+}
+
+
+export class DocketNumber {
+
+    ScannedDate: Date;
+    DocketNumber: string;
+    CreatedByName: string;
+    CreatedDate: Date;
+    LoginId: number;
 } 

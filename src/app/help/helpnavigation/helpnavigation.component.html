@@ -95,9 +95,10 @@
         <div class="modal-body">
 
           <div class="form-group" [ngClass]="{'has-error': formErrors.ModuleType}">
-            <label class="col-sm-3 control-label" for="ModuleType">Module Type<span class="mandantory"> *</span></label>
+            <label class="col-sm-4 control-label" for="ModuleType">Module Type<span class="mandantory"> *</span></label>
             <div class="col-sm-6">
-              <select id="ModuleType" class="form-control" formControlName="ModuleType" (blur)="logValidationErrors()">
+              <select id="ModuleType" class="form-control" formControlName="ModuleType" (blur)="logValidationErrors()"
+                [(ngModel)]="ModuleType" name="ModuleType">
                 <option value="" selected="selected">Select</option>
                 <option *ngFor="let dis of lstModuleType" value={{dis.DropdownValue}}>
                   {{dis.DropDownDescription}}
@@ -113,7 +114,7 @@
 
 
           <div class="form-group" [ngClass]="{'has-error': formErrors.Subject}">
-            <label class="col-sm-3 control-label" for="Subject">Subject<span class="mandantory"> *</span></label>
+            <label class="col-sm-4 control-label" for="Subject">Subject<span class="mandantory"> *</span></label>
             <div class="col-sm-6">
               <input id="Subject" type="text" class="form-control" formControlName="Subject"
                 (blur)="logValidationErrors()" maxlength="50">
@@ -125,7 +126,14 @@
           </div>
 
           <div class="form-group" [ngClass]="{'has-error': formErrors.ReferenceNumber}">
-            <label class="col-sm-3 control-label" for="ReferenceNumber">Reference Number<span class="mandantory">
+            <label class="col-sm-4 control-label" for="ReferenceNumber"> 
+              <span *ngIf="ModuleType!='SELLER STATEMENTS'">
+                Reference Number
+              </span>
+              <span *ngIf="ModuleType=='SELLER STATEMENTS'">
+                Payment Statement Number
+              </span>
+              <span class="mandantory">
                 *</span></label>
             <div class="col-sm-6">
               <input id="ReferenceNumber" type="text" class="form-control" formControlName="ReferenceNumber"
@@ -138,7 +146,7 @@
           </div>
 
           <div class="form-group" [ngClass]="{'has-error': formErrors.Query}">
-            <label class="col-sm-3 control-label" for="Query">Query<span class="mandantory"> *</span></label>
+            <label class="col-sm-4 control-label" for="Query">Query<span class="mandantory"> *</span></label>
             <div class="col-sm-8">
               <textarea id="Query" type="text" formControlName="Query" (blur)="logValidationErrors()" maxlength="8000"
                 rows="6" cols="50">

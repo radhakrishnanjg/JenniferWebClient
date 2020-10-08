@@ -106,6 +106,7 @@ export class unsellqty {
     LiquidationPercent: number;
     LiquidationRate: number;
     LiquidationValue: number;
+    IsSellingPriceValueLess: Boolean;
 }
 
 export class Salesratecard {
@@ -128,6 +129,25 @@ export class Salesratecard {
     ItemCode: string;
 
     ItemIds: number[];
+}
+
+export class EventManager {
+    EventManagerID: number;
+    CompanyDetailID: number;
+    ItemID: number;  
+    StartDate: Date;
+    EndDate: Date;
+    DeactivateDate: Date;
+    IsActive: Boolean; 
+    MarketplaceID: number;
+    MarketPlace: string;
+    IsExpense:Boolean;
+    Expense:number;
+    LoginId: number;
+    //Master Tables 
+    ItemCode: string; 
+    ItemIds: number[];
+    StoreName: string;
 }
 export class SalesShipment {
     ShipmentOutwardID: number;

@@ -1,6 +1,6 @@
 //core npms 
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA, } from '@angular/core';
+import { NgModule, NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA, APP_INITIALIZER } from '@angular/core';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppComponent } from './app.component';
@@ -32,7 +32,7 @@ import { PDFExportModule } from '@progress/kendo-angular-pdf-export';
 import { InputsModule } from '@progress/kendo-angular-inputs';
 import { DateInputsModule } from '@progress/kendo-angular-dateinputs';
 import { EditorModule } from '@progress/kendo-angular-editor';
- import { ChartsModule } from '@progress/kendo-angular-charts';
+import { ChartsModule } from '@progress/kendo-angular-charts';
 import { TreeListModule } from '@progress/kendo-angular-treelist';
 
 import { SlickCarouselModule } from 'ngx-slick-carousel';
@@ -59,13 +59,16 @@ import { Submenu1Component } from './submenu1/submenu1.component';
 import { Submenu2Component } from './submenu2/submenu2.component';
 
 
-  import 'hammerjs';
-
+import 'hammerjs';
+import { AppInitService } from './_services/service/AppInitService';
+export function init_app(appLoadService: AppInitService) {
+  return () => appLoadService.init();
+}
 @NgModule({
   imports: [
     BrowserModule,
     ReactiveFormsModule,
-    HttpClientModule, 
+    HttpClientModule,
     BrowserAnimationsModule,
     FormsModule,
 
@@ -101,9 +104,8 @@ import { Submenu2Component } from './submenu2/submenu2.component';
     ChartsModule,
     // user defined modules by rk 
     AccountModule,
-    SlickCarouselModule ,
-    AppRoutingModule, 
-
+    SlickCarouselModule,
+    AppRoutingModule,
   ],
   declarations: [
     AppComponent,
@@ -123,12 +125,19 @@ import { Submenu2Component } from './submenu2/submenu2.component';
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: HttpErrorInterceptor, multi: true },
-    CookieService, 
+    CookieService,
     EncrDecrService,
+    // AppInitService,
+    // {
+    //   provide: APP_INITIALIZER,
+    //   useFactory: init_app,
+    //   deps: [AppInitService],
+    //   multi: true
+    // }
   ],
   bootstrap: [AppComponent],
   schemas: [
-    CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA,  
+    CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA,
   ]
 })
 export class AppModule { }

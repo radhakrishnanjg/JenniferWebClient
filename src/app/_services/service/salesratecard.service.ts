@@ -1,12 +1,12 @@
 import { Injectable, } from '@angular/core';
 import { HttpClient, HttpErrorResponse, } from '@angular/common/http';
 import { Observable, throwError, } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 import { BadRequest } from '../../common/bad-request';
 import { NotFoundError } from '../../common/not-found-error';
 import { AppError } from '../../common/app-error';
 import { AuthenticationService } from './authentication.service';
-import { Salesratecard, Result } from '../model/index';
+import { Salesratecard, Result, JsonModal, EventManager } from '../model/index';
 import { environment } from '../../../environments/environment';
 
 @Injectable({
@@ -51,6 +51,48 @@ export class SalesratecardService {
     return this.httpClient.post<Result>(environment.baseUrl + `SalesRateCard/Upsert`, this.lstSalesratecard)
       .pipe(catchError(this.handleError));
   }
+
+
+  //#region Event Manager
+  public EventManagerSearch(SearchBy: string, Search: string, StartDate: string, EndDate: string, IsActive: Boolean):
+    Observable<EventManager[]> {
+    let currentUser = this.authenticationService.currentUserValue;
+    let CompanyID = currentUser.CompanyID;
+    return this.httpClient.get<string>(environment.baseUrl + `SalesRateCard/EventManagerSearch?CompanyID=` + CompanyID
+      + `&SearchBy=` + encodeURIComponent(SearchBy) + `&Search=` + encodeURIComponent(Search)
+      + `&StartDate=` + StartDate + `&EndDate=` + EndDate + `&IsActive=` + IsActive)
+      .pipe(
+        map(data => {
+          return JSON.parse(data) as EventManager[];
+        }),
+        catchError(this.handleError)
+      );
+  }
+
+  objJsonModal: JsonModal = {} as any;
+  lstEventManager: EventManager[] = [] as any;
+  public EventManagerUpsert(objSalesratecard: EventManager, ItemIds: number[]): Observable<Result> {
+    this.lstEventManager = [] as any;
+    ItemIds.forEach(element => {
+      let objSalesratecard1: EventManager = {} as any;
+      // old data       
+      objSalesratecard1.MarketplaceID = objSalesratecard.MarketplaceID;
+      objSalesratecard1.CompanyDetailID = objSalesratecard.CompanyDetailID;
+      objSalesratecard1.IsExpense = objSalesratecard.IsExpense;
+      objSalesratecard1.Expense = objSalesratecard.Expense; 
+      objSalesratecard1.StartDate = objSalesratecard.StartDate;
+      objSalesratecard1.EndDate = objSalesratecard.EndDate;
+      // MULTIPLE item id
+      let currentUser = this.authenticationService.currentUserValue;
+      objSalesratecard1.LoginId = currentUser.UserId;
+      objSalesratecard1.ItemID = element;
+      this.lstEventManager.push(objSalesratecard1);
+    });
+    this.objJsonModal.Json = JSON.stringify(this.lstEventManager);
+    return this.httpClient.post<Result>(environment.baseUrl + `SalesRateCard/EventManagerUpsert`, this.objJsonModal)
+      .pipe(catchError(this.handleError));
+  }
+  // #endregion
 
   private handleError(error: HttpErrorResponse) {
 

@@ -9,12 +9,8 @@ import { NotFoundError } from '../../../common/not-found-error';
 import { AppError } from '../../../common/app-error';
 
 import { AuthenticationService } from '../authentication.service';
-import {
-    JsonModal, Result, SellerRegistration, Dropdown, IORPartners, EORPartners, ShipTo,
-    Consignor, LogisticPartners, PackageHeader
-}
-    from '../../model/crossborder/index';
-import { Country, State, State1 } from '../../../_services/model';
+import { JsonModal, Dropdown, } from '../../model/crossborder/index';
+import { Country, State, State1, Customerwarehouse, ChartOfAccount, TaxLedger, AmazonAutoRTVOrder } from '../../../_services/model';
 import { environment } from '../../../../environments/environment';
 
 
@@ -65,127 +61,86 @@ export class JsonPrivateUtilityService {
     }
 
 
-    public getsellerregistrations(): Observable<SellerRegistration[]> {
-        return this.httpClient.get<string>(environment.baseUrl + 'JsonPrivateUtility/GetSellerRegistrations')
+    public GetChartOfAccountsGroup(): Observable<ChartOfAccount[]> {
+        let currentUser = this.authenticationService.currentUserValue;
+        let CompanyID = currentUser.CompanyID;
+        return this.httpClient.get<string>(environment.baseUrl +
+            `JsonPrivateUtility/GetChartOfAccountsGroup?CompanyID=` + CompanyID)
             .pipe(
                 map(data => {
-                    return JSON.parse(data) as SellerRegistration[];
+                    return JSON.parse(data) as ChartOfAccount[];
                 }),
                 catchError(this.handleError)
             );
     }
 
-    // public GetShipFrom(): Observable<ShipFrom[]> {
-    //     return this.httpClient.get<string>(environment.baseUrl + 'JsonPrivateUtility/GetShipFrom')
-    //         .pipe(
-    //             map(data => {
-    //                 return JSON.parse(data) as ShipFrom[];
-    //             }),
-    //             catchError(this.handleError)
-    //         );
-    // }
-
-    public GetShipTo(): Observable<ShipTo[]> {
+    public GetChartOfAccountsSubGroup(ChartOfAccountsGroup: string): Observable<ChartOfAccount[]> {
         let currentUser = this.authenticationService.currentUserValue;
-        let SellerFormID = currentUser.SellerFormID;
-        return this.httpClient.get<string>(environment.baseUrl + 'JsonPrivateUtility/GetShipTo?SellerFormID=' + SellerFormID)
+        let CompanyID = currentUser.CompanyID;
+        return this.httpClient.get<string>(environment.baseUrl +
+            `JsonPrivateUtility/GetChartOfAccountsSubGroup?ChartOfAccountsGroup=` + encodeURIComponent(ChartOfAccountsGroup)
+
+            + `&CompanyID=` + CompanyID)
             .pipe(
                 map(data => {
-                    return JSON.parse(data) as ShipTo[];
+                    return JSON.parse(data) as ChartOfAccount[];
                 }),
                 catchError(this.handleError)
             );
     }
 
-    public GetConsignor(): Observable<Consignor[]> {
+    public GetChartOfAccountsFinancialStatement(ChartOfAccountsSubGroup: string): Observable<ChartOfAccount[]> {
         let currentUser = this.authenticationService.currentUserValue;
-        let SellerFormID = currentUser.SellerFormID;
-        return this.httpClient.get<string>(environment.baseUrl + 'JsonPrivateUtility/GetConsignor?SellerFormID=' + SellerFormID)
+        let CompanyID = currentUser.CompanyID;
+        return this.httpClient.get<string>(environment.baseUrl +
+            `JsonPrivateUtility/GetChartOfAccountsFinancialStatement?ChartOfAccountsSubGroup=` + encodeURIComponent(ChartOfAccountsSubGroup)
+            + `&CompanyID=` + CompanyID)
             .pipe(
                 map(data => {
-                    return JSON.parse(data) as Consignor[];
+                    return JSON.parse(data) as ChartOfAccount[];
                 }),
                 catchError(this.handleError)
             );
     }
 
-    // public GetConsignee(): Observable<Consignee[]> {
-    //     return this.httpClient.get<string>(environment.baseUrl + 'JsonPrivateUtility/GetConsignee')
-    //         .pipe(
-    //             map(data => {
-    //                 return JSON.parse(data) as Consignee[];
-    //             }),
-    //             catchError(this.handleError)
-    //         );
-    // }
-
-    public GetLogisticPartners(): Observable<LogisticPartners[]> { 
+    public GetAccounts(): Observable<TaxLedger[]> {
         let currentUser = this.authenticationService.currentUserValue;
-        let SellerFormID = currentUser.SellerFormID;
-        return this.httpClient.get<string>(environment.baseUrl + 'JsonPrivateUtility/GetLogisticPartners?SellerFormID=' + SellerFormID)
+        let CompanyID = currentUser.CompanyID;
+        return this.httpClient.get<string>(environment.baseUrl +
+            `JsonPrivateUtility/GetAccounts?`
+            + `&CompanyID=` + CompanyID)
             .pipe(
                 map(data => {
-                    return JSON.parse(data) as LogisticPartners[];
+                    return JSON.parse(data) as TaxLedger[];
                 }),
                 catchError(this.handleError)
             );
     }
 
-    public GetCARPFBAShipment(): Observable<PackageHeader[]> {
+    public GetRTVCustomerWarehouses(): Observable<Customerwarehouse[]> {
         let currentUser = this.authenticationService.currentUserValue;
-        let SellerFormID = currentUser.SellerFormID;
-        return this.httpClient.get<string>(environment.baseUrl + 'JsonPrivateUtility/GetCARPFBAShipment?SellerFormID=' + SellerFormID)
+        let CompanyID = currentUser.CompanyID;
+        return this.httpClient.get<string>(environment.baseUrl +
+            `JsonPrivateUtility/GetRTVCustomerWarehouses?`
+            + `CompanyID=` + CompanyID)
             .pipe(
                 map(data => {
-                    return JSON.parse(data) as PackageHeader[];
+                    return JSON.parse(data) as Customerwarehouse[];
                 }),
                 catchError(this.handleError)
             );
     }
 
-    public GetPODFBAShipment(): Observable<PackageHeader[]> {
+    public GetRTVGenerateInvoices(OrderID: string): Observable<AmazonAutoRTVOrder[]> {
         let currentUser = this.authenticationService.currentUserValue;
-        let LoginId = currentUser.UserId;
-        return this.httpClient.get<string>(environment.baseUrl + 'JsonPrivateUtility/GetPODFBAShipment?LoginId=' + LoginId)
+        let CompanyDetailID = currentUser.CompanyDetailID;
+        return this.httpClient.get<string>(environment.baseUrl +
+            `JsonPrivateUtility/GetRTVGenerateInvoices?`
+            + `CompanyDetailID=` + CompanyDetailID
+            + `&OrderID=` + encodeURIComponent(OrderID))
             .pipe(
                 map(data => {
-                    return JSON.parse(data) as PackageHeader[];
-                }),
-                catchError(this.handleError)
-            );
-    }
-
-    public GetShipmentFBAShipment(): Observable<PackageHeader[]> {
-        let currentUser = this.authenticationService.currentUserValue;
-        let LoginId = currentUser.UserId;
-        return this.httpClient.get<string>(environment.baseUrl + 'JsonPrivateUtility/GetShipmentFBAShipment?LoginId=' + LoginId)
-            .pipe(
-                map(data => {
-                    return JSON.parse(data) as PackageHeader[];
-                }),
-                catchError(this.handleError)
-            );
-    }
-
-    public GetCheckListFBAShipment(): Observable<PackageHeader[]> {
-        let currentUser = this.authenticationService.currentUserValue;
-        let LoginId = currentUser.UserId;
-        return this.httpClient.get<string>(environment.baseUrl + 'JsonPrivateUtility/GetCheckListFBAShipment?LoginId=' + LoginId)
-            .pipe(
-                map(data => {
-                    return JSON.parse(data) as PackageHeader[];
-                }),
-                catchError(this.handleError)
-            );
-    }
-
-    public GetBOEFBAShipment(): Observable<PackageHeader[]> {
-        let currentUser = this.authenticationService.currentUserValue;
-        let LoginId = currentUser.UserId;
-        return this.httpClient.get<string>(environment.baseUrl + 'JsonPrivateUtility/GetBOEFBAShipment?LoginId=' + LoginId)
-            .pipe(
-                map(data => {
-                    return JSON.parse(data) as PackageHeader[];
+                    return JSON.parse(data) as AmazonAutoRTVOrder[];
                 }),
                 catchError(this.handleError)
             );

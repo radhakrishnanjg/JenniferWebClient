@@ -21,10 +21,10 @@ export class CompanydetaillistComponent implements OnInit {
 
   obj: Companydetails;
 
-  selectedDeleteId: number;
-  dtOptions: DataTables.Settings = {};
+  selectedDeleteId: number; 
   deleteColumn: string;
-
+  SearchBy: string = '';
+  SearchKeyword: string = '';
   //#endregion
   constructor(
     private alertService: ToastrService,
@@ -36,7 +36,7 @@ export class CompanydetaillistComponent implements OnInit {
 
   ngOnInit() {
 
-    this.onLoad();
+    this.onLoad(this.SearchBy, this.SearchKeyword);
   }
 
   editButtonClick(id: number) {
@@ -56,30 +56,25 @@ export class CompanydetaillistComponent implements OnInit {
     $('#modaldeleteconfimation').modal('show');
   }
 
-  delete() {
-    //
+  delete() { 
     this._companydetailService.delete(this.selectedDeleteId).subscribe(
       (data) => {
         if (data) {
-          this.onLoad();
+          this.onLoad(this.SearchBy, this.SearchKeyword);
           this.alertService.success('Store data has been deleted successful');
         } else {
           this.alertService.error('Store – ' + this.deleteColumn + ' is being used in the application, Can’t be deleted.!');
         }
-        $('#modaldeleteconfimation').modal('hide');
-
-        //
+        $('#modaldeleteconfimation').modal('hide'); 
       },
-      (error: any) => {
-        //
+      (error: any) => { 
         console.log(error);
       }
     );
   }
 
-  onLoad() {
-    //
-    return this._companydetailService.search('').subscribe(
+  onLoad(SearchBy: string, Search: string) { 
+    return this._companydetailService.search(SearchBy, Search).subscribe(
       (lst) => {
         if (lst != null) {
           this.items = lst;
@@ -87,11 +82,19 @@ export class CompanydetaillistComponent implements OnInit {
         }
         //
       },
-      (err) => {
-        //
+      (err) => { 
         console.log(err);
       }
     );
+  }
+
+  Search(): void {
+    this.onLoad(this.SearchBy, this.SearchKeyword);
+  }
+
+  Refresh(): void {
+    this.SearchBy = '';
+    this.SearchKeyword = ''; 
   }
 
   AddNewLink() {
@@ -99,6 +102,32 @@ export class CompanydetaillistComponent implements OnInit {
       return;
     }
     this.router.navigate(['/Companydetails/Create']);
+  }
+
+  ReCheck(CompanyDetailID: number, MarketplaceID: number, MarketPlaceSellerID: string, MarketPlaceAPIToken: string) {
+    if (this._authorizationGuard.CheckAcess("Companydetaillist", "ViewEdit")) {
+      return;
+    }
+    this.obj = new Companydetails();
+    this.obj.CompanyDetailID = CompanyDetailID;
+    this.obj.MarketplaceID = MarketplaceID;
+    this.obj.MarketPlaceSellerID = MarketPlaceSellerID;
+    this.obj.MarketPlaceAPIToken = MarketPlaceAPIToken;
+    this._companydetailService.validate(this.obj).subscribe(
+      (data) => {
+        if (data != null && data.Flag == true) {
+          this.alertService.success(data.Msg);
+          this.onLoad(this.SearchBy, this.SearchKeyword);
+        }
+        else {
+          this.alertService.error(data.Msg);
+        }
+      },
+      (error: any) => {
+        //
+        console.log(error);
+      }
+    );
   }
 
   //#region Paging Sorting and Filtering Start
@@ -168,10 +197,10 @@ export class CompanydetaillistComponent implements OnInit {
             field: 'MarketPlaceSellerID',
             operator: 'contains',
             value: inputValue
-          }, 
+          },
         ],
       }
-    })  ;  
+    });
   }
 
 

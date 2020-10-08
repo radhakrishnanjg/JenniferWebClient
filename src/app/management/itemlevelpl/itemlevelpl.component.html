@@ -1,0 +1,244 @@
+<div class="row">
+  <div class="col-sm-6 col-lg-6">
+    <h3>
+      Item Wise Profit Loss
+    </h3>
+  </div>
+  <div class="col-sm-6 col-lg-6">
+    <div class="pull-right hidden-xs">
+      <ol class="breadcrumb" id="dynamicbreadcrumb">
+        <li>
+          <span> Management </span>
+        </li>
+        <li>
+          <span> Item Wise </span>
+        </li>
+        <li class="active">
+          Statement
+        </li>
+      </ol>
+    </div>
+  </div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <div class="row">
+      <div class="col-sm-6">
+        <span class="groupspanheader">
+          Item Wise Profit & Loss Statement
+        </span>
+      </div>
+      <div class="col-sm-6">
+        <!-- <div class="pull-right">
+          <button type="button" class="btn btn-primary" routerLink="/BOElist" title="Back">
+            Back
+          </button>
+        </div> -->
+      </div>
+    </div>
+  </div>
+
+  <div class="panel-body">
+
+
+    <div class="col-md-12">
+      <div class="row">
+
+        <div class="col-md-3">
+          <select [(ngModel)]="SearchBy" type="select" class="form-control serchcurv  btn-group"
+            (ngModelChange)="onchange_SearchBy($event)">
+            <option value="" selected="select">Search By</option>
+            <option *ngFor="let dis of lstDropdown" value={{dis.DropdownValue}}>
+              {{dis.DropdownValue}}
+            </option>
+          </select>
+        </div>
+        <div class="col-md-1">
+          <input onkeypress="return /[0-9]/i.test(event.key)" maxlength="10" [(ngModel)]="SearchKeyword" type="text"
+            [placeholder]="SearchBy" class="serchcurv  form-control btn-group">
+        </div>
+        <div class="col-md-3">
+          <input type="text" ngxDaterangepickerMd [(ngModel)]="selectedDateRange"
+            class="serchcurv form-control btn-group col-xs-12 pointer"
+            style="border:1px soloid #ccc !important; padding :3px;left:0px" [showCustomRangeLabel]="true"
+            [ranges]="Searchranges" [showCancel]="true" placeholder="Select please..."
+            (ngModelChange)="onChange($event)" />
+        </div>
+        <div class="col-md-5">
+          <div class="pull-left">
+            <button class="btn serchcurv btn-default btn-group" (click)="Search()" title="Search">
+              <i class="fa fa-search " aria-hidden="true"></i>
+            </button>
+            <!-- &nbsp;
+            <button type="button" class="btn serchcurv btn-default btn-group" data-toggle="tooltip"
+              data-placement="right" [title]="DropDownDescription">
+              <i class="fa fa-question-circle-o " aria-hidden="true">
+              </i>
+            </button> -->
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="col-md-12">
+      <!-- <br />
+      {{DropDownDescription}} -->
+      <br />
+      <div>
+        <b> Recommendations for OutRight Purchases : </b>
+        <!--pointer  (click)="filterdata(2)" -->
+        <b class="bgorg fontbig "> {{ Recommendations }} </b> Items ,
+        &nbsp;
+        &nbsp;
+        <b> OutRight Items : </b>
+        <b class="bggreen fontbig  "> {{ Outrightitems }} </b> Items
+        <br />
+      </div>
+      <br />
+    </div>
+    <div class="col-md-12">
+
+      <div class="table-responsive">
+        <table class="table table-bordered table-sm">
+          <thead>
+            <tr>
+              <th width="20"></th>
+              <th>Store </th>
+              <th>COGS</th>
+              <th>Investment</th>
+
+              <th>Revenue InclTax </th>
+              <th>Revenue ExclTax</th>
+              <th>Exp InclTax</th>
+              <th>Exp ExclTax</th>
+
+              <th>Gross P/L </th>
+              <th>GP %</th>
+              <th>Net Profit</th>
+              <th>NP %</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let dis of lst; let id = index">
+              <tr data-toggle="collapse" [attr.data-target]="'.order'+id">
+                <td [ngClass]="dis.StoreName=='Grand Total'?'bgblack' : ''"> <span class="pointer">+</span></td>
+                <td [ngClass]="dis.StoreName=='Grand Total'?'bgblack' : ''">
+                  <a class="pointer" title="Click To View Seller Products"
+                    href="{{ 'https://www.amazon.in/s?me='+dis.MarketPlaceSellerID+'&marketplaceID=A21TJRUUN4KGV'}}"
+                    target="_blank">
+                    {{dis.StoreName }}
+                  </a>
+                </td>
+                <td [ngClass]="dis.StoreName=='Grand Total'?'bgblack' : ''">
+                  {{dis.COGS  | currency : 'INR' : '₹' : '1.0-0'}}</td>
+                <td [ngClass]="dis.StoreName=='Grand Total'?'bgblack' : ''">
+                  {{dis.Investment  | currency : 'INR' : '₹' : '1.0-0'}}</td>
+
+                <td [ngClass]="dis.StoreName=='Grand Total'?'bgblack' : ''">
+                  {{dis.Revenue_InclTax | currency : 'INR' : '₹' : '1.0-0'}}</td>
+                <td [ngClass]="dis.StoreName=='Grand Total'?'bgblack' : ''">
+                  {{dis.Revenue_ExclTax | currency : 'INR' : '₹' : '1.0-0'}}</td>
+                <td [ngClass]="dis.StoreName=='Grand Total'?'bgblack' : ''">
+                  {{dis.Exp_InclTax | currency : 'INR' : '₹' : '1.0-0' }}</td>
+                <td [ngClass]="dis.StoreName=='Grand Total'?'bgblack' : ''">
+                  {{dis.Exp_ExclTax | currency : 'INR' : '₹' : '1.0-0' }}</td>
+
+
+                <td [ngClass]="dis.StoreName=='Grand Total'?'bgblack' : ''">
+                  {{dis.GrossProfit_Loss | currency : 'INR' : '₹' : '1.0-0'}}</td>
+                <td [ngClass]="dis.StoreName=='Grand Total'?'bgblack' : ''">
+                  {{dis.GP_Per | currency : 'INR' : '' : '1.0-2' }}</td>
+                <td [ngClass]="dis.StoreName=='Grand Total'?'bgblack' : ''">
+                  {{dis.NetProfit | currency : 'INR' : '₹' : '1.0-0' }}</td>
+                <td [ngClass]="dis.StoreName=='Grand Total'?'bgblack' : ''">
+                  {{dis.NP_Per  | currency : 'INR' : '' : '1.0-2' }}</td>
+              </tr>
+              <tr [ngClass]="'collapse order'+id">
+                <td> </td>
+                <td>Item Detail</td>
+                <td colspan="11">
+                  <table class="table table-bordered table-sm">
+                    <thead>
+                      <tr>
+                        <th>Item Code</th>
+                        <th>COGS</th>
+                        <th>Investment</th>
+
+                        <th>Revenue InclTax </th>
+                        <th>Revenue ExclTax</th>
+                        <th>Exp InclTax</th>
+                        <th>Exp ExclTax</th>
+
+                        <th>Gross P/L </th>
+                        <th>GP %</th>
+                        <th>Net Profit</th>
+                        <th>NP %</th>
+                      </tr>
+                    </thead>
+                    <tbody *ngIf="Sublst !=null && Sublst.length">
+                      <ng-container *ngFor="let e of Sublst | filterBy: ['StoreName']: dis.StoreName">
+                        <tr>
+                          <td
+                            [ngClass]="e.ItemCode=='Sub Total'?'bggrey' : e.OutrightFlag == 1 ? 'bggreen' : e.OutrightFlag==2? 'bgorg' : 'bgwhite'">
+                            <a class="pointer" href="{{ 'https://www.amazon.in/dp/' + e.ItemCode}}" target="_blank">
+                              {{e.ItemCode}} </a>
+                          </td>
+                          <td
+                            [ngClass]="e.ItemCode=='Sub Total'?'bggrey' : e.OutrightFlag == 1 ? 'bggreen' : e.OutrightFlag==2? 'bgorg' : 'bgwhite'">
+                            {{e.COGS  | currency : 'INR' : '₹' : '1.0-0'}}</td>
+                          <td
+                            [ngClass]="e.ItemCode=='Sub Total'?'bggrey' : e.OutrightFlag == 1 ? 'bggreen' : e.OutrightFlag==2? 'bgorg' : 'bgwhite'">
+                            {{e.Investment  | currency : 'INR' : '₹' : '1.0-0'}}</td>
+
+                          <td
+                            [ngClass]="e.ItemCode=='Sub Total'?'bggrey' : e.OutrightFlag == 1 ? 'bggreen' : e.OutrightFlag==2? 'bgorg' : 'bgwhite'">
+                            {{e.Revenue_InclTax | currency : 'INR' : '₹' : '1.0-0'}}</td>
+                          <td
+                            [ngClass]="e.ItemCode=='Sub Total'?'bggrey' : e.OutrightFlag == 1 ? 'bggreen' : e.OutrightFlag==2? 'bgorg' : 'bgwhite'">
+                            {{e.Revenue_ExclTax | currency : 'INR' : '₹' : '1.0-0'}}</td>
+                          <td
+                            [ngClass]="e.ItemCode=='Sub Total'?'bggrey' : e.OutrightFlag == 1 ? 'bggreen' : e.OutrightFlag==2? 'bgorg' : 'bgwhite'">
+                            {{e.Exp_InclTax | currency : 'INR' : '₹' : '1.0-0' }}</td>
+                          <td
+                            [ngClass]="e.ItemCode=='Sub Total'?'bggrey' : e.OutrightFlag == 1 ? 'bggreen' : e.OutrightFlag==2? 'bgorg' : 'bgwhite'">
+                            {{e.Exp_ExclTax | currency : 'INR' : '₹' : '1.0-0' }}</td>
+
+
+                          <td
+                            [ngClass]="e.ItemCode=='Sub Total'?'bggrey' : e.OutrightFlag == 1 ? 'bggreen' : e.OutrightFlag==2? 'bgorg' : 'bgwhite'">
+                            {{e.GrossProfit_Loss | currency : 'INR' : '₹' : '1.0-0'}}</td>
+                          <td
+                            [ngClass]="e.ItemCode=='Sub Total'?'bggrey' : e.OutrightFlag == 1 ? 'bggreen' : e.OutrightFlag==2? 'bgorg' : 'bgwhite'">
+                            {{e.GP_Per | currency : 'INR' : '' : '1.0-2' }}</td>
+                          <td
+                            [ngClass]="e.ItemCode=='Sub Total'?'bggrey' : e.OutrightFlag == 1 ? 'bggreen' : e.OutrightFlag==2? 'bgorg' : 'bgwhite'">
+                            {{e.NetProfit | currency : 'INR' : '₹' : '1.0-0' }}</td>
+                          <td
+                            [ngClass]="e.ItemCode=='Sub Total'?'bggrey' : e.OutrightFlag == 1 ? 'bggreen' : e.OutrightFlag==2? 'bgorg' : 'bgwhite'">
+                            {{e.NP_Per  | currency : 'INR' : '' : '1.0-2' }}</td>
+                        </tr>
+                      </ng-container>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+            </ng-container>
+            <tr *ngIf="lst==null || lst.length==0">
+              <td colspan="12">
+                No Records Found.!
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="panel-footer">
+    <div class="clearfix"></div>
+  </div>
+
+</div>

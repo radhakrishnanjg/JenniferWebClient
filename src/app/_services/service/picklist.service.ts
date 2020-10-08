@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError, } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 
 import { BadRequest } from '../../common/bad-request';
 import { NotFoundError } from '../../common/not-found-error';
 import { AppError } from '../../common/app-error';
 
 import { AuthenticationService } from './authentication.service';
-import { Picklistheader, Result, Picklistview, SalesInvoiceHeader } from '../model/index';
+import { Picklistheader, Result, Picklistview, SalesInvoiceHeader, StockAuditReport, StockAudit, JsonModal, JenniferItemSerials, StockAuditStatus } from '../model/index';
 import { environment } from '../../../environments/environment';
 
 @Injectable({
@@ -90,6 +90,39 @@ export class PicklistService {
       + `Picklist/PicklistView?PickListNumber=` + PLNum
       + `&CompanyDetailID=` + CompanyDetailID)
       .pipe(catchError(this.handleError));
+  }
+
+  objJsonModal: JsonModal = {} as any;
+  public StockAuditCheck(lst: JenniferItemSerials[]): Observable<StockAuditReport[]> {
+    let obj = new StockAudit();
+    let currentUser = this.authenticationService.currentUserValue;
+    obj.CompanyDetailID = currentUser.CompanyDetailID;
+    obj.LoginId = currentUser.UserId;
+    obj.lstSerialNums = lst;
+    this.objJsonModal.Json = JSON.stringify(obj);
+    return this.httpClient.post<string>(environment.baseUrl + `Picklist/StockAuditCheck`, this.objJsonModal)
+      .pipe(
+        map(data => {
+          return JSON.parse(data) as StockAuditReport[];
+        }),
+        catchError(this.handleError)
+      );
+  }
+
+  public StockAuditCheckStatus(JenniferItemSerial: string): Observable<StockAuditStatus[]> {
+    let obj = new StockAudit();
+    let currentUser = this.authenticationService.currentUserValue;
+    obj.CompanyDetailID = currentUser.CompanyDetailID;
+    obj.LoginId = currentUser.UserId;
+    obj.JenniferItemSerial = JenniferItemSerial;
+    this.objJsonModal.Json = JSON.stringify(obj);
+    return this.httpClient.post<string>(environment.baseUrl + `Picklist/StockAuditCheckStatus`, this.objJsonModal)
+      .pipe(
+        map(data => {
+          return JSON.parse(data) as StockAuditStatus[];
+        }),
+        catchError(this.handleError)
+      );
   }
 
   private handleError(error: HttpErrorResponse) {

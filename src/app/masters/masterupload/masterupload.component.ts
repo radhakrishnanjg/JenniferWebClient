@@ -17,7 +17,7 @@ import * as $ from 'jquery'
 export class MasteruploadComponent implements OnInit {
   lstmasterscreens: Dropdown[];
   MasterUploadForm: FormGroup;
-  uploaddata: MasterUpload = {} as any;
+  uploaddata: MasterUpload = {} as any;   
   selectedFile: File;
   kycFiles_Ext = Apisettings.KYCFiles_Ext;
   kycFiles_Fileszie = Apisettings.KYCFiles_Fileszie;

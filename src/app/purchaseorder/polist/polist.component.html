@@ -84,7 +84,7 @@
           </ng-template>
           <kendo-grid-column field="PONumber" title="PO No.">
           </kendo-grid-column>
-          <kendo-grid-column field="PODate" title="PO Date" filter="date" format="{0:d}" [filterable]="false">
+          <kendo-grid-column field="PODate" title="PO Date" >
             <ng-template kendoGridCellTemplate let-dataItem>
               {{ dataItem.PODate | date :"MM-dd-yyyy HH:mm" }}
             </ng-template>
@@ -103,10 +103,12 @@
                 *ngIf="!(obj.ApprovalStatus == 'Approved')"></i>
               &nbsp;
               <i class="fa fa-eye bgblue pointer" (click)="viewButtonClick(obj.POID)" title="View"></i>
+              &nbsp; 
+              <a [routerLink]="['/POprint', obj.POID]" target="_blank" class="pointer">
+                <i class="fa fa-print" title="Print"></i>
+              </a>
               &nbsp;
-              <i class="fa fa-print" (click)="printButtonClick(obj.POID)" title="Print"></i>
-              &nbsp;
-              <i class="fa fa-trash bgred pointer" *ngIf="!(obj.ApprovalStatus == 'Approved')" title="Delete"
+              <i class="fa fa-trash bgred pointer" title="Delete"
                 (click)="confirmDeleteid(obj.POID,obj.LocationID,obj.PONumber)"></i>
 
               &nbsp;

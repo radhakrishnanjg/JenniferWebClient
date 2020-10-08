@@ -33,6 +33,7 @@ import { PpoblistComponent } from './ppoblist/ppoblist.component';
 import { PpobComponent } from './ppob/ppob.component';
 
 import { MastersRoutingModule } from './masters.routing.module';
+import { TaxledgerComponent } from './taxledger/taxledger.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -68,6 +69,7 @@ import { MastersRoutingModule } from './masters.routing.module';
     LedgerlistComponent, 
     PpoblistComponent,
     PpobComponent,
+    TaxledgerComponent,
   ],
   providers: [
     CookieService,

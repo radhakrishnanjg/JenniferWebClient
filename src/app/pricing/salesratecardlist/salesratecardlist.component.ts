@@ -24,7 +24,7 @@ export class SalesratecardlistComponent implements OnInit {
 
   lstItem: Item[] = [] as any;
   lstItemSelected: Item[] = [] as any;
-  objItem: Item = {} as any; 
+  objItem: Item = {} as any;
   objSalesratecard: Salesratecard = {} as any;
   salesratecardForm: FormGroup;
   panelTitle: string;
@@ -60,7 +60,7 @@ export class SalesratecardlistComponent implements OnInit {
   constructor(
     private alertService: ToastrService,
     private _salesratecardService: SalesratecardService,
-    
+
     private _authorizationGuard: AuthorizationGuard,
     private fb: FormBuilder,
     private _PrivateutilityService: PrivateutilityService,
@@ -174,22 +174,14 @@ export class SalesratecardlistComponent implements OnInit {
   }
 
 
-  private getCurrentServerDateTime() {
-    //
+  private getCurrentServerDateTime() { 
     this._PrivateutilityService.getCurrentDate()
       .subscribe(
         (data: Date) => {
-          // var mcurrentDate = moment(data, 'YYYY-MM-DD[T]HH:mm').format('MM-DD-YYYY HH:mm').toString();
-          // this.salesratecardForm.patchValue({
-          //   StartDate: { startDate: new Date(mcurrentDate) },
-          // }); 
           this.MinDate = moment(data).add(0, 'days');
-          //
         },
         (err: any) => {
           console.log(err);
-
-          //
         }
       );
   }
@@ -199,7 +191,7 @@ export class SalesratecardlistComponent implements OnInit {
       return;
     }
     this.getCurrentServerDateTime();
-    
+
     //
     this._PrivateutilityService.GetValues('InventoryType')
       .subscribe(
@@ -297,7 +289,7 @@ export class SalesratecardlistComponent implements OnInit {
     //   return;
     // }
     // else
-     if (StartDate > EndDate) {
+    if (StartDate > EndDate) {
       this.alertService.error('The EndDate must be greater than or equal to StartDate.!');
       return;
     }
@@ -354,9 +346,9 @@ export class SalesratecardlistComponent implements OnInit {
     //
     return this._salesratecardService.search(SearchBy, Search, StartDate, EndDate, IsActive).subscribe(
       (lst) => {
-        if (lst != null) { 
+        if (lst != null) {
           this.items = lst;
-          this.loadItems(); 
+          this.loadItems();
         }
         //
       },
@@ -437,7 +429,7 @@ export class SalesratecardlistComponent implements OnInit {
             field: 'SellingPrice',
             operator: 'contains',
             value: inputValue
-          }, 
+          },
           {
             field: 'StartDate',
             operator: 'contains',
@@ -447,10 +439,10 @@ export class SalesratecardlistComponent implements OnInit {
             field: 'EndDate',
             operator: 'contains',
             value: inputValue
-          }, 
+          },
         ],
       }
-    })  ;  
+    });
   }
   //#endregion Paging Sorting and Filtering End
 

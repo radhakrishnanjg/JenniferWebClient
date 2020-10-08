@@ -8,20 +8,20 @@
     <div class="pull-right hidden-xs">
       <ol class="breadcrumb" id="dynamicbreadcrumb">
         <li>
-           <span> Revenue</span>
+          <span> Revenue</span>
         </li>
         <li>
-           <span> Sales Order</span>
+          <span> Sales Order</span>
         </li>
         <li class="active">
-          
+
           Save
         </li>
       </ol>
     </div>
   </div>
 </div>
-<form   (ngSubmit)="saveData()" [formGroup]="salesForm">
+<form (ngSubmit)="saveData()" [formGroup]="salesForm">
   <div class="panel panel-default">
     <div class="panel-heading">
       <div class="row">
@@ -37,7 +37,7 @@
         </div>
         <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 ">
           <div class="pull-right">
-            <button  type="button" class="btn btn-primary" routerLink="/Salesorderlist" title="Back">
+            <button type="button" class="btn btn-primary" routerLink="/Salesorderlist" title="Back">
 
               Back
             </button>
@@ -47,7 +47,7 @@
     </div>
 
     <div class="panel-body">
-      
+
       <div class="row">
 
         <div class="col-md-3 col-xs-12">
@@ -295,7 +295,7 @@
       </div>
       <div class="panel-default panel" *ngIf="ispickitems">
         <div class="panel-heading">
-          <div class="row"> 
+          <div class="row">
             <div class="col-md-12">
 
 
@@ -382,13 +382,19 @@
                     {{data.LiquidationValue | currency: 'INR'}}</td>
                   <td class="text-right">
                     <input type="number" min="0" step="1" class="form-control" max="100000"
-                      (input)="updateList(id,'Qty',$event.target.value)" value="{{data.Qty}}">
+                      [disabled]="!data.IsSellingPriceValueLess" (input)="updateList(id,'Qty',$event.target.value)"
+                      value="{{data.Qty}}">
                   </td>
                 </tr>
               </tbody>
             </table>
           </div>
           <div class="form-group col-md-12">
+            <div class="pull-left">
+              <b> Note : The above highlighted in Grey color SKU prices are not matching with Sales Rate Card. Please check sales rate card to proceed further. </b>
+             
+            </div>
+
             <div class="btn-toolbar pull-right">
               <button (click)="addtolist()" type="button" class="btn btn-success">Add to List</button>
             </div>
@@ -457,7 +463,7 @@
     </div>
     <div class="panel-footer" *ngIf="isadditems">
       <div class="btn-toolbar pull-right">
-        <button type="button"  type="button" class="btn btn-primary" routerLink="/Salesorderlist">Cancel</button>
+        <button type="button" type="button" class="btn btn-primary" routerLink="/Salesorderlist">Cancel</button>
         <button prevent-double-submit type="submit" id="save" class="btn btn-success"
           [disabled]="!salesForm.valid">Save</button>
       </div>

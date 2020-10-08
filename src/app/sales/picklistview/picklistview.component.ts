@@ -14,7 +14,7 @@ export class PicklistviewComponent implements OnInit {
   identity: number = 0;
   constructor(
     private _picklistService: PicklistService,
-    
+
     private aroute: ActivatedRoute,
   ) { }
 
@@ -23,17 +23,13 @@ export class PicklistviewComponent implements OnInit {
     this.aroute.paramMap.subscribe(params => {
       this.identity = +params.get('id');
     });
-    //
     return this._picklistService.PicklistView(this.identity).subscribe(
       (data) => {
         if (data != null) {
           this.objPicklistview = data;
-          //
         }
-        //
       },
       (err) => {
-        //
         console.log(err);
       }
     );

@@ -30,12 +30,14 @@ export class CompanydetailService {
     private authenticationService: AuthenticationService) {
   }
 
-  public search(Search: string): Observable<Companydetails[]> {
+  public search(SearchBy: string, Search: string): Observable<Companydetails[]> {
     let currentUser = this.authenticationService.currentUserValue;
     let CompanyID = currentUser.CompanyID;
     let LoginId = currentUser.UserId;
     return this.httpClient.get<Companydetails[]>(environment.baseUrl +
-      `CompanyDetail/Search?Search=` + Search + `&CompanyID=` + CompanyID + `&LoginId=` + LoginId)
+      `CompanyDetail/Search?SearchBy=` + encodeURIComponent(SearchBy)
+      + `&Search=` + encodeURIComponent(Search) + `&CompanyID=` + CompanyID
+      + `&LoginId=` + LoginId)
       .pipe(catchError(this.handleError));
   }
 
@@ -51,7 +53,9 @@ export class CompanydetailService {
     let currentUser = this.authenticationService.currentUserValue;
     let CompanyID = currentUser.CompanyID;
     return this.httpClient.get<Boolean>(environment.baseUrl +
-      `CompanyDetail/Exist?CompanyDetailID=` + CompanyDetailID + `&StoreName=` + StoreName + `&CompanyID=` + CompanyID)
+      `CompanyDetail/Exist?CompanyDetailID=` + CompanyDetailID
+      + `&StoreName=` + encodeURIComponent(StoreName)
+      + `&CompanyID=` + CompanyID)
       .pipe(
         map(users => {
           if (users && users == true)
@@ -85,6 +89,9 @@ export class CompanydetailService {
   }
 
   public validate(obj: Companydetails): Observable<Result> {
+    let currentUser = this.authenticationService.currentUserValue;
+    obj.CompanyID = currentUser.CompanyID;
+    obj.LoginId = currentUser.UserId;
     return this.httpClient.post<Result>(environment.baseUrl + `CompanyDetail/Validate`, obj)
       .pipe(catchError(this.handleError));
   }

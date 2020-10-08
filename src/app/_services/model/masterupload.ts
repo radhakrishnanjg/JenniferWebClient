@@ -21,6 +21,7 @@ export interface MasterUpload {
     LoginId: number;  
     LoanNum_ReceiptNum: string;  
     IsRecord_Error: boolean;  
+    CompanyDetailID:number;
 
     //FileData : File;
 }

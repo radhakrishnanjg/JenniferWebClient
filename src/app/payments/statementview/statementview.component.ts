@@ -91,7 +91,6 @@ export class StatementviewComponent implements OnInit {
             this.lstHistory = data;
             this.SupportQueryID = data[0].SupportQueryID;
             this.TimeLeft = data[0].TimeLeft;
-            
           }
         },
         (err: any) => {
@@ -135,9 +134,11 @@ export class StatementviewComponent implements OnInit {
 
   onClickSellerQuery(buttontype) {
     if (buttontype == 'Forward') {
-      this.objTicket.IsForwarded = true;
+      this.objTicket.IsForwarded = true; 
+      this.objTicket.Action="Forward";
     }
     else {
+      this.objTicket.Action = "Update";
       this.objTicket.IsForwarded = false;
     }
     this.objTicket.Query = this.customerMsg;
@@ -173,7 +174,6 @@ export class StatementviewComponent implements OnInit {
   }
 
   onClickBackButton() {
-    // this._router.navigate(['/PaymentSurvey']);
     this.GetSurveys();
   }
 

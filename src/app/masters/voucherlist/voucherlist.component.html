@@ -160,7 +160,7 @@
   <div id="modalpopupvoucherupsert" class="modal fade" tabindex="-1" role="dialog"
     aria-labelledby="modalpopupvoucherupsert" aria-hidden="true">
 
-    <form   [formGroup]="VoucherForm" (ngSubmit)="SaveData()" class="form-horizontal">
+    <form [formGroup]="VoucherForm" (ngSubmit)="SaveData()" class="form-horizontal">
       <div class="modal-dialog ">
         <div class="modal-content">
           <div class="modal-header">
@@ -225,27 +225,7 @@
                   </span>
                 </div>
               </div>
-            </div>
-
-            <!-- <div class="form-group" [ngClass]="{'has-error': formErrors.TaxType}">
-              <label class="col-sm-3 control-label" for="TaxType">
-                Tax Type <span class="mandantory">*</span>
-              </label>
-              <div class="col-sm-8">
-                <select id="TaxType" class="form-control" formControlName="TaxType" (blur)="logValidationErrors()"
-                  (change)="OnchangeforVendorName()">
-                  <option value="" selected="selected">Select</option>
-                  <option *ngFor="let dis of lstTaxType" value={{dis.DropdownValue}}>
-                    {{dis.DropDownDescription}}
-                  </option>
-                </select>
-                <div class="help-block-rk"> <span class="help-block" *ngIf="formErrors.TaxType">
-                    {{formErrors.TaxType}}
-                  </span>
-                </div>
-              </div>
-            </div> -->
-
+            </div> 
             <div class="form-group" [ngClass]="{'has-error': formErrors.VoucherType}">
               <label class="col-sm-3 control-label" for="VoucherType">
                 Voucher Type <span class="mandantory">*</span>
@@ -269,14 +249,14 @@
               <label class="col-sm-3 control-label" for="TransactionType">
                 Transaction Type <span class="mandantory">*</span>
               </label>
-              <div class="col-sm-8" >
-                <select   id="TransactionType" class="form-control" formControlName="TransactionType"
+              <div class="col-sm-8">
+                <select id="TransactionType" class="form-control" formControlName="TransactionType"
                   (blur)="logValidationErrors()" (change)="OnchangeforVendorName()">
                   <option value="" selected="selected">Select</option>
                   <option *ngFor="let dis of lstTransactionType" value={{dis.DropdownValue}}>
                     {{dis.DropdownValue}}
                   </option>
-                </select> 
+                </select>
                 <div class="help-block-rk"> <span class="help-block" *ngIf="formErrors.TransactionType">
                     {{formErrors.TransactionType}}
                   </span>
@@ -285,8 +265,9 @@
             </div>
 
             <div class="form-group" [ngClass]="{'has-error': formErrors.VoucherText}">
-              <label class="col-sm-3 control-label" for="VoucherText">Voucher Text <span
-                  class="mandantory">*</span></label>
+              <label class="col-sm-3 control-label" for="VoucherText">
+                Voucher Text
+              </label>
               <div class="col-sm-8">
                 <input id="VoucherText" type="text" class="form-control" formControlName="VoucherText"
                   (blur)="logValidationErrors()" maxlength="5" (change)="OnchangeforVendorName()"

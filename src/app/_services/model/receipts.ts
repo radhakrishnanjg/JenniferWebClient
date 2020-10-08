@@ -15,3 +15,18 @@ export class Receipts {
     LoginId: number; 
     UploadStatus:string;
 }
+
+
+export class UpcomingReceipts {
+
+    SettlementStartDate: Date;
+    SettlementEndDate : Date;
+    Amount: number;
+    Currency: string;
+    Status: string;
+    FundTransferStatus: string;
+    FundTransferDate : Date;
+    AccountNumberEndingwith : string;
+    UTRNumber : string;
+    BankReceiptDate : string;
+}

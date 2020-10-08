@@ -1,7 +1,6 @@
 export class Picklistheader {
     PicklistID: number;
     PickListNumber: number;
-    CompanyDetailID: number;
     OrderID: string;
     LocationID: number;
 
@@ -16,6 +15,7 @@ export class Picklistheader {
 
     //login info
     LoginId: number;
+    CompanyDetailID: number;
     // Master table values
     LocationName: string;
     InvoiceNumber: string;
@@ -86,7 +86,7 @@ export class SalesInvoiceHeader {
     TotalAmount: number;
     TotalAmuntWords: string;
     TotalTaxWords: string;
-    TotalAmountRoundtype:string;
+    TotalAmountRoundtype: string;
     TotalAmountRoundValue: number;
     TaxAmtRoundOff: number;
     lstDetail: SalesInvoiceDetail[];
@@ -127,4 +127,31 @@ export class SalesInvoicetaxDetail {
     TaxRate: number;
     TaxAmount: number;
     TaxState: string;
+}
+
+export class StockAudit {
+    lstSerialNums: JenniferItemSerials[];
+    LoginId: number;
+    CompanyDetailID: number;
+    JenniferItemSerial: string;
+}
+export class JenniferItemSerials {
+    JenniferItemSerial: string;
+}
+
+export class StockAuditReport {
+    JenniferItemSerial: string;
+    ItemCode: string;
+    ItemName: string;
+    Status: string;
+    Remarks: string;
+}
+
+export class StockAuditStatus {
+    JenniferItemSerial: string;
+    ItemCode: string;
+    ItemName: string;
+    Action: string;
+    ActionBy: string;
+    ActionDate: Date;
 }

@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col-sm-6 col-lg-6">
     <h3>
-      MFI
+      MFI Cases
     </h3>
   </div>
   <div class="col-sm-6 col-lg-6">
@@ -11,7 +11,7 @@
           <span> Procurements </span>
         </li>
         <li>
-          <span> MFI</span>
+          <span> MFI Cases</span>
         </li>
         <li class="active">
           List
@@ -22,6 +22,49 @@
 </div>
 
 <div class="panel panel-default">
+  <div class="panel-heading">
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="input-group col-xs-12 col-sm-12" role="group" aria-label="Basic example">
+          <div class="col-md-3 col-sm-3 col-xs-12 nopading_loct">
+            <select class="form-control serchcurv btn-group" [(ngModel)]="SearchBy">
+              <option value="" selected="select">Search By</option>
+              <option value="ByPONumber">PO Number</option>
+              <option value="ByShipmentNumber">Shipment Number</option>
+              <option value="ByPODate">PO Date</option>
+              <option value="ByShipmentDate">PO Date</option>
+            </select>
+          </div>
+          <div class="col-md-3 col-sm-3 nopading_loct"
+            *ngIf="(SearchBy=='' || SearchBy=='ByPONumber' ||SearchBy=='ByShipmentNumber'  )">
+            <input (keyup.enter)="Search()" [(ngModel)]="SearchKeyword" type="text"
+              class="serchcurv form-control btn-group">
+          </div>
+          <div class="col-md-3 col-sm-3 nopading_loct" *ngIf="(SearchBy=='ByPODate' ||SearchBy=='ByShipmentDate' )">
+            <input type="text" ngxDaterangepickerMd [(ngModel)]="selectedDateRange"
+              class="serchcurv form-control btn-group col-xs-12 pointer"
+              style="border:1px soloid #ccc !important; padding :3px;left:0px" [showCustomRangeLabel]="true"
+              [ranges]="Searchranges" [showCancel]="true" placeholder="Select please..."
+              (ngModelChange)="onChange($event)" />
+          </div>
+          <div class="col-md-3 col-sm-3 col-xs-6 nopading_loct">
+            <button class="serchcurv btn btn-default btn-group" (click)="Search()" title="Search">
+              <i class="fa fa-search " aria-hidden="true"></i>
+            </button>
+            <button class="serchcurv btn btn-default btn-group" (click)="Refresh()" title="Reset">
+              <i class="fa fa-refresh" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="col-xs-6 col-sm-3 col-md-3 text-right nopadding">
+            <!-- <button class="btn btn-xs btn-sm btn-primary" (click)="AddNewLink()" title="Add New">
+              Add New
+            </button> -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="panel-body">
     <div class="table-responsive">
       <table class="table">
@@ -37,8 +80,8 @@
               (input)="onFilter($event.target.value)" />
             <button kendoGridExcelCommand type="button" icon="file-excel"> </button>
             <button kendoGridPDFCommand icon="file-pdf"> </button>
-            <kendo-grid-pdf fileName="PoMFIList.pdf" [repeatHeaders]="true"></kendo-grid-pdf>
-            <kendo-grid-excel fileName="PoMFIlList.xlsx"></kendo-grid-excel>
+            <kendo-grid-pdf fileName="MFICaseList.pdf" [repeatHeaders]="true"></kendo-grid-pdf>
+            <kendo-grid-excel fileName="MFICaseList.xlsx"></kendo-grid-excel>
           </ng-template>
           <kendo-grid-column field="POnumber" title="PO Number">
           </kendo-grid-column>
@@ -55,23 +98,24 @@
           </kendo-grid-column>
           <kendo-grid-column field="ShipmentNumber" title="Shipment Number">
           </kendo-grid-column>
-          <kendo-grid-column field="ItemCode" title="Item Code">
-          </kendo-grid-column>
-          <kendo-grid-column field="ItemName" title="Item Name">
-          </kendo-grid-column>
           <kendo-grid-column field="ShippedQty" title="Shipped Qty">
           </kendo-grid-column>
           <kendo-grid-column field="ReceivedQty" title="Received Qty">
           </kendo-grid-column>
           <kendo-grid-column field="DiffQty" title="Diff Qty">
           </kendo-grid-column>
-          <kendo-grid-column field="DiffValue" title="DiffValue">
+          <kendo-grid-column field="DiffValue" title="Diff Value">
           </kendo-grid-column>
           <kendo-grid-column field="Ageing" title="Ageing">
           </kendo-grid-column>
-
+          <kendo-grid-column title="Action" [class]="{'text-center': true}" [filterable]="false" [sortable]="false"
+            width="80">
+            <ng-template kendoGridCellTemplate let-obj>
+              <i class="fa fa-edit bgblue pointer" (click)="editButtonClick(obj.ShipmentNumber)" title="Edit"> </i>
+            </ng-template>
+          </kendo-grid-column>
         </kendo-grid>
       </table>
     </div>
-  </div> 
+  </div>
 </div>

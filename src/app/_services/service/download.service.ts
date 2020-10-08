@@ -1,12 +1,12 @@
 import { Injectable, } from '@angular/core';
 import { HttpClient, HttpErrorResponse, } from '@angular/common/http';
 import { Observable, throwError, } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 import { BadRequest } from './../../common/bad-request';
 import { NotFoundError } from './../../common/not-found-error';
 import { AppError } from './../../common/app-error';
 import { AuthenticationService } from './authentication.service';
-import { DownloadMaster, DownloadDetail, AmazonMTR, DownloadLog, Result } from '../model/index';
+import { DownloadMaster, DownloadDetail, AmazonMTR, DownloadLog, Result, JsonModal } from '../model/index';
 import { environment } from '../../../environments/environment';
 
 @Injectable({
@@ -43,16 +43,6 @@ export class DownloadService {
       .pipe(catchError(this.handleError));
   }
 
-  public getDownloadLog(MenuId: number): Observable<DownloadLog[]> {
-    let currentUser = this.authenticationService.currentUserValue;
-    let CompanyID = currentUser.CompanyID;
-    let CompanyDetailID = currentUser.CompanyDetailID;
-    return this.httpClient.get<DownloadLog[]>(environment.baseUrl +
-      `Download/GetDownloadLog?CompanyID=` + CompanyID + `&CompanyDetailID=` + CompanyDetailID
-      + `&MenuId=` + MenuId)
-      .pipe(catchError(this.handleError));
-  }
-
   public add(objDownloadMaster: DownloadMaster): Observable<Result> {
     return this.httpClient.post<Result>(environment.baseUrl + `Download/Insert`, objDownloadMaster)
       .pipe(catchError(this.handleError));
@@ -67,7 +57,7 @@ export class DownloadService {
   }
 
 
-  public downloadExcel(SP_Name:string, MenuId: number,Filename: string, DynamicQuery: string): Observable<Result> {
+  public downloadExcel(SP_Name: string, MenuId: number, Filename: string, DynamicQuery: string): Observable<Result> {
     let currentUser = this.authenticationService.currentUserValue;
     this.objDownloadMaster.Filename = Filename;
     this.objDownloadMaster.SP_Name = SP_Name;
@@ -112,6 +102,41 @@ export class DownloadService {
       .pipe(catchError(this.handleError));
   }
 
+  //#region Download Log
+  public getDownloadLog(Download_Master_ID: number): Observable<DownloadLog[]> {
+    let currentUser = this.authenticationService.currentUserValue;
+    let CompanyID = currentUser.CompanyID;
+    let CompanyDetailID = currentUser.CompanyDetailID;
+    return this.httpClient.get<string>(environment.baseUrl +
+      `Download/GetDownloadLog?CompanyID=` + CompanyID + `&CompanyDetailID=` + CompanyDetailID
+      + `&Download_Master_ID=` + Download_Master_ID)
+      .pipe(
+        map(data => {
+          return JSON.parse(data) as DownloadLog[]
+        }),
+        catchError(this.handleError)
+      );
+  }
+
+  objJsonModal: JsonModal = {} as any;
+  public InsertDownloadLog(objDownloadLog: DownloadLog): Observable<Result> {
+    let currentUser = this.authenticationService.currentUserValue;
+    objDownloadLog.LoginId = currentUser.UserId;
+    objDownloadLog.CompanyID = currentUser.CompanyID;
+    objDownloadLog.CompanyDetailID = currentUser.CompanyDetailID;
+
+    let DynamicQuery = objDownloadLog.Dynamic_Query;
+    DynamicQuery += " @CompanyID=" + currentUser.CompanyID + ",";
+    DynamicQuery += "@CompanyDetailID=" + currentUser.CompanyDetailID + ",";
+    DynamicQuery += "@UserId=" + currentUser.UserId + ",";
+    DynamicQuery += "@MenuId=" + objDownloadLog.MenuId + "";
+    objDownloadLog.Dynamic_Query = DynamicQuery; 
+    this.objJsonModal.Json = JSON.stringify(objDownloadLog);
+    return this.httpClient.post<Result>(environment.baseUrl + `Download/InsertDownloadLog`, this.objJsonModal)
+      .pipe(catchError(this.handleError));
+  }
+
+  //#endregion
   private handleError(error: HttpErrorResponse) {
 
     if (error.status === 404)

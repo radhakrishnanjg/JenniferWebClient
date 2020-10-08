@@ -34,11 +34,12 @@ import { BoeviewComponent } from './boeview/boeview.component';
 import { ShipmentviewComponent } from './shipmentview/shipmentview.component';
 import { PoprintComponent } from './poprint/poprint.component';
 
-import { PomfilistComponent } from './pomfilist/pomfilist.component';
 import { PurchaseorderRoutingModule } from './/purchaseorder.routing.module';
 import { DebitnoteComponent } from './debitnote/debitnote.component';
 import { DebitnotelistComponent } from './debitnotelist/debitnotelist.component';
 import { DebitnoteviewComponent } from './debitnoteview/debitnoteview.component';
+import { PomfilistComponent } from './pomfilist/pomfilist.component';
+import { MFICaseComponent } from './mficase/mficase.component';
 
 @NgModule({
   imports: [
@@ -80,7 +81,8 @@ import { DebitnoteviewComponent } from './debitnoteview/debitnoteview.component'
     PomfilistComponent,
     DebitnoteComponent,
     DebitnotelistComponent,
-    DebitnoteviewComponent
+    DebitnoteviewComponent,
+    MFICaseComponent
   ],
   providers: [ 
     CookieService, 

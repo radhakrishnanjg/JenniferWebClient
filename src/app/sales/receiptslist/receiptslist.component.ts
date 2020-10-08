@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 
 import { ToastrService } from 'ngx-toastr';
 import { ReceiptsService } from '../../_services/service/receipts.service';
-import { Receipts } from '../../_services/model';
+import { Receipts, UpcomingReceipts } from '../../_services/model';
 import { AuthorizationGuard } from '../../_guards/Authorizationguard'
 
 import * as moment from 'moment';
-import { FormGroup, FormControl, } from '@angular/forms'; 
+import { FormGroup, FormControl, } from '@angular/forms';
 
 const createFormGroup = dataItem => new FormGroup({
   'FileID': new FormControl(dataItem.FileID),
@@ -65,12 +65,12 @@ export class ReceiptslistComponent implements OnInit {
     };
 
     this.onLoad();
+    this.LoadUpcomingReceipts();
   }
 
   onLoad() {
     let startdate: Date = this.selectedDateRange.startDate._d.toISOString().substring(0, 10);
     let enddate: Date = this.selectedDateRange.endDate._d.toISOString().substring(0, 10);
-    //
     return this._receiptsService.search(startdate, enddate).subscribe(
       (data) => {
         this.lst = data;
@@ -86,14 +86,24 @@ export class ReceiptslistComponent implements OnInit {
             return item;
           });
         }
-        //
       },
       (err) => {
-        //
         console.log(err);
       }
     );
   }
+  lstUpcomingReceipts: UpcomingReceipts[] = [] as any;
+  LoadUpcomingReceipts() {
+    return this._receiptsService.UpcomingReceiptSearch().subscribe(
+      (data) => {
+        this.lstUpcomingReceipts = data;
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+  }
+
 
   onChange(range) {
     let startdate: string = range.startDate._d.toISOString().substring(0, 10);
@@ -159,7 +169,6 @@ export class ReceiptslistComponent implements OnInit {
         this.gridDataunreconciled.find(({ FileID }) => FileID === selectedItem.FileID),
         this.obj
       );
-      //
       this._receiptsService.Update(this.obj).subscribe(
         (data) => {
           if (data && data.Flag == true) {
@@ -250,7 +259,7 @@ export class ReceiptslistComponent implements OnInit {
   }
 
 
-  public removeHandler(Filename: string): void { 
+  public removeHandler(Filename: string): void {
     this._receiptsService.DownloadReceiptFile(Filename)
       .subscribe(data => {
         saveAs(data, Filename.toString() + '.csv');//+ '.csv'

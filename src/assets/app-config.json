@@ -1,0 +1,7 @@
+{
+    "production": true,
+    "defaultImageUrl": "UploadFiles/Item/default.png",
+    "baseUrl": "https://puneethapi.jennifer-in.com/api/",
+    "basedomain": "https://puneethapi.jennifer-in.com/",
+    "JSONFileUploadPath": "https://puneethapi.jennifer-in.com/uploadfiles/common/"
+}

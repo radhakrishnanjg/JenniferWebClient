@@ -81,6 +81,15 @@ export class BOEHeader {
     LocationName:string ;
     WarehouseName:string ;
     PIValue:number;
+    //newly added
+    ShipmentMode:string;
+    DutyMode:string;
+    CHAAgentID:number;
+    DutyPayableID:number;
+    LedgerID:number;
+    CHAAgentName:string;
+    DutyPayableName:string;
+    LedgerName:string;
 }
 
 export class BOEDetail {
@@ -98,7 +107,6 @@ export class BOEDetail {
 
     IGSTValue: number;
     TotalValue: number;
-    SumTotalValue: number;
-
+    SumTotalValue: number; 
     IsView:boolean=true;
 }

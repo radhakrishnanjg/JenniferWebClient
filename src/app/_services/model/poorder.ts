@@ -27,10 +27,10 @@ export class Poorder {
     POApprovalID: number;
     // who is doing this task
     LoginId: number;
-    IsPOClosed:boolean;
-    BulkString:string;
-    FilePath:string;
-    CurrencyType: string; 
+    IsPOClosed: boolean;
+    BulkString: string;
+    FilePath: string;
+    CurrencyType: string;
 }
 export class Poorderitem {
 
@@ -71,7 +71,7 @@ export class Poshipment {
     POID: number;
     CarpID: string;
     Appointment: Date;
-    AppointmentDate:Date;
+    AppointmentDate: Date;
     AttachedFileNames: string;
     Remarks: string;
     IsMailSent: Boolean;
@@ -88,9 +88,9 @@ export class Poshipment {
 
     // who is doing this task
     LoginId: number;
-    ShipmentType:string;
-} 
- 
+    ShipmentType: string;
+}
+
 
 export class Poapprovaldetail {
     ApprovalStatus: string;
@@ -142,8 +142,7 @@ export class Poprint {
     TermsOfCondition6: string;
 }
 
-export class PoMFI
-{
+export class PoMFI {
     POnumber: string;
     PODate: Date | string;
     ShipmentDate: Date | string;
@@ -157,4 +156,45 @@ export class PoMFI
     DiffValue: number;
 
     Ageing: number;
+    //Newly added
+    CompanyDetailID: number;
+    LoginId: number;
+    CaseID: number;
+}
+
+export class MFICaseHeader {
+    PONumber: string;
+    PODate: Date;
+    ShipmentDate: Date;
+    ShipmentNumber: string;
+    ShippedQty: number;
+    ReceivedQty: number;
+    DiffQty: number;
+    DiffValue: number;
+    FNSKU: string;
+
+    Ageing: number;
+    //Newly added
+    Location:string; 
+    InwardDate: Date;
+    Owner:string
+    lstCaseDetail: MFICaseDetail[] = [] as any;
+}
+
+export class MFICaseDetail {
+
+    ShipmentDate: Date;
+    ShipmentNumber: string;
+    CaseId: string;
+    Status: string;
+    Resolution: string;
+    OveragedShipment: string;
+    Quantity: number;
+    RMSID: string;
+    ValueOfRMS: number;
+    Remarks: string; 
+    
+    CreatedDate: Date;
+    CompanyDetailID: number;
+    LoginId: number;
 }

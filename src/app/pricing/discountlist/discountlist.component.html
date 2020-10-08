@@ -71,69 +71,73 @@
     </div>
   </div>
   <div class="panel-body">
-    <div class="col-md-12 col-xs-12">
-      <div class="pull-right">
-        <span> <b> M- </b> MarketPlace </span>
-        <span> <b> S- </b> Store </span>
-        <span> <b> O- </b> Other </span>
-        <span> <b> T- </b>Total </span>
+    <div class="row">
+
+      <div class="col-md-12 col-xs-12">
+        <div class="pull-right">
+          <span> <b> M- </b> MarketPlace </span>
+          <span> <b> S- </b> Store </span>
+          <span> <b> O- </b> Other </span>
+          <span> <b> T- </b>Total </span>
+        </div>
       </div>
-    </div>
-    <div class="col-md-12 col-xs-12">
-      <div class="table-responsive">
-        <table class="table">
-          <kendo-grid [data]="gridView" resizable="true" columnMenu="true" [pageSize]="pageSize" [skip]="skip"
-            [pageable]="{pageSizes: [10, 25, 50, 100, 250, 500]}" (pageChange)="pageChange($event)" [sortable]="{
+      <div class="col-md-12 col-xs-12">
+        <div class="table-responsive">
+          <table class="table">
+            <kendo-grid [data]="gridView" resizable="true" columnMenu="true" [pageSize]="pageSize" [skip]="skip"
+              [pageable]="{pageSizes: [10, 25, 50, 100, 250, 500]}" (pageChange)="pageChange($event)" [sortable]="{
           allowUnsort: allowUnsort,
           mode:  'single'
           }" [sort]="sort" (sortChange)="sortChange($event)" [filterable]="true"
-            (dataStateChange)="dataStateChange($event)" [filter]="state.filter">
+              (dataStateChange)="dataStateChange($event)" [filter]="state.filter">
 
-            <ng-template kendoGridToolbarTemplate>
-              <input placeholder="Search in all columns..." style="float:right;" kendoTextBox
-                (input)="onFilter($event.target.value)" />
-              <button kendoGridExcelCommand type="button" icon="file-excel"> </button>
-              <button kendoGridPDFCommand icon="file-pdf"> </button>
-              <kendo-grid-pdf fileName="DiscountList.pdf" [repeatHeaders]="true"></kendo-grid-pdf>
-              <kendo-grid-excel fileName="DiscountList.xlsx"></kendo-grid-excel>
-            </ng-template>
+              <ng-template kendoGridToolbarTemplate>
+                <input placeholder="Search in all columns..." style="float:right;" kendoTextBox
+                  (input)="onFilter($event.target.value)" />
+                <button kendoGridExcelCommand type="button" icon="file-excel"> </button>
+                <button kendoGridPDFCommand icon="file-pdf"> </button>
+                <kendo-grid-pdf fileName="DiscountList.pdf" [repeatHeaders]="true"></kendo-grid-pdf>
+                <kendo-grid-excel fileName="DiscountList.xlsx"></kendo-grid-excel>
+              </ng-template>
 
-            <kendo-grid-column field="CustomerName" title="Customer">
-            </kendo-grid-column>
-            <kendo-grid-column field="TransactionType" title="Transaction Type">
-            </kendo-grid-column>
-            <kendo-grid-column field="InventoryType" title="Inventory Type">
-            </kendo-grid-column>
-            <kendo-grid-column field="ItemCode" title="ItemCode">
-            </kendo-grid-column>
-            <!-- <kendo-grid-column field="MarketPlaceContribution" title="MarketPlace Contribution">
+              <kendo-grid-column field="CustomerName" title="Customer">
+              </kendo-grid-column>
+              <kendo-grid-column field="TransactionType" title="Transaction Type">
+              </kendo-grid-column>
+              <kendo-grid-column field="InventoryType" title="Inventory Type">
+              </kendo-grid-column>
+              <kendo-grid-column field="ItemCode" title="ItemCode">
+              </kendo-grid-column>
+              <!-- <kendo-grid-column field="MarketPlaceContribution" title="MarketPlace Contribution">
       </kendo-grid-column>
       <kendo-grid-column field="StoreContribution" title="Store Contribution">
       </kendo-grid-column>
       <kendo-grid-column field="OtherContribution" title="Other Contribution">
       </kendo-grid-column> -->
-            <kendo-grid-column field="MarketPlaceContribution" title="Contribution" [filterable]="false">
-              <ng-template kendoGridCellTemplate let-dataItem>
-                <span> <b> M- </b>{{dataItem.MarketPlaceContribution}} %, <span width="30"></span> </span>
-                <span> <b> S- </b>{{dataItem.StoreContribution}} %,</span> <br />
-                <span> <b> O- </b>{{dataItem.OtherContribution}} %,</span>
-                <span> <b> T- </b>{{dataItem.TotalDiscountPer}} %</span>
-              </ng-template>
-            </kendo-grid-column>
-            <kendo-grid-column field="StartDate" title="Effective From" filter="date" format="{0:d}"
-              [filterable]="false">
-              <ng-template kendoGridCellTemplate let-dataItem>
-                {{ dataItem.StartDate | date :"MM-dd-yyyy HH:mm" }}
-              </ng-template>
-            </kendo-grid-column>
-            <kendo-grid-column field="EndDate" title="Effective To" filter="date" format="{0:d}" [filterable]="false">
-              <ng-template kendoGridCellTemplate let-dataItem>
-                {{ dataItem.EndDate | date :"MM-dd-yyyy HH:mm" }}
-              </ng-template>
-            </kendo-grid-column>
-          </kendo-grid>
-        </table>
+              <kendo-grid-column field="MarketPlaceContribution" title="Contribution" [filterable]="false">
+                <ng-template kendoGridCellTemplate let-dataItem>
+                  <span> <b> M- </b>{{dataItem.MarketPlaceContribution}} %, <span width="30"></span> </span>
+                  <span> <b> S- </b>{{dataItem.StoreContribution}} %,</span> <br />
+                  <span> <b> O- </b>{{dataItem.OtherContribution}} %,</span>
+                  <span> <b> T- </b>{{dataItem.TotalDiscountPer}} %</span>
+                </ng-template>
+              </kendo-grid-column>
+              <kendo-grid-column field="StartDate" title="Effective From" filter="date" format="{0:d}"
+                [filterable]="false">
+                <ng-template kendoGridCellTemplate let-dataItem>
+                  {{ dataItem.StartDate | date :"MM-dd-yyyy HH:mm" }}
+                </ng-template>
+              </kendo-grid-column>
+              <kendo-grid-column field="EndDate" title="Effective To" filter="date" format="{0:d}" [filterable]="false">
+                <ng-template kendoGridCellTemplate let-dataItem>
+                  {{ dataItem.EndDate | date :"MM-dd-yyyy HH:mm" }}
+                </ng-template>
+              </kendo-grid-column>
+            </kendo-grid>
+          </table>
+        </div>
       </div>
+
     </div>
   </div>
 
@@ -141,7 +145,7 @@
   <div id="modalpopup_discount" class="modal fade " tabindex="-1" role="dialog" aria-labelledby="modalpopup_discount"
     aria-hidden="true">
 
-    <form   [formGroup]="discountForm" (ngSubmit)="SaveData()">
+    <form [formGroup]="discountForm" (ngSubmit)="SaveData()">
       <div class="modal-dialog ">
         <div class="modal-content">
           <div class="modal-header">

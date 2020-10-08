@@ -24,12 +24,42 @@
 <div class="panel panel-default">
   <div class="panel-heading">
     <div class="row">
-      <div class="col-xs-6 col-sm-8 col-md-8 col-lg-8">
-      </div>
-      <div class="col-xs-6 col-sm-4 col-md-4 col-lg-4 text-right">
-        <button class="btn btn-xs btn-sm btn-primary" (click)="AddNewLink()">Add New</button>
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="input-group col-xs-12 col-sm-12" role="group" aria-label="Basic example">
+          <div class="col-md-3 col-sm-3 col-xs-12 nopading_loct">
+            <select [(ngModel)]="SearchBy" type="select" class="serchcurv form-control btn-group">
+              <option value="" selected="select">Search By</option>
+              <option value="MarketPlaceSellerID">MarketPlace SellerID</option>
+              <option value="StoreName">Store Name</option>
+            </select>
+          </div>
+          <div class="col-md-3 col-sm-3 nopading_loct" *ngIf="(SearchBy!= 'ByStatus') ">
+            <input (keyup.enter)="Search()" [(ngModel)]="SearchKeyword" placeholder="Enter {{SearchBy}}" type="text"
+              class="serchcurv  form-control btn-group">
+          </div>
+          <!-- <div class="col-md-3 col-sm-3 nopading_loct" *ngIf="(SearchBy=='ByStatus')">
+            <select [(ngModel)]="Searchaction" type="select" class="serchcurv form-control btn-group">
+              <option value="true">Active</option>
+              <option value="false">InActive</option>
+            </select>
+          </div> -->
+          <div class="col-md-3 col-sm-3 col-xs-6 nopading_loct">
+            <button class="btn btn-default serchcurv  btn-group" (click)="Search()" title="Search">
+              <i class="fa fa-search " aria-hidden="true"></i>
+            </button>
+            <button class="btn btn-default serchcurv  btn-group" (click)="Refresh()" title="Reset">
+              <i class="fa fa-refresh" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="col-xs-6 col-sm-3 col-md-3 text-right nopadding">
+            <button class="btn btn-xs btn-sm btn-primary" (click)="AddNewLink()" title="Add New">
+              Add New
+            </button>
+          </div>
+        </div>
       </div>
     </div>
+
   </div>
   <div class="panel-body">
     <div class="table-responsive">
@@ -67,11 +97,24 @@
           </kendo-grid-column>
           <kendo-grid-column field="MarketPlace" title="Market Place">
           </kendo-grid-column>
-
           <kendo-grid-column field="IsActive" title="IsActive" [class]="{'text-center': true}" filter="boolean"
             width="80">
             <ng-template kendoGridCellTemplate let-dataItem>
               <i [class]="dataItem.IsActive ? 'fa fa-check': 'fa fa-times'" aria-hidden="true"></i>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="ExpireStatus" title="ExpireStatus" width="120">
+            <ng-template kendoGridCellTemplate let-dataItem>
+              <div style="padding-top:3px">
+              </div>
+              <button title="Re Check" class="btn btn-xs btn-sm btn-warning" *ngIf="dataItem.ExpireStatus=='Recheck'"
+                (click)="ReCheck(dataItem.CompanyDetailID,dataItem.MarketplaceID,dataItem.MarketPlaceSellerID,dataItem.MarketPlaceAPIToken)">
+                Re Check </button>
+              <span *ngIf="dataItem.ExpireStatus!='Recheck'">
+                {{   dataItem.ExpireStatus}}
+              </span>
+              <div style="padding-top:3px">
+              </div>
             </ng-template>
           </kendo-grid-column>
           <kendo-grid-column title="Action" [class]="{'text-center': true}" [filterable]="false" [sortable]="false"

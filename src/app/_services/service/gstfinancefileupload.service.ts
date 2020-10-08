@@ -106,7 +106,6 @@ export class GstfinancefileuploadService {
       .pipe(catchError(this.handleError));
   }
 
-
   public Delete(FileID: number): Observable<Result> {
     let currentUser = this.authenticationService.currentUserValue;
     this.objGstfinancefileupload.FileID = FileID;
@@ -116,12 +115,12 @@ export class GstfinancefileuploadService {
       .pipe(catchError(this.handleError));
   }
 
-  public FinanceApproverCheck(): Observable<string> {
+  public FinanceApproverCheck(ActionName:string ): Observable<string> {
     let currentUser = this.authenticationService.currentUserValue;
     let CompanyID = currentUser.CompanyID;
-    let LoginId = currentUser.UserId;
+    let LoginId = currentUser.UserId; 
     return this.httpClient.get<string>(environment.baseUrl +
-      `GSTFinance/FinanceApproverCheck?LoginId=` + LoginId + `&CompanyID=` + CompanyID)
+      `GSTFinance/FinanceApproverCheck?LoginId=` + LoginId + `&CompanyID=` + CompanyID + `&ActionName=` + ActionName)
       .pipe(catchError(this.handleError));
   }
 

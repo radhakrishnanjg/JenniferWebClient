@@ -33,6 +33,7 @@ import { GoodsDisputeListComponent } from './goods-dispute-list/goods-dispute-li
 import { InventorydetaillistComponent } from './inventorydetaillist/inventorydetaillist.component';
 import { GoodsdisputeviewComponent } from './goodsdisputeview/goodsdisputeview.component';
 import { GoodsreceiptviewComponent } from './goodsreceiptview/goodsreceiptview.component'; 
+import { GoodsgateacknowledgementComponent } from './goodsgateacknowledgement/goodsgateacknowledgement.component';
 
 //routing module
 
@@ -75,7 +76,8 @@ import { GoodsRoutingModule } from './goods.routing.module';
     GoodsDisputeListComponent, 
     InventorydetaillistComponent,
     GoodsdisputeviewComponent,
-    GoodsreceiptviewComponent, 
+    GoodsreceiptviewComponent,
+    GoodsgateacknowledgementComponent, 
   ],
   providers: [
     CookieService,

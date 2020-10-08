@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AmazonautortvService } from '../../_services/service/amazonautortv.service';
-import { AmazonAutoRTVConfiguration, AmazonAutoRTVOrder } from '../../_services/model';
+import { AmazonAutoRTVOrder } from '../../_services/model';
 
 import { AuthorizationGuard } from '../../_guards/Authorizationguard';
 import * as moment from 'moment';
@@ -17,7 +17,6 @@ import { SortDescriptor, orderBy } from '@progress/kendo-data-query';
 })
 export class OrderlistComponent implements OnInit {
 
-  obj: AmazonAutoRTVOrder = {} as any;
   lst: AmazonAutoRTVOrder[];
 
   selectedDeleteId: number;
@@ -38,10 +37,8 @@ export class OrderlistComponent implements OnInit {
   }
 
   constructor(
-    private alertService: ToastrService,
-    private router: Router,
-    private _amazonautortvService: AmazonautortvService,
-    private _authorizationGuard: AuthorizationGuard
+    private alertService: ToastrService, 
+    private _amazonautortvService: AmazonautortvService, 
   ) { }
 
   ngOnInit() {
@@ -77,6 +74,26 @@ export class OrderlistComponent implements OnInit {
       );
   }
 
+  obj: AmazonAutoRTVOrder = {} as any;
+  GenerateInvoice(OrderID: string) {
+    this.obj = new AmazonAutoRTVOrder();
+    this.obj.OrderID = OrderID;
+    this._amazonautortvService.InvoiceInsert(this.obj)
+      .subscribe(data => {
+        if (data != null && data.Flag == true) {
+          this.alertService.success(data.Msg);
+          this.onLoad(this.SearchBy, this.SearchKeyword);
+        }
+        else {
+          this.alertService.error(data.Msg);
+        }
+      },
+        (err) => {
+          console.log(err);
+        }
+      );
+  }
+
   Search(): void {
     this.onLoad(this.SearchBy, this.SearchKeyword);
   }
@@ -91,13 +108,13 @@ export class OrderlistComponent implements OnInit {
     let enddate: string = range.endDate._d.toISOString().substring(0, 10);
   }
 
-  onLoad(SearchBy: string, Search: string, ) {
-    let FromDate: Date = this.selectedDateRange.startDate._d.toISOString().substring(0, 10);
-    let ToDate: Date = this.selectedDateRange.endDate._d.toISOString().substring(0, 10);
-
-    return this._amazonautortvService.OrderSearch(SearchBy, Search, FromDate, ToDate).subscribe(
-      (lst) => {
+  onLoad(SearchBy: string, Search: string,) {
+    let startdate: string = moment(this.selectedDateRange.startDate._d, 'YYYY-MM-DD[T]HH:mm').format('YYYY-MM-DD').toString();
+    let enddate: string = moment(this.selectedDateRange.endDate._d, 'YYYY-MM-DD[T]HH:mm').format('YYYY-MM-DD').toString();
+    return this._amazonautortvService.OrderSearch(SearchBy, Search, startdate, enddate).subscribe(
+      (lst) => { 
         if (lst != null) {
+
           this.items = lst;
           this.loadItems();
         }
@@ -204,7 +221,7 @@ export class OrderlistComponent implements OnInit {
             operator: 'contains',
             value: inputValue
           },
-           
+
         ],
       }
     });

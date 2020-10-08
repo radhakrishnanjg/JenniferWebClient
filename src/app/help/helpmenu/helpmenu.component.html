@@ -47,13 +47,32 @@
         </div>
         <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 ">
           <div class="pull-right">
-            <button  type="button" class="btn btn-primary" routerLink="/Helpmenulist">Back</button>
+            <button type="button" class="btn btn-primary" routerLink="/Helpmenulist">Back</button>
           </div>
         </div>
       </div>
     </div>
 
     <div class="panel-body">
+
+      <div class="form-group" [ngClass]="{'has-error': formErrors.ApplicationName}">
+        <label class="col-sm-4 control-label" for="ApplicationName">
+          Application Name
+          <span class="mandantory">*</span></label>
+        <div class="col-sm-2">
+          <select class="form-control" formControlName="ApplicationName" (blur)="logValidationErrors()">
+            <option value="" selected="selected">Select</option>
+            <option *ngFor="let dis of lstApplication" value={{dis.DropdownValue}}>
+              {{dis.DropDownDescription}}
+            </option>
+          </select>
+
+          <div class="help-block-rk"> <span class="help-block" *ngIf="formErrors.ApplicationName">
+              {{formErrors.ApplicationName}}
+            </span>
+          </div>
+        </div>
+      </div>
 
       <div class="form-group" [ngClass]="{'has-error': formErrors.MenuType}">
         <label class="col-sm-4 control-label" for="MenuType">Menu Type<span class="mandantory">*</span></label>
@@ -131,7 +150,7 @@
     </div>
     <div class="panel-footer  ">
       <div class="pull-right btn-toolbar">
-        <button  type="button" class="btn btn-primary" routerLink="/Helpmenulist">Cancel</button>
+        <button type="button" class="btn btn-primary" routerLink="/Helpmenulist">Cancel</button>
         <button class="btn btn-success" type="submit" prevent-double-submit [disabled]="Helpmenuform.invalid">
           Save </button>
       </div>

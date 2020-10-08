@@ -8,20 +8,20 @@
     <div class="pull-right hidden-xs">
       <ol class="breadcrumb" id="dynamicbreadcrumb">
         <li>
-           <span> Procurements</span>
+          <span> Procurements</span>
         </li>
         <li>
-           <span> BOE </span>
+          <span> BOE </span>
         </li>
         <li class="active">
-          
+
           Save
         </li>
       </ol>
     </div>
   </div>
 </div>
-<form   [formGroup]=" boeform" (ngSubmit)="SaveData()" class="form-group">
+<form [formGroup]=" boeform" (ngSubmit)="SaveData()" class="form-group">
   <div class="panel panel-default">
     <div class="panel-heading">
       <div class="row">
@@ -34,13 +34,14 @@
         </div>
         <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 ">
           <div class="pull-right">
-            <button  type="button" class="btn btn-primary" routerLink="/BOElist" title="Back">
+            <button type="button" class="btn btn-primary" routerLink="/BOElist" title="Back">
               Back
             </button>
           </div>
         </div>
       </div>
     </div>
+    
     <div class="panel-body">
       <span class="groupspanheader"> Purchase Invoice Details </span>
       <div class="row">
@@ -61,7 +62,7 @@
           </div>
         </div>
 
-        <div class="col-md-3 col-xs-12">
+        <div class="col-md-2 col-xs-12">
           <div class="form-group">
             <label class="control-label">Invoice Date </label>
             <div>
@@ -70,15 +71,6 @@
           </div>
         </div>
 
-
-        <div class="col-md-2 col-xs-12">
-          <div class="form-group">
-            <label class="control-label">Vendor Warehouse <span class="mandantory">*</span></label>
-            <div>
-              {{obj?.WarehouseName}}
-            </div>
-          </div>
-        </div>
 
         <div class="col-md-1 col-xs-12">
           <div class="form-group">
@@ -90,13 +82,22 @@
             </div>
           </div>
         </div>
+
+        <div class="col-md-3 col-xs-12"></div>
+        <div class="form-group">
+          <label class="control-label">Vendor Warehouse <span class="mandantory">*</span></label>
+          <div>
+            {{obj?.WarehouseName}}
+          </div>
+        </div>
       </div>
 
     </div>
+
     <div class="panel-body">
       <div class="groupspanheader"> BOE Details </div>
       <div class="row">
-        <div class="col-md-4 col-xs-12">
+        <div class="col-md-3 col-xs-12">
           <div class="form-group" [ngClass]="{'has-error': formErrors.BOENumber}">
             <label class="control-label" for="BOENumber">BOE Number <span class="mandantory">*</span></label>
             <div>
@@ -109,9 +110,9 @@
               </div>
             </div>
           </div>
-        </div> 
+        </div>
 
-        <div class="col-md-4 col-xs-12">
+        <div class="col-md-3 col-xs-12">
           <div class="form-group" [ngClass]="{'has-error': formErrors.PortCode}">
             <label class="control-label" for="PortCode"> Port Code<span class="mandantory">*</span></label>
             <div>
@@ -126,7 +127,7 @@
           </div>
         </div>
 
-        <div class="col-md-4 col-xs-12">
+        <div class="col-md-3 col-xs-12">
           <div class="form-group" [ngClass]="{'has-error': formErrors.BOEDate}">
             <label class="control-label" for="BOEDate">BOE Date<span class="mandantory">*</span></label>
             <div>
@@ -145,6 +146,113 @@
             </div>
           </div>
         </div>
+
+
+        <div class="col-md-3 col-xs-12">
+          <div class="form-group" [ngClass]="{'has-error': formErrors.CHAAgentID}">
+            <label class="control-label" for="CHAAgentID">
+              CHA Agent
+              <span class="mandantory">*</span></label>
+            <div>
+              <select class="form-control" (blur)="logValidationErrors()" formControlName="CHAAgentID">
+                <option value="0" selected="selected">Select</option>
+                <option *ngFor="let vendor of lstAccounts" value={{vendor.AccountID}}>
+                  {{vendor.LedgerName}}
+                </option>
+              </select>
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrors.CHAAgentID">
+                  {{formErrors.CHAAgentID}}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-3 col-xs-12">
+          <div class="form-group" [ngClass]="{'has-error': formErrors.DutyPayableID}">
+            <label class="control-label" for="DutyPayableID">
+              Duty Payable
+              <span class="mandantory">*</span></label>
+            <div>
+              <select class="form-control" (blur)="logValidationErrors()" formControlName="DutyPayableID">
+                <option value="0" selected="selected">Select</option>
+                <option *ngFor="let vendor of lstAccounts" value={{vendor.AccountID}}>
+                  {{vendor.LedgerName}}
+                </option>
+              </select>
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrors.DutyPayableID">
+                  {{formErrors.DutyPayableID}}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-3 col-xs-12">
+          <div class="form-group" [ngClass]="{'has-error': formErrors.LedgerID}">
+            <label class="control-label" for="LedgerID">
+              Ledger
+              <span class="mandantory">*</span></label>
+            <div>
+              <select class="form-control" (blur)="logValidationErrors()" formControlName="LedgerID">
+                <option value="0" selected="selected">Select</option>
+                <option *ngFor="let vendor of lstAccounts" value={{vendor.AccountID}}>
+                  {{vendor.LedgerName}}
+                </option>
+              </select>
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrors.LedgerID">
+                  {{formErrors.LedgerID}}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-3 col-xs-12">
+          <div class="form-group" [ngClass]="{'has-error': formErrors.ShipmentMode}">
+            <label class="control-label" for="ShipmentMode">
+              Shipment Mode
+              <span class="mandantory">*</span></label>
+            <div>
+              <select class="form-control" formControlName="ShipmentMode" (blur)="logValidationErrors()">
+                <option value="" selected="selected">Select</option>
+                <option *ngFor="let dis of lstShipmentMode" value={{dis.DropdownValue}}>
+                  {{dis.DropdownValue}}
+                </option>
+              </select>
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrors.ShipmentMode">
+                  {{formErrors.ShipmentMode}}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-3 col-xs-12">
+          <div class="form-group" [ngClass]="{'has-error': formErrors.DutyMode}">
+            <label class="control-label" for="DutyMode">
+              Duty Payment Mode
+              <span class="mandantory">*</span></label>
+            <div>
+              <select class="form-control" formControlName="DutyMode" (blur)="logValidationErrors()">
+                <option value="" selected="selected">Select</option>
+                <option *ngFor="let dis of lstDutyMode" value={{dis.DropdownValue}}>
+                  {{dis.DropdownValue}}
+                </option>
+              </select>
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrors.DutyMode">
+                  {{formErrors.DutyMode}}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
 
 
         <div class="col-md-12 col-xs-12">
@@ -185,7 +293,7 @@
             <tr *ngFor="let person of lstItem; let id = index">
 
               <td *ngIf=" mergecells(person.HSNCode,person.IGSTRate,id)" class="bggray">
-              
+
                 <b> {{person.HSNCodeGST}}</b>
               </td>
               <td *ngIf=" !mergecells(person.HSNCode,person.IGSTRate,id)">
@@ -195,11 +303,11 @@
                 {{person.DutyType }}
               </td>
               <td class="text-center">
-                <div *ngIf="(person.IsGSTApplicable ==true )">
+                <div *ngIf="person.IsGSTApplicable ==true">
                   <input type="checkbox" checked="checked" [disabled]="person.IGSTRate==0"
                     (input)="updateListIsGST(id,'IsGSTApplicable',$event.target.checked)">
                 </div>
-                <div *ngIf="(person.IsGSTApplicable !=true)">
+                <div *ngIf="person.IsGSTApplicable !=true">
                   <input type="checkbox" [disabled]="person.IGSTRate==0"
                     (input)="updateListIsGST(id,'IsGSTApplicable',$event.target.checked)">
                 </div>
@@ -244,17 +352,20 @@
       </div>
 
     </div>
-    <div class="panel-footer">
-    </div> 
-    <div class="pull-right btn-toolbar">
-      <button  type="button" class="btn btn-primary" routerLink="/BOElist" title="Cancel">
-        Cancel
-      </button>
-      <button class="btn btn-success" type="submit" prevent-double-submit [disabled]=" boeform.invalid">
 
-        Save
-      </button>
+    <div class="panel-footer">
+
+      <div class="pull-right btn-toolbar">
+        <button type="button" class="btn btn-primary" routerLink="/BOElist" title="Cancel">
+          Cancel
+        </button>
+        <button class="btn btn-success" type="submit" prevent-double-submit [disabled]=" boeform.invalid">
+
+          Save
+        </button>
+      </div>
+      <div class="clearfix"></div>
     </div>
-    <div class="clearfix"></div>
+
   </div>
 </form>

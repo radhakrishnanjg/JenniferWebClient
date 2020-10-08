@@ -809,36 +809,37 @@
         </div>
 
         <div class="row" *ngIf="action && lstHistory.length > 0">
-          <div class="col-xs-12">
-            <div>
+
+          <div class="col-sm-12 col-xs-12">
+            <div class="col-sm-12 col-xs-12">
               <h5>
                 Chat History
               </h5>
+
               <div *ngFor="let tool of lstHistory | groupBy:'CreatedDate'| pairs">
-                <!-- <h3>{{tool[0]}}</h3> -->
-                <div *ngFor="let val of tool[1] | filterBy: ['UserType']: 'C'">
-                  <p>
+                <div class="row" *ngFor="let val of tool[1] | filterBy: ['UserType']: 'C'">
+                  <p class="pull-left">
                     <span style="color:green;">Seller</span> - {{val.Query}} - By <b>{{val.CreatedByName}}</b> on
                     {{val.CreatedDate  |date :"MM-dd-yyyy HH:mm"  }} </p>
                 </div>
 
-                <div *ngFor="let val of tool[1] | filterBy: ['UserType']: 'S'">
+                <div class="row" *ngFor="let val of tool[1] | filterBy: ['UserType']: 'S'">
                   <p class="pull-right" style="padding-top:30px">
 
                     <span style="color:hotpink;">Support</span> - {{val.Query}} - By <b>{{val.CreatedByName}}</b> on
                     {{val.CreatedDate  |date :"MM-dd-yyyy HH:mm"  }} </p>
                 </div>
 
-                <div *ngFor="let val of tool[1] | filterBy: ['UserType']: 'P'">
+                <div class="row" *ngFor="let val of tool[1] | filterBy: ['UserType']: 'P'">
                   <p class="pull-right" style="padding-top:30px">
 
-                    - {{val.Query}} - By <b>{{val.CreatedByName}}</b> on
+                    <span style="color:orange">PSP</span> - {{val.Query}} - By <b>{{val.CreatedByName}}</b> on
                     {{val.CreatedDate  |date :"MM-dd-yyyy HH:mm"  }} </p>
                 </div>
-
               </div>
             </div>
           </div>
+
         </div>
 
         <div class="row" *ngIf="action && lstHistory.length == 0">
@@ -859,7 +860,9 @@
                   Please describe your issue and our resolution team will get back to you shortly!
                 </h5>
                 <textarea placeholder="Please tell us more about your issue" formControlName="Query" rows="4" cols="80"
-                  [(ngModel)]="customerMsg" maxlength="8000"></textarea><br />
+                  [(ngModel)]="customerMsg" maxlength="8000"></textarea>
+                <br />
+
                 <div class="text-right">
                   <button type="button" title="Go Back" type="button" class="btn btn-primary" (click)="onClickGoBack()">
                     Go Back</button>
@@ -870,7 +873,7 @@
 
                   <button *ngIf="userType == 'P' && lstHistory.length > 0" type="submit" title="Forward" type="submit"
                     prevent-double-submit class="btn btn-success"
-                    (click)="onClickSellerQuery('Forward')">Fowward</button>
+                    (click)="onClickSellerQuery('Forward')">Forward</button>
                 </div>
               </div>
             </div>
@@ -892,37 +895,36 @@
           </div>
         </div>
         <div class="row" *ngIf="lstHistory.length > 0">
-          <div class="col-xs-12">
-            <div>
+          <div class="col-sm-12 col-xs-12">
+            <div class="col-sm-12 col-xs-12">
               <h5>
                 Agreed By
               </h5>
+
               <div *ngFor="let tool of lstHistory | groupBy:'CreatedDate'| pairs">
-                <!-- <h3>{{tool[0]}}</h3> -->
-                <div *ngFor="let val of tool[1] | filterBy: ['UserType']: 'C'">
-                  <p>
+                <div class="row" *ngFor="let val of tool[1] | filterBy: ['UserType']: 'C'">
+                  <p class="pull-left" style="padding-top:10px">
                     <span style="color:green;">Seller</span> - {{val.Query}} - By <b>{{val.CreatedByName}}</b> on
-                    {{val.CreatedDate  |date :"MM-dd-yyyy HH:mm"  }}
-                  </p>
+                    {{val.CreatedDate  |date :"MM-dd-yyyy HH:mm"  }} </p>
                 </div>
 
-                <div *ngFor="let val of tool[1] | filterBy: ['UserType']: 'S'">
-                  <p class="pull-right" style="padding-top:30px">
+                <div class="row" *ngFor="let val of tool[1] | filterBy: ['UserType']: 'S'">
+                  <p class="pull-right" style="padding-top:10px">
 
                     <span style="color:hotpink;">Support</span> - {{val.Query}} - By <b>{{val.CreatedByName}}</b> on
-                    {{val.CreatedDate  |date :"MM-dd-yyyy HH:mm"  }}
-                  </p>
+                    {{val.CreatedDate  |date :"MM-dd-yyyy HH:mm"  }} </p>
                 </div>
 
+                <div class="row" *ngFor="let val of tool[1] | filterBy: ['UserType']: 'P'">
+                  <p class="pull-right" style="padding-top:10px">
+                    <span style="color:orange">PSP</span> - {{val.Query}} - By <b>{{val.CreatedByName}}</b> on
+                    {{val.CreatedDate  |date :"MM-dd-yyyy HH:mm"  }} </p>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-
-      <!-- <div class="modal-footer">
-        <button class="btn btn-primary btn-sm" data-dismiss="modal">Cancel</button>
-      </div> -->
     </div>
   </div>
 </div>

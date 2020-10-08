@@ -2,13 +2,13 @@
 <ngx-spinner bdOpacity=0.9 size="medium" color="#ce295e" type="ball-fussion" [fullScreen]="true">
   <p style="color: #000000"> Fetching for you ... </p>
 </ngx-spinner>
-<div class="signinsection">
-  <div class='text-center'>
-    <img src="assets\images\logo.png" alt="Logo" height="50" style="margin:45px 0px;" />
-  </div>
-  <div class="centered">
-    <div class="card col-md-6 col-xs-12">
+<div class="signinsection"> 
+  <div class="row nopadding"> 
+    <div class="col-lg-4 col-lg-push-8 col-xs-12">
       <div class="card-body">
+        <div class='text-center'>
+          <img src="assets\images\logo.png" alt="Logo" height="50" style="margin:60px 0px 10px 0px;" /> 
+        </div>
         <form [formGroup]="signinForm" (ngSubmit)="PageSignin()" class="form-horizontal">
 
           <div class='landscren'>
@@ -31,7 +31,7 @@
             <div class="form-group" [ngClass]="{'has-error': formErrors.password}">
               <div>
                 <input id="password" type="password" placeholder='Password' class="form-control"
-                  formControlName="password" (blur)="logValidationErrors()" autocomplete="off">
+                  formControlName="password" (blur)="logValidationErrors()">
                 <div class="help-block-rk">
                   <span class="help-block" *ngIf="formErrors.password">
                     {{formErrors.password}}
@@ -42,38 +42,61 @@
 
             <div class="form-group">
               <button class="btn btn-success btn-block" type="submit" prevent-double-submit
-                [disabled]="!signinForm.valid">Sign In</button>
-              <img *ngIf="loading" class="pl-3"
+                [disabled]="!signinForm.valid">Sign In</button> 
+                <img *ngIf="loading" class="pl-3"
                 src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
             </div>
-            <div class="form-group">
-              <div class="pull-left">
+            <div class="form-group text-center">
+              <div class="">
                 <input type="checkbox" id="rememberme" formControlName="rememberme" />
                 <label class="control-label" for="rememberme"> Keep me signed in this device</label>
               </div>
-              <div class="pull-right text-right">
+              <div class="text-center">
                 <div><a routerLinkActive="active" routerLink="/ForgotPassword">Forgot Password</a></div>
-                <div>
-                  <!-- <a routerLinkActive="active" routerLink="/Companyregister">Sign Up Company. / </a> -->
+                <div><a routerLinkActive="active" routerLink="/Companyregister">Sign Up Company. / </a>
                   <a routerLinkActive="active" routerLink="/Sellerregistration"> Sign Up
                     Seller</a>
                 </div>
               </div>
-            </div>
-            <div class="form-group terms">
+            </div> 
+            <div class="form-group terms text-center">
               <p>By continuing, you agree to Jennifer's
                 <a routerLink="/Termsofuse">Terms of Use</a> and
                 <a routerLink="/PrivacyPolicy">Privacy Notice</a>.</p>
             </div>
           </div>
         </form>
-
+ 
       </div>
     </div>
-    <div class="card cardvideo col-md-6 col-xs-12">
-      <video width="100%" height="257" controls>
-        <source src="assets\videos\jenniferchineses.mp4" type="video/mp4">
-      </video>
-    </div>
+     
   </div>
 </div>
+
+
+<div id="myModalvideohome" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">Watch Jennifer video - 观看珍妮弗介绍视频</h4>
+          </div>
+          <div class="modal-body">
+              <div class="videobg">
+                  <div class="videobase">
+                    <video width="100%"  controls> 
+                      <source src="assets\videos\jenniferchineses.mp4" type="video/mp4">  
+                    </video>   
+                  </div>
+                </div>
+                
+          </div>
+          <div class="modal-footer">
+              <div class="checkbox videocheck pull-left">
+                  <label><input type="checkbox" value="">Don’t show me again</label>
+                </div>
+                <button type="button" data-dismiss="modal" title="save" class="btn btn-primary pull-right">Save</button>
+          </div>
+      </div>
+  </div>
+</div> 

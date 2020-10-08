@@ -11,11 +11,10 @@ import ReportDescription from '../../../assets/reportdescription';
   styleUrls: ['./reportsothers.component.css']
 })
 export class ReportsothersComponent implements OnInit {
-
   lstDownloadMaster: DownloadMaster[];
   lstDownloadDetail: DownloadDetail[];
-  Download_Master_ID: number = 0;
   lstDownloadLog: DownloadLog[];
+  Download_Master_ID: number = 0;
   Column1: string = '';
   Column2: string = '';
   Column3: string = '';
@@ -31,28 +30,35 @@ export class ReportsothersComponent implements OnInit {
   Description: string = '';
   constructor(
     private alertService: ToastrService,
-
     private _authorizationGuard: AuthorizationGuard,
     private _DownloadService: DownloadService,
   ) { }
 
+  MenuId: number = 0;
+  Report_Type: string = '';
   ngOnInit() {
     this.Download_Master_ID = 0;
-    //
-    this._DownloadService.getDownloadScreens('Others')
+    this.MenuId = 92;
+    this.Report_Type = 'Others';
+    //87|88|89|90|91|92;  
+    // 'Reportsinventory',  87  Inventory
+    // 'Reportsamazon'      88  Amazon 
+    // 'Reportscompliance'  89  Compliance  
+    // 'Reportsanalytics'   90  Analytics 
+    // 'Reportsmis'         91  MIS
+    // 'Reportsothers'      92  Others  
+    this._DownloadService.getDownloadScreens(this.Report_Type)
       .subscribe(
         (data: DownloadMaster[]) => {
           this.lstDownloadMaster = data;
-          //
         },
         (err: any) => {
           console.log(err);
-          //
         }
       );
   }
-
-  Downloadexcel(): void {
+  objDownloadLog: DownloadLog = {} as any;
+  Downloadexcel(buttonType): void {
 
     if (this._authorizationGuard.CheckAcess("Reportsothers", "ViewEdit")) {
       return;
@@ -62,12 +68,6 @@ export class ReportsothersComponent implements OnInit {
       return;
     }
     if (this.lstDownloadDetail.length > 0) {
-      // $(".dvhide").hide();
-      // $("#txtColumn1").val('');
-      // $("#txtColumn2").val('');
-      // $("#txtColumn3").val('');
-      // $("#txtColumn4").val('');
-      // $("#txtColumn5").val('');
       let dyamicspstring = ' ';
       var SP_Name = this.lstDownloadDetail[0].SP_Name;
       var Screen_Name = this.lstDownloadDetail[0].Screen_Name;
@@ -114,58 +114,71 @@ export class ReportsothersComponent implements OnInit {
           return bflag = false;
         }
       });
-      //var newStr = dyamicspstring.substring(0, dyamicspstring.length - 1);
-      // 87	-Inventory
-      // 88	-Amazon
-      // 89	-Compliance
-      // 90	-Analytics
-      // 91	-MIS
-      // 92	-Others 
-      const MenuId = 92; //87|88|89|90|91|92;  
-      if (bflag || this.lstDownloadDetail.length == 0) {
-        this._DownloadService.downloadExcel(SP_Name, MenuId, Screen_Name, dyamicspstring)
-          .subscribe(data => {
-            if (data != null) {
-              this._DownloadService.Download(Screen_Name, MenuId)
-                .subscribe(data1 => {
-                  //
-                  saveAs(data1, Screen_Name + '.xls');//+ '.xls'
-                  this.alertService.success("File downloaded succesfully.!");
-                },
-                  (err) => {
-                    //
-                    console.log(err);
-                  }
-                );
-            } else {
-              this.alertService.error(data.Msg);
-            }
-            //
-          },
-            (err) => {
-              //
-              console.log(err);
-            }
-          );
+      if (buttonType == "Download") {
+        if (bflag || this.lstDownloadDetail.length == 0) {
+          this._DownloadService.downloadExcel(SP_Name, this.MenuId, Screen_Name, dyamicspstring)
+            .subscribe(data => {
+              if (data != null && data.Flag == true) {
+                this._DownloadService.Download(Screen_Name, this.MenuId)
+                  .subscribe(data1 => {
+                    saveAs(data1, Screen_Name + '.xls');//+ '.xls'
+                    this.alertService.success("File downloaded succesfully.!");
+                  },
+                    (err) => {
+                      console.log(err);
+                    }
+                  );
+              } else {
+                this.alertService.error(data.Msg);
+              }
+            },
+              (err) => {
+                console.log(err);
+              }
+            );
+        }
       }
-      //this.alertService.success('Your Dynamic Query:' + newStr);
+      else if (buttonType == "Request") {
+        if (bflag || this.lstDownloadDetail.length == 0) {
+          this.objDownloadLog = new DownloadLog();
+          this.objDownloadLog.MenuId = this.MenuId;
+          this.objDownloadLog.Download_Master_ID = this.Download_Master_ID;
+          this.objDownloadLog.Dynamic_Query = dyamicspstring;
+          this.objDownloadLog.Report_Type = this.Report_Type;
+          this._DownloadService.InsertDownloadLog(this.objDownloadLog)
+            .subscribe(data => {
+              if (data != null && data.Flag == true) {
+                this.alertService.success(data.Msg);
+                this.GetDownloadLog(this.Download_Master_ID);
+              } else {
+                this.alertService.error(data.Msg);
+              }
+            },
+              (err) => {
+                console.log(err);
+              }
+            );
+        }
+      }
     }
+
   }
 
   Refresh(): void {
     this.Download_Master_ID = 0;
     $(".dvhide").hide();
   }
-
-  onScreenNameChange(selectedValue: string) {
-    let id = parseInt(selectedValue);
+  IsManualRequest: boolean;
+  onScreenNameChange(Download_Master_ID: string) {
+    let id = parseInt(Download_Master_ID);
     if (id > 0) {
-      //
+      this.GetDownloadLog(id);
       this._DownloadService.getDownloadParameters(id)
         .subscribe(
           (data: DownloadDetail[]) => {
             this.lstDownloadDetail = data;
             this.Description = this.lstDownloadDetail[0].ReportDecription;
+            this.IsManualRequest = this.lstDownloadDetail[0].IsManualRequest;
             if (data != null && this.lstDownloadDetail.length > 0) {
               $(".dvhide").hide();
               this.lstDownloadDetail.forEach((element) => {
@@ -228,22 +241,34 @@ export class ReportsothersComponent implements OnInit {
             else {
               $(".dvhide").hide();
             }
-            const MenuId = 92;
-            this._DownloadService.getDownloadLog(MenuId)
-              .subscribe(data => {
-                this.lstDownloadLog = data;
-              },
-                (err) => {
-                  console.log(err);
-                }
-              );
           },
           (err: any) => {
             console.log(err);
-            //
           }
         );
     }
   }
+  GetDownloadLog(Download_Master_ID: number): void {
+    this._DownloadService.getDownloadLog(Download_Master_ID)
+      .subscribe(data => {
+        this.lstDownloadLog = data;
+      },
+        (err) => {
+          console.log(err);
+        }
+      );
+  }
+  DownloadFile(ReportID: string, MenuId: number): void {
+    this._DownloadService.Download(ReportID, MenuId)
+      .subscribe(data1 => {
+        saveAs(data1, ReportID + '.xls');//+ '.xls'
+        this.alertService.success("File downloaded succesfully.!");
+      },
+        (err) => {
+          console.log(err);
+        }
+      );
+  }
+
 
 }

@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes, PreloadAllModules } from '@angular/router';
-import { AuthGuard, StoreGuard,MaintenanceGuard   } from './_guards';
+import { RouterModule, Routes, PreloadAllModules, NoPreloading } from '@angular/router';
+import { AuthGuard, StoreGuard, MaintenanceGuard } from './_guards';
 // Import the components so they can be referenced in routes
 
 import { PrivatelayoutComponent } from './privatelayout/privatelayout.component';
@@ -17,21 +17,23 @@ import { SellerregistrationComponent } from './account/sellerregistration/seller
 import { MaintenanceComponent } from './maintenance/maintenance.component';
 import { SearchComponent } from './search/search.component';
 import { IndexComponent } from './index/index.component';
+import { CustompreloadingService } from './_services/service/custompreloading.service';
 
 // The last route is the empty path route. This specifies
 // the route to redirect to if the client side path is empty.
 const appRoutes: Routes = [
   //Landing page
-  { path: '', component: IndexComponent }, 
+  { path: '', component: IndexComponent },
   //Site routes goes here  
   {
     path: '',
+    data: { preload: false },
     component: PrivatelayoutComponent,
     children: [
       { path: 'Dashboard1', component: Dashboard1Component },
 
       // prasanth intgration
-      { path: '', loadChildren: './amazonrtv/amazonrtv.module#AmazonrtvModule' },
+      { path: '', data: { preload: true },loadChildren: './amazonrtv/amazonrtv.module#AmazonrtvModule' },
       { path: '', loadChildren: './customers/customers.module#CustomersModule' },
       { path: '', loadChildren: './download/download.module#DownloadModule' },
       { path: '', loadChildren: './emailconfiguration/emailconfiguration.module#EmailconfigurationModule' },
@@ -42,7 +44,7 @@ const appRoutes: Routes = [
       { path: '', loadChildren: './cases/cases.module#CasesModule' },
       { path: '', loadChildren: './help/help.module#HelpModule' },
       { path: '', loadChildren: './masters/masters.module#MastersModule' },
-      { path: '', loadChildren: './premaster/premaster.module#PremasterModule' },
+      { path: '', data: { preload: false }, loadChildren: './premaster/premaster.module#PremasterModule' },
       { path: '', loadChildren: './purchaseorder/purchaseorder.module#PurchaseorderModule' },
       { path: '', loadChildren: './sales/sales.module#SalesModule' },
       { path: '', loadChildren: './userprofile/userprofile.module#UserprofileModule' },
@@ -50,9 +52,11 @@ const appRoutes: Routes = [
       { path: '', loadChildren: './vendors/vendors.module#VendorsModule' },
 
 
-      { path: '', loadChildren: './pricing/pricing.module#PricingModule' },
-      { path: '', loadChildren: './journals/journals.module#JournalsModule' },
+      { path: '', data: { preload: false }, loadChildren: './pricing/pricing.module#PricingModule' },
+      { path: '', data: { preload: false }, loadChildren: './journals/journals.module#JournalsModule' },
+
       { path: '', loadChildren: './payments/payments.module#PaymentsModule' },
+      { path: '', loadChildren: './management/management.module#ManagementModule' },
 
       { path: 'Search/:key', component: SearchComponent },
 
@@ -60,7 +64,7 @@ const appRoutes: Routes = [
     ]
   },
   //no layout routes  
-  { path: 'Signin', component: SigninComponent, canActivate: [ ] },
+  { path: 'Signin', component: SigninComponent, canActivate: [] },
   { path: 'ForgotPassword', component: ForgotpasswordComponent },
   { path: 'Companyregister', component: CompanyregisterComponent },
   { path: 'Sellerregistration', component: SellerregistrationComponent },
@@ -84,10 +88,9 @@ const appRoutes: Routes = [
 // are available to the module that imports this AppRoutingModule
 @NgModule({
   imports: [RouterModule.forRoot(appRoutes, {
-    initialNavigation: 'enabled',
-    onSameUrlNavigation: 'reload',
-    //preloadingStrategy: CustompreloadingService
-    // preloadingStrategy: PreloadAllModules
+    // initialNavigation: false,
+    // onSameUrlNavigation: 'reload',
+    preloadingStrategy: CustompreloadingService,// NoPreloading,//PreloadAllModules//CustompreloadingService 
   })
 
   ],

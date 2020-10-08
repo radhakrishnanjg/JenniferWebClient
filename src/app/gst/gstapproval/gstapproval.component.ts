@@ -45,7 +45,6 @@ export class GstapprovalComponent implements OnInit {
 
   downloadActualFile(downloadFilePath: string,
     fileName: string) {
-    debugger
     this._gstfinancefileuploadService.downloadActualFile(downloadFilePath, fileName)
       .subscribe(data => {
         this._alertService.success('File Downloaded successfully');
@@ -72,7 +71,8 @@ export class GstapprovalComponent implements OnInit {
     this.obj.Remarks = this.Remarks;
     // L1 Approval
     if (Action == "L1 REJECTED" || Action == "L1 APPROVED") {
-      this._gstfinancefileuploadService.FinanceApproverCheck()
+      let ActionName = "L1";
+      this._gstfinancefileuploadService.FinanceApproverCheck(ActionName)
         .subscribe(
           (CheckAcess) => {
             if (CheckAcess != "L1") {
@@ -102,7 +102,8 @@ export class GstapprovalComponent implements OnInit {
     }
     else if (Action == "L2 REJECTED" || Action == "L2 APPROVED") {
       // L2 Approval
-      this._gstfinancefileuploadService.FinanceApproverCheck()
+      let ActionName = "L2";
+      this._gstfinancefileuploadService.FinanceApproverCheck(ActionName)
         .subscribe(
           (CheckAcess) => {
             if (CheckAcess != "L2") {

@@ -1,17 +1,17 @@
 <div class="row">
   <div class="col-sm-6 col-lg-6">
     <h3>
-      Orders
+      RTV Orders
     </h3>
   </div>
   <div class="col-sm-6 col-lg-6">
     <div class="pull-right hidden-xs">
       <ol class="breadcrumb" id="dynamicbreadcrumb">
         <li>
-          <span> Amazon Auto RTV</span>
+          <span> Amazon RTV</span>
         </li>
         <li>
-          <span> Orders</span>
+          <span> RTV Orders</span>
         </li>
         <li class="active">
           List
@@ -99,6 +99,13 @@
               &nbsp;
               <i class="fa fa-download bgred" *ngIf="obj.RecordUploadStatus =='REJECTED'"
                 (click)="downloadError(obj.RTVID)"></i>
+              &nbsp;
+              <i class="fa fa-plus bgblue pointer" *ngIf="!obj.IsInvoiceCreated" title="Generate"
+                (click)="GenerateInvoice(obj.OrderID)"></i>
+              &nbsp;
+              <i class="fa fa-print bgblue pointer" title="View"
+                [routerLink]="['/ConfigurationInvoice', obj.OrderID]"></i>
+
             </ng-template>
           </kendo-grid-column>
         </kendo-grid>

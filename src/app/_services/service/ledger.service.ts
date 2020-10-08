@@ -9,7 +9,7 @@ import { NotFoundError } from '../../common/not-found-error';
 import { AppError } from '../../common/app-error';
 
 import { AuthenticationService } from './authentication.service';
-import { Voucher, JsonModal, Result, Ledger, LedgerTaxRate } from '../model/index';
+import { Voucher, JsonModal, Result, Ledger, LedgerTaxRate, TaxLedger } from '../model/index';
 import { environment } from '../../../environments/environment';
 
 @Injectable({
@@ -126,6 +126,45 @@ export class LedgerService {
       );
   }
 
+
+  //#region tax Ledger
+
+  public TaxLedgerSearch(SearchBy: string, Search: string):
+    Observable<TaxLedger[]> {
+    let currentUser = this.authenticationService.currentUserValue;
+    let CompanyID = currentUser.CompanyID;
+    return this.httpClient.get<string>(environment.baseUrl + `Ledger/TaxLedgerSearch?Search=` + Search
+      + `&SearchBy=` + encodeURIComponent(SearchBy) 
+      + `&CompanyID=` + CompanyID)
+      .pipe(
+        map(data => {
+          return JSON.parse(data) as TaxLedger[];
+        }),
+        catchError(this.handleError)
+      );
+  } 
+  
+  public TaxLedgerInsert(obj: TaxLedger): Observable<Result> {
+    let currentUser = this.authenticationService.currentUserValue;
+    obj.CompanyID = currentUser.CompanyID;
+    obj.LoginId = currentUser.UserId;
+    obj.Action = 'I';
+    this.objJsonModal.Json = JSON.stringify(obj);
+    return this.httpClient.post<Result>(environment.baseUrl + `Ledger/TaxLedgerDoAction`, this.objJsonModal)
+      .pipe(catchError(this.handleError));
+  }
+
+  public TaxLedgerUpdate(obj: TaxLedger): Observable<Result> {
+    let currentUser = this.authenticationService.currentUserValue;
+    obj.LoginId = currentUser.UserId;
+    obj.CompanyID = currentUser.CompanyID;
+    obj.Action = 'U';
+    this.objJsonModal.Json = JSON.stringify(obj);
+    return this.httpClient.post<Result>(environment.baseUrl + `Ledger/TaxLedgerDoAction`, this.objJsonModal)
+      .pipe(catchError(this.handleError));
+  }
+
+  //#endregion
 
   private handleError(error: HttpErrorResponse) {
     if (error.status === 404)

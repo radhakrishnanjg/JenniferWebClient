@@ -19,6 +19,7 @@ import { DataTablesModule } from 'angular-datatables';
 import { DiscountlistComponent } from './discountlist/discountlist.component';
 import { MarketplacefeelistComponent } from './marketplacefeelist/marketplacefeelist.component';
 import { SalesratecardlistComponent } from './salesratecardlist/salesratecardlist.component';
+import { EventmanagerComponent } from './eventmanager/eventmanager.component';
 
 import { PricingRoutingModule } from './pricing.routing.module';
 
@@ -44,6 +45,7 @@ import { PricingRoutingModule } from './pricing.routing.module';
     DiscountlistComponent,
     MarketplacefeelistComponent,
     SalesratecardlistComponent,
+    EventmanagerComponent,
   ],
   providers: [ 
     CookieService, 

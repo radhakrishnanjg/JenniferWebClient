@@ -1,6 +1,7 @@
 export class Marketplace { 
     MarketplaceID: number;
     MarketPlace: string; 
+    MarketPlaceCode: string; 
     LoginId: number;
     IsActive:Boolean;
 }
@@ -55,7 +56,11 @@ export class UOM {
     MultiplierValue: number;
     IsActive: Boolean;
     LoginId: number
+} 
+export class BulkMasterUpload { 
+    FileId: number; 
+    LoginId: number;   
+    CompanyDetailID:number; 
 }
-
 
    

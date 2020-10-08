@@ -1,0 +1,461 @@
+<div class="row">
+  <div class="col-sm-6 col-lg-6">
+    <h3>
+      Profit Loss
+    </h3>
+  </div>
+  <div class="col-sm-6 col-lg-6">
+    <div class="pull-right hidden-xs">
+      <ol class="breadcrumb" id="dynamicbreadcrumb">
+        <li>
+          <span> Management </span>
+        </li>
+        <li>
+          <span> Profit Loss </span>
+        </li>
+        <li class="active">
+          Statement
+        </li>
+      </ol>
+    </div>
+  </div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <div class="row">
+      <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+        <span class="groupspanheader">
+          Profit & Loss Statement
+        </span>
+      </div>
+      <div class="col-sm-6">
+      </div>
+      <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 ">
+        <!-- <div class="pull-right">
+          <button type="button" class="btn btn-primary" routerLink="/BOElist" title="Back">
+            Back
+          </button>
+        </div> -->
+      </div>
+    </div>
+  </div>
+
+  <div class="panel-body">
+
+
+    <div class="col-md-3">
+      <div>
+        <kendo-autocomplete style="width:300px" [data]="dataCompanydetail" valueField="StoreName" textField="StoreName"
+          [suggest]="true" (valueChange)="onchangeCompanyDetail($event)" [(ngModel)]="StoreName"
+          [placeholder]="'Store Name'" [filterable]="true" (filterChange)="handleFilterCompanydetails($event)">
+        </kendo-autocomplete>
+        <br />
+      </div>
+      <br />
+      <div>
+        <kendo-autocomplete style="width:300px" [data]="datatOrderIds" valueField="OrderID" textField="OrderID"
+          [suggest]="true" (valueChange)="onchangeOrderID($event)" [(ngModel)]="OrderID" [placeholder]="'Order ID'"
+          [filterable]="true" (filterChange)="handleFilterOrderID($event)">
+        </kendo-autocomplete>
+        <br />
+      </div>
+      <br />
+      <div>
+        <kendo-autocomplete style="width:300px" [data]="dataSKUs" valueField="SKU" textField="SKU" [suggest]="true"
+          (valueChange)="onchangeSKU($event)" [(ngModel)]="SKU" [placeholder]="'Seller SKU'" [filterable]="true"
+          (filterChange)="handleFilterSKU($event)">
+        </kendo-autocomplete> <br />
+      </div>
+      <br />
+      <div>
+        <input type="text" ngxDaterangepickerMd [(ngModel)]="selectedDateRange"
+          class="serchcurv form-control btn-group col-xs-12 pointer"
+          style="border:1px soloid #ccc !important; padding :3px;left:0px" [showCustomRangeLabel]="true"
+          [ranges]="Searchranges" [showCancel]="true" placeholder="Select please..."
+          (ngModelChange)="onChange($event)" />
+      </div>
+    </div>
+
+    <div class="col-md-9">
+
+      <div class="table-responsive">
+        <table class="table table-bordered  ">
+          <tr>
+            <th width="180px" class="profitloss1 text-center" colspan="2">
+              Expenses   
+            </th>
+            <th class="profitloss1 text-center">
+              Amount
+            </th>
+            <th width="180px" class="profitloss1 text-center" colspan="2">
+              Income
+              
+            </th>
+            <th class="profitloss1 text-center">
+              Amount
+            </th>
+
+          </tr>
+
+          <tr>
+            <th width="180px">
+              COGS
+            </th>
+            <th>
+
+            </th>
+            <th class="text-right">
+              {{obj.COGS | currency : 'INR' : '₹' : '1.0-0' }}
+            </th>
+            <th width="180px">
+              Revenue
+            </th>
+            <th>
+
+            </th>
+            <th class="text-right">
+              {{obj.Revenue | currency : 'INR' : '₹' : '1.0-0' }}
+            </th>
+
+          </tr>
+
+          <tr>
+            <td width="180px">
+              &nbsp;&nbsp; Purchases
+            </td>
+            <th class="text-right">
+              {{obj.Purchases | currency : 'INR' : '₹' : '1.0-0' }}
+            </th>
+            <th>
+
+            </th>
+            <td width="180px">
+              &nbsp;&nbsp; Sales
+            </td>
+            <th class="text-right">
+              {{obj.Sales | currency : 'INR' : '₹' : '1.0-0' }}
+            </th>
+            <th>
+
+            </th>
+
+          </tr>
+
+          <tr>
+            <td width="180px">
+              &nbsp;&nbsp; BCD
+            </td>
+            <th class="text-right">
+              {{obj.BCD | currency : 'INR' : '₹' : '1.0-0' }}
+            </th>
+            <th>
+
+            </th>
+            <td width="180px">
+              &nbsp;&nbsp; Sales Returns
+            </td>
+            <th class="text-right">
+              {{obj.SalesReturns | currency : 'INR' : '₹' : '1.0-0' }}
+            </th>
+            <th>
+
+            </th>
+
+          </tr>
+
+          <tr>
+            <td width="180px">
+              &nbsp;&nbsp; SWS
+            </td>
+            <th class="text-right">
+              {{obj.SWS | currency : 'INR' : '₹' : '1.0-0' }} </th>
+            <th>
+
+            </th>
+            <th width="180px">
+
+            </th>
+            <th>
+
+            </th>
+            <th>
+
+            </th>
+
+          </tr>
+
+          <tr>
+            <th width="180px">
+
+
+              <span *ngIf="obj.GrossProfit>0">
+                Gross Profit c/o (
+                {{ obj.GP_Per   | percent     }}
+                )
+              </span>
+            </th>
+            <th>
+
+            </th>
+            <th class="text-right">
+              <span *ngIf="obj.GrossProfit>0">
+                {{obj.GrossProfit | currency : 'INR' : '₹' : '1.0-0' }}
+              </span>
+            </th>
+            <th width="180px">
+              <span *ngIf="obj.GrossLoss<0">
+                Gross Loss c/o (
+                {{ obj.GL_Per   | percent     }}
+                )
+              </span>
+            </th>
+            <th>
+
+            </th>
+            <th class="text-right">
+
+              <span *ngIf="obj.GrossLoss<0">
+                {{obj.GrossLoss | currency : 'INR' : '₹' : '1.0-0' }}
+              </span>
+            </th>
+
+          </tr>
+
+
+          <!-- <tr>
+            <td colspan="6">
+
+            </td>
+          </tr> -->
+          <tr>
+            <th width="180px" class="profitloss11 text-center" colspan="2">
+              Total
+            </th>
+            <th class="profitloss11 text-right">
+              {{obj.MidTotalLeft  | currency : 'INR' : '₹' : '1.0-0' }}
+            </th>
+            <th width="180px" class="profitloss11 text-center" colspan="2">
+              Total
+            </th>
+            <th class="profitloss11 text-right">
+              {{obj.MidTotalRight | currency : 'INR' : '₹' : '1.0-0' }}
+            </th>
+
+          </tr>
+
+          <!-- <tr>
+            <td colspan="6">
+
+            </td>
+          </tr> -->
+
+          <tr>
+            <th width="180px">
+              <span *ngIf="obj.GPLoss_Left<0">
+                Gross Loss c/d
+              </span>
+            </th>
+            <th class="">
+
+            </th>
+            <th class="text-right">
+              <span *ngIf="obj.GPLoss_Left<0">
+                {{obj.GPLoss_Left  | currency : 'INR' : '₹' : '1.0-0' }}
+              </span>
+            </th>
+            <th width="180px">
+              <span *ngIf="obj.GPProft_Right>0">
+                Gross Profit c/d
+              </span>
+            </th>
+            <th>
+
+            </th>
+            <th class=" text-right">
+              <span *ngIf="obj.GPProft_Right>0">
+
+                {{obj.GPProft_Right | currency : 'INR' : '₹' : '1.0-0' }}
+              </span>
+            </th>
+
+          </tr>
+
+          <tr>
+            <th width="180px">
+              Amazon Expenses
+            </th>
+            <th>
+
+            </th>
+            <th class="text-right">
+              {{obj.AmazonExpenses | currency : 'INR' : '₹' : '1.0-0' }}
+            </th>
+            <th width="180px">
+
+            </th>
+            <th>
+
+            </th>
+            <th>
+
+            </th>
+
+          </tr>
+
+          <tr>
+            <td width="180px">
+              &nbsp;&nbsp; FBA & SOA Expenses
+            </td>
+            <th class="text-right">
+              {{obj.FBAExpenses_Left | currency : 'INR' : '₹' : '1.0-0' }}
+            </th>
+            <th>
+
+            </th>
+            <th width="180px">
+
+            </th>
+            <th>
+
+            </th>
+            <th>
+
+            </th>
+
+          </tr>
+
+
+          <tr>
+            <td width="180px">
+              &nbsp;&nbsp; Advertisement & Others
+            </td>
+            <th class="text-right">
+              {{obj.AdvertisementOthers_Left | currency : 'INR' : '₹' : '1.0-0' }}
+            </th>
+            <th>
+
+            </th>
+            <th width="180px">
+
+            </th>
+            <th>
+
+            </th>
+            <th>
+
+            </th>
+
+          </tr>
+
+          <tr>
+            <td width="180px">
+              &nbsp;&nbsp; IOR Margin @ 3 %
+            </td>
+            <th class="text-right">
+              {{obj.IORMargin_Left | currency : 'INR' : '₹' : '1.0-0' }}
+            </th>
+            <th>
+
+            </th>
+            <th width="180px">
+
+            </th>
+            <th>
+
+            </th>
+            <th>
+
+            </th>
+
+          </tr>
+
+          <tr>
+            <td width="180px">
+              &nbsp;&nbsp; PSP Margin @ 0.5 %
+            </td>
+            <th class="text-right">
+              {{obj.PSPMargin_Left | currency : 'INR' : '₹' : '1.0-0' }}
+            </th>
+            <th>
+
+            </th>
+            <th width="180px">
+
+            </th>
+            <th>
+
+            </th>
+            <th>
+
+            </th>
+
+          </tr>
+
+          <tr>
+            <th width="180px">
+
+              <span *ngIf="obj.NetProfit>0">
+                Net Profit (
+                {{ obj.NP_Per   | percent     }}
+                )
+              </span>
+            </th>
+            <th>
+
+            </th>
+            <th class="text-right">
+              <span *ngIf="obj.NetProfit>0">
+
+                {{obj.NetProfit | currency : 'INR' : '₹' : '1.0-0' }}
+              </span>
+            </th>
+            <th width="180px">
+
+              <span *ngIf="obj.NetLoss<0">
+                Net Loss (
+                {{ obj.NL_Per   | percent     }}
+                )
+              </span>
+            </th>
+            <th>
+
+            </th>
+            <th class="text-right">
+              <span *ngIf="obj.NetLoss<0">
+
+                {{obj.NetLoss | currency : 'INR' : '₹' : '1.0-0' }}
+              </span>
+            </th>
+
+          </tr>
+
+          <tr>
+            <th width="180px" class="profitloss1 text-center" colspan="2">
+              Total
+            </th>
+            <th class="profitloss1 text-right">
+              {{obj.GrandTotalLeft | currency : 'INR' : '₹' : '1.0-0' }}
+            </th>
+            <th width="180px" class="profitloss1 text-center" colspan="2">
+              Total
+            </th>
+            <th class="profitloss1 text-right">
+              {{obj.GrandTotalRight | currency : 'INR' : '₹' : '1.0-0' }}
+            </th>
+
+          </tr>
+
+
+        </table>
+
+      </div>
+    </div>
+
+  </div>
+
+  <div class="panel-footer">
+    <div class="clearfix"></div>
+  </div>
+
+</div>

@@ -1,0 +1,199 @@
+<div class="row">
+  <div class="col-sm-6 col-lg-6">
+    <h3>
+      Configuration
+    </h3>
+  </div>
+  <div class="col-sm-6 col-lg-6">
+    <div class="pull-right hidden-xs">
+      <ol class="breadcrumb" id="dynamicbreadcrumb">
+        <li>
+          <span> Amazon Manual RTV</span>
+        </li>
+        <li>
+          <span> Configuration</span>
+        </li>
+        <li class="active">
+          Save
+        </li>
+      </ol>
+    </div>
+  </div>
+</div>
+<form [formGroup]="Configurationform" (ngSubmit)="SaveData()" class="form-horizontal">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <div class="row">
+        <div class="col-md-3 col-sm-3 col-xs-5">
+          <span class="groupspanheader">
+            {{panelTitle}}
+          </span>
+        </div>
+        <div class="col-md-4 col-sm-4 col-xs-5">
+          <div class="pull-left">
+
+          </div>
+        </div>
+        <div class="col-md-5 col-sm-5 col-xs-2">
+          <div class="pull-right">
+            <button class="btn btn-xs btn-sm btn-primary" routerLink="/Configurationlist">Back</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="panel-body">
+
+      <div class="form-group">
+        <label class="col-sm-4 control-label" for="RTVType">RTV Type <span class="mandantory">*</span></label>
+        <div class="col-sm-4">
+
+          <input id="RTVType" type="hidden" class="form-control" disabled formControlName="RTVType"
+            (blur)="logValidationErrors()" maxlength="30">
+
+          <div>
+            Direct to Customer Warehouse
+          </div>
+
+          <div class="help-block-rk">
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group" [ngClass]="{'has-error': formErrors.FromLocationID}">
+        <label class="col-sm-4 control-label" for="FromLocationID">From Location <span
+            class="mandantory">*</span></label>
+        <div class="col-sm-4">
+          <select id="FromLocationID" class="form-control" formControlName="FromLocationID"
+            (blur)="logValidationErrors()">
+            <option value="0" selected="selected">Select</option>
+            <option *ngFor="let dis of Fromlocations" value={{dis.LocationID}}>
+              {{dis.LocationName}}
+            </option>
+          </select>
+
+          <div class="help-block-rk"> <span class="help-block" *ngIf="formErrors.FromLocationID">
+              {{formErrors.FromLocationID}}
+            </span>
+          </div>
+        </div>
+
+        <div class="col-sm-4">
+          {{FromLocationName}}
+        </div>
+
+      </div>
+
+      <div class="form-group" [ngClass]="{'has-error': formErrors.CustomerWareHouseID}">
+        <label class="col-sm-4 control-label" for="CustomerWareHouseID">
+          Customer Warehouse
+          <span class="mandantory">*</span></label>
+        <div class="col-sm-4">
+          <select id="CustomerWareHouseID" class="form-control" formControlName="CustomerWareHouseID"
+            (blur)="logValidationErrors()">
+            <option value="0" selected="selected">Select</option>
+            <option *ngFor="let dis of Tolocations" value={{dis.CustomerWarehouseID}}>
+              {{dis.WarehouseName}}
+            </option>
+          </select>
+          <div class="help-block-rk"> <span class="help-block" *ngIf="formErrors.CustomerWareHouseID">
+              {{formErrors.CustomerWareHouseID}}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group" [ngClass]="{'has-error': formErrors.InventoryType}">
+        <label class="col-sm-4 control-label" for="InventoryType">Inventory Type <span
+            class="mandantory">*</span></label>
+        <div class="col-sm-4">
+          <select id="InventoryType" class="form-control" formControlName="InventoryType"
+            (blur)="logValidationErrors()">
+            <option value="0" selected="selected">Select</option>
+            <option *ngFor="let dis of lstInventorytype" value={{dis.DropdownValue}}>
+              {{dis.DropdownValue}}
+            </option>
+          </select>
+          <div class="help-block-rk"> <span class="help-block" *ngIf="formErrors.InventoryType">
+              {{formErrors.InventoryType}}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group" [ngClass]="{'has-error': formErrors.FrequencyType}">
+        <label class="col-sm-4 control-label" for="FrequencyType">Frequency Type <span
+            class="mandantory">*</span></label>
+        <div class="col-sm-4">
+
+          <input id="FrequencyType" type="hidden" class="form-control" disabled formControlName="FrequencyType"
+            (blur)="logValidationErrors()" maxlength="30">
+          <div>
+            One Time
+          </div>
+          <div class="help-block-rk"> <span class="help-block" *ngIf="formErrors.FrequencyType">
+              {{formErrors.FrequencyType}}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-sm-4 control-label" for="RTVType">
+          Download Template </label>
+        <div class="col-sm-4">
+
+          <button type="button" (click)="onDownloadTemplate()" class="btn btn-default btn-block" title="RTV Template">
+            RTV Template </button>
+          <div class="help-block-rk">
+          </div>
+          <br />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <br />
+        <label class="col-sm-4 control-label" for="RTVType">
+          Upload Template
+          <span class="mandantory">*</span>
+        </label>
+        <div class="col-sm-4">
+          <input type="file" #takeInput name="filename" (change)="onFileChanged($event)"
+            accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
+          <div class="help-block-rk">
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-12">
+        <b> Instructions : </b>
+        <br />
+        <b>Step #1:</b> Download and save your RTV template individually to your local computer. Be sure your file names
+        do not include any special characters and the file size does not exceed 5mb. <br />
+        <b>Step #2:</b> Using the ‘Upload Template’ section below, choose the document you are uploading in the ‘Choose
+        file’ drop down menu. <br />
+        <b>Step #3:</b> Select browse, and locate the file on your local computer. <br />
+        <b>Step #4:</b> Select attach. The document will be listed in the grid below as a confirmation that the document
+        was
+        added to the queue. If you made a mistake you may delete the file from this grid. <br />
+        <b>Step #5:</b> Select Upload. All the documents you have chosen to attach will appear in the grid below the
+        Upload
+        Files section as a confirmation they were successfully uploaded.<br />
+      </div>
+      <div class="col-sm-12">
+
+        <div class="form-group" *ngIf="!flag">
+          <div [innerHTML]="errorMsg | safeHtml"></div>
+        </div>
+
+      </div>
+
+    </div>
+    <div class="panel-footer">
+      <div class="pull-right btn-toolbar">
+        <button type="button" class="btn btn-primary" routerLink="/Configurationlist" title="Cancel">Cancel</button>
+        <button *ngIf="(obj?.ApprovalStatus!='Approved')" class="btn btn-success" prevent-double-submit type="submit"
+          title="save" [disabled]="Configurationform.invalid">Save</button>
+      </div>
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</form>

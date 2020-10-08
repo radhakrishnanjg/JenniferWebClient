@@ -4,12 +4,13 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AuthorizationGuard } from '../../_guards/Authorizationguard';
 
-import { Ticket, History } from '../../_services/model/index';
+import { Ticket, History, Dropdown } from '../../_services/model/index';
 import { TicketService } from '../../_services/service/ticket.service';
 import { process, State } from '@progress/kendo-data-query';
 import { GridDataResult, DataStateChangeEvent, PageChangeEvent } from '@progress/kendo-angular-grid';
 import { SortDescriptor, orderBy } from '@progress/kendo-data-query';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder,Validators } from '@angular/forms';
+import { PrivateutilityService } from '../../_services/service/privateutility.service';
 
 @Component({
   selector: 'app-supporthistory',
@@ -25,22 +26,81 @@ export class SupporthistoryComponent implements OnInit {
   Searchaction: boolean = true;
 
   constructor(
-    private alertService: ToastrService,
-    private router: Router,
+    private alertService: ToastrService, 
     private fb: FormBuilder,
     private _ticketService: TicketService,
-    private _authorizationGuard: AuthorizationGuard
+    private _PrivateutilityService: PrivateutilityService,
 
   ) {
 
   }
 
-  SupportForm: FormGroup;
-  ngOnInit() {
-    this.onLoad('', '', true);
+  formErrors = {
 
+    'ModuleType': '',
+    'Subject': '',
+    'ReferenceNumber': '',
+    'Query': '',
+
+  };
+
+  validationMessages = {
+
+    'ModuleType': {
+      'required': 'This field is required.',
+
+    },
+    'Subject': {
+      'required': 'This field is required.',
+    },
+
+    'ReferenceNumber': {
+      'required': 'This field is required.',
+    },
+
+    'Query': {
+      'required': 'This field is required.',
+    },
+
+  };
+
+  logValidationErrors(group: FormGroup = this.SupportQueryForm): void {
+    Object.keys(group.controls).forEach((key: string) => {
+      const abstractControl = group.get(key);
+      if (abstractControl && abstractControl.value && abstractControl.value.length > 0 && !abstractControl.value.replace(/^\s+|\s+$/gm, '').length) {
+        abstractControl.setValue('');
+      }
+      this.formErrors[key] = '';
+      if (abstractControl && !abstractControl.valid &&
+        (abstractControl.touched || abstractControl.dirty)) {
+        const messages = this.validationMessages[key];
+        for (const errorKey in abstractControl.errors) {
+          if (errorKey) {
+            this.formErrors[key] += messages[errorKey] + ' ';
+          }
+        }
+      }
+      if (abstractControl instanceof FormGroup) {
+        this.logValidationErrors(abstractControl);
+      }
+    });
+  } 
+  SupportForm: FormGroup;
+  SupportQueryForm: FormGroup;
+  ngOnInit() {
+
+    this.SupportQueryForm = this.fb.group({
+      ModuleType: ['', [Validators.required]],
+      Subject: ['', [Validators.required]],
+      ReferenceNumber: ['', [Validators.required],],
+      Query: ['', [Validators.required],],
+
+    });
+    this.onLoad('', '', true);
+    this.GetModuleType();
     this.GetUserType();
-    this.SupportForm = this.fb.group({      
+    
+    this.SupportForm = this.fb.group({
       Query: ['', []],
     });
   }
@@ -53,6 +113,41 @@ export class SupporthistoryComponent implements OnInit {
     this.SearchBy = '';
     this.SearchKeyword = '';
     this.Searchaction = true;
+  }
+
+  lstModuleType: Dropdown[];
+  GetModuleType() {
+    this._PrivateutilityService.GetValues('ModuleType')
+      .subscribe(
+        (data: Dropdown[]) => {
+          this.lstModuleType = data;
+        },
+        (err: any) => {
+          console.log(err);
+        }
+      );
+  } 
+  SaveData() {
+    this.objTicket.Query = this.SupportQueryForm.controls['Query'].value;;
+    this.objTicket.ModuleType = this.SupportQueryForm.controls['ModuleType'].value;;
+    this.objTicket.Subject = this.SupportQueryForm.controls['Subject'].value;;
+    this.objTicket.ReferenceNumber = this.SupportQueryForm.controls['ReferenceNumber'].value;;
+    this.objTicket.SupportQueryID = 0;
+
+    this._ticketService.insert(this.objTicket).subscribe(
+      (data) => {
+        if (data != null && data.Flag == true) {
+          $('#modalstatusconfimation').modal('hide');
+          this.onLoad(this.SearchBy, this.SearchKeyword, this.Searchaction);
+          this.alertService.success(data.Msg);
+        } else {
+          this.alertService.error(data.Msg);
+        }
+      },
+      (error: any) => {
+        console.log(error);
+      }
+    );
   }
 
   userType: string;
@@ -68,15 +163,7 @@ export class SupporthistoryComponent implements OnInit {
       );
   }
 
-  // editButtonClick(HelpMenuID: number) {
-  //   if (this._authorizationGuard.CheckAcess("Helpmenulist", "ViewEdit")) {
-  //     return;
-  //   }
-  //   this.router.navigate(['/Helpmenu', HelpMenuID]);
-  // }
-
   onLoad(SearchBy: string, Search: string, IsActive: Boolean) {
-    //
     return this._ticketService.search(SearchBy, Search).subscribe(
       (lst) => {
         if (lst != null) {
@@ -85,7 +172,6 @@ export class SupporthistoryComponent implements OnInit {
         }
       },
       (err) => {
-        //
         console.log(err);
       }
     );
@@ -95,13 +181,11 @@ export class SupporthistoryComponent implements OnInit {
   lstHistory: History[] = [] as any;
   lstcustomerMsg: History[] = [] as any;
   lstsupportMsg: History[] = [] as any;
-  now :Date;
+  now: Date;
   SupportStatus: string;
+  ModuleType: string;
+  IsForwarded:boolean;
   editButtonClick(id: number) {
-    // if (this._authorizationGuard.CheckAcess("Brandlist", "ViewEdit")) {
-    //   return;
-    // }
-
     this.now = new Date();
     this.identity = + id;
     this._ticketService.searchById(this.identity)
@@ -110,10 +194,11 @@ export class SupporthistoryComponent implements OnInit {
         (data) => {
           if (data != null && data.length > 0) {
             this.lstHistory = data;
-            // this.lstcustomerMsg = this.lstHistory.filter(a => a.UserType == 'C');
-            // this.lstsupportMsg = this.lstHistory.filter(a => a.UserType == 'S');
             this.lstHistory = data;
             this.SupportStatus = data[0].SupportStatus;
+            this.ModuleType = data[0].ModuleType;
+            this.IsForwarded = data[0].IsForwarded;
+            
           }
         },
         (err: any) => {
@@ -127,28 +212,83 @@ export class SupporthistoryComponent implements OnInit {
 
   objTicket: Ticket = {} as any;
   customerMsg: string = '';
-  Update() {
-    this.objTicket.Query = this.customerMsg;
-    this.objTicket.SupportQueryID = this.identity;
-    if (this.customerMsg.replace(/^\s+|\s+$/gm, '').length == 0) {
-      this.alertService.error('Please enter a message');
-      return;
+
+  Save(buttonType) {
+    if (buttonType === "Update") { 
+      this.objTicket.Query = this.customerMsg;
+      this.objTicket.SupportQueryID = this.identity;
+      if (this.customerMsg.replace(/^\s+|\s+$/gm, '').length == 0) {
+        this.alertService.error('Please enter a message');
+        return;
+      }
+      if (this.customerMsg.length > 8000) {
+        this.alertService.error('This field should not exceed 8000 characters.!');
+        return;
+      }
+      else {
+        this.objTicket.Action = "Update";
+        this.objTicket.IsForwarded = false;
+        this._ticketService.insert(this.objTicket).subscribe(
+          (data) => {
+            if (data != null && data.Flag == true) {
+              this.alertService.success(data.Msg);
+              this.onLoad('', '', true);
+              this.customerMsg = '';
+              $('#modalstatusconfimationUpdate').modal('hide');
+            } else {
+              this.alertService.error(data.Msg);
+            }
+          },
+          (error: any) => {
+            console.log(error);
+          }
+        );
+      }
     }
-    if(this.customerMsg.length > 8000) {
-      this.alertService.error('This field should not exceed 8000 characters.!');
-      return;
+    if (buttonType === "Forward") {
+      console.log(buttonType);
+      this.objTicket.Query = this.customerMsg;
+      this.objTicket.SupportQueryID = this.identity;
+      this.objTicket.IsForwarded = true;
+      if (this.customerMsg.replace(/^\s+|\s+$/gm, '').length == 0) {
+        this.alertService.error('Please enter a message');
+        return;
+      }
+      if (this.customerMsg.length > 8000) {
+        this.alertService.error('This field should not exceed 8000 characters.!');
+        return;
+      }
+      else {
+        this.objTicket.Action = "Forward";
+        this._ticketService.insert(this.objTicket).subscribe(
+          (data) => {
+            if (data != null && data.Flag == true) {
+              this.alertService.success(data.Msg);
+              this.onLoad('', '', true);
+              this.customerMsg = '';
+              $('#modalstatusconfimationUpdate').modal('hide');
+            } else {
+              this.alertService.error(data.Msg);
+            }
+          },
+          (error: any) => {
+            console.log(error);
+          }
+        );
+      }
     }
-    else {
-      this._ticketService.insert(this.objTicket).subscribe(
+    if (buttonType === "Close") {
+      console.log(buttonType);
+      this.objTicket.Action = "Close";
+      this._ticketService.closeTicket(this.identity).subscribe(
         (data) => {
           if (data != null && data.Flag == true) {
+            $('#modalstatusconfimationUpdate').modal('hide');
             this.alertService.success(data.Msg);
-          } else { 
+            this.onLoad('', '', true);
+          } else {
             this.alertService.error(data.Msg);
           }
-          this.onLoad('', '', true);
-          this.customerMsg = '';
-          $('#modalstatusconfimationUpdate').modal('hide');
         },
         (error: any) => {
           console.log(error);
@@ -157,34 +297,7 @@ export class SupporthistoryComponent implements OnInit {
     }
   }
 
-  onClickCloseTicket() {   
-    this._ticketService.closeTicket(this.identity).subscribe(
-      (data) => {
-        if (data != null && data.Flag == true) {
-          this.router.navigate(['/Supporthistory']);
-          this.alertService.success(data.Msg);
-          this.onLoad('', '', true);
-        } else {
-          this.router.navigate(['/Supporthistory']);
-          this.alertService.error(data.Msg);
-          this.onLoad('', '', true);
-        }
-        $('#modalstatusconfimationUpdate').modal('hide'); 
-      },
-      (error: any) => {
-        //
-        console.log(error);
-      }
-    );
-  }
 
-
-  // AddNewLink() {
-  //   if (this._authorizationGuard.CheckAcess("Helpmenulist", "ViewEdit")) {
-  //     return;
-  //   }
-  //   this.router.navigate(['/Helpmenu/Create',]);
-  // }
 
   //#region Paging Sorting and Filtering Start
   public allowUnsort = false;

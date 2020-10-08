@@ -1,0 +1,421 @@
+<div class="row">
+  <div class="col-sm-6 col-lg-6">
+    <h3>
+      MFI Cases
+    </h3>
+  </div>
+  <div class="col-sm-6 col-lg-6">
+    <div class="pull-right hidden-xs">
+      <ol class="breadcrumb" id="dynamicbreadcrumb">
+        <li>
+          <span> Procurements</span>
+        </li>
+        <li>
+          <span> MFI Cases</span>
+        </li>
+        <li class="active">
+          Save
+        </li>
+      </ol>
+    </div>
+  </div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <div class="row">
+      <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+        <span class="groupspanheader">
+          {{panelTitle}}
+        </span>
+      </div>
+      <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 ">
+        <div class="pull-right">
+          <button class="btn btn-primary" routerLinkActive="active" routerLink="/PoMFIlist">Back</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <form [formGroup]="MFICaseForm" (ngSubmit)="Save()" class="form-horizontal">
+    <div class="panel-body">
+
+      <div class="row">
+        <div class="col-md-4 ">
+          <div class="form-group">
+            <div class="col-sm-12 inputlevel">
+              <label class="control-label">
+                Shipment Number
+                <span class="mandantory">*</span></label>
+              <div>
+                {{
+                  objMFICaseHeader?.ShipmentNumber
+                 }}
+                <div class="help-block-rk">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4 ">
+          <div class="form-group">
+
+            <div class="col-sm-12 inputlevel">
+              <label class="control-label">
+                Shipment Date
+                <span class="mandantory">*</span></label>
+              <div>
+                {{
+                  objMFICaseHeader?.ShipmentDate |date :"MM-dd-yyyy HH:mm" 
+                 }}
+                <div class="help-block-rk">
+                  <span class="help-block">
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-2 ">
+          <div class="form-group">
+            <div class="col-sm-12 inputlevel">
+              <label class="control-label">
+                Location
+                <span class="mandantory">*</span></label>
+              <div>
+                {{
+                  objMFICaseHeader?.Location
+                 }}
+                <div class="help-block-rk">
+                  <span class="help-block">
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-2 ">
+          <div class="form-group">
+            <div class="col-sm-12 inputlevel">
+              <label class="control-label">
+                FNSKU
+                <span class="mandantory">*</span></label>
+              <div>
+                {{
+                  objMFICaseHeader?.FNSKU
+                 }}
+                <div class="help-block-rk">
+                  <span class="help-block">
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4 ">
+          <div class="form-group">
+            <div class="col-sm-12 inputlevel">
+              <label class="control-label">
+                Shipped Qty
+                <span class="mandantory">*</span></label>
+              <div>
+                {{
+                  objMFICaseHeader?.ShippedQty
+                 }}
+                <div class="help-block-rk">
+                  <span class="help-block">
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="col-md-4 ">
+          <div class="form-group">
+            <div class="col-sm-12 inputlevel">
+              <label class="control-label">
+                Received Qty
+                <span class="mandantory">*</span></label>
+              <div>
+                {{
+                  objMFICaseHeader?.ReceivedQty
+                 }}
+                <div class="help-block-rk">
+                  <span class="help-block">
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4 ">
+          <div class="form-group">
+            <div class="col-sm-12 inputlevel">
+              <label class="control-label">
+                Difference Qty
+                <span class="mandantory">*</span></label>
+              <div>
+                {{
+                  objMFICaseHeader?.DiffQty
+                 }}
+                <div class="help-block-rk">
+                  <span class="help-block">
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="col-md-4 ">
+          <div class="form-group">
+            <div class="col-sm-12 inputlevel">
+              <label class="control-label">
+                Difference Value
+                <span class="mandantory">*</span></label>
+              <div>
+                {{
+                  objMFICaseHeader?.DiffValue
+                 }}
+                <div class="help-block-rk">
+                  <span class="help-block">
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="col-md-4 ">
+          <div class="form-group">
+            <div class="col-sm-12 inputlevel">
+              <label class="control-label">
+                Inward Date
+                <span class="mandantory">*</span></label>
+              <div>
+                {{
+                  objMFICaseHeader?.InwardDate | date :"MM-dd-yyyy HH:mm" 
+                 }}
+                <div class="help-block-rk">
+                  <span class="help-block">
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="col-md-4 ">
+          <div class="form-group">
+            <div class="col-sm-12 inputlevel">
+              <label class="control-label">
+                Ageing
+                <span class="mandantory">*</span></label>
+              <div>
+                {{
+                  objMFICaseHeader?.Ageing
+                 }}
+                <div class="help-block-rk">
+                  <span class="help-block">
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class=" col-md-4">
+          <div class="form-group">
+            <div class="col-sm-12 inputlevel">
+              <label class=" control-label" for="CaseId">
+                Case ID
+                <span class="mandantory"> *</span>
+              </label>
+              <input type="text" maxlength="30" class="form-control" formControlName="CaseId"
+                (blur)="logValidationErrors()" />
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrors.CaseId">
+                  {{formErrors.CaseId}}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class=" col-md-4">
+          <div class="form-group">
+            <div class="col-sm-12 inputlevel">
+              <label class=" control-label" for="Status">
+                Status
+                <span class="mandantory"> *</span>
+              </label>
+              <select class="form-control" formControlName="Status" (blur)="logValidationErrors()" [(ngModel)]="Status">
+                <option value="" selected="selected">Select</option>
+                <option *ngFor="let dis of lstMFIStatus" value={{dis.DropdownValue}}>
+                  {{dis.DropDownDescription}}
+                </option>
+              </select>
+              <div class="help-block-rk">
+                <span class="help-block" *ngIf="formErrors.Status">
+                  {{formErrors.Status}}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class=" col-md-4" *ngIf="(Status=='RESOLVED')">
+          <div class="form-group">
+            <div class="col-sm-12 inputlevel">
+              <label class=" control-label" for="Resolution">Resolution </label>
+              <select class=" form-control" formControlName="Resolution" (blur)="logValidationErrors()"
+                [(ngModel)]="Resolution">
+                <option value="" selected="selected">Select</option>
+                <option *ngFor="let dis of lstMFIResolutionStatus" value={{dis.DropdownValue}}>
+                  {{dis.DropDownDescription}}
+                </option>
+              </select>
+              <div class="help-block-rk">
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class=" col-md-4" *ngIf="(Resolution=='OVERAGED TO')">
+          <div class="form-group">
+            <div class="col-sm-12 inputlevel">
+              <label class=" control-label" for="OveragedShipment">Overaged Shipment Number </label>
+              <input type="text" maxlength="100" class="form-control" formControlName="OveragedShipment"
+                (blur)="logValidationErrors()" />
+              <div class="help-block-rk">
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class=" col-md-4" *ngIf="(Resolution=='OVERAGED TO')">
+          <div class="form-group">
+            <div class="col-sm-12 inputlevel">
+              <label class=" control-label" for="CaseId"> Quantity </label>
+              <input type="text" maxlength="9" class="form-control" formControlName="Quantity"
+                (blur)="logValidationErrors()" onkeypress="return /[0-9]/i.test(event.key)" />
+              <div class="help-block-rk">
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class=" col-md-4" *ngIf="(Resolution=='REIMBURSED')">
+          <div class="form-group">
+            <div class="col-sm-12 inputlevel">
+              <label class=" control-label" for="RMSID"> Reimbursed ID </label>
+              <input type="text" maxlength="100" class="form-control" formControlName="RMSID"
+                (blur)="logValidationErrors()" onkeypress="return /[a-z0-9]/i.test(event.key)" />
+              <div class="help-block-rk">
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class=" col-md-4" *ngIf="(Resolution=='REIMBURSED')">
+          <div class="form-group">
+            <div class="col-sm-12 inputlevel">
+              <label class=" control-label" for="ValueOfRMS"> Value Of Reimbursed </label>
+              <input type="text" maxlength="9" class="form-control" formControlName="ValueOfRMS"
+                (blur)="logValidationErrors()" onkeypress="return /[0-9.]/i.test(event.key)" />
+              <div class="help-block-rk">
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class=" col-md-12">
+          <div class="form-group" [ngClass]="{'has-error': formErrors.Remarks}">
+            <div class="col-sm-12 inputlevel">
+              <label class=" control-label" for="Remarks">
+                Remarks
+                <span class="mandantory"> *</span>
+              </label>
+              <textarea id="Remarks" type="text" row="5" maxlength="500" class="form-control" formControlName="Remarks"
+                (blur)="logValidationErrors()"> </textarea>
+              <span class="help-block" *ngIf="formErrors.Remarks">
+                {{formErrors.Remarks}}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-12">
+          <span class="groupspanheader"> Case Log</span>
+          <table class="table table-bordered table-condensed ">
+            <thead>
+              <tr>
+                <!-- <th>Shipment Number</th> -->
+                <th>Case Id</th>
+                <th>Status</th>
+                <th>Resolution</th>
+                <th>Overaged Shipment Number</th>
+                <th>Qty </th>
+
+                <th>Reimbursed ID</th>
+                <th>Value of Reimbursed</th>
+                <th>Remarks</th>
+                <th>Created Date </th>
+              </tr>
+            </thead>
+            <tbody *ngIf="objMFICaseHeader?.lstCaseDetail && objMFICaseHeader?.lstCaseDetail.length">
+              <tr *ngFor="let user of objMFICaseHeader?.lstCaseDetail; let id = index">
+                <!-- <td>{{ user.ShipmentNumber  }}</td> -->
+                <td>{{ user.CaseId  }}</td>
+                <td>{{ user.Status  }}</td>
+                <td>{{ user.Resolution  }}</td>
+                <td>{{ user.OveragedShipment}}</td>
+                <td>{{ user.Quantity  }}</td>
+
+
+                <td>{{ user.RMSID  }}</td>
+                <td>{{ user.ValueOfRMS  }}</td>
+                <td>{{ user.Remarks}}</td>
+                <td>{{ user.CreatedDate | date :"MM-dd-yyyy HH:mm"   }}</td>
+              </tr>
+
+            </tbody>
+            <tbody *ngIf="objMFICaseHeader?.lstCaseDetail == null ||  objMFICaseHeader?.lstCaseDetail.length==0">
+              <tr>
+                <th colspan="9"> No Records Found </th>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+    <div class="panel-footer">
+      <div class="pull-right btn-toolbar">
+        <button class="btn btn-primary" routerLinkActive="active" routerLink="/PoMFIlist">Cancel</button>
+        <button type="submit" prevent-double-submit [disabled]="MFICaseForm.invalid" class="btn btn-success">
+          Save
+        </button>
+      </div>
+      <div class="clearfix"></div>
+    </div>
+  </form>
+</div>
