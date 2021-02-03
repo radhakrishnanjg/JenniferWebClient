@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from '../../_services/service/authentication.service';
-import { Companydetails, ProfitLossData } from '../../_services/model';
-import { PrivateutilityService } from '../../_services/service/privateutility.service';
+import { Companydetails, ProfitLossData } from '../../_services/model'; 
 import { DashboardoneService } from '../../_services/service/dashboardone.service';
 import * as moment from 'moment';
 @Component({
@@ -12,8 +11,7 @@ import * as moment from 'moment';
 export class ProfilelossComponent implements OnInit {
 
   constructor(
-    private authenticationService: AuthenticationService,
-    private _PrivateutilityService: PrivateutilityService,
+    private authenticationService: AuthenticationService, 
     public _dashboard1Service: DashboardoneService,
   ) { }
   lstCompanydetails: Companydetails[] = [] as any;
@@ -178,13 +176,13 @@ export class ProfilelossComponent implements OnInit {
 
   selectedDateRange: any;
   Searchranges: any = {
-    'Today': [moment(), moment()],
-    'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-    'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-    'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+    'Current FY ': [moment().month() > 4 ? moment().quarter(2).startOf('quarter') : moment().subtract(1, 'year').quarter(2).startOf('quarter'),
+    moment().month() > 4 ? moment().add(1, 'year').quarter(1).endOf('quarter') : moment().quarter(1).endOf('quarter')],
+    'Lifetime  (2019-04-01 to till Date)': [moment("04/01/2019"), moment().subtract(1, 'days')],
+    'Last FY ': [moment().month() > 4 ? moment().subtract(1, 'year').quarter(2).startOf('quarter') : moment().subtract(1, 'year').subtract(1, 'year').quarter(2).startOf('quarter'),
+    moment().month() > 4 ? moment().subtract(1, 'year').add(1, 'year').quarter(1).endOf('quarter') : moment().subtract(1, 'year').quarter(1).endOf('quarter')],
     'This Month': [moment().startOf('month'), moment().endOf('month')],
     'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
-    'Last Year': [moment().subtract(1, 'year').startOf('year'), moment().subtract(1, 'year').endOf('year')]
   }
 
 

@@ -178,7 +178,7 @@ export class DashboardoneService {
       );
   }
 
-  public GetItemWiseProfitLossData(SearchBy: string, Search: string, 
+  public GetItemWiseProfitLossData(SearchBy: string, Search: string,
     StrtDT: string, EndDT: string): Observable<ItemWiseProfitLossData[]> {
     let currentUser = this.authenticationService.currentUserValue;
     let CompanyId = currentUser.CompanyID;
@@ -195,6 +195,23 @@ export class DashboardoneService {
       );
   }
   //#endregion
+
+  public GetMISPresentation(SearchBy: string, Search: string,
+    StrtDT: string, EndDT: string): Observable<any[]> {
+    let currentUser = this.authenticationService.currentUserValue;
+    let CompanyId = currentUser.CompanyID;
+    return this.httpClient.get<string>(environment.baseUrl +
+      `Dashboard1/GetMISPresentation?CompanyId=` + CompanyId +
+      `&SearchBy=` + SearchBy + `&Search=` + Search +
+      `&StrtDT=` + StrtDT + `&EndDT=` + EndDT
+    ).pipe(
+      map(data => {
+        return JSON.parse(data) as any[];
+      }),
+      catchError(this.handleError)
+    );
+  }
+ 
 
   private handleError(errorResponse: HttpErrorResponse) {
     if (errorResponse.error instanceof ErrorEvent) {

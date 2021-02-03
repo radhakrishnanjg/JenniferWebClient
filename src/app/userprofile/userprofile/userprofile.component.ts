@@ -5,8 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 
 import { FormGroup, FormBuilder, Validators, } from '@angular/forms';
 import { IUser, Apisettings } from '../../_services/model';
-import { AuthenticationService } from 'src/app/_services/service/authentication.service';
-import { AuthorizationGuard } from '../../_guards/Authorizationguard';
+import { AuthenticationService } from 'src/app/_services/service/authentication.service'; 
 import { environment } from 'src/environments/environment';
 import { EncrDecrService } from 'src/app/_services/service/encr-decr.service';
 
@@ -27,9 +26,7 @@ export class UserprofileComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private userService: UserService,
-    private alertService: ToastrService,
-    
-    public _authorizationGuard: AuthorizationGuard,
+    private alertService: ToastrService, 
     public _authenticationService: AuthenticationService,
     private EncrDecr: EncrDecrService,
   ) { }
@@ -38,10 +35,7 @@ export class UserprofileComponent implements OnInit {
 
 
   formErrors = {
-    'FirstName': '',
-    'LastName': '',
-    'IsMailRequired': '',
-    'FileData': ''
+    'FirstName': '', 
   }
 
   validationMessages = {

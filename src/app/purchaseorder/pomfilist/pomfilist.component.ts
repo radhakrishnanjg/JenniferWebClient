@@ -86,8 +86,8 @@ export class PomfilistComponent implements OnInit {
   }
   public allowUnsort = false;
   public sort: SortDescriptor[] = [{
-    field: 'PONumber',
-    dir: 'asc'
+    field: 'ShipmentDate',
+    dir: 'desc'
   }];
   public gridView: GridDataResult;
   public pageSize = 10;
@@ -101,7 +101,7 @@ export class PomfilistComponent implements OnInit {
     // Initial filter descriptor
     filter: {
       logic: 'and',
-      filters: [{ field: 'PONumber', operator: 'contains', value: '' }]
+      filters: [{ field: 'ShipmentDate', operator: 'contains', value: '' }]
     }
   };
   public pageChange({ skip, take }: PageChangeEvent): void {
@@ -160,12 +160,12 @@ export class PomfilistComponent implements OnInit {
             value: inputValue
           },
           {
-            field: 'ItemCode',
+            field: 'sku',
             operator: 'contains',
             value: inputValue
           },
           {
-            field: 'ItemName',
+            field: 'CaseId',
             operator: 'contains',
             value: inputValue
           },

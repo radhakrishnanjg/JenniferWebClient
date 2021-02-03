@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 import { ToastrService } from 'ngx-toastr';
 import { InvoiceService } from '../../_services/service/invoice.service';
 import { PrivateutilityService } from '../../_services/service/privateutility.service';
-import { Invoice, Invoiceitem } from '../../_services/model';
+import { Invoice } from '../../_services/model';
 
 @Component({
   selector: 'app-purchaseview',
@@ -14,7 +14,7 @@ import { Invoice, Invoiceitem } from '../../_services/model';
 export class PurchaseviewComponent implements OnInit {
   obj: Invoice;
   identity: number = 0;
-  POID: number = 0; 
+  POID: number = 0;
   TotalQty: number = 0;
   TotalRate: number = 0;
   TotalMRP: number = 0;
@@ -27,31 +27,28 @@ export class PurchaseviewComponent implements OnInit {
     public _invoiceService: InvoiceService,
     public _privateutilityService: PrivateutilityService,
     public _alertService: ToastrService,
-    
     private aroute: ActivatedRoute
   ) { }
-
+  TCS_Amount: number = 0;
   ngOnInit() {
     this.aroute.paramMap.subscribe(params => {
       this.identity = +params.get('id');
       this.POID = +params.get('PoId');
       if (this.identity > 0) {
-        //
         this._invoiceService.searchById(this.identity, this.POID)
           .subscribe(
             (data: Invoice) => {
-              this.obj = data; 
+              this.obj = data;
+              this.TCS_Amount = data.TCS_Amount;
               this.TotalQty = this.obj.lstItem.reduce((acc, a) => acc + a.Qty, 0);
               this.TotalRate = this.obj.lstItem.reduce((acc, a) => acc + a.Rate, 0);
               this.TotalMRP = this.obj.lstItem.reduce((acc, a) => acc + a.MRP, 0);
               this.TotalTaxAmount = this.obj.lstItem.reduce((acc, a) => acc + a.TaxAmount, 0);
               this.TotalDirectCost = this.obj.lstItem.reduce((acc, a) => acc + a.DirectCost, 0);
-              this.TotalTotalAmount = this.obj.lstItem.reduce((acc, a) => acc + a.TotalAmount, 0);
-              //
+              this.TotalTotalAmount = this.obj.lstItem.reduce((acc, a) => acc + a.TotalAmount, 0) + data.TCS_Amount;
             },
             (err: any) => {
               console.log(err);
-              //
             }
           );
       }

@@ -21,7 +21,7 @@
     </div>
   </div>
 </div>
-<form   [formGroup]="vendorwarehouseform" (ngSubmit)="SaveData()" class="form-horizontal">
+<form [formGroup]="vendorwarehouseform" (ngSubmit)="SaveData()" class="form-horizontal">
   <div class="panel panel-default">
     <div class="panel-heading">
       <div class="row">
@@ -54,225 +54,300 @@
         </div>
       </div>
     </div>
-    <div class="panel-body">
-      <span class="groupspanheader">General Information</span>
-      <div class="row">
-        <div class="col-sm-4 col-xs-12">
-          <div class="form-group" [ngClass]="{'has-error': formErrors.VendorID}">
-            <div class="col-xs-12 inputlevel" for="VendorID">
-              <label for="VendorID" class="nopading_loct control-label">Vendor Name <span
-                  class="mandantory">*</span></label>
-              <select formControlName="VendorID" id='VendorID' type="select" class="form-control"
-                (blur)="logValidationErrors()">
-                <option value="0" selected="selected">Select</option>
-                <option *ngFor="let c1 of lstVendor" value={{c1.VendorID}}>
-                  {{c1.VendorName}}
-                </option>
-              </select>
-              <div class="help-block-rk">
-                <span class="help-block" *ngIf="formErrors.VendorID">
-                  {{formErrors.VendorID}}
-                </span>
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+      <li class="nav-item">
+        <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home"
+          aria-selected="true">Basic Details</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile"
+          aria-selected="false">Secondary Contacts </a>
+      </li>
+    </ul>
+    <div class="tab-content" id="myTabContent">
+      <div class="tab-pane  active" id="home" role="tabpanel" aria-labelledby="home-tab">
+        <div class="panel-body">
+          <span class="groupspanheader">General Information</span>
+          <div class="row">
+            <div class="col-sm-4 col-xs-12">
+              <div class="form-group" [ngClass]="{'has-error': formErrors.VendorID}">
+                <div class="col-xs-12 inputlevel" for="VendorID">
+                  <label for="VendorID" class="nopading_loct control-label">Vendor Name <span
+                      class="mandantory">*</span></label>
+                  <select formControlName="VendorID" id='VendorID' type="select" class="form-control"
+                    (blur)="logValidationErrors()">
+                    <option value="0" selected="selected">Select</option>
+                    <option *ngFor="let c1 of lstVendor" value={{c1.VendorID}}>
+                      {{c1.VendorName}}
+                    </option>
+                  </select>
+                  <div class="help-block-rk">
+                    <span class="help-block" *ngIf="formErrors.VendorID">
+                      {{formErrors.VendorID}}
+                    </span>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
-        <div class="col-sm-4 col-xs-12">
-          <div class="form-group" [ngClass]="{'has-error': formErrors.WarehouseName}">
-            <div class="col-sm-12 inputlevel">
-              <label class="nopading_loct control-label" for="WarehouseName"> Warehouse Name
-                <span class="mandantory">*</span>
-              </label>
-              <input id="WarehouseName" type="text" class="form-control" formControlName="WarehouseName"
-                (blur)="logValidationErrors()" maxlength="30">
-              <div class="help-block-rk">
-                <span class="help-block" *ngIf="formErrors.WarehouseName">
-                  {{formErrors.WarehouseName}}
-                </span>
+            <div class="col-sm-4 col-xs-12">
+              <div class="form-group" [ngClass]="{'has-error': formErrors.WarehouseName}">
+                <div class="col-sm-12 inputlevel">
+                  <label class="nopading_loct control-label" for="WarehouseName"> Warehouse Name
+                    <span class="mandantory">*</span>
+                  </label>
+                  <input id="WarehouseName" type="text" class="form-control" formControlName="WarehouseName"
+                    (blur)="logValidationErrors()" maxlength="30">
+                  <div class="help-block-rk">
+                    <span class="help-block" *ngIf="formErrors.WarehouseName">
+                      {{formErrors.WarehouseName}}
+                    </span>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
-        <div class="col-sm-4 col-xs-12">
-          <div class="form-group" [ngClass]="{'has-error': formErrors.GSTNumber}">
-            <div class="col-xs-12 inputlevel">
-              <label class="nopading_loct control-label" for="GSTNumber"> GST Number
-                <span class="mandantory">*</span>
-              </label>
-              <input id="GSTNumber" type="text" class="form-control" formControlName="GSTNumber"
-                (blur)="logValidationErrors()" maxlength="30">
-              <div class="help-block-rk">
-                <span class="help-block" *ngIf="formErrors.GSTNumber">
-                  {{formErrors.GSTNumber}}
-                </span>
+            <div class="col-sm-4 col-xs-12">
+              <div class="form-group" [ngClass]="{'has-error': formErrors.GSTNumber}">
+                <div class="col-xs-12 inputlevel">
+                  <label class="nopading_loct control-label" for="GSTNumber"> GST Number
+                    <span class="mandantory">*</span>
+                  </label>
+                  <input id="GSTNumber" type="text" class="form-control" formControlName="GSTNumber"
+                    (blur)="logValidationErrors()" maxlength="30">
+                  <div class="help-block-rk">
+                    <span class="help-block" *ngIf="formErrors.GSTNumber">
+                      {{formErrors.GSTNumber}}
+                    </span>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
 
-        <div class="col-sm-4 col-xs-12">
-          <div class="form-group" [ngClass]="{'has-error': formErrors.ContactPerson}">
-            <div class="col-xs-12 inputlevel">
-              <label class="nopading_loct control-label" for="ContactPerson"> Contact Person
-                <span class="mandantory">*</span>
-              </label>
-              <input id="ContactPerson" type="text" class="form-control" formControlName="ContactPerson"
-                (blur)="logValidationErrors()" maxlength="30">
-              <div class="help-block-rk">
-                <span class="help-block" *ngIf="formErrors.ContactPerson">
-                  {{formErrors.ContactPerson}}
-                </span>
+            <div class="col-sm-4 col-xs-12">
+              <div class="form-group" [ngClass]="{'has-error': formErrors.ContactPerson}">
+                <div class="col-xs-12 inputlevel">
+                  <label class="nopading_loct control-label" for="ContactPerson"> Contact Person
+                    <span class="mandantory">*</span>
+                  </label>
+                  <input id="ContactPerson" type="text" class="form-control" formControlName="ContactPerson"
+                    (blur)="logValidationErrors()" maxlength="30">
+                  <div class="help-block-rk">
+                    <span class="help-block" *ngIf="formErrors.ContactPerson">
+                      {{formErrors.ContactPerson}}
+                    </span>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
-        <div class="col-sm-4 col-xs-12">
-          <div class="form-group" [ngClass]="{'has-error': formErrors.ContactNumber}">
-            <div class="col-xs-12 inputlevel">
-              <label class="nopading_loct control-label" for="ContactNumber"> Contact Number
-                <span class="mandantory">*</span>
-              </label>
-              <input id="ContactNumber" type="text" class="form-control" formControlName="ContactNumber"
-                (blur)="logValidationErrors()" maxlength="12" mask="000000000000">
-              <div class="help-block-rk">
-                <span class="help-block" *ngIf="formErrors.ContactNumber">
-                  {{formErrors.ContactNumber}}
-                </span>
+            <div class="col-sm-4 col-xs-12">
+              <div class="form-group" [ngClass]="{'has-error': formErrors.ContactNumber}">
+                <div class="col-xs-12 inputlevel">
+                  <label class="nopading_loct control-label" for="ContactNumber"> Contact Number
+                    <span class="mandantory">*</span>
+                  </label>
+                  <input id="ContactNumber" type="text" class="form-control" formControlName="ContactNumber"
+                    (blur)="logValidationErrors()" maxlength="12" mask="000000000000">
+                  <div class="help-block-rk">
+                    <span class="help-block" *ngIf="formErrors.ContactNumber">
+                      {{formErrors.ContactNumber}}
+                    </span>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
-        <div class="col-sm-4 col-xs-12">
-          <div class="form-group" [ngClass]="{'has-error': formErrors.Email}">
-            <div class="col-xs-12 inputlevel">
-              <label class="nopading_loct control-label" for="Email"> Email <span class="mandantory">*</span></label>
-              <input id="Email" type="email" class="form-control" formControlName="Email" (blur)="logValidationErrors()"
-                maxlength="50">
-              <div class="help-block-rk">
-                <span class="help-block" *ngIf="formErrors.Email">
-                  {{formErrors.Email}}
-                </span>
+            <div class="col-sm-4 col-xs-12">
+              <div class="form-group" [ngClass]="{'has-error': formErrors.Email}">
+                <div class="col-xs-12 inputlevel">
+                  <label class="nopading_loct control-label" for="Email"> Email <span
+                      class="mandantory">*</span></label>
+                  <input id="Email" type="email" class="form-control" formControlName="Email"
+                    (blur)="logValidationErrors()" maxlength="50">
+                  <div class="help-block-rk">
+                    <span class="help-block" *ngIf="formErrors.Email">
+                      {{formErrors.Email}}
+                    </span>
+                  </div>
+                </div>
               </div>
             </div>
+
           </div>
         </div>
-
-      </div>
-    </div>
-  </div>
-
-  <div class="panel panel-default">
-    <div class="panel-body">
-      <span class="groupspanheader">Address</span>
+        <div class="panel-body">
+          <span class="groupspanheader">Address</span>
 
 
-      <div class="row">
-        <div class="col-sm-6 col-xs-12">
-          <div class="form-group" [ngClass]="{'has-error': formErrors.Address1}">
-            <div class="col-xs-12  inputlevel">
-              <label class="nopading_loct control-label" for="Address1"> Address 1 <span
-                  class="mandantory">*</span></label>
-              <textarea id="Address1" type="text" class="form-control" formControlName="Address1"
-                (blur)="logValidationErrors()" rows="1" maxlength="150">
+          <div class="row">
+            <div class="col-sm-6 col-xs-12">
+              <div class="form-group" [ngClass]="{'has-error': formErrors.Address1}">
+                <div class="col-xs-12  inputlevel">
+                  <label class="nopading_loct control-label" for="Address1"> Address 1 <span
+                      class="mandantory">*</span></label>
+                  <textarea id="Address1" type="text" class="form-control" formControlName="Address1"
+                    (blur)="logValidationErrors()" rows="1" maxlength="150">
                                               Address 1
                                             </textarea>
-              <div class="help-block-rk">
-                <span class="help-block" *ngIf="formErrors.Address1">
-                  {{formErrors.Address1}}
-                </span>
+                  <div class="help-block-rk">
+                    <span class="help-block" *ngIf="formErrors.Address1">
+                      {{formErrors.Address1}}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6 col-xs-12">
+              <div class="form-group" [ngClass]="{'has-error': formErrors.Address2}">
+                <div class="col-xs-12 inputlevel">
+                  <label class="nopading_loct control-label" for="Address2"> Address 2 </label>
+                  <textarea id="Address2" type="text" class="form-control" formControlName="Address2"
+                    (blur)="logValidationErrors()" rows="1" maxlength="100">
+                                    </textarea>
+                  <div class="help-block-rk">
+                    <span class="help-block" *ngIf="formErrors.Address2">
+                      {{formErrors.Address2}}
+                    </span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="col-sm-6 col-xs-12">
-          <div class="form-group" [ngClass]="{'has-error': formErrors.Address2}">
-            <div class="col-xs-12 inputlevel">
-              <label class="nopading_loct control-label" for="Address2"> Address 2 </label>
-              <textarea id="Address2" type="text" class="form-control" formControlName="Address2"
-                (blur)="logValidationErrors()" rows="1" maxlength="100">
-                                    </textarea>
-              <div class="help-block-rk">
-                <span class="help-block" *ngIf="formErrors.Address2">
-                  {{formErrors.Address2}}
-                </span>
+          <div class="row">
+            <div class="col-sm-3 col-xs-12">
+              <div class="form-group" [ngClass]="{'has-error': formErrors.CountryID}">
+                <div class="col-xs-12 inputlevel" for="CountryID">
+                  <label for="CountryID" class="nopading_loct control-label">Country <span
+                      class="mandantory">*</span></label>
+                  <select formControlName="CountryID" id='CountryID' type="select" class="form-control"
+                    (blur)="logValidationErrors()" (change)="onchangeCountryID($event.target.value)">
+                    <option value="0" selected="selected">Select</option>
+                    <option *ngFor="let c1 of countries" value={{c1.CountryID}}>
+                      {{c1.CountryName}}
+                    </option>
+                  </select>
+                  <div class="help-block-rk">
+                    <span class="help-block" *ngIf="formErrors.CountryID">
+                      {{formErrors.CountryID}}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-3">
+              <div class="form-group" [ngClass]="{'has-error': formErrors.StateID}">
+                <div class="col-xs-12 inputlevel" for="StateID">
+                  <label for="StateID" class="nopading_loct control-label"> State <span
+                      class="mandantory">*</span></label>
+                  <select formControlName="StateID" id='StateID' type="select" class="form-control"
+                    (blur)="logValidationErrors()">
+                    <option value="0" selected="selected">Select</option>
+                    <option *ngFor="let dis of states" value={{dis.StateID}}>
+                      {{dis.State}}
+                    </option>
+                  </select>
+                  <div class="help-block-rk">
+                    <span class="help-block" *ngIf="formErrors.StateID">
+                      {{formErrors.StateID}}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+            <div class="col-sm-3 col-xs-12">
+              <div class="form-group" [ngClass]="{'has-error': formErrors.City}">
+                <div class="col-xs-12 inputlevel">
+                  <label class="nopading_loct control-label" for="City"> City
+                    <span class="mandantory">*</span>
+                  </label>
+                  <input id="City" type="text" class="form-control" formControlName="City"
+                    (blur)="logValidationErrors()" maxlength="50">
+                  <div class="help-block-rk">
+                    <span class="help-block" *ngIf="formErrors.City">
+                      {{formErrors.City}}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-3 col-xs-12">
+              <div class="form-group" [ngClass]="{'has-error': formErrors.PostalCode}">
+                <div class="col-xs-12 inputlevel">
+                  <label class="nopading_loct control-label" for="PostalCode"> Postal Code
+                    <span class="mandantory">*</span>
+                  </label>
+                  <input id="PostalCode" type="text" class="form-control" formControlName="PostalCode"
+                    (blur)="logValidationErrors()" maxlength="6" mask="000000">
+                  <div class="help-block-rk">
+                    <span class="help-block" *ngIf="formErrors.PostalCode">
+                      {{formErrors.PostalCode}}
+                    </span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="row">
-        <div class="col-sm-3 col-xs-12">
-          <div class="form-group" [ngClass]="{'has-error': formErrors.CountryID}">
-            <div class="col-xs-12 inputlevel" for="CountryID">
-              <label for="CountryID" class="nopading_loct control-label">Country <span
-                  class="mandantory">*</span></label>
-              <select formControlName="CountryID" id='CountryID' type="select" class="form-control"
-                (blur)="logValidationErrors()" (change)="onchangeCountryID($event.target.value)">
-                <option value="0" selected="selected">Select</option>
-                <option *ngFor="let c1 of countries" value={{c1.CountryID}}>
-                  {{c1.CountryName}}
-                </option>
-              </select>
-              <div class="help-block-rk">
-                <span class="help-block" *ngIf="formErrors.CountryID">
-                  {{formErrors.CountryID}}
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-sm-3">
-          <div class="form-group" [ngClass]="{'has-error': formErrors.StateID}">
-            <div class="col-xs-12 inputlevel" for="StateID">
-              <label for="StateID" class="nopading_loct control-label"> State <span class="mandantory">*</span></label>
-              <select formControlName="StateID" id='StateID' type="select" class="form-control"
-                (blur)="logValidationErrors()">
-                <option value="0" selected="selected">Select</option>
-                <option *ngFor="let dis of states" value={{dis.StateID}}>
-                  {{dis.State}}
-                </option>
-              </select>
-              <div class="help-block-rk">
-                <span class="help-block" *ngIf="formErrors.StateID">
-                  {{formErrors.StateID}}
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
+      <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+        <div class="table-responsive">
+          <table datatable [dtOptions]="dtOptions" class="table table-bordered table-condensed "
+            *ngIf="obj?.lstContact && obj?.lstContact.length">
+            <thead>
+              <tr>
+                <th class="text-center ">
+                  <input type="checkbox" (change)="checkcontacts($event.currentTarget.checked)">
+                </th>
+                <th class="text-center ">Contact Name</th>
+                <th class="text-center ">Mobile Number </th>
+                <th class="text-center ">Email </th>
 
+                <th class="text-center ">Designation </th>
+                <th class="text-center ">Department </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let ms of obj?.lstContact">
+                <td class="text-center ">
+                  <div *ngIf="(ms.IsActive)">
+                    <input type="checkbox" name="{{ms.ContactID}}" id="{{ms.ContactID }}" checked="checked"
+                      (change)="ContactIDFieldsChange($event)">
+                  </div>
+                  <div *ngIf="!ms.IsActive">
+                    <input type="checkbox" name="{{ms.ContactID}}" id="{{ms.ContactID }}"
+                      (change)="ContactIDFieldsChange($event)">
+                  </div>
+                </td>
+                <td>{{ ms.ContactName }}</td>
+                <td>{{ ms.MobileNumber }}</td>
+                <td>{{ ms.Email }}</td>
+                <td>{{ ms.Designation }}</td>
 
-        <div class="col-sm-3 col-xs-12">
-          <div class="form-group" [ngClass]="{'has-error': formErrors.City}">
-            <div class="col-xs-12 inputlevel">
-              <label class="nopading_loct control-label" for="City"> City
-                <span class="mandantory">*</span>
-              </label>
-              <input id="City" type="text" class="form-control" formControlName="City" (blur)="logValidationErrors()"
-                maxlength="50">
-              <div class="help-block-rk">
-                <span class="help-block" *ngIf="formErrors.City">
-                  {{formErrors.City}}
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-sm-3 col-xs-12">
-          <div class="form-group" [ngClass]="{'has-error': formErrors.PostalCode}">
-            <div class="col-xs-12 inputlevel">
-              <label class="nopading_loct control-label" for="PostalCode"> Postal Code
-                <span class="mandantory">*</span>
-              </label>
-              <input id="PostalCode" type="text" class="form-control" formControlName="PostalCode"
-                (blur)="logValidationErrors()" maxlength="6" mask="000000">
-              <div class="help-block-rk">
-                <span class="help-block" *ngIf="formErrors.PostalCode">
-                  {{formErrors.PostalCode}}
-                </span>
-              </div>
-            </div>
-          </div>
+                <td>{{ ms.Department }}</td>
+
+              </tr>
+            </tbody>
+          </table>
+
+          <table class="table table-bordered table-condensed" *ngIf="obj?.lstContact==null">
+            <thead>
+              <tr>
+                <th class="text-center ">Check</th>
+                <th class="text-center ">Contact Name</th>
+                <th class="text-center ">Mobile Number </th>
+                <th class="text-center ">Email </th>
+
+                <th class="text-center ">Designation </th>
+                <th class="text-center ">Department </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td colspan="6">
+                  No Records Found.!
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
@@ -285,5 +360,6 @@
       </div>
       <div class="clearfix"></div>
     </div>
+
   </div>
 </form>

@@ -118,6 +118,7 @@ export class AmazonautortvService {
       { responseType: 'blob' })
       .pipe(catchError(this.handleError));
   }
+
   public InvoiceInsert(obj: AmazonAutoRTVOrder): Observable<Result> {
     let currentUser = this.authenticationService.currentUserValue;
     obj.CompanyID = currentUser.CompanyID;

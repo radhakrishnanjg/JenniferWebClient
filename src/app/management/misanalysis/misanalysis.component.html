@@ -1,0 +1,144 @@
+<div class="row">
+  <div class="col-sm-6 col-lg-6">
+    <h3>
+      MIS
+    </h3>
+  </div>
+  <div class="col-sm-6 col-lg-6">
+    <div class="pull-right hidden-xs">
+      <ol class="breadcrumb" id="dynamicbreadcrumb">
+        <li>
+          <span> Management </span>
+        </li>
+        <li>
+          <span>
+            Data Analysis</span>
+        </li>
+        <li class="active">
+          List
+        </li>
+      </ol>
+    </div>
+  </div>
+</div>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="input-group col-xs-12 col-sm-12" role="group" aria-label="Basic example">
+          <div class="col-md-3 col-sm-3 col-xs-12 nopading_loct">
+            <select [(ngModel)]="SearchBy" class="serchcurv form-control btn-group">
+              <option value="Summary">Summary</option>
+              <option value="Details">Details </option>
+              <option value="ItemLevel">ItemLevel </option>
+            </select>
+          </div>
+          <div class="col-md-3 col-sm-3 nopading_loct" *ngIf="(SearchBy=='ItemLevel')">
+            <input (keyup.enter)="Search()" [(ngModel)]="SearchKeyword" type="text"
+              class="serchcurv form-control btn-group">
+          </div>
+          <div class="col-md-3 col-sm-3 nopading_loct">
+            <input type="text" ngxDaterangepickerMd [(ngModel)]="selectedDateRange"
+              class="serchcurv form-control btn-group col-xs-12 pointer"
+              style="border:1px soloid #ccc !important; padding :3px;left:0px" [showCustomRangeLabel]="true"
+              [ranges]="Searchranges" [showCancel]="true" placeholder="Select please..."
+              (ngModelChange)="onChange($event)" />
+          </div>
+          <div class="col-md-3 col-sm-3 col-xs-6 nopading_loct">
+            <button class="serchcurv btn btn-default btn-group" (click)="Search()" title="Search">
+              <i class="fa fa-search " aria-hidden="true"></i>
+            </button>
+            <button class="serchcurv btn btn-default btn-group" (click)="Refresh()" title="Reset">
+              <i class="fa fa-refresh" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="col-xs-6 col-sm-3 col-md-3 text-right nopadding">
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel-body">
+    <div class="table-responsive">
+      <table class="table">
+        <!-- <kendo-grid [kendoGridBinding]="JSONdata" resizable="true" columnMenu="true" [groupable]="true" [group]="groups"
+          (groupChange)="groupChange($event)" [rowClass]="rowCallback">
+          <ng-template kendoGridToolbarTemplate>
+            <button kendoGridExcelCommand type="button" icon="file-excel"> </button>
+            <kendo-grid-excel fileName="MISDataList.xlsx"></kendo-grid-excel>
+          </ng-template>
+          <kendo-grid-column field="Section" title="Income/Expenses" width="150">
+          </kendo-grid-column>
+          <kendo-grid-column field="SubSection" title="Sub Category" width="200">
+          </kendo-grid-column>
+          <kendo-grid-column field="VendorName" title="Vendor Name" width="200">
+          </kendo-grid-column> 
+          <kendo-grid-column *ngFor="let key of captions" field="{{key}}" title="{{key}}">
+          </kendo-grid-column>
+        </kendo-grid> -->
+
+        <!-- <kendo-treelist [kendoTreeListFlatBinding]="JSONdata" [height]="410" kendoTreeListExpandable idField="id"
+          parentIdField="managerId">
+          <kendo-treelist-column [expandable]="true" field="Section" title="Name" [width]="250">
+          </kendo-treelist-column>
+          <kendo-treelist-column *ngFor="let key of captions" field="{{key}}" title="{{key}}">
+          </kendo-treelist-column> 
+        </kendo-treelist> -->
+
+        <!-- <kendo-treelist [kendoTreeListFlatBinding]="employees" [height]="410" kendoTreeListExpandable idField="id"
+          parentIdField="managerId">
+          <kendo-treelist-column [expandable]="true" field="name" title="Name" [width]="250">
+          </kendo-treelist-column>
+          <kendo-treelist-column field="title" title="Title" [width]="180"></kendo-treelist-column>
+          <kendo-treelist-column field="phone" title="Phone" [width]="180"></kendo-treelist-column>
+        </kendo-treelist> -->
+
+        <!-- <kendo-treelist kendoTreeListExpandable [kendoTreeListHierarchyBinding]="filesdata" childrenField="contents"
+          [pageable]="true" [pageSize]="9" [height]="400">
+          <kendo-treelist-column [expandable]="true" field="name" title="Name" [width]="300">
+            <ng-template kendoTreeListCellTemplate let-dataItem>
+              <span class="k-icon k-i-{{ dataItem.type === 'directory' ? 'folder' : 'file' }}"></span>
+              {{ dataItem.name }}
+            </ng-template>
+          </kendo-treelist-column>
+          <kendo-treelist-column field="type" title="Type" [width]="100">
+          </kendo-treelist-column>
+          <kendo-treelist-column field="size" title="Size" [width]="200">
+          </kendo-treelist-column>
+        </kendo-treelist> -->
+        <!-- <p>
+          <button class="k-button" (click)="exportToExcel(treelist)">Export TreeList to Excel...</button>
+        </p> -->
+        <kendo-treelist #treelist kendoTreeListExpandable [kendoTreeListHierarchyBinding]="JSONdata"
+          childrenField="contents" [height]="800" [rowClass]="rowCallback">
+          <ng-template kendoTreeListToolbarTemplate>
+            <button type="button" kendoTreeListExcelCommand icon="file-excel">
+              Excel
+            </button>
+            &nbsp;
+            <button kendoTreeListPDFCommand icon="file-pdf">
+              PDF
+            </button>
+          </ng-template>
+          <kendo-treelist-excel fileName="Sheet1.xlsx"></kendo-treelist-excel>
+          <kendo-treelist-pdf fileName="File.pdf" [allPages]="true">
+            <kendo-treelist-pdf-margin top="1cm" left="1cm" right="1cm" bottom="1cm"></kendo-treelist-pdf-margin>
+          </kendo-treelist-pdf>
+          <kendo-treelist-column [expandable]="true" field="Descriptions" title="Descriptions" [width]="400">
+            <ng-template kendoTreeListCellTemplate let-dataItem>
+              <span
+                class="{{ dataItem.Levels === 'Level1' ?  'green' :dataItem.Levels === 'Level2' ? 'orange' : 'yellow' }}">
+                {{ dataItem.Descriptions }}
+              </span>
+            </ng-template>
+          </kendo-treelist-column>
+          <kendo-treelist-column *ngFor="let key of captions" field="{{key}}" title="{{key}}" [width]="100">
+          </kendo-treelist-column>
+        </kendo-treelist>
+
+        <!-- {{JSONdata |json}} -->
+      </table>
+    </div>
+  </div>

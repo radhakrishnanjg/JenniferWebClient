@@ -132,7 +132,7 @@ export class SigninComponent implements OnInit {
               else {
                 this.alertService.success('Sign in Successful.!');
               }
-              this.GetApplicationAccess();
+              this.GetApplicationAccess(datalogin);
               this.loading = false;
             }
           },
@@ -196,7 +196,7 @@ export class SigninComponent implements OnInit {
                     else {
                       this.alertService.success('Sign in Successful.!');
                     }
-                    this.GetApplicationAccess();
+                    this.GetApplicationAccess(datalogin);
                   }
                 },
                 error => {
@@ -225,28 +225,25 @@ export class SigninComponent implements OnInit {
     return of(this.objuser);
   }
   SellerDomain: string = '';
-  GetApplicationAccess() {
-    // this.SellerDomain = environment.SellerDomain;
-    // window.location.href = this.SellerDomain + "?u=anurag@valuecart.in&p=0PlNRg";
-    // // this.document.location.href = 'https://stackoverflow.com';
-    // window.location.href = "http://www.google.com";
-    // this.router.navigateByUrl('https://stackoverflow.com');
-    // this.SellerDomain = environment.SellerDomain;
-
-    // let currentUser = this.authenticationService.currentUserValue;
-    // if (currentUser.lstUserPermission.filter(a => a.ApplicationName == "Jennifer").length > 1 &&
-    //   currentUser.lstUserPermission.filter(a => a.ApplicationName == "CrossBorder").length > 1) {
-    //   this.router.navigate(['/CrossBorder/dashboard2']); 
-    // }
-    // else {
-    //   if (currentUser.lstUserPermission[0].ApplicationName == "CrossBorder") {
-    //     this.router.navigate(['/CrossBorder/dashboard2']);
-    //   }
-    //   else {
-    //     this.router.navigate(['/Dashboard1']);
-    //   }
-    // }
-    this.router.navigate(['/Dashboard1']);
+  GetApplicationAccess(datalogin: IUser) {
+    //jennifer Access
+    if (datalogin.UserType == '0' || datalogin.UserType == '1' || datalogin.UserType == '2') {
+      this.router.navigate(['/Dashboard1']);
+    }
+    //Seller Central Access 3|4|5|6|7|8|9|10|11|12|13|14
+    else if (datalogin.UserType == '3' || datalogin.UserType == '4'
+      || datalogin.UserType == '5' || datalogin.UserType == '6'
+      || datalogin.UserType == '7' || datalogin.UserType == '8'
+      || datalogin.UserType == '9' || datalogin.UserType == '10'
+      || datalogin.UserType == '11' || datalogin.UserType == '12'
+      || datalogin.UserType == '13' || datalogin.UserType == '14') {
+      this.router.navigate(['/SellerCentral']);
+    }
+    //PSP Access 15|16|17|18
+    else if (datalogin.UserType == '15' || datalogin.UserType == '16'
+      || datalogin.UserType == '17' || datalogin.UserType == '18') {
+      this.router.navigate(['/PSP']);
+    }
   }
 
 }

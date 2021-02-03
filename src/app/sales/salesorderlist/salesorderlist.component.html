@@ -99,8 +99,8 @@
           </kendo-grid-column>
           <kendo-grid-column field="TransactionType" title="Transaction Type" width="120">
           </kendo-grid-column>
-          <kendo-grid-column field="TotalValue" title="Total Value" format="{0:##,#.##}">
-          </kendo-grid-column>
+          <!-- <kendo-grid-column field="TotalValue" title="Total Value" format="{0:##,#.##}">
+          </kendo-grid-column> -->
           <kendo-grid-column field="OrderStatus" title="Order Status">
           </kendo-grid-column>
           <kendo-grid-column field="ApprovalStatus" title="Approval Status">
@@ -108,16 +108,17 @@
 
           <kendo-grid-column title="Action" [class]="{'text-center': true}" [filterable]="false" [sortable]="false"
             width="70">
-            <ng-template kendoGridCellTemplate let-obj>
-              <!-- <i class="fa fa-eye bgblue pointer" (click)="editButtonClick(obj.SalesOrderID)" title="Edit"></i>
-          &nbsp; -->
+            <ng-template kendoGridCellTemplate let-obj> 
               <i class="fa fa-times bgred pointer"
                 *ngIf="( 
               (obj.InventoryType =='SELLABLE')  ||   (obj.InventoryType =='UNSELLABLE' && obj.ApprovalStatus == 'Pending Approval'  ) )" title="Cancel"
                 (click)="confirmDeleteid(obj.SalesOrderID,obj.OrderID)"></i>
-
-              &nbsp; <i class="fa fa-eye bgblue pointer" [routerLink]="['/Salesorderview', obj.SalesOrderID]"
-                title="View"></i>
+              &nbsp;
+              <i class="fa fa-eye bgblue pointer" *ngIf="!obj.IsDispute"
+                [routerLink]="['/Salesorderview', obj.SalesOrderID]" title="View"></i>
+              &nbsp;
+              <i class="fa fa-eye bgblue pointer" *ngIf="obj.IsDispute"
+                [routerLink]="['/SalesorderunsellableDisputeView', obj.SalesOrderID]" title="View"></i>
 
             </ng-template>
           </kendo-grid-column>
@@ -175,16 +176,22 @@
             <div>
               <h5>
                 Please Select Inventory Type to Create Sales Order
-              </h5>  
+              </h5>
               <label for="Sellable" class="control-label radio-inline">
-                <input id="Sellable" type="radio" [value]="true" name="InventoryType" [(ngModel)]="InventoryType">
+                <input id="Sellable" type="radio" [value]="'Sellable'" name="InventoryType" [(ngModel)]="InventoryType">
                 Sellable
               </label>
-              
               &nbsp; &nbsp;
               <label for="Unsellable" class="control-label radio-inline">
-                <input id="Unsellable" type="radio" [value]="false" name="InventoryType" [(ngModel)]="InventoryType">
+                <input id="Unsellable" type="radio" [value]="'Unsellable'" name="InventoryType"
+                  [(ngModel)]="InventoryType">
                 Unsellable
+              </label>
+              &nbsp; &nbsp;
+              <label for="UnsellableWithDispute" class="control-label radio-inline">
+                <input id="UnsellableWithDispute" type="radio" [value]="'UnsellableWithDispute'" name="InventoryType"
+                  [(ngModel)]="InventoryType">
+                Unsellable With Dispute
               </label>
             </div>
           </div>

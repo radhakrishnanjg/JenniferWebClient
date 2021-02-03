@@ -32,7 +32,7 @@
               <option value="ByCNNumber">CN Number</option>
               <option value="ByCNType">CN Type</option>
               <option value="ByCustomerName">Customer Name</option>
-              <option value="ByOrderID">Order ID</option>
+              <option value="ByInvoiceNumber">Invoice Number</option>
               <option value="ByCNDate">CN Date</option>
             </select>
           </div>
@@ -82,6 +82,8 @@
             <kendo-grid-pdf fileName="CreditNoteList.pdf" [repeatHeaders]="true"></kendo-grid-pdf>
             <kendo-grid-excel fileName="CreditNoteList.xlsx"></kendo-grid-excel>
           </ng-template>
+          <kendo-grid-column field="CustomerName" title="Customer Name">
+          </kendo-grid-column>
           <kendo-grid-column field="CNNumber" title="Credit Note No.">
           </kendo-grid-column>
           <kendo-grid-column field="CNStatus" title="Credit Status">
@@ -92,22 +94,19 @@
             </ng-template>
           </kendo-grid-column>
           <kendo-grid-column field="TotalAmount" title="CN Amount" format="{0:##,#.##}">
-          </kendo-grid-column> 
+          </kendo-grid-column>
           <kendo-grid-column field="CNType" title="CN Type">
           </kendo-grid-column>
-          <kendo-grid-column field="CustomerName" title="Customer Name">
-          </kendo-grid-column>
           <kendo-grid-column field="OrderID" title="Order ID">
+          </kendo-grid-column> 
+          <kendo-grid-column field="InvoiceNumber" title="Invoice No.">
           </kendo-grid-column>
-          <kendo-grid-column field="ReferenceDetail" title="Reference Detail">
-          </kendo-grid-column>
+          <!-- <kendo-grid-column field="ReferenceDetail" title="Reference Detail">
+          </kendo-grid-column>  
+          <kendo-grid-column field="Remarks" title="Remarks">
+          </kendo-grid-column>  -->
           <kendo-grid-column field="Reason" title="Reason For Return">
           </kendo-grid-column>
-          <kendo-grid-column field="Remarks" title="Remarks">
-          </kendo-grid-column>
-          <!-- <kendo-grid-column field="CreatedBy" title="Created By">
-          </kendo-grid-column> -->
-
           <kendo-grid-column title="Action" [class]="{'text-center': true}" [filterable]="false" [sortable]="false"
             width="80">
             <ng-template kendoGridCellTemplate let-obj>

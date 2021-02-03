@@ -121,8 +121,8 @@ export class RefundlistComponent implements OnInit {
   //#region Paging Sorting and Filtering Start
   public allowUnsort = false;
   public sort: SortDescriptor[] = [{
-    field: 'RefundNumber',
-    dir: 'asc'
+    field: 'TransactionDate',
+    dir: 'desc'
   }];
   public gridView: GridDataResult;
   public pageSize = 10;
@@ -136,7 +136,7 @@ export class RefundlistComponent implements OnInit {
     // Initial filter descriptor
     filter: {
       logic: 'and',
-      filters: [{ field: 'RefundNumber', operator: 'contains', value: '' }]
+      filters: [{ field: 'TransactionDate', operator: 'contains', value: '' }]
     }
   };
   public pageChange({ skip, take }: PageChangeEvent): void {

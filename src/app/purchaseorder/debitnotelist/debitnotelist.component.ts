@@ -154,8 +154,8 @@ export class DebitnotelistComponent implements OnInit {
   //#region Paging Sorting and Filtering Start
   public allowUnsort = false;
   public sort: SortDescriptor[] = [{
-    field: 'DNNumber',
-    dir: 'asc'
+    field: 'DNDate',
+    dir: 'desc'
   }];
   public gridView: GridDataResult;
   public pageSize = 10;
@@ -169,7 +169,7 @@ export class DebitnotelistComponent implements OnInit {
     // Initial filter descriptor
     filter: {
       logic: 'and',
-      filters: [{ field: 'DNNumber', operator: 'contains', value: '' }]
+      filters: [{ field: 'DNDate', operator: 'contains', value: '' }]
     }
   };
   public pageChange({ skip, take }: PageChangeEvent): void {

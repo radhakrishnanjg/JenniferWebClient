@@ -36,7 +36,6 @@ export class PrivatelayoutComponent implements OnInit {
     private router: Router,
     private _alertService: ToastrService,
     private authenticationService: AuthenticationService,
-
     private _PrivateutilityService: PrivateutilityService,
     private EncrDecr: EncrDecrService,
     private _CompanydetailService: CompanydetailService,

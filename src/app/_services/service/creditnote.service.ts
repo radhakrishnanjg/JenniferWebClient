@@ -63,11 +63,11 @@ export class CreditnoteService {
       );
   }
 
-  public SearchBySalesOrderID(CNType: string, SalesOrderID: number): Observable<CreditNoteDetail[]> {
+  public SearchBySalesSalesInvoiceID(CNType: string, SalesOrderID: number): Observable<CreditNoteDetail[]> {
     let currentUser = this.authenticationService.currentUserValue;
     let CompanyDetailID = currentUser.CompanyDetailID;
     return this.httpClient.get<string>(environment.baseUrl +
-      `CreditNote/SearchBySalesOrderID?CNType=` + CNType
+      `CreditNote/SearchBySalesSalesInvoiceID?CNType=` + CNType
       + `&SalesOrderID=` + SalesOrderID
       + `&CompanyDetailID=` + CompanyDetailID
     )

@@ -131,8 +131,8 @@ export class CustomerreceiptlistComponent implements OnInit {
   //#region Paging Sorting and Filtering Start
   public allowUnsort = false;
   public sort: SortDescriptor[] = [{
-    field: 'BillNumber',
-    dir: 'asc'
+    field: 'TransactionDate',
+    dir: 'desc'
   }];
 
   public gridView: GridDataResult;
@@ -147,7 +147,7 @@ export class CustomerreceiptlistComponent implements OnInit {
     // Initial filter descriptor
     filter: {
       logic: 'and',
-      filters: [{ field: 'BillNumber', operator: 'contains', value: '' }]
+      filters: [{ field: 'TransactionDate', operator: 'contains', value: '' }]
     }
   };
 

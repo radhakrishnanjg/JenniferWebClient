@@ -104,14 +104,14 @@
       </div>
 
       <div class="row">
-        <div class="col-md-3 col-xs-12" [ngClass]="{'has-error': formErrors.TransactionDate}">
+        <div class="col-md-2 col-xs-12" [ngClass]="{'has-error': formErrors.TransactionDate}">
           <div class="form-group">
             <label class="control-label" for="TransactionDate">Transaction Date<span class="mandantory">
                 *</span></label>
             <div>
               <div class='input-group date'>
-                <input type="text" ngxDaterangepickerMd [minDate]="MinDate"
-                  [maxDate]="MaxDate" [singleDatePicker]="true" class="form-control" id="TransactionDate"
+                <input type="text" ngxDaterangepickerMd [minDate]="MinDate" [maxDate]="MaxDate"
+                  [singleDatePicker]="true" class="form-control" id="TransactionDate"
                   [locale]="{format: 'MM-DD-YYYY HH:mm'}" [timePicker]="true" [autoApply]="true"
                   (change)="logValidationErrors()" formControlName="TransactionDate" />
                 <label class="fa fa-calendar"></label>
@@ -124,10 +124,9 @@
             </div>
           </div>
         </div>
-        <div class="col-md-3 col-xs-12">
-          <div class="form-group"  [ngClass]="{'has-error': formErrors.RefundMode}">
-            <label class="control-label" for="RefundMode"> Refund Mode  <span
-              class="mandantory">*</span></label> 
+        <div class="col-md-2 col-xs-12">
+          <div class="form-group" [ngClass]="{'has-error': formErrors.RefundMode}">
+            <label class="control-label" for="RefundMode"> Refund Mode <span class="mandantory">*</span></label>
             <div>
               <select id="RefundMode" class="form-control" formControlName="RefundMode"
                 (change)="onchangeRefundMode($event.target.value)">
@@ -136,7 +135,7 @@
                   {{c1.DropDownDescription}}
                 </option>
               </select>
-              <div class="help-block-rk"> 
+              <div class="help-block-rk">
                 <span class="help-block" *ngIf="formErrors.RefundMode">
                   {{formErrors.RefundMode}}
                 </span>
@@ -144,23 +143,22 @@
             </div>
           </div>
         </div>
-        <div class="col-md-3 col-xs-12" *ngIf="RefundMode == 'ONLINE'">
-          <div class="form-group" [ngClass]="{'has-error': formErrors.TransactionNumber}">
+        <div class="col-md-2 col-xs-12" *ngIf="RefundMode == 'ONLINE'">
+          <div class="form-group">
             <label class="control-label" for="TransactionNumber">Transaction No. <span
                 class="mandantory">*</span></label>
             <input type="text" id="TransactionNumber" class="form-control" (blur)="logValidationErrors()"
               formControlName="TransactionNumber" maxlength="30">
             <div class="help-block-rk">
-              <span class="help-block" *ngIf="formErrors.TransactionNumber">
-                {{formErrors.TransactionNumber}}
+              <span class="help-block">
+
               </span>
             </div>
           </div>
         </div>
-        <div class="col-md-3 col-xs-12" >
+        <div class="col-md-2 col-xs-12">
           <div class="form-group" [ngClass]="{'has-error': formErrors.RefundAmount}">
-            <label class="control-label" for="RefundAmount">Refund Amount <span
-                class="mandantory">*</span></label>
+            <label class="control-label" for="RefundAmount">Refund Amount <span class="mandantory">*</span></label>
             <input type="text" id="RefundAmount" class="form-control" (blur)="logValidationErrors()"
               formControlName="RefundAmount" maxlength="10" onkeypress="return /[0-9.]/i.test(event.key)">
             <div class="help-block-rk">
@@ -169,13 +167,11 @@
               </span>
             </div>
           </div>
-        </div> 
-      </div>
-      <div class="row">
-        <div class="col-md-8 col-xs-12">
+        </div>
+        <div [ngClass]="RefundMode == 'ONLINE'? 'col-md-4 col-xs-12' : 'col-md-6 col-xs-12'">
           <div class="form-group">
             <label class="control-label" for="Remarks">Remarks</label>
-            <input type="text" id="Remarks" class="form-control" formControlName="Remarks" maxlength="500" >
+            <input type="text" id="Remarks" class="form-control" formControlName="Remarks" maxlength="500">
           </div>
         </div>
       </div>

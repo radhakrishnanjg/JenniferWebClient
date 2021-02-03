@@ -92,8 +92,8 @@ export class SalesorderapprovallistComponent implements OnInit {
    //#region Paging Sorting and Filtering Start
    public allowUnsort = false;
    public sort: SortDescriptor[] = [{
-     field: 'OrderID',
-     dir: 'asc'
+     field: 'OrderDate',
+     dir: 'desc'
    }];
    public gridView: GridDataResult;
    public pageSize = 10;
@@ -107,7 +107,7 @@ export class SalesorderapprovallistComponent implements OnInit {
      // Initial filter descriptor
      filter: {
        logic: 'and',
-       filters: [{ field: 'OrderID', operator: 'contains', value: '' }]
+       filters: [{ field: 'OrderDate', operator: 'contains', value: '' }]
      }
    };
    public pageChange({ skip, take }: PageChangeEvent): void {

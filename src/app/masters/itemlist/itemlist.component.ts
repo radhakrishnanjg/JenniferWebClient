@@ -19,8 +19,7 @@ import { SortDescriptor, orderBy } from '@progress/kendo-data-query';
 export class ItemlistComponent implements OnInit,OnDestroy { 
   objItem: Item;
 
-  selectedDeleteId: number;
-  dtOptions: DataTables.Settings = {};
+  selectedDeleteId: number; 
   deleteColumn: string;
   SearchBy: string = '';
   SearchKeyword: string = '';

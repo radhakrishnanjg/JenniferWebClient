@@ -76,7 +76,7 @@ export class StoComponent implements OnInit {
     private _poService: PoService,
     private _privateutilityService: PrivateutilityService,
     private _authorizationGuard: AuthorizationGuard,
-    
+
     public _alertService: ToastrService,
     private fb: FormBuilder,
     private router: Router
@@ -382,8 +382,8 @@ export class StoComponent implements OnInit {
             let MultiplierValue = this.objStoItem.MultiplierValue;
             let Qty = Units * MultiplierValue;
             let IsDiscountApplicable = this.stoForm.get("IsDiscountApplicable").value;
+            this.DisCountPer = 0;
             if (IsDiscountApplicable) {
-              //
               this._privateutilityService.getDiscountAmount(itemID, STODate, CustomerID, InventoryType, TransactionType)
                 .subscribe(
                   (data11) => {
@@ -399,14 +399,12 @@ export class StoComponent implements OnInit {
                       this.itemFormGroup.controls['TaxAmount'].setValue(TaxAmount);
                       this.itemFormGroup.controls['TotalAmount'].setValue(TaxAmount + (Qty * this.Rate) - DiscountAmount);
                     }
-                    //
                   },
-                  (err) => {
-                    //
-                  }
+                  (err) => { }
                 );
             }
             else {
+              debugger
               this.itemFormGroup.controls['DiscountValue'].setValue(0);
               this.DisCountPer = 0;
               let TaxRate = this.itemFormGroup.get("TaxRate").value;
@@ -513,6 +511,8 @@ export class StoComponent implements OnInit {
     this.selectedRowIndex = rowIndex;
     this.objStoItem.ItemID = dataItem.ItemID;
     this.Rate = dataItem.Rate;
+    let uom = this.uomList.filter(x => { return x.UOMID == dataItem.UOMID })[0];
+    this.objStoItem.MultiplierValue = uom.MultiplierValue;
     sender.editRow(rowIndex, this.itemFormGroup);
   }
 
@@ -545,7 +545,6 @@ export class StoComponent implements OnInit {
       this._alertService.error(errorMessage);
       return;
     };
-    debugger
     if (isNew) {
       this.objSto.lstItem.splice(0, 0, this.objStoItem);
     }
@@ -553,7 +552,7 @@ export class StoComponent implements OnInit {
       let selectedItem = this.objSto.lstItem[rowIndex];
       Object.assign(
         this.objSto.lstItem.find(({ ItemID }) => ItemID === selectedItem.ItemID),
-        this.objSto
+        this.objStoItem
       );
     }
     if (this.gridData.length > 0) {

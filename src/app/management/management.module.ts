@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
 //kendo
-import { GridModule, PDFModule, ExcelModule } from '@progress/kendo-angular-grid';
+import { GridModule, ExcelModule as GridExcelModule, PDFModule as gridPDFModule } from '@progress/kendo-angular-grid';
 import { PopupModule } from '@progress/kendo-angular-popup';
 import { DropDownListModule, DropDownsModule } from '@progress/kendo-angular-dropdowns';
 import { DateInputsModule } from '@progress/kendo-angular-dateinputs';
@@ -16,16 +16,18 @@ import { IntlModule } from '@progress/kendo-angular-intl';
 import { NgxMaskModule } from 'ngx-mask';
 import { DataTablesModule } from 'angular-datatables';
 import { PreventDoubleSubmitModule } from 'ngx-prevent-double-submission';
-import { EncrDecrService } from '../_services/service/encr-decr.service';
-import { CookieService } from 'ngx-cookie-service';
 import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 import { NgPipesModule } from 'ngx-pipes';
 import { NgbModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { ListViewModule } from '@progress/kendo-angular-listview';
+import { TreeListModule, ExcelModule, PDFModule } from '@progress/kendo-angular-treelist';
 
 import { ProfilelossComponent } from './profileloss/profileloss.component';
 import { ItemlevelplComponent } from './itemlevelpl/itemlevelpl.component';
 
 import { ManagementRoutingModule } from './management-routing.module';
+import { ProfitAnalysisComponent } from './profit-analysis/profit-analysis.component';
+import { MISanalysisComponent } from './misanalysis/misanalysis.component';
 
 
 @NgModule({
@@ -49,6 +51,8 @@ import { ManagementRoutingModule } from './management-routing.module';
     DateInputsModule,
     PDFExportModule,
     InputsModule,
+    ListViewModule,
+    TreeListModule,
     NgPipesModule,
     NgbModule,
     NgbTooltipModule,
@@ -56,14 +60,9 @@ import { ManagementRoutingModule } from './management-routing.module';
   ],
   declarations: [
     ProfilelossComponent,
-    ItemlevelplComponent
-  ]
-  ,
-  providers: [
-
-    CookieService,
-
-    EncrDecrService
+    ItemlevelplComponent,
+    ProfitAnalysisComponent,
+    MISanalysisComponent
   ],
   schemas: [
     NO_ERRORS_SCHEMA,

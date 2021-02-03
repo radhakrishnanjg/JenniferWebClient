@@ -294,7 +294,7 @@
         </div>
       </div>
       <div class="row">
-        <div class=" col-md-4" *ngIf="(Resolution=='OVERAGED TO')">
+        <div class=" col-md-4" *ngIf="(Status=='RESOLVED' && Resolution=='OVERAGED TO')">
           <div class="form-group">
             <div class="col-sm-12 inputlevel">
               <label class=" control-label" for="OveragedShipment">Overaged Shipment Number </label>
@@ -307,7 +307,7 @@
           </div>
         </div>
 
-        <div class=" col-md-4" *ngIf="(Resolution=='OVERAGED TO')">
+        <div class=" col-md-4" *ngIf="(Status=='RESOLVED' &&  Resolution=='OVERAGED TO')">
           <div class="form-group">
             <div class="col-sm-12 inputlevel">
               <label class=" control-label" for="CaseId"> Quantity </label>
@@ -320,7 +320,7 @@
           </div>
         </div>
 
-        <div class=" col-md-4" *ngIf="(Resolution=='REIMBURSED')">
+        <div class=" col-md-4" *ngIf="(Status=='RESOLVED' &&  Resolution=='REIMBURSED')">
           <div class="form-group">
             <div class="col-sm-12 inputlevel">
               <label class=" control-label" for="RMSID"> Reimbursed ID </label>
@@ -333,7 +333,7 @@
           </div>
         </div>
 
-        <div class=" col-md-4" *ngIf="(Resolution=='REIMBURSED')">
+        <div class=" col-md-4" *ngIf="(Status=='RESOLVED' &&  Resolution=='REIMBURSED')">
           <div class="form-group">
             <div class="col-sm-12 inputlevel">
               <label class=" control-label" for="ValueOfRMS"> Value Of Reimbursed </label>

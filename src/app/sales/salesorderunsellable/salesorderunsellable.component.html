@@ -391,8 +391,9 @@
           </div>
           <div class="form-group col-md-12">
             <div class="pull-left">
-              <b> Note : The above highlighted in Grey color SKU prices are not matching with Sales Rate Card. Please check sales rate card to proceed further. </b>
-             
+              <b> Note : The above highlighted in Grey color SKU prices are not matching with Sales Rate Card. Please
+                check sales rate card to proceed further. </b>
+
             </div>
 
             <div class="btn-toolbar pull-right">
@@ -419,11 +420,13 @@
 
                 <th>Tax Amt</th>
                 <th>Discount Amt</th>
+                <th>Additional Discount (RK)</th>
+                <th>Additional Discount (Amazon)</th>
                 <th>Total Value</th>
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let data of objSalesOrder.lstItem">
+              <tr *ngFor="let data of objSalesOrder.lstItem; let id = index">
                 <td>{{data.ItemCode}}</td>
                 <td>{{data.ItemName  }}</td>
                 <td>{{data.CustomerItemCode}}</td>
@@ -434,6 +437,18 @@
                 <td class="text-right">{{data.TaxAmount | currency: 'INR'}}</td>
 
                 <td class="text-right">{{data.Discountamt | currency: 'INR'}}</td>
+                <td class="text-right">
+                  <input type="text" class="form-control" maxlength="12" onkeypress="return /[0-9.]/i.test(event.key)"
+                    (input)="updateListAdd_DiscRK(id,'Add_DiscRK',$event.target.value)" 
+                    id="{{'Add_DiscRK'+data.ItemID}}" name="{{'Add_DiscRK' +data.ItemID}}"
+                    value="{{data.Add_DiscRK}}">
+                </td>
+                <td class="text-right">
+                  <input type="text" class="form-control" maxlength="12" onkeypress="return /[0-9.]/i.test(event.key)"
+                  (input)="updateListAdd_DiscAmazon(id,'Add_DiscAmazon',$event.target.value)" 
+                  id="{{'Add_DiscAmazon'+data.ItemID}}" name="{{'Add_DiscAmazon'+data.ItemID}}"
+                  value="{{data.Add_DiscAmazon}}">
+                </td>
                 <td class="text-right">{{data.TotalValue | currency: 'INR'}}</td>
               </tr>
 
@@ -453,11 +468,18 @@
                   {{ TotalDiscountamt | currency: 'INR'}}
                 </th>
                 <th class="text-right">
+                  {{ TotalAdd_DiscRK | currency: 'INR'}}
+                </th>
+                <th class="text-right">
+                  {{ TotalAdd_DiscAmazon | currency: 'INR'}}
+                </th>
+                <th class="text-right">
                   {{ TotalTotalAmount | currency: 'INR'}}
                 </th>
               </tr>
             </tbody>
           </table>
+
         </div>
       </div>
     </div>

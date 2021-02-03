@@ -17,6 +17,9 @@ import { SellerregistrationComponent } from './account/sellerregistration/seller
 import { MaintenanceComponent } from './maintenance/maintenance.component';
 import { SearchComponent } from './search/search.component';
 import { IndexComponent } from './index/index.component';
+
+import { SellercentralaccessComponent } from './sellercentralaccess/sellercentralaccess.component';
+import { PspaccessComponent } from './pspaccess/pspaccess.component';
 import { CustompreloadingService } from './_services/service/custompreloading.service';
 
 // The last route is the empty path route. This specifies
@@ -33,7 +36,7 @@ const appRoutes: Routes = [
       { path: 'Dashboard1', component: Dashboard1Component },
 
       // prasanth intgration
-      { path: '', data: { preload: true },loadChildren: './amazonrtv/amazonrtv.module#AmazonrtvModule' },
+      { path: '', data: { preload: true }, loadChildren: './amazonrtv/amazonrtv.module#AmazonrtvModule' },
       { path: '', loadChildren: './customers/customers.module#CustomersModule' },
       { path: '', loadChildren: './download/download.module#DownloadModule' },
       { path: '', loadChildren: './emailconfiguration/emailconfiguration.module#EmailconfigurationModule' },
@@ -71,6 +74,9 @@ const appRoutes: Routes = [
   { path: 'Maintenance', component: MaintenanceComponent },
   { path: 'Termsofuse', component: TermsofuseComponent },
   { path: 'PrivacyPolicy', component: PrivacyPolicyComponent },
+  //added two additional for redirection purpose.
+  { path: 'SellerCentral', component: SellercentralaccessComponent },
+  { path: 'PSP', component: PspaccessComponent },
   // otherwise redirect to home 
   {
     path: 'not-found',
@@ -87,13 +93,7 @@ const appRoutes: Routes = [
 // Export the imported RouterModule so router directives
 // are available to the module that imports this AppRoutingModule
 @NgModule({
-  imports: [RouterModule.forRoot(appRoutes, {
-    // initialNavigation: false,
-    // onSameUrlNavigation: 'reload',
-    preloadingStrategy: CustompreloadingService,// NoPreloading,//PreloadAllModules//CustompreloadingService 
-  })
-
-  ],
+  imports: [RouterModule.forRoot(appRoutes)],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

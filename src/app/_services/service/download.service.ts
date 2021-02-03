@@ -8,6 +8,10 @@ import { AppError } from './../../common/app-error';
 import { AuthenticationService } from './authentication.service';
 import { DownloadMaster, DownloadDetail, AmazonMTR, DownloadLog, Result, JsonModal } from '../model/index';
 import { environment } from '../../../environments/environment';
+import * as FileSaver from 'file-saver';
+import * as XLSX from 'xlsx';
+const EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+const EXCEL_EXTENSION = '.xlsx';
 
 @Injectable({
   providedIn: 'root'
@@ -74,6 +78,7 @@ export class DownloadService {
       .pipe(catchError(this.handleError));
   }
 
+
   public Download(filename: string, MenuId: number) {
     let currentUser = this.authenticationService.currentUserValue;
     let CompanyDetailID = currentUser.CompanyDetailID;
@@ -130,11 +135,75 @@ export class DownloadService {
     DynamicQuery += "@CompanyDetailID=" + currentUser.CompanyDetailID + ",";
     DynamicQuery += "@UserId=" + currentUser.UserId + ",";
     DynamicQuery += "@MenuId=" + objDownloadLog.MenuId + "";
-    objDownloadLog.Dynamic_Query = DynamicQuery; 
+    objDownloadLog.Dynamic_Query = DynamicQuery;
     this.objJsonModal.Json = JSON.stringify(objDownloadLog);
     return this.httpClient.post<Result>(environment.baseUrl + `Download/InsertDownloadLog`, this.objJsonModal)
       .pipe(catchError(this.handleError));
   }
+
+  public DownloadExcelJSON(SP_Name: string, MenuId: number, Filename: string, DynamicQuery: string): Observable<any[]> {
+    let currentUser = this.authenticationService.currentUserValue;
+    this.objDownloadMaster.Filename = Filename;
+    this.objDownloadMaster.SP_Name = SP_Name;
+    this.objDownloadMaster.UserId = currentUser.UserId;
+    this.objDownloadMaster.CompanyID = currentUser.CompanyID;
+    this.objDownloadMaster.CompanyDetailID = currentUser.CompanyDetailID;
+    this.objDownloadMaster.MenuID = MenuId;
+    DynamicQuery += " @CompanyID=" + currentUser.CompanyID + ",";
+    DynamicQuery += "@CompanyDetailID=" + currentUser.CompanyDetailID + ",";
+    DynamicQuery += "@UserId=" + currentUser.UserId + ",";
+    DynamicQuery += "@MenuId=" + MenuId + ",";
+    DynamicQuery += "@OUTPUT=null";
+    this.objDownloadMaster.DynamicQuery = DynamicQuery;
+    return this.httpClient.post<string>(environment.baseUrl + `Download/DownloadExcelJSON`, this.objDownloadMaster)
+      .pipe(
+        map(data => {
+          return JSON.parse(data) as any[];
+        }),
+        catchError(this.handleError)
+      );
+  }
+  public InsertDownloadLogJSON(objDownloadLog: DownloadLog): Observable<Result> {
+    let currentUser = this.authenticationService.currentUserValue;
+    objDownloadLog.LoginId = currentUser.UserId;
+    objDownloadLog.CompanyID = currentUser.CompanyID;
+    objDownloadLog.CompanyDetailID = currentUser.CompanyDetailID;
+
+    let DynamicQuery = objDownloadLog.Dynamic_Query;
+    DynamicQuery += " @CompanyID=" + currentUser.CompanyID + ",";
+    DynamicQuery += "@CompanyDetailID=" + currentUser.CompanyDetailID + ",";
+    DynamicQuery += "@UserId=" + currentUser.UserId + ",";
+    DynamicQuery += "@MenuId=" + objDownloadLog.MenuId + ",";
+    DynamicQuery += "@OUTPUT=null";
+    objDownloadLog.Dynamic_Query = DynamicQuery;
+    this.objJsonModal.Json = JSON.stringify(objDownloadLog);
+    return this.httpClient.post<Result>(environment.baseUrl + `Download/InsertDownloadLogJSON`, this.objJsonModal)
+      .pipe(catchError(this.handleError));
+  }
+
+  public DownloadJson(ReportID: string): Observable<any[]> {
+    return this.httpClient.get<string>(environment.baseUrl +
+      `Download/DownloadJson?ReportID=` + ReportID)
+      .pipe(
+        map(data => {
+          return JSON.parse(data) as any[]
+        }),
+        catchError(this.handleError)
+      );
+  }
+
+
+  public exportAsExcelFile(json: any[], excelFileName: string): void {
+    const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(json);
+    const workbook: XLSX.WorkBook = { Sheets: { 'data': worksheet }, SheetNames: ['data'] };
+    const excelBuffer: any = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+    this.saveAsExcelFile(excelBuffer, excelFileName);
+  }
+  private saveAsExcelFile(buffer: any, fileName: string): void {
+    const data: Blob = new Blob([buffer], { type: EXCEL_TYPE });
+    FileSaver.saveAs(data, fileName + EXCEL_EXTENSION);
+  }
+
 
   //#endregion
   private handleError(error: HttpErrorResponse) {

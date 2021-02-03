@@ -50,6 +50,8 @@ import { SalesRoutingModule } from './sales.routing.module';
 import { RefundlistComponent } from './refundlist/refundlist.component';
 import { RefundComponent } from './refund/refund.component';
 import { StockauditComponent } from './stockaudit/stockaudit.component';
+import { SalesorderunsellableDisputeComponent } from './salesorderunsellable-dispute/salesorderunsellable-dispute.component';
+import { SalesorderunsellableDisputeViewComponent } from './salesorderunsellable-dispute-view/salesorderunsellable-dispute-view.component';
 @NgModule({
   imports: [
     CommonModule, 
@@ -97,6 +99,8 @@ import { StockauditComponent } from './stockaudit/stockaudit.component';
     RefundlistComponent,
     RefundComponent,
     StockauditComponent,
+    SalesorderunsellableDisputeComponent,
+    SalesorderunsellableDisputeViewComponent,
   ],
   providers: [
     CookieService,

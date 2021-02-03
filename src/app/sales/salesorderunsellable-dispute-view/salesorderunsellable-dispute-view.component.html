@@ -1,0 +1,287 @@
+<div class="row">
+  <div class="col-sm-6 col-lg-6">
+    <h3>
+      Sales Order
+    </h3>
+  </div>
+  <div class="col-sm-6 col-lg-6">
+    <div class="pull-right hidden-xs">
+      <ol class="breadcrumb" id="dynamicbreadcrumb">
+        <li>
+          <span> Revenue</span>
+        </li>
+        <li>
+          <span> Sales Order</span>
+        </li>
+        <li class="active">
+
+          View
+        </li>
+      </ol>
+    </div>
+  </div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <div class="row">
+      <div class="col-xs-12 col-md-4 col-sm-4">
+        <span class="groupspanheader">
+          {{panelTitle}} <span>
+            - {{objSalesOrder?.ApprovalStatus}}
+          </span>
+        </span>
+      </div>
+      <div class="col-sm-3 col-md-3 col-xs-6">
+        <span class=" spanheader">
+          Action By : {{objSalesOrder?.ActionBy}}
+        </span>
+      </div>
+      <div class="col-sm-3 col-md-3 col-xs-6">
+        <span class=" spanheader">
+          Action Date : {{objSalesOrder?.ActionDate | date:'MM-dd-yyyy HH:mm'}}
+        </span>
+      </div>
+      <div class="col-sm-2 col-md-2 col-xs-12">
+        <div class="pull-right">
+          <button type="button" class="btn btn-primary" routerLink="/Salesorderlist" title="Back">
+            Back
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel-body">
+
+    <div class="row">
+
+      <div class="col-md-12">
+        <div class="table-responsive">
+          <table class="table table-bordered bgtable">
+
+            <tr>
+              <th width="15%">
+                Customer <span class="mandantory"> *</span>
+              </th>
+              <td width="35%">
+                {{objSalesOrder?.CustomerName}}
+              </td>
+              <th width="15%">
+                Order ID<span class="mandantory"> *</span>
+              </th>
+              <td width="35%">
+                {{objSalesOrder?.OrderID}}
+              </td>
+            </tr>
+
+
+            <tr>
+              <th>
+                OrderDate <span class="mandantory"> *</span>
+              </th>
+              <td>
+                {{objSalesOrder?.OrderDate | date:'MM-dd-yyyy HH:mm' }}
+              </td>
+              <th>
+                Customer Warehouse <span class="mandantory"> *</span>
+              </th>
+              <td>
+                {{objSalesOrder?.WarehouseName}}
+              </td>
+            </tr>
+
+            <tr>
+              <th>
+                ShipTo <span class="mandantory"> *</span>
+              </th>
+              <td>
+                {{objSalesOrder?.ShipTo}}
+              </td>
+              <th>
+                BilledTo <span class="mandantory"> *</span>
+              </th>
+              <td>
+                {{objSalesOrder?.BilledTo}}
+              </td>
+            </tr>
+
+            <tr>
+              <th>
+                Bill To Is same as Ship To
+              </th>
+              <td>
+                <div *ngIf="objSalesOrder?.IsBillTo_SameAs_ShipTo">
+                  Yes
+                </div>
+                <div *ngIf="!objSalesOrder?.IsBillTo_SameAs_ShipTo">
+                  No
+                </div>
+              </td>
+              <th>
+                Is discount applicable
+              </th>
+              <td>
+                <div *ngIf="TotalDiscountamt>0">
+                  Yes
+                </div>
+                <div *ngIf="!(TotalDiscountamt>0)">
+                  No
+                </div>
+              </td>
+            </tr>
+
+            <tr>
+              <th>
+                Inventory Type <span class="mandantory"> *</span>
+              </th>
+              <td>
+                {{objSalesOrder?.InventoryType}}
+              </td>
+              <th>
+                Dispatch Through <span class="mandantory"> *</span>
+              </th>
+              <td>
+                {{objSalesOrder?.DispatchThrough}}
+              </td>
+            </tr>
+
+            <tr>
+              <th>
+                Buyer OrderNo <span class="mandantory"> *</span>
+              </th>
+              <td>
+                {{objSalesOrder?.BuyerOrderNo}}
+              </td>
+              <th>
+                Delivery Note<span class="mandantory"> *</span>
+              </th>
+              <td>
+                {{objSalesOrder?.DeliveryNote}}
+              </td>
+            </tr>
+            <tr>
+              <th>
+                Terms Of Delivery <span class="mandantory"> *</span>
+              </th>
+              <td>
+                {{objSalesOrder?.TermsOfDelivery}}
+              </td>
+              <th>
+                Payment Terms <span class="mandantory"> *</span>
+              </th>
+              <td>
+                {{objSalesOrder?.DiscountAllowedinDaysDesc}}
+              </td>
+            </tr>
+            <tr>
+              <th>
+                Remarks<span class="mandantory"> *</span>
+              </th>
+              <td colspan="3">
+                {{objSalesOrder?.Remarks}}
+              </td>
+            </tr>
+          </table>
+
+        </div>
+        <span class="groupspanheader">Order Items</span>
+        <div class="table-responsive">
+          <table class="table table-bordered table-condensed table-striped"
+            *ngIf="objSalesOrder.lstItem && objSalesOrder.lstItem.length">
+            <thead>
+              <tr>
+                <th>ItemCode</th>
+                <th>Item Name</th>
+                <th>Customer ItemCode</th>
+                
+                <th>Jennifer ItemSerial</th>
+                <th>Actual Item Name</th>
+                <th>Dispute Type</th> 
+                <th *ngIf="(objSalesOrder?.InventoryType=='SELLABLE')">Units</th>
+                <th *ngIf="(objSalesOrder?.InventoryType=='SELLABLE')">UOM </th>
+                <th>Qty </th>
+
+
+                <th>Selling Price</th>
+                <th>TaxRate</th>
+                <th>Taxable Amt</th>
+                <th>Tax Amt</th>
+                <th>Discount Amt</th>
+                <th>Shipping Charges</th>
+                <th>Total value</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of objSalesOrder.lstItem">
+                <td>{{data.ItemCode}}</td>
+                <td>{{data.ItemName  }}</td>
+                <td>{{data.CustomerItemCode}}</td>
+                
+                <td>{{data.JenniferItemSerial}}</td>
+                <td>{{data.OtherItem}}</td>
+                <td>{{data.DisputeType}}</td>
+                <td *ngIf="(objSalesOrder?.InventoryType=='SELLABLE')" class="text-right">{{data.Units}}</td>
+                <td *ngIf="(objSalesOrder?.InventoryType=='SELLABLE')" class="text-right">
+                  {{data.MultiplierValue}}</td>
+                <td class="text-right">{{data.Qty}}</td>
+
+
+                <td class="text-right">{{data.ItemRate | currency: 'INR'}}</td>
+                <td class="text-right">{{data.TaxRate  }}</td>
+                <td class="text-right">{{data.TaxableValue | currency: 'INR'}}</td>
+                <td class="text-right">{{data.TaxAmount | currency: 'INR'}}</td>
+                <td class="text-right">{{data.Discountamt | currency: 'INR'}}</td>
+                <td class="text-right">{{data.ShippingCharges | currency: 'INR'}}</td>
+                <td class="text-right">{{data.TotalValue | currency: 'INR'}}</td>
+              </tr>
+
+              <tr>
+                <th>Total</th>
+                <th> </th>
+                <th> </th> 
+                <th> </th>
+                <th> </th>
+                <th> </th>
+                <th *ngIf="(objSalesOrder?.InventoryType=='SELLABLE')" class="text-right"> {{ TotalCaseSize}}</th>
+                <th *ngIf="(objSalesOrder?.InventoryType=='SELLABLE')" class="text-right"> {{ TotalMultiplierValue}}
+                </th>
+                <th class="text-right"> {{ TotalQty}}</th>
+
+
+                <th class="text-right">
+                  {{ TotalItemRate | currency: 'INR'}}
+                </th>
+                <th class="text-right">
+                </th>
+                <th class="text-right"> {{ TotalTaxableValue | currency: 'INR'}} </th>
+                <th class="text-right">
+                  {{ TotalTaxAmount | currency: 'INR'}}
+                </th> 
+                <th class="text-right">
+                  {{ TotalDiscountamt | currency: 'INR'}}
+                </th>
+
+                <th class="text-right">
+                  {{ TotalShippingCharges | currency: 'INR'}}
+                </th>
+                <th class="text-right">
+                  {{ TotalTotalAmount | currency: 'INR'}}
+                </th>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel-footer">
+    <div class="btn-toolbar pull-right">
+      <button type="button" id="cancel" type="button" class="btn btn-primary"
+        routerLink="/Salesorderlist">Cancel</button>
+
+    </div>
+    <div class="clearfix"></div>
+  </div>
+</div>

@@ -8,6 +8,7 @@ import { Country, State, Vendor, Vendorwarehouse } from '../../_services/model';
 import { VendorwarehouseService } from '../../_services/service/vendorwarehouse.service';
 import { PrivateutilityService } from '../../_services/service/privateutility.service';
 import { UtilityService } from '../../_services/service/utility.service';
+import { ContactService } from 'src/app/_services/service/contact.service';
 @Component({
   selector: 'app-vendorwarehouse',
   templateUrl: './vendorwarehouse.component.html',
@@ -25,16 +26,18 @@ export class VendorwarehouseComponent implements OnInit {
   identity: number = 0;
   Searchaction: boolean = true;
   emailPattern = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}$";
+  dtOptions: DataTables.Settings = {};
   constructor(
     private alertService: ToastrService,
     private fb: FormBuilder,
     private _router: Router,
     private aroute: ActivatedRoute,
-    
+
     private _vendorwarehouseService: VendorwarehouseService,
     private utilityService: UtilityService,
     private _PrivateutilityService: PrivateutilityService,
-    private _authorizationGuard: AuthorizationGuard
+    private _authorizationGuard: AuthorizationGuard,
+    private _contactService: ContactService,
   ) { }
 
   formErrors = {
@@ -163,28 +166,22 @@ export class VendorwarehouseComponent implements OnInit {
           .subscribe(
             (data: Vendorwarehouse) => {
               var CountryID = data.CountryID.toString();
-              //
               this.utilityService.getStates(parseInt(CountryID))
                 .subscribe(
                   (statesa: State[]) => {
                     this.states = statesa;
-                    //
                   },
                   (err: any) => {
                     console.log(err);
-                    //
                   }
                 );
-              //
               this._PrivateutilityService.getVendors()
                 .subscribe(
                   (data1: Vendor[]) => {
                     this.lstVendor = data1;
-                    //
                   },
                   (err: any) => {
                     console.log(err);
-                    //
                   }
                 );
 
@@ -207,6 +204,14 @@ export class VendorwarehouseComponent implements OnInit {
                 Email: data.Email,
                 IsActive: data.IsActive,
               });
+              this.obj.lstContact = data.lstContact;
+              this.dtOptions = {
+                paging: false,
+                scrollY: '400px',
+                "language": {
+                  "search": 'Filter',
+                },
+              };
               this.vendorwarehouseform.get('VendorID').disable();
               this.vendorwarehouseform.get('CountryID').disable();
               this.vendorwarehouseform.get('StateID').disable();
@@ -218,6 +223,7 @@ export class VendorwarehouseComponent implements OnInit {
       else {
         this.action = true;
         this.panelTitle = "Add New Vendor Warehouse";
+        this.BindNewContacts();
       }
     });
 
@@ -250,10 +256,8 @@ export class VendorwarehouseComponent implements OnInit {
         .subscribe(
           (data: State[]) => {
             this.states = data;
-            //
           },
           (err: any) => {
-            //
             console.log(err);
           }
         );
@@ -308,7 +312,10 @@ export class VendorwarehouseComponent implements OnInit {
 
     this.obj.IsActive = this.vendorwarehouseform.controls['IsActive'].value;
 
-    //
+
+    if (this.obj.lstContact != null && this.obj.lstContact.length > 0) {
+      this.obj.lstContact = this.obj.lstContact.filter(a => a.IsActive == true);
+    }
     this._vendorwarehouseService.exist(this.identity, this.obj.WarehouseName, this.obj.VendorID)
       .subscribe(
         (data) => {
@@ -316,31 +323,24 @@ export class VendorwarehouseComponent implements OnInit {
             this.alertService.error('This warehouse is already registered');
           }
           else {
-            //
             this._vendorwarehouseService.add(this.obj).subscribe(
               (data) => {
-                if (data != null && data == true) {
-                  //
-                  this.alertService.success('Vendor warehouse data has been added successful');
+                if (data != null && data.Flag == true) { 
+                  this.alertService.success(data.Msg);
+                  this.identity = 0;
                   this._router.navigate(['/Vendorwarehouselist']);
                 }
-                else {
-                  //
-                  this.alertService.error('Vendor warehouse data not saved!');
-                  this._router.navigate(['/Vendorwarehouselist']);
+                else { 
+                  this.alertService.error(data.Msg); 
                 }
-                this.identity = 0;
               },
-              (error: any) => {
-                //
+              (error: any) => { 
                 console.log(error);
               }
             );
           }
-          //
         },
         (error: any) => {
-          //
         }
       );
   }
@@ -364,7 +364,10 @@ export class VendorwarehouseComponent implements OnInit {
 
     this.obj.IsActive = this.vendorwarehouseform.controls['IsActive'].value;
 
-    //
+
+    if (this.obj.lstContact != null && this.obj.lstContact.length > 0) {
+      this.obj.lstContact = this.obj.lstContact.filter(a => a.IsActive == true);
+    }
     this._vendorwarehouseService.exist(this.identity, this.obj.WarehouseName, this.obj.VendorID)
       .subscribe(
         (data) => {
@@ -372,33 +375,57 @@ export class VendorwarehouseComponent implements OnInit {
             this.alertService.error('This warehouse is already registered');
           }
           else {
-            //
             this._vendorwarehouseService.update(this.obj).subscribe(
               (data) => {
-                if (data != null && data == true) {
-                  //
-                  this.alertService.success('Vendor warehouse detail data has been updated successful');
+                if (data != null && data.Flag == true) {
+                  this.alertService.success(data.Msg);
+                  this.identity = 0;
                   this._router.navigate(['/Vendorwarehouselist']);
                 }
-                else {
-                  //
-                  this.alertService.error('Vendor warehouse detail not saved!');
-                  this._router.navigate(['/Vendorwarehouselist']);
-                }
-                this.identity = 0;
+                else { 
+                  this.alertService.error(data.Msg);
+                } 
               },
               (error: any) => {
-                //
                 console.log(error);
               }
             );
           }
-          //
         },
         (error: any) => {
-          //
         }
       );
+  }
+
+  private BindNewContacts() {
+
+    this._contactService.searchByType('External').subscribe((data) => {
+      this.obj.lstContact = data;
+      if (this.obj.lstContact != null && this.obj.lstContact.length > 0) {
+        this.obj.lstContact.map(a => a.IsActive = false);
+      }
+      this.dtOptions = {
+        paging: false,
+        scrollY: 'auto',
+        "language": {
+          "search": 'Filter',
+        },
+      };
+
+    }, (err) => {
+
+      console.log(err);
+    });
+  }
+  ContactIDFieldsChange(values: any) {
+    this.obj.lstContact.filter(a => a.ContactID == values.currentTarget.id)[0].IsActive = values.currentTarget.checked;
+  }
+
+  checkcontacts(value: boolean) {
+    for (var i = 0; i < this.obj.lstContact.length; i++) {
+      this.obj.lstContact[i].IsActive = value;
+      $('#' + this.obj.lstContact[i].ContactID).prop("checked", value);
+    }
   }
 
 }

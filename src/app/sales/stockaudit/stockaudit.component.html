@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col-sm-6 col-lg-6">
     <h3>
-      Stock Audit
+      Stock Information
     </h3>
   </div>
   <div class="col-sm-6 col-lg-6">
@@ -11,7 +11,7 @@
           <span> Revenue</span>
         </li>
         <li>
-          <span> Stock Audit</span>
+          <span> Stock Information </span>
         </li>
         <li class="active">
           Check
@@ -26,7 +26,7 @@
     <div class="row">
       <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
         <span class="groupspanheader">
-          Stock Audit Check
+          Stock Information
         </span>
       </div>
       <div class="col-sm-6">
@@ -36,10 +36,6 @@
       </div>
       <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 ">
         <div class="pull-right">
-          <!-- <button  type="button" class="btn btn-primary" routerLink="/Picklistsearch" title="Back">
-
-            Back
-          </button> -->
         </div>
       </div>
     </div>
@@ -53,6 +49,14 @@
     <li class="nav-item">
       <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile"
         aria-selected="false">Check Status </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="stock-Exchange" data-toggle="tab" href="#StockExchange" role="tab"
+        aria-controls="StockExchange" aria-selected="false">Stock Exchange </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="stock-history" data-toggle="tab" href="#Stockhistory" role="tab"
+        aria-controls="Stockhistory" aria-selected="false">Stock Exchange History </a>
     </li>
   </ul>
   <div class="tab-content" id="myTabContent">
@@ -158,7 +162,7 @@
               </table>
             </div>
           </div>
-        </div> 
+        </div>
       </div>
     </div>
     <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
@@ -166,7 +170,7 @@
         <div class="col-md-12">
           <div class="row">
             <div class="col-md-6">
-              <form [formGroup]="refundForm">
+              <form [formGroup]="stockauditForm">
                 <div class="row">
                   <div class="col-md-12 col-xs-12">
                     <div class="form-group">
@@ -230,5 +234,193 @@
       </div>
     </div>
 
+    <div class="tab-pane" id="StockExchange" role="tabpanel" aria-labelledby="stock-Exchange">
+      <div class="panel-body">
+
+        <form [formGroup]="stockexchangeForm">
+          <div class="col-md-12">
+            <div class="row">
+              <div class="col-md-6">
+
+                <div class="row">
+                  <div class="col-md-12 col-xs-12">
+                    <div class="form-group">
+                      <label class="col-md-4 control-label" for="JenniferItem erial"> Jennifer Item Serial No.</label>
+                      <div class="col-md-4">
+                        <input id="JenniferItemSerial_StockExchange" type="text" class="form-control" maxlength="15"
+                          [(ngmodel)]="JenniferItemSerial_StockExchange"
+                          (change)="onJenniferItemSerialChange_StockExchange($event.target.value)">
+                        <div class="help-block-rk">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-12">
+                    <div *ngIf="lstPicklistdetail_StockExchange && lstPicklistdetail_StockExchange.length">Scanned Items
+                    </div>
+                    <table datatable [dtOptions]="dtOptions" class="table table-bordered table-condensed "
+                      *ngIf="lstPicklistdetail_StockExchange && lstPicklistdetail_StockExchange.length">
+                      <thead>
+                        <tr>
+                          <th>#</th>
+                          <th>Jennifer Item Serial No.</th>
+                          <th>Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let obj1 of lstPicklistdetail_StockExchange; let id = index">
+                          <td>{{ id +1 }}</td>
+                          <td>{{ obj1.JenniferItemSerial}}</td>
+                          <td>
+                            <i class="fa fa-trash bgred pointer" title="Remove"
+                              (click)="removeRow_StockExchange(id)"></i>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+
+                    <table class="table table-bordered table-condensed " *ngIf="lstPicklistdetail_StockExchange==null">
+                      <thead>
+                        <tr>
+                          <th>#</th>
+                          <th>Jennifer Item Serial No.</th>
+                          <th>Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td colspan="3"> No Records Found</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="form-group col-sm-12">
+                    <div class="pull-right">
+                      <button type="button" class="btn btn-success" (click)="StockExchangeProcess()" title="Process">
+                        Process </button>
+                    </div>
+                  </div>
+
+                </div>
+
+
+              </div>
+            </div>
+            <div class="row" *ngIf="gridView_StockExchange && gridView_StockExchange.length">
+              <div>
+                <span class="groupspanheader">Stock Exchange Detail </span>
+              </div>
+              <div class="table-responsive">
+                <table class="table">
+                  <kendo-grid [height]="410" [data]="gridView_StockExchange" resizable="true" columnMenu="true">
+                    <ng-template kendoGridToolbarTemplate>
+                      <button kendoGridExcelCommand type="button" icon="file-excel"> </button>
+                      <kendo-grid-excel fileName="StockExchangeReport.xlsx"></kendo-grid-excel>
+                    </ng-template>
+                    <kendo-grid-column field="JenniferItemSerial" title="Jennifer Item Serial No." width="160">
+                    </kendo-grid-column>
+                    <kendo-grid-column field="ItemCode" title="Item Code" width="160">
+                    </kendo-grid-column>
+                    <kendo-grid-column field="ItemName" title="Item Name" width="100">
+                    </kendo-grid-column>
+                    <kendo-grid-column field="InventoryType" title="Inventory Type" width="120">
+                    </kendo-grid-column>
+                    <kendo-grid-column field="NewInventoryType" title="New Inventory Type" width="120">
+                    </kendo-grid-column>
+                  </kendo-grid>
+                </table>
+              </div>
+            </div>
+
+            <div class="row" *ngIf="gridView_StockExchange && gridView_StockExchange.length">
+              <div>
+
+                <div class="pull-right">
+                  <button type="submit" class="btn btn-success" (click)="StockExChangeSave()" title="Save">
+                    Save </button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="tab-pane" id="Stockhistory" role="tabpanel" aria-labelledby="stock-history">
+      <div class="panel-heading">
+        <div class="row">
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="input-group col-xs-12 col-sm-12" role="group" aria-label="Basic example">
+              <div class="col-md-3 col-sm-3 col-xs-12 nopading_loct">
+                <select class="form-control serchcurv btn-group" [(ngModel)]="SearchBy">
+                  <option value="" selected="select">Search By</option>
+                  <option value="JenniferItemSerial">Jennifer ItemSerial</option>
+                  <option value="ItemCode">Item Code</option>
+                  <option value="ActionBy">Action By</option>
+                </select>
+              </div>
+              <div class="col-md-3 col-sm-3 nopading_loct" *ngIf="(SearchBy!='ByCNDate')">
+                <input (keyup.enter)="Search()" [(ngModel)]="SearchKeyword" type="text"
+                  class="serchcurv form-control btn-group">
+              </div>
+              <div class="col-md-3 col-sm-3 col-xs-6 nopading_loct">
+                <button class="serchcurv btn btn-default btn-group" (click)="Search()" title="Search">
+                  <i class="fa fa-search " aria-hidden="true"></i>
+                </button>
+                <button class="serchcurv btn btn-default btn-group" (click)="Refresh()" title="Reset">
+                  <i class="fa fa-refresh" aria-hidden="true"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="panel-body">
+        <div class="table-responsive">
+          <table class="table">
+            <kendo-grid [data]="gridView" resizable="true" columnMenu="true" [pageSize]="pageSize" [skip]="skip"
+              [pageable]="{pageSizes: [10, 25, 50, 100, 250, 500]}" (pageChange)="pageChange($event)" [sortable]="{
+              allowUnsort: allowUnsort,
+              mode:  'single'
+              }" [sort]="sort" (sortChange)="sortChange($event)" [filterable]="true"
+              (dataStateChange)="dataStateChange($event)" [filter]="state.filter">
+              <ng-template kendoGridToolbarTemplate>
+                <input placeholder="Search in all columns..." style="float:right;" kendoTextBox
+                  (input)="onFilter($event.target.value)" />
+                <button kendoGridExcelCommand type="button" icon="file-excel"> </button>
+                <button kendoGridPDFCommand icon="file-pdf"> </button>
+                <kendo-grid-pdf fileName="StockExChangeHistory.pdf" [repeatHeaders]="true"></kendo-grid-pdf>
+                <kendo-grid-excel fileName="StockExChangeHistory.xlsx"></kendo-grid-excel>
+              </ng-template>
+              <kendo-grid-column field="LocationName" title="Location">
+              </kendo-grid-column>
+              <kendo-grid-column field="JenniferItemSerial" title="Jennifer ItemSerial">
+              </kendo-grid-column>
+              <kendo-grid-column field="ItemCode" title="Item Code">
+              </kendo-grid-column>
+              <kendo-grid-column field="InventoryType" title="Inventory Type">
+              </kendo-grid-column>
+              <kendo-grid-column field="NewInventoryType" title="New Inventory Type">
+              </kendo-grid-column>
+              <kendo-grid-column field="ItemName" title="Item Name">
+              </kendo-grid-column>
+              <kendo-grid-column field="ActionBy" title="Action By">
+              </kendo-grid-column>
+              <kendo-grid-column field="ActionDate" title="Action Date">
+                <ng-template kendoGridCellTemplate let-dataItem>
+                  {{ dataItem.ActionDate | date :"MM-dd-yyyy HH:mm" }}
+                </ng-template>
+              </kendo-grid-column>
+            </kendo-grid>
+          </table>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

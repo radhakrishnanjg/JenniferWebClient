@@ -35,7 +35,7 @@ export class CreditnoteComponent implements OnInit {
     'CNDate': '',
     'CustomerType': '',
     'CustomerID': '',
-    'SalesOrderID': '',
+    'SalesInvoiceID': '',
     'CNNumber': '',
     'CNType': '',
     'ReasonForReturn': '',
@@ -56,7 +56,7 @@ export class CreditnoteComponent implements OnInit {
     'CustomerID': {
       'min': 'This field is required.',
     },
-    'SalesOrderID': {
+    'SalesInvoiceID': {
       'min': 'This field is required.',
     },
   };
@@ -86,7 +86,7 @@ export class CreditnoteComponent implements OnInit {
   ngOnInit() {
     this.getCurrentServerDateTime();
     this.getlocations();
-    this.getCustomerType(); 
+    this.getCustomerType();
     this.aroute.paramMap.subscribe(params => {
       this.CNType = params.get('CNType');
     });
@@ -95,7 +95,7 @@ export class CreditnoteComponent implements OnInit {
       CNDate: ['', [Validators.required]],
       CustomerType: ['', [Validators.required]],
       CustomerID: [0, [Validators.min(1)]],
-      SalesOrderID: [0, [Validators.min(1)]],
+      SalesInvoiceID: [0, [Validators.min(1)]],
       CNNumber: [0, [Validators.required]],
       CNType: [0, [Validators.required]],
       ReasonForReturn: ['', [Validators.required]],
@@ -182,15 +182,14 @@ export class CreditnoteComponent implements OnInit {
   PaymentReceiptNumber: string;
   ExistingAmount: number = 0.00;
   onchangegetSalesInvoice(selectedValue: string) {
-    let SalesOrderID = parseInt(selectedValue);
-    if (SalesOrderID > 0) {
-      this._creditnoteService.SearchBySalesOrderID(this.CNType, SalesOrderID)
+    let SalesInvoiceID = parseInt(selectedValue);
+    if (SalesInvoiceID > 0) {
+      this._creditnoteService.SearchBySalesSalesInvoiceID(this.CNType, SalesInvoiceID)
         .subscribe(
           (data: CreditNoteDetail[]) => {
             this.obj.lstCreditNoteDetail = data;
-            this.OrderDate = this.lstPendingSalesInvoice.filter(a => { return a.SalesOrderID == SalesOrderID })[0].OrderDate;
-            this.InvoiceValue = this.lstPendingSalesInvoice.filter(a => { return a.SalesOrderID == SalesOrderID })[0].INTotalAmount;
-            // this.LocationName = this.lstPendingSalesInvoice.filter(a => { return a.SalesOrderID == SalesOrderID })[0].LocationName;
+            this.OrderDate = this.lstPendingSalesInvoice.filter(a => { return a.SalesInvoiceID == SalesInvoiceID })[0].OrderDate;
+            this.InvoiceValue = this.lstPendingSalesInvoice.filter(a => { return a.SalesInvoiceID == SalesInvoiceID })[0].INTotalAmount;
           },
           (err: any) => {
             console.log(err);
@@ -295,7 +294,7 @@ export class CreditnoteComponent implements OnInit {
       this.obj.CNDate = new Date(moment(new Date(CNDate)).format("MM-DD-YYYY HH:mm"));
     }
 
-    this.obj.SalesOrderID = this.CreditNoteform.controls['SalesOrderID'].value;
+    this.obj.SalesInvoiceID = this.CreditNoteform.controls['SalesInvoiceID'].value;
     this.obj.CNType = this.CNType;
     this.obj.CustomerID = this.CreditNoteform.controls['CustomerID'].value;
     this.obj.ReferenceDetail = this.CreditNoteform.controls['ReferenceDetail'].value;

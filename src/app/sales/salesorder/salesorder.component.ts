@@ -94,7 +94,7 @@ export class SalesorderComponent implements OnInit {
     private _poService: PoService,
     private _PrivateutilityService: PrivateutilityService,
     private _authorizationGuard: AuthorizationGuard,
-    
+
     public _alertService: ToastrService,
     private fb: FormBuilder,
     private router: Router,
@@ -487,8 +487,8 @@ export class SalesorderComponent implements OnInit {
             let Qty = Units * MultiplierValue;
             let ShippingCharges = this.itemFormGroup.get("ShippingCharges").value;
             let IsDiscountApplicable = this.salesForm.get("IsDiscountApplicable").value;
+            this.DisCountPer = 0;
             if (IsDiscountApplicable) {
-              //
               this._PrivateutilityService.getDiscountAmount(itemID, OrderDate, CustomerID, InventoryType, TransactionType)
                 .subscribe(
                   (data11) => {
@@ -504,10 +504,8 @@ export class SalesorderComponent implements OnInit {
                       this.itemFormGroup.controls['TotalValue'].setValue((Qty * this.ItemRate) -
                         DiscountAmount + this.itemFormGroup.get("TaxAmount").value + ShippingCharges);
                     }
-                    //
                   },
                   (err) => {
-                    //
                   }
                 );
             }
@@ -634,6 +632,8 @@ export class SalesorderComponent implements OnInit {
     this.objSalesorderItem.TaxRate = dataItem.TaxRate;
     this.objSalesorderItem.TaxAmount = dataItem.TaxAmount;
     this.ItemRate = dataItem.ItemRate;
+    let uom = this.uomList.filter(x => { return x.UOMID == dataItem.UOMID })[0];
+    this.objSalesorderItem.MultiplierValue = uom.MultiplierValue;
     sender.editRow(rowIndex, this.itemFormGroup);
   }
 
@@ -669,7 +669,7 @@ export class SalesorderComponent implements OnInit {
       let selectedItem = this.objSalesOrder.lstItem[rowIndex];
       Object.assign(
         this.objSalesOrder.lstItem.find(({ ItemID }) => ItemID === selectedItem.ItemID),
-        this.objSalesOrder
+        this.objSalesorderItem
       );
     }
     if (this.gridData.length > 0) {

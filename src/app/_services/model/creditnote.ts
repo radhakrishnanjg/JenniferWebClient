@@ -1,6 +1,6 @@
 export class CreditNoteHeader {
     CNID: number;
-    SalesOrderID: number;
+    SalesInvoiceID: number;
     CNDate: Date;
     CNNumber: string;
     CNType: string;
@@ -14,10 +14,11 @@ export class CreditNoteHeader {
     CompanyDetailID: number;
 
     //Master table
-    OrderID: string;
+    InvoiceNumber: string;
     CustomerName: string;
     TotalAmount: number;
     OrderDate: Date;
+    OrderID:  string;
 }
 
 export class CreditNoteDetail {
@@ -35,11 +36,12 @@ export class CreditNoteDetail {
     InvoiceTotalAmount: number; 
     UnitPrice: number;
     Reason: string;
+    PendingTotalAmount:number;
 }
 
 export class PendingSalesInvoice{
     InvoiceNumber: string;
-    SalesOrderID: number;
+    SalesInvoiceID: number;
     InvoiceDate: Date;
     OrderID:  string;
     INTotalAmount: number;

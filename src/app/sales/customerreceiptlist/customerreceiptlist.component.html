@@ -82,32 +82,32 @@
             <kendo-grid-pdf fileName="CustomerReceiptList.pdf" [repeatHeaders]="true"></kendo-grid-pdf>
             <kendo-grid-excel fileName="CustomerReceiptList.xlsx"></kendo-grid-excel>
           </ng-template>
-          <kendo-grid-column field="BillNumber" title="Bill No.">
+          
+          <kendo-grid-column field="CustomerName" title="Customer Name" width="130">
           </kendo-grid-column>
-
-          <kendo-grid-column field="ReceivedDate" title="Received Date" filter="date" format="{0:d}"
-            [filterable]="false">
+          <kendo-grid-column field="BillNumber" title="Bill No." width="100">
+          </kendo-grid-column> 
+          <!-- <kendo-grid-column field="ReceivedDate" title="Received Date" filter="date" format="{0:d}"
+            [filterable]="false" width="100">
             <ng-template kendoGridCellTemplate let-dataItem>
               {{ dataItem.ReceivedDate | date :"MM-dd-yyyy HH:mm" }}
             </ng-template>
+          </kendo-grid-column> -->
+          <kendo-grid-column field="OrderIDs" title="Order ID" width="200">
           </kendo-grid-column>
-          <kendo-grid-column field="CustomerName" title="Customer Name" width="130">
+          <kendo-grid-column field="TotalReceivedAmount" title="Total Received Amount" width="200" format="{0:##,#.##}">
           </kendo-grid-column>
-          <kendo-grid-column field="OrderIDs" title="Order ID" width="160">
+          <kendo-grid-column field="PaymentMode" title="Transaction Mode" width="100">
           </kendo-grid-column>
-          <kendo-grid-column field="TotalReceivedAmount" title="Total Invoice's Amount" width="130">
-          </kendo-grid-column>
-          <kendo-grid-column field="PaymentMode" title="Transaction Mode">
-          </kendo-grid-column>
-          <kendo-grid-column field="TransactionNumber" title="UTR No.">
+          <kendo-grid-column field="TransactionNumber" title="UTR No." width="100">
           </kendo-grid-column>
           <kendo-grid-column field="TransactionDate" title="Transaction Date" filter="date" format="{0:d}"
-            [filterable]="false">
+            [filterable]="false" width="100">
             <ng-template kendoGridCellTemplate let-dataItem>
               {{ dataItem.TransactionDate | date :"MM-dd-yyyy HH:mm" }}
             </ng-template>
           </kendo-grid-column>
-          <kendo-grid-column field="Remarks" title="Remarks">
+          <kendo-grid-column field="Remarks" title="Remarks" width="200">
           </kendo-grid-column>
 
           <kendo-grid-column title="Action" [class]="{'text-center': true}" [filterable]="false" [sortable]="false"

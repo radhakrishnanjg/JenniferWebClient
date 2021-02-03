@@ -92,7 +92,7 @@ export class SalesInvoiceHeader {
     lstDetail: SalesInvoiceDetail[];
     lstHSNCode: SalesInvoiceHSNDetail[];
     lsttax: SalesInvoicetaxDetail[];
-
+    TCS_Amount: number;
 }
 
 export class SalesInvoiceDetail {
@@ -154,4 +154,19 @@ export class StockAuditStatus {
     Action: string;
     ActionBy: string;
     ActionDate: Date;
+}
+export class StockExchangeHeader {
+    CompanyDetailID: number;
+    LoginId: number;
+    lstSerialNums: JenniferItemSerials[] = [] as any;
+}
+export class StockExchangeDetail {
+    CompanyDetailID: number;
+    LocationID: number;
+    JenniferItemSerial: string;
+    ItemID: number;
+    ItemCode: string;
+    ItemName: string;
+    InventoryType: string;
+    NewInventoryType: string;
 }

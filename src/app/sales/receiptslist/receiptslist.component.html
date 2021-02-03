@@ -61,9 +61,8 @@
           aria-selected="false">Reconciled Details </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" id="upcomingReceipts-tab" data-toggle="tab" href="#upcomingReceipts" 
-        role="tab" aria-controls="upcomingReceipts"
-          aria-selected="false">Up Coming Receipts </a>
+        <a class="nav-link" id="upcomingReceipts-tab" data-toggle="tab" href="#upcomingReceipts" role="tab"
+          aria-controls="upcomingReceipts" aria-selected="false">Up Coming Receipts </a>
       </li>
     </ul>
     <div class="tab-content">
@@ -75,6 +74,11 @@
               <ng-template kendoGridToolbarTemplate>
               </ng-template>
 
+              <kendo-grid-column field="BankAccountNumber" title="Bank No." width="200">
+                <ng-template kendoGridEditTemplate let-column="column" let-formGroup="itemFormGroup" let-isNew="isNew">
+                  <input #input [readonly]="true" class="k-textbox" [formControl]="itemFormGroup.get(column.field)">
+                </ng-template>
+              </kendo-grid-column>
 
               <kendo-grid-column field="Filename" title="File Name" width="200">
                 <ng-template kendoGridEditTemplate let-column="column" let-formGroup="itemFormGroup" let-isNew="isNew">
@@ -143,6 +147,11 @@
               (save)="saveHandler2($event)" (remove)="removeHandler2($event)" [height]="410">
               <ng-template kendoGridToolbarTemplate>
               </ng-template>
+              <kendo-grid-column field="BankAccountNumber" title="Bank No." width="200">
+                <ng-template kendoGridEditTemplate let-column="column" let-formGroup="itemFormGroup" let-isNew="isNew">
+                  <input #input [readonly]="true" class="k-textbox" [formControl]="itemFormGroup.get(column.field)">
+                </ng-template>
+              </kendo-grid-column>
 
               <kendo-grid-column field="Filename" title="File Name" width="200">
                 <ng-template kendoGridEditTemplate let-column="column" let-formGroup="itemFormGroup" let-isNew="isNew">
@@ -210,7 +219,12 @@
       <div class="tab-pane " id="upcomingReceipts" role="tabpanel" aria-labelledby="upcomingReceipts">
         <div class="table-responsive">
           <table class="table">
-            <kendo-grid [data]="lstUpcomingReceipts" resizable="true" columnMenu="true" [height]="410"> 
+            <kendo-grid [data]="lstUpcomingReceipts" resizable="true" columnMenu="true" [height]="410">
+
+
+              <kendo-grid-column field="BankAccountNumber" title="Bank No.">
+              </kendo-grid-column>
+
               <kendo-grid-column field="SettlementStartDate" title="Settlement Start">
                 <ng-template kendoGridCellTemplate let-dataItem>
                   {{ dataItem.SettlementStartDate | date :"MM-dd-yyyy HH:mm" }}

@@ -160,8 +160,8 @@ export class GoodsReceiptListComponent implements OnInit {
   //#region Paging Sorting and Filtering Start
   public allowUnsort = false;
   public sort: SortDescriptor[] = [{
-    field: 'PONumber',
-    dir: 'asc'
+    field: 'GRNDate',
+    dir: 'desc'
   }];
   public gridView: GridDataResult;
   public pageSize = 10;
@@ -175,7 +175,7 @@ export class GoodsReceiptListComponent implements OnInit {
     // Initial filter descriptor
     filter: {
       logic: 'and',
-      filters: [{ field: 'PONumber', operator: 'contains', value: '' }]
+      filters: [{ field: 'GRNDate', operator: 'contains', value: '' }]
     }
   };
   public pageChange({ skip, take }: PageChangeEvent): void {

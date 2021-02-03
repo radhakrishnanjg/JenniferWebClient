@@ -29,8 +29,8 @@
           <div class="col-md-3 col-sm-3 col-xs-12 nopading_loct">
             <select class="form-control serchcurv btn-group" [(ngModel)]="SearchBy">
               <option value="" selected="select">Search By</option>
-              <option value="ByRefundNumber">Refund Number</option> 
-              <option value="ByTransactionNumber">Transaction Number</option> 
+              <option value="ByRefundNumber">Refund Number</option>
+              <option value="ByTransactionNumber">Transaction Number</option>
               <option value="ByCustomerName">Customer Name</option>
               <option value="ByCNNumber">CN Number</option>
               <option value="ByCNDate">CN Date</option>
@@ -54,7 +54,7 @@
             <button class="serchcurv btn btn-default btn-group" (click)="Refresh()" title="Reset">
               <i class="fa fa-refresh" aria-hidden="true"></i>
             </button>
-          </div> 
+          </div>
         </div>
       </div>
     </div>
@@ -81,33 +81,29 @@
           <kendo-grid-column field="CNType" title="CN Type">
           </kendo-grid-column>
           <kendo-grid-column field="CNNumber" title="CN Number">
-          </kendo-grid-column> 
+          </kendo-grid-column>
           <kendo-grid-column field="CNDate" title="CN Date">
             <ng-template kendoGridCellTemplate let-dataItem>
               {{ dataItem.CNDate | date :"MM-dd-yyyy HH:mm" }}
             </ng-template>
           </kendo-grid-column>
           <kendo-grid-column field="TotalAmount" title="CN Amount" format="{0:##,#.##}">
-          </kendo-grid-column> 
-          <kendo-grid-column field="RefundNumber" title="Refund No.">
+          </kendo-grid-column>
+          <kendo-grid-column field="RefundNumber" title="Refund Number">
           </kendo-grid-column>
           <kendo-grid-column field="TransactionNumber" title="Transaction Number">
           </kendo-grid-column>
-          <!-- <kendo-grid-column field="RefundStatus" title="Refund Status">
-          </kendo-grid-column> -->
           <kendo-grid-column field="TransactionDate" title="Refund Date">
             <ng-template kendoGridCellTemplate let-dataItem>
               {{ dataItem.TransactionDate | date :"MM-dd-yyyy HH:mm" }}
             </ng-template>
           </kendo-grid-column>
           <kendo-grid-column field="RefundAmount" title="Refund Amount" format="{0:##,#.##}">
-          </kendo-grid-column> 
+          </kendo-grid-column>
 
           <kendo-grid-column title="Action" [class]="{'text-center': true}" [filterable]="false" [sortable]="false"
             width="80">
             <ng-template kendoGridCellTemplate let-obj>
-              <!-- <i class="fa fa-eye bgblue pointer" (click)="viewButtonClick(obj.CNID, obj.CNType)" title="View"></i>
-              &nbsp; -->
               <i class="fa fa-trash bgred pointer" title="Delete"
                 (click)="confirmDeleteid(obj.RefundID, obj.RefundNumber)"></i>
             </ng-template>
@@ -146,4 +142,4 @@
         </div>
       </div>
     </div>
-  </div> 
+  </div>

@@ -57,8 +57,8 @@ export class InventorydetaillistComponent implements OnInit {
   //#region Paging Sorting and Filtering Start
   public allowUnsort = false;
   public sort: SortDescriptor[] = [{
-    field: 'ItemCode',
-    dir: 'asc'
+    field: 'EventDate',
+    dir: 'desc'
   }];
   public gridView: GridDataResult;
   public pageSize = 10;
@@ -72,7 +72,7 @@ export class InventorydetaillistComponent implements OnInit {
     // Initial filter descriptor
     filter: {
       logic: 'and',
-      filters: [{ field: 'ItemCode', operator: 'contains', value: '' }]
+      filters: [{ field: 'EventDate', operator: 'contains', value: '' }]
     }
   };
   public pageChange({ skip, take }: PageChangeEvent): void {

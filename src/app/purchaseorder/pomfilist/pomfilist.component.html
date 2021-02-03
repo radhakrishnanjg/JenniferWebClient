@@ -32,7 +32,7 @@
               <option value="ByPONumber">PO Number</option>
               <option value="ByShipmentNumber">Shipment Number</option>
               <option value="ByPODate">PO Date</option>
-              <option value="ByShipmentDate">PO Date</option>
+              <!-- <option value="ByShipmentDate">Shipment Date</option> -->
             </select>
           </div>
           <div class="col-md-3 col-sm-3 nopading_loct"
@@ -97,7 +97,11 @@
             </ng-template>
           </kendo-grid-column>
           <kendo-grid-column field="ShipmentNumber" title="Shipment Number">
-          </kendo-grid-column>
+          </kendo-grid-column> 
+          <kendo-grid-column field="sku" title="SKU">
+          </kendo-grid-column> 
+          <kendo-grid-column field="CaseId" title="Case Id">
+          </kendo-grid-column> 
           <kendo-grid-column field="ShippedQty" title="Shipped Qty">
           </kendo-grid-column>
           <kendo-grid-column field="ReceivedQty" title="Received Qty">

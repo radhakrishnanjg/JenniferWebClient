@@ -57,10 +57,15 @@ import { IndexComponent } from './index/index.component';
 import { Dashboard2Component } from './dashboard2/dashboard2.component';
 import { Submenu1Component } from './submenu1/submenu1.component';
 import { Submenu2Component } from './submenu2/submenu2.component';
+import { SellercentralaccessComponent } from './sellercentralaccess/sellercentralaccess.component';
+import { PspaccessComponent } from './pspaccess/pspaccess.component';
 
 
 import 'hammerjs';
 import { AppInitService } from './_services/service/AppInitService';
+import { ListViewModule } from '@progress/kendo-angular-listview';
+import { SanitizeUrlPipe } from './_pipes/SanitizeUrlPipe';
+
 export function init_app(appLoadService: AppInitService) {
   return () => appLoadService.init();
 }
@@ -106,9 +111,11 @@ export function init_app(appLoadService: AppInitService) {
     AccountModule,
     SlickCarouselModule,
     AppRoutingModule,
+    ListViewModule,
   ],
   declarations: [
     AppComponent,
+    SanitizeUrlPipe,
     Dashboard1Component,
     PrivatelayoutComponent,
     ParentComponent,
@@ -120,6 +127,8 @@ export function init_app(appLoadService: AppInitService) {
     Dashboard2Component,
     Submenu1Component,
     Submenu2Component,
+    SellercentralaccessComponent,
+    PspaccessComponent,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

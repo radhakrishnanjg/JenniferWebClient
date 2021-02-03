@@ -14,7 +14,6 @@
                     <span> Vendor Payment</span>
                 </li>
                 <li class="active">
-
                     Save
                 </li>
             </ol>
@@ -69,7 +68,7 @@
                                 class="mandantory">*</span></label>
                         <div>
                             <select id="PaymentMode" class="form-control" formControlName="PaymentMode"
-                                (blur)="logValidationErrors()">
+                                (blur)="logValidationErrors()" [(ngModel)]="PaymentMode">
                                 <option value="" selected="selected">Select</option>
                                 <option *ngFor="let c1 of lstPaymentMode" value={{c1.DropdownValue}}>
                                     {{c1.DropDownDescription}}
@@ -104,7 +103,6 @@
                                 *</span></label>
                         <div>
                             <div class='input-group date'>
-
                                 <input type="text" ngxDaterangepickerMd [minDate]="vendorMinDate"
                                     [maxDate]="vendorMaxDate" [singleDatePicker]="true" class="form-control"
                                     id="PaymentDate" [locale]="{format: 'MM-DD-YYYY HH:mm'}" [timePicker]="true"
@@ -112,6 +110,9 @@
 
                                 <label class="fa fa-calendar"></label>
                             </div>
+                            <!-- <div *ngIf="!action">
+                                {{obj?.PaymentDate| date :"MM-dd-yyyy HH:mm"  }}
+                            </div> -->
                             <div class="help-block-rk">
                                 <span class="help-block" *ngIf="formErrors.PaymentDate">
                                     {{formErrors.PaymentDate}}
@@ -141,7 +142,14 @@
                     </div>
                 </div>
 
-                <div class="col-md-9">
+                <div class="col-md-3" *ngIf="(PaymentMode == 'ADVANCE' && identity>0)">
+                    <div class="form-group">
+                        <label class="control-label">Pending Amount</label> <br />
+                        {{PendingAmount | currency: 'INR'}}
+                    </div>
+                </div>
+
+                <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label" for="Remarks">Remarks</label>
                         <input type="text" id="Remarks" class="form-control" formControlName="Remarks" maxlength="500">
@@ -149,47 +157,54 @@
                 </div>
 
             </div>
-            <div *ngIf="lstVendorPaymentDetail != null && lstVendorPaymentDetail.length>0">
-                <span class="groupspanheader">Details</span>
-                <div class="table-responsive">
-                    <table class="table table-bordered table-condensed">
-                        <thead>
-                            <tr>
-                                <th class="text-center">Aging Days</th>
-                                <th class="text-center">Purchase Invoice Date</th>
-                                <th class="text-center">Purchase Invoice No.</th>
-                                <th class="text-center">Payable Amount</th>
-                                <th class="text-center">Pending Amount</th>
+            <div *ngIf="(PaymentMode == 'ADVANCE' && identity>0  ) || 
+                ((PaymentMode == 'ONLINE' || PaymentMode=='CASH') && identity==0 )">
+                <!-- {{PaymentMode}} <br />
+                {{identity}} -->
+                <div *ngIf="lstVendorPaymentDetail != null && lstVendorPaymentDetail.length>0">
+                    <span class="groupspanheader">Details</span>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-condensed">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">Aging Days</th>
+                                    <th class="text-center">Purchase Invoice Date</th>
+                                    <th class="text-center">Purchase Invoice No.</th>
+                                    <th class="text-center">Payable Amount</th>
+                                    <th class="text-center">Pending Amount</th>
 
-                                <th class="text-center" width="200px">Paid Amount</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let dis of lstVendorPaymentDetail; let id = index">
-                                <td> {{ dis.AgingDays }} </td>
-                                <td> {{ dis.InvoiceDate | date :"MM-dd-yyyy HH:mm" }} </td>
-                                <td> {{ dis.InvoiceNumber }} </td>
-                                <td class="text-right"> {{ dis.PayableAmt | currency: 'INR'}} </td>
-                                <td class="text-right"> {{ dis.PendingAmt  }} </td>
-                                <td class="text-right">
-                                    <input type="text" class="form-control" id="{{dis.PurchaseID}}"
-                                        name="{{dis.PurchaseID}}" (input)="updateList(id,'PaidAmt',$event.target.value)"
-                                        value="{{dis.PaidAmt}}" maxlength="13"
-                                        onkeypress="return /[0-9.]/i.test(event.key)">
-                                </td>
-                            </tr>
-                            <tr>
-                                <th></th>
-                                <th> </th>
-                                <th> </th>
-                                <th> </th>
-                                <th>Total </th>
-                                <th class="text-right">{{TotalPaidAmt | currency: 'INR'}}</th>
-                            </tr>
-                        </tbody>
-                    </table>
+                                    <th class="text-center" width="200px">Paid Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let dis of lstVendorPaymentDetail; let id = index">
+                                    <td> {{ dis.AgingDays }} </td>
+                                    <td> {{ dis.InvoiceDate | date :"MM-dd-yyyy HH:mm" }} </td>
+                                    <td> {{ dis.InvoiceNumber }} </td>
+                                    <td class="text-right"> {{ dis.PayableAmt | currency: 'INR'}} </td>
+                                    <td class="text-right"> {{ dis.PendingAmt  }} </td>
+                                    <td class="text-right">
+                                        <input type="text" class="form-control" id="{{dis.PurchaseID}}"
+                                            name="{{dis.PurchaseID}}"
+                                            (input)="updateList(id,'PaidAmt',$event.target.value)"
+                                            value="{{dis.PaidAmt}}" maxlength="13"
+                                            onkeypress="return /[0-9.]/i.test(event.key)">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th></th>
+                                    <th> </th>
+                                    <th> </th>
+                                    <th> </th>
+                                    <th>Total </th>
+                                    <th class="text-right">{{TotalPaidAmt | currency: 'INR'}}</th>
+                                </tr>
+                            </tbody>
+                        </table>
 
+                    </div>
                 </div>
+
             </div>
 
         </div>

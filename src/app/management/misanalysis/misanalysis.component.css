@@ -1,0 +1,61 @@
+/* .k-grid .k-grouping-row p
+{
+    background-color: green !important;
+    color: white!important; 
+}
+
+.k-grid .k-grouping-row .k-grouping-row p
+{
+    background-color: crimson !important;
+    color: white!important; 
+} */
+
+.NotAnAmazon
+{
+    background: #CCc !important;
+    font-weight: 700!important;
+} 
+.Amazon
+{
+    background: #000 !important ;
+    color:#fff !important ;
+}
+
+.k-grid tr.even { 
+    background-color: #f45c42 !important;
+}
+.k-grid tr.odd { 
+    background-color: #41f4df !important;
+}
+
+.green
+{
+    color:blue !important;
+    font-weight: 700!important;
+} 
+.orange 
+{
+     color: #000000 !important;
+     font-weight: 700!important;
+}
+.yellow
+{
+    color: grey !important;
+    font-weight: 700!important;
+}
+.Level1
+{
+    height:   30px ;
+    background-color: #458BC2 !important;
+    color: whitesmoke !important;
+}
+.Level2
+{ 
+    height:   30px ;
+    background: #CCC !important; 
+}
+.Level3
+{
+    background: #FFF !important;
+    color: grey !important;
+}

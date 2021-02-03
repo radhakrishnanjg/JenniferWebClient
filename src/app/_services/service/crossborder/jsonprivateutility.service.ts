@@ -9,8 +9,8 @@ import { NotFoundError } from '../../../common/not-found-error';
 import { AppError } from '../../../common/app-error';
 
 import { AuthenticationService } from '../authentication.service';
-import { JsonModal, Dropdown, } from '../../model/crossborder/index';
-import { Country, State, State1, Customerwarehouse, ChartOfAccount, TaxLedger, AmazonAutoRTVOrder } from '../../../_services/model';
+import { JsonModal, Dropdown, Shipment, } from '../../model/crossborder/index';
+import { Country, State, State1, Customerwarehouse, ChartOfAccount, TaxLedger, AmazonAutoRTVOrder, Companydetails, Poshipment } from '../../../_services/model';
 import { environment } from '../../../../environments/environment';
 
 
@@ -141,6 +141,30 @@ export class JsonPrivateUtilityService {
             .pipe(
                 map(data => {
                     return JSON.parse(data) as AmazonAutoRTVOrder[];
+                }),
+                catchError(this.handleError)
+            );
+    }
+
+    public GetAllStores(CompanyID: number): Observable<Companydetails[]> {
+        let currentUser = this.authenticationService.currentUserValue;
+        let UserId = currentUser.UserId;
+        return this.httpClient.get<string>(environment.baseUrl + `JsonPrivateUtility/GetAllStores?CompanyID=` + CompanyID +
+            `&UserId=` + UserId)
+            .pipe(
+                map(data => {
+                    return JSON.parse(data) as Companydetails[];
+                }),
+                catchError(this.handleError)
+            );
+    }
+
+    public GetDutyDepositLedgerShipments(CompanyDetailID: number): Observable<Poshipment[]> { 
+        return this.httpClient.get<string>(environment.baseUrl +
+            `JsonPrivateUtility/GetDutyDepositLedgerShipments?CompanyDetailID=` + CompanyDetailID)
+            .pipe(
+                map(data => {
+                    return JSON.parse(data) as Poshipment[];
                 }),
                 catchError(this.handleError)
             );

@@ -8,7 +8,8 @@ import { AuthorizationGuard } from '../../_guards/Authorizationguard'
 import * as moment from 'moment';
 import { FormGroup, FormControl, } from '@angular/forms';
 
-const createFormGroup = dataItem => new FormGroup({
+const createFormGroup = dataItem => new FormGroup({ 
+  'BankAccountNumber': new FormControl(dataItem.BankAccountNumber),
   'FileID': new FormControl(dataItem.FileID),
   'Filename': new FormControl(dataItem.Filename),
   'BankUTRNumber': new FormControl(dataItem.BankUTRNumber),

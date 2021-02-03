@@ -20,6 +20,7 @@ import { DiscountlistComponent } from './discountlist/discountlist.component';
 import { MarketplacefeelistComponent } from './marketplacefeelist/marketplacefeelist.component';
 import { SalesratecardlistComponent } from './salesratecardlist/salesratecardlist.component';
 import { EventmanagerComponent } from './eventmanager/eventmanager.component';
+import { SubscriptionComponent } from './subscription/subscription.component';
 
 import { PricingRoutingModule } from './pricing.routing.module';
 
@@ -46,6 +47,7 @@ import { PricingRoutingModule } from './pricing.routing.module';
     MarketplacefeelistComponent,
     SalesratecardlistComponent,
     EventmanagerComponent,
+    SubscriptionComponent,
   ],
   providers: [ 
     CookieService, 

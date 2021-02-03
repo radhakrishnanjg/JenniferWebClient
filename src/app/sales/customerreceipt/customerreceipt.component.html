@@ -88,8 +88,8 @@
           <div class="form-group" [ngClass]="{'has-error': formErrors.PaymentMode}">
             <label class="control-label" for="PaymentMode"> Payment Mode <span class="mandantory">*</span></label>
             <div>
-              <select id="PaymentMode" class="form-control" formControlName="PaymentMode"
-                (blur)="logValidationErrors()"  (change)="onchangePaymentMode($event.target.value)">
+              <select id="PaymentMode" class="form-control" formControlName="PaymentMode" (blur)="logValidationErrors()"
+                (change)="onchangePaymentMode($event.target.value)">
                 <option value="" selected="selected">Select</option>
                 <option *ngFor="let c1 of lstPaymentMode" value={{c1.DropdownValue}}>
                   {{c1.DropDownDescription}}
@@ -106,7 +106,8 @@
 
         <div class="col-md-3 col-xs-12" *ngIf="PaymentMode == 'ONLINE'">
           <div class="form-group" [ngClass]="{'has-error': formErrors.TransactionNumber}">
-            <label class="control-label" for="TransactionNumber">Transaction No. <span class="mandantory">*</span></label>
+            <label class="control-label" for="TransactionNumber">Transaction No. <span
+                class="mandantory">*</span></label>
             <input type="text" id="TransactionNumber" class="form-control" (blur)="logValidationErrors()"
               formControlName="TransactionNumber" maxlength="30">
             <div class="help-block-rk">
@@ -115,10 +116,10 @@
               </span>
             </div>
           </div>
-        </div> 
+        </div>
       </div>
 
-      <div class="row"> 
+      <div class="row">
         <div class="col-md-3 col-xs-12" [ngClass]="{'has-error': formErrors.TransactionDate}">
           <div class="form-group">
             <label class="control-label" for="TransactionDate">Transaction Date<span class="mandantory">
@@ -166,7 +167,40 @@
 
       </div>
 
-      <div *ngIf="lstCustomerReceiptDetail != null && lstCustomerReceiptDetail.length>0">
+      <kendo-grid [height]="400" [data]="gridView" resizable="true">
+        <ng-template kendoGridToolbarTemplate>
+          <h6 style="float:left;">
+            Order List
+          </h6>
+          <div style="float:right;">
+            Total ReceivableAmt : <b> {{TotalReceivableAmt | currency: 'INR'}} </b>
+            Total PendingAmt :<b> {{TotalPendingAmt | currency: 'INR'}} </b>
+            Total ReceivedAmt :<b>{{TotalReceivedAmt | currency: 'INR'}} </b>
+            <input placeholder="Search Order" kendoTextBox (input)="onFilter($event.target.value)" />
+          </div>
+        </ng-template>
+        <kendo-grid-column field="AgingDays" title="Invoice Aging" width="120">
+        </kendo-grid-column>
+        <kendo-grid-column field="OrderDate" title="Order Date" width="180">
+          <ng-template kendoGridCellTemplate let-dataItem>
+            {{dataItem.OrderDate | date :"MM-dd-yyyy HH:mm"}}
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column field="OrderID" title="Order ID" width="100">
+        </kendo-grid-column>
+        <kendo-grid-column field="ReceivableAmt" title="Receivable Amount" width="100" format="{0:##,#.##}">
+        </kendo-grid-column>
+        <kendo-grid-column field="PendingAmt" title="Pending Amount" width="100" format="{0:##,#.##}">
+        </kendo-grid-column>
+        <kendo-grid-column field="ReceivedAmt" title="Receipt Amount" width="100">
+          <ng-template kendoGridCellTemplate let-dis let-id="rowIndex">
+            <input type="text" class="form-control" id="{{dis.SalesOrderID}}" name="{{dis.SalesOrderID}}"
+              (input)="updateList(id,'ReceivedAmt',$event.target.value)" value="{{dis.ReceivedAmt}}" maxlength="13"
+              onkeypress="return /[0-9.]/i.test(event.key)">
+          </ng-template>
+        </kendo-grid-column>
+      </kendo-grid> 
+      <!-- <div *ngIf="lstCustomerReceiptDetail != null && lstCustomerReceiptDetail.length>0">
         <span class="groupspanheader">Details</span>
         <div class="table-responsive">
           <table class="table table-bordered table-condensed">
@@ -209,7 +243,7 @@
           </table>
 
         </div>
-      </div>
+      </div> -->
 
     </div>
 

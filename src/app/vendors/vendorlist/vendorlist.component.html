@@ -98,6 +98,8 @@
       </kendo-grid-column> 
       <kendo-grid-column field="TotalAmount" title="Total Amount" format="{0:##,#.##}">
       </kendo-grid-column>
+      <kendo-grid-column field="TCS_Amount" title="TCS Amount" format="{0:##,#.##}">
+      </kendo-grid-column>
       <kendo-grid-column field="IsActive"  title="IsActive" [class]="{'text-center': true}"  filter="boolean" width="80">
         <ng-template kendoGridCellTemplate let-dataItem>
           <i [class]="dataItem.IsActive ? 'fa fa-check': 'fa fa-times'" aria-hidden="true"></i>

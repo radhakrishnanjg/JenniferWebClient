@@ -26,11 +26,9 @@ export class PoviewComponent implements OnInit {
   TotalTotalAmount: number = 0.00;
 
   constructor(
-    
+
     private _poService: PoService,
     private aroute: ActivatedRoute,
-    private _authorizationGuard: AuthorizationGuard,
-    private _alertService: ToastrService
   ) { }
 
   ngOnInit() {
@@ -38,12 +36,9 @@ export class PoviewComponent implements OnInit {
     this.aroute.paramMap.subscribe(params => {
       this.identity = +params.get('id');
       if (this.identity > 0) {
-        //
         this._poService.searchById(this.identity).subscribe(
           (data: Poorder) => {
             this.obj = data;
-
-            //
             this._poService.getItems(this.identity).subscribe(
               (data: Poorderitem[]) => {
                 this.lstItem = data;
@@ -53,16 +48,13 @@ export class PoviewComponent implements OnInit {
                 this.TotalDirectCost = this.lstItem.reduce((acc, a) => acc + a.DirectCost, 0);
                 this.TotalTaxAmount = this.lstItem.reduce((acc, a) => acc + a.TaxAmount, 0);
                 this.TotalTotalAmount = this.lstItem.reduce((acc, a) => acc + a.TotalAmount, 0);
-                //
               },
               (err: any) => {
-                //
                 console.log(err);
               }
             );
           },
           (err: any) => {
-            //
             console.log(err);
           }
         );

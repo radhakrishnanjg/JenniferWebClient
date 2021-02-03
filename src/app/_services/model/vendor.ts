@@ -28,10 +28,11 @@ export class Vendor {
     lstContact: Contact[];
     // who is doing this task
     LoginId: number;
-    TotalAmount: number;
     //added on 03 03 2020
     IsEOR: boolean;
-    IsEORApprovalRequired:boolean;
+    IsEORApprovalRequired: boolean;
+    TotalAmount: number;
+    TCS_Amount: number;
 }
 export class Vendorwarehouse {
     VendorWarehouseID: number;
@@ -56,6 +57,7 @@ export class Vendorwarehouse {
     VendorName: string;
     // who is doing this task
     LoginId: number;
+    lstContact: Contact[] = [] as any;
 }
 export class Vendoritem {
 

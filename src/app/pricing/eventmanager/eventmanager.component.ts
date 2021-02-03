@@ -228,7 +228,8 @@ export class EventmanagerComponent implements OnInit {
     this.action = true;
     $('#StartDate').val("");
     $('#EndDate').val("");
-    this.ItemSelectionType = true;
+    this.ItemSelectionType = 1;
+    this.ItemSelectionText = '';
     this.IsExpense = true;
     this.discountForm = this.fb.group({
       MarketplaceID: [0, [Validators.min(1)]],
@@ -242,7 +243,8 @@ export class EventmanagerComponent implements OnInit {
     });
   }
 
-  ItemSelectionType: boolean = true;
+  ItemSelectionType: number = 1;
+  ItemSelectionText: string = '';
   IsExpense: boolean = true;
   objEventManager: EventManager = {} as any;
   SaveData(): void {
@@ -261,7 +263,11 @@ export class EventmanagerComponent implements OnInit {
       this.alertService.error('The EndDate must be greater than or equal to StartDate.!');
       return;
     }
-    else if (this.ItemSelectionType == false && this.discountForm.controls['ItemID'].value == "") {
+    else if (this.ItemSelectionType == 1 && this.discountForm.controls['ItemID'].value == "") {
+      this.alertService.error('Please select atleast one item in a list.!');
+      return;
+    }
+    else if (this.ItemSelectionType == 2 && this.ItemSelectionText == "") {
       this.alertService.error('Please select atleast one item in a list.!');
       return;
     }
@@ -280,11 +286,21 @@ export class EventmanagerComponent implements OnInit {
     this.objEventManager.StartDate = this.discountForm.controls['StartDate'].value.startDate._d;
     this.objEventManager.EndDate = this.discountForm.controls['EndDate'].value.startDate._d;
     let Itemids = [];
-    if (this.ItemSelectionType) {
+    if (this.ItemSelectionType == 0) {
       Itemids = this.lstItem.map(a => a.ItemID);
     }
-    else {
+    else if (this.ItemSelectionType == 1) {
       Itemids = this.discountForm.controls['ItemID'].value.map(a => a.ItemID);
+    }
+    else if (this.ItemSelectionType == 2) {
+      const lines = this.ItemSelectionText.split('\n');
+      const csvSeparator = '|';
+      lines.forEach(element => {
+        const cols: string[] = element.split(csvSeparator);
+        const ItemCode = cols[0];
+        let Itemid = this.lstItem.filter(a => a.ItemCode == ItemCode)[0].ItemID;
+        Itemids.push(Itemid);
+      });
     }
     if (Itemids.length == 0) {
       this.alertService.error('No Items in list or selected Store!');

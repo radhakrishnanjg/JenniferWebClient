@@ -32,6 +32,8 @@ export class Customer {
 
     // who is doing this task
     LoginId: number;
+    TotalAmount: number;
+    TCS_Amount: number;
 }
 
 export class Customerwarehouse {

@@ -22,7 +22,8 @@ export class ConfigurationinvoiceComponent implements OnInit {
   TotalCGSTTaxAmount: number = 0;
   TotalSGSTTaxAmount: number = 0;
   TotalTaxAmount: number = 0;
-
+  TCS_Amount: number = 0;
+  Grand_Total: number = 0; 
   constructor(
     private aroute: ActivatedRoute,
     private _JsonPrivateUtilityService: JsonPrivateUtilityService,
@@ -55,6 +56,8 @@ export class ConfigurationinvoiceComponent implements OnInit {
           this.TotalCGSTTaxAmount = data.lstHSNCode.reduce((acc, a) => acc + a.CGSTTaxAmount, 0);
           this.TotalSGSTTaxAmount = data.lstHSNCode.reduce((acc, a) => acc + a.SGSTTaxAmount, 0);
           this.TotalTaxAmount = data.lstHSNCode.reduce((acc, a) => acc + a.TaxAmount, 0);
+          this.TCS_Amount = data.TCS_Amount;
+          this.Grand_Total = data.TotalAmount +data.TCS_Amount;
         },
           (err) => {
             console.log(err);

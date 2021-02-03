@@ -81,8 +81,9 @@
           <div class="form-group">
             <label class="control-label" for="Vendor">Vendor<span class="mandantory"> *</span></label>
             <select class="form-control" name="poOrder.VendorID" id="Vendor"
-              [disabled]="poOrder.POID > 0 || gridData.length> 0" (change)="onVendorChanged($event.target.value)"
-              (blur)="logValidationErrors()" formControlName="VendorID">
+              [disabled]="poOrder.POID > 0 || gridData.length> 0" (change)="onVendorChanged($event.target.value); 
+              onVendorChangedforwarehouse($event.target.value);" (blur)="logValidationErrors()"
+              formControlName="VendorID">
               <option value="0" selected="selected">Select</option>
               <option *ngFor="let vendor of vendorList" value={{vendor.VendorID}}>
                 {{vendor.VendorName}}
@@ -100,7 +101,7 @@
           <div class="form-group">
             <label class="control-label" for="Vendor">Vendor<span class="mandantory"> *</span></label>
             <div>
-              {{poOrder.VendorName}}
+              {{poOrder.VendorName}} 
             </div>
           </div>
         </div>
@@ -255,6 +256,27 @@
             <div class="help-block-rk">
               <span class="help-block" *ngIf="formErrors.CurrencyType">
                 {{formErrors.CurrencyType}}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-3 ">
+          <div class="form-group" [ngClass]="{'has-error': formErrors.VendorWarehouseID}">
+            <label class="nopading_loct control-label" for="WarehouseName">
+              Email Notification
+              <span class="mandantory">*</span>
+            </label>
+            <select class="form-control" name="poOrder.VendorWarehouseID" id="VendorWarehouseID"
+              (blur)="logValidationErrors()" formControlName="VendorWarehouseID">
+              <option value="0" selected="selected">Select</option>
+              <option *ngFor="let location of lstVendorwarehouse" value={{location.VendorWarehouseID}}>
+                {{location.WarehouseName}}
+              </option>
+            </select>
+            <div class="help-block-rk">
+              <span class="help-block" *ngIf="formErrors.VendorWarehouseID">
+                {{formErrors.VendorWarehouseID}}
               </span>
             </div>
           </div>

@@ -168,28 +168,36 @@ export class LedgerlistComponent implements OnInit {
   OnChangeforLedgerName() {
     let VoucherID = this.LedgerForm.controls['VoucherID'].value;;
     let TaxRate = this.LedgerForm.controls['TaxRate'].value;
-    let LedgerText = this.LedgerForm.controls['LedgerText'].value;
+    let LedgerText = this.LedgerForm.controls['LedgerText'].value == "" ? "" : '-' + this.LedgerForm.controls['LedgerText'].value;
 
     let GSTID = this.lstVoucher.filter(a => a.VoucherID == VoucherID)[0].GSTID;
     let VoucherType = this.lstVoucher.filter(a => a.VoucherID == VoucherID)[0].VoucherType;
     let StateID = this.lstVoucher.filter(a => a.VoucherID == VoucherID)[0].StateID;
     let StateCode = this.lstStates.filter(a => a.StateID == StateID)[0].StateCode;
-
+    debugger
     if (TaxRate == 0) {
-      this.InterstateLedgerName = VoucherType + ' ' + StateCode + ' ' + GSTID + ' @ Tax Exempted' + ' INTERSTATE' + '-' + LedgerText;
-      this.InterstateOutput_InputLedgerName = 'Output ' + StateCode + '-IGST ' + ' @ Tax Exempted' + '-' + LedgerText;
-      this.LocalLedgerName = VoucherType + ' ' + StateCode + ' @ Tax Exempted' + ' LOCAL' + '-' + LedgerText;
-      this.LocalOutput_InputLedgerName1 = 'Output ' + StateCode + ' -CGST ' + ' @ Tax Exempted' + '-' + LedgerText;
-      this.LocalOutput_InputLedgerName2 = 'Output ' + StateCode + ' -SGST ' + ' @ Tax Exempted' + '-' + LedgerText;
+      this.InterstateLedgerName = VoucherType + ' ' + StateCode + ' ' + GSTID + ' @ Tax Exempted' + ' INTERSTATE' + LedgerText;
+      this.InterstateOutput_InputLedgerName = 'Output ' + StateCode + '-IGST ' + ' @ Tax Exempted' + LedgerText;
+      this.LocalLedgerName = VoucherType + ' ' + StateCode + ' @ Tax Exempted' + ' LOCAL' + LedgerText;
+      this.LocalOutput_InputLedgerName1 = 'Output ' + StateCode + ' -CGST ' + ' @ Tax Exempted' + LedgerText;
+      this.LocalOutput_InputLedgerName2 = 'Output ' + StateCode + ' -SGST ' + ' @ Tax Exempted' + LedgerText;
+      if (VoucherType == "PURCHASE" || VoucherType == "IMPORT PURCHASE") {
+        this.LocalOutput_InputLedgerName1 = 'Input ' + StateCode + ' -CGST ' + ' @ Tax Exempted' + LedgerText;
+        this.LocalOutput_InputLedgerName2 = 'Input ' + StateCode + ' -SGST ' + ' @ Tax Exempted' + LedgerText;
+      }
     }
     else {
-      this.InterstateLedgerName = VoucherType + ' ' + StateCode + ' ' + GSTID + ' @ ' + TaxRate + '% INTERSTATE' + '-' + LedgerText;
-      this.InterstateOutput_InputLedgerName = 'Output ' + StateCode + '-IGST ' + ' @ ' + TaxRate + '%' + '-' + LedgerText;
-      this.LocalLedgerName = VoucherType + ' ' + StateCode + ' @ ' + TaxRate + '% LOCAL' + '-' + LedgerText;
-      this.LocalOutput_InputLedgerName1 = 'Output ' + StateCode + ' -CGST ' + ' @ ' + TaxRate / 2 + '%' + '-' + LedgerText;
-      this.LocalOutput_InputLedgerName2 = 'Output ' + StateCode + ' -SGST ' + ' @ ' + TaxRate / 2 + '%' + '-' + LedgerText;
+      this.InterstateLedgerName = VoucherType + ' ' + StateCode + ' ' + GSTID + ' @ ' + TaxRate + '% INTERSTATE' + LedgerText;
+      this.InterstateOutput_InputLedgerName = 'Output ' + StateCode + '-IGST ' + ' @ ' + TaxRate + '%' + LedgerText;
+      this.LocalLedgerName = VoucherType + ' ' + StateCode + ' @ ' + TaxRate + '% LOCAL' + LedgerText;
+      this.LocalOutput_InputLedgerName1 = 'Output ' + StateCode + ' -CGST ' + ' @ ' + TaxRate / 2 + '%' + LedgerText;
+      this.LocalOutput_InputLedgerName2 = 'Output ' + StateCode + ' -SGST ' + ' @ ' + TaxRate / 2 + '%' + LedgerText;
+      if (VoucherType == "PURCHASE" || VoucherType == "IMPORT PURCHASE") { 
+        this.LocalOutput_InputLedgerName1 = 'Input ' + StateCode + ' -CGST ' + ' @ ' + TaxRate / 2 + '%' + LedgerText;
+        this.LocalOutput_InputLedgerName2 = 'Input ' + StateCode + ' -SGST ' + ' @ ' + TaxRate / 2 + '%' + LedgerText;
+      }
     }
-    if (VoucherType == "PURCHASE") {
+    if (VoucherType == "PURCHASE" || VoucherType == "IMPORT PURCHASE") {
       this.InterstateLedgerName = "";
       this.InterstateOutput_InputLedgerName = "";
     }
@@ -231,7 +239,7 @@ export class LedgerlistComponent implements OnInit {
       LedgerText: ['', [],
         // this._usernameValidator.existLedgerText(this.identity)
       ],
-    }); 
+    });
 
   }
 

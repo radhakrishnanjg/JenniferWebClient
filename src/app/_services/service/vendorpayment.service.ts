@@ -72,6 +72,15 @@ export class VendorpaymentService {
       .pipe(catchError(this.handleError));
   }
 
+  public Update(obj: VendorPaymentHeader): Observable<Result> {
+    let currentUser = this.authenticationService.currentUserValue;
+    obj.CompanyDetailID = currentUser.CompanyDetailID;
+    obj.LoginId = currentUser.UserId;
+    this.objJsonModal.Json = JSON.stringify(obj);
+    return this.httpClient.post<Result>(environment.baseUrl + `Vendorpayment/Update`, this.objJsonModal)
+      .pipe(catchError(this.handleError));
+  }
+
   public Delete(PaymentID: number): Observable<Result> {
     let obj: VendorPaymentHeader = {} as any;
     let currentUser = this.authenticationService.currentUserValue;

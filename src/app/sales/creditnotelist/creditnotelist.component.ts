@@ -147,8 +147,8 @@ export class CreditnotelistComponent implements OnInit {
   //#region Paging Sorting and Filtering Start
   public allowUnsort = false;
   public sort: SortDescriptor[] = [{
-    field: 'CNNumber',
-    dir: 'asc'
+    field: 'CNDate',
+    dir: 'desc'
   }];
   public gridView: GridDataResult;
   public pageSize = 10;
@@ -162,7 +162,7 @@ export class CreditnotelistComponent implements OnInit {
     // Initial filter descriptor
     filter: {
       logic: 'and',
-      filters: [{ field: 'CNNumber', operator: 'contains', value: '' }]
+      filters: [{ field: 'CNDate', operator: 'contains', value: '' }]
     }
   };
   public pageChange({ skip, take }: PageChangeEvent): void {

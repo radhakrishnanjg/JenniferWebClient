@@ -164,6 +164,7 @@
             <td class="text-center">{{ row.Per }}</td>
             <td class="text-right">{{ row.Amount }}</td>
           </tr>
+
           <tr *ngFor="let row1 of objSalesInvoiceHeader?.lsttax" style="font-size:9px;">
             <td style="font-size:9px;">
             </td>
@@ -223,6 +224,30 @@
             </th>
             <th class="text-right" style="font-size:9px;">
               <b>{{objSalesInvoiceHeader?.TotalAmount | number:'.0'}} </b>
+            </th>
+          </tr>
+          <tr>
+            <td></td>
+            <td>TCS Amount </td>
+            <td></td>
+            <td></td>
+            <td></td>
+
+            <td></td>
+            <td class="text-right" style="font-size:9px;">{{ TCS_Amount | number:'.0'}}</td>
+          </tr>
+          <tr style="font-size:9px;">
+            <th> </th>
+            <th>
+              Grand Total
+            </th>
+            <th> </th>
+            <th> </th>
+            <th> </th>
+
+            <th> </th>
+            <th>
+              <b>{{Grand_Total | number:'.0'}} </b>
             </th>
           </tr>
         </tbody>

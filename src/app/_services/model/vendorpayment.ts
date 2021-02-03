@@ -18,6 +18,8 @@ export class VendorPaymentHeader {
     CompanyDetailID: number;
     TotalPaidAmount: number;
     InvoiceNumber: string;
+    PendingAmount:number;
+    lstVendorPaymentDetailHistory: VendorPaymentDetailHistory[] = [] as any;
 }
 export class VendorPaymentDetail {
     PaymentDetailID: number;
@@ -31,4 +33,16 @@ export class VendorPaymentDetail {
     PayableAmt: number;
     PendingAmt: number;
 
+} 
+
+
+export class VendorPaymentDetailHistory { 
+    AgingDays: number; 
+    InvoiceDate: Date;
+    InvoiceNumber: string;
+    PayableAmt: number;
+    PendingAmt: number;
+    PaidAmt: number; 
+    ActionBy: string;
+    ActionDate: Date;
 } 

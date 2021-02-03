@@ -31,6 +31,7 @@ export class Poorder {
     BulkString: string;
     FilePath: string;
     CurrencyType: string;
+    VendorWarehouseID:number;
 }
 export class Poorderitem {
 
@@ -140,6 +141,8 @@ export class Poprint {
     TermsOfCondition5: string;
 
     TermsOfCondition6: string;
+    CurrencyType: string;
+    TCS: string;
 }
 
 export class PoMFI {
@@ -178,7 +181,9 @@ export class MFICaseHeader {
     Location:string; 
     InwardDate: Date;
     Owner:string
-    lstCaseDetail: MFICaseDetail[] = [] as any;
+    lstCaseDetail: MFICaseDetail[] = [] as any; 
+    sku:string;
+    CaseId:string;
 }
 
 export class MFICaseDetail {

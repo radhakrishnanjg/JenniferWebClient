@@ -8,7 +8,7 @@ import { NotFoundError } from '../../common/not-found-error';
 import { AppError } from '../../common/app-error';
 
 import { AuthenticationService } from './authentication.service';
-import { Picklistheader, Result, Picklistview, SalesInvoiceHeader, StockAuditReport, StockAudit, JsonModal, JenniferItemSerials, StockAuditStatus } from '../model/index';
+import { Picklistheader, Result, Picklistview, SalesInvoiceHeader, StockAuditReport, StockAudit, JsonModal, JenniferItemSerials, StockAuditStatus, StockExchangeDetail, StockExchangeHeader } from '../model/index';
 import { environment } from '../../../environments/environment';
 
 @Injectable({
@@ -125,6 +125,45 @@ export class PicklistService {
       );
   }
 
+  public StockExchangeProcess(lst: JenniferItemSerials[]): Observable<StockExchangeDetail[]> {
+    let obj = new StockExchangeHeader();
+    let currentUser = this.authenticationService.currentUserValue;
+    obj.CompanyDetailID = currentUser.CompanyDetailID;
+    obj.LoginId = currentUser.UserId;
+    obj.lstSerialNums = lst;
+    this.objJsonModal.Json = JSON.stringify(obj);
+    return this.httpClient.post<string>(environment.baseUrl + `Picklist/StockExchangeProcess`, this.objJsonModal)
+      .pipe(
+        map(data => {
+          return JSON.parse(data) as StockExchangeDetail[];
+        }),
+        catchError(this.handleError)
+      );
+  }
+
+  public StockExChangeSave(obj: StockExchangeHeader): Observable<Result> {
+    let currentUser = this.authenticationService.currentUserValue;
+    obj.CompanyDetailID = currentUser.CompanyDetailID;
+    obj.LoginId = currentUser.UserId;
+    this.objJsonModal.Json = JSON.stringify(obj);
+    return this.httpClient.post<Result>(environment.baseUrl + `Picklist/StockExChangeSave`, this.objJsonModal)
+      .pipe(catchError(this.handleError));
+  }
+
+  public StockExChangeHistory(SearchBy: string, Search: string,):
+    Observable<StockExchangeDetail[]> {
+    let currentUser = this.authenticationService.currentUserValue;
+    let CompanyDetailID = currentUser.CompanyDetailID;
+    return this.httpClient.get<string>(environment.baseUrl +
+      `Picklist/StockExChangeHistory?CompanyDetailID=` + CompanyDetailID
+      + `&SearchBy=` + encodeURIComponent(SearchBy) + `&Search=` + encodeURIComponent(Search))
+      .pipe(
+        map(data => {
+          return JSON.parse(data) as StockExchangeDetail[];
+        }),
+        catchError(this.handleError)
+      );
+  }
   private handleError(error: HttpErrorResponse) {
 
     if (error.status === 404)

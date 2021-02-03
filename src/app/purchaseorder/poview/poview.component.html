@@ -168,9 +168,9 @@
 
             <td class="text-right"> {{ dis.Rate }} </td>
             <td class="text-right"> {{ dis.TaxRate }} </td>
-            <td class="text-right"> {{ dis.TaxAmount | currency: 'INR'}} </td>
-            <td class="text-right"> {{ dis.DirectCost | currency: 'INR'}} </td>
-            <td class="text-right"> {{ dis.TotalAmount | currency: 'INR'}} </td>
+            <td class="text-right"> {{ dis.TaxAmount | currency: obj?.CurrencyType   }} </td>
+            <td class="text-right"> {{ dis.DirectCost | currency: obj?.CurrencyType}} </td>
+            <td class="text-right"> {{ dis.TotalAmount | currency: obj?.CurrencyType}} </td>
           </tr>
           <tr>
             <th>Total</th>
@@ -179,11 +179,11 @@
             <th class="text-right">{{TotalUnits}}</th>
             <th class="text-right">{{TotalMultiplierValue}} </th>
 
-            <th class="text-right">{{TotalRate | currency: 'INR'}}</th>
+            <th class="text-right">{{TotalRate | currency: obj?.CurrencyType}}</th>
             <th class="text-right"> </th>
-            <th class="text-right">{{TotalTaxAmount | currency: 'INR'}}</th>
-            <th class="text-right">{{TotalDirectCost | currency: 'INR'}}</th>
-            <th class="text-right">{{TotalTotalAmount | currency: 'INR'}}</th>
+            <th class="text-right">{{TotalTaxAmount | currency: obj?.CurrencyType}}</th>
+            <th class="text-right">{{TotalDirectCost | currency: obj?.CurrencyType}}</th>
+            <th class="text-right">{{TotalTotalAmount | currency: obj?.CurrencyType}}</th>
           </tr>
         </tbody>
       </table>

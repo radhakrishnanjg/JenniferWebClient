@@ -7,7 +7,7 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 //kendo
 import { GridModule, PDFModule, ExcelModule } from '@progress/kendo-angular-grid';
 import { PopupModule } from '@progress/kendo-angular-popup';
-import { DropDownListModule } from '@progress/kendo-angular-dropdowns'; 
+import { DropDownListModule, DropDownsModule } from '@progress/kendo-angular-dropdowns'; 
 import { InputsModule } from '@progress/kendo-angular-inputs';
 import { PDFExportModule } from '@progress/kendo-angular-pdf-export';
 
@@ -29,6 +29,8 @@ import { VendorpaymentviewComponent } from './vendorpaymentview/vendorpaymentvie
 import { PaymentsRoutingModule } from './payments.routing.module';
 import { PaymentsurveyComponent } from './paymentsurvey/paymentsurvey.component';
 import { NgPipesModule } from 'ngx-pipes';
+import { FinancialAdjustmentComponent } from './financial-adjustment/financial-adjustment.component';
+import { DutyDepositLedgerComponent } from './duty-deposit-ledger/duty-deposit-ledger.component';
 
 @NgModule({
   imports: [
@@ -50,6 +52,7 @@ import { NgPipesModule } from 'ngx-pipes';
     PDFModule, 
     ExcelModule,
     DropDownListModule,
+    DropDownsModule,
     PopupModule, 
     PDFExportModule,
     NgPipesModule,
@@ -61,7 +64,9 @@ import { NgPipesModule } from 'ngx-pipes';
      VendorpaymentComponent,
     VendorpaymentlistComponent,
     VendorpaymentviewComponent,
-    PaymentsurveyComponent
+    PaymentsurveyComponent,
+    FinancialAdjustmentComponent,
+    DutyDepositLedgerComponent
   ],
 
   providers: [

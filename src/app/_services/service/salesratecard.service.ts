@@ -6,7 +6,7 @@ import { BadRequest } from '../../common/bad-request';
 import { NotFoundError } from '../../common/not-found-error';
 import { AppError } from '../../common/app-error';
 import { AuthenticationService } from './authentication.service';
-import { Salesratecard, Result, JsonModal, EventManager } from '../model/index';
+import { Salesratecard, Result, JsonModal, EventManager, Commission, FinancialAdjustment, DutyDepositLedgerHeader } from '../model/index';
 import { environment } from '../../../environments/environment';
 
 @Injectable({
@@ -79,7 +79,7 @@ export class SalesratecardService {
       objSalesratecard1.MarketplaceID = objSalesratecard.MarketplaceID;
       objSalesratecard1.CompanyDetailID = objSalesratecard.CompanyDetailID;
       objSalesratecard1.IsExpense = objSalesratecard.IsExpense;
-      objSalesratecard1.Expense = objSalesratecard.Expense; 
+      objSalesratecard1.Expense = objSalesratecard.Expense;
       objSalesratecard1.StartDate = objSalesratecard.StartDate;
       objSalesratecard1.EndDate = objSalesratecard.EndDate;
       // MULTIPLE item id
@@ -92,6 +92,99 @@ export class SalesratecardService {
     return this.httpClient.post<Result>(environment.baseUrl + `SalesRateCard/EventManagerUpsert`, this.objJsonModal)
       .pipe(catchError(this.handleError));
   }
+  // #endregion
+
+  //#region Subscriptions
+  public SubscriptionSearch(SearchBy: string, Search: string, StartDate: string, EndDate: string, IsActive: Boolean):
+    Observable<Commission[]> {
+    let currentUser = this.authenticationService.currentUserValue;
+    let CompanyID = currentUser.CompanyID;
+    return this.httpClient.get<string>(environment.baseUrl + `SalesRateCard/SubscriptionSearch?CompanyID=` + CompanyID
+      + `&SearchBy=` + encodeURIComponent(SearchBy) + `&Search=` + encodeURIComponent(Search)
+      + `&StartDate=` + StartDate + `&EndDate=` + EndDate + `&IsActive=` + IsActive)
+      .pipe(
+        map(data => {
+          return JSON.parse(data) as Commission[];
+        }),
+        catchError(this.handleError)
+      );
+  }
+
+  public SubscriptionUpsert(objSalesratecard: Commission): Observable<Result> {
+    let currentUser = this.authenticationService.currentUserValue;
+    objSalesratecard.LoginId = currentUser.UserId;
+    this.objJsonModal.Json = JSON.stringify(objSalesratecard);
+    return this.httpClient.post<Result>(environment.baseUrl + `SalesRateCard/SubscriptionUpsert`, this.objJsonModal)
+      .pipe(catchError(this.handleError));
+  }
+
+  // #endregion
+
+  
+  //#region Financial Adjustment  
+  public FinancialAdjustmentSearch(SearchBy: string, Search: string, StartDate: string, EndDate: string):
+    Observable<FinancialAdjustment[]> {
+    let currentUser = this.authenticationService.currentUserValue;
+    let CompanyID = currentUser.CompanyID;
+    return this.httpClient.get<string>(environment.baseUrl +
+       `SalesRateCard/FinancialAdjustmentSearch?CompanyID=` + CompanyID
+      + `&SearchBy=` + encodeURIComponent(SearchBy) + `&Search=` + encodeURIComponent(Search)
+      + `&StartDate=` + StartDate + `&EndDate=` + EndDate  )
+      .pipe(
+        map(data => {
+          return JSON.parse(data) as FinancialAdjustment[];
+        }),
+        catchError(this.handleError)
+      );
+  }
+
+  public FinancialAdjustmentAction(obj: FinancialAdjustment): Observable<Result> {
+    let currentUser = this.authenticationService.currentUserValue;
+    obj.LoginId = currentUser.UserId;
+    this.objJsonModal.Json = JSON.stringify(obj);
+    return this.httpClient.post<Result>(environment.baseUrl + `SalesRateCard/FinancialAdjustmentAction`, this.objJsonModal)
+      .pipe(catchError(this.handleError));
+  }
+
+  // #endregion
+
+  //#region Duty Deposit Ledger   
+  public DutyDepositLedgerSearch(SearchBy: string, Search: string, StartDate: string, EndDate: string):
+    Observable<DutyDepositLedgerHeader[]> {
+    let currentUser = this.authenticationService.currentUserValue;
+    let CompanyID = currentUser.CompanyID;
+    return this.httpClient.get<string>(environment.baseUrl +
+       `SalesRateCard/DutyDepositLedgerSearch?CompanyID=` + CompanyID
+      + `&SearchBy=` + encodeURIComponent(SearchBy) + `&Search=` + encodeURIComponent(Search)
+      + `&StartDate=` + StartDate + `&EndDate=` + EndDate  )
+      .pipe(
+        map(data => {
+          return JSON.parse(data) as DutyDepositLedgerHeader[];
+        }),
+        catchError(this.handleError)
+      );
+  }
+
+  public DutyDepositLedgerSearchById(DutyDepositLedgerID: number):
+    Observable<DutyDepositLedgerHeader> { 
+    return this.httpClient.get<string>(environment.baseUrl +
+       `SalesRateCard/DutyDepositLedgerSearchById?DutyDepositLedgerID=` + DutyDepositLedgerID )
+      .pipe(
+        map(data => {
+          return JSON.parse(data) as DutyDepositLedgerHeader;
+        }),
+        catchError(this.handleError)
+      );
+  }
+
+  public DutyDepositLedgerAction(obj: DutyDepositLedgerHeader): Observable<Result> {
+    let currentUser = this.authenticationService.currentUserValue;
+    obj.LoginId = currentUser.UserId;
+    this.objJsonModal.Json = JSON.stringify(obj);
+    return this.httpClient.post<Result>(environment.baseUrl + `SalesRateCard/DutyDepositLedgerAction`, this.objJsonModal)
+      .pipe(catchError(this.handleError));
+  }
+
   // #endregion
 
   private handleError(error: HttpErrorResponse) {

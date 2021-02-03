@@ -14,6 +14,7 @@ export class Receipts {
     IsEditable: boolean; 
     LoginId: number; 
     UploadStatus:string;
+    BankAccountNumber:string;
 }
 
 
@@ -29,4 +30,5 @@ export class UpcomingReceipts {
     AccountNumberEndingwith : string;
     UTRNumber : string;
     BankReceiptDate : string;
+    BankAccountNumber:string;
 }

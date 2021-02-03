@@ -1,0 +1,56 @@
+.product {
+    padding: 10px;
+    font-size: 16px;
+    border-bottom-color: lightgrey;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    width: 100%;
+}
+.product.last {
+    border-bottom-width: 0;
+}
+.item
+{
+    border-color: lightgrey;
+    border-style: solid;
+    border-width: 1px; 
+    padding: 5px;
+    margin: 2px;
+}
+.k-listview {
+    height: 340px;
+}
+.k-pager-wrap { 
+    width: 100% !important;
+}
+kendo-datapager { 
+    background-color: #FFF !important;
+    width: 100% !important;
+}
+.k-widget
+{
+    border: none !important;
+} 
+.favorite
+{
+    color: #f24646;
+}
+.unfavorite
+{
+    color: #f49f9f;
+}
+ /* .text-default
+ {
+    color:gainsboro;
+    border:  #f24646 1px solid;
+ } */
+
+ .header {
+    display: flex;
+    padding: 12px;
+}
+.title {
+    flex: 1;
+    font-size: 22px;
+    font-weight: bold;
+}

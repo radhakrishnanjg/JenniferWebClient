@@ -6,9 +6,8 @@ import { Userpermission, ItemLevelStaticData, } from '../_services/model';
 import { SalesChartColors } from '../../assets/ChartColors';
 
 import { AuthenticationService } from '../_services/service/authentication.service';
-import { Router } from '@angular/router'; 
-// import 'hammerjs';
-
+import { Router } from '@angular/router';
+// import 'hammerjs'; 
 @Component({
   selector: 'app-dashboard1',
   templateUrl: './dashboard1.component.html',
@@ -36,7 +35,6 @@ export class Dashboard1Component implements OnInit {
 
   //#region variable declartion start
   lstMenus: Userpermission[] = [] as any;
-  MenuID: number = 0;
 
 
   Sales_OrderByTime: any = SalesChartColors.Sales_OrderByTime;
@@ -64,15 +62,9 @@ export class Dashboard1Component implements OnInit {
   //#endregion variable declartion end
 
   ngOnInit() {
+    this.MenuID = 0;
     this.selectedDateRange = { startDate: moment().subtract(0, 'months').date(1), endDate: moment().subtract(1, 'days') };
     this.BindDropdown();
-    this.OnloadupdatedDate();
-    this.onLoadLiveSalesData();
-    this.onLoadliveReturnsValue();
-    this.onLoadOrderByTime();
-    this.onLoadReturnsByTime();
-    this.onLoadTopProductssales();
-
   }
 
   //#region Method declaration
@@ -86,9 +78,6 @@ export class Dashboard1Component implements OnInit {
       this.onLoadPerformance();
       this.onLoadRevenueByLocation();
       this.onLoadItemLevelStaticData();
-      // this.onLoadTopSellersInRevenue();
-      // this.onLoadSalesReturnsOrder();
-      // this.onLoadSalesReturnsValue();
     }
   }
   selectedDateRangeUpdated(range) {
@@ -102,11 +91,25 @@ export class Dashboard1Component implements OnInit {
   }
 
   onchangeMenuID(MenuID: number) {
-
+    this.MenuID = MenuID;
+    this.PageName = this._authenticationService.currentUserValue.lstUserPermission.filter(a => a.MenuID == this.MenuID)[0].PageName;
+    if (this.MenuID == 122) {
+      this.OnloadupdatedDate();
+      this.onLoadLiveSalesData();
+      this.onLoadliveReturnsValue();
+      this.onLoadOrderByTime();
+      this.onLoadReturnsByTime();
+      this.onLoadTopProductssales();
+    }
   }
+  MenuID: number = 0;
+  PageName: string = '';
   BindDropdown() {
     this.lstMenus = this._authenticationService.currentUserValue.lstUserPermission.filter(a => a.ParentId == 120);
-    this.MenuID = 122;
+    this.MenuID = this._authenticationService.currentUserValue.lstUserPermission.some(a => a.ParentId == 120) ?
+      this._authenticationService.currentUserValue.lstUserPermission.filter(a => a.ParentId == 120)[0].MenuID : 0;
+    this.PageName = this._authenticationService.currentUserValue.lstUserPermission.filter(a => a.MenuID == this.MenuID)[0].PageName;
+
   }
 
   LastUpdatedDate: Date;

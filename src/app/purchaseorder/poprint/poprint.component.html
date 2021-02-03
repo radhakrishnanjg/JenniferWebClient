@@ -46,7 +46,7 @@
           <kendo-pdf-export #pdf paperSize="A4" margin="1cm" landscape="true" repeatHeaders="true">
             <h4 class="text-center"><b>Purchase Order</b></h4>
             <table class="table table-bordered table-condensed  table-striped" width="3508px" style=" font-family: Verdana, Geneva, Tahoma, sans-serif;
-              font-size:9px;background-color: #fff;color:#000;"> 
+              font-size:9px;background-color: #fff;color:#000;">
               <tr>
                 <td colspan="3">
                   <h6><u><b>Ship to Address</b></u></h6>
@@ -60,7 +60,7 @@
                   <b>Phone:</b> {{obj?.BilledToContactNumber}} <br>
                   <b>GST:</b> {{obj?.BilledToGSTNumber}}
                 </td>
-              </tr> 
+              </tr>
               <tr>
                 <td colspan="3">
                   <b>Vendor:</b> {{obj?.VendorName}} <br>
@@ -115,15 +115,15 @@
                   {{data.Qty}}
                 </td>
                 <td class="text-right">
-                  {{data.Rate}}
+                  {{data.Rate  | number: '2.'}}
                 </td>
                 <td class="text-right">
-                  {{data.Total}}
+                  {{data.Total  | number: '2.'}}
                 </td>
               </tr>
               <tr>
                 <td class="text-center" colspan="3">
-                  <b>Total</b>
+                  <b>Total ({{obj?.CurrencyType}})</b>
                 </td>
                 <td class="text-right">
                   <b>{{Qty}}</b>
@@ -132,17 +132,12 @@
 
                 </td>
                 <td class="text-right">
-                  <b>{{Total}}</b>
+                  <b>{{Total  | number: '2.'}}</b>
                 </td>
               </tr>
-              <!-- <tr *ngIf="lst == null">
-                <td class="text-center" colspan="6">
-                  No Records Found.!
-                </td> 
-              </tr>  -->
               <tr>
                 <td colspan="6" class="text-left">
-                  <b> Amount in Words: </b> {{obj?.AmountInWords}}
+                  <b> Amount in Words: </b> {{obj?.AmountInWords}} ({{obj?.CurrencyType}})
                 </td>
               </tr>
             </table>
@@ -157,7 +152,8 @@
                   {{obj?.TermsOfCondition3}} <br>
                   {{obj?.TermsOfCondition4}} <br>
                   {{obj?.TermsOfCondition5}} <br>
-                  {{obj?.TermsOfCondition6}}
+                  {{obj?.TermsOfCondition6}}<br>
+                  {{obj?.TCS}}<br>
                 </td>
               </tr>
             </table>

@@ -15,6 +15,12 @@
       </div>
     </div>
 
+    <div id="0" *ngIf="MenuID==0">
+      <h3>
+        Your Dashboard Coming Soon.!
+      </h3>
+    </div>
+
     <div id="122" *ngIf="MenuID==122">
 
       <div class="panel-body">
@@ -41,7 +47,7 @@
 
           <div class="box">
             <h6 class="boldvalues"> Total Ordered Items</h6>
-            <div> {{ TotalOrderItem   }}</div>
+            <div> {{ TotalOrderItem }}</div>
           </div>
           <div class="box">
             <h6 class="boldvalues">Ordered Product Sales</h6>
@@ -49,7 +55,7 @@
           </div>
           <div class="box">
             <h6 class="boldvalues"> Total Units Ordered </h6>
-            <div> {{ TotalUnitsOrdered   }}</div>
+            <div> {{ TotalUnitsOrdered }}</div>
           </div>
           <div class="box">
             <h6 class="boldvalues"> Average Sales/Order Item</h6>
@@ -57,11 +63,11 @@
           </div>
           <div class="box">
             <h6 class="boldvalues"> Average Unit/Order Item</h6>
-            <div> {{ AvgunitPerorderitem  }}</div>
+            <div> {{ AvgunitPerorderitem }}</div>
           </div>
           <div class="box">
             <h6 class="boldvalues"> Total Returns</h6>
-            <div> {{ TotalReturnOrders  }}</div>
+            <div> {{ TotalReturnOrders }}</div>
           </div>
           <div class="box">
             <h6 class="boldvalues"> Total Returns Value</h6>
@@ -191,7 +197,7 @@
             </div>
             <div class="salsecase">
               <h6 class="boldvalues"> Profit Margin</h6>
-              <div> {{ GrossProfitPer  }}</div>
+              <div> {{ GrossProfitPer }}</div>
             </div>
             <div class="PerformCase">
               <div>
@@ -410,8 +416,16 @@
 
       </div>
     </div>
+
+    <!-- <iframe width="1224" height="604"
+        src="https://app.powerbi.com/view?r=eyJrIjoiZjAyMzNkZGMtMzY2My00ZTJjLTliMmMtMjA0ZjUxYjM3M2NhIiwidCI6IjU1OTBjNTg3LTY3MGItNGUxNy1iMTc1LTczM2ZmZGQzYzk5NiJ9"
+        frameborder="0" allowFullScreen="true"></iframe> -->
+
+    <div *ngIf="!(MenuID==0 || MenuID==122) "> 
+      <iframe [src]="PageName | sanitizeUrl" frameborder="0" allowFullScreen="true" style="width:100%;height:80vh"></iframe> 
+    </div>
+
   </div>
-  <div id="121" *ngIf="MenuID==121">
-    Dashboard Coming Soon.!
-  </div>
+
+
 </div>

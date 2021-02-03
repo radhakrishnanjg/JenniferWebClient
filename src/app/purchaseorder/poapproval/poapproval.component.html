@@ -179,7 +179,7 @@
 
                 <td class="text-right">
                   <span *ngIf="objResult?.Flag ">
-                    {{ user.TaxAmount | currency: 'INR' }}
+                    {{ user.TaxAmount | currency: obj?.CurrencyType }}
                   </span>
                   <span *ngIf="!objResult?.Flag">
                     ********
@@ -187,7 +187,7 @@
                 </td>
                 <td class="text-right">
                   <span *ngIf="objResult?.Flag ">
-                    {{ user.TotalAmount | currency: 'INR' }}
+                    {{ user.TotalAmount | currency: obj?.CurrencyType }}
                   </span>
                   <span *ngIf="!objResult?.Flag ">
                     ********
@@ -210,7 +210,7 @@
 
                 <th class="text-right">
                   <span *ngIf="objResult?.Flag ">
-                    {{ TotalTaxAmount | currency: 'INR'}}
+                    {{ TotalTaxAmount | currency: obj?.CurrencyType}}
                   </span>
                   <span *ngIf="!objResult?.Flag ">
                     ********
@@ -219,7 +219,7 @@
 
                 <th class="text-right">
                   <span *ngIf="objResult?.Flag ">
-                    {{ TotalTotalAmount | currency: 'INR'}}
+                    {{ TotalTotalAmount | currency: obj?.CurrencyType}}
                   </span>
                   <span *ngIf="!objResult?.Flag ">
                     ********

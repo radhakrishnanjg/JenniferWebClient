@@ -117,26 +117,40 @@ export class ReportsanalyticsComponent implements OnInit {
       });
       if (buttonType == "Download") {
         if (bflag || this.lstDownloadDetail.length == 0) {
-          this._DownloadService.downloadExcel(SP_Name, this.MenuId, Screen_Name, dyamicspstring)
-            .subscribe(data => {
-              if (data != null && data.Flag == true) {
-                this._DownloadService.Download(Screen_Name, this.MenuId)
-                  .subscribe(data1 => {
-                    saveAs(data1, Screen_Name + '.xls');//+ '.xls'
-                    this.alertService.success("File downloaded succesfully.!");
-                  },
-                    (err) => {
-                      console.log(err);
-                    }
-                  );
-              } else {
-                this.alertService.error(data.Msg);
+          // this._DownloadService.downloadExcel(SP_Name, this.MenuId, Screen_Name, dyamicspstring)
+          //   .subscribe(data => {
+          //     if (data != null && data.Flag == true) {
+          //       this._DownloadService.Download(Screen_Name, this.MenuId)
+          //         .subscribe(data1 => {
+          //           saveAs(data1, Screen_Name + '.xls');//+ '.xls'
+          //           this.alertService.success("File downloaded succesfully.!");
+          //         },
+          //           (err) => {
+          //             console.log(err);
+          //           }
+          //         );
+          //     } else {
+          //       this.alertService.error(data.Msg);
+          //     }
+          //   },
+          //     (err) => {
+          //       console.log(err);
+          //     }
+          //   );
+
+          this._DownloadService.DownloadExcelJSON(SP_Name, this.MenuId, Screen_Name, dyamicspstring).subscribe(
+            (data: any[]) => {
+              if (data.length > 0) {
+                this._DownloadService.exportAsExcelFile(data, Screen_Name);
+              }
+              else {
+                this.alertService.error('No Records Found!');
               }
             },
-              (err) => {
-                console.log(err);
-              }
-            );
+            (err: any) => {
+              console.log(err);
+            }
+          );
         }
       }
       else if (buttonType == "Request") {
@@ -146,7 +160,21 @@ export class ReportsanalyticsComponent implements OnInit {
           this.objDownloadLog.Download_Master_ID = this.Download_Master_ID;
           this.objDownloadLog.Dynamic_Query = dyamicspstring;
           this.objDownloadLog.Report_Type = this.Report_Type;
-          this._DownloadService.InsertDownloadLog(this.objDownloadLog)
+          // this._DownloadService.InsertDownloadLog(this.objDownloadLog)
+          //   .subscribe(data => {
+          //     if (data != null && data.Flag == true) {
+          //       this.alertService.success(data.Msg);
+          //       this.GetDownloadLog(this.Download_Master_ID);
+          //     } else {
+          //       this.alertService.error(data.Msg);
+          //     }
+          //   },
+          //     (err) => {
+          //       console.log(err);
+          //     }
+          //   );
+
+          this._DownloadService.InsertDownloadLogJSON(this.objDownloadLog)
             .subscribe(data => {
               if (data != null && data.Flag == true) {
                 this.alertService.success(data.Msg);
@@ -260,15 +288,28 @@ export class ReportsanalyticsComponent implements OnInit {
       );
   }
   DownloadFile(ReportID: string, MenuId: number): void {
-    this._DownloadService.Download(ReportID, MenuId)
-      .subscribe(data1 => {
-        saveAs(data1, ReportID + '.xls');//+ '.xls'
-        this.alertService.success("File downloaded succesfully.!");
-      },
-        (err) => {
-          console.log(err);
+    // this._DownloadService.Download(ReportID, MenuId)
+    //   .subscribe(data1 => {
+    //     saveAs(data1, ReportID + '.xls');//+ '.xls'
+    //     this.alertService.success("File downloaded succesfully.!");
+    //   },
+    //     (err) => {
+    //       console.log(err);
+    //     }
+    //   ); 
+    this._DownloadService.DownloadJson(ReportID).subscribe(
+      (data: any[]) => {
+        if (data.length > 0) {
+          this._DownloadService.exportAsExcelFile(data, ReportID);
         }
-      );
+        else {
+          this.alertService.error('No Records Found!');
+        }
+      },
+      (err: any) => {
+        console.log(err);
+      }
+    );
   }
 
 

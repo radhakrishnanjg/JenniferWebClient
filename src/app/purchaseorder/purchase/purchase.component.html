@@ -200,25 +200,25 @@
               <th> </th>
               <th> </th>
               <th class="text-right"> {{ TotalQty}}</th>
-              <th class="text-right"> {{ TotalRate | currency: 'INR'}}</th>
+              <th class="text-right"> {{ TotalRate | currency: CurrencyType}}</th>
 
 
               <th class="text-right">
-                {{ TotalMRP | currency: 'INR' }}
+                {{ TotalMRP | currency: CurrencyType }}
               </th>
               <th class="text-right">
-                {{ TotalTaxRate | currency: 'INR'}}
+                {{ TotalTaxRate | currency: CurrencyType}}
               </th>
               <th> </th>
 
               <th class="text-right">
-                {{ TotalDirectCost | currency: 'INR'}}
+                {{ TotalDirectCost | currency: CurrencyType}}
               </th>
               <th class="text-right">
-                {{ TotalTaxAmount | currency: 'INR'}}
+                {{ TotalTaxAmount | currency: CurrencyType}}
               </th>
               <th class="text-right">
-                {{ TotalTotalAmount | currency: 'INR'}}
+                {{ TotalTotalAmount | currency: CurrencyType}}
               </th>
             </tr>
           </table>

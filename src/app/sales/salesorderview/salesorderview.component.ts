@@ -34,6 +34,8 @@ export class SalesorderviewComponent implements OnInit {
   ) {
     this.objSalesOrder.lstItem = [] as any;
   }
+  TotalAdd_DiscRK: number = 0;
+  TotalAdd_DiscAmazon: number = 0;
   ngOnInit() {
 
     this.aroute.paramMap.subscribe(params => {
@@ -43,10 +45,8 @@ export class SalesorderviewComponent implements OnInit {
         //
         this._salesService.searchById(this.identity)
           .subscribe(
-            (data: Salesorder) => {
-              //
-              this.objSalesOrder = data;
-
+            (data: Salesorder) => { 
+              this.objSalesOrder = data; 
               this.TotalCaseSize = data.lstItem.reduce((acc, a) => acc + a.Units, 0);
               this.TotalMultiplierValue = data.lstItem.reduce((acc, a) => acc + a.MultiplierValue, 0);
               this.TotalQty = data.lstItem.reduce((acc, a) => acc + a.Qty, 0);
@@ -56,9 +56,10 @@ export class SalesorderviewComponent implements OnInit {
               this.TotalDiscountamt = data.lstItem.reduce((acc, a) => acc + a.Discountamt, 0);
               this.TotalTaxAmount = data.lstItem.reduce((acc, a) => acc + a.TaxAmount, 0);
               this.TotalTotalAmount = data.lstItem.reduce((acc, a) => acc + a.TotalValue, 0);
+              this.TotalAdd_DiscRK = this.objSalesOrder.lstItem.reduce((acc, a) => acc + a.Add_DiscRK, 0);
+              this.TotalAdd_DiscAmazon = this.objSalesOrder.lstItem.reduce((acc, a) => acc + a.Add_DiscAmazon, 0);
             },
-            (err) => {
-              //
+            (err) => { 
               console.log(err);
             }
           );

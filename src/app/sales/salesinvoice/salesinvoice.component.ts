@@ -29,11 +29,11 @@ export class SalesinvoiceComponent implements OnInit {
     private _PicklistService: PicklistService,
 
   ) { }
-
+  TCS_Amount: number=0;
+  Grand_Total:number=0;
   ngOnInit() {
     this.aroute.paramMap.subscribe(params => {
-      let PickListNumber = +params.get('id');
-      //
+      let PickListNumber = +params.get('id'); 
       this._PicklistService.InvoiceDownload(PickListNumber)
         .subscribe(data => {
           this.objSalesInvoiceHeader = data;
@@ -44,10 +44,10 @@ export class SalesinvoiceComponent implements OnInit {
           this.TotalCGSTTaxAmount = data.lstHSNCode.reduce((acc, a) => acc + a.CGSTTaxAmount, 0);
           this.TotalSGSTTaxAmount = data.lstHSNCode.reduce((acc, a) => acc + a.SGSTTaxAmount, 0);
           this.TotalTaxAmount = data.lstHSNCode.reduce((acc, a) => acc + a.TaxAmount, 0);
-          //
+          this.TCS_Amount = data.TCS_Amount;
+          this.Grand_Total= data.TotalAmount + data.TCS_Amount;
         },
-          (err) => {
-            //
+          (err) => { 
             console.log(err);
           });
     });

@@ -221,15 +221,21 @@
                 <span class="mandantory">*</span></label>
               <div class="col-sm-8">
                 <label for="ForAllItems" class="control-label radio-inline">
-                  <input id="ForAllItems" type="radio" [value]="true" name="ItemSelectionType"
+                  <input id="ForAllItems" type="radio" [value]="0" name="ItemSelectionType"
                     formControlName="ItemSelectionType" [(ngModel)]="ItemSelectionType">
                   For All Items
                 </label>
                 &nbsp; &nbsp;
                 <label for="OnlyforfewItems" class="control-label radio-inline">
-                  <input id="OnlyforfewItems" type="radio" [value]="false" name="ItemSelectionType"
+                  <input id="OnlyforfewItems" type="radio" [value]="1" name="ItemSelectionType"
                     formControlName="ItemSelectionType" [(ngModel)]="ItemSelectionType">
                   Only for few Items
+                </label>
+                &nbsp; &nbsp;
+                <label for="BulkCodes" class="control-label radio-inline">
+                  <input id="BulkCodes" type="radio" [value]="2" name="ItemSelectionType"
+                    formControlName="ItemSelectionType" [(ngModel)]="ItemSelectionType">
+                  Bulk Items
                 </label>
                 <div class="help-block-rk">
                   <span class="help-block">
@@ -240,7 +246,7 @@
             </div>
 
 
-            <div *ngIf="!ItemSelectionType" class="form-group col-sm-12" [ngClass]="{'has-error': formErrors.ItemID}">
+            <div *ngIf="ItemSelectionType==1" class="form-group col-sm-12" [ngClass]="{'has-error': formErrors.ItemID}">
               <label class="col-sm-4 control-label" for="ItemID">Item Code <span class="mandantory">*</span></label>
               <div class="col-sm-8">
                 <ngx-select-dropdown formControlName="ItemID" [multiple]="true" [config]="config"
@@ -249,6 +255,18 @@
                 <div class="help-block-rk">
                   <span class="help-block" *ngIf="formErrors.ItemID">
                     {{formErrors.ItemID}}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div *ngIf="ItemSelectionType==2" class="form-group col-sm-12">
+              <label class="col-sm-4 control-label" for="ItemID">Item Codes <span class="mandantory">*</span></label>
+              <div class="col-sm-8">
+                <textarea rows="10" cols="50" name="ItemSelectionText" maxlength="10000" [(ngModel)]="ItemSelectionText"
+                  id="ItemSelectionText" [ngModelOptions]="{standalone: true}"></textarea>
+                <div class="help-block-rk">
+                  <span class="help-block">
                   </span>
                 </div>
               </div>
@@ -290,7 +308,10 @@
                 </span>
               </div>
             </div>
-
+            <div class="form-group col-sm-12">
+              <b>Note :</b> <br />
+              Please use pipeline(|) seperated values for bulk item code selection.
+            </div>
           </div>
           <div class="clearfix"> </div>
           <div class="modal-footer">

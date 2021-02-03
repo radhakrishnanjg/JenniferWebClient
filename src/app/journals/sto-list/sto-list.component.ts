@@ -1,9 +1,6 @@
-import { Component, OnInit,OnDestroy  } from '@angular/core';
-
-import { Router } from '@angular/router';
+import { Component, OnInit,OnDestroy  } from '@angular/core'; 
 import { Sto } from '../../_services/model';
-import { StoService } from '../../_services/service/sto.service';
-import { AuthorizationGuard } from '../../_guards/Authorizationguard'
+import { StoService } from '../../_services/service/sto.service'; 
 import * as moment from 'moment';
 import { process, State } from '@progress/kendo-data-query';
 import { GridDataResult, DataStateChangeEvent, PageChangeEvent } from '@progress/kendo-angular-grid';
@@ -14,10 +11,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './sto-list.component.html',
   styleUrls: ['./sto-list.component.css']
 })
-export class StoListComponent implements OnInit, OnDestroy {
-  obj: Sto;
-
-  dtOptions: DataTables.Settings = {};
+export class StoListComponent implements OnInit, OnDestroy {  
   SearchBy: string;
   SearchKeyword: string;
   selectedDateRange: any;
@@ -31,9 +25,7 @@ export class StoListComponent implements OnInit, OnDestroy {
   }
   constructor(
     
-    private _stoService: StoService,
-    private router: Router,
-    private _authorizationGuard: AuthorizationGuard) { }
+    private _stoService: StoService, ) { }
 
   ngOnInit() {
 
@@ -83,8 +75,8 @@ export class StoListComponent implements OnInit, OnDestroy {
   //#region Paging Sorting and Filtering Start
   public allowUnsort = false;
   public sort: SortDescriptor[] = [{
-    field: 'STONumber',
-    dir: 'asc'
+    field: 'STODate',
+    dir: 'desc'
   }];
   public gridView: GridDataResult;
   public pageSize = 10;
@@ -98,7 +90,7 @@ export class StoListComponent implements OnInit, OnDestroy {
     // Initial filter descriptor
     filter: {
       logic: 'and',
-      filters: [{ field: 'STONumber', operator: 'contains', value: '' }]
+      filters: [{ field: 'STODate', operator: 'contains', value: '' }]
     }
   };
   public pageChange({ skip, take }: PageChangeEvent): void {

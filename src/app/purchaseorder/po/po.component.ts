@@ -7,7 +7,7 @@ import { ToastrService } from 'ngx-toastr';
 import { isNumeric } from "rxjs/util/isNumeric"
 import {
   Poorder, Location, Vendor, Brand, ProductGroup, Category, SubCategory,
-  Item, UOM, Poorderitem, Apisettings, Dropdown
+  Item, UOM, Poorderitem, Apisettings, Dropdown, Vendorwarehouse
 } from '../../_services/model';
 import * as moment from 'moment';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -15,6 +15,7 @@ import { AuthorizationGuard } from '../../_guards/Authorizationguard'
 import { DropDownFilterSettings } from '@progress/kendo-angular-dropdowns';
 
 import { MasteruploadService } from 'src/app/_services/service/masterupload.service';
+import { InvoiceService } from 'src/app/_services/service/invoice.service';
 const createFormGroup = dataItem => new FormGroup({
   'ItemCode': new FormControl(dataItem.ItemID),
   'ItemName': new FormControl(dataItem.ItemName),
@@ -22,11 +23,11 @@ const createFormGroup = dataItem => new FormGroup({
   'CaseSize': new FormControl(dataItem.CaseSize,
     [Validators.required, Validators.min(1), Validators.max(1000000), Validators.pattern("^([0-9]+)$")]),
   'UOM': new FormControl(dataItem.UOMID, [Validators.required, Validators.min(1),]),
-  'Rate': new FormControl(dataItem.Rate, [Validators.required, Validators.min(1), Validators.max(999999999), Validators.pattern("^[0-9]+(.[0-9]{0,2})?$")]),
+  'Rate': new FormControl(dataItem.Rate, [Validators.required, Validators.min(0.01), Validators.max(999999999), Validators.pattern("^[0-9]+(.[0-9]{0,2})?$")]),
   'TaxRate': new FormControl(dataItem.TaxRate),
   'DirectCost': new FormControl(dataItem.DirectCost),
   'TaxAmount': new FormControl(dataItem.TaxAmount),
-  'TotalAmount': new FormControl(dataItem.TotalAmount, [Validators.required, Validators.min(1), Validators.max(999999999),])
+  'TotalAmount': new FormControl(dataItem.TotalAmount, [Validators.required, Validators.min(0.01), Validators.max(999999999),])
 });
 
 @Component({
@@ -80,6 +81,7 @@ export class PoComponent implements OnInit {
     private router: Router,
     private fb: FormBuilder,
     public _masteruploadService: MasteruploadService,
+    private _invoiceService: InvoiceService,
 
   ) {
     this.poOrder.lstItem = [];
@@ -103,7 +105,8 @@ export class PoComponent implements OnInit {
     'UOM': '',
     'Rate': '',
     'TotalAmount': '',
-    'CurrencyType': '' 
+    'CurrencyType': '',
+    'VendorWarehouseID': '',
   };
 
   validationMessages = {
@@ -141,7 +144,9 @@ export class PoComponent implements OnInit {
     'CurrencyType': {
       'required': 'This Field is required.',
     },
-    
+    'VendorWarehouseID': {
+      'min': 'This Field is required.',
+    },
   };
 
   logValidationErrors(group: FormGroup = this.poForm): void {
@@ -180,6 +185,7 @@ export class PoComponent implements OnInit {
       PaymentReference: ['', []],
       Remarks: ['', []],
       CurrencyType: ['INR', [Validators.required]],
+      VendorWarehouseID: [0, [Validators.min(1)]],
     });
 
     this.getCurrentServerDateTime();
@@ -242,6 +248,7 @@ export class PoComponent implements OnInit {
           var PODeliveryDate = moment(data.PODeliveryDate, 'YYYY-MM-DD[T]HH:mm').format('MM-DD-YYYY HH:mm').toString();
           var VendorID = data.VendorID.toString();
           var LocationID = data.LocationID.toString();
+          var VendorWarehouseID = data.VendorWarehouseID.toString();
           this.poForm.patchValue({
             PONumber: data.PONumber,
             PODate: { startDate: new Date(PODate) },
@@ -254,9 +261,11 @@ export class PoComponent implements OnInit {
             AgainstReference: data.AgainstReference,
             PaymentReference: data.PaymentReference,
             Remarks: data.Remarks,
-            CurrencyType: data.CurrencyType
+            CurrencyType: data.CurrencyType,
+            VendorWarehouseID:VendorWarehouseID
           });
-          this.onVendorChanged(this.poOrder.VendorID);
+          this.onVendorChanged(this.poOrder.VendorID); 
+          this.onVendorChangedforwarehouse(this.poOrder.VendorID);
           this.DisbableShipmentCheckbox(data.LocationID);
         },
         (err: any) => {
@@ -379,7 +388,7 @@ export class PoComponent implements OnInit {
         }, (err) => {
           this.itemList = [];
           console.log(err);
-        });
+        }); 
     }
   }
 
@@ -491,7 +500,18 @@ export class PoComponent implements OnInit {
         })
     }
   }
-
+  lstVendorwarehouse: Vendorwarehouse[] = [] as any;
+  public onVendorChangedforwarehouse(VendorID: number) {
+    this._invoiceService.getVendorWarehouses(VendorID)
+      .subscribe(
+        (data: Vendorwarehouse[]) => {
+          this.lstVendorwarehouse = data;
+        },
+        (err: any) => {
+          console.log(err);
+        }
+      );
+  }
   //submit POOrder
   public saveData(): void {
 
@@ -534,7 +554,8 @@ export class PoComponent implements OnInit {
     this.poOrder.AgainstReference = this.poForm.controls['AgainstReference'].value;
     this.poOrder.PaymentReference = this.poForm.controls['PaymentReference'].value;
     this.poOrder.Remarks = this.poForm.controls['Remarks'].value;
-    this.poOrder.CurrencyType = this.poForm.controls['CurrencyType'].value; 
+    this.poOrder.CurrencyType = this.poForm.controls['CurrencyType'].value;
+    this.poOrder.VendorWarehouseID = this.poForm.controls['VendorWarehouseID'].value;
     if (this.poOrder.POID > 0) {
       this.Update();
 

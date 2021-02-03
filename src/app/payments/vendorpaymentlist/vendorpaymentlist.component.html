@@ -33,7 +33,7 @@
               <option value="ByBillNumber">Bill No.</option>
               <option value="ByPaidDate">Bill Date</option>
               <option value="ByVendorName">Vendor Name</option>
-              <option value="ByInvoiceNumber">Purchase Invoice No.</option>
+              <!-- <option value="ByInvoiceNumber">Purchase Invoice No.</option> -->
             </select>
           </div>
           <div class="col-md-3 col-sm-3 nopading_loct" *ngIf="(SearchBy!='ByPaidDate')">
@@ -93,14 +93,17 @@
           </kendo-grid-column>
           <kendo-grid-column field="InvoiceNumber" title="Purchase Invoice No." width="160">
           </kendo-grid-column>
-          <kendo-grid-column field="TotalPaidAmount" title="Paid Amount"  width="130" format="{0:##,#.##}">
+          <kendo-grid-column field="TotalPaidAmount" title="Consumed" width="130" format="{0:##,#.##}">
+          </kendo-grid-column>
+          <kendo-grid-column field="PendingAmount" title="Available" width="130" format="{0:##,#.##}">
           </kendo-grid-column>
           <kendo-grid-column field="PaymentMode" title="Payment Mode" width="130">
           </kendo-grid-column>
           <kendo-grid-column field="TransactionNumber" title="UTR No.">
           </kendo-grid-column>
-
-          <kendo-grid-column field="PaymentDate" title="Payment Date"  width="130" filter="date" format="{0:d}" [filterable]="false">
+ 
+          <kendo-grid-column field="PaymentDate" title="Payment Date" width="130" filter="date" format="{0:d}"
+            [filterable]="false">
             <ng-template kendoGridCellTemplate let-dataItem>
               {{ dataItem.PaymentDate | date :"MM-dd-yyyy HH:mm" }}
             </ng-template>
@@ -112,14 +115,18 @@
           <kendo-grid-column title="Action" [class]="{'text-center': true}" [filterable]="false" [sortable]="false"
             width="80">
             <ng-template kendoGridCellTemplate let-obj>
-              <i class="fa fa-repeat pointer" title="Reverse" *ngIf="obj.ReverseId==0"
+              <i class="fa fa-repeat pointer" title="Reverse" *ngIf="obj.ReverseId==0 && obj.PendingAmount==0"
                 (click)="confirmRefreshid(obj.PaymentID)"></i>
               &nbsp;
+              <i class="fa fa-plus bgblue pointer" *ngIf="obj.PaymentMode=='ADVANCE'  && obj.PendingAmount>0"
+                [routerLink]="['/Vendorpayment', obj.PaymentID]" title="Edit">
+              </i>
+              &nbsp;
               <i class="fa fa-eye bgblue pointer" [routerLink]="['/Vendorpaymentview', obj.PaymentID]" title="View">
-              </i> 
+              </i>
             </ng-template>
           </kendo-grid-column>
-          
+
         </kendo-grid>
       </table>
     </div>

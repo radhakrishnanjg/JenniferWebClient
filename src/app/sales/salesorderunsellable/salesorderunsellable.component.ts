@@ -516,22 +516,9 @@ export class SalesorderunsellableComponent implements OnInit {
         let wa: number = 0;
         //let DiscountAmount: number = 0;
         lstunsellqty.filter(a => a.ItemID == element).forEach((w, index) => {
-          // wa += lstunsellqty.filter(a => a.ItemID == w.ItemID)[index].  LiquidationRate*
-          // lstunsellqty.filter(a => a.ItemID == w.ItemID)[index].Qty;
           wa += lstunsellqty.filter(a => a.ItemID == w.ItemID)[index].SellingPrice *
             lstunsellqty.filter(a => a.ItemID == w.ItemID)[index].Qty;
-
-          //  LiquidationRate
-          // DiscountAmount += (
-          //   ( (lstunsellqty.filter(a => a.ItemID == w.ItemID)[index].SellingPrice
-          //     * lstunsellqty.filter(a => a.ItemID == w.ItemID)[index].Qty)) + 
-
-          //   (lstunsellqty.filter(a => a.ItemID == w.ItemID)[index].TaxRate
-          //     * lstunsellqty.filter(a => a.ItemID == w.ItemID)[index].Qty)
-
-          // );
         });
-        debugger
         this.objSalesorderItem.ItemRate = wa /
           lstunsellqty.filter(a => a.ItemID == element).reduce((acc, a) => acc + a.Qty, 0);
         this.objSalesorderItem.Qty = lstunsellqty.filter(a => a.ItemID == element).reduce((acc, a) => acc + a.Qty, 0);
@@ -549,7 +536,8 @@ export class SalesorderunsellableComponent implements OnInit {
         this.objSalesorderItem.TaxAmount =
           ((((this.objSalesorderItem.ItemRate * this.objSalesorderItem.Qty) - this.objSalesorderItem.Discountamt) /
             ((100 + this.objSalesorderItem.TaxRate) / 100)) * this.objSalesorderItem.TaxRate) / 100
-
+        this.objSalesorderItem.Add_DiscRK = 0;
+        this.objSalesorderItem.Add_DiscAmazon = 0;
         this.objSalesorderItem.TotalValue =
           ((this.objSalesorderItem.ItemRate * this.objSalesorderItem.Qty) - this.objSalesorderItem.Discountamt);
 
@@ -560,6 +548,8 @@ export class SalesorderunsellableComponent implements OnInit {
         this.TotalDiscountamt = this.objSalesOrder.lstItem.reduce((acc, a) => acc + a.Discountamt, 0);
         this.TotalTaxAmount = this.objSalesOrder.lstItem.reduce((acc, a) => acc + a.TaxAmount, 0);
         this.TotalTotalAmount = this.objSalesOrder.lstItem.reduce((acc, a) => acc + a.TotalValue, 0);
+        this.TotalAdd_DiscRK = this.objSalesOrder.lstItem.reduce((acc, a) => acc + a.Add_DiscRK, 0);
+        this.TotalAdd_DiscAmazon = this.objSalesOrder.lstItem.reduce((acc, a) => acc + a.Add_DiscAmazon, 0);
         if (this.objSalesOrder.lstItem.length > 0) {
           this.salesForm.get('CustomerID').disable();
           this.salesForm.get('InventoryType').disable();
@@ -595,6 +585,88 @@ export class SalesorderunsellableComponent implements OnInit {
     localStorage.setItem("Unsellableqty", JSON.stringify(this.objunsell.lstunsellqty));
   }
 
+  updateListAdd_DiscRK(id: number, property: string, value: number) {
+    const editField = parseFloat(value.toString());
+    const ItemRate = parseFloat(this.objSalesOrder.lstItem[id]['ItemRate'].toString());
+    const Qty = parseFloat(this.objSalesOrder.lstItem[id]['Qty'].toString());
+    const Add_DiscRK = parseFloat(this.objSalesOrder.lstItem[id].Add_DiscRK == undefined ? "0" : this.objSalesOrder.lstItem[id].Add_DiscRK.toString());
+    const ItemID = this.objSalesOrder.lstItem[id]['ItemID'].toString();
+    const Add_DiscAmazon = parseFloat(this.objSalesOrder.lstItem[id].Add_DiscAmazon == undefined ? "0" : this.objSalesOrder.lstItem[id].Add_DiscAmazon.toString());
+
+    if (editField < 0) {
+      this._alertService.error('Entered Additional Discount (RK) must be greater than or equal to zero.!');
+      $('#Add_DiscRK' + ItemID).val(Add_DiscRK);
+      return;
+    }
+    else if (editField > (ItemRate * Qty) - Add_DiscAmazon) {
+      this._alertService.error('Entered Additional Discount (RK) must be less than or equal to (ItemRate * Qty ) - Additional Discount (Amazon).!');
+      $('#Add_DiscRK' + ItemID).val(Add_DiscRK);
+      return;
+    }
+    else {
+      this.objSalesOrder.lstItem[id][property] = editField;
+      this.objSalesOrder.lstItem[id].TaxAmount =
+        ((((this.objSalesOrder.lstItem[id].ItemRate * this.objSalesOrder.lstItem[id].Qty) -
+          this.objSalesOrder.lstItem[id].Discountamt -
+          this.objSalesOrder.lstItem[id].Add_DiscRK -
+          this.objSalesOrder.lstItem[id].Add_DiscAmazon) /
+          ((100 + this.objSalesOrder.lstItem[id].TaxRate) / 100)) * this.objSalesOrder.lstItem[id].TaxRate) / 100
+      this.objSalesorderItem.TotalValue =
+        ((this.objSalesorderItem.ItemRate * this.objSalesorderItem.Qty) -
+          this.objSalesorderItem.Discountamt -
+          this.objSalesOrder.lstItem[id].Add_DiscRK -
+          this.objSalesOrder.lstItem[id].Add_DiscAmazon);
+      //sum of all columns 
+      this.TotalSellingPrice = this.objSalesOrder.lstItem.reduce((acc, a) => acc + a.ItemRate, 0);
+      this.TotalTaxAmount = this.objSalesOrder.lstItem.reduce((acc, a) => acc + a.TaxAmount, 0);
+      this.TotalDiscountamt = this.objSalesOrder.lstItem.reduce((acc, a) => acc + a.Discountamt, 0);
+      this.TotalAdd_DiscRK = this.objSalesOrder.lstItem.reduce((acc, a) => acc + a.Add_DiscRK, 0);
+      this.TotalAdd_DiscAmazon = this.objSalesOrder.lstItem.reduce((acc, a) => acc + a.Add_DiscAmazon, 0);
+      this.TotalTotalAmount = this.objSalesOrder.lstItem.reduce((acc, a) => acc + a.TotalValue, 0);
+    }
+  }
+  TotalAdd_DiscRK: number = 0;
+  TotalAdd_DiscAmazon: number = 0;
+  updateListAdd_DiscAmazon(id: number, property: string, value: number) {
+    const editField = parseFloat(value.toString());
+    const ItemRate = parseFloat(this.objSalesOrder.lstItem[id]['ItemRate'].toString());
+    const Qty = parseFloat(this.objSalesOrder.lstItem[id]['Qty'].toString());
+    const Add_DiscAmazon = parseFloat(this.objSalesOrder.lstItem[id].Add_DiscAmazon == undefined ? "0" : this.objSalesOrder.lstItem[id].Add_DiscAmazon.toString());
+    const ItemID = this.objSalesOrder.lstItem[id]['ItemID'].toString();
+    const Add_DiscRK = parseFloat(this.objSalesOrder.lstItem[id].Add_DiscRK == undefined ? "0" : this.objSalesOrder.lstItem[id].Add_DiscRK.toString());
+    if (editField < 0) {
+      this._alertService.error('Entered Additional Discount (Amazon) must be greater than or equal to zero.!');
+      $('#Add_DiscAmazon' + ItemID).val(Add_DiscAmazon);
+      return;
+    }
+    else if (editField > (ItemRate * Qty) - Add_DiscRK) {
+      this._alertService.error('Entered Additional Discount (Amazon) must be less than or equal to (ItemRate * Qty ) - Additional Discount (Amazon).!');
+      $('#Add_DiscAmazon' + ItemID).val(Add_DiscAmazon);
+      return;
+    }
+    else {
+      this.objSalesOrder.lstItem[id][property] = editField;
+      this.objSalesOrder.lstItem[id].TaxAmount =
+        ((((this.objSalesOrder.lstItem[id].ItemRate * this.objSalesOrder.lstItem[id].Qty) -
+          this.objSalesOrder.lstItem[id].Discountamt -
+          this.objSalesOrder.lstItem[id].Add_DiscRK -
+          this.objSalesOrder.lstItem[id].Add_DiscAmazon) /
+          ((100 + this.objSalesOrder.lstItem[id].TaxRate) / 100)) * this.objSalesOrder.lstItem[id].TaxRate) / 100
+      this.objSalesorderItem.TotalValue =
+        ((this.objSalesorderItem.ItemRate * this.objSalesorderItem.Qty) -
+          this.objSalesorderItem.Discountamt -
+          this.objSalesOrder.lstItem[id].Add_DiscRK -
+          this.objSalesOrder.lstItem[id].Add_DiscAmazon);
+      //sum of all columns 
+      this.TotalSellingPrice = this.objSalesOrder.lstItem.reduce((acc, a) => acc + a.ItemRate, 0);
+      this.TotalTaxAmount = this.objSalesOrder.lstItem.reduce((acc, a) => acc + a.TaxAmount, 0);
+      this.TotalDiscountamt = this.objSalesOrder.lstItem.reduce((acc, a) => acc + a.Discountamt, 0);
+      this.TotalAdd_DiscRK = this.objSalesOrder.lstItem.reduce((acc, a) => acc + a.Add_DiscRK, 0);
+      this.TotalAdd_DiscAmazon = this.objSalesOrder.lstItem.reduce((acc, a) => acc + a.Add_DiscAmazon, 0);
+      this.TotalTotalAmount = this.objSalesOrder.lstItem.reduce((acc, a) => acc + a.TotalValue, 0);
+    }
+  }
+
   public saveData(): void {
     // stop here if form is invalid
     if (this.salesForm.invalid) {
@@ -603,8 +675,13 @@ export class SalesorderunsellableComponent implements OnInit {
     if (this._authorizationGuard.CheckAcess("Salesorderlist", "ViewEdit")) {
       return;
     }
+
     if (this.objSalesOrder.lstItem == null || this.objSalesOrder.lstItem.length == 0) {
       this._alertService.error("Order Items is Empty.Please add items to proceed!.");
+      return;
+    }
+    if (this.TotalTotalAmount == 0 || isNaN(this.TotalTotalAmount)) {
+      this._alertService.error("Please enter additional discounts as zero if not required!.");
       return;
     }
     this.objSalesOrder.lstItemUnsellable = this.objunsell.lstunsellqty.filter(a => a.Qty > 0);

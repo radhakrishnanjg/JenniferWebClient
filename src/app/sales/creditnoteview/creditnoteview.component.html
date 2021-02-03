@@ -88,32 +88,32 @@
             </tr>
             <tr>
               <th>
-                Order ID
+                Order ID {{ obj?.OrderID }}
               </th>
               <td>
-                {{ obj?.OrderID }}
+                Invoice Number {{ obj?.InvoiceNumber }}
               </td>
               <th>
                 Reference Details
               </th>
               <td>
                 {{obj?.ReferenceDetail}}
-              </td> 
-            </tr> 
+              </td>
+            </tr>
             <tr>
               <th>
                 Reason For Return
               </th>
               <td>
                 {{ obj?.Reason }}
-              </td> 
+              </td>
               <th>
                 Remarks
               </th>
               <td colspan="3">
                 {{obj?.Remarks}}
               </td>
-            </tr> 
+            </tr>
           </table>
         </div>
       </div>
@@ -139,17 +139,15 @@
           <tr *ngFor="let dis of obj?.lstCreditNoteDetail; let id = index">
             <td> {{ dis.ItemName }} </td>
             <td> {{ dis.ItemCode}} </td>
-            <td class="text-right" *ngIf="obj.CNType=='CN'"> {{ dis.InvoiceQty  }} </td>
+            <td class="text-right" *ngIf="obj.CNType=='CN'"> {{ dis.InvoiceQty }} </td>
             <td class="text-right">
               {{ dis.InvoiceTotalAmount | currency: 'INR' }} </td>
 
             <td class="text-right" *ngIf="obj.CNType=='CN'">
               {{dis.Qty}}
-            </td>
-            <!-- <td class="text-right" *ngIf="obj.CNType=='FCN'">
-              {{ dis.PendingTotalAmount  | currency: 'INR'}} </td> -->
+            </td> 
             <td class="text-right" *ngIf="obj.CNType=='CN'">
-              {{ dis.TotalAmount  | currency: 'INR'}}
+              {{ dis.TotalAmount | currency: 'INR'}}
             </td>
             <td class="text-right" *ngIf="obj.CNType=='FCN'">
               {{dis.TotalAmount| currency: 'INR'}}</td>
@@ -162,9 +160,7 @@
             <th> </th>
             <th class="text-right" *ngIf="obj.CNType=='CN'"> {{InvoiceTotalQtyTotal }}</th>
             <th class="text-right"> {{InvoiceTotalAmountTotal | currency: 'INR'}}</th>
-            <th class="text-right" *ngIf="obj.CNType=='CN'"> {{TotalQty}}</th>
-
-            <!-- <th class="text-right" *ngIf="obj.CNType=='FCN'">{{PendingAmountTotal | currency: 'INR'}} </th> -->
+            <th class="text-right" *ngIf="obj.CNType=='CN'"> {{TotalQty}}</th> 
             <th class="text-right" *ngIf="obj.CNType=='CN'">{{TotalTotalAmount | currency: 'INR'}} </th>
             <th class="text-right" *ngIf="obj.CNType=='FCN'">{{TotalTotalAmount | currency: 'INR'}} </th>
             <th> </th>

@@ -7,6 +7,8 @@ import { ToastrService } from 'ngx-toastr';
 import { AuthorizationGuard } from '../../_guards/Authorizationguard'
 import { CustomerreceiptService } from '../../_services/service/customerreceipt.service';
 import { CustomerReceiptHeader, Dropdown, CustomerReceiptDetail, Customer } from 'src/app/_services/model';
+import { process, State, orderBy } from '@progress/kendo-data-query';
+import { GridDataResult } from '@progress/kendo-angular-grid';
 import * as moment from 'moment';
 
 @Component({
@@ -175,6 +177,7 @@ export class CustomerreceiptComponent implements OnInit {
       this._customerreceiptService.SearchByCustomerId(CustomerId).subscribe(
         (data: CustomerReceiptDetail[]) => {
           this.lstCustomerReceiptDetail = data;
+          this.loadItems();
         },
         (err: any) => {
           console.log(err);
@@ -185,7 +188,7 @@ export class CustomerreceiptComponent implements OnInit {
 
   PaymentMode: string;
   onchangePaymentMode(selectedValue: string) {
-    this.PaymentMode = selectedValue; 
+    this.PaymentMode = selectedValue;
   }
 
 
@@ -205,7 +208,7 @@ export class CustomerreceiptComponent implements OnInit {
   TotalReceivedAmt: number = 0;
   TotalPendingAmt: number = 0;
   TotalReceivableAmt: number = 0;
-  updateList(id: number, property: string, value: number) { 
+  updateList(id: number, property: string, value: number) {
     const editField = parseFloat(value.toString());
     const ReceivedAmt = parseFloat(this.lstCustomerReceiptDetail[id]['ReceivedAmt'].toString());
     const PendingAmt = parseFloat(this.lstCustomerReceiptDetail[id]['PendingAmt'].toString());
@@ -236,9 +239,9 @@ export class CustomerreceiptComponent implements OnInit {
       return;
     }
 
-    let TotalReceivedAmount = parseFloat(this.CustomerReceiptForm.controls['TotalReceivedAmount'].value);
-    let downTotalPaidAmount = parseFloat(this.TotalReceivedAmt.toString());
-    if (downTotalPaidAmount == 0) {
+    let TotalReceivedAmount = parseFloat(this.CustomerReceiptForm.controls['TotalReceivedAmount'].value).toFixed(2);
+    let downTotalPaidAmount = parseFloat(this.TotalReceivedAmt.toString()).toFixed(2);
+    if (this.lstCustomerReceiptDetail.filter(a => a.ReceivedAmt > 0).length == 0) {
       this.alertService.error("Please Enter Atleast one Receipt Amount.!");
       return;
     }
@@ -253,7 +256,32 @@ export class CustomerreceiptComponent implements OnInit {
     }
     this.Insert();
   }
-
+  public gridView: GridDataResult;
+  private loadItems(): void {
+    this.gridView = {
+      data: this.lstCustomerReceiptDetail,
+      total: this.lstCustomerReceiptDetail.length
+    };
+  }
+  public onFilter(inputValue: string): void {
+    this.gridView = process(this.lstCustomerReceiptDetail, {
+      filter: {
+        logic: "or",
+        filters: [
+          {
+            field: 'OrderID',
+            operator: 'contains',
+            value: inputValue
+          },
+          {
+            field: 'ReceivableAmt',
+            operator: 'contains',
+            value: inputValue
+          },
+        ],
+      }
+    });
+  }
   Insert() {
     this.obj = new CustomerReceiptHeader();
     this.obj.CustomerID = this.CustomerReceiptForm.controls['CustomerID'].value;
@@ -288,5 +316,5 @@ export class CustomerreceiptComponent implements OnInit {
         console.log(error);
       }
     );
-  } 
+  }
 }

@@ -203,6 +203,8 @@
                 <th>TaxRate</th>
                 <th>Tax Amt</th>
                 <th>Discount Amt</th>
+                <th>Additional Discount (RK)</th>
+                <th>Additional Discount (Amazon)</th>
                 <th>Shipping Charges</th>
                 <th>Total value</th>
               </tr>
@@ -222,6 +224,9 @@
                 <td class="text-right">{{data.TaxRate  }}</td>
                 <td class="text-right">{{data.TaxAmount | currency: 'INR'}}</td>
                 <td class="text-right">{{data.Discountamt | currency: 'INR'}}</td>
+                <td class="text-right">{{data.Add_DiscRK | currency: 'INR'}}</td>
+                <td class="text-right">{{data.Add_DiscAmazon | currency: 'INR'}}</td>
+                
                 <td class="text-right">{{data.ShippingCharges | currency: 'INR'}}</td>
                 <td class="text-right">{{data.TotalValue | currency: 'INR'}}</td>
               </tr>
@@ -233,11 +238,11 @@
                 <th *ngIf="(objSalesOrder?.InventoryType=='SELLABLE')" class="text-right"> {{ TotalCaseSize}}</th>
                 <th *ngIf="(objSalesOrder?.InventoryType=='SELLABLE')" class="text-right"> {{ TotalMultiplierValue}}
                 </th>
-                <th class="text-right"> {{ TotalQty}}</th>
-
-
+                <th class="text-right"> 
+                  {{ TotalQty}}
+                </th>
                 <th class="text-right">
-                  {{ TotalItemRate | currency: 'INR'}}
+                  {{ TotalItemRate | currency: 'INR'}} 
                 </th>
                 <th class="text-right">
                 </th>
@@ -247,7 +252,12 @@
                 <th class="text-right">
                   {{ TotalDiscountamt | currency: 'INR'}}
                 </th>
-
+                <th class="text-right">
+                  {{ TotalAdd_DiscRK | currency: 'INR'}}
+                </th>                
+                <th class="text-right">
+                  {{ TotalAdd_DiscAmazon | currency: 'INR'}}
+                </th>
                 <th class="text-right">
                   {{ TotalShippingCharges | currency: 'INR'}}
                 </th>

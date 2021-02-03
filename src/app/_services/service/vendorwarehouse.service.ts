@@ -7,7 +7,7 @@ import { BadRequest } from './../../common/bad-request';
 import { NotFoundError } from './../../common/not-found-error';
 import { AppError } from './../../common/app-error';
 import { AuthenticationService } from './authentication.service';
-import { Vendorwarehouse, } from '../model/index';
+import { Result, Vendorwarehouse, } from '../model/index';
 import { environment } from '../../../environments/environment';
 @Injectable({
   providedIn: 'root'
@@ -49,19 +49,19 @@ export class VendorwarehouseService {
       );
   }
 
-  public add(objVendorwarehouse: Vendorwarehouse): Observable<boolean> {
+  public add(objVendorwarehouse: Vendorwarehouse): Observable<Result> {
     let currentUser = this.authenticationService.currentUserValue;
     objVendorwarehouse.CompanyID = currentUser.CompanyID;
     objVendorwarehouse.LoginId = currentUser.UserId;
-    return this.httpClient.post<boolean>(environment.baseUrl + `Vendorwarehouse/Create`, objVendorwarehouse)
+    return this.httpClient.post<Result>(environment.baseUrl + `Vendorwarehouse/Create`, objVendorwarehouse)
       .pipe(catchError(this.handleError));
   }
 
-  public update(objVendorwarehouse: Vendorwarehouse): Observable<boolean> {
+  public update(objVendorwarehouse: Vendorwarehouse): Observable<Result> {
     let currentUser = this.authenticationService.currentUserValue;
     objVendorwarehouse.CompanyID = currentUser.CompanyID;
     objVendorwarehouse.LoginId = currentUser.UserId;
-    return this.httpClient.post<boolean>(environment.baseUrl + `Vendorwarehouse/Update`, objVendorwarehouse)
+    return this.httpClient.post<Result>(environment.baseUrl + `Vendorwarehouse/Update`, objVendorwarehouse)
       .pipe(catchError(this.handleError));
   }
   public delete(VendorWarehouseID: number): Observable<Boolean> {

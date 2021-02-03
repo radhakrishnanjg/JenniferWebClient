@@ -32,7 +32,7 @@ export class IUser {
 
 export class Userpermission {
     LoginId: Number;
-    MenuID: Number;
+    MenuID: number;
     MenuType: string;
     ParentId: number;
     MenuName: string;

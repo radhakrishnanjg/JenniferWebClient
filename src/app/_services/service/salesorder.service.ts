@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 
 import { AppError } from '../../common/app-error';
 import { BadRequest } from '../../common/bad-request';
 import { NotFoundError } from '../../common/not-found-error';
 
-import { Salesorder,  SalesorderItem, Result, SalesorderunsellableQty } from '../model/index';
+import { Salesorder, SalesorderItem, Result, SalesorderunsellableQty, JsonModal } from '../model/index';
 import { AuthenticationService } from './authentication.service';
 import { environment } from '../../../environments/environment';
 
@@ -22,12 +22,12 @@ export class SalesorderService {
     private authenticationService: AuthenticationService
   ) { }
 
-  public search(SearchBy: string, Search: string, StartDate: Date,EndDate:Date): Observable<Salesorder[]> {
+  public search(SearchBy: string, Search: string, StartDate: Date, EndDate: Date): Observable<Salesorder[]> {
     let currentUser = this.authenticationService.currentUserValue;
     let CompanyDetailID = currentUser.CompanyDetailID;
     return this.httpClient.get<Salesorder[]>(environment.baseUrl + `SalesOrder/Search?CompanyDetailID=` +
-      CompanyDetailID + `&SearchBy=` + encodeURIComponent(SearchBy) + `&Search=` + Search 
-      + `&StartDate=` + StartDate  + `&EndDate=` + EndDate )
+      CompanyDetailID + `&SearchBy=` + encodeURIComponent(SearchBy) + `&Search=` + Search
+      + `&StartDate=` + StartDate + `&EndDate=` + EndDate)
       .pipe(catchError(this.handleError));
   }
 
@@ -82,6 +82,47 @@ export class SalesorderService {
     return this.httpClient.post<Result>(environment.baseUrl + `SalesOrder/ApprovalUpdate`, this.objSalesorder)
       .pipe(catchError(this.handleError));
   }
+
+  //#region Dispute Sales Order
+
+  public GetDisputeSalesDropDown(CustomerID: number, TransactionType: string, OrderDate: string):
+    Observable<SalesorderItem[]> {
+    let currentUser = this.authenticationService.currentUserValue;
+    let CompanyDetailID = currentUser.CompanyDetailID;
+    return this.httpClient.get<string>(environment.baseUrl + `SalesOrder/GetDisputeSalesDropDown?CompanyDetailID=` + CompanyDetailID + `&CustomerID=` + CustomerID
+      + `&TransactionType=` + TransactionType
+      + `&OrderDate=` + OrderDate)
+      .pipe(
+        map(data => {
+          return JSON.parse(data) as SalesorderItem[];
+        }),
+        catchError(this.handleError)
+      );
+  }
+
+  objJsonModal: JsonModal = {} as any;
+  public InsertDisputeSalesOrder(obj: Salesorder): Observable<Result> {
+    let currentUser = this.authenticationService.currentUserValue;
+    obj.CompanyDetailID = currentUser.CompanyDetailID;
+    obj.LoginId = currentUser.UserId;
+    this.objJsonModal.Json = JSON.stringify(obj);
+    return this.httpClient.post<Result>(environment.baseUrl + `SalesOrder/InsertDisputeSalesOrder`, this.objJsonModal)
+      .pipe(catchError(this.handleError));
+  }
+
+  public DisputeSalesOrderSearchById(SalesOrderID: number): Observable<Salesorder> {
+    let currentUser = this.authenticationService.currentUserValue;
+    let CompanyDetailID = currentUser.CompanyDetailID;
+    return this.httpClient.get<string>(environment.baseUrl + `SalesOrder/DisputeSalesOrderSearchById?SalesOrderID=` + SalesOrderID
+      + `&CompanyDetailID=` + CompanyDetailID)
+      .pipe(
+        map(data => {
+          return JSON.parse(data) as Salesorder;
+        }),
+        catchError(this.handleError)
+      );
+  }
+  // #endregion
 
   private handleError(error: HttpErrorResponse) {
     if (error.status === 404)

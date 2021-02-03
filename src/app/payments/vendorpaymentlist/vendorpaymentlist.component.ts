@@ -131,8 +131,8 @@ export class VendorpaymentlistComponent implements OnInit {
   //#region Paging Sorting and Filtering Start
   public allowUnsort = false;
   public sort: SortDescriptor[] = [{
-    field: 'BillNumber',
-    dir: 'asc'
+    field: 'PaidDate',
+    dir: 'desc'
   }];
 
   public gridView: GridDataResult;
@@ -147,7 +147,7 @@ export class VendorpaymentlistComponent implements OnInit {
     // Initial filter descriptor
     filter: {
       logic: 'and',
-      filters: [{ field: 'BillNumber', operator: 'contains', value: '' }]
+      filters: [{ field: 'PaidDate', operator: 'contains', value: '' }]
     }
   };
 

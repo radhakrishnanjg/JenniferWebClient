@@ -34,7 +34,7 @@ export class PicklistComponent implements OnInit {
     private alertService: ToastrService,
     private router: Router,
     private _picklistService: PicklistService,
-    
+
     private _authorizationGuard: AuthorizationGuard,
     private aroute: ActivatedRoute,
   ) { }
@@ -45,7 +45,6 @@ export class PicklistComponent implements OnInit {
     this.aroute.paramMap.subscribe(params => {
       this.identity = +params.get('id');
     });
-    //
     return this._picklistService.searchById(this.identity).subscribe(
       (data) => {
         if (data != null) {
@@ -88,6 +87,7 @@ export class PicklistComponent implements OnInit {
         console.log(err);
       }
     );
+    
   }
 
 
@@ -150,7 +150,7 @@ export class PicklistComponent implements OnInit {
       this.alertService.error('Jennifer Item Serial Numbers scanned quantity is greater than Picklist Qty.Please remove some Numbers.!');
       return;
     }
-    else { 
+    else {
       this.objPicklistheader.PickListNumber = this.identity;
       this.objPicklistheader.lstSerialNums = this.lstPicklistdetail;
       //
@@ -196,7 +196,7 @@ export class PicklistComponent implements OnInit {
     this.aroute.paramMap.subscribe(params => {
       this.identity = +params.get('id');
     });
-    if (this.identity > 0) { 
+    if (this.identity > 0) {
       if (this.Status == "Draft") {
         this.SaveAsDraft();
       }
@@ -208,57 +208,63 @@ export class PicklistComponent implements OnInit {
   }
 
   SaveAsDraft(): void {
+    let scannedqty = this.lstPicklistdetail.length;
     if (this.lstPicklistdetail.filter(a => a.JenniferItemSerial != "").length == 0) {
       this.alertService.error('Required Jennifer Item Serial Numbers!');
       return;
     }
-    this.objPicklistheader.PickListNumber = this.identity;
-    this.objPicklistheader.lstSerialNums = this.lstPicklistdetail;
-    //
-    this._picklistService.saveAsDraft(this.objPicklistheader).subscribe(
-      (data) => {
-        if (data != null && data.Flag == true) {
-          //
-          this.alertService.success(data.Msg);
-          this.router.navigate(['/Picklistsearch']);
+    else if (scannedqty > this.PicklistQty) {
+      this.alertService.error('Jennifer Item Serial Numbers scanned quantity is greater than Picklist Qty.Please remove some Numbers.!');
+      return;
+    }
+    else {
+      this.objPicklistheader.PickListNumber = this.identity;
+      this.objPicklistheader.lstSerialNums = this.lstPicklistdetail;
+      this._picklistService.saveAsDraft(this.objPicklistheader).subscribe(
+        (data) => {
+          if (data != null && data.Flag == true) {
+            this.alertService.success(data.Msg);
+            this.router.navigate(['/Picklistsearch']);
+          }
+          else {
+            this.alertService.error(data.Msg);
+            this.router.navigate(['/Picklistsearch']);
+          }
+          this.identity = 0;
+        },
+        (error: any) => {
+          console.log(error);
         }
-        else {
-          //
-          this.alertService.error(data.Msg);
-          this.router.navigate(['/Picklistsearch']);
-        }
-        this.identity = 0;
-      },
-      (error: any) => {
-        //
-        console.log(error);
-      }
-    );
+      );
+    }
   }
 
   SaveAsClose(): void {
     this.objPicklistheader.PickListNumber = this.identity;
     this.objPicklistheader.lstSerialNums = this.lstPicklistdetail;
-    //
-    this._picklistService.saveAsClose(this.objPicklistheader).subscribe(
-      (data) => {
-        if (data != null && data.Flag == true) {
-          //
-          this.alertService.success(data.Msg);
-          this.router.navigate(['/Picklistsearch']);
+    let scannedqty = this.lstPicklistdetail.length;
+    if (scannedqty > this.PicklistQty) {
+      this.alertService.error('Jennifer Item Serial Numbers scanned quantity is greater than Picklist Qty.Please remove some Numbers.!');
+      return;
+    }
+    else {
+      this._picklistService.saveAsClose(this.objPicklistheader).subscribe(
+        (data) => {
+          if (data != null && data.Flag == true) {
+            this.alertService.success(data.Msg);
+            this.router.navigate(['/Picklistsearch']);
+          }
+          else {
+            this.alertService.error(data.Msg);
+            this.router.navigate(['/Picklistsearch']);
+          }
+          this.identity = 0;
+        },
+        (error: any) => {
+          console.log(error);
         }
-        else {
-          //
-          this.alertService.error(data.Msg);
-          this.router.navigate(['/Picklistsearch']);
-        }
-        this.identity = 0;
-      },
-      (error: any) => {
-        //
-        console.log(error);
-      }
-    );
+      );
+    }
   }
 
 }

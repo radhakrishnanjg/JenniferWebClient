@@ -1,0 +1,291 @@
+<div class="row">
+  <div class="col-sm-6 col-lg-6">
+    <h3>
+      Commissions
+    </h3>
+  </div>
+  <div class="col-sm-6 col-lg-6">
+    <div class="pull-right hidden-xs">
+      <ol class="breadcrumb" id="dynamicbreadcrumb">
+        <li>
+          <span> Pricing</span>
+        </li>
+        <li>
+          <span> Commissions</span>
+        </li>
+        <li class="active">
+
+          List
+        </li>
+      </ol>
+    </div>
+  </div>
+</div>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="input-group col-xs-12 col-sm-12" role="group" aria-label="Basic example">
+          <div class="col-md-3 col-sm-3 col-xs-12 nopading_loct">
+            <select [(ngModel)]="SearchBy" class="serchcurv form-control btn-group">
+              <option value="" selected="select">Search By</option>
+              <option value="ByStoreName"> Store </option>
+              <option value="ByCommissionMethod">Commission Method</option>
+              <option value="ByCommissionType">Commission Type</option>
+              <option value="ByDateRange">Effective Date</option>
+            </select>
+          </div>
+          <div class="col-md-3 col-sm-3 nopading_loct" *ngIf="(SearchBy!= 'ByDateRange')">
+            <input (keyup.enter)="Search()" [(ngModel)]="SearchKeyword" type="text"
+              class="serchcurv form-control btn-group">
+          </div>
+          <div class="col-md-3 col-sm-3 nopading_loct" *ngIf="(SearchBy=='ByDateRange')">
+            <input type="text" ngxDaterangepickerMd [(ngModel)]="selectedDateRange"
+              class="serchcurv form-control btn-group col-xs-12 pointer"
+              style="border:1px soloid #ccc !important; padding :3px;left:0px" [showCustomRangeLabel]="true"
+              [ranges]="Searchranges" [showCancel]="true" placeholder="Select please..."
+              (ngModelChange)="onChange($event)" />
+          </div>
+          <div class="col-md-3 col-sm-3 nopading_loct" *ngIf="(SearchBy=='ByStatus')">
+            <select [(ngModel)]="Searchaction" type="select" class="serchcurv form-control btn-group">
+              <option value="true">Active</option>
+              <option value="false">InActive</option>
+            </select>
+          </div>
+          <div class="col-md-3 col-sm-3 col-xs-6 nopading_loct">
+            <button class="serchcurv btn btn-default btn-group" (click)="Search()" title="Search">
+              <i class="fa fa-search " aria-hidden="true"></i>
+            </button>
+            <button class="serchcurv btn btn-default btn-group" (click)="Refresh()" title="Reset">
+              <i class="fa fa-refresh" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="col-xs-6 col-sm-3 col-md-3 text-right nopadding">
+            <button class="btn btn-xs btn-sm btn-primary" (click)="newButtonClick()" title="Add New">
+              Add New
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="panel-body">
+    <div class="table-responsive">
+      <table class="table">
+        <kendo-grid [data]="gridView" resizable="true" columnMenu="true" [pageSize]="pageSize" [skip]="skip"
+          [pageable]="{pageSizes: [10, 25, 50, 100, 250, 500]}" (pageChange)="pageChange($event)" [sortable]="{
+          allowUnsort: allowUnsort,
+          mode:  'single'
+          }" [sort]="sort" (sortChange)="sortChange($event)" [filterable]="true"
+          (dataStateChange)="dataStateChange($event)" [filter]="state.filter">
+
+          <ng-template kendoGridToolbarTemplate>
+            <input placeholder="Search in all columns..." style="float:right;" kendoTextBox
+              (input)="onFilter($event.target.value)" />
+            <button kendoGridExcelCommand type="button" icon="file-excel"> </button>
+            <button kendoGridPDFCommand icon="file-pdf"> </button>
+            <kendo-grid-pdf fileName="CommissionList.pdf" [repeatHeaders]="true"></kendo-grid-pdf>
+            <kendo-grid-excel fileName="CommissionList.xlsx"></kendo-grid-excel>
+          </ng-template>
+
+          <kendo-grid-column field="StoreName" title="Store Name">
+          </kendo-grid-column>
+          <kendo-grid-column field="CommissionMethod" title="Commission Method">
+          </kendo-grid-column>
+          <kendo-grid-column field="CommissionType" title="Commission Type">
+          </kendo-grid-column>
+          <kendo-grid-column field="SubscriptionType" title="Subscription Type">
+          </kendo-grid-column>
+          <kendo-grid-column field="CommissionPer" title="Commission" [filterable]="false">
+            <ng-template kendoGridCellTemplate let-dataItem>
+              <span> <b> F- </b>{{dataItem.FixedCharges }} /, <span width="30"></span> </span>
+              <span> <b> V- </b>{{dataItem.CommissionPer}} %,</span>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column title="Effective From">
+            <ng-template kendoGridCellTemplate let-dataItem>
+              {{ dataItem.StartDate | date :"MM-dd-yyyy HH:mm" }}
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column title="Effective To">
+            <ng-template kendoGridCellTemplate let-dataItem>
+              {{ dataItem.EndDate | date :"MM-dd-yyyy HH:mm" }}
+            </ng-template>
+          </kendo-grid-column>
+        </kendo-grid>
+      </table>
+    </div>
+  </div>
+
+
+  <div id="modalpopup_discount" class="modal fade " tabindex="-1" role="dialog" aria-labelledby="modalpopup_discount"
+    aria-hidden="true">
+
+    <form [formGroup]="CommissionForm" (ngSubmit)="SaveData()">
+      <div class="modal-dialog ">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="modalpopup_discount"> {{panelTitle}}</h4>
+          </div>
+          <div class="modal-body">
+
+            <div class="form-group col-sm-12" [ngClass]="{'has-error': formErrors.CompanyDetailID}">
+              <label for="CustomerID" class=" col-sm-4 control-label">Store Name <span
+                  class="mandantory">*</span></label>
+              <div class="col-sm-8">
+                <select id="CompanyDetailID" class="form-control topdropbx" formControlName="CompanyDetailID">
+                  <option value="0" selected="selected">Select</option>
+                  <option *ngFor="let c1 of lstCompanydetails" value={{c1.CompanyDetailID}}>
+                    {{c1.StoreName}}
+                  </option>
+                </select>
+                <div class="help-block-rk">
+                  <span class="help-block" *ngIf="formErrors.CompanyDetailID">
+                    {{formErrors.CompanyDetailID}}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div class=" form-group col-sm-12" [ngClass]="{'has-error': formErrors.CommissionMethod}">
+              <label class="col-sm-4 control-label" for="CommissionMethod">Commission Method
+                <span class="mandantory">*</span></label>
+              <div class="col-sm-8">
+                <select class="form-control" formControlName="CommissionMethod" (blur)="logValidationErrors()"
+                  (change)="onchange_CommissionMethod($event.target.value)">
+                  <option value="0" selected="selected">Select</option>
+                  <option *ngFor="let dis of lstCommissionMethod" value={{dis.DropdownValue}}>
+                    {{dis.DropDownDescription}}
+                  </option>
+                </select>
+                <div class="help-block-rk">
+                  <span class="help-block" *ngIf="formErrors.CommissionMethod">
+                    {{formErrors.CommissionMethod}}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div class=" form-group col-sm-12">
+              <label class="col-sm-4 control-label" for="CommissionPer">Commission (%)
+              </label>
+              <div class="col-sm-8">
+                <input type="text" class="form-control" formControlName="CommissionPer" (blur)="logValidationErrors()"
+                  maxlength="5" onkeypress="return /[0-9.]/i.test(event.key)">
+                <div class="help-block-rk">
+                  <span class="help-block">
+
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div class=" form-group col-sm-12">
+              <label class="col-sm-4 control-label" for="FixedCharges">Fixed Charges
+              </label>
+              <div class="col-sm-8">
+                <input type="text" class="form-control" formControlName="FixedCharges" (blur)="logValidationErrors()"
+                  maxlength="15" onkeypress="return /[0-9.]/i.test(event.key)">
+                <div class="help-block-rk">
+                  <span class="help-block">
+
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div class=" form-group col-sm-12" [ngClass]="{'has-error': formErrors.CommissionType}">
+              <label class="col-sm-4 control-label" for="CommissionType">Commission Type
+                <span class="mandantory">*</span></label>
+              <div class="col-sm-8">
+                <p *ngFor="let ms of lstCommissionType; let i = index"  >
+                  <input type="checkbox" name="{{ms.DropdownValue}}" id="{{ms.DropdownValue }}"
+                      (change)="masterscreenFieldsChange($event)">
+                    <span class="stornme">{{ms.DropDownDescription }}</span>
+                </p>
+                <div class="help-block-rk">
+                  <span class="help-block" *ngIf="formErrors.CommissionType">
+                    {{formErrors.CommissionType}}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group col-sm-12">
+              <label class="col-sm-4 control-label">
+                Subscription Type
+                <span class="mandantory">*</span></label>
+              <div class="col-sm-8">
+
+                <label for="Yes" class="control-label radio-inline">
+                  <input id="Yes" type="radio" value="Yearly" name="SubscriptionType"
+                    formControlName="SubscriptionType">
+                  Yearly
+                </label>
+                &nbsp; &nbsp;
+                <label for="No" class="control-label radio-inline">
+                  <input id="No" type="radio" value="Monthly" name="SubscriptionType"
+                    formControlName="SubscriptionType">
+                  Monthly
+                </label>
+
+                <div class="help-block-rk">
+                  <span class="help-block">
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group col-sm-12" [ngClass]="{'has-error': formErrors.StartDate}">
+              <label class="col-sm-4 control-label" for="StartDate">Start Date <span class="mandantory">*</span>
+              </label>
+              <div class="col-sm-8">
+                <div class='input-group date'>
+                  <input type="text" ngxDaterangepickerMd [minDate]="MinDate" [autoApply]="true"
+                    [singleDatePicker]="true" (datesUpdated)="EndDateUpdated($event)" [timePicker]="true"
+                    class="form-control" name="StartDate" [formControl]="CommissionForm.controls['StartDate']"
+                    (change)="logValidationErrors()" id="StartDate" [locale]="{format: 'MM-DD-YYYY HH:mm'}"
+                    maxlength="16" />
+                  <label class="fa fa-calendar"></label>
+                </div>
+                <div class="help-block-rk">
+                </div><span class="help-block" *ngIf="formErrors.StartDate">
+                  {{formErrors.StartDate}}
+                </span>
+              </div>
+            </div>
+
+            <div class="form-group col-sm-12" [ngClass]="{'has-error': formErrors.EndDate}">
+              <label class="col-sm-4 control-label" for="EndDate">End Date <span class="mandantory">*</span> </label>
+              <div class="col-sm-8">
+                <div class='input-group date'>
+                  <input type="text" ngxDaterangepickerMd [minDate]="MinDate" [autoApply]="true"
+                    [singleDatePicker]="true" (datesUpdated)="EndDateUpdated($event)" [timePicker]="true"
+                    class="form-control" name="EndDate" [formControl]="CommissionForm.controls['EndDate']"
+                    (change)="logValidationErrors()" id="EndDate" [locale]="{format: 'MM-DD-YYYY HH:mm'}"
+                    maxlength="16" />
+                  <label class="fa fa-calendar"></label>
+                </div>
+                <div class="help-block-rk">
+                </div><span class="help-block" *ngIf="formErrors.EndDate">
+                  {{formErrors.EndDate}}
+                </span>
+              </div>
+            </div>
+
+          </div>
+          <div class="clearfix"> </div>
+          <div class="modal-footer">
+            <button class="btn btn-primary" data-dismiss="modal">Cancel</button>
+            &nbsp;
+            <button class="btn btn-success" type="submit" prevent-double-submit [disabled]="CommissionForm.invalid">
+              Save
+            </button>
+          </div>
+          <div class="clearfix"> </div>
+        </div>
+      </div>
+    </form>
+  </div>

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PrivateutilityService } from '../../_services/service/privateutility.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 
@@ -29,6 +29,7 @@ export class VendorpaymentComponent implements OnInit {
     private _router: Router,
     private _authorizationGuard: AuthorizationGuard,
     private _PrivateutilityService: PrivateutilityService,
+    private aroute: ActivatedRoute,
   ) { }
   formErrors = {
 
@@ -90,8 +91,10 @@ export class VendorpaymentComponent implements OnInit {
 
   vendorMinDate: moment.Moment;
   vendorMaxDate: moment.Moment;
+  PendingAmount: number = 0;
   ngOnInit() {
-
+    this.identity = 0;
+    this.action = true;
     var end = moment().endOf('day');
     var currentend = new Date();
     var differ = end.diff(currentend, 'minutes');
@@ -109,6 +112,42 @@ export class VendorpaymentComponent implements OnInit {
     this.getCurrentServerDateTime();
     this.GetpaymentVendors();
     this.GetpaymentModes();
+
+    this.aroute.paramMap.subscribe(params => {
+      this.identity = +params.get('id');
+      this.action = false;
+      if (this.identity > 0) {
+        this._vendorpaymentService.SearchById(this.identity).subscribe(
+          (data: VendorPaymentHeader) => {
+            this.obj = data;
+            this.PendingAmount = data.PendingAmount;
+            var VendorID = data.VendorID.toString();
+            var PaymentDate = moment(data.PaymentDate, 'YYYY-MM-DD[T]HH:mm').format('MM-DD-YYYY HH:mm').toString();
+            this.VendorPaymentform.patchValue({
+              VendorID: VendorID,
+              PaymentMode: data.PaymentMode,
+              TransactionNumber: data.TransactionNumber,
+              PaymentDate: { startDate: new Date(PaymentDate) },
+              TotalPaidAmount: data.TotalPaidAmount,
+              Remarks: data.Remarks,
+            });
+            this.VendorPaymentform.get('VendorID').disable();
+            this.VendorPaymentform.get('PaymentMode').disable();
+            this.VendorPaymentform.get('TransactionNumber').disable();
+            //this.VendorPaymentform.get('PaymentDate').disable();
+            this.VendorPaymentform.get('TotalPaidAmount').disable();
+            this.VendorPaymentform.get('Remarks').disable();
+            this.onchangeVendorID(VendorID);
+          },
+          (err: any) => {
+            console.log(err);
+          }
+        );
+      }
+    });
+    if (isNaN(this.identity)) {
+      this.identity = 0;
+    }
   }
 
   private getCurrentServerDateTime() {
@@ -160,6 +199,10 @@ export class VendorpaymentComponent implements OnInit {
       this._vendorpaymentService.SearchByVendorId(VendorID).subscribe(
         (data: VendorPaymentDetail[]) => {
           this.lstVendorPaymentDetail = data;
+          // this.obj.lstVendorPaymentDetail.forEach(element => {
+          //   // let element.PurchaseID = this.obj.lstVendorPaymentDetail.fi 
+          // });
+          this.TotalPaidAmt = this.lstVendorPaymentDetail.reduce((acc, a) => acc + a.PaidAmt, 0);
         },
         (err: any) => {
           console.log(err);
@@ -192,28 +235,44 @@ export class VendorpaymentComponent implements OnInit {
       this.TotalPaidAmt = this.lstVendorPaymentDetail.reduce((acc, a) => acc + a.PaidAmt, 0);
     }
   }
-
+  PaymentMode: string = '';
   SaveData(): void {
     if (this._authorizationGuard.CheckAcess("Vendorpaymentlist", "ViewEdit")) {
       return;
     }
-
-    let TotalPaidAmount = parseFloat(this.VendorPaymentform.controls['TotalPaidAmount'].value.toString()).toFixed(2);
-    let downTotalPaidAmount = parseFloat(this.TotalPaidAmt.toString()).toFixed(2);
-    if (downTotalPaidAmount == "") {
-      this.alertService.error("Please Enter Atleast one Invoice Paid Amount.!");
-      return;
+    if (this.identity == 0 || isNaN(this.identity)) {
+      let TotalPaidAmount = parseFloat(this.VendorPaymentform.controls['TotalPaidAmount'].value.toString()).toFixed(2);
+      let downTotalPaidAmount = parseFloat(this.TotalPaidAmt.toString()).toFixed(2);
+      if ((this.VendorPaymentform.controls['PaymentMode'].value == 'ONLINE' ||
+        this.VendorPaymentform.controls['PaymentMode'].value == 'CASH') && downTotalPaidAmount == "") {
+        this.alertService.error("Please Enter Atleast one Invoice Paid Amount.!");
+        return;
+      }
+      if ((this.VendorPaymentform.controls['PaymentMode'].value == 'ONLINE' ||
+        this.VendorPaymentform.controls['PaymentMode'].value == 'CASH') && TotalPaidAmount != downTotalPaidAmount) {
+        this.alertService.error("The Total Paid Amount and Sum of Paid Amount must be equal.!");
+        return;
+      }
+      if (this.VendorPaymentform.controls['PaymentMode'].value == 'ONLINE' &&
+        this.VendorPaymentform.controls['TransactionNumber'].value == '') {
+        this.alertService.error("Please Enter the UTR Number!");
+        return;
+      }
+      this.Insert();
     }
-    if (TotalPaidAmount != downTotalPaidAmount) {
-      this.alertService.error("The Total Paid Amount and Sum of Paid Amount must be equal.!");
-      return;
+    else {
+      let PendingAmount = parseFloat(this.PendingAmount.toString()).toFixed(2);
+      let downTotalPaidAmount = parseFloat(this.TotalPaidAmt.toString()).toFixed(2);
+      if (this.identity >0 && this.lstVendorPaymentDetail.filter(a => a.PaidAmt > 0).length == 0) {
+        this.alertService.error("Please enter atleast one Invoice Paid Amount.!");
+        return;
+      }
+      if (this.identity >0 &&  parseFloat(downTotalPaidAmount) > parseFloat(PendingAmount)) {
+        this.alertService.error("The Total Paid Amount and less than or equal to Pending Amount.!");
+        return;
+      }
+      this.Update();
     }
-    if (this.VendorPaymentform.controls['PaymentMode'].value == 'ONLINE' &&
-      this.VendorPaymentform.controls['TransactionNumber'].value == '') {
-      this.alertService.error("Please Enter the UTR Number!");
-      return;
-    }
-    this.Insert();
   }
 
   Insert() {
@@ -243,7 +302,6 @@ export class VendorpaymentComponent implements OnInit {
         }
         else {
           this.alertService.error(data.Msg);
-          this._router.navigate(['/Vendorpaymentlist']);
         }
       },
       (error: any) => {
@@ -252,6 +310,37 @@ export class VendorpaymentComponent implements OnInit {
     );
   }
 
+
+  Update() {
+    this.obj = new VendorPaymentHeader();
+    this.obj.PaymentID = this.identity;
+    this.obj.TransactionNumber = this.VendorPaymentform.controls['TransactionNumber'].value;
+    if (this.VendorPaymentform.controls['PaymentDate'].value.startDate._d != undefined) {
+      let PaymentDate = new Date(moment(
+        new Date(this.VendorPaymentform.controls['PaymentDate'].value.startDate._d.toLocaleString())).format("MM-DD-YYYY HH:mm"));
+      this.obj.PaymentDate = PaymentDate;
+
+    } else {
+      let PaymentDate = new Date(moment(new Date(this.VendorPaymentform.controls['PaymentDate'].value.startDate.toLocaleString())).format("MM-DD-YYYY HH:mm"));
+      this.obj.PaymentDate = PaymentDate;
+    }
+    this.obj.lstVendorPaymentDetail = this.lstVendorPaymentDetail.filter(a => a.PaidAmt > 0);
+
+    this._vendorpaymentService.Update(this.obj).subscribe(
+      (data) => {
+        if (data != null && data.Flag == true) {
+          this.alertService.success(data.Msg);
+          this._router.navigate(['/Vendorpaymentlist']);
+        }
+        else {
+          this.alertService.error(data.Msg);
+        }
+      },
+      (error: any) => {
+        console.log(error);
+      }
+    );
+  }
 
 }
 

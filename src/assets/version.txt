@@ -1,4 +1,71 @@
 
+Version 15.0
+    Date 
+        Jan 21 2021
+    Descriptions 
+        - MIS Data Analysis Screen has been added
+        - EPIC shelter Analysis Screen has been added
+        - Dowload Options has been changed for Report type MIS and Others  
+        - Wallet reco report
+        - Adjustment screen
+        - Duty deposit screen
+        - MFI supporting document upload.
+        - Sales automation mail
+        - Purchase order status Report 
+        
+Version 14.0
+    Date 
+        Jan 11 2021
+    Descriptions 
+        - Finanical Adjustment screen 
+        - Duty deposit scren
+        - Dispute Salesorder 
+       
+       
+Version 13.0
+    Date 
+        Dec 14 2020
+    Descriptions 
+        - 1)subscription
+        - 2)RTV Sales and upload TCS
+        - 3)Dispute Salesorder
+        - 4)Stock exchange
+            
+Version 12.0
+    Date 
+        OCT 30 2020
+    Descriptions 
+        - Jennifer application
+		- Tcs Implementation has been added on Purchase parivate
+        - advance Vendor payment functionality has been added in Vendor payment screen
+        - User type based login re direction added in signin screen
+            - usertype 3 to 14 will redirect to sellerscentral access page
+            - usertype 15,16,17,18 redirect to psp access page
+
+Version 11.0
+    Date 
+        OCT 14 2020
+    Descriptions
+		- Po Screen has been attended
+                Currency USD/INR
+                Comma Separated for Values
+                Under Terms & Condistions (Payment Terms) Consider Payment terms from PO header Payment Reference column.
+                In the PO view screen amounts symbol should change as per currency symbol
+                In the Purchases Screen as per currency symbol values should shown.
+                PO Changes & Vendorwarehouse Screen Requirement 
+        - Secondary contacts has been added in Vendor warehouse screen
+
+Version 10.0
+    Date 
+        OCT 13 2020
+    Descriptions
+		- Prodcut Tax Code screen has been added
+        - MFI Case management Scrreen has been added
+        - print option enabled with new link in target as _blank
+
+
+        -
+
 Version 9.0
     Date 
         OCT 5 Sep 2020

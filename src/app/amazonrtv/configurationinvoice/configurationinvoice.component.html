@@ -60,7 +60,7 @@
   <div class="panel-body">
     <!-- *ngIf="SalesInvoiceID!=0" -->
     <!-- margin="2cm" [keepTogether]="keepTogether"-->
-    <kendo-pdf-export #pdf paperSize="A4" margin="1cm" [repeatHeaders]="repeatHeaders">
+    <kendo-pdf-export ngIf="SalesInvoiceID!=0" #pdf paperSize="A4" margin="1cm" [repeatHeaders]="repeatHeaders">
       <table class="table table-bordered table-condensed  table-striped" width="2480px" style=" font-family: Verdana, Geneva, Tahoma, sans-serif;
         font-size:9px;background-color: #fff;color:#000;">
         <tbody>
@@ -240,6 +240,30 @@
             </th>
             <th class="text-right" style="font-size:9px;">
               <b>{{objSalesInvoiceHeader?.TotalAmount | number:'.0'}} </b>
+            </th>
+          </tr>
+          <tr>
+            <td></td>
+            <td>TCS Amount </td>
+            <td></td>
+            <td></td>
+            <td></td>
+
+            <td></td>
+            <td class="text-right" style="font-size:9px;">{{ TCS_Amount | number:'.0'}}</td>
+          </tr>
+          <tr style="font-size:9px;">
+            <th> </th>
+            <th>
+              Grand Total
+            </th>
+            <th> </th>
+            <th> </th>
+            <th> </th>
+
+            <th> </th>
+            <th>
+              <b>{{Grand_Total | number:'.0'}} </b>
             </th>
           </tr>
         </tbody>

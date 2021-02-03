@@ -106,6 +106,10 @@
           <kendo-grid-column field="Email" title="Email">
           </kendo-grid-column>
 
+          <!-- <kendo-grid-column field="TotalAmount" title="Total Amount" format="{0:##,#.##}">
+          </kendo-grid-column> -->
+          <kendo-grid-column field="TCS_Amount" title="TCS Amount" format="{0:##,#.##}">
+          </kendo-grid-column>
           <kendo-grid-column field="IsActive" title="IsActive" [class]="{'text-center': true}" filter="boolean"
             width="80">
             <ng-template kendoGridCellTemplate let-dataItem>

@@ -132,8 +132,8 @@
             <td> {{ dis.AgingDays}} </td>
             <td> {{ dis.OrderDate | date :"MM-dd-yyyy HH:mm"}} </td>
             <td> {{ dis.OrderID }} </td>
-            <td> {{ dis.ReceivableAmt | currency: 'INR'}} </td>
-            <td> {{ dis.ReceivedAmt | currency: 'INR'}} </td>
+            <td class="text-right"> {{ dis.ReceivableAmt | currency: 'INR'}} </td>
+            <td class="text-right"> {{ dis.ReceivedAmt | currency: 'INR'}} </td>
 
           </tr>
           <tr>

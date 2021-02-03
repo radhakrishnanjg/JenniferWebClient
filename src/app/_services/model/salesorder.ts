@@ -44,8 +44,9 @@ export class Salesorder {
     ApprovalStatus: string;
     ActionBy: string;
     ActionDate: Date;
-    DiscountAllowedinDays: number;    
+    DiscountAllowedinDays: number;
     DiscountAllowedinDaysDesc: string;
+    IsDispute: boolean;
 }
 
 export class PaymentTermType {
@@ -73,6 +74,14 @@ export class SalesorderItem {
     TotalValue: number = 0.00;
     TaxRate: number;
     TaxAmount: number;
+    OtherItem: string;
+    ActualItemRate: number;
+    AvailableQty: number;
+    DisputeType: string;
+    JenniferItemSerial: string;
+    Add_DiscRK: number;
+    Add_DiscAmazon: number;
+    TaxableValue: number;
 }
 
 export class SalesorderunsellableQty {
@@ -134,20 +143,36 @@ export class Salesratecard {
 export class EventManager {
     EventManagerID: number;
     CompanyDetailID: number;
-    ItemID: number;  
+    ItemID: number;
     StartDate: Date;
     EndDate: Date;
     DeactivateDate: Date;
-    IsActive: Boolean; 
+    IsActive: Boolean;
     MarketplaceID: number;
     MarketPlace: string;
-    IsExpense:Boolean;
-    Expense:number;
+    IsExpense: Boolean;
+    Expense: number;
     LoginId: number;
     //Master Tables 
-    ItemCode: string; 
+    ItemCode: string;
     ItemIds: number[];
     StoreName: string;
+}
+
+export class Commission {
+    StartDate: Date;
+    EndDate: Date;
+    DeactivateDate: Date;
+    IsActive: Boolean;
+    StoreName: string;
+    CommissionPer: number;
+    FixedCharges: number;
+    CommissionMethod: string;
+    CommissionType: string;
+    SubscriptionType: string;
+    //Master Tables 
+    LoginId: number;
+    CompanyDetailID: number;
 }
 export class SalesShipment {
     ShipmentOutwardID: number;
@@ -169,7 +194,7 @@ export class SalesShipment {
     LoginId: number;
 }
 
-export class InvoiceNumber { 
+export class InvoiceNumber {
     InvoiceNumber: string;
 }
 export class Shipmentoutward {
@@ -188,5 +213,52 @@ export class Shipmentoutward {
     GSTEwayBillNumber: string;
     IsEditable: boolean;
     // who is doing this task
+    LoginId: number;
+}
+
+
+export class FinancialAdjustment {
+    SysID: number;
+    AdjustmentDate: Date;
+    AdjustmentType: string;
+    AdjustmentDescription: string;
+    AdjustmentAmount: number;
+    StatementNumber: string;
+    CompanyDetailID: number;
+    // own infor
+    StoreName: string;
+    LoginId: number;
+    Action: string;
+}
+
+export class DutyDepositLedgerHeader {
+    DutyDepositLedgerID: number;
+    FBAShipmentID: string;
+    DepositDate: Date;
+    DepositAmount: number;
+    CurrencyType: string;
+    Remarks: string;
+    ReimbursementAmount: number;
+    BalanceAmount: number;
+    CompanyDetailID: number;
+    ReimbursementDate: Date;
+    lstReimbursementDetail: DutyDepositLedgerDetail[] = [] as any;
+    // own infor
+    StoreName: string;
+    LoginId: number;
+    Action: string;
+}
+
+export class DutyDepositLedgerDetail {
+    SysID: number;
+    DutyDepositLedgerID: number;
+    ReimbursementAmount: number;
+    ReimbursementDate: Date;
+    Remarks: string;
+    ActionBy: string;
+    ActionDate: Date;
+    CompanyDetailID: number;
+    // own infor
+    StoreName: string;
     LoginId: number;
 }

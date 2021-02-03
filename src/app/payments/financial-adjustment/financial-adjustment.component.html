@@ -1,0 +1,270 @@
+<div class="row">
+  <div class="col-sm-6 col-lg-6">
+    <h3>
+      Financial Adjustments
+    </h3>
+  </div>
+  <div class="col-sm-6 col-lg-6">
+    <div class="pull-right hidden-xs">
+      <ol class="breadcrumb" id="dynamicbreadcrumb">
+        <li>
+          <span> Payments</span>
+        </li>
+        <li>
+          <span> Financial Adjustments</span>
+        </li>
+        <li class="active">
+          List
+        </li>
+      </ol>
+    </div>
+  </div>
+</div>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="input-group col-xs-12 col-sm-12" role="group" aria-label="Basic example">
+          <div class="col-md-3 col-sm-3 col-xs-12 nopading_loct">
+            <select [(ngModel)]="SearchBy" class="serchcurv form-control btn-group">
+              <option value="" selected="select">Search By</option>
+              <option value="StoreName"> Store </option>
+              <option value="AdjustmentType"> Adjustment Type</option>
+              <option value="AdjustmentDate">Adjustment Date</option>
+            </select>
+          </div>
+          <div class="col-md-3 col-sm-3 nopading_loct" *ngIf="(SearchBy!= 'AdjustmentDate')">
+            <input (keyup.enter)="Search()" [(ngModel)]="SearchKeyword" type="text"
+              class="serchcurv form-control btn-group">
+          </div>
+          <div class="col-md-3 col-sm-3 nopading_loct" *ngIf="(SearchBy=='AdjustmentDate')">
+            <input type="text" ngxDaterangepickerMd [(ngModel)]="selectedDateRange"
+              class="serchcurv form-control btn-group col-xs-12 pointer"
+              style="border:1px soloid #ccc !important; padding :3px;left:0px" [showCustomRangeLabel]="true"
+              [ranges]="Searchranges" [showCancel]="true" placeholder="Select please..."
+              (ngModelChange)="onChange($event)" />
+          </div>
+          <div class="col-md-3 col-sm-3 col-xs-6 nopading_loct">
+            <button class="serchcurv btn btn-default btn-group" (click)="Search()" title="Search">
+              <i class="fa fa-search " aria-hidden="true"></i>
+            </button>
+            <button class="serchcurv btn btn-default btn-group" (click)="Refresh()" title="Reset">
+              <i class="fa fa-refresh" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="col-xs-6 col-sm-3 col-md-3 text-right nopadding">
+            <button class="btn btn-xs btn-sm btn-primary" (click)="newButtonClick()" title="Add New">
+              Add New
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="panel-body">
+    <div class="table-responsive">
+      <table class="table">
+        <kendo-grid [data]="gridView" resizable="true" columnMenu="true" [pageSize]="pageSize" [skip]="skip"
+          [pageable]="{pageSizes: [10, 25, 50, 100, 250, 500]}" (pageChange)="pageChange($event)" [sortable]="{
+          allowUnsort: allowUnsort,
+          mode:  'single'
+          }" [sort]="sort" (sortChange)="sortChange($event)" [filterable]="true"
+          (dataStateChange)="dataStateChange($event)" [filter]="state.filter">
+
+          <ng-template kendoGridToolbarTemplate>
+            <input placeholder="Search in all columns..." style="float:right;" kendoTextBox
+              (input)="onFilter($event.target.value)" />
+            <button kendoGridExcelCommand type="button" icon="file-excel"> </button>
+            <button kendoGridPDFCommand icon="file-pdf"> </button>
+            <kendo-grid-pdf fileName="CommissionList.pdf" [repeatHeaders]="true"></kendo-grid-pdf>
+            <kendo-grid-excel fileName="CommissionList.xlsx"></kendo-grid-excel>
+          </ng-template>
+
+          <kendo-grid-column field="StoreName" title="Store Name">
+          </kendo-grid-column>
+          <kendo-grid-column title="Adjustment Date">
+            <ng-template kendoGridCellTemplate let-dataItem>
+              {{ dataItem.AdjustmentDate | date :"MM-dd-yyyy" }}
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="AdjustmentType" title="Adjustment Type">
+          </kendo-grid-column>
+          <kendo-grid-column field="AdjustmentDescription" title="Adjustment Description">
+          </kendo-grid-column>
+          <kendo-grid-column field="AdjustmentAmount" title="Adjustment Amount" format="{0:##,#.##}">
+          </kendo-grid-column>
+          <kendo-grid-column field="StatementNumber" title="Adjustment To">
+          </kendo-grid-column>
+          <kendo-grid-column title="Action" [class]="{'text-center': true}" [filterable]="false" [sortable]="false"
+            width="70">
+            <ng-template kendoGridCellTemplate let-obj>
+              <i class="fa fa-edit bgblue pointer" *ngIf="obj.StatementNumber=='' || obj.StatementNumber==null "
+                title="Edit" (click)="editButtonClick(obj.SysID)"></i>
+              &nbsp;
+              <i class="fa fa-trash bgred pointer" *ngIf="obj.StatementNumber=='' || obj.StatementNumber==null "
+                title="Delete" (click)="confirmDeleteid(obj.SysID,obj.AdjustmentAmount)"></i>
+            </ng-template>
+          </kendo-grid-column>
+        </kendo-grid>
+      </table>
+    </div>
+  </div>
+
+
+  <div id="modalpopup_discount" class="modal fade " tabindex="-1" role="dialog" aria-labelledby="modalpopup_discount"
+    aria-hidden="true">
+
+    <form [formGroup]="CommissionForm" (ngSubmit)="SaveData()">
+      <div class="modal-dialog ">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="modalpopup_discount"> {{panelTitle}}</h4>
+          </div>
+          <div class="modal-body">
+
+            <div class="form-group col-sm-12" [ngClass]="{'has-error': formErrors.StoreName}">
+              <label for="CustomerID" class=" col-sm-4 control-label" for="StoreName">Store Name <span
+                  class="mandantory">*</span></label>
+              <div class="col-sm-8">
+                <kendo-autocomplete *ngIf="action" formControlName="StoreName" name="StoreName" [filterable]="true"
+                  (filterChange)="handleFilter($event)" [data]="lstCompanydetails_data" [valueField]="'StoreName'"
+                  [placeholder]="'e.g.Store'" class="form-control">
+                  <ng-template kendoAutoCompleteItemTemplate let-d>
+                    {{ d.StoreName }}
+                  </ng-template>
+                </kendo-autocomplete>
+                <div *ngIf="!action">
+                  {{objCommission.StoreName}}
+                </div>
+                <div class="help-block-rk">
+                  <span class="help-block" *ngIf="formErrors.StoreName">
+                    {{formErrors.StoreName}}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div class=" form-group col-sm-12" [ngClass]="{'has-error': formErrors.AdjustmentType}">
+              <label class="col-sm-4 control-label" for="CommissionMethod"> Adjustment Type
+                <span class="mandantory">*</span></label>
+              <div class="col-sm-8">
+                <select class="form-control" *ngIf="action" formControlName="AdjustmentType"
+                  (blur)="logValidationErrors()">
+                  <option value="0" selected="selected">Select</option>
+                  <option *ngFor="let dis of lstAdjustmentType" value={{dis.DropdownValue}}>
+                    {{dis.DropDownDescription}}
+                  </option>
+                </select>
+                <div *ngIf="!action">
+                  {{objCommission.AdjustmentType}}
+                </div>
+                <div class="help-block-rk">
+                  <span class="help-block" *ngIf="formErrors.AdjustmentType">
+                    {{formErrors.AdjustmentType}}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div class=" form-group col-sm-12" [ngClass]="{'has-error': formErrors.AdjustmentAmount}">
+              <label class="col-sm-4 control-label" for="AdjustmentAmount">
+                 Adjustment Amount
+                 <span class="mandantory">*</span>
+              </label>
+              <div class="col-sm-8">
+                <input type="text" class="form-control" formControlName="AdjustmentAmount"
+                  (blur)="logValidationErrors()" maxlength="18" onkeypress="return /[0-9.]/i.test(event.key)">
+                <div class="help-block-rk">
+                  <span class="help-block">
+                    <span class="help-block" *ngIf="formErrors.AdjustmentAmount">
+                      {{formErrors.AdjustmentAmount}}
+                    </span>
+                  </span>
+                </div>
+              </div>
+            </div>
+
+
+            <div class="form-group col-sm-12" [ngClass]="{'has-error': formErrors.AdjustmentDate}">
+              <label class="col-sm-4 control-label" for="AdjustmentDate">
+                Adjustment Date <span class="mandantory">*</span>
+              </label>
+              <div class="col-sm-8">
+                <div class='input-group date'>
+                  <input type="text" ngxDaterangepickerMd [autoApply]="true" [singleDatePicker]="true"
+                    (datesUpdated)="EndDateUpdated($event)" [timePicker]="false" class="form-control"
+                    name="AdjustmentDate" [formControl]="CommissionForm.controls['AdjustmentDate']"
+                    (change)="logValidationErrors()" id="AdjustmentDate" [locale]="{format: 'MM-DD-YYYY'}"
+                    maxlength="16" />
+                  <label class="fa fa-calendar"></label>
+                </div>
+                <div class="help-block-rk">
+                </div><span class="help-block" *ngIf="formErrors.AdjustmentDate">
+                  {{formErrors.AdjustmentDate}}
+                </span>
+              </div>
+            </div>
+
+            <div class="form-group col-sm-12" [ngClass]="{'has-error': formErrors.AdjustmentDescription}">
+              <label class="col-sm-4 control-label" for="Description">
+                Adjustment Description
+                <span class="mandantory">*</span></label>
+              <div class="col-sm-8">
+                <input id="AdjustmentDescription" type="text" class="form-control"
+                  formControlName="AdjustmentDescription" (blur)="logValidationErrors()" maxlength="5000">
+                <div class="help-block-rk">
+                  <span class="help-block" *ngIf="formErrors.AdjustmentDescription">
+                    {{formErrors.AdjustmentDescription}}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <div class="clearfix"> </div>
+          <div class="modal-footer">
+            <button class="btn btn-primary" data-dismiss="modal">Cancel</button>
+            &nbsp;
+            <button class="btn btn-success" type="submit" prevent-double-submit [disabled]="CommissionForm.invalid">
+              Save
+            </button>
+          </div>
+          <div class="clearfix"> </div>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div id="modaldeleteconfimation" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="modaldeleteconfimation" aria-hidden="true">
+    <div class="modal-dialog ">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+              aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="modaldeleteconfimation">Confirmation</h4>
+        </div>
+        <div class="modal-body alert-warning">
+          <div class="row">
+            <div class="col-xs-2">
+              <i class="fa fa-warning fa-3x "></i>
+            </div>
+            <div class="col-xs-10">
+              <div>
+                <h5>
+                  Are you sure you want to delete this value <span> {{deleteColumn}}</span>?
+                </h5>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-danger btn-sm" (click)="delete()">Yes</button>
+          &nbsp;
+          <button class="btn btn-default btn-sm" data-dismiss="modal">No</button>
+        </div>
+      </div>
+    </div>
+  </div>

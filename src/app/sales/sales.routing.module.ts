@@ -29,11 +29,16 @@ import { CreditnoteviewComponent } from './creditnoteview/creditnoteview.compone
 import { RefundlistComponent } from './refundlist/refundlist.component';
 import { RefundComponent } from './refund/refund.component';
 import { StockauditComponent } from './stockaudit/stockaudit.component';
+import { SalesorderunsellableDisputeComponent } from './salesorderunsellable-dispute/salesorderunsellable-dispute.component';
 
+import { SalesorderunsellableDisputeViewComponent } from './salesorderunsellable-dispute-view/salesorderunsellable-dispute-view.component';
 const appRoutes: Routes = [
     // Sales module
     { path: 'Salesorder/:id', component: SalesorderComponent, canActivate: [AuthGuard, StoreGuard] },
     { path: 'Salesorderunsellable/:id', component: SalesorderunsellableComponent, canActivate: [AuthGuard, StoreGuard] },
+    { path: 'SalesorderunsellableDispute/:id', component: SalesorderunsellableDisputeComponent, canActivate: [AuthGuard, StoreGuard] },
+    { path: 'SalesorderunsellableDisputeView/:id', component: SalesorderunsellableDisputeViewComponent, canActivate: [AuthGuard, StoreGuard] },
+   
     { path: 'Salesorderview/:id', component: SalesorderviewComponent, canActivate: [AuthGuard, StoreGuard] },
     { path: 'Salesorderlist', component: SalesorderlistComponent, canActivate: [AuthGuard, StoreGuard] },
     { path: 'Salesorderapproval/:id', component: SalesorderapprovalComponent, canActivate: [AuthGuard, StoreGuard] },
